@@ -1,0 +1,307 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: lil_Emission
+  m_Shader: {fileID: 4800000, guid: df12117ecd77c31469c224178886498e, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Bump2ndMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emission2ndBlendMask:
+        m_Texture: {fileID: 2800000, guid: 9c311bcf07cb6a841a90fcea63ebc375, type: 3}
+        m_Scale: {x: 0.8, y: 0.8}
+        m_Offset: {x: 0.1, y: 0.1}
+    - _Emission2ndGradTex:
+        m_Texture: {fileID: 2800000, guid: dddb8b9e8cea6b745b98704db1437c88, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emission2ndMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionBlendMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionGradTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 2800000, guid: 4d11d2a06325ff04db4b467d5fb92fea, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Main2ndTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Main3rdTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Main4thTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MatcapBlendMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MatcapTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OutlineAlphaMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OutlineWidthMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ReflectionBlendMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RimBlendMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Shadow2ndColorTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadowBlurMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadowBorderMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadowColorTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadowStrengthMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SmoothnessTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _ApplyReflection: 1
+    - _ApplySpecular: 1
+    - _BackfaceForceShadow: 0
+    - _Bump2ndScale: 1
+    - _BumpScale: 1
+    - _CullMode: 2
+    - _Cutoff: 0.5
+    - _DstBlend: 0
+    - _Emission2ndBlend: 1
+    - _Emission2ndBlendMaskAngle: 0
+    - _Emission2ndBlendMaskRotate: -30
+    - _Emission2ndBlendMaskScrollX: 0
+    - _Emission2ndBlendMaskScrollY: 0
+    - _Emission2ndBlendMaskTrim: 0
+    - _Emission2ndBlendMaskUV: 0
+    - _Emission2ndBlinkOffset: 0
+    - _Emission2ndBlinkSpeed: 10
+    - _Emission2ndBlinkStrength: 1
+    - _Emission2ndBlinkType: 1
+    - _Emission2ndGradSpeed: 10
+    - _Emission2ndMapAngle: 0
+    - _Emission2ndMapRotate: 0
+    - _Emission2ndMapScrollX: 0
+    - _Emission2ndMapScrollY: 0
+    - _Emission2ndMapTrim: 0
+    - _Emission2ndMapUV: 0
+    - _Emission2ndParallaxDepth: 0
+    - _Emission2ndUseBlink: 0
+    - _Emission2ndUseGrad: 1
+    - _EmissionBlend: 1
+    - _EmissionBlendMaskAngle: 0
+    - _EmissionBlendMaskRotate: 0
+    - _EmissionBlendMaskScrollX: 0
+    - _EmissionBlendMaskScrollY: 0
+    - _EmissionBlendMaskTrim: 0
+    - _EmissionBlendMaskUV: 0
+    - _EmissionBlinkOffset: 0
+    - _EmissionBlinkSpeed: 100
+    - _EmissionBlinkStrength: 1
+    - _EmissionBlinkType: 0
+    - _EmissionGradSpeed: 1
+    - _EmissionMapAngle: 0
+    - _EmissionMapRotate: 0
+    - _EmissionMapScrollX: 0
+    - _EmissionMapScrollY: 0
+    - _EmissionMapTrim: 0
+    - _EmissionMapUV: 0
+    - _EmissionParallaxDepth: 0
+    - _EmissionUseBlink: 1
+    - _EmissionUseGrad: 0
+    - _FlipNormal: 0
+    - _Invisible: 0
+    - _Main2ndTexAngle: 0
+    - _Main2ndTexMix: 0
+    - _Main2ndTexTrim: 0
+    - _Main3rdTexAngle: 0
+    - _Main3rdTexMix: 0
+    - _Main3rdTexTrim: 0
+    - _Main4thTexAngle: 0
+    - _Main4thTexMix: 0
+    - _Main4thTexTrim: 0
+    - _MainTexHue: 0
+    - _MainTexSaturation: 1
+    - _MainTexTonecurve: 1
+    - _MainTexValue: 1
+    - _MatcapBlend: 1
+    - _MatcapMix: 1
+    - _MatcapShadeMix: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OutlineAutoHue: 0.35
+    - _OutlineAutoValue: 0.25
+    - _OutlineHue: 0
+    - _OutlineMixMain: 1
+    - _OutlineMixMainStrength: 2
+    - _OutlineSaturation: 1.75
+    - _OutlineValue: 0.9
+    - _OutlineWidth: 1
+    - _ReflectionBlend: 1
+    - _ReflectionShadeMix: 0
+    - _RimBlend: 0.5
+    - _RimBlur: 0
+    - _RimBorder: 0.5
+    - _RimColorTexTrim: 0
+    - _RimColorTexUV: 0
+    - _RimFresnelPower: 0.8
+    - _RimShadeMix: 1
+    - _RimShadowMask: 0
+    - _RimToon: 0
+    - _RimUpperSideWidth: 0
+    - _Shadow2ndBlur: 0.3
+    - _Shadow2ndBorder: 0.5
+    - _Shadow2ndColorFromMain: 0
+    - _Shadow2ndColorMix: 3
+    - _ShadowBlur: 0.01
+    - _ShadowBorder: 0.65
+    - _ShadowColorFromMain: 0
+    - _ShadowColorMix: 0
+    - _ShadowGrad: 1
+    - _ShadowHue: -0.1
+    - _ShadowMixMainColor: 2
+    - _ShadowSaturation: 1
+    - _ShadowStrength: 0.5
+    - _ShadowValue: 1
+    - _Smoothness: 1
+    - _SrcBlend: 1
+    - _StencilComp: 8
+    - _StencilFail: 0
+    - _StencilPass: 0
+    - _StencilRef: 0
+    - _StencilZFail: 0
+    - _UseAlphaMask: 0
+    - _UseBump2ndMap: 0
+    - _UseBumpMap: 0
+    - _UseEmission: 1
+    - _UseEmission2nd: 1
+    - _UseMain2ndTex: 0
+    - _UseMain3rdTex: 0
+    - _UseMain4thTex: 0
+    - _UseMainTex: 1
+    - _UseMatcap: 0
+    - _UseOutline: 0
+    - _UseReflection: 1
+    - _UseRim: 0
+    - _UseShadow: 0
+    - _UseShadow2nd: 0
+    - _UseShadowColor: 0
+    - _UseShadowMixMainColor: 1
+    - _UseVertexColor: 0
+    - _VertexColor2Width: 0
+    - _ZTest: 4
+    - _ZWrite: 1
+    - _e2gai: 2
+    - _e2gci: 7
+    - _egai: 2
+    - _egci: 2
+    m_Colors:
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color2nd: {r: 1, g: 1, b: 1, a: 1}
+    - _Color3rd: {r: 1, g: 1, b: 1, a: 1}
+    - _Color4th: {r: 1, g: 1, b: 1, a: 1}
+    - _Emission2ndColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MatcapColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Shadow2ndColor: {r: 0.75, g: 0.85, b: 1, a: 1}
+    - _ShadowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowGradColor: {r: 1, g: 0, b: 0, a: 1}
+    - _e2ga0: {r: 1, g: 0, b: 0, a: 0}
+    - _e2ga1: {r: 1, g: 0, b: 0, a: 1}
+    - _e2ga2: {r: 1, g: 0, b: 0, a: 0}
+    - _e2ga3: {r: 1, g: 0, b: 0, a: 0}
+    - _e2ga4: {r: 1, g: 0, b: 0, a: 0}
+    - _e2ga5: {r: 1, g: 0, b: 0, a: 0}
+    - _e2ga6: {r: 1, g: 0, b: 0, a: 0}
+    - _e2ga7: {r: 1, g: 0, b: 0, a: 0}
+    - _e2gc0: {r: 1, g: 0.5, b: 0.5, a: 0}
+    - _e2gc1: {r: 1, g: 1, b: 0.5, a: 0.16665904}
+    - _e2gc2: {r: 0.5, g: 1, b: 0.5, a: 0.33299762}
+    - _e2gc3: {r: 0.5, g: 1, b: 1, a: 0.5000076}
+    - _e2gc4: {r: 0.5, g: 0.5, b: 1, a: 0.6666667}
+    - _e2gc5: {r: 1, g: 0.5, b: 1, a: 0.83300525}
+    - _e2gc6: {r: 1, g: 0.5, b: 0.5, a: 1}
+    - _e2gc7: {r: 1, g: 1, b: 1, a: 0}
+    - _ega0: {r: 1, g: 0, b: 0, a: 0}
+    - _ega1: {r: 1, g: 0, b: 0, a: 1}
+    - _ega2: {r: 1, g: 0, b: 0, a: 0}
+    - _ega3: {r: 1, g: 0, b: 0, a: 0}
+    - _ega4: {r: 1, g: 0, b: 0, a: 0}
+    - _ega5: {r: 1, g: 0, b: 0, a: 0}
+    - _ega6: {r: 1, g: 0, b: 0, a: 0}
+    - _ega7: {r: 1, g: 0, b: 0, a: 0}
+    - _egc0: {r: 1, g: 1, b: 1, a: 0}
+    - _egc1: {r: 1, g: 1, b: 1, a: 1}
+    - _egc2: {r: 1, g: 1, b: 1, a: 0}
+    - _egc3: {r: 1, g: 1, b: 1, a: 0}
+    - _egc4: {r: 1, g: 1, b: 1, a: 0}
+    - _egc5: {r: 1, g: 1, b: 1, a: 0}
+    - _egc6: {r: 1, g: 1, b: 1, a: 0}
+    - _egc7: {r: 1, g: 1, b: 1, a: 0}
