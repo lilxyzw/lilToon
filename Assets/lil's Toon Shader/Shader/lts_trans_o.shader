@@ -218,7 +218,7 @@
     }
     SubShader
     {
-        Tags {"Queue" = "Transparent" "RenderPipeline" = ""}
+        Tags {"Queue" = "AlphaTest+2" "RenderPipeline" = ""}
         UsePass "Hidden/ltspass_transparent/FORWARD"
         UsePass "Hidden/ltspass_transparent/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_transparent/FORWARD_ADD"
