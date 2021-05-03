@@ -1,0 +1,244 @@
+Japanese
+
+string sEditorMode          = "編集モード";
+string sEditorModeSimple    = "Simple (簡易設定)";
+string sEditorModeAdvanced  = "Advanced (詳細設定)";
+string sEditorModePreset    = "Preset (プリセット)";
+    string sHelpSimple      = "色替えだけしたい方向けのモードです。";
+    string sHelpAdvanced    = "マテリアルの詳細設定を行うモードです。";
+    string sHelpPreset      = "プリセットから簡単にマテリアル設定できます。";
+
+
+
+string sColor           = "色";
+string sGamma           = "ガンマ";
+string sHue             = "色相";
+string sSaturation      = "彩度";
+string sValue           = "明度";
+string sStrength        = "強度";
+string sStrengthMask    = "マスクと強度";
+string sStrengthR       = "強度 (R)";
+string sTexture         = "テクスチャ";
+string sTextureRGBA     = "色(RGB)と透明度(A)";
+string sMask            = "マスク";
+string sBlendR          = "合成度 (R)";
+string sBlendMode       = "合成モード";
+string sBlendModeNormal = "通常";
+string sBlendModeAdd    = "加算";
+string sBlendModeScreen = "スクリーン";
+string sBlendModeMul    = "乗算";
+string sBorder          = "範囲";
+string sBorderAO        = "AOと影範囲";
+string sBorderR         = "範囲 (R)";
+string sBlur            = "ぼかし";
+string sBlurR           = "ぼかし (R)";
+string sAlphaR          = "透明度 (R)";
+string sUseMainColorSO  = "メインカラーを使用";
+string sMainColorPower  = "メインカラーの強度";
+string sBlendLight      = "ライティングを合成";
+string sUVSetting       = "UV設定";
+string sUVAnimation     = "UVアニメーション";
+string sScroll          = "スクロール";
+string sAngle           = "角度";
+string sRotate          = "回転速度";
+string sAsDecal         = "デカール化";
+string sDecalAnimation  = "アニメーション|X方向の枚数|Y方向の枚数|フレーム数|FPS";
+string sDecalSubParam   = "X軸比率|Y軸比率|境界を調整";
+string sConvertGif      = "Convert Gif";
+string sAutoSetAnim     = "変換したGifから自動設定";
+string sMirrorMode      = "ミラーモード";
+    string sMirrorModeNormal    = "通常";
+    string sMirrorModeFlip      = "反転";
+    string sMirrorModeLeft      = "左のみ";
+    string sMirrorModeRight     = "右のみ";
+    string sMirrorModeRightFlip = "右のみ・反転";
+string sCopyMode        = "複製モード";
+    string sCopyModeNormal      = "通常";
+    string sCopyModeSymmetry    = "左右対称";
+    string sCopyModeFlip        = "反転";
+string sPositionX       = "X座標";
+string sPositionY       = "Y座標";
+string sScaleX          = "X軸サイズ";
+string sScaleY          = "Y軸サイズ";
+string sVector          = "向き";
+string sLength          = "長さ";
+
+string sReset           = "初期化";
+
+string sLimShadowStrength   = "影の強さ";
+string sLimOutline          = "輪郭線の色";
+string sLimEmission         = "発光色";
+string sLimEmission2nd      = "発光色2nd";
+
+
+
+string sBaseSetting = "基本設定";
+    string sInvisible                   = "非表示";
+    string sShaderType                  = "シェーダーの種類";
+    string sShaderTypeNormal            = "Normal (通常版)";
+    string sShaderTypeLite              = "Lite (軽量版)";
+    string sRenderingMode               = "透過モード";
+    string sRenderingModeOpaque         = "不透明";
+    string sRenderingModeCutout         = "透明・不透明をくっきり分ける";
+    string sRenderingModeTransparent    = "半透明";
+    string sRenderingModeAdd            = "加算";
+    string sRenderingModeMultiply       = "乗算";
+    string sRenderingModeRefraction     = "屈折";
+    string sRenderingModeRefractionBlur = "屈折ぼかし";
+    string sRenderingModeFur            = "ファー";
+    string sRenderingModeFurCutout      = "ファー (カットアウト)";
+    string sCutoff                      = "Cutoff (透明にする範囲)";
+    string sCullMode                    = "Cull Mode (描画面)";
+    string sCullModeOff                 = "Off (両面を描画)";
+    string sCullModeFront               = "Front (背面のみ描画)";
+    string sCullModeBack                = "Back (前面のみ描画)";
+    string sFlipBackfaceNormal          = "背面の法線を反転";
+    string sBackfaceForceShadow         = "裏面を影にする";
+    string sHelpRenderingTransparent    = "透過マテリアル同士が重なったときに片方が見えなくなる場合があります";
+    string sHelpCullMode                = "表示がおかしい場合はCullModeをOffもしくはBackにしてください";
+    string sHelpZWrite                  = "表示がおかしい場合はZWriteをオンにしてください";
+    string sMaskTiling                  = "Mask UV Tiling";
+    string sMaskOffset                  = "Mask UV Offset";
+    string sTriMask                     = "TriMask (Mat/Rim/Emi)";
+    string sTriMaskRGB                  = "Mask (R:Matcap G:Rim B:Emission)";
+
+
+
+string sColors = "色設定";
+    string sMainColor           = "基本色設定";
+        string sMainColorTips       = "色や透明度の設定ができます";
+        string sUseMainColor        = "メインカラー";
+        string sUseMainColor2nd     = "メインカラー2nd";
+        string sUseMainColor3rd     = "メインカラー3rd";
+    string sShadow              = "影設定";
+        string sShadowTips          = "影の色や範囲の設定ができます";
+        string sUseShadow           = "影";
+        string sReceiveShadow       = "影を受け取る";
+        string sShadowColor         = "影色";
+        string sShadow1stColor      = "影色1";
+        string sShadow2ndColor      = "影色2";
+        string sShadowEnvStrength   = "環境光の強さ";
+        string sShadowBorderColor   = "境界の色";
+        string sShadowBorderRange   = "境界の幅";
+    string sOutline             = "輪郭線設定";
+        string sOutlineTips         = "輪郭線の色や太さの設定ができます";
+        string sUseOutline          = "輪郭線";
+        string sWidth               = "マスクと太さ";
+        string sWidthR              = "太さ (R)";
+    string sRefraction          = "屈折設定";
+        string sRefractionTips      = "屈折の強さや色の設定ができます";
+        string sRefractionLabel     = "屈折";
+        string sRefractionStrength  = "屈折の強さ";
+        string sRefractionFresnel   = "フレネル";
+        string sRefractionColorFromMain  = "メインカラーから色を取得";
+    string sFur                 = "ファー設定";
+        string sFurTips             = "ファーの長さや向き、質感の設定ができます";
+        string sFurLabel            = "ファー";
+        string sFurNoise            = "ノイズ";
+        string sFurNoiseR           = "Noise (R)";
+        string sFurGravity          = "重力";
+        string sFurAO               = "陰影";
+        string sVertexColor2FurVector   = "VertexColor -> Vector";
+        string sFurLayerNum         = "レイヤー数";
+    string sTessellation        = "テッセレーション";
+        string sTessellationTips    = "テッセレーションのかかり方を設定できます";
+        string sTessellationEdge    = "閾値";
+        string sTessellationShrink  = "縮小補正";
+        string sTessellationFactor  = "最大分割数";
+    string sEmission            = "発光設定";
+        string sEmissionTips        = "発光の色や点滅に関する設定ができます";
+        string sUseEmission         = "発光テクスチャ";
+        string sUseEmission2nd      = "発光テクスチャ2nd";
+        string sBlinkStrength       = "点滅の強さ";
+        string sBlinkType           = "点滅タイプ";
+        string sBlinkSpeed          = "点滅の速度";
+        string sBlinkOffset         = "点滅のズレ";
+        string sUseGrad             = "グラデーション";
+        string sGradTexSpeed        = "テクスチャ & 変化速度";
+        string sGradColor           = "色";
+        string sParallaxDepth       = "視差の強さ";
+        string sFluorescence        = "疑似蛍光";
+
+
+
+string sNormalReflection    = "ノーマルマップ・光沢設定";
+    string sNormal              = "ノーマルマップ設定";
+        string sNormalTips          = "ノーマルマップの設定ができます";
+        string sUseNormalMap        = "ノーマルマップ";
+        string sUseNormalMap2nd     = "ノーマルマップ2nd";
+        string sNormalMap           = "ノーマルマップ";
+        string sNormalRGB           = "ノーマル (RGB)";
+    string sReflections         = "光沢設定";
+        string sReflectionsTips     = "光沢に関する設定ができます";
+        string sUseReflection       = "反射";
+        string sSmoothness          = "滑らかさ";
+        string sSmoothnessR         = "滑らかさ (R)";
+        string sMetallic            = "金属度";
+        string sMetallicR           = "金属度 (R)";
+        string sSpecularMode        = "光沢のタイプ";
+        string sSpecularNone        = "無効";
+        string sSpecularReal        = "リアル";
+        string sSpecularToon        = "トゥーン";
+        string sApplyReflection     = "環境光の反射";
+        string sUseCubemap          = "外部テクスチャを使う";
+        string sCubemap             = "Cubemap";
+        string sSelectCubemap       = "Select Cubemap";
+        string sUseMatCap           = "マットキャップ";
+        string sMatCap              = "マットキャップ";
+        string sMatCapMul           = "乗算";
+        string sUseRim              = "リムライト";
+        string sFresnelPower        = "リムライトの細さ";
+        string sShadowMask          = "影部分で無効化";
+    string sStencil             = "ステンシル設定";
+        string sStencilTips         = "ステンシル(眉毛を髪の上に表示するなど)の設定ができます";
+
+
+
+string sAdvanced = "拡張設定";
+string sAnimationTexture = "アニメーションテクスチャ設定";
+string sAnimationTextureTips = "連番テクスチャを指定してアニメーションできます";
+string sFur = "ファー設定";
+string sFurTips = "ファー(もふもふ)に関する設定ができます";
+string sRendering = "レンダリング設定";
+string sRenderingTips = "その他細かいレンダリング設定ができます";
+    string sZWrite                      = "ZWrite";
+    string sZTest                       = "ZTest";
+    string sSrcBlend                    = "SrcBlend";
+    string sDstBlend                    = "DstBlend";
+    string sBlendOp                     = "BlendOp";
+    string sSrcBlendForwardAdd          = "ForwardAdd SrcBlend";
+    string sDstBlendForwardAdd          = "ForwardAdd DstBlend";
+    string sBlendOpForwardAdd           = "ForwardAdd BlendOp";
+    string sRenderingReset              = "レンダリング設定を初期化";
+
+
+
+string sOptimization = "最適化";
+    string sBake            = "焼き込み";
+    string sBakeAll         = "全て焼き込み";
+    string sBake1st         = "色替えを焼き込み";
+    string sBake2nd         = "レイヤー2を焼き込み";
+    string sBake3rd         = "レイヤー3を焼き込み";
+    string sBakeAlphamask   = "アルファマスクを焼き込み";
+    string sSelectAlphamask = "アルファマスクを選択してください";
+    string sRemoveUnused    = "未使用のテクスチャを外す";
+    string sConvertLite     = "lilToonLiteに変換";
+    string sConvertMToon    = "MToon(VRM)に変換";
+
+
+
+string sPresets                 = "プリセット";
+string sSkin                    = "肌";
+string sHair                    = "髪";
+string sCostume                 = "衣服";
+string sOther                   = "その他";
+string sPresetsSkinFaceParts    = "肌や顔パーツ";
+string sPresetsSkinLine         = "肌-輪郭線あり";
+string sPresetsSkinLineShadow   = "肌-輪郭線と影あり";
+string sPresetsHair             = "髪の毛";
+string sPresetsHairRim          = "髪の毛-リムライトあり";
+string sPresetsCostume          = "衣装";
+string sPresetsSkinAnime        = "肌-アニメ風";
+string sPresetsHairAnime        = "髪-アニメ風";
+string sPresetsCostumeAnime     = "衣装-アニメ風";
+string sPresetsMetal            = "金属";
