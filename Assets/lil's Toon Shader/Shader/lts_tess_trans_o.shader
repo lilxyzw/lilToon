@@ -229,11 +229,11 @@ Shader "Hidden/lilToonTessellationTransparentOutline"
     }
     SubShader
     {
-        Tags {"Queue" = "Transparent"}
+        Tags {"Queue" = "Transparent" "RenderPipeline" = ""}
         UsePass "Hidden/ltspass_tess_transparent/FORWARD"
         UsePass "Hidden/ltspass_tess_transparent/FORWARD_OUTLINE"
+        UsePass "Hidden/ltspass_tess_transparent/FORWARD_ADD"
         UsePass "Hidden/ltspass_tess_transparent/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_tess_transparent/DEPTHONLY"
         UsePass "Hidden/ltspass_tess_transparent/META"
     }
     Fallback "Unlit/Texture"

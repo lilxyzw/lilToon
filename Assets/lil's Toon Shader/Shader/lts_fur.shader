@@ -70,156 +70,16 @@ Shader "Hidden/lilToonFur"
         [Enum(UnityEngine.Rendering.StencilOp)]         _StencilFail    ("Stencil Fail", Float) = 0
         [Enum(UnityEngine.Rendering.StencilOp)]         _StencilZFail   ("Stencil ZFail", Float) = 0
     }
-    //------------------------------------------------------------------------------------------------------------------
-    // Universal Render Pipeline SM4.5
     SubShader
     {
-        Tags {"Queue" = "Transparent" "ShaderModel"="4.5"}
+        Tags {"Queue" = "Transparent" "RenderPipeline" = ""}
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
             Tags {
-                "LightMode" = "SRPDefaultUnlit"
-                "RenderType" = "Transparent"
-            }
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-		    Cull [_Cull]
-            Blend [_SrcBlend] [_DstBlend], One OneMinusSrcAlpha
-            BlendOp [_BlendOp]
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-
-            HLSLPROGRAM
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma target 4.5
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile_fragment _ _SHADOWS_SOFT
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #define LIL_RENDER 2
-            #define LIL_FUR
-            #include "Includes/lil_pass_normal.hlsl"
-
-            ENDHLSL
-        }
-
-        // Fur
-        Pass
-        {
-            Name "FORWARD_FUR"
-            Tags {
-                "LightMode" = "LightweightForward"
-                "RenderType" = "Transparent"
-            }
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-		    Cull Off
-            Blend [_SrcBlend] [_DstBlend], One OneMinusSrcAlpha
-            BlendOp [_BlendOp]
-            ZWrite Off
-            ZTest [_ZTest]
-
-            HLSLPROGRAM
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma geometry geom
-            #pragma fragment frag
-            #pragma target 4.5
-            #pragma require geometry
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile_fragment _ _SHADOWS_SOFT
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #define LIL_RENDER 2
-            #include "Includes/lil_pass_fur.hlsl"
-
-            ENDHLSL
-        }
-
-        UsePass "Hidden/ltspass_transparent/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_transparent/DEPTHONLY"
-
-        // Meta
-        Pass
-        {
-            Name "META"
-            Tags {
-                "LightMode"="Meta"
-                "RenderType" = "Transparent"
-            }
-            Cull Off
-
-            HLSLPROGRAM
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma target 4.5
-            #pragma exclude_renderers gles gles3 glcore
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #define LIL_FUR
-            #define LIL_RENDER 2
-            #include "Includes/lil_pass_meta.hlsl"
-            ENDHLSL
-        }
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    // Universal Render Pipeline
-    SubShader
-    {
-        Tags {"Queue" = "Transparent"}
-
-        // ForwardLit
-        Pass
-        {
-            Name "FORWARD"
-            Tags {
-                "LightMode" = "SRPDefaultUnlit"
+                "LightMode" = "ForwardBase"
                 "RenderType" = "Transparent"
             }
 
@@ -244,15 +104,11 @@ Shader "Hidden/lilToonFur"
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 4.0
-            #pragma only_renderers gles gles3 glcore d3d11
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile_fragment _ _SHADOWS_SOFT
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
             #pragma multi_compile_instancing
+            #pragma multi_compile_fwdbase
+            #pragma multi_compile_fog
+            #pragma fragmentoption ARB_precision_hint_fastest
+            #pragma skip_variants SHADOWS_SCREEN
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -263,12 +119,60 @@ Shader "Hidden/lilToonFur"
             ENDHLSL
         }
 
-        // Fur
+        /*
+        // ForwardAdd
+        Pass
+        {
+            Name "FORWARD_ADD"
+            Tags {
+                "LightMode" = "ForwardAdd"
+                "RenderType" = "Transparent"
+            }
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+		    Cull [_Cull]
+            Blend [_SrcBlendFA] [_DstBlendFA], Zero One
+            BlendOp [_BlendOpFA]
+            Fog { Color(0,0,0,0) }
+			ZWrite Off
+            ZTest LEqual
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.0
+            #pragma multi_compile_instancing
+            #pragma multi_compile_fwdadd
+            #pragma multi_compile_fog
+            #pragma fragmentoption ARB_precision_hint_fastest
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_RENDER 2
+            #define LIL_FUR
+            #define LIL_PASS_FORWARDADD
+            #include "Includes/lil_pass_normal.hlsl"
+
+            ENDHLSL
+        }
+        */
+
+        // Forward Fur
         Pass
         {
             Name "FORWARD_FUR"
             Tags {
-                "LightMode" = "LightweightForward"
+                "LightMode" = "ForwardBase"
                 "RenderType" = "Transparent"
             }
 
@@ -295,15 +199,11 @@ Shader "Hidden/lilToonFur"
             #pragma fragment frag
             #pragma target 4.0
             #pragma require geometry
-            #pragma only_renderers gles gles3 glcore d3d11
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile_fragment _ _SHADOWS_SOFT
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
             #pragma multi_compile_instancing
+            #pragma multi_compile_fwdbase
+            #pragma multi_compile_fog
+            #pragma fragmentoption ARB_precision_hint_fastest
+            #pragma skip_variants SHADOWS_SCREEN
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -312,16 +212,63 @@ Shader "Hidden/lilToonFur"
 
             ENDHLSL
         }
+        /*
+        // ForwardAdd Fur
+        Pass
+        {
+            Name "FORWARD_ADD_FUR"
+            Tags {
+                "LightMode" = "ForwardAdd"
+                "RenderType" = "Transparent"
+            }
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+		    Cull Off
+            Blend [_SrcBlendFA] [_DstBlendFA], Zero One
+            BlendOp [_BlendOpFA]
+            Fog { Color(0,0,0,0) }
+			ZWrite Off
+            ZTest LEqual
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma geometry geom
+            #pragma fragment frag
+            #pragma target 4.0
+            #pragma require geometry
+            #pragma multi_compile_instancing
+            #pragma multi_compile_fwdadd
+            #pragma multi_compile_fog
+            #pragma fragmentoption ARB_precision_hint_fastest
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_RENDER 2
+            #define LIL_PASS_FORWARDADD
+            #include "Includes/lil_pass_fur.hlsl"
+
+            ENDHLSL
+        }
+        */
 
         UsePass "Hidden/ltspass_transparent/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_transparent/DEPTHONLY"
 
         // Meta
         Pass
         {
             Name "META"
             Tags {
-                "LightMode"="Meta"
+                "LightMode" = "Meta"
                 "RenderType" = "Transparent"
             }
             Cull Off
@@ -332,12 +279,12 @@ Shader "Hidden/lilToonFur"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma shader_feature EDITOR_VISUALIZATION
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_FUR
             #define LIL_RENDER 2
+            #define LIL_FUR
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }

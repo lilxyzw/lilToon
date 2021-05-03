@@ -221,10 +221,10 @@ Shader "Hidden/lilToonTessellationCutout"
     }
     SubShader
     {
-        Tags {"Queue" = "AlphaTest"}
+        Tags {"Queue" = "AlphaTest" "RenderPipeline" = ""}
         UsePass "Hidden/ltspass_tess_cutout/FORWARD"
+        UsePass "Hidden/ltspass_tess_cutout/FORWARD_ADD"
         UsePass "Hidden/ltspass_tess_cutout/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_tess_cutout/DEPTHONLY"
         UsePass "Hidden/ltspass_tess_cutout/META"
     }
     Fallback "Unlit/Texture"

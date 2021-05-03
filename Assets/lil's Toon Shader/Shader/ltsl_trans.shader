@@ -70,10 +70,10 @@ Shader "Hidden/lilToonLiteTransparent"
     }
     SubShader
     {
-        Tags {"Queue" = "Transparent"}
+        Tags {"Queue" = "Transparent" "RenderPipeline" = ""}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
+        UsePass "Hidden/ltspass_lite_transparent/FORWARD_ADD"
         UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_lite_transparent/DEPTHONLY"
         UsePass "Hidden/ltspass_lite_transparent/META"
     }
     Fallback "Unlit/Texture"

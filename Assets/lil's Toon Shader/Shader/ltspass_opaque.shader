@@ -5,203 +5,16 @@
 Shader "Hidden/ltspass_opaque"
 {
     //------------------------------------------------------------------------------------------------------------------
-    // Universal Render Pipeline SM4.5
+    // Built-in Render Pipeline
     SubShader
     {
-        Tags{"ShaderModel"="4.5"}
-        // ForwardLit
+        Tags{"RenderPipeline" = ""}
+        // Forward
         Pass
         {
             Name "FORWARD"
             Tags {
-                "LightMode" = "LightweightForward"
-                "RenderType" = "Opaque"
-            }
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-		    Cull [_Cull]
-            Blend [_SrcBlend] [_DstBlend]
-            BlendOp [_BlendOp]
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-
-            HLSLPROGRAM
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma target 4.5
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile_fragment _ _SHADOWS_SOFT
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #define LIL_RENDER 0
-            #include "Includes/lil_pass_normal.hlsl"
-
-            ENDHLSL
-        }
-
-        // Outline
-        Pass
-        {
-            Name "FORWARD_OUTLINE"
-            Tags {
-                "LightMode" = "SRPDefaultUnlit"
-                "RenderType" = "Opaque"
-            }
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-		    Cull Front
-            Blend [_SrcBlend] [_DstBlend]
-            BlendOp [_BlendOp]
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-
-            HLSLPROGRAM
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma target 4.5
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #define LIL_RENDER 0
-            #define LIL_OUTLINE
-            #include "Includes/lil_pass_normal.hlsl"
-
-            ENDHLSL
-        }
-
-        // ShadowCaster
-        Pass
-        {
-            Name "SHADOW_CASTER"
-            Tags {
-                "LightMode" = "ShadowCaster"
-                "RenderType" = "Opaque"
-            }
-		    Cull [_Cull]
-
-            HLSLPROGRAM
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma target 4.5
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #define LIL_RENDER 0
-            #include "Includes/lil_pass_shadowcaster.hlsl"
-
-            ENDHLSL
-        }
-
-        // DepthOnly
-        Pass
-        {
-            Name "DEPTHONLY"
-            Tags {
-                "LightMode" = "DepthOnly"
-                "RenderType" = "Opaque"
-            }
-		    Cull [_Cull]
-
-            HLSLPROGRAM
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma target 4.5
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #define LIL_RENDER 0
-            #include "Includes/lil_pass_depthonly.hlsl"
-
-            ENDHLSL
-        }
-
-        // Meta
-        Pass
-        {
-            Name "META"
-            Tags {
-                "LightMode"="Meta"
-                "RenderType" = "Opaque"
-            }
-            Cull Off
-
-            HLSLPROGRAM
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma target 4.5
-            #pragma exclude_renderers gles gles3 glcore
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #define LIL_RENDER 0
-            #include "Includes/lil_pass_meta.hlsl"
-            ENDHLSL
-        }
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    // Universal Render Pipeline
-    SubShader
-    {
-        // ForwardLit
-        Pass
-        {
-            Name "FORWARD"
-            Tags {
-                "LightMode" = "LightweightForward"
+                "LightMode" = "ForwardBase"
                 "RenderType" = "Opaque"
             }
 
@@ -226,16 +39,10 @@ Shader "Hidden/ltspass_opaque"
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 3.5
-            #pragma only_renderers gles gles3 glcore d3d11
-            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile_fragment _ _SHADOWS_SOFT
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
             #pragma multi_compile_instancing
+            #pragma multi_compile_fwdbase
+            #pragma multi_compile_fog
+            #pragma fragmentoption ARB_precision_hint_fastest
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -250,7 +57,7 @@ Shader "Hidden/ltspass_opaque"
         {
             Name "FORWARD_OUTLINE"
             Tags {
-                "LightMode" = "SRPDefaultUnlit"
+                "LightMode" = "ForwardBase"
                 "RenderType" = "Opaque"
             }
 
@@ -275,17 +82,61 @@ Shader "Hidden/ltspass_opaque"
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 3.5
-            #pragma only_renderers gles gles3 glcore d3d11
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
             #pragma multi_compile_instancing
+            #pragma multi_compile_fwdbase
+            #pragma multi_compile_fog
+            #pragma fragmentoption ARB_precision_hint_fastest
+            #pragma skip_variants SHADOWS_SCREEN
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_RENDER 0
             #define LIL_OUTLINE
+            #include "Includes/lil_pass_normal.hlsl"
+
+            ENDHLSL
+        }
+
+        // ForwardAdd
+        Pass
+        {
+            Name "FORWARD_ADD"
+            Tags {
+                "LightMode" = "ForwardAdd"
+                "RenderType" = "Opaque"
+            }
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+		    Cull [_Cull]
+            Blend [_SrcBlendFA] [_DstBlendFA], Zero One
+            BlendOp [_BlendOpFA]
+            Fog { Color(0,0,0,0) }
+			ZWrite Off
+            ZTest LEqual
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 3.5
+            #pragma multi_compile_instancing
+            #pragma multi_compile_fwdadd
+            #pragma multi_compile_fog
+            #pragma fragmentoption ARB_precision_hint_fastest
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_RENDER 0
+            #define LIL_PASS_FORWARDADD
             #include "Includes/lil_pass_normal.hlsl"
 
             ENDHLSL
@@ -299,6 +150,7 @@ Shader "Hidden/ltspass_opaque"
                 "LightMode" = "ShadowCaster"
                 "RenderType" = "Opaque"
             }
+            Offset 1, 1
 		    Cull [_Cull]
 
             HLSLPROGRAM
@@ -308,42 +160,12 @@ Shader "Hidden/ltspass_opaque"
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 3.5
-            #pragma only_renderers gles gles3 glcore d3d11
-            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
-            #pragma multi_compile_instancing
+            #pragma multi_compile_shadowcaster
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_RENDER 0
             #include "Includes/lil_pass_shadowcaster.hlsl"
-
-            ENDHLSL
-        }
-
-        // DepthOnly
-        Pass
-        {
-            Name "DEPTHONLY"
-            Tags {
-                "LightMode" = "DepthOnly"
-                "RenderType" = "Opaque"
-            }
-		    Cull [_Cull]
-
-            HLSLPROGRAM
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma target 3.5
-            #pragma only_renderers gles gles3 glcore d3d11
-            #pragma multi_compile_instancing
-
-            //------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #define LIL_RENDER 0
-            #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
         }
@@ -364,7 +186,7 @@ Shader "Hidden/ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma shader_feature EDITOR_VISUALIZATION
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
