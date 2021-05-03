@@ -11,7 +11,7 @@ using System.IO;
 public class lilStartup {
     static lilStartup()
     {
-        #if UNITY_2018_1_OR_NEWER
+        #if NET_4_6
             string fullPath = Path.GetFullPath("Assets/csc.rsp");
         #else
             string fullPath = Path.GetFullPath("Assets/mcs.rsp");
