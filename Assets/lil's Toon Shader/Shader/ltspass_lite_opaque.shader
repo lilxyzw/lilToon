@@ -1,7 +1,3 @@
-// lil's Toon Shader
-// Copyright (c) 2020 lilxyzw
-// This code is under MIT licence, see LICENSE
-// https://github.com/lilxyzw/lil-s-Toon-Shader/blob/main/LICENSE
 Shader "Hidden/ltspass_lite_opaque"
 {
     SubShader

@@ -212,7 +212,6 @@
 
 # Advanced
 
-<br/>
 <a id="anchor4-1"></a>
 
 ## Stencil

@@ -1,9 +1,4 @@
 
-// lil's Toon Shader
-// Copyright (c) 2020 lilxyzw
-// This code is under MIT licence, see LICENSE
-// https://github.com/lilxyzw/lil-s-Toon-Shader/blob/main/LICENSE
-
 #ifndef LIL_PASS_REFLACTION_BLUR_INCLUDED
 #define LIL_PASS_REFLACTION_BLUR_INCLUDED
 

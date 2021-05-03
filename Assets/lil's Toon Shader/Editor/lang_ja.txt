@@ -1,12 +1,12 @@
 Japanese
 
 string sEditorMode          = "編集モード";
-string sEditorModeSimple    = "Simple (簡易設定)";
-string sEditorModeAdvanced  = "Advanced (詳細設定)";
-string sEditorModePreset    = "Preset (プリセット)";
-    string sHelpSimple      = "色替えだけしたい方向けのモードです。";
-    string sHelpAdvanced    = "マテリアルの詳細設定を行うモードです。";
-    string sHelpPreset      = "プリセットから簡単にマテリアル設定できます。";
+string sEditorModeSimple    = "簡易設定";
+string sEditorModeAdvanced  = "詳細設定";
+string sEditorModePreset    = "プリセット";
+    string sHelpSimple      = "簡単に見た目を編集するモードです。";
+    string sHelpAdvanced    = "詳細設定を行うモードです。";
+    string sHelpPreset      = "プリセットから一括で設定するモードです。";
 
 
 
@@ -45,7 +45,6 @@ string sAsDecal         = "デカール化";
 string sDecalAnimation  = "アニメーション|X方向の枚数|Y方向の枚数|フレーム数|FPS";
 string sDecalSubParam   = "X軸比率|Y軸比率|境界を調整";
 string sConvertGif      = "Convert Gif";
-string sAutoSetAnim     = "変換したGifから自動設定";
 string sMirrorMode      = "ミラーモード";
     string sMirrorModeNormal    = "通常";
     string sMirrorModeFlip      = "反転";
@@ -195,10 +194,6 @@ string sNormalReflection    = "ノーマルマップ・光沢設定";
 
 
 string sAdvanced = "拡張設定";
-string sAnimationTexture = "アニメーションテクスチャ設定";
-string sAnimationTextureTips = "連番テクスチャを指定してアニメーションできます";
-string sFur = "ファー設定";
-string sFurTips = "ファー(もふもふ)に関する設定ができます";
 string sRendering = "レンダリング設定";
 string sRenderingTips = "その他細かいレンダリング設定ができます";
     string sZWrite                      = "ZWrite";
