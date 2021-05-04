@@ -12,7 +12,7 @@ public class lilStartup {
         #else
             string fullPath = Path.GetFullPath("Assets/mcs.rsp");
         #endif
-        string edotorPath = "Assets/lil's Toon Shader/Editor/lilInspector.cs";
+        string edotorPath = "Assets/lilToon/Editor/lilInspector.cs";
         if(!File.Exists(fullPath))
         {
             StreamWriter sw = new StreamWriter(fullPath,true);

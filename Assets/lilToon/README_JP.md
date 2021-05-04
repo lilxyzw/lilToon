@@ -1,4 +1,4 @@
-# lil's Toon Shader
+# lilToon
 Version 1.0
 
 # 概要

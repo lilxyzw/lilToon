@@ -290,15 +290,15 @@ namespace lilToon
 	    {
             // EditorAssets
             #if UNITY_2019_1_OR_NEWER
-                GUIStyle boxOuter        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lil's Toon Shader/Editor/gui_box_outer_2019.guiskin", typeof(GUISkin))).box);
-                GUIStyle boxInnerHalf    = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lil's Toon Shader/Editor/gui_box_inner_half_2019.guiskin", typeof(GUISkin))).box);
-                GUIStyle boxInner        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lil's Toon Shader/Editor/gui_box_inner_2019.guiskin", typeof(GUISkin))).box);
-                GUIStyle customBox       = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lil's Toon Shader/Editor/gui_custom_box_2019.guiskin", typeof(GUISkin))).box);
+                GUIStyle boxOuter        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_outer_2019.guiskin", typeof(GUISkin))).box);
+                GUIStyle boxInnerHalf    = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_inner_half_2019.guiskin", typeof(GUISkin))).box);
+                GUIStyle boxInner        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_inner_2019.guiskin", typeof(GUISkin))).box);
+                GUIStyle customBox       = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_custom_box_2019.guiskin", typeof(GUISkin))).box);
                 GUIStyle customToggleFont = EditorStyles.label;
             #else
-                GUIStyle boxOuter        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lil's Toon Shader/Editor/gui_box_outer_2018.guiskin", typeof(GUISkin))).box);
-                GUIStyle boxInnerHalf    = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lil's Toon Shader/Editor/gui_box_inner_half_2018.guiskin", typeof(GUISkin))).box);
-                GUIStyle boxInner        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lil's Toon Shader/Editor/gui_box_inner_2018.guiskin", typeof(GUISkin))).box);
+                GUIStyle boxOuter        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_outer_2018.guiskin", typeof(GUISkin))).box);
+                GUIStyle boxInnerHalf    = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_inner_half_2018.guiskin", typeof(GUISkin))).box);
+                GUIStyle boxInner        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_inner_2018.guiskin", typeof(GUISkin))).box);
                 GUIStyle customBox       = GUI.skin.box;
                 GUIStyle customToggleFont = new GUIStyle();
                 customToggleFont.normal.textColor = Color.white;
@@ -1888,7 +1888,7 @@ namespace lilToon
         static int selectLang(int lnum)
         {
             // Find language files
-            string[] langGuid = AssetDatabase.FindAssets("lang_", new[] {"Assets/lil's Toon Shader/Editor"});
+            string[] langGuid = AssetDatabase.FindAssets("lang_", new[] {"Assets/lilToon/Editor"});
             string[] langName = new string[langGuid.Length];
 
             // Load default language
@@ -1901,7 +1901,7 @@ namespace lilToon
                     {
                         if(AssetDatabase.GUIDToAssetPath(langGuid[i]).Contains("lang_ja")) lnum = i;
                     }
-                    string langRawDef = ((TextAsset)AssetDatabase.LoadAssetAtPath("Assets/lil's Toon Shader/Editor/lang_ja.txt", typeof(TextAsset))).text;
+                    string langRawDef = ((TextAsset)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/lang_ja.txt", typeof(TextAsset))).text;
                     string[] langDataDef = langRawDef.Split(char.Parse("\n"));
                     for(int ii = 0; ii < langDataDef.Length; ii++)
                     {
@@ -1922,7 +1922,7 @@ namespace lilToon
                     {
                         if(AssetDatabase.GUIDToAssetPath(langGuid[i]).Contains("lang_en")) lnum = i;
                     }
-                    string langRawDef = ((TextAsset)AssetDatabase.LoadAssetAtPath("Assets/lil's Toon Shader/Editor/lang_en.txt", typeof(TextAsset))).text;
+                    string langRawDef = ((TextAsset)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/lang_en.txt", typeof(TextAsset))).text;
                     string[] langDataDef = langRawDef.Split(char.Parse("\n"));
                     for(int ii = 0; ii < langDataDef.Length; ii++)
                     {
