@@ -43,8 +43,20 @@ namespace lilToon
             Mul
         }
 
+        public enum lilPresetCategory
+        {
+            Skin,
+            Hair,
+            Cloth,
+            Nature,
+            Inorganic,
+            Effect,
+            Other
+        }
+
         // Language
         static int languageNum = 0;
+        static string languageName = "English";
         static Dictionary<string, string> loc = new Dictionary<string, string>();
 
         // Default Editor Mode
@@ -283,6 +295,9 @@ namespace lilToon
         Gradient emi2Grad = new Gradient();
 
         static Vector4 defaultHSVG = new Vector4(0.0f,1.0f,1.0f,1.0f);
+
+        static lilToonPreset[] presets;
+        static bool[] isShowCategorys = new bool[(int)lilPresetCategory.Other+1]{false,false,false,false,false,false,false};
 
         //------------------------------------------------------------------------------------------------------------------------------
         // GUI
@@ -819,453 +834,13 @@ namespace lilToon
             } else if(editorMode == EditorMode.Preset) {
             // Preset
                 GUILayout.Label(" " + loc["sPresets"], EditorStyles.boldLabel);
-                GUIStyle PresetButton = new GUIStyle(GUI.skin.button);
-                PresetButton.alignment = TextAnchor.MiddleLeft;
-                    EditorGUILayout.BeginVertical(customBox);
-                    // チェック用
-                    bool olbuf = isOutl;
-                    if(isLite)
-                    {
-                        // 肌
-                        EditorGUILayout.LabelField(loc["sSkin"]);
-                        if(GUILayout.Button(loc["sPresetsSkinFaceParts"],PresetButton))
-                        {
-                            cull.floatValue = 2.0f;
-                            useShadow.floatValue = 0.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = false;
-                        }
-                        if(GUILayout.Button(loc["sPresetsSkinLine"],PresetButton))
-                        {
-                            cull.floatValue = 2.0f;
-                            useShadow.floatValue = 0.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.05f;
-                                outlineColor.colorValue = new Color(0.95f,0.7f,0.7f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 0.0f;
-                        }
-                        if(GUILayout.Button(loc["sPresetsSkinLineShadow"],PresetButton))
-                        {
-                            cull.floatValue = 2.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.35f;
-                                shadowBlur.floatValue = 0.05f;
-                                shadowStrength.floatValue = 0.5f;
-                                shadowColor.colorValue = new Color(1.0f,0.7f,0.75f,1.0f);
-                                shadowMainStrength.floatValue = 0.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.05f;
-                                outlineColor.colorValue = new Color(0.95f,0.7f,0.7f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 0.0f;
-                        }
-                        if(GUILayout.Button(loc["sPresetsSkinAnime"],PresetButton))
-                        {
-                            cull.floatValue = 2.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.35f;
-                                shadowBlur.floatValue = 0.005f;
-                                shadowStrength.floatValue = 1.0f;
-                                shadowColor.colorValue = new Color(0.925f,0.7f,0.74f,1.0f);
-                                shadowMainStrength.floatValue = 0.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.1f;
-                                outlineColor.colorValue = new Color(0.9f,0.6f,0.6f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 0.0f;
-                        }
-                        EditorGUILayout.Space();
-                        DrawLine();
-                        // 髪
-                        EditorGUILayout.LabelField(loc["sHair"]);
-                        if(GUILayout.Button(loc["sPresetsHair"],PresetButton))
-                        {
-                            cull.floatValue = 0.0f;
-                                flipNormal.floatValue = 1.0f;
-                                backfaceForceShadow.floatValue = 1.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.45f;
-                                shadowBlur.floatValue = 0.15f;
-                                shadowStrength.floatValue = 0.65f;
-                                shadowColor.colorValue = new Color(0.6f,0.65f,0.75f,1.0f);
-                                shadowMainStrength.floatValue = 1.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.05f;
-                                outlineColor.colorValue = new Color(0.8f,0.8f,0.8f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 1.0f;
-                        }
-                        if(GUILayout.Button(loc["sPresetsHairAnime"],PresetButton))
-                        {
-                            cull.floatValue = 0.0f;
-                                flipNormal.floatValue = 1.0f;
-                                backfaceForceShadow.floatValue = 1.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.5f;
-                                shadowBlur.floatValue = 0.005f;
-                                shadowStrength.floatValue = 0.8f;
-                                shadowColor.colorValue = new Color(0.6f,0.65f,0.75f,1.0f);
-                                shadowMainStrength.floatValue = 1.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.1f;
-                                outlineColor.colorValue = new Color(0.7f,0.7f,0.7f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 1.0f;
-                        }
-                        EditorGUILayout.Space();
-                        DrawLine();
-                        // 衣服
-                        EditorGUILayout.LabelField(loc["sCostume"]);
-                        if(GUILayout.Button(loc["sPresetsCostume"],PresetButton))
-                        {
-                            cull.floatValue = 0.0f;
-                                flipNormal.floatValue = 1.0f;
-                                backfaceForceShadow.floatValue = 1.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.5f;
-                                shadowBlur.floatValue = 0.1f;
-                                shadowStrength.floatValue = 1.0f;
-                                shadowColor.colorValue = new Color(0.7f,0.75f,0.85f,1.0f);
-                                shadowMainStrength.floatValue = 0.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.05f;
-                                outlineColor.colorValue = new Color(0.6f,0.7f,0.8f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 0.0f;
-                        }
-                        if(GUILayout.Button(loc["sPresetsCostumeAnime"],PresetButton))
-                        {
-                            cull.floatValue = 0.0f;
-                                flipNormal.floatValue = 1.0f;
-                                backfaceForceShadow.floatValue = 1.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.35f;
-                                shadowBlur.floatValue = 0.005f;
-                                shadowStrength.floatValue = 0.8f;
-                                shadowColor.colorValue = new Color(0.75f,0.8f,0.95f,1.0f);
-                                shadowMainStrength.floatValue = 1.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                                shadowBorderColor.colorValue = new Color(1.0f,0.0f,0.0f,1.0f);
-                            useMatCap.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.1f;
-                                outlineColor.colorValue = new Color(0.45f,0.55f,0.65f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 1.0f;
-                        }
-                    }
-                    else
-                    {
-                        // 肌
-                        EditorGUILayout.LabelField(loc["sSkin"]);
-                        if(GUILayout.Button(loc["sPresetsSkinFaceParts"],PresetButton))
-                        {
-                            cull.floatValue = 2.0f;
-                            useShadow.floatValue = 0.0f;
-                                shadowBorder.floatValue = 0.4f;
-                                shadowBlur.floatValue = 0.25f;
-                                shadowStrength.floatValue = 0.35f;
-                                shadowColor.colorValue = new Color(0.73f,0.39f,0.37f,1.0f);
-                                shadow2ndColor.colorValue = new Color(0.73f,0.39f,0.37f,0.0f);
-                                shadowMainStrength.floatValue = 0.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                                shadowBorderColor.colorValue = new Color(1.0f,0.0f,0.0f,1.0f);
-                            useReflection.floatValue = 0.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useRim.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = false;
-                        }
-                        if(GUILayout.Button(loc["sPresetsSkinLine"],PresetButton))
-                        {
-                            cull.floatValue = 2.0f;
-                            useShadow.floatValue = 0.0f;
-                                shadowBorder.floatValue = 0.35f;
-                                shadowBlur.floatValue = 0.05f;
-                                shadowStrength.floatValue = 0.5f;
-                                shadowColor.colorValue = new Color(1.0f,0.7f,0.75f,1.0f);
-                                shadow2ndBorder.floatValue = 0.15f;
-                                shadow2ndBlur.floatValue = 0.05f;
-                                shadow2ndColor.colorValue = new Color(1.0f,0.7f,0.75f,0.0f);
-                                shadowMainStrength.floatValue = 0.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                                shadowBorderColor.colorValue = new Color(1.0f,0.0f,0.0f,1.0f);
-                            useReflection.floatValue = 0.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useRim.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.05f;
-                                outlineColor.colorValue = new Color(0.95f,0.7f,0.7f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 0.0f;
-                        }
-                        if(GUILayout.Button(loc["sPresetsSkinLineShadow"],PresetButton))
-                        {
-                            cull.floatValue = 2.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.35f;
-                                shadowBlur.floatValue = 0.05f;
-                                shadowStrength.floatValue = 0.5f;
-                                shadowColor.colorValue = new Color(1.0f,0.7f,0.75f,1.0f);
-                                shadow2ndBorder.floatValue = 0.15f;
-                                shadow2ndBlur.floatValue = 0.05f;
-                                shadow2ndColor.colorValue = new Color(1.0f,0.7f,0.75f,0.0f);
-                                shadowMainStrength.floatValue = 0.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                                shadowBorderColor.colorValue = new Color(1.0f,0.0f,0.0f,1.0f);
-                            useReflection.floatValue = 0.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useRim.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.05f;
-                                outlineColor.colorValue = new Color(0.95f,0.7f,0.7f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 0.0f;
-                        }
-                        if(GUILayout.Button(loc["sPresetsSkinAnime"],PresetButton))
-                        {
-                            cull.floatValue = 2.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.35f;
-                                shadowBlur.floatValue = 0.005f;
-                                shadowStrength.floatValue = 1.0f;
-                                shadowColor.colorValue = new Color(0.925f,0.7f,0.74f,1.0f);
-                                shadow2ndBorder.floatValue = 0.15f;
-                                shadow2ndBlur.floatValue = 0.05f;
-                                shadow2ndColor.colorValue = new Color(1.0f,0.7f,0.75f,0.0f);
-                                shadowMainStrength.floatValue = 0.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                                shadowBorderColor.colorValue = new Color(1.0f,0.0f,0.0f,1.0f);
-                            useReflection.floatValue = 0.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useRim.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.1f;
-                                outlineColor.colorValue = new Color(0.9f,0.6f,0.6f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 0.0f;
-                        }
-                        EditorGUILayout.Space();
-                        DrawLine();
-                        // 髪
-                        EditorGUILayout.LabelField(loc["sHair"]);
-                        if(GUILayout.Button(loc["sPresetsHair"],PresetButton))
-                        {
-                            cull.floatValue = 0.0f;
-                                flipNormal.floatValue = 1.0f;
-                                backfaceForceShadow.floatValue = 1.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.45f;
-                                shadowBlur.floatValue = 0.15f;
-                                shadowStrength.floatValue = 0.65f;
-                                shadowColor.colorValue = new Color(0.6f,0.65f,0.75f,1.0f);
-                                shadow2ndBorder.floatValue = 0.45f;
-                                shadow2ndBlur.floatValue = 0.1f;
-                                shadow2ndColor.colorValue = new Color(0.7f,0.75f,0.85f,1.0f);
-                                shadowMainStrength.floatValue = 1.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                                shadowBorderColor.colorValue = new Color(1.0f,0.25f,0.0f,1.0f);
-                            useReflection.floatValue = 0.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useRim.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.05f;
-                                outlineColor.colorValue = new Color(0.8f,0.8f,0.8f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 1.0f;
-                        }
-                        if(GUILayout.Button(loc["sPresetsHairRim"],PresetButton))
-                        {
-                            cull.floatValue = 0.0f;
-                                flipNormal.floatValue = 1.0f;
-                                backfaceForceShadow.floatValue = 1.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.45f;
-                                shadowBlur.floatValue = 0.15f;
-                                shadowStrength.floatValue = 0.65f;
-                                shadowColor.colorValue = new Color(0.6f,0.65f,0.75f,1.0f);
-                                shadow2ndBorder.floatValue = 0.45f;
-                                shadow2ndBlur.floatValue = 0.1f;
-                                shadow2ndColor.colorValue = new Color(0.7f,0.75f,0.85f,1.0f);
-                                shadowMainStrength.floatValue = 1.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                                shadowBorderColor.colorValue = new Color(1.0f,0.25f,0.0f,1.0f);
-                            useReflection.floatValue = 0.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useRim.floatValue = 1.0f;
-                                rimColor.colorValue = new Color(0.5f,0.4625f,0.425f,1.0f);
-                                rimBorder.floatValue = 0.8f;
-                                rimBlur.floatValue = 0.05f;
-                                rimFresnelPower.floatValue = 1.0f;
-                                rimBlendLight.floatValue = 1.0f;
-                                rimShadowMask.floatValue = 1.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.05f;
-                                outlineColor.colorValue = new Color(0.8f,0.8f,0.8f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 1.0f;
-                        }
-                        if(GUILayout.Button(loc["sPresetsHairAnime"],PresetButton))
-                        {
-                            cull.floatValue = 0.0f;
-                                flipNormal.floatValue = 1.0f;
-                                backfaceForceShadow.floatValue = 1.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.5f;
-                                shadowBlur.floatValue = 0.005f;
-                                shadowStrength.floatValue = 0.8f;
-                                shadowColor.colorValue = new Color(0.6f,0.65f,0.75f,1.0f);
-                                shadow2ndBorder.floatValue = 0.45f;
-                                shadow2ndBlur.floatValue = 0.1f;
-                                shadow2ndColor.colorValue = new Color(0.7f,0.75f,0.85f,0.0f);
-                                shadowMainStrength.floatValue = 1.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                                shadowBorderColor.colorValue = new Color(1.0f,0.25f,0.0f,1.0f);
-                            useReflection.floatValue = 0.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useRim.floatValue = 1.0f;
-                                rimColor.colorValue = new Color(0.5f,0.4625f,0.425f,1.0f);
-                                rimBorder.floatValue = 0.65f;
-                                rimBlur.floatValue = 0.05f;
-                                rimFresnelPower.floatValue = 1.0f;
-                                rimBlendLight.floatValue = 1.0f;
-                                rimShadowMask.floatValue = 1.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.1f;
-                                outlineColor.colorValue = new Color(0.7f,0.7f,0.7f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 1.0f;
-                        }
-                        EditorGUILayout.Space();
-                        DrawLine();
-                        // 衣服
-                        EditorGUILayout.LabelField(loc["sCostume"]);
-                        if(GUILayout.Button(loc["sPresetsCostume"],PresetButton))
-                        {
-                            cull.floatValue = 0.0f;
-                                flipNormal.floatValue = 1.0f;
-                                backfaceForceShadow.floatValue = 1.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.5f;
-                                shadowBlur.floatValue = 0.1f;
-                                shadowStrength.floatValue = 1.0f;
-                                shadowColor.colorValue = new Color(0.7f,0.75f,0.85f,1.0f);
-                                shadow2ndBorder.floatValue = 0.25f;
-                                shadow2ndBlur.floatValue = 0.1f;
-                                shadow2ndColor.colorValue = new Color(0.55f,0.62f,0.75f,1.0f);
-                                shadowMainStrength.floatValue = 0.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                                shadowBorderColor.colorValue = new Color(1.0f,0.0f,0.0f,1.0f);
-                            useReflection.floatValue = 0.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useRim.floatValue = 1.0f;
-                                rimColor.colorValue = new Color(0.5f,0.4625f,0.425f,1.0f);
-                                rimBorder.floatValue = 0.65f;
-                                rimBlur.floatValue = 0.5f;
-                                rimFresnelPower.floatValue = 1.0f;
-                                rimBlendLight.floatValue = 1.0f;
-                                rimShadowMask.floatValue = 1.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.05f;
-                                outlineColor.colorValue = new Color(0.6f,0.7f,0.8f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 0.0f;
-                        }
-                        if(GUILayout.Button(loc["sPresetsCostumeAnime"],PresetButton))
-                        {
-                            cull.floatValue = 0.0f;
-                                flipNormal.floatValue = 1.0f;
-                                backfaceForceShadow.floatValue = 1.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.35f;
-                                shadowBlur.floatValue = 0.005f;
-                                shadowStrength.floatValue = 0.8f;
-                                shadowColor.colorValue = new Color(0.75f,0.8f,0.95f,1.0f);
-                                shadow2ndBorder.floatValue = 0.15f;
-                                shadow2ndBlur.floatValue = 0.1f;
-                                shadow2ndColor.colorValue = new Color(0.62f,0.68f,0.93f,0.0f);
-                                shadowMainStrength.floatValue = 1.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                                shadowBorderColor.colorValue = new Color(1.0f,0.0f,0.0f,1.0f);
-                            useReflection.floatValue = 0.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useRim.floatValue = 1.0f;
-                                rimColor.colorValue = new Color(0.5f,0.4625f,0.425f,1.0f);
-                                rimBorder.floatValue = 0.75f;
-                                rimBlur.floatValue = 0.05f;
-                                rimFresnelPower.floatValue = 1.0f;
-                                rimBlendLight.floatValue = 1.0f;
-                                rimShadowMask.floatValue = 1.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = true;
-                                outlineWidth.floatValue = 0.1f;
-                                outlineColor.colorValue = new Color(0.45f,0.55f,0.65f,1.0f);
-                                outlineUseMainColor.floatValue = 1.0f;
-                                outlineMainStrength.floatValue = 1.0f;
-                        }
-                        EditorGUILayout.Space();
-                        DrawLine();
-                        // その他
-                        EditorGUILayout.LabelField(loc["sOther"]);
-                        if(GUILayout.Button(loc["sPresetsMetal"],PresetButton))
-                        {
-                            cull.floatValue = 0.0f;
-                            flipNormal.floatValue = 0.0f;
-                            useShadow.floatValue = 1.0f;
-                                shadowBorder.floatValue = 0.6f;
-                                shadowBlur.floatValue = 0.25f;
-                                shadowStrength.floatValue = 0.5f;
-                                shadowColor.colorValue = new Color(0.0f,0.0f,0.0f,1.0f);
-                                shadow2ndColor.colorValue = new Color(0.73f,0.39f,0.37f,0.0f);
-                                shadowMainStrength.floatValue = 1.0f;
-                                shadowEnvStrength.floatValue = 1.0f;
-                                shadowBorderColor.colorValue = new Color(1.0f,0.0f,0.0f,1.0f);
-                            useReflection.floatValue = 1.0f;
-                                smoothness.floatValue = 0.95f;
-                                metallic.floatValue = 1.0f;
-                                reflectionColor.floatValue = 1.0f;
-                                applySpecular.floatValue = 1.0f;
-                                specularToon.floatValue = 0.0f;
-                                applyReflection.floatValue = 1.0f;
-                            useMatCap.floatValue = 0.0f;
-                            useRim.floatValue = 0.0f;
-                            useEmission.floatValue = 0.0f;
-                            isOutl = false;
-                        }
-                    }
-                    // シェーダーを変更
-                    if(olbuf != isOutl)
-                    {
-                        SetupMaterialWithRenderingMode(material, renderingModeBuf, isOutl, isLite, isStWr, isTess);
-                    }
-                    EditorGUILayout.EndVertical();
+                if(presets == null) LoadPresets();
+                ShowPresets(material);
+                EditorGUILayout.Space();
+                GUILayout.BeginHorizontal();
+                if(GUILayout.Button(loc["sPresetRefresh"])) LoadPresets();
+                if(GUILayout.Button(loc["sPresetSave"])) EditorWindow.GetWindow<lilPresetWindow>();
+                GUILayout.EndHorizontal();
             } else {
             // Advanced
                 // レンダリングモード
@@ -1901,11 +1476,12 @@ namespace lilToon
                     {
                         if(AssetDatabase.GUIDToAssetPath(langGuid[i]).Contains("lang_ja")) lnum = i;
                     }
-                    string langRawDef = ((TextAsset)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/lang_ja.txt", typeof(TextAsset))).text;
-                    string[] langDataDef = langRawDef.Split(char.Parse("\n"));
-                    for(int ii = 0; ii < langDataDef.Length; ii++)
+                    string langBuf = ((TextAsset)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/lang_ja.txt", typeof(TextAsset))).text;
+                    languageName = langBuf.Substring(0,langBuf.IndexOf("\r\n"));
+                    string[] langData = langBuf.Split(char.Parse("\n"));
+                    for(int ii = 0; ii < langData.Length; ii++)
                     {
-                        string line = langDataDef[ii];
+                        string line = langData[ii];
                         if(line.Contains("string"))
                         {
                             string name = line.Substring(line.IndexOf("string")+6,line.IndexOf("=")-(line.IndexOf("string")+7));
@@ -1922,11 +1498,12 @@ namespace lilToon
                     {
                         if(AssetDatabase.GUIDToAssetPath(langGuid[i]).Contains("lang_en")) lnum = i;
                     }
-                    string langRawDef = ((TextAsset)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/lang_en.txt", typeof(TextAsset))).text;
-                    string[] langDataDef = langRawDef.Split(char.Parse("\n"));
-                    for(int ii = 0; ii < langDataDef.Length; ii++)
+                    string langBuf = ((TextAsset)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/lang_en.txt", typeof(TextAsset))).text;
+                    languageName = langBuf.Substring(0,langBuf.IndexOf("\r\n"));
+                    string[] langData = langBuf.Split(char.Parse("\n"));
+                    for(int ii = 0; ii < langData.Length; ii++)
                     {
-                        string line = langDataDef[ii];
+                        string line = langData[ii];
                         if(line.Contains("string"))
                         {
                             string name = line.Substring(line.IndexOf("string")+6,line.IndexOf("=")-(line.IndexOf("string")+7));
@@ -1941,7 +1518,7 @@ namespace lilToon
             for(int i=0;i<langGuid.Length;i++)
             {
                 string langBuf = ((TextAsset)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(langGuid[i]), typeof(TextAsset))).text;
-                langName[i] = langBuf.Substring(0,langBuf.IndexOf("\n"));
+                langName[i] = langBuf.Substring(0,langBuf.IndexOf("\r\n"));
             }
 
             // Select language
@@ -1949,6 +1526,7 @@ namespace lilToon
 
             if(outnum != lnum)
             {
+                languageName = langName[outnum];
                 // Load language
                 string langRaw = ((TextAsset)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(langGuid[outnum]), typeof(TextAsset))).text;
                 string[] langData = langRaw.Split(char.Parse("\n"));
@@ -2092,6 +1670,98 @@ namespace lilToon
             // Remain in Debug Window
         }
 
+        static void LoadPresets()
+        {
+            string[] presetGuid = AssetDatabase.FindAssets("t:lilToonPreset", new[] {"Assets/lilToon/Presets"});
+            Array.Resize(ref presets, presetGuid.Length);
+            for(int i=0; i<presetGuid.Length; i++)
+            {
+                presets[i] = (lilToonPreset)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(presetGuid[i]), typeof(lilToonPreset));
+            }
+        }
+
+        static void ShowPresets(Material material)
+        {
+            GUIStyle PresetButton = new GUIStyle(GUI.skin.button);
+            PresetButton.alignment = TextAnchor.MiddleLeft;
+            string[] sCategorys = { loc["sPresetCategorySkin"],
+                                    loc["sPresetCategoryHair"],
+                                    loc["sPresetCategoryCloth"],
+                                    loc["sPresetCategoryNature"],
+                                    loc["sPresetCategoryInorganic"],
+                                    loc["sPresetCategoryEffect"],
+                                    loc["sPresetCategoryOther"] };
+            for(int i=0; i<(int)lilPresetCategory.Other+1; i++)
+            {
+                isShowCategorys[i] = Foldout(sCategorys[i], "", isShowCategorys[i]);
+                if(isShowCategorys[i])
+                {
+                    for(int j=0; j<presets.Length; j++)
+                    {
+                        if(i == (int)presets[j].category)
+                        {
+                            string showNameEng = "";
+                            string showName = "";
+                            for(int k=0; k<presets[j].bases.Length; k++)
+                            {
+                                if(presets[j].bases[k].language == "English")
+                                {
+                                    showNameEng = presets[j].bases[k].name;
+                                }
+                                if(presets[j].bases[k].language == languageName)
+                                {
+                                    showName = presets[j].bases[k].name;
+                                    k = 256;
+                                }
+                            }
+                            if(showName == String.Empty) showName = showNameEng;
+                            if(GUILayout.Button(showName,PresetButton)) ApplyPreset(material, presets[j]);
+                        }
+                    }
+                }
+            }
+        }
+
+        static void ApplyPreset(Material material, lilToonPreset preset)
+        {
+            for(int i = 0; i < preset.floats.Length; i++)
+            {
+                if(preset.floats[i].name == "_StencilPass") material.SetFloat(preset.floats[i].name, preset.floats[i].value);
+            }
+            if(preset.shader != null) material.shader = preset.shader;
+            if(preset.renderQueue != -2) material.renderQueue = preset.renderQueue;
+            bool isoutl         = preset.outline;
+            bool istess         = preset.tessellation;
+            bool isstencil      = (material.GetFloat("_StencilPass") == (float)UnityEngine.Rendering.StencilOp.Replace);
+
+            bool islite         = material.shader.name.Contains("Lite");
+            bool iscutout       = material.shader.name.Contains("Cutout");
+            bool istransparent  = material.shader.name.Contains("Transparent");
+            bool isrefr         = preset.shader != null && preset.shader.name.Contains("Refraction");
+            bool isblur         = preset.shader != null && preset.shader.name.Contains("Blur");
+            bool isfur          = preset.shader != null && preset.shader.name.Contains("Fur");
+
+            RenderingMode       renderingMode = RenderingMode.Opaque;
+            if(iscutout)        renderingMode = RenderingMode.Cutout;
+            if(istransparent)   renderingMode = RenderingMode.Transparent;
+            if(isrefr)          renderingMode = RenderingMode.Refraction;
+            if(isrefr&isblur)   renderingMode = RenderingMode.RefractionBlur;
+            if(isfur)           renderingMode = RenderingMode.Fur;
+            if(isfur&iscutout)  renderingMode = RenderingMode.FurCutout;
+
+            SetupMaterialWithRenderingMode(material, renderingMode, isoutl, islite, isstencil, istess);
+
+            for(int i = 0; i < preset.colors.Length;   i++) material.SetColor(preset.colors[i].name, preset.colors[i].value);
+            for(int i = 0; i < preset.vectors.Length;  i++) material.SetVector(preset.vectors[i].name, preset.vectors[i].value);
+            for(int i = 0; i < preset.floats.Length;   i++) material.SetFloat(preset.floats[i].name, preset.floats[i].value);
+            for(int i = 0; i < preset.textures.Length; i++)
+            {
+                material.SetTexture(preset.textures[i].name, preset.textures[i].value);
+                material.SetTextureOffset(preset.textures[i].name, preset.textures[i].offset);
+                material.SetTextureScale(preset.textures[i].name, preset.textures[i].scale);
+            }
+        }
+
         void RemoveUnusedTexture(Material material, bool islite, bool isfur)
         {
             RemoveUnusedProperties(material);
@@ -2187,7 +1857,6 @@ namespace lilToon
             string matPath = AssetDatabase.GetAssetPath(material);
             if(matPath.Length > 0)  matPath = EditorUtility.SaveFilePanel("Save Material", Path.GetDirectoryName(matPath), Path.GetFileNameWithoutExtension(matPath)+"_mtoon", "mat");
             else                    matPath = EditorUtility.SaveFilePanel("Save Material", "Assets", material.name + ".mat", "mat");
-            Debug.Log(FileUtil.GetProjectRelativePath(matPath));
             if(matPath.Length > 0)  AssetDatabase.CreateAsset(mtoonMaterial, FileUtil.GetProjectRelativePath(matPath));
 
             mtoonMaterial.SetColor("_Color",                    mainColor.colorValue);
@@ -2357,7 +2026,6 @@ namespace lilToon
             string matPath = AssetDatabase.GetAssetPath(material);
             if(matPath.Length > 0)  matPath = EditorUtility.SaveFilePanel("Save Material", Path.GetDirectoryName(matPath), Path.GetFileNameWithoutExtension(matPath)+"_lite", "mat");
             else                    matPath = EditorUtility.SaveFilePanel("Save Material", "Assets", material.name + ".mat", "mat");
-            Debug.Log(FileUtil.GetProjectRelativePath(matPath));
             if(matPath.Length > 0)  AssetDatabase.CreateAsset(liteMaterial, FileUtil.GetProjectRelativePath(matPath));
 
             liteMaterial.SetFloat("_Invisible",                 invisible.floatValue);
@@ -3484,6 +3152,234 @@ namespace lilToon
             }
         }
 
+        public class lilPresetWindow : EditorWindow
+        {
+            private Vector2 scrollPosition = Vector2.zero;
+
+            bool shouldSaveShader = false;
+            bool shouldSaveQueue = false;
+            bool shouldSaveStencil = false;
+            bool shouldSaveMain = false;
+            bool shouldSaveMain2 = false;
+            bool shouldSaveMain2Mask = false;
+            bool shouldSaveMain3 = false;
+            bool shouldSaveMain3Mask = false;
+            bool shouldSaveShadowBorder = false;
+            bool shouldSaveShadowBlur = false;
+            bool shouldSaveShadowStrength = false;
+            bool shouldSaveShadowColor = false;
+            bool shouldSaveShadowColor2 = false;
+            bool shouldSaveOutlineWidth = false;
+            bool shouldSaveEmissionColor = false;
+            bool shouldSaveEmissionMask = false;
+            bool shouldSaveEmissionGrad = false;
+            bool shouldSaveEmission2Color = false;
+            bool shouldSaveEmission2Mask = false;
+            bool shouldSaveEmission2Grad = false;
+            bool shouldSaveNormal = false;
+            bool shouldSaveNormal2 = false;
+            bool shouldSaveNormal2Mask = false;
+            bool shouldSaveReflectionSmoothness = false;
+            bool shouldSaveReflectionMetalic = false;
+            bool shouldSaveReflectionColor = false;
+            bool shouldSaveMatcap = false;
+            bool shouldSaveMatcapMask = false;
+            bool shouldSaveRim = false;
+            bool shouldSaveFurNormal = false;
+            bool shouldSaveFurNoise = false;
+            bool shouldSaveFurMask = false;
+            lilToonPreset preset;
+            int langNum;
+
+            void OnGUI()
+            {
+                string[] sCategorys = { loc["sPresetCategorySkin"],
+                                        loc["sPresetCategoryHair"],
+                                        loc["sPresetCategoryCloth"],
+                                        loc["sPresetCategoryNature"],
+                                        loc["sPresetCategoryInorganic"],
+                                        loc["sPresetCategoryEffect"],
+                                        loc["sPresetCategoryOther"] };
+                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
+                Material material = (Material)Selection.activeObject;
+                if(preset == null) preset = ScriptableObject.CreateInstance<lilToonPreset>();
+
+                // load language
+                string[] langGuid = AssetDatabase.FindAssets("lang_", new[] {"Assets/lilToon/Editor"});
+                string[] langName = new string[langGuid.Length];
+                for(int i=0;i<langGuid.Length;i++)
+                {
+                    string langBuf = ((TextAsset)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(langGuid[i]), typeof(TextAsset))).text;
+                    langName[i] = langBuf.Substring(0,langBuf.IndexOf("\r\n"));
+                    if(langName[i] == "English") langNum = i;
+                }
+
+                // Initialize
+                Array.Resize(ref preset.bases, langName.Length);
+                Array.Resize(ref preset.colors, 0);
+                Array.Resize(ref preset.vectors, 0);
+                Array.Resize(ref preset.floats, 0);
+                Array.Resize(ref preset.textures, 0);
+
+                // Name
+                EditorGUILayout.LabelField(loc["sPresetName"]);
+                for(int i = 0; i < langName.Length; i++)
+                {
+                    preset.bases[i].language = langName[i];
+                    preset.bases[i].name = EditorGUILayout.TextField(langName[i], preset.bases[i].name);
+                }
+
+                DrawLine();
+
+                preset.category = (lilPresetCategory)EditorGUILayout.Popup(loc["sPresetCategory"], (int)preset.category, sCategorys);
+
+                // Toggle
+                EditorGUILayout.LabelField(loc["sPresetSaveTarget"]);
+                shouldSaveShader                = EditorGUILayout.ToggleLeft(loc["sPresetShader"], shouldSaveShader);
+                shouldSaveQueue                 = EditorGUILayout.ToggleLeft(loc["sPresetQueue"], shouldSaveQueue);
+                shouldSaveStencil               = EditorGUILayout.ToggleLeft(loc["sPresetStencil"], shouldSaveStencil);
+
+                DrawLine();
+
+                EditorGUILayout.LabelField(loc["sPresetTexture"]);
+                shouldSaveMain                  = EditorGUILayout.ToggleLeft(loc["sPresetMain"], shouldSaveMain);
+                shouldSaveMain2                 = EditorGUILayout.ToggleLeft(loc["sPresetMain2"], shouldSaveMain2);
+                shouldSaveMain2Mask             = EditorGUILayout.ToggleLeft(loc["sPresetMain2Mask"], shouldSaveMain2Mask);
+                shouldSaveMain3                 = EditorGUILayout.ToggleLeft(loc["sPresetMain3"], shouldSaveMain3);
+                shouldSaveMain3Mask             = EditorGUILayout.ToggleLeft(loc["sPresetMain3Mask"], shouldSaveMain3Mask);
+
+                shouldSaveShadowBorder          = EditorGUILayout.ToggleLeft(loc["sPresetShadowBorder"], shouldSaveShadowBorder);
+                shouldSaveShadowBlur            = EditorGUILayout.ToggleLeft(loc["sPresetShadowBlur"], shouldSaveShadowBlur);
+                shouldSaveShadowStrength        = EditorGUILayout.ToggleLeft(loc["sPresetShadowStrength"], shouldSaveShadowStrength);
+                shouldSaveShadowColor           = EditorGUILayout.ToggleLeft(loc["sPresetShadowColor"], shouldSaveShadowColor);
+                shouldSaveShadowColor2          = EditorGUILayout.ToggleLeft(loc["sPresetShadowColor2"], shouldSaveShadowColor2);
+
+                shouldSaveOutlineWidth          = EditorGUILayout.ToggleLeft(loc["sPresetOutlineWidth"], shouldSaveOutlineWidth);
+
+                shouldSaveEmissionColor         = EditorGUILayout.ToggleLeft(loc["sPresetEmissionColor"], shouldSaveEmissionColor);
+                shouldSaveEmissionMask          = EditorGUILayout.ToggleLeft(loc["sPresetEmissionMask"], shouldSaveEmissionMask);
+                shouldSaveEmissionGrad          = EditorGUILayout.ToggleLeft(loc["sPresetEmissionGrad"], shouldSaveEmissionGrad);
+                shouldSaveEmission2Color        = EditorGUILayout.ToggleLeft(loc["sPresetEmission2Color"], shouldSaveEmission2Color);
+                shouldSaveEmission2Mask         = EditorGUILayout.ToggleLeft(loc["sPresetEmission2Mask"], shouldSaveEmission2Mask);
+                shouldSaveEmission2Grad         = EditorGUILayout.ToggleLeft(loc["sPresetEmission2Grad"], shouldSaveEmission2Grad);
+
+                shouldSaveNormal                = EditorGUILayout.ToggleLeft(loc["sPresetNormal"], shouldSaveNormal);
+                shouldSaveNormal2               = EditorGUILayout.ToggleLeft(loc["sPresetNormal2"], shouldSaveNormal2);
+                shouldSaveNormal2Mask           = EditorGUILayout.ToggleLeft(loc["sPresetNormal2Mask"], shouldSaveNormal2Mask);
+
+                shouldSaveReflectionSmoothness  = EditorGUILayout.ToggleLeft(loc["sPresetReflectionSmoothness"], shouldSaveReflectionSmoothness);
+                shouldSaveReflectionMetalic     = EditorGUILayout.ToggleLeft(loc["sPresetReflectionMetalic"], shouldSaveReflectionMetalic);
+                shouldSaveReflectionColor       = EditorGUILayout.ToggleLeft(loc["sPresetReflectionColor"], shouldSaveReflectionColor);
+
+                shouldSaveMatcap                = EditorGUILayout.ToggleLeft(loc["sPresetMatcap"], shouldSaveMatcap);
+                shouldSaveMatcapMask            = EditorGUILayout.ToggleLeft(loc["sPresetMatcapMask"], shouldSaveMatcapMask);
+
+                shouldSaveRim                   = EditorGUILayout.ToggleLeft(loc["sPresetRim"], shouldSaveRim);
+
+                shouldSaveFurNormal             = EditorGUILayout.ToggleLeft(loc["sPresetFurNormal"], shouldSaveFurNormal);
+                shouldSaveFurNoise              = EditorGUILayout.ToggleLeft(loc["sPresetFurNoise"], shouldSaveFurNoise);
+                shouldSaveFurMask               = EditorGUILayout.ToggleLeft(loc["sPresetFurMask"], shouldSaveFurMask);
+
+                if(GUILayout.Button("Save"))
+                {
+                    int propCount = ShaderUtil.GetPropertyCount(material.shader);
+                    for(int i = 0; i < propCount; i++)
+                    {
+                        string propName = ShaderUtil.GetPropertyName(material.shader, i);
+                        ShaderUtil.ShaderPropertyType propType = ShaderUtil.GetPropertyType(material.shader, i);
+                        if(propType == ShaderUtil.ShaderPropertyType.Color)
+                        {
+                            Array.Resize(ref preset.colors, preset.colors.Length + 1);
+                            preset.colors[preset.colors.Length-1].name = propName;
+                            preset.colors[preset.colors.Length-1].value = material.GetColor(propName);
+                        }
+                        if(propType == ShaderUtil.ShaderPropertyType.Vector)
+                        {
+                            Array.Resize(ref preset.vectors, preset.vectors.Length + 1);
+                            preset.vectors[preset.vectors.Length-1].name = propName;
+                            preset.vectors[preset.vectors.Length-1].value = material.GetVector(propName);
+                        }
+                        if(propType == ShaderUtil.ShaderPropertyType.Float || propType == ShaderUtil.ShaderPropertyType.Range)
+                        {
+                            if(!(!shouldSaveStencil && propName == "_StencilRef" && propName == "_StencilComp" && propName == "_StencilPass" && propName == "_StencilFail" && propName == "_StencilZFail"))
+                            {
+                                Array.Resize(ref preset.floats, preset.floats.Length + 1);
+                                preset.floats[preset.floats.Length-1].name = propName;
+                                preset.floats[preset.floats.Length-1].value = material.GetFloat(propName);
+                            }
+                        }
+                    }
+                    if(shouldSaveShader) preset.shader = material.shader;
+                    else preset.shader = null;
+
+                    if(shouldSaveQueue) preset.renderQueue = material.renderQueue;
+                    else preset.renderQueue = -2;
+
+                    preset.outline = material.shader.name.Contains("Outline");
+                    preset.tessellation = material.shader.name.Contains("Tessellation");
+
+                    if(shouldSaveMain) lilPresetCopyTexture(preset, material, "_MainTex");
+                    if(shouldSaveMain2) lilPresetCopyTexture(preset, material, "_Main2ndTex");
+                    if(shouldSaveMain2Mask) lilPresetCopyTexture(preset, material, "_Main2ndBlendMask");
+                    if(shouldSaveMain3) lilPresetCopyTexture(preset, material, "_Main3rdTex");
+                    if(shouldSaveMain3Mask) lilPresetCopyTexture(preset, material, "_Main3rdBlendMask");
+
+                    if(shouldSaveShadowBorder) lilPresetCopyTexture(preset, material, "_ShadowBorderMask");
+                    if(shouldSaveShadowBlur) lilPresetCopyTexture(preset, material, "_ShadowBlurMask");
+                    if(shouldSaveShadowStrength) lilPresetCopyTexture(preset, material, "_ShadowStrengthMask");
+                    if(shouldSaveShadowColor) lilPresetCopyTexture(preset, material, "_ShadowColorTex");
+                    if(shouldSaveShadowColor2) lilPresetCopyTexture(preset, material, "_Shadow2ndColorTex");
+                    
+                    if(shouldSaveOutlineWidth) lilPresetCopyTexture(preset, material, "_OutlineWidthMask");
+
+                    if(shouldSaveEmissionColor) lilPresetCopyTexture(preset, material, "_EmissionMap");
+                    if(shouldSaveEmissionMask) lilPresetCopyTexture(preset, material, "_EmissionBlendMask");
+                    if(shouldSaveEmissionGrad) lilPresetCopyTexture(preset, material, "_EmissionGradTex");
+                    if(shouldSaveEmission2Color) lilPresetCopyTexture(preset, material, "_Emission2ndMap");
+                    if(shouldSaveEmission2Mask) lilPresetCopyTexture(preset, material, "_Emission2ndBlendMask");
+                    if(shouldSaveEmission2Grad) lilPresetCopyTexture(preset, material, "_Emission2ndGradTex");
+
+                    if(shouldSaveNormal) lilPresetCopyTexture(preset, material, "_BumpMap");
+                    if(shouldSaveNormal2) lilPresetCopyTexture(preset, material, "_Bump2ndMap");
+                    if(shouldSaveNormal2Mask) lilPresetCopyTexture(preset, material, "_Bump2ndScaleMask");
+
+                    if(shouldSaveReflectionSmoothness) lilPresetCopyTexture(preset, material, "_SmoothnessTex");
+                    if(shouldSaveReflectionMetalic) lilPresetCopyTexture(preset, material, "_MetallicGlossMap");
+                    if(shouldSaveReflectionColor) lilPresetCopyTexture(preset, material, "_ReflectionColorTex");
+
+                    if(shouldSaveMatcap) lilPresetCopyTexture(preset, material, "_MatCapTex");
+                    if(shouldSaveMatcapMask) lilPresetCopyTexture(preset, material, "_MatCapBlendMask");
+
+                    if(shouldSaveRim) lilPresetCopyTexture(preset, material, "_RimColorTex");
+
+                    if(shouldSaveFurNormal) lilPresetCopyTexture(preset, material, "_FurVectorTex");
+                    if(shouldSaveFurNoise) lilPresetCopyTexture(preset, material, "_FurNoiseMask");
+                    if(shouldSaveFurMask) lilPresetCopyTexture(preset, material, "_FurMask");
+
+                    string filename = preset.category.ToString() + "-" + preset.bases[langNum].name;
+
+                    EditorUtility.SetDirty(preset);
+                    string savePath = EditorUtility.SaveFilePanel("Save Preset", "Assets/lilToon/Presets/", filename, "asset");
+                    if(savePath.Length > 0)  AssetDatabase.CreateAsset(preset, FileUtil.GetProjectRelativePath(savePath));
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+                    AssetDatabase.ImportAsset(savePath, ImportAssetOptions.ForceUpdate);
+                }
+
+                EditorGUILayout.EndScrollView();
+            }
+
+            void lilPresetCopyTexture(lilToonPreset preset, Material material, string propName)
+            {
+                Array.Resize(ref preset.textures, preset.textures.Length + 1);
+                preset.textures[preset.textures.Length-1].name = propName;
+                preset.textures[preset.textures.Length-1].value = material.GetTexture(propName);
+                preset.textures[preset.textures.Length-1].offset = material.GetTextureOffset(propName);
+                preset.textures[preset.textures.Length-1].scale = material.GetTextureScale(propName);
+            }
+        }
+
         #if SYSTEM_DRAWING
             void ConvertGifToAtlas(MaterialProperty tex, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty isDecal)
             {
@@ -3705,7 +3601,6 @@ namespace lilToon
 
             // Angle
             angle = EditorGUI.Slider(position, labels[0], angle, -180.0f, 180.0f);
-
 
             #if UNITY_2019_1_OR_NEWER
                 Color lineColor = new Color(0.35f,0.35f,0.35f,1.0f);

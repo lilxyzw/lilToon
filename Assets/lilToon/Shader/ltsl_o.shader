@@ -74,7 +74,7 @@
     }
     SubShader
     {
-        Tags {"Queue" = "Geometry" "RenderPipeline" = ""}
+        Tags {"RenderType" = "Opaque" "Queue" = "Geometry"}
         UsePass "Hidden/ltspass_lite_opaque/FORWARD"
         UsePass "Hidden/ltspass_lite_opaque/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_lite_opaque/FORWARD_ADD"

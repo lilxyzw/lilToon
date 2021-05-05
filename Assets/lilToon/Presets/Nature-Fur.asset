@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 330d117753a947947bf5a4f237b9a9f3, type: 3}
+  m_Name: Nature-Fur
+  m_EditorClassIdentifier: 
+  bases:
+  - language: English
+    name: Fur
+  - language: Japanese
+    name: "\u30D5\u30A1\u30FC"
+  category: 3
+  shader: {fileID: 4800000, guid: 55706696b2bdb5d4d8541b89e17085c8, type: 3}
+  colors:
+  - name: _Color
+    value: {r: 1, g: 1, b: 1, a: 1}
+  - name: _ShadowColor
+    value: {r: 0.7, g: 0.75, b: 0.85, a: 1}
+  - name: _Shadow2ndColor
+    value: {r: 0, g: 0, b: 0, a: 0}
+  - name: _ShadowBorderColor
+    value: {r: 1, g: 0, b: 0, a: 1}
+  vectors:
+  - name: _MainTex_ScrollRotate
+    value: {x: 0, y: 0, z: 0, w: 0}
+  - name: _MainTexHSVG
+    value: {x: 0, y: 1, z: 1, w: 1}
+  - name: _FurVector
+    value: {x: 0, y: 0, z: 1, w: 0.2}
+  floats:
+  - name: _Invisible
+    value: 0
+  - name: _Cutoff
+    value: 0.5
+  - name: _Cull
+    value: 2
+  - name: _FlipNormal
+    value: 0
+  - name: _BackfaceForceShadow
+    value: 0
+  - name: _UseShadow
+    value: 0
+  - name: _ShadowReceive
+    value: 0
+  - name: _ShadowBorder
+    value: 0.5
+  - name: _ShadowBlur
+    value: 0.1
+  - name: _ShadowStrength
+    value: 1
+  - name: _Shadow2ndBorder
+    value: 0.5
+  - name: _Shadow2ndBlur
+    value: 0.3
+  - name: _ShadowMainStrength
+    value: 1
+  - name: _ShadowEnvStrength
+    value: 1
+  - name: _ShadowBorderRange
+    value: 0
+  - name: _FurVectorScale
+    value: 1
+  - name: _VertexColor2FurVector
+    value: 0
+  - name: _FurGravity
+    value: 0.25
+  - name: _FurAO
+    value: 0
+  - name: _FurLayerNum
+    value: 4
+  - name: _SrcBlend
+    value: 5
+  - name: _DstBlend
+    value: 10
+  - name: _BlendOp
+    value: 0
+  - name: _SrcBlendFA
+    value: 1
+  - name: _DstBlendFA
+    value: 1
+  - name: _BlendOpFA
+    value: 4
+  - name: _ZWrite
+    value: 1
+  - name: _ZTest
+    value: 4
+  - name: _StencilRef
+    value: 0
+  - name: _StencilComp
+    value: 8
+  - name: _StencilPass
+    value: 0
+  - name: _StencilFail
+    value: 0
+  - name: _StencilZFail
+    value: 0
+  textures:
+  - name: _FurNoiseMask
+    value: {fileID: 2800000, guid: 3d421fc7bc8924f4985df741bf8d70ed, type: 3}
+    offset: {x: 0, y: 0}
+    scale: {x: 8, y: 8}
+  renderQueue: -2
+  outline: 0
+  tessellation: 0

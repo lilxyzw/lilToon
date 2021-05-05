@@ -6,10 +6,7 @@ Shader "Hidden/ltspass_tess_cutout"
         Pass
         {
             Name "FORWARD"
-            Tags {
-                "LightMode" = "ForwardBase"
-                "RenderType" = "TransparentCutout"
-            }
+            Tags {"LightMode" = "ForwardBase"}
 
             Stencil
             {
@@ -53,10 +50,7 @@ Shader "Hidden/ltspass_tess_cutout"
         Pass
         {
             Name "FORWARD_OUTLINE"
-            Tags {
-                "LightMode" = "ForwardBase"
-                "RenderType" = "TransparentCutout"
-            }
+            Tags {"LightMode" = "ForwardBase"}
 
 		    Cull Front
             Blend [_SrcBlend] [_DstBlend]
@@ -94,10 +88,7 @@ Shader "Hidden/ltspass_tess_cutout"
         Pass
         {
             Name "FORWARD_ADD"
-            Tags {
-                "LightMode" = "ForwardAdd"
-                "RenderType" = "TransparentCutout"
-            }
+            Tags {"LightMode" = "ForwardAdd"}
 
             Stencil
             {
@@ -143,10 +134,7 @@ Shader "Hidden/ltspass_tess_cutout"
         Pass
         {
             Name "SHADOW_CASTER"
-            Tags {
-                "LightMode" = "ShadowCaster"
-                "RenderType" = "TransparentCutout"
-            }
+            Tags {"LightMode" = "ShadowCaster"}
             Offset 1, 1
 		    Cull [_Cull]
 
@@ -171,10 +159,7 @@ Shader "Hidden/ltspass_tess_cutout"
         Pass
         {
             Name "META"
-            Tags {
-                "LightMode" = "Meta"
-                "RenderType" = "TransparentCutout"
-            }
+            Tags {"LightMode" = "Meta"}
             Cull Off
 
             HLSLPROGRAM

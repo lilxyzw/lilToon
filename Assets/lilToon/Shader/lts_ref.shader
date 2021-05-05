@@ -217,7 +217,7 @@
     }
     SubShader
     {
-        Tags {"Queue" = "Transparent" "RenderPipeline" = ""}
+        Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
 
         // GrabPass
         GrabPass {"_BackgroundTexture"}
@@ -226,10 +226,7 @@
         Pass
         {
             Name "FORWARD"
-            Tags {
-                "LightMode" = "ForwardBase"
-                "RenderType" = "Opaque"
-            }
+            Tags {"LightMode" = "ForwardBase"}
 
             Stencil
             {
@@ -271,10 +268,7 @@
         Pass
         {
             Name "FORWARD_ADD"
-            Tags {
-                "LightMode" = "ForwardAdd"
-                "RenderType" = "Opaque"
-            }
+            Tags {"LightMode" = "ForwardAdd"}
 
             Stencil
             {

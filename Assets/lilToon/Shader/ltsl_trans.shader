@@ -66,7 +66,7 @@
     }
     SubShader
     {
-        Tags {"Queue" = "AlphaTest+2" "RenderPipeline" = ""}
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+2"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
         UsePass "Hidden/ltspass_lite_transparent/FORWARD_ADD"
         UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"

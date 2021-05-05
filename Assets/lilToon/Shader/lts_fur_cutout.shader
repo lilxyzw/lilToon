@@ -68,16 +68,14 @@
     }
     SubShader
     {
-        Tags {"Queue" = "AlphaTest" "RenderPipeline" = ""}
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
 
         // Forward
         Pass
         {
             Name "FORWARD"
-            Tags {
-                "LightMode" = "ForwardBase"
-                "RenderType" = "TransparentCutout"
-            }
+            Tags {"LightMode" = "ForwardBase"
+                "RenderType" = "TransparentCutout"}
 
             Stencil
             {
@@ -120,10 +118,8 @@
         Pass
         {
             Name "FORWARD_FUR"
-            Tags {
-                "LightMode" = "ForwardBase"
-                "RenderType" = "TransparentCutout"
-            }
+            Tags {"LightMode" = "ForwardBase"
+                "RenderType" = "TransparentCutout"}
 
             Stencil
             {
@@ -167,10 +163,8 @@
         Pass
         {
             Name "FORWARD_ADD"
-            Tags {
-                "LightMode" = "ForwardAdd"
-                "RenderType" = "TransparentCutout"
-            }
+            Tags {"LightMode" = "ForwardAdd"
+                "RenderType" = "TransparentCutout"}
 
             Stencil
             {
@@ -214,10 +208,8 @@
         Pass
         {
             Name "FORWARD_ADD_FUR"
-            Tags {
-                "LightMode" = "ForwardAdd"
-                "RenderType" = "TransparentCutout"
-            }
+            Tags {"LightMode" = "ForwardAdd"
+                "RenderType" = "TransparentCutout"}
 
             Stencil
             {
@@ -264,10 +256,8 @@
         Pass
         {
             Name "META"
-            Tags {
-                "LightMode" = "Meta"
-                "RenderType" = "TransparentCutout"
-            }
+            Tags {"LightMode" = "Meta"
+                "RenderType" = "TransparentCutout"}
             Cull Off
 
             HLSLPROGRAM

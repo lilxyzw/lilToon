@@ -225,7 +225,7 @@
     }
     SubShader
     {
-        Tags {"Queue" = "AlphaTest" "RenderPipeline" = ""}
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
         UsePass "Hidden/ltspass_tess_cutout/FORWARD"
         UsePass "Hidden/ltspass_tess_cutout/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_tess_cutout/FORWARD_ADD"
