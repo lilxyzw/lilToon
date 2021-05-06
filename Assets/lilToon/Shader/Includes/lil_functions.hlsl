@@ -149,12 +149,6 @@ float lilLuminance(float3 rgb)
     #endif
 }
 
-float2 lilParallax(float2 uv, float2 parallaxOffset)
-{
-    float height = (LIL_SAMPLE_2D_LOD(_ParallaxMap,sampler_linear_repeat,uv,0).r - _ParallaxOffset) * _Parallax;
-    return uv + height * parallaxOffset;
-}
-
 //------------------------------------------------------------------------------------------------------------------------------
 // Lighting
 //unity_SHAr unity_SHAg unity_SHAb unity_SHBr unity_SHBg unity_SHBb unity_SHC

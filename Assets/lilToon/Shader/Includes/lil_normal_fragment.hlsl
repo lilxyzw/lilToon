@@ -24,7 +24,13 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //--------------------------------------------------------------------------------------------------------------------------
         // Parallax
-        if(_UseParallax) uvMain = lilParallax(uvMain, parallaxOffset);
+        if(_UseParallax)
+        {
+            float height = (LIL_SAMPLE_2D_LOD(_ParallaxMap,sampler_linear_repeat,uvMain,0).r - _ParallaxOffset) * _Parallax;
+            float2 parallaxOffset2 = height * parallaxOffset;
+            uvMain += parallaxOffset2;
+            input.uv += parallaxOffset2;
+        }
     #endif
 
     //--------------------------------------------------------------------------------------------------------------------------
