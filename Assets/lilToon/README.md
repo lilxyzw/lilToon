@@ -30,7 +30,7 @@ This shader was developed for services that use avatars and has the following fe
 - One-click settings with presets
 - Combine up to 3 layers with main color, and Sublayer also supports GIF animation
 - Features for toon (Outline, Custom shading, Rim light, MatCap, Stencil)
-- Features for Photorealistic (Normal map, Smoothness, Metallic, Emission)
+- Features for Photorealistic (Normal map, Smoothness, Metallic, Emission, Parallax)
 - UV scrolling & rotation available for almost all textures
 - Parallax compatible emission (x2 layers)
 - Pseudo-fluorescence that glows in dark spaces and when there is a little light (Recommended for making eyes glow)
