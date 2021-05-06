@@ -195,7 +195,7 @@ string sNormalReflection    = "Normal & Reflection";
 
 string sAdvanced = "Advanced";
 string sRendering = "Rendering";
-string sRenderingTips = "You can configure detailed rendering settings.";
+    string sRenderingTips               = "You can configure detailed rendering settings.";
     string sZWrite                      = "ZWrite";
     string sZTest                       = "ZTest";
     string sSrcBlend                    = "SrcBlend";
@@ -209,16 +209,17 @@ string sRenderingTips = "You can configure detailed rendering settings.";
 
 
 string sOptimization = "Optimization";
-    string sBake            = "Bake";
-    string sBakeAll         = "Bake all layer";
-    string sBake1st         = "Bake Color Shift";
-    string sBake2nd         = "Bake 2nd Layer";
-    string sBake3rd         = "Bake 3rd layer";
-    string sBakeAlphamask   = "Bake Alphamask";
-    string sSelectAlphamask = "Select Alphamask";
-    string sRemoveUnused    = "Remove unused textures";
-    string sConvertLite     = "Convert to lilToonLite";
-    string sConvertMToon    = "Convert to MToon (VRM)";
+    string sOptimizationTips    = "You can optimize the material to reduce the load.";
+    string sBake                = "Bake";
+    string sBakeAll             = "Bake all layer";
+    string sBake1st             = "Bake Color Shift";
+    string sBake2nd             = "Bake 2nd Layer";
+    string sBake3rd             = "Bake 3rd layer";
+    string sBakeAlphamask       = "Bake Alphamask";
+    string sSelectAlphamask     = "Select Alphamask";
+    string sRemoveUnused        = "Remove unused textures";
+    string sConvertLite         = "Convert to lilToonLite";
+    string sConvertMToon        = "Convert to MToon (VRM)";
 
 
 

@@ -195,7 +195,7 @@ string sNormalReflection    = "ノーマルマップ・光沢設定";
 
 string sAdvanced = "拡張設定";
 string sRendering = "レンダリング設定";
-string sRenderingTips = "その他細かいレンダリング設定ができます";
+    string sRenderingTips               = "その他細かいレンダリング設定ができます";
     string sZWrite                      = "ZWrite";
     string sZTest                       = "ZTest";
     string sSrcBlend                    = "SrcBlend";
@@ -209,16 +209,17 @@ string sRenderingTips = "その他細かいレンダリング設定ができま�
 
 
 string sOptimization = "最適化";
-    string sBake            = "焼き込み";
-    string sBakeAll         = "全て焼き込み";
-    string sBake1st         = "色替えを焼き込み";
-    string sBake2nd         = "レイヤー2を焼き込み";
-    string sBake3rd         = "レイヤー3を焼き込み";
-    string sBakeAlphamask   = "アルファマスクを焼き込み";
-    string sSelectAlphamask = "アルファマスクを選択してください";
-    string sRemoveUnused    = "未使用のテクスチャを外す";
-    string sConvertLite     = "lilToonLiteに変換";
-    string sConvertMToon    = "MToon(VRM)に変換";
+    string sOptimizationTips    = "マテリアルを最適化して負荷を低減できます";
+    string sBake                = "焼き込み";
+    string sBakeAll             = "全て焼き込み";
+    string sBake1st             = "色替えを焼き込み";
+    string sBake2nd             = "レイヤー2を焼き込み";
+    string sBake3rd             = "レイヤー3を焼き込み";
+    string sBakeAlphamask       = "アルファマスクを焼き込み";
+    string sSelectAlphamask     = "アルファマスクを選択してください";
+    string sRemoveUnused        = "未使用のテクスチャを外す";
+    string sConvertLite         = "lilToonLiteに変換";
+    string sConvertMToon        = "MToon(VRM)に変換";
 
 
 

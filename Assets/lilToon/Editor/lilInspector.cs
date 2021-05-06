@@ -130,6 +130,7 @@ namespace lilToon
 	    static bool isShowFur           = false;
 	    static bool isShowTess          = false;
 	    static bool isShowRendering     = false;
+	    static bool isShowOptimization  = false;
 
         // Material properties
         MaterialProperty invisible;
@@ -1409,18 +1410,20 @@ namespace lilToon
                 EditorGUILayout.Space();
 
                 GUILayout.Label(" " + loc["sOptimization"], EditorStyles.boldLabel);
-                // Bake
-                if(!isLite & !isFur)
+                isShowOptimization = Foldout(loc["sOptimization"], loc["sOptimizationTips"], isShowOptimization);
+                if(isShowOptimization)
                 {
-                    TextureBakeGui(material, 0);
-                    TextureBakeGui(material, 1);
-                    TextureBakeGui(material, 2);
-                    TextureBakeGui(material, 3);
+                    if(!isLite & !isFur)
+                    {
+                        TextureBakeGui(material, 0);
+                        TextureBakeGui(material, 1);
+                        TextureBakeGui(material, 2);
+                        TextureBakeGui(material, 3);
+                    }
+                    if(GUILayout.Button(loc["sRemoveUnused"])) RemoveUnusedTexture(material, isLite, isFur);
+                    if(!isLite && GUILayout.Button(loc["sConvertLite"])) CreateLiteMaterial(material);
+                    if(mtoon != null && GUILayout.Button(loc["sConvertMToon"])) CreateMToonMaterial(material);
                 }
-
-                if(GUILayout.Button(loc["sRemoveUnused"])) RemoveUnusedTexture(material, isLite, isFur);
-                if(!isLite && GUILayout.Button(loc["sConvertLite"])) CreateLiteMaterial(material);
-                if(mtoon != null && GUILayout.Button(loc["sConvertMToon"])) CreateMToonMaterial(material);
             }
 	    }
 
@@ -1684,6 +1687,11 @@ namespace lilToon
         {
             GUIStyle PresetButton = new GUIStyle(GUI.skin.button);
             PresetButton.alignment = TextAnchor.MiddleLeft;
+            #if UNITY_2019_1_OR_NEWER
+                PresetButton.margin.left = 24;
+            #else
+                PresetButton.margin.left = 20;
+            #endif
             string[] sCategorys = { loc["sPresetCategorySkin"],
                                     loc["sPresetCategoryHair"],
                                     loc["sPresetCategoryCloth"],
