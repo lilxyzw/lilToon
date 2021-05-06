@@ -15,11 +15,12 @@
         - [MatCap](#anchor3-2-2)
         - [Rim Light](#anchor3-2-3)
 - [Advanced](#anchor4)
-    - [Stencil](#anchor4-1)
-    - [Rendering](#anchor4-2)
-    - [Tessellation](#anchor4-3)
-    - [Refraction](#anchor4-4)
-    - [Fur](#anchor4-5)
+    - [Parallax](#anchor4-1)
+    - [Stencil](#anchor4-2)
+    - [Rendering](#anchor4-3)
+    - [Tessellation](#anchor4-4)
+    - [Refraction](#anchor4-5)
+    - [Fur](#anchor4-6)
 - [Optimization](#anchor5)
 
 <br/>
@@ -214,6 +215,15 @@
 
 <a id="anchor4-1"></a>
 
+## Parallax
+|名前|説明|
+|-|-|
+|Parallax|Parallax map and its scale.|
+|Offset|The threshold of parallax map.|
+
+<br/>
+<a id="anchor4-2"></a>
+
 ## Stencil
 If it is complicated and difficult to understand, you can use it without problems by understanding it as follows.
 
@@ -233,7 +243,7 @@ If it is complicated and difficult to understand, you can use it without problem
 |Reset|Initializes the setting to no stencil.|
 
 <br/>
-<a id="anchor4-2"></a>
+<a id="anchor4-3"></a>
 
 ## Rendering
 This is a complex setting that is usually not changed. You can ignore them.
@@ -250,7 +260,7 @@ This is a complex setting that is usually not changed. You can ignore them.
 |Render Queue|A number used to determine the order in which materials are drawn. The higher the value, the later it will be drawn.|
 
 <br/>
-<a id="anchor4-3"></a>
+<a id="anchor4-4"></a>
 
 ## Tessellation
 This is an experimental feature that smooths polygons when you get close to them. The load on high-poly models is very high, so it is best to use this only when you want to make a low-poly model look smooth.
@@ -262,7 +272,7 @@ This is an experimental feature that smooths polygons when you get close to them
 |Max Factor|Maximum number of divisions. The higher the value, the more load is applied.|
 
 <br/>
-<a id="anchor4-4"></a>
+<a id="anchor4-5"></a>
 
 ## Refraction
 |Name|Description|
@@ -273,7 +283,7 @@ This is an experimental feature that smooths polygons when you get close to them
 |Color|Color of refraction.|
 
 <br/>
-<a id="anchor4-5"></a>
+<a id="anchor4-6"></a>
 
 ## Fur
 |Name|Description|

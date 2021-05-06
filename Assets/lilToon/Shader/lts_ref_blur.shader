@@ -193,6 +193,13 @@
         [HideInInspector] _e2ga7 ("", Color) = (1,0,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Parallax
+        [lilToggleLeft] _UseParallax                ("Use Parallax", Int) = 0
+        [NoScaleOffset] _ParallaxMap                ("Parallax Map", 2D) = "gray" {}
+                        _Parallax                   ("Parallax Scale", float) = 0.02
+                        _ParallaxOffset             ("Parallax Offset", float) = 0.5
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Refraction
                         _RefractionStrength         ("Strength", Range(0,1)) = 0.1
         [PowerSlider(3.0)]_RefractionFresnelPower   ("Fresnel Power", Range(0.01, 10)) = 0.5

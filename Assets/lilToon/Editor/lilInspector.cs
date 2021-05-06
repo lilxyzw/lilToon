@@ -125,6 +125,7 @@ namespace lilToon
             static bool isShowEmissionBlendMask     = false;
             static bool isShowEmission2ndMap        = false;
             static bool isShowEmission2ndBlendMask  = false;
+	    static bool isShowParallax      = false;
 	    static bool isShowStencil       = false;
 	    static bool isShowRefraction    = false;
 	    static bool isShowFur           = false;
@@ -270,6 +271,10 @@ namespace lilToon
             MaterialProperty emission2ndGradSpeed;
             MaterialProperty emission2ndParallaxDepth;
             MaterialProperty emission2ndFluorescence;
+        MaterialProperty useParallax;
+            MaterialProperty parallaxMap;
+            MaterialProperty parallax;
+            MaterialProperty parallaxOffset;
         //MaterialProperty useRefraction;
             MaterialProperty refractionStrength;
             MaterialProperty refractionFresnelPower;
@@ -594,6 +599,10 @@ namespace lilToon
                     emission2ndGradSpeed = FindProperty("_Emission2ndGradSpeed", props);
                     emission2ndParallaxDepth = FindProperty("_Emission2ndParallaxDepth", props);
                     emission2ndFluorescence = FindProperty("_Emission2ndFluorescence", props);
+                useParallax = FindProperty("_UseParallax", props);
+                    parallaxMap = FindProperty("_ParallaxMap", props);
+                    parallax = FindProperty("_Parallax", props);
+                    parallaxOffset = FindProperty("_ParallaxOffset", props);
                 // Refraction
                 if(isRefr)
                 {
@@ -1257,6 +1266,24 @@ namespace lilToon
                 EditorGUILayout.Space();
 
                 GUILayout.Label(" " + loc["sAdvanced"], EditorStyles.boldLabel);
+                // Parallax
+                if(!isFur && !isLite)
+                {
+                    isShowParallax = Foldout(loc["sParallax"], loc["sParallaxTips"], isShowParallax);
+                    if(isShowParallax)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        materialEditor.ShaderProperty(useParallax, loc["sParallax"]);
+                        if(useParallax.floatValue == 1)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            materialEditor.TexturePropertySingleLine(new GUIContent(loc["sParallax"], loc["sParallaxR"]), parallaxMap, parallax);
+                            materialEditor.ShaderProperty(parallaxOffset, loc["sParallaxOffset"]);
+                            EditorGUILayout.EndVertical();
+                        }
+                        EditorGUILayout.EndVertical();
+                    }
+                }
                 // 屈折
                 if(isRefr)
                 {
@@ -3193,6 +3220,7 @@ namespace lilToon
             bool shouldSaveMatcap = false;
             bool shouldSaveMatcapMask = false;
             bool shouldSaveRim = false;
+            bool shouldSaveParallax = false;
             bool shouldSaveFurNormal = false;
             bool shouldSaveFurNoise = false;
             bool shouldSaveFurMask = false;
@@ -3285,6 +3313,8 @@ namespace lilToon
 
                 shouldSaveRim                   = EditorGUILayout.ToggleLeft(loc["sPresetRim"], shouldSaveRim);
 
+                shouldSaveParallax              = EditorGUILayout.ToggleLeft(loc["sPresetParallax"], shouldSaveParallax);
+
                 shouldSaveFurNormal             = EditorGUILayout.ToggleLeft(loc["sPresetFurNormal"], shouldSaveFurNormal);
                 shouldSaveFurNoise              = EditorGUILayout.ToggleLeft(loc["sPresetFurNoise"], shouldSaveFurNoise);
                 shouldSaveFurMask               = EditorGUILayout.ToggleLeft(loc["sPresetFurMask"], shouldSaveFurMask);
@@ -3360,6 +3390,8 @@ namespace lilToon
                     if(shouldSaveMatcapMask) lilPresetCopyTexture(preset, material, "_MatCapBlendMask");
 
                     if(shouldSaveRim) lilPresetCopyTexture(preset, material, "_RimColorTex");
+
+                    if(shouldSaveParallax) lilPresetCopyTexture(preset, material, "_ParallaxMap");
 
                     if(shouldSaveFurNormal) lilPresetCopyTexture(preset, material, "_FurVectorTex");
                     if(shouldSaveFurNoise) lilPresetCopyTexture(preset, material, "_FurNoiseMask");

@@ -193,6 +193,13 @@
         [HideInInspector] _e2ga7 ("", Color) = (1,0,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Parallax
+        [lilToggleLeft] _UseParallax                ("Use Parallax", Int) = 0
+        [NoScaleOffset] _ParallaxMap                ("Parallax Map", 2D) = "gray" {}
+                        _Parallax                   ("Parallax Scale", float) = 0.02
+                        _ParallaxOffset             ("Parallax Offset", float) = 0.5
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend       ("SrcBlend", Int) = 1
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend       ("DstBlend", Int) = 0

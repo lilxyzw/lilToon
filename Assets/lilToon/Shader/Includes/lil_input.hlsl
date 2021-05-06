@@ -151,6 +151,12 @@ float   _Emission2ndParallaxDepth;
 float   _Emission2ndFluorescence;
 
 //------------------------------------------------------------------------------------------------------------------------------
+// Parallax
+lilBool _UseParallax;
+float   _Parallax;
+float   _ParallaxOffset;
+
+//------------------------------------------------------------------------------------------------------------------------------
 // Fur
 float4  _FurNoiseMask_ST;
 float   _FurVectorScale;
@@ -196,6 +202,7 @@ TEXTURE2D(_EmissionGradTex);
 TEXTURE2D(_Emission2ndMap);
 TEXTURE2D(_Emission2ndBlendMask);
 TEXTURE2D(_Emission2ndGradTex);
+TEXTURE2D(_ParallaxMap);
 TEXTURE2D(_FurNoiseMask);
 TEXTURE2D(_FurMask);
 TEXTURE2D(_FurVectorTex);

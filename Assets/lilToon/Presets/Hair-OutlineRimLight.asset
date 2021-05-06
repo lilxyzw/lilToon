@@ -31,7 +31,7 @@ MonoBehaviour:
   - name: _Shadow2ndColor
     value: {r: 0.7, g: 0.75, b: 0.85, a: 1}
   - name: _ShadowBorderColor
-    value: {r: 1, g: 0.24999997, b: 0, a: 1}
+    value: {r: 1, g: 0.24999994, b: 0, a: 1}
   - name: _OutlineColor
     value: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   - name: _ReflectionColor
@@ -39,7 +39,7 @@ MonoBehaviour:
   - name: _MatCapColor
     value: {r: 1, g: 1, b: 1, a: 1}
   - name: _RimColor
-    value: {r: 0.5, g: 0.46249998, b: 0.42499998, a: 1}
+    value: {r: 0.5, g: 0.46249998, b: 0.42499995, a: 1}
   - name: _EmissionColor
     value: {r: 1, g: 1, b: 1, a: 1}
   - name: _egc0
@@ -278,6 +278,12 @@ MonoBehaviour:
     value: 2
   - name: _e2gai
     value: 2
+  - name: _UseParallax
+    value: 0
+  - name: _Parallax
+    value: 0.02
+  - name: _ParallaxOffset
+    value: 0.5
   - name: _SrcBlend
     value: 1
   - name: _DstBlend

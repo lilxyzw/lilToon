@@ -272,6 +272,12 @@ MonoBehaviour:
     value: 2
   - name: _e2gai
     value: 2
+  - name: _UseParallax
+    value: 0
+  - name: _Parallax
+    value: 0.02
+  - name: _ParallaxOffset
+    value: 0.5
   - name: _RefractionStrength
     value: 0.1
   - name: _RefractionFresnelPower

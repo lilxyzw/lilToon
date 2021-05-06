@@ -201,6 +201,13 @@
         [HideInInspector] _e2ga7 ("", Color) = (1,0,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Parallax
+        [lilToggleLeft] _UseParallax                ("Use Parallax", Int) = 0
+        [NoScaleOffset] _ParallaxMap                ("Parallax Map", 2D) = "gray" {}
+                        _Parallax                   ("Parallax Scale", float) = 0.02
+                        _ParallaxOffset             ("Parallax Offset", float) = 0.5
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Tessellation
                         _TessEdge                   ("Tessellation Edge", Range(1, 100)) = 10
                         _TessStrength               ("Tessellation Strength", Range(0, 1)) = 0.5

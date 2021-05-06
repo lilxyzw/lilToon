@@ -18,7 +18,7 @@ MonoBehaviour:
   - language: Japanese
     name: "\u30D5\u30A1\u30FC"
   category: 3
-  shader: {fileID: 4800000, guid: 55706696b2bdb5d4d8541b89e17085c8, type: 3}
+  shader: {fileID: 0}
   colors:
   - name: _Color
     value: {r: 1, g: 1, b: 1, a: 1}
@@ -102,11 +102,7 @@ MonoBehaviour:
     value: 0
   - name: _StencilZFail
     value: 0
-  textures:
-  - name: _FurNoiseMask
-    value: {fileID: 2800000, guid: 3d421fc7bc8924f4985df741bf8d70ed, type: 3}
-    offset: {x: 0, y: 0}
-    scale: {x: 8, y: 8}
+  textures: []
   renderQueue: -2
   outline: 0
   tessellation: 0

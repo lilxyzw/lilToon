@@ -157,6 +157,10 @@ string sColors = "Color";
         string sGradColor           = "Color";
         string sParallaxDepth       = "Parallax Depth";
         string sFluorescence        = "Fluorescence";
+    string sParallax            = "Parallax";
+        string sParallaxTips        = "You can set the parallax.";
+        string sParallaxR           = "Parallax (R)";
+        string sParallaxOffset      = "Offset";
 
 
 
@@ -266,6 +270,7 @@ string sPresetReflectionColor       = "Reflection Color";
 string sPresetMatcap                = "MatCap";
 string sPresetMatcapMask            = "MatCap Mask";
 string sPresetRim                   = "Rim Color";
+string sPresetParallax              = "Parallax";
 string sPresetFurNormal             = "Fur Normal";
 string sPresetFurNoise              = "Fur Noise";
 string sPresetFurMask               = "Fur Mask";

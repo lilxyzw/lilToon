@@ -14,6 +14,18 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
     //--------------------------------------------------------------------------------------------------------------------------
     // UV
     float2 uvMain = lilCalcUV(input.uv, _MainTex_ST, _MainTex_ScrollRotate);
+    #if !defined(LIL_OUTLINE) && !defined(LIL_FUR)
+        //--------------------------------------------------------------------------------------------------------------------------
+        // View Direction
+        float3x3 tbnWS = float3x3(input.tangentWS, input.bitangentWS, input.normalWS);
+        float3 viewDirection = LIL_GET_VIEWDIR_WS(input.positionWS.xyz);
+        float3 parallaxViewDirection = mul(tbnWS, viewDirection);
+        float2 parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
+
+        //--------------------------------------------------------------------------------------------------------------------------
+        // Parallax
+        if(_UseParallax) uvMain = lilParallax(uvMain, parallaxOffset);
+    #endif
 
     //--------------------------------------------------------------------------------------------------------------------------
     // Main Color
@@ -128,10 +140,8 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             normalmap = lilBlendNormal(normalmap, UnpackNormalScale(normal2ndTex, _Bump2ndScale));
         }
 
-        float3x3 tbnWS = float3x3(input.tangentWS, input.bitangentWS, input.normalWS);
         float3 normalDirection = normalize(mul(normalmap, tbnWS));
         normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
-        float3 viewDirection = LIL_GET_VIEWDIR_WS(input.positionWS.xyz);
         float nv = saturate(dot(normalDirection, viewDirection));
         float nvabs = abs(dot(normalDirection, viewDirection));
 
@@ -296,7 +306,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             LIL_BRANCH
             if(_UseEmission)
             {
-                float2 _EmissionMapParaTex = input.uv + _EmissionParallaxDepth * mul(tbnWS, viewDirection).xy;
+                float2 _EmissionMapParaTex = input.uv + _EmissionParallaxDepth * parallaxOffset;
                 _EmissionColor *= LIL_GET_EMITEX(_EmissionMap,_EmissionMapParaTex);
                 _EmissionColor.rgb = lerp(_EmissionColor.rgb, _EmissionColor.rgb * invLighting, _EmissionFluorescence);
                 float _EmissionBlinkSeq = lilCalcBlink(_EmissionBlink);
@@ -310,7 +320,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             LIL_BRANCH
             if(_UseEmission2nd)
             {
-                float2 _Emission2ndMapParaTex = input.uv + _Emission2ndParallaxDepth * mul(tbnWS, viewDirection).xy;
+                float2 _Emission2ndMapParaTex = input.uv + _Emission2ndParallaxDepth * parallaxOffset;
                 _Emission2ndColor *= LIL_GET_EMITEX(_Emission2ndMap,_Emission2ndMapParaTex);
                 _Emission2ndColor.rgb = lerp(_Emission2ndColor.rgb, _Emission2ndColor.rgb * invLighting, _Emission2ndFluorescence);
                 float _Emission2ndBlinkSeq = lilCalcBlink(_Emission2ndBlink);

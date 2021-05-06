@@ -27,9 +27,9 @@ MonoBehaviour:
   - name: _Color3rd
     value: {r: 1, g: 1, b: 1, a: 1}
   - name: _ShadowColor
-    value: {r: 0.73, g: 0.38999996, b: 0.36999997, a: 1}
+    value: {r: 0.7, g: 0.75, b: 0.85, a: 1}
   - name: _Shadow2ndColor
-    value: {r: 0.73, g: 0.38999996, b: 0.36999997, a: 0}
+    value: {r: 0, g: 0, b: 0, a: 0}
   - name: _ShadowBorderColor
     value: {r: 1, g: 0, b: 0, a: 1}
   - name: _ReflectionColor
@@ -191,17 +191,17 @@ MonoBehaviour:
   - name: _ShadowReceive
     value: 0
   - name: _ShadowBorder
-    value: 0.4
+    value: 0.5
   - name: _ShadowBlur
-    value: 0.25
+    value: 0.1
   - name: _ShadowStrength
-    value: 0.35
+    value: 1
   - name: _Shadow2ndBorder
     value: 0.5
   - name: _Shadow2ndBlur
     value: 0.3
   - name: _ShadowMainStrength
-    value: 0
+    value: 1
   - name: _ShadowEnvStrength
     value: 1
   - name: _ShadowBorderRange
@@ -270,6 +270,12 @@ MonoBehaviour:
     value: 2
   - name: _e2gai
     value: 2
+  - name: _UseParallax
+    value: 0
+  - name: _Parallax
+    value: 0.02
+  - name: _ParallaxOffset
+    value: 0.5
   - name: _SrcBlend
     value: 1
   - name: _DstBlend

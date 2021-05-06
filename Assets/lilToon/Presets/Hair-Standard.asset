@@ -31,7 +31,7 @@ MonoBehaviour:
   - name: _Shadow2ndColor
     value: {r: 0.7, g: 0.75, b: 0.85, a: 1}
   - name: _ShadowBorderColor
-    value: {r: 1, g: 0.24999997, b: 0, a: 1}
+    value: {r: 1, g: 0.24999994, b: 0, a: 1}
   - name: _ReflectionColor
     value: {r: 1, g: 1, b: 1, a: 1}
   - name: _MatCapColor
@@ -270,6 +270,12 @@ MonoBehaviour:
     value: 2
   - name: _e2gai
     value: 2
+  - name: _UseParallax
+    value: 0
+  - name: _Parallax
+    value: 0.02
+  - name: _ParallaxOffset
+    value: 0.5
   - name: _SrcBlend
     value: 1
   - name: _DstBlend

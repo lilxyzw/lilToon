@@ -157,6 +157,10 @@ string sColors = "色設定";
         string sGradColor           = "色";
         string sParallaxDepth       = "視差の強さ";
         string sFluorescence        = "疑似蛍光";
+    string sParallax            = "視差マップ";
+        string sParallaxTips        = "視差マップに関する設定ができます";
+        string sParallaxR           = "Parallax (R)";
+        string sParallaxOffset      = "オフセット";
 
 
 
@@ -266,6 +270,7 @@ string sPresetReflectionColor       = "反射色";
 string sPresetMatcap                = "マットキャップ";
 string sPresetMatcapMask            = "マットキャップマスク";
 string sPresetRim                   = "リムライト色";
+string sPresetParallax              = "視差マップ";
 string sPresetFurNormal             = "ファーノーマルマップ";
 string sPresetFurNoise              = "ファーノイズ";
 string sPresetFurMask               = "ファーマスク";
