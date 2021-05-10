@@ -33,7 +33,6 @@ Shader "Hidden/ltspass_transparent"
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
             #pragma fragmentoption ARB_precision_hint_fastest
-            #pragma skip_variants SHADOWS_SCREEN
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass

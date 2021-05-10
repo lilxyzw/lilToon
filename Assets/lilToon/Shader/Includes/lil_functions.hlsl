@@ -560,26 +560,29 @@ float2 lilCalcUVWithoutAnimation(float2 uv, float4 uv_st, float4 uv_sr)
 
 float2 lilCalcMatCapUV(float3 normalWS)
 {
-    float2 outuv = mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5;
+    #if LIL_MATCAP_MODE == 0
+        // Simple
+        return mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5 + 0.5;
+    #elif LIL_MATCAP_MODE == 1
+        // Fix Z-Rotation
+        bool isMirror = unity_CameraProjection._m20 != 0.0 || unity_CameraProjection._m21 != 0.0;
+        float2 outuv = mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5;
 
-    bool isMirror = unity_CameraProjection._m20 != 0.0 || unity_CameraProjection._m21 != 0.0;
-    float3 matV1 = LIL_MATRIX_V._m00_m01_m02;
-    float3 matV2 = float3(-LIL_MATRIX_V._m22, 0.0, LIL_MATRIX_V._m20); //cross(LIL_MATRIX_V._m20_m21_m22, float3(0,1,0));
-    float matR = dot(matV1,matV2) / sqrt(dot(matV1,matV1)*dot(matV2,matV2));
-    matR = isMirror ? -matR : matR;
-    matR = lilAcos(clamp(matR, -1, 1));
-    matR = LIL_MATRIX_V._m01 < 0 ? -matR : matR;
+        float3 tan = LIL_MATRIX_V._m00_m01_m02;
+        float3 bitan = float3(-LIL_MATRIX_V._m22, 0.0, LIL_MATRIX_V._m20);
+        float co = dot(tan,bitan) / length(bitan);
+        float si = LIL_MATRIX_V._m01;
+        co = isMirror ? -co : co;
 
-    float si,co;
-    sincos(matR,si,co);
-    outuv = float2(
-        outuv.x * co - outuv.y * si,
-        outuv.x * si + outuv.y * co
-    );
-    outuv += 0.5;
-    outuv.x = isMirror ? -outuv.x : outuv.x;
+        outuv = float2(
+            outuv.x * co - outuv.y * si,
+            outuv.x * si + outuv.y * co
+        );
+        outuv += 0.5;
+        outuv.x = isMirror ? -outuv.x : outuv.x;
 
-    return outuv;
+        return outuv;
+    #endif
 }
 
 float3 lilToneCorrection(float3 c, float4 hsvg)

@@ -100,6 +100,8 @@ string sBaseSetting = "基本設定";
     string sMaskOffset                  = "Mask UV Offset";
     string sTriMask                     = "TriMask (Mat/Rim/Emi)";
     string sTriMaskRGB                  = "Mask (R:Matcap G:Rim B:Emission)";
+    string sMainUV                      = "UV設定";
+    string sMainUVTips                  = "UVの位置やサイズ、アニメーションの設定ができます";
 
 
 
@@ -189,6 +191,7 @@ string sNormalReflection    = "ノーマルマップ・光沢設定";
         string sUseMatCap           = "マットキャップ";
         string sMatCap              = "マットキャップ";
         string sMatCapMul           = "乗算";
+        string sHelpMatCapBlending  = "乗算モードではライティングの合成をオフにしてください";
         string sUseRim              = "リムライト";
         string sFresnelPower        = "リムライトの細さ";
         string sShadowMask          = "影部分で無効化";

@@ -38,7 +38,6 @@ Shader "Hidden/ltspass_lite_opaque"
             //------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_RENDER 0
-            #define LIL_BRP
             #include "Includes/lil_pass_lite.hlsl"
 
             ENDHLSL
@@ -81,7 +80,6 @@ Shader "Hidden/ltspass_lite_opaque"
             // Pass
             #define LIL_RENDER 0
             #define LIL_OUTLINE
-            #define LIL_BRP
             #include "Includes/lil_pass_lite.hlsl"
 
             ENDHLSL
@@ -150,7 +148,6 @@ Shader "Hidden/ltspass_lite_opaque"
             // Pass
             #define LIL_LITE
             #define LIL_RENDER 0
-            #define LIL_BRP
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -175,7 +172,6 @@ Shader "Hidden/ltspass_lite_opaque"
             // Pass
             #define LIL_RENDER 0
             #define LIL_LITE
-            #define LIL_BRP
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }

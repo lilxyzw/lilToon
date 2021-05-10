@@ -133,7 +133,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         LIL_BRANCH
         if(_UseBumpMap)
         {
-            float4 normalTex = LIL_SAMPLE_2D_ST(_BumpMap, sampler_MainTex, input.uv);
+            float4 normalTex = LIL_SAMPLE_2D_ST(_BumpMap, sampler_MainTex, uvMain);
             normalmap = UnpackNormalScale(normalTex, _BumpScale);
         }
 

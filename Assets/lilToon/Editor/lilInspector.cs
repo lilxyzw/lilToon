@@ -115,6 +115,7 @@ namespace lilToon
         static bool isTess         = false;
 
         // Toggle show / hide
+	    static bool isShowMainUV        = false;
 	    static bool isShowMain          = false;
 	    static bool isShowShadow        = false;
 	    static bool isShowOutline       = false;
@@ -889,8 +890,6 @@ namespace lilToon
                     {
                         EditorGUILayout.HelpBox(loc["sHelpZWrite"],MessageType.Warning);
                     }
-                    DrawLine();
-                    UVSettingGui(materialEditor, mainTex, mainTex_ScrollRotate);
                     if(isLite) 
                     {
                         DrawLine();
@@ -898,6 +897,17 @@ namespace lilToon
                     }
                 }
                 EditorGUILayout.EndVertical();
+
+                // UV
+                isShowMainUV = Foldout(loc["sMainUV"], loc["sMainUVTips"], isShowMainUV);
+                if(isShowMainUV)
+                {
+                    EditorGUILayout.BeginVertical(boxOuter);
+                    EditorGUILayout.BeginVertical(boxInnerHalf);
+                    UVSettingGui(materialEditor, mainTex, mainTex_ScrollRotate);
+                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.EndVertical();
+                }
 
                 EditorGUILayout.Space();
 
@@ -1218,6 +1228,10 @@ namespace lilToon
                                 materialEditor.TexturePropertySingleLine(maskBlendContent, matcapBlendMask, matcapBlend);
                                 materialEditor.ShaderProperty(matcapBlendLight, loc["sBlendLight"]);
                                 materialEditor.ShaderProperty(matcapBlendMode, sBlendModes);
+                                if(matcapBlendLight.floatValue == 1.0f && matcapBlendMode.floatValue == 3.0f)
+                                {
+                                    EditorGUILayout.HelpBox(loc["sHelpMatCapBlending"],MessageType.Warning);
+                                }
                                 EditorGUILayout.EndVertical();
                             }
                         }
@@ -2545,7 +2559,7 @@ namespace lilToon
 
         void AlphamaskToTextureGui(Material material)
         {
-            if(GUILayout.Button(loc["sBakeAlphamask"]))
+            if(mainTex.textureValue != null && GUILayout.Button(loc["sBakeAlphamask"]))
             {
                 mainTex.textureValue = AutoBakeAlphaMask(material);
             }

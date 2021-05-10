@@ -61,6 +61,11 @@
 // 2 : Fast Specular
 #define LIL_SPECULAR_MODE 0
 
+// MatCap mode (Default : 1)
+// 0 : Simple
+// 1 : Fix Z-Rotation
+#define LIL_MATCAP_MODE 1
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Replace Macro
 #define LIL_BRANCH                                  UNITY_BRANCH

@@ -1,10 +1,7 @@
 Shader "Hidden/ltspass_tess_opaque"
 {
-    //------------------------------------------------------------------------------------------------------------------
-    // Built-in Render Pipeline
     SubShader
     {
-        Tags{"RenderPipeline" = ""}
         // Forward
         Pass
         {

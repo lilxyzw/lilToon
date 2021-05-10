@@ -100,6 +100,8 @@ string sBaseSetting = "Base Setting";
     string sMaskOffset                  = "Mask UV Offset";
     string sTriMask                     = "TriMask (Mat/Rim/Emi)";
     string sTriMaskRGB                  = "Mask (R:Matcap G:Rim B:Emission)";
+    string sMainUV                      = "UV Setting";
+    string sMainUVTips                  = "You can set the UV position, scale and animation.";
 
 
 
@@ -189,6 +191,7 @@ string sNormalReflection    = "Normal & Reflection";
         string sUseMatCap           = "MatCap";
         string sMatCap              = "MatCap";
         string sMatCapMul           = "Multiply";
+        string sHelpMatCapBlending  = "Turn off "Blend Light" in multiply mode.";
         string sUseRim              = "Rim Light";
         string sFresnelPower        = "Fresnel Power";
         string sShadowMask          = "Shadow Mask";
