@@ -46,7 +46,7 @@
         [NoScaleOffset] _MatCapTex                  ("Texture", 2D) = "white" {}
                         _MatCapBlend                ("Blend", Range(0, 3)) = 1
         [NoScaleOffset] _MatCapBlendMask            ("Mask", 2D) = "white" {}
-        [lilToggle]     _MatCapBlendLight           ("Blend Light", Int) = 1
+        [lilToggle]     _MatCapEnableLighting       ("Enable Lighting", Int) = 1
         [lilBlendMode]  _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@
                         _RimBorder                  ("Border", Range(0, 1)) = 0.5
                         _RimBlur                    ("Blur", Range(0, 1)) = 0.1
         [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
-        [lilToggle]     _RimBlendLight              ("Blend Light", Int) = 1
+        [lilToggle]     _RimEnableLighting          ("Enable Lighting", Int) = 1
         [lilToggle]     _RimShadowMask              ("Shadow Mask", Int) = 0
     }
     SubShader

@@ -6,8 +6,7 @@
 - [Color](#anchor2)
     - [Main Color](#anchor2-1)
     - [Shadow](#anchor2-2)
-    - [Outline](#anchor2-3)
-    - [Emission](#anchor2-4)
+    - [Emission](#anchor2-3)
 - [Normal & Reflection](#anchor3)
     - [Normal Map](#anchor3-1)
     - [Reflections](#anchor3-2)
@@ -15,12 +14,13 @@
         - [MatCap](#anchor3-2-2)
         - [Rim Light](#anchor3-2-3)
 - [Advanced](#anchor4)
-    - [Parallax](#anchor4-1)
-    - [Stencil](#anchor4-2)
-    - [Rendering](#anchor4-3)
-    - [Tessellation](#anchor4-4)
-    - [Refraction](#anchor4-5)
-    - [Fur](#anchor4-6)
+    - [Outline](#anchor4-1)
+    - [Parallax](#anchor4-2)
+    - [Stencil](#anchor4-3)
+    - [Rendering](#anchor4-4)
+    - [Tessellation](#anchor4-5)
+    - [Refraction](#anchor4-6)
+    - [Fur](#anchor4-7)
 - [Optimization](#anchor5)
 
 <br/>
@@ -45,9 +45,13 @@
 |Name|Description|
 |-|-|
 |Invisible|When this is turned on, the material will be hidden.|
+|As Unlit|Disable lighting.|
 |Rendering Mode|Allows you to change the transparency setting.|
 |Cutoff|If the transparency drops below this value, the mesh will be clipped.|
-|ZWrite|Whether to write depth. Usually this is turned on, but for transparent materials it is sometimes better to turn it off.|
+|Cull Mode|Hide the specified surface.|
+|Frip Backface Normal|Reverse backface lighting and other processes.|
+|Backface Force Shadow|Intensity to force the back face to dark.|
+|ZWrite|Whether to write depth. Basically, set it to on.|
 |UV Setting|Tiling is the number of loops in the UV, and Offset is the amount of displacement.|
 |UV Animation|Speed of UV movement and rotation.|
 
@@ -84,6 +88,7 @@
 |Bake|Export the color-corrected texture.|
 
 ### Main Color 2nd / 3rd
+You can blend colors into the main color. This is the layer function in painting software.
 |Name|Description|
 |-|-|
 |Texture|Specifies the texture. You can also specify a Gif image and click "Convert Gif" to animate it.|
@@ -136,17 +141,6 @@
 
 <br/>
 <a id="anchor2-3"></a>
-
-## Outline
-|Name|Description|
-|-|-|
-|Color|Color of outline.|
-|Use Main Color|Apply the main color to outline.|
-|Main Color Power|Amount to multiply the main color.|
-|Mask & Width|Width of outline. The outline does not appear in the area painted black by the mask.|
-
-<br/>
-<a id="anchor2-4"></a>
 
 ## Emission
 |Name|Description|
@@ -215,6 +209,23 @@
 
 <a id="anchor4-1"></a>
 
+## Outline
+|Name|Description|
+|-|-|
+|Texture|Specifies the texture. You can also use the color picker on the right to set the color.|
+|Hue|Colour.|
+|Saturation|Intensity of a color|
+|Value|Lightness or darkness of a color.|
+|Gamma|Emphasizes contrast.|
+|Bake|Export the color-corrected texture.|
+|Mask & Width|Width of outline. The outline does not appear in the area painted black by the mask.|
+|Fix Width|Correct width changes with distance.|
+|Vertex R -> Width|Apply the R value of vertex color to the width.|
+|Enable Lighting|Apply changes in brightness due to lighting.|
+
+<br/>
+<a id="anchor4-2"></a>
+
 ## Parallax
 |名前|説明|
 |-|-|
@@ -222,7 +233,7 @@
 |Offset|The threshold of parallax map.|
 
 <br/>
-<a id="anchor4-2"></a>
+<a id="anchor4-3"></a>
 
 ## Stencil
 If it is complicated and difficult to understand, you can use it without problems by understanding it as follows.
@@ -234,6 +245,8 @@ If it is complicated and difficult to understand, you can use it without problem
 |Name|Description|
 |-|-|
 |Ref|ID used for stencil. Decide whether or not to draw based on the ID.|
+|ReadMask|Mask for the value of Ref before comparison.|
+|WriteMask|Mask for the value to be written.|
 |Comp|How to compare IDs. Material is drawn when the conditions are met.|
 |Pass|Whether to rewrite the ID when the material is drawn.|
 |Fail|Whether to rewrite the ID when the material is not drawn.|
@@ -243,15 +256,18 @@ If it is complicated and difficult to understand, you can use it without problem
 |Reset|Initializes the setting to no stencil.|
 
 <br/>
-<a id="anchor4-3"></a>
+<a id="anchor4-4"></a>
 
 ## Rendering
 This is a complex setting that is usually not changed. You can ignore them.
 |Name|Description|
 |-|-|
 |Shader Type|Normal / Lite|
+|Cull Mode|Hide the specified surface.|
 |ZWrite|Whether to write depth. The value is larger at the back and smaller at the front.|
 |ZTest|Method of comparing depth value. Material is drawn when the conditions are met.|
+|Offset Factor|Increase or decrease the depth based on the screen coordinates.|
+|Offset Units|Increase or decrease the depth.|
 |SrcBlend|Value to be multiplied by the color calculated by the shader.|
 |DstBlend|Value to be multiplied by the color already on the screen.|
 |BlendOp|How to synthesize the calculation results. If you set it to anything other than Add, SrcBlend and DstBlend will be ignored.|
@@ -260,7 +276,7 @@ This is a complex setting that is usually not changed. You can ignore them.
 |Render Queue|A number used to determine the order in which materials are drawn. The higher the value, the later it will be drawn.|
 
 <br/>
-<a id="anchor4-4"></a>
+<a id="anchor4-5"></a>
 
 ## Tessellation
 This is an experimental feature that smooths polygons when you get close to them. The load on high-poly models is very high, so it is best to use this only when you want to make a low-poly model look smooth.
@@ -272,7 +288,7 @@ This is an experimental feature that smooths polygons when you get close to them
 |Max Factor|Maximum number of divisions. The higher the value, the more load is applied.|
 
 <br/>
-<a id="anchor4-5"></a>
+<a id="anchor4-6"></a>
 
 ## Refraction
 |Name|Description|
@@ -283,7 +299,7 @@ This is an experimental feature that smooths polygons when you get close to them
 |Color|Color of refraction.|
 
 <br/>
-<a id="anchor4-6"></a>
+<a id="anchor4-7"></a>
 
 ## Fur
 |Name|Description|

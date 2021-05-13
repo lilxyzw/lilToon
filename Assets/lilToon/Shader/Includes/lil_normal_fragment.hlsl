@@ -10,67 +10,67 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
     LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
     LIL_GET_VERTEXLIGHT(input, vertexLightColor);
     LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
-
-    //--------------------------------------------------------------------------------------------------------------------------
-    // UV
-    float2 uvMain = lilCalcUV(input.uv, _MainTex_ST, _MainTex_ScrollRotate);
-    #if !defined(LIL_OUTLINE) && !defined(LIL_FUR)
-        //--------------------------------------------------------------------------------------------------------------------------
-        // View Direction
-        float3x3 tbnWS = float3x3(input.tangentWS, input.bitangentWS, input.normalWS);
-        float3 viewDirection = LIL_GET_VIEWDIR_WS(input.positionWS.xyz);
-        float3 parallaxViewDirection = mul(tbnWS, viewDirection);
-        float2 parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
-
-        //--------------------------------------------------------------------------------------------------------------------------
-        // Parallax
-        if(_UseParallax)
-        {
-            float height = (LIL_SAMPLE_2D_LOD(_ParallaxMap,sampler_linear_repeat,uvMain,0).r - _ParallaxOffset) * _Parallax;
-            float2 parallaxOffset2 = height * parallaxOffset;
-            uvMain += parallaxOffset2;
-            input.uv += parallaxOffset2;
-        }
-    #endif
-
-    //--------------------------------------------------------------------------------------------------------------------------
-    // Main Color
-    float4 col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain);
-    #ifndef LIL_FUR
-        col.rgb = lilToneCorrection(col.rgb, _MainTexHSVG);
-    #endif
-    col *= _Color;
-
-    //----------------------------------------------------------------------------------------------------------------------
-    // Alpha
-    #if LIL_RENDER == 0
-        // Opaque
-    #elif LIL_RENDER == 1
-        // Cutout
-        col.a = saturate((col.a - _Cutoff) / max(fwidth(col.a), 0.0001) + 0.5);
-    #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
-        // Transparent
-        clip(col.a - 0.001);
-    #endif
+    if(_AsUnlit)
+    {
+        #if !defined(LIL_PASS_FORWARDADD)
+            lightColor = 1.0;
+            vertexLightColor = 0.0;
+            additionalLightColor = 0.0;
+        #else
+            lightColor = 0.0;
+        #endif
+    }
 
     //--------------------------------------------------------------------------------------------------------------------------
     // Apply Matelial & Lighting
     #if defined(LIL_OUTLINE)
-        //----------------------------------------------------------------------------------------------------------------------
-        // Outline Color
-        // Multiply Main Color
-        if(_OutlineUseMainColor) col.rgb *= lerp(1, col.rgb, _OutlineMainStrength);
-        else                     col.rgb = 1.0;
+        //--------------------------------------------------------------------------------------------------------------------------
+        // UV
+        float2 uvMain = lilCalcUV(input.uv, _OutlineTex_ST, _OutlineTex_ScrollRotate);
 
-        // Apply Color
-        #if LIL_RENDER == 2
-            col *= _OutlineColor;
-        #else
-            col.rgb *= _OutlineColor.rgb;
+        //--------------------------------------------------------------------------------------------------------------------------
+        // Main Color
+        float4 col = LIL_SAMPLE_2D(_OutlineTex, sampler_OutlineTex, uvMain);
+        col.rgb = lilToneCorrection(col.rgb, _OutlineTexHSVG);
+        col *= _OutlineColor;
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Alpha
+        #if LIL_RENDER == 0
+            // Opaque
+        #elif LIL_RENDER == 1
+            // Cutout
+            col.a = saturate((col.a - _Cutoff) / max(fwidth(col.a), 0.0001) + 0.5);
+        #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+            // Transparent
+            clip(col.a - 0.001);
         #endif
 
-        col.rgb *= saturate(lightColor + vertexLightColor + additionalLightColor);
+        //----------------------------------------------------------------------------------------------------------------------
+        // Lighting
+        if(_OutlineEnableLighting) col.rgb *= saturate(lightColor + vertexLightColor + additionalLightColor);
     #elif defined(LIL_FUR)
+        //--------------------------------------------------------------------------------------------------------------------------
+        // UV
+        float2 uvMain = lilCalcUV(input.uv, _MainTex_ST, _MainTex_ScrollRotate);
+
+        //--------------------------------------------------------------------------------------------------------------------------
+        // Main Color
+        float4 col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain);
+        col *= _Color;
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Alpha
+        #if LIL_RENDER == 0
+            // Opaque
+        #elif LIL_RENDER == 1
+            // Cutout
+            col.a = saturate((col.a - _Cutoff) / max(fwidth(col.a), 0.0001) + 0.5);
+        #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+            // Transparent
+            clip(col.a - 0.001);
+        #endif
+
         //----------------------------------------------------------------------------------------------------------------------
         // Fur AO
         #if LIL_RENDER == 1
@@ -102,6 +102,45 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             #endif
         #endif
     #else
+        //--------------------------------------------------------------------------------------------------------------------------
+        // UV
+        float2 uvMain = lilCalcUV(input.uv, _MainTex_ST, _MainTex_ScrollRotate);
+
+        //--------------------------------------------------------------------------------------------------------------------------
+        // View Direction
+        float3x3 tbnWS = float3x3(input.tangentWS, input.bitangentWS, input.normalWS);
+        float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+        float3 parallaxViewDirection = mul(tbnWS, viewDirection);
+        float2 parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
+
+        //--------------------------------------------------------------------------------------------------------------------------
+        // Parallax
+        if(_UseParallax)
+        {
+            float height = (LIL_SAMPLE_2D_LOD(_ParallaxMap,sampler_linear_repeat,uvMain,0).r - _ParallaxOffset) * _Parallax;
+            float2 parallaxOffset2 = height * parallaxOffset;
+            uvMain += parallaxOffset2;
+            input.uv += parallaxOffset2;
+        }
+
+        //--------------------------------------------------------------------------------------------------------------------------
+        // Main Color
+        float4 col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain);
+        col.rgb = lilToneCorrection(col.rgb, _MainTexHSVG);
+        col *= _Color;
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Alpha
+        #if LIL_RENDER == 0
+            // Opaque
+        #elif LIL_RENDER == 1
+            // Cutout
+            col.a = saturate((col.a - _Cutoff) / max(fwidth(col.a), 0.0001) + 0.5);
+        #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+            // Transparent
+            clip(col.a - 0.001);
+        #endif
+
         //--------------------------------------------------------------------------------------------------------------------------
         // Layer Color
         bool isRightHand = input.tangentW > 0.0;
@@ -276,7 +315,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         {
             float2 matUV = lilCalcMatCapUV(normalDirection);
             _MatCapColor *= LIL_SAMPLE_2D(_MatCapTex, sampler_MainTex, matUV);
-            if(_MatCapBlendLight) _MatCapColor.rgb *= lightColor;
+            if(_MatCapEnableLighting) _MatCapColor.rgb *= lightColor;
             col.rgb = lilBlendColor(col.rgb, _MatCapColor.rgb, LIL_SAMPLE_2D(_MatCapBlendMask, sampler_MainTex, uvMain).r * _MatCapBlend * _MatCapColor.a, _MatCapBlendMode);
         }
 
@@ -287,7 +326,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             if(_UseRim)
         #else
             LIL_BRANCH
-            if(_UseRim && _RimBlendLight)
+            if(_UseRim && _RimEnableLighting)
         #endif
         {
             _RimColor *= LIL_SAMPLE_2D(_RimColorTex, sampler_MainTex, uvMain);
@@ -297,7 +336,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             rim = saturate((rim - rimBorderMin) / (rimBorderMax - rimBorderMin));
             #ifndef LIL_PASS_FORWARDADD
                 if(_RimShadowMask) rim *= shadowmix;
-                if(_RimBlendLight) _RimColor.rgb *= lightColor;
+                if(_RimEnableLighting) _RimColor.rgb *= lightColor;
                 col.rgb += rim * _RimColor.a * _RimColor.rgb;
             #else
                 col.rgb += rim * _RimColor.a * _RimColor.rgb * lightColor;

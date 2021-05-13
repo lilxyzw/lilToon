@@ -57,6 +57,8 @@ It is available under the MIT License. Please refer to the "LICENSE" included in
   → You can specify a mask texture in "Mask & Strength" to partially remove shadows.
 - Outline becomes dirty.  
   → You can specify a mask texture in "Mask & Width" to partially remove outline or adjust the thickness.
+- Shadows are weak in bright places.  
+  → "Environment Strength" value affects the strength of shadows in bright places.
 
 # Recommended settings outside the shader
 The following settings improve the problem of different brightness in one part of the model. Also, texture transparency artifacts are removed.

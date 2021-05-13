@@ -13,6 +13,7 @@ public class lilToonPreset : ScriptableObject
     public lilPresetTexture[] textures;
     public int renderQueue;
     public bool outline;
+    public bool outlineMainTex;
     public bool tessellation;
 
     [System.Serializable]

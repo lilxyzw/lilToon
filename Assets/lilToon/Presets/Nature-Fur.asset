@@ -38,10 +38,10 @@ MonoBehaviour:
   floats:
   - name: _Invisible
     value: 0
+  - name: _AsUnlit
+    value: 0
   - name: _Cutoff
     value: 0.5
-  - name: _Cull
-    value: 2
   - name: _FlipNormal
     value: 0
   - name: _BackfaceForceShadow
@@ -66,6 +66,56 @@ MonoBehaviour:
     value: 1
   - name: _ShadowBorderRange
     value: 0
+  - name: _Cull
+    value: 2
+  - name: _SrcBlend
+    value: 5
+  - name: _DstBlend
+    value: 10
+  - name: _SrcBlendAlpha
+    value: 1
+  - name: _DstBlendAlpha
+    value: 10
+  - name: _BlendOp
+    value: 0
+  - name: _BlendOpAlpha
+    value: 0
+  - name: _SrcBlendFA
+    value: 1
+  - name: _DstBlendFA
+    value: 1
+  - name: _SrcBlendAlphaFA
+    value: 0
+  - name: _DstBlendAlphaFA
+    value: 1
+  - name: _BlendOpFA
+    value: 4
+  - name: _BlendOpAlphaFA
+    value: 4
+  - name: _ZWrite
+    value: 1
+  - name: _ZTest
+    value: 4
+  - name: _StencilRef
+    value: 0
+  - name: _StencilReadMask
+    value: 255
+  - name: _StencilWriteMask
+    value: 255
+  - name: _StencilComp
+    value: 8
+  - name: _StencilPass
+    value: 0
+  - name: _StencilFail
+    value: 0
+  - name: _StencilZFail
+    value: 0
+  - name: _OffsetFactor
+    value: 0
+  - name: _OffsetUnits
+    value: 0
+  - name: _ColorMask
+    value: 15
   - name: _FurVectorScale
     value: 1
   - name: _VertexColor2FurVector
@@ -76,32 +126,56 @@ MonoBehaviour:
     value: 0
   - name: _FurLayerNum
     value: 4
-  - name: _SrcBlend
+  - name: _FurCull
+    value: 0
+  - name: _FurSrcBlend
     value: 5
-  - name: _DstBlend
+  - name: _FurDstBlend
     value: 10
-  - name: _BlendOp
+  - name: _FurSrcBlendAlpha
+    value: 1
+  - name: _FurDstBlendAlpha
+    value: 10
+  - name: _FurBlendOp
     value: 0
-  - name: _SrcBlendFA
-    value: 1
-  - name: _DstBlendFA
-    value: 1
-  - name: _BlendOpFA
-    value: 4
-  - name: _ZWrite
-    value: 1
-  - name: _ZTest
-    value: 4
-  - name: _StencilRef
+  - name: _FurBlendOpAlpha
     value: 0
-  - name: _StencilComp
+  - name: _FurSrcBlendFA
+    value: 1
+  - name: _FurDstBlendFA
+    value: 1
+  - name: _FurSrcBlendAlphaFA
+    value: 0
+  - name: _FurDstBlendAlphaFA
+    value: 1
+  - name: _FurBlendOpFA
+    value: 4
+  - name: _FurBlendOpAlphaFA
+    value: 4
+  - name: _FurZWrite
+    value: 0
+  - name: _FurZTest
+    value: 4
+  - name: _FurStencilRef
+    value: 0
+  - name: _FurStencilReadMask
+    value: 255
+  - name: _FurStencilWriteMask
+    value: 255
+  - name: _FurStencilComp
     value: 8
-  - name: _StencilPass
+  - name: _FurStencilPass
     value: 0
-  - name: _StencilFail
+  - name: _FurStencilFail
     value: 0
-  - name: _StencilZFail
+  - name: _FurStencilZFail
     value: 0
+  - name: _FurOffsetFactor
+    value: 0
+  - name: _FurOffsetUnits
+    value: 0
+  - name: _FurColorMask
+    value: 15
   textures:
   - name: _FurNoiseMask
     value: {fileID: 2800000, guid: 3d421fc7bc8924f4985df741bf8d70ed, type: 3}
@@ -109,4 +183,5 @@ MonoBehaviour:
     scale: {x: 8, y: 8}
   renderQueue: -2
   outline: 0
+  outlineMainTex: 0
   tessellation: 0

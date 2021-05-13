@@ -5,8 +5,8 @@
         //----------------------------------------------------------------------------------------------------------------------
         // Base
         [lilToggle]     _Invisible                  ("Invisible", Int) = 0
+        [lilToggle]     _AsUnlit                    ("As Unlit", Int) = 0
                         _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.5
-		[lilCullMode]   _Cull                       ("Cull Mode|Off|Front|Back", Int) = 2
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
 
@@ -24,7 +24,7 @@
                         _Main2ndTex                 ("Texture", 2D) = "white" {}
         [lilAngle]      _Main2ndTexAngle            ("Angle", Float) = 0
         [lilDecalAnim]  _Main2ndTexDecalAnimation   ("Animation|X Size|Y Size|Frames|FPS", Vector) = (1,1,1,30)
-        [lilDecalSub]   _Main2ndTexDecalSubParam    ("Ratio X|Ratio Y|Fix Border", Vector) = (1,1,0.01,1)
+        [lilDecalSub]   _Main2ndTexDecalSubParam    ("Ratio X|Ratio Y|Fix Border", Vector) = (1,1,0,1)
         [lilToggle]     _Main2ndTexIsDecal          ("As Decal", Int) = 0
         [lilToggle]     _Main2ndTexIsLeftOnly       ("Left Only", Int) = 0
         [lilToggle]     _Main2ndTexIsRightOnly      ("Right Only", Int) = 0
@@ -41,7 +41,7 @@
                         _Main3rdTex                 ("Texture", 2D) = "white" {}
         [lilAngle]      _Main3rdTexAngle            ("Angle", Float) = 0
         [lilDecalAnim]  _Main3rdTexDecalAnimation   ("Animation|X Size|Y Size|Frames|FPS", Vector) = (1,1,1,30)
-        [lilDecalSub]   _Main3rdTexDecalSubParam    ("Ratio X|Ratio Y|Fix Border", Vector) = (1,1,0.01,1)
+        [lilDecalSub]   _Main3rdTexDecalSubParam    ("Ratio X|Ratio Y|Fix Border", Vector) = (1,1,0,1)
         [lilToggle]     _Main3rdTexIsDecal          ("As Decal", Int) = 0
         [lilToggle]     _Main3rdTexIsLeftOnly       ("Left Only", Int) = 0
         [lilToggle]     _Main3rdTexIsRightOnly      ("Right Only", Int) = 0
@@ -86,14 +86,6 @@
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
-        // Outline
-                        _OutlineColor               ("Outline Color", Color) = (0.8,0.85,0.9,1)
-        [lilToggle]     _OutlineUseMainColor        ("Use Main Color", Int) = 1
-                        _OutlineMainStrength        ("Main Color Strength", Range(0, 1)) = 1
-                        _OutlineWidth               ("Width", Range(0,10)) = 0.05
-        [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
-
-        //----------------------------------------------------------------------------------------------------------------------
         // Reflection
         [lilToggleLeft] _UseReflection              ("Use Reflection", Int) = 0
         // Smoothness
@@ -116,7 +108,7 @@
         [NoScaleOffset] _MatCapTex                  ("Texture", 2D) = "white" {}
                         _MatCapBlend                ("Blend", Range(0, 3)) = 1
         [NoScaleOffset] _MatCapBlendMask            ("Mask", 2D) = "white" {}
-        [lilToggle]     _MatCapBlendLight           ("Blend Light", Int) = 1
+        [lilToggle]     _MatCapEnableLighting       ("Enable Lighting", Int) = 1
         [lilBlendMode]  _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -127,7 +119,7 @@
                         _RimBorder                  ("Border", Range(0, 1)) = 0.5
                         _RimBlur                    ("Blur", Range(0, 1)) = 0.1
         [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
-        [lilToggle]     _RimBlendLight              ("Blend Light", Int) = 1
+        [lilToggle]     _RimEnableLighting          ("Enable Lighting", Int) = 1
         [lilToggle]     _RimShadowMask              ("Shadow Mask", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -208,6 +200,34 @@
                         _ParallaxOffset             ("Parallax Offset", float) = 0.5
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Advanced
+        [lilCullMode]                                   _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 5
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlpha      ("SrcBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlpha      ("DstBlendAlpha", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOp            ("BlendOp", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlpha       ("BlendOpAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendFA         ("ForwardAdd SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendFA         ("ForwardAdd DstBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlphaFA    ("ForwardAdd SrcBlendAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlphaFA    ("ForwardAdd DstBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpFA          ("ForwardAdd BlendOp", Int) = 4
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlphaFA     ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _ZWrite             ("ZWrite", Int) = 1
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest              ("ZTest", Int) = 4
+        [IntRange]                                      _StencilRef         ("Stencil Reference Value", Range(0, 255)) = 0
+        [IntRange]                                      _StencilReadMask    ("Stencil ReadMask Value", Range(0, 255)) = 255
+        [IntRange]                                      _StencilWriteMask   ("Stencil WriteMask Value", Range(0, 255)) = 255
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _StencilComp        ("Stencil Compare Function", Float) = 8
+        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilPass        ("Stencil Pass", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilFail        ("Stencil Fail", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilZFail       ("Stencil ZFail", Float) = 0
+                                                        _OffsetFactor       ("Offset Factor", Float) = 0
+                                                        _OffsetUnits        ("Offset Units", Float) = 0
+        [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Tessellation
                         _TessEdge                   ("Tessellation Edge", Range(1, 100)) = 10
                         _TessStrength               ("Tessellation Strength", Range(0, 1)) = 0.5
@@ -215,20 +235,44 @@
         [IntRange]      _TessFactorMax              ("Tessellation Max", Range(1, 8)) = 3
 
         //----------------------------------------------------------------------------------------------------------------------
-        // Advanced
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend       ("SrcBlend", Int) = 5
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend       ("DstBlend", Int) = 10
-        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOp        ("BlendOp", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendFA     ("ForwardAdd SrcBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendFA     ("ForwardAdd DstBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpFA      ("ForwardAdd BlendOp", Int) = 4
-        [lilToggle]                                     _ZWrite         ("ZWrite", Int) = 1
-        [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest          ("ZTest", Int) = 4
-        [IntRange]                                      _StencilRef     ("Stencil Reference Value", Range(0, 255)) = 0
-        [Enum(UnityEngine.Rendering.CompareFunction)]   _StencilComp    ("Stencil Compare Function", Float) = 8
-        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilPass    ("Stencil Pass", Float) = 0
-        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilFail    ("Stencil Fail", Float) = 0
-        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilZFail   ("Stencil ZFail", Float) = 0
+        // Outline
+                        _OutlineColor               ("Outline Color", Color) = (0.8,0.85,0.9,1)
+                        _OutlineTex                 ("Texture", 2D) = "white" {}
+        [lilUVAnim]     _OutlineTex_ScrollRotate    ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
+        [lilHSVG]       _OutlineTexHSVG             ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
+                        _OutlineWidth               ("Width", Range(0,10)) = 0.05
+        [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
+        [lilToggle]     _OutlineFixWidth            ("Fix Width", Int) = 1
+        [lilToggle]     _OutlineVertexR2Width       ("Vertex R -> Width", Int) = 1
+        [lilToggle]     _OutlineEnableLighting      ("Enable Lighting", Int) = 1
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Outline Advanced
+        [lilCullMode]                                   _OutlineCull                ("Cull Mode|Off|Front|Back", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlend            ("SrcBlend", Int) = 5
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlend            ("DstBlend", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlendAlpha       ("SrcBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlendAlpha       ("DstBlendAlpha", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOp             ("BlendOp", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpAlpha        ("BlendOpAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlendFA          ("ForwardAdd SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlendFA          ("ForwardAdd DstBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlendAlphaFA     ("ForwardAdd SrcBlendAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlendAlphaFA     ("ForwardAdd DstBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpFA           ("ForwardAdd BlendOp", Int) = 4
+        [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpAlphaFA      ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _OutlineZWrite              ("ZWrite", Int) = 1
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _OutlineZTest               ("ZTest", Int) = 4
+        [IntRange]                                      _OutlineStencilRef          ("Stencil Reference Value", Range(0, 255)) = 0
+        [IntRange]                                      _OutlineStencilReadMask     ("Stencil ReadMask Value", Range(0, 255)) = 255
+        [IntRange]                                      _OutlineStencilWriteMask    ("Stencil WriteMask Value", Range(0, 255)) = 255
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _OutlineStencilComp         ("Stencil Compare Function", Float) = 8
+        [Enum(UnityEngine.Rendering.StencilOp)]         _OutlineStencilPass         ("Stencil Pass", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _OutlineStencilFail         ("Stencil Fail", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _OutlineStencilZFail        ("Stencil ZFail", Float) = 0
+                                                        _OutlineOffsetFactor        ("Offset Factor", Float) = 0
+                                                        _OutlineOffsetUnits         ("Offset Units", Float) = 0
+        [lilColorMask]                                  _OutlineColorMask           ("Color Mask", Int) = 15
     }
     SubShader
     {

@@ -29,30 +29,17 @@
 // LIL_VERTEX_INPUT_INSTANCE_ID
 // LIL_VERTEX_OUTPUT_STEREO
 
-struct appdata
-{
-    float4 positionOS   : POSITION;
-    float3 normalOS     : NORMAL;
-    float2 uv           : TEXCOORD0;
-    LIL_VERTEX_INPUT_LIGHTMAP_UV
-    LIL_VERTEX_INPUT_INSTANCE_ID
-};
-
-#ifndef LIL_OUTLINE
-    struct v2f
+#ifdef LIL_OUTLINE
+    struct appdata
     {
-        float4 positionCS       : SV_POSITION;
-        float2 uv               : TEXCOORD0;
-        float2 uvMat            : TEXCOORD1;
-        float3 normalWS         : TEXCOORD2;
-        float3 positionWS       : TEXCOORD3;
-        LIL_VERTEXLIGHT_COORDS(4)
-        LIL_FOG_COORDS(5)
-        LIL_LIGHTMAP_COORDS(6)
+        float4 positionOS   : POSITION;
+        float3 normalOS     : NORMAL;
+        float2 uv           : TEXCOORD0;
+        float4 color        : COLOR;
+        LIL_VERTEX_INPUT_LIGHTMAP_UV
         LIL_VERTEX_INPUT_INSTANCE_ID
-        LIL_VERTEX_OUTPUT_STEREO
     };
-#else
+
     struct v2f
     {
         float4 positionCS       : SV_POSITION;
@@ -66,6 +53,29 @@ struct appdata
         LIL_VERTEXLIGHT_COORDS(3)
         LIL_FOG_COORDS(4)
         LIL_LIGHTMAP_COORDS(5)
+        LIL_VERTEX_INPUT_INSTANCE_ID
+        LIL_VERTEX_OUTPUT_STEREO
+    };
+#else
+    struct appdata
+    {
+        float4 positionOS   : POSITION;
+        float3 normalOS     : NORMAL;
+        float2 uv           : TEXCOORD0;
+        LIL_VERTEX_INPUT_LIGHTMAP_UV
+        LIL_VERTEX_INPUT_INSTANCE_ID
+    };
+
+    struct v2f
+    {
+        float4 positionCS       : SV_POSITION;
+        float2 uv               : TEXCOORD0;
+        float2 uvMat            : TEXCOORD1;
+        float3 normalWS         : TEXCOORD2;
+        float3 positionWS       : TEXCOORD3;
+        LIL_VERTEXLIGHT_COORDS(4)
+        LIL_FOG_COORDS(5)
+        LIL_LIGHTMAP_COORDS(6)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };

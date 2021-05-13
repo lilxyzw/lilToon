@@ -32,8 +32,6 @@ MonoBehaviour:
     value: {r: 1, g: 0.7, b: 0.75, a: 0}
   - name: _ShadowBorderColor
     value: {r: 1, g: 0, b: 0, a: 1}
-  - name: _OutlineColor
-    value: {r: 0.9, g: 0.6, b: 0.6, a: 1}
   - name: _ReflectionColor
     value: {r: 1, g: 1, b: 1, a: 1}
   - name: _MatCapColor
@@ -108,6 +106,8 @@ MonoBehaviour:
     value: {r: 1, g: 0, b: 0, a: 0}
   - name: _e2ga7
     value: {r: 1, g: 0, b: 0, a: 0}
+  - name: _OutlineColor
+    value: {r: 0.9, g: 0.6, b: 0.6, a: 1}
   vectors:
   - name: _MainTex_ScrollRotate
     value: {x: 0, y: 0, z: 0, w: 0}
@@ -116,11 +116,11 @@ MonoBehaviour:
   - name: _Main2ndTexDecalAnimation
     value: {x: 1, y: 1, z: 1, w: 30}
   - name: _Main2ndTexDecalSubParam
-    value: {x: 1, y: 1, z: 0.01, w: 1}
+    value: {x: 1, y: 1, z: 0, w: 1}
   - name: _Main3rdTexDecalAnimation
     value: {x: 1, y: 1, z: 1, w: 30}
   - name: _Main3rdTexDecalSubParam
-    value: {x: 1, y: 1, z: 0.01, w: 1}
+    value: {x: 1, y: 1, z: 0, w: 1}
   - name: _EmissionMap_ScrollRotate
     value: {x: 0, y: 0, z: 0, w: 0}
   - name: _EmissionBlendMask_ScrollRotate
@@ -133,13 +133,17 @@ MonoBehaviour:
     value: {x: 0, y: 0, z: 0, w: 0}
   - name: _Emission2ndBlink
     value: {x: 0, y: 0, z: 3.141593, w: 0}
+  - name: _OutlineTex_ScrollRotate
+    value: {x: 0, y: 0, z: 0, w: 0}
+  - name: _OutlineTexHSVG
+    value: {x: 0, y: 1, z: 1, w: 2}
   floats:
   - name: _Invisible
     value: 0
+  - name: _AsUnlit
+    value: 0
   - name: _Cutoff
     value: 0.5
-  - name: _Cull
-    value: 2
   - name: _FlipNormal
     value: 0
   - name: _BackfaceForceShadow
@@ -193,7 +197,7 @@ MonoBehaviour:
   - name: _ShadowReceive
     value: 0
   - name: _ShadowBorder
-    value: 0.35
+    value: 0.1
   - name: _ShadowBlur
     value: 0.005
   - name: _ShadowStrength
@@ -208,12 +212,6 @@ MonoBehaviour:
     value: 1
   - name: _ShadowBorderRange
     value: 0
-  - name: _OutlineUseMainColor
-    value: 1
-  - name: _OutlineMainStrength
-    value: 0
-  - name: _OutlineWidth
-    value: 0.1
   - name: _UseReflection
     value: 0
   - name: _Smoothness
@@ -230,7 +228,7 @@ MonoBehaviour:
     value: 0
   - name: _MatCapBlend
     value: 1
-  - name: _MatCapBlendLight
+  - name: _MatCapEnableLighting
     value: 1
   - name: _MatCapBlendMode
     value: 1
@@ -242,7 +240,7 @@ MonoBehaviour:
     value: 0.1
   - name: _RimFresnelPower
     value: 3
-  - name: _RimBlendLight
+  - name: _RimEnableLighting
     value: 1
   - name: _RimShadowMask
     value: 0
@@ -284,17 +282,31 @@ MonoBehaviour:
     value: 0.02
   - name: _ParallaxOffset
     value: 0.5
+  - name: _Cull
+    value: 2
   - name: _SrcBlend
     value: 1
   - name: _DstBlend
     value: 0
+  - name: _SrcBlendAlpha
+    value: 1
+  - name: _DstBlendAlpha
+    value: 10
   - name: _BlendOp
+    value: 0
+  - name: _BlendOpAlpha
     value: 0
   - name: _SrcBlendFA
     value: 1
   - name: _DstBlendFA
     value: 1
+  - name: _SrcBlendAlphaFA
+    value: 0
+  - name: _DstBlendAlphaFA
+    value: 1
   - name: _BlendOpFA
+    value: 4
+  - name: _BlendOpAlphaFA
     value: 4
   - name: _ZWrite
     value: 1
@@ -302,6 +314,10 @@ MonoBehaviour:
     value: 4
   - name: _StencilRef
     value: 0
+  - name: _StencilReadMask
+    value: 255
+  - name: _StencilWriteMask
+    value: 255
   - name: _StencilComp
     value: 8
   - name: _StencilPass
@@ -310,7 +326,72 @@ MonoBehaviour:
     value: 0
   - name: _StencilZFail
     value: 0
+  - name: _OffsetFactor
+    value: 0
+  - name: _OffsetUnits
+    value: 0
+  - name: _ColorMask
+    value: 15
+  - name: _OutlineWidth
+    value: 0.15
+  - name: _OutlineFixWidth
+    value: 1
+  - name: _OutlineVertexR2Width
+    value: 1
+  - name: _OutlineEnableLighting
+    value: 1
+  - name: _OutlineCull
+    value: 1
+  - name: _OutlineSrcBlend
+    value: 1
+  - name: _OutlineDstBlend
+    value: 0
+  - name: _OutlineSrcBlendAlpha
+    value: 1
+  - name: _OutlineDstBlendAlpha
+    value: 10
+  - name: _OutlineBlendOp
+    value: 0
+  - name: _OutlineBlendOpAlpha
+    value: 0
+  - name: _OutlineSrcBlendFA
+    value: 1
+  - name: _OutlineDstBlendFA
+    value: 1
+  - name: _OutlineSrcBlendAlphaFA
+    value: 0
+  - name: _OutlineDstBlendAlphaFA
+    value: 1
+  - name: _OutlineBlendOpFA
+    value: 4
+  - name: _OutlineBlendOpAlphaFA
+    value: 4
+  - name: _OutlineZWrite
+    value: 1
+  - name: _OutlineZTest
+    value: 4
+  - name: _OutlineStencilRef
+    value: 0
+  - name: _OutlineStencilReadMask
+    value: 255
+  - name: _OutlineStencilWriteMask
+    value: 255
+  - name: _OutlineStencilComp
+    value: 8
+  - name: _OutlineStencilPass
+    value: 0
+  - name: _OutlineStencilFail
+    value: 0
+  - name: _OutlineStencilZFail
+    value: 0
+  - name: _OutlineOffsetFactor
+    value: 0
+  - name: _OutlineOffsetUnits
+    value: 0
+  - name: _OutlineColorMask
+    value: 15
   textures: []
   renderQueue: -2
   outline: 1
+  outlineMainTex: 1
   tessellation: 0

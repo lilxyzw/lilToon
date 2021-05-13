@@ -5,8 +5,8 @@
         //----------------------------------------------------------------------------------------------------------------------
         // Base
         [lilToggle]     _Invisible                  ("Invisible", Int) = 0
+        [lilToggle]     _AsUnlit                    ("As Unlit", Int) = 0
                         _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.5
-		[lilCullMode]   _Cull                       ("Cull Mode|Off|Front|Back", Int) = 2
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
 
@@ -39,6 +39,34 @@
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Advanced
+        [lilCullMode]                                   _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlpha      ("SrcBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlpha      ("DstBlendAlpha", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOp            ("BlendOp", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlpha       ("BlendOpAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendFA         ("ForwardAdd SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendFA         ("ForwardAdd DstBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlphaFA    ("ForwardAdd SrcBlendAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlphaFA    ("ForwardAdd DstBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpFA          ("ForwardAdd BlendOp", Int) = 4
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlphaFA     ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _ZWrite             ("ZWrite", Int) = 1
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest              ("ZTest", Int) = 4
+        [IntRange]                                      _StencilRef         ("Stencil Reference Value", Range(0, 255)) = 0
+        [IntRange]                                      _StencilReadMask    ("Stencil ReadMask Value", Range(0, 255)) = 255
+        [IntRange]                                      _StencilWriteMask   ("Stencil WriteMask Value", Range(0, 255)) = 255
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _StencilComp        ("Stencil Compare Function", Float) = 8
+        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilPass        ("Stencil Pass", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilFail        ("Stencil Fail", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilZFail       ("Stencil ZFail", Float) = 0
+                                                        _OffsetFactor       ("Offset Factor", Float) = 0
+                                                        _OffsetUnits        ("Offset Units", Float) = 0
+        [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Fur
                         _FurNoiseMask               ("Fur Noise", 2D) = "white" {}
         [NoScaleOffset] _FurMask                    ("Fur Mask", 2D) = "white" {}
@@ -51,20 +79,32 @@
         [IntRange]      _FurLayerNum                ("Fur Layer Num", Range(1, 6)) = 4
 
         //----------------------------------------------------------------------------------------------------------------------
-        // Advanced
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend       ("SrcBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend       ("DstBlend", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOp        ("BlendOp", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendFA     ("ForwardAdd SrcBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendFA     ("ForwardAdd DstBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpFA      ("ForwardAdd BlendOp", Int) = 4
-        [lilToggle]                                     _ZWrite         ("ZWrite", Int) = 1
-        [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest          ("ZTest", Int) = 4
-        [IntRange]                                      _StencilRef     ("Stencil Reference Value", Range(0, 255)) = 0
-        [Enum(UnityEngine.Rendering.CompareFunction)]   _StencilComp    ("Stencil Compare Function", Float) = 8
-        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilPass    ("Stencil Pass", Float) = 0
-        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilFail    ("Stencil Fail", Float) = 0
-        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilZFail   ("Stencil ZFail", Float) = 0
+        // Fur Advanced
+        [lilCullMode]                                   _FurCull                ("Cull Mode|Off|Front|Back", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlend            ("SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlend            ("DstBlend", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlendAlpha       ("SrcBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlendAlpha       ("DstBlendAlpha", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOp             ("BlendOp", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOpAlpha        ("BlendOpAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlendFA          ("ForwardAdd SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlendFA          ("ForwardAdd DstBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlendAlphaFA     ("ForwardAdd SrcBlendAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlendAlphaFA     ("ForwardAdd DstBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOpFA           ("ForwardAdd BlendOp", Int) = 4
+        [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOpAlphaFA      ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _FurZWrite              ("ZWrite", Int) = 1
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _FurZTest               ("ZTest", Int) = 4
+        [IntRange]                                      _FurStencilRef          ("Stencil Reference Value", Range(0, 255)) = 0
+        [IntRange]                                      _FurStencilReadMask     ("Stencil ReadMask Value", Range(0, 255)) = 255
+        [IntRange]                                      _FurStencilWriteMask    ("Stencil WriteMask Value", Range(0, 255)) = 255
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _FurStencilComp         ("Stencil Compare Function", Float) = 8
+        [Enum(UnityEngine.Rendering.StencilOp)]         _FurStencilPass         ("Stencil Pass", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _FurStencilFail         ("Stencil Fail", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _FurStencilZFail        ("Stencil ZFail", Float) = 0
+                                                        _FurOffsetFactor        ("Offset Factor", Float) = 0
+                                                        _FurOffsetUnits         ("Offset Units", Float) = 0
+        [lilColorMask]                                  _FurColorMask           ("Color Mask", Int) = 15
     }
     SubShader
     {
@@ -80,16 +120,20 @@
             Stencil
             {
                 Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
                 Comp [_StencilComp]
                 Pass [_StencilPass]
                 Fail [_StencilFail]
                 ZFail [_StencilZFail]
             }
-		    Cull [_Cull]
-            Blend [_SrcBlend] [_DstBlend]
-            BlendOp [_BlendOp]
+            Cull [_Cull]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
             AlphaToMask On
 
             HLSLPROGRAM
@@ -99,9 +143,9 @@
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 4.0
-            #pragma multi_compile_instancing
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
+            #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
             #pragma skip_variants SHADOWS_SCREEN
 
@@ -123,17 +167,21 @@
 
             Stencil
             {
-                Ref [_StencilRef]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                Ref [_FurStencilRef]
+                ReadMask [_FurStencilReadMask]
+                WriteMask [_FurStencilWriteMask]
+                Comp [_FurStencilComp]
+                Pass [_FurStencilPass]
+                Fail [_FurStencilFail]
+                ZFail [_FurStencilZFail]
             }
-		    Cull Off
-            Blend [_SrcBlend] [_DstBlend]
-            BlendOp [_BlendOp]
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
+            Cull [_FurCull]
+            ZWrite [_FurZWrite]
+            ZTest [_FurZTest]
+            ColorMask [_FurColorMask]
+            Offset [_FurOffsetFactor], [_FurOffsetUnits]
+            BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
+            Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
             AlphaToMask On
 
             HLSLPROGRAM
@@ -145,9 +193,9 @@
             #pragma fragment frag
             #pragma require geometry
             #pragma target 4.0
-            #pragma multi_compile_instancing
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
+            #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
             #pragma skip_variants SHADOWS_SCREEN
 
@@ -169,17 +217,21 @@
             Stencil
             {
                 Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
                 Comp [_StencilComp]
                 Pass [_StencilPass]
                 Fail [_StencilFail]
                 ZFail [_StencilZFail]
             }
 		    Cull [_Cull]
-            Blend [_SrcBlendFA] [_DstBlendFA], Zero One
-            BlendOp [_BlendOpFA]
-            Fog { Color(0,0,0,0) }
 			ZWrite Off
             ZTest LEqual
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            Blend [_SrcBlendFA] [_DstBlendFA], Zero One
+            BlendOp [_BlendOpFA], [_BlendOpAlphaFA]
+            Fog { Color(0,0,0,0) }
             AlphaToMask On
 
             HLSLPROGRAM
@@ -189,9 +241,9 @@
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 4.0
-            #pragma multi_compile_instancing
             #pragma multi_compile_fwdadd
             #pragma multi_compile_fog
+            #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
 
             //------------------------------------------------------------------------------------------------------------------
@@ -213,18 +265,22 @@
 
             Stencil
             {
-                Ref [_StencilRef]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                Ref [_FurStencilRef]
+                ReadMask [_FurStencilReadMask]
+                WriteMask [_FurStencilWriteMask]
+                Comp [_FurStencilComp]
+                Pass [_FurStencilPass]
+                Fail [_FurStencilFail]
+                ZFail [_FurStencilZFail]
             }
-		    Cull Off
-            Blend [_SrcBlendFA] [_DstBlendFA], Zero One
-            BlendOp [_BlendOpFA]
-            Fog { Color(0,0,0,0) }
+		    Cull [_FurCull]
 			ZWrite Off
             ZTest LEqual
+            ColorMask [_FurColorMask]
+            Offset [_FurOffsetFactor], [_FurOffsetUnits]
+            Blend [_FurSrcBlendFA] [_FurDstBlendFA], Zero One
+            BlendOp [_FurBlendOpFA], [_FurBlendOpAlphaFA]
+            Fog { Color(0,0,0,0) }
             AlphaToMask On
 
             HLSLPROGRAM
@@ -236,9 +292,9 @@
             #pragma fragment frag
             #pragma target 4.0
             #pragma require geometry
-            #pragma multi_compile_instancing
             #pragma multi_compile_fwdadd
             #pragma multi_compile_fog
+            #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
 
             //------------------------------------------------------------------------------------------------------------------

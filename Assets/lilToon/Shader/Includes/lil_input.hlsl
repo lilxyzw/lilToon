@@ -39,6 +39,7 @@ float   _Cutoff;
 float   _FlipNormal;
 float   _BackfaceForceShadow;
 lilBool _Invisible;
+lilBool _AsUnlit;
 float _TessEdge;
 float _TessStrength;
 float _TessShrink;
@@ -53,6 +54,7 @@ LIL_TEX_PROPERTIES(_EmissionMap);
 LIL_TEX_PROPERTIES(_EmissionBlendMask);
 LIL_TEX_PROPERTIES(_Emission2ndMap);
 LIL_TEX_PROPERTIES(_Emission2ndBlendMask);
+LIL_TEX_PROPERTIES(_OutlineTex);
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Main
@@ -95,13 +97,6 @@ float   _ShadowBorderRange;
 lilBool _ShadowReceive;
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Outline
-float4  _OutlineColor;
-lilBool _OutlineUseMainColor;
-float   _OutlineMainStrength;
-float   _OutlineWidth;
-
-//------------------------------------------------------------------------------------------------------------------------------
 // Reflection
 lilBool _UseReflection;
 float   _Smoothness;
@@ -116,7 +111,7 @@ float4  _ReflectionColor;
 lilBool _UseMatCap;
 float4  _MatCapColor;
 float   _MatCapBlend;
-lilBool _MatCapBlendLight;
+lilBool _MatCapEnableLighting;
 uint    _MatCapBlendMode;
 lilBool _MatCapMul;
 
@@ -127,7 +122,7 @@ float4  _RimColor;
 float   _RimBorder;
 float   _RimBlur;
 float   _RimFresnelPower;
-lilBool _RimBlendLight;
+lilBool _RimEnableLighting;
 lilBool _RimShadowMask;
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -155,6 +150,15 @@ float   _Emission2ndFluorescence;
 lilBool _UseParallax;
 float   _Parallax;
 float   _ParallaxOffset;
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Outline
+float4  _OutlineColor;
+float4  _OutlineTexHSVG;
+float   _OutlineWidth;
+lilBool _OutlineFixWidth;
+lilBool _OutlineVertexR2Width;
+lilBool _OutlineEnableLighting;
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Fur
@@ -189,7 +193,6 @@ TEXTURE2D(_ShadowBlurMask);
 TEXTURE2D(_ShadowStrengthMask);
 TEXTURE2D(_ShadowColorTex);
 TEXTURE2D(_Shadow2ndColorTex);
-TEXTURE2D(_OutlineWidthMask);
 TEXTURE2D(_SmoothnessTex);
 TEXTURE2D(_MetallicGlossMap);
 TEXTURE2D(_ReflectionColorTex);
@@ -203,6 +206,8 @@ TEXTURE2D(_Emission2ndMap);
 TEXTURE2D(_Emission2ndBlendMask);
 TEXTURE2D(_Emission2ndGradTex);
 TEXTURE2D(_ParallaxMap);
+TEXTURE2D(_OutlineTex);
+TEXTURE2D(_OutlineWidthMask);
 TEXTURE2D(_FurNoiseMask);
 TEXTURE2D(_FurMask);
 TEXTURE2D(_FurVectorTex);
@@ -212,5 +217,6 @@ SAMPLER(sampler_Main2ndTex);
 SAMPLER(sampler_Main3rdTex);
 SAMPLER(sampler_EmissionMap);
 SAMPLER(sampler_Emission2ndMap);
+SAMPLER(sampler_OutlineTex);
 
 #endif

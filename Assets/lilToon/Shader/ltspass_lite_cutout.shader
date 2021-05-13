@@ -11,16 +11,20 @@ Shader "Hidden/ltspass_lite_cutout"
             Stencil
             {
                 Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
                 Comp [_StencilComp]
                 Pass [_StencilPass]
                 Fail [_StencilFail]
                 ZFail [_StencilZFail]
             }
-		    Cull [_Cull]
-            Blend [_SrcBlend] [_DstBlend]
-            BlendOp [_BlendOp]
+            Cull [_Cull]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
 
             HLSLPROGRAM
 
@@ -29,9 +33,9 @@ Shader "Hidden/ltspass_lite_cutout"
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 2.5
-            #pragma multi_compile_instancing
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
+            #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
             #pragma skip_variants SHADOWS_SCREEN
 
@@ -49,11 +53,23 @@ Shader "Hidden/ltspass_lite_cutout"
             Name "FORWARD_OUTLINE"
             Tags {"LightMode" = "ForwardBase"}
 
-		    Cull Front
-            Blend [_SrcBlend] [_DstBlend]
-            BlendOp [_BlendOp]
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
+            Stencil
+            {
+                Ref [_OutlineStencilRef]
+                ReadMask [_OutlineStencilReadMask]
+                WriteMask [_OutlineStencilWriteMask]
+                Comp [_OutlineStencilComp]
+                Pass [_OutlineStencilPass]
+                Fail [_OutlineStencilFail]
+                ZFail [_OutlineStencilZFail]
+            }
+            Cull [_OutlineCull]
+            ZWrite [_OutlineZWrite]
+            ZTest [_OutlineZTest]
+            ColorMask [_OutlineColorMask]
+            Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
+            BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
+            Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
 
             HLSLPROGRAM
 
@@ -62,9 +78,9 @@ Shader "Hidden/ltspass_lite_cutout"
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 2.5
-            #pragma multi_compile_instancing
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
+            #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
             #pragma skip_variants SHADOWS_SCREEN
 
@@ -86,17 +102,21 @@ Shader "Hidden/ltspass_lite_cutout"
             Stencil
             {
                 Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
                 Comp [_StencilComp]
                 Pass [_StencilPass]
                 Fail [_StencilFail]
                 ZFail [_StencilZFail]
             }
 		    Cull [_Cull]
-            Blend [_SrcBlendFA] [_DstBlendFA], Zero One
-            BlendOp [_BlendOpFA]
-            Fog { Color(0,0,0,0) }
 			ZWrite Off
             ZTest LEqual
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            Blend [_SrcBlendFA] [_DstBlendFA], Zero One
+            BlendOp [_BlendOpFA], [_BlendOpAlphaFA]
+            Fog { Color(0,0,0,0) }
 
             HLSLPROGRAM
 
@@ -105,9 +125,9 @@ Shader "Hidden/ltspass_lite_cutout"
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 2.5
-            #pragma multi_compile_instancing
             #pragma multi_compile_fwdadd
             #pragma multi_compile_fog
+            #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
 
             //------------------------------------------------------------------------------------------------------------------
@@ -135,6 +155,7 @@ Shader "Hidden/ltspass_lite_cutout"
             #pragma fragment frag
             #pragma target 3.5
             #pragma multi_compile_shadowcaster
+            #pragma multi_compile_instancing
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass

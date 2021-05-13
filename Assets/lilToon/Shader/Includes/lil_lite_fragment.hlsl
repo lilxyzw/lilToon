@@ -10,46 +10,65 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
     LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
     LIL_GET_VERTEXLIGHT(input, vertexLightColor);
     LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
-
-    //----------------------------------------------------------------------------------------------------------------------
-    // UV
-    float2 uvMain = lilCalcUV(input.uv, _MainTex_ST, _MainTex_ScrollRotate);
-
-    //----------------------------------------------------------------------------------------------------------------------
-    // Main Color
-    float4 col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain) * _Color;
-    float4 triMask = LIL_SAMPLE_2D(_TriMask, sampler_MainTex, uvMain);
-
-    //----------------------------------------------------------------------------------------------------------------------
-    // Alpha
-    #if LIL_RENDER == 0
-        // Opaque
-    #elif LIL_RENDER == 1
-        // Cutout
-        clip(col.a - _Cutoff);
-    #elif LIL_RENDER == 2
-        // Transparent
-        clip(col.a - 0.001);
-    #endif
+    if(_AsUnlit)
+    {
+        #if !defined(LIL_PASS_FORWARDADD)
+            lightColor = 1.0;
+            vertexLightColor = 0.0;
+            additionalLightColor = 0.0;
+        #else
+            lightColor = 0.0;
+        #endif
+    }
 
     //----------------------------------------------------------------------------------------------------------------------
     // Apply Matelial & Lighting
     #if defined(LIL_OUTLINE)
         //----------------------------------------------------------------------------------------------------------------------
-        // Outline Color
-        // Multiply Main Color
-        if(_OutlineUseMainColor) col.rgb *= lerp(1, col.rgb, _OutlineMainStrength);
-        else                     col.rgb = 1.0;
+        // UV
+        float2 uvMain = lilCalcUV(input.uv, _OutlineTex_ST, _OutlineTex_ScrollRotate);
 
-        // Apply Color
-        #if LIL_RENDER == 2
-            col *= _OutlineColor;
-        #else
-            col.rgb *= _OutlineColor.rgb;
+        //----------------------------------------------------------------------------------------------------------------------
+        // Main Color
+        float4 col = LIL_SAMPLE_2D(_OutlineTex, sampler_OutlineTex, uvMain) * _OutlineColor;
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Alpha
+        #if LIL_RENDER == 0
+            // Opaque
+        #elif LIL_RENDER == 1
+            // Cutout
+            clip(col.a - _Cutoff);
+        #elif LIL_RENDER == 2
+            // Transparent
+            clip(col.a - 0.001);
         #endif
 
-        col.rgb *= saturate(lightColor + vertexLightColor + additionalLightColor);
+        //----------------------------------------------------------------------------------------------------------------------
+        // Lighting
+        if(_OutlineEnableLighting) col.rgb *= saturate(lightColor + vertexLightColor + additionalLightColor);
     #else
+        //----------------------------------------------------------------------------------------------------------------------
+        // UV
+        float2 uvMain = lilCalcUV(input.uv, _MainTex_ST, _MainTex_ScrollRotate);
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Main Color
+        float4 col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain) * _Color;
+        float4 triMask = LIL_SAMPLE_2D(_TriMask, sampler_MainTex, uvMain);
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Alpha
+        #if LIL_RENDER == 0
+            // Opaque
+        #elif LIL_RENDER == 1
+            // Cutout
+            clip(col.a - _Cutoff);
+        #elif LIL_RENDER == 2
+            // Transparent
+            clip(col.a - 0.001);
+        #endif
+
         //----------------------------------------------------------------------------------------------------------------------
         // Normal
         float3 normalDirection = normalize(input.normalWS);

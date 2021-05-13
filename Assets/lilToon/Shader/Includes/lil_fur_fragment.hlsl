@@ -10,6 +10,16 @@ float4 frag(g2f input) : SV_Target
     LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
     LIL_GET_VERTEXLIGHT(input, vertexLightColor);
     LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
+    if(_AsUnlit)
+    {
+        #if !defined(LIL_PASS_FORWARDADD)
+            lightColor = 1.0;
+            vertexLightColor = 0.0;
+            additionalLightColor = 0.0;
+        #else
+            lightColor = 0.0;
+        #endif
+    }
 
     float facing = 1.0;
 

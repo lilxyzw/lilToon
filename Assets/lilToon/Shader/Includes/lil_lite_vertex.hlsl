@@ -28,6 +28,8 @@ v2f vert(appdata input)
         // Outline
         float2 uvMain = input.uv * _MainTex_ST.xy + _MainTex_ST.zw;
         _OutlineWidth *= LIL_SAMPLE_2D_LOD(_OutlineWidthMask, sampler_MainTex, uvMain, 0).r * 0.01;
+        if(_OutlineVertexR2Width) _OutlineWidth *= input.color.r;
+        if(_OutlineFixWidth) _OutlineWidth *= saturate(length(LIL_GET_VIEWDIR_WS(vertexInput.positionWS)));
         vertexInput.positionWS += vertexNormalInput.normalWS * _OutlineWidth;
         output.uv           = input.uv;
         output.positionCS   = LIL_TRANSFORM_POS_WS_TO_CS(vertexInput.positionWS);

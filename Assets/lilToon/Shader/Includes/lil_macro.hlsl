@@ -133,7 +133,7 @@
 
 // Absorb pipeline differences
 #if defined(LIL_LWRP)
-    #define LIL_GET_VIEWDIR_WS(positionWS) normalize(GetCameraPositionWS() - positionWS)
+    #define LIL_GET_VIEWDIR_WS(positionWS) GetCameraPositionWS() - positionWS
     float4 _ShadowBias;
     float3 ApplyShadowBias(float3 positionWS, float3 normalWS, float3 lightDirectionWS)
     {
@@ -141,7 +141,7 @@
         return normalWS * invNdotL * _ShadowBias.y + lightDirectionWS * _ShadowBias.xxx + positionWS;
     }
 #elif defined(LIL_URP)
-    #define LIL_GET_VIEWDIR_WS(positionWS) normalize(GetWorldSpaceViewDir(positionWS))
+    #define LIL_GET_VIEWDIR_WS(positionWS) GetWorldSpaceViewDir(positionWS)
 #endif
 
 #if defined(LIL_BRP)
@@ -233,7 +233,7 @@
     // Transform
     #define LIL_TRANSFORM_POS_OS_TO_WS(positionOS)  mul(unity_ObjectToWorld, float4(positionOS.xyz,1.0))
     #define LIL_TRANSFORM_POS_WS_TO_CS(positionWS)  UnityWorldToClipPos(positionWS)
-    #define LIL_GET_VIEWDIR_WS(positionWS)          normalize(UnityWorldSpaceViewDir(positionWS))
+    #define LIL_GET_VIEWDIR_WS(positionWS)          UnityWorldSpaceViewDir(positionWS)
 
     // Support
     #define _MainLightColor                         _LightColor0

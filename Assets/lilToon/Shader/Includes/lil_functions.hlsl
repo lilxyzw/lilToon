@@ -724,4 +724,9 @@ float4 lilGetSubTexWithoutAnimation(Texture2D tex, float4 uv_ST, float angle, fl
     return outCol;
 }
 
+float2 lilGetSphereUV(float3 viewDirection)
+{
+    return float2(lilAtan2(viewDirection.x, viewDirection.z), lilAcos(viewDirection.y)) * LIL_INV_PI;
+}
+
 #endif

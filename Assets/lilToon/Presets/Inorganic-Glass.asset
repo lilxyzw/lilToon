@@ -116,11 +116,11 @@ MonoBehaviour:
   - name: _Main2ndTexDecalAnimation
     value: {x: 1, y: 1, z: 1, w: 30}
   - name: _Main2ndTexDecalSubParam
-    value: {x: 1, y: 1, z: 0.01, w: 1}
+    value: {x: 1, y: 1, z: 0, w: 1}
   - name: _Main3rdTexDecalAnimation
     value: {x: 1, y: 1, z: 1, w: 30}
   - name: _Main3rdTexDecalSubParam
-    value: {x: 1, y: 1, z: 0.01, w: 1}
+    value: {x: 1, y: 1, z: 0, w: 1}
   - name: _EmissionMap_ScrollRotate
     value: {x: 0, y: 0, z: 0, w: 0}
   - name: _EmissionBlendMask_ScrollRotate
@@ -136,10 +136,10 @@ MonoBehaviour:
   floats:
   - name: _Invisible
     value: 0
+  - name: _AsUnlit
+    value: 0
   - name: _Cutoff
     value: 0.5
-  - name: _Cull
-    value: 2
   - name: _FlipNormal
     value: 0
   - name: _BackfaceForceShadow
@@ -224,7 +224,7 @@ MonoBehaviour:
     value: 0
   - name: _MatCapBlend
     value: 1
-  - name: _MatCapBlendLight
+  - name: _MatCapEnableLighting
     value: 1
   - name: _MatCapBlendMode
     value: 1
@@ -236,7 +236,7 @@ MonoBehaviour:
     value: 0.1
   - name: _RimFresnelPower
     value: 3
-  - name: _RimBlendLight
+  - name: _RimEnableLighting
     value: 1
   - name: _RimShadowMask
     value: 0
@@ -278,23 +278,31 @@ MonoBehaviour:
     value: 0.02
   - name: _ParallaxOffset
     value: 0.5
-  - name: _RefractionStrength
-    value: 0.1
-  - name: _RefractionFresnelPower
-    value: 0.5
-  - name: _RefractionColorFromMain
-    value: 0
+  - name: _Cull
+    value: 2
   - name: _SrcBlend
     value: 1
   - name: _DstBlend
     value: 0
+  - name: _SrcBlendAlpha
+    value: 1
+  - name: _DstBlendAlpha
+    value: 10
   - name: _BlendOp
+    value: 0
+  - name: _BlendOpAlpha
     value: 0
   - name: _SrcBlendFA
     value: 1
   - name: _DstBlendFA
     value: 1
+  - name: _SrcBlendAlphaFA
+    value: 0
+  - name: _DstBlendAlphaFA
+    value: 1
   - name: _BlendOpFA
+    value: 4
+  - name: _BlendOpAlphaFA
     value: 4
   - name: _ZWrite
     value: 1
@@ -302,6 +310,10 @@ MonoBehaviour:
     value: 4
   - name: _StencilRef
     value: 0
+  - name: _StencilReadMask
+    value: 255
+  - name: _StencilWriteMask
+    value: 255
   - name: _StencilComp
     value: 8
   - name: _StencilPass
@@ -310,7 +322,20 @@ MonoBehaviour:
     value: 0
   - name: _StencilZFail
     value: 0
+  - name: _OffsetFactor
+    value: 0
+  - name: _OffsetUnits
+    value: 0
+  - name: _ColorMask
+    value: 15
+  - name: _RefractionStrength
+    value: 0.1
+  - name: _RefractionFresnelPower
+    value: 0.5
+  - name: _RefractionColorFromMain
+    value: 0
   textures: []
   renderQueue: -2
   outline: 0
+  outlineMainTex: 0
   tessellation: 0
