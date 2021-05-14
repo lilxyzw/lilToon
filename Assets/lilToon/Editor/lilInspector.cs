@@ -223,41 +223,6 @@ namespace lilToon
             MaterialProperty shadowBorderColor;
             MaterialProperty shadowBorderRange;
             MaterialProperty shadowReceive;
-        //MaterialProperty useOutline;
-            MaterialProperty outlineColor;
-            MaterialProperty outlineTex;
-            MaterialProperty outlineTex_ScrollRotate;
-            MaterialProperty outlineTexHSVG;
-            MaterialProperty outlineWidth;
-            MaterialProperty outlineWidthMask;
-            MaterialProperty outlineFixWidth;
-            MaterialProperty outlineVertexR2Width;
-            MaterialProperty outlineEnableLighting;
-            MaterialProperty outlineCull;
-            MaterialProperty outlineSrcBlend;
-            MaterialProperty outlineDstBlend;
-            MaterialProperty outlineSrcBlendAlpha;
-            MaterialProperty outlineDstBlendAlpha;
-            MaterialProperty outlineBlendOp;
-            MaterialProperty outlineBlendOpAlpha;
-            MaterialProperty outlineSrcBlendFA;
-            MaterialProperty outlineDstBlendFA;
-            MaterialProperty outlineSrcBlendAlphaFA;
-            MaterialProperty outlineDstBlendAlphaFA;
-            MaterialProperty outlineBlendOpFA;
-            MaterialProperty outlineBlendOpAlphaFA;
-            MaterialProperty outlineZwrite;
-            MaterialProperty outlineZtest;
-            MaterialProperty outlineStencilRef;
-            MaterialProperty outlineStencilReadMask;
-            MaterialProperty outlineStencilWriteMask;
-            MaterialProperty outlineStencilComp;
-            MaterialProperty outlineStencilPass;
-            MaterialProperty outlineStencilFail;
-            MaterialProperty outlineStencilZFail;
-            MaterialProperty outlineOffsetFactor;
-            MaterialProperty outlineOffsetUnits;
-            MaterialProperty outlineColorMask;
         MaterialProperty useBumpMap;
             MaterialProperty bumpMap;
             MaterialProperty bumpScale;
@@ -319,6 +284,41 @@ namespace lilToon
             MaterialProperty emission2ndGradSpeed;
             MaterialProperty emission2ndParallaxDepth;
             MaterialProperty emission2ndFluorescence;
+        //MaterialProperty useOutline;
+            MaterialProperty outlineColor;
+            MaterialProperty outlineTex;
+            MaterialProperty outlineTex_ScrollRotate;
+            MaterialProperty outlineTexHSVG;
+            MaterialProperty outlineWidth;
+            MaterialProperty outlineWidthMask;
+            MaterialProperty outlineFixWidth;
+            MaterialProperty outlineVertexR2Width;
+            MaterialProperty outlineEnableLighting;
+            MaterialProperty outlineCull;
+            MaterialProperty outlineSrcBlend;
+            MaterialProperty outlineDstBlend;
+            MaterialProperty outlineSrcBlendAlpha;
+            MaterialProperty outlineDstBlendAlpha;
+            MaterialProperty outlineBlendOp;
+            MaterialProperty outlineBlendOpAlpha;
+            MaterialProperty outlineSrcBlendFA;
+            MaterialProperty outlineDstBlendFA;
+            MaterialProperty outlineSrcBlendAlphaFA;
+            MaterialProperty outlineDstBlendAlphaFA;
+            MaterialProperty outlineBlendOpFA;
+            MaterialProperty outlineBlendOpAlphaFA;
+            MaterialProperty outlineZwrite;
+            MaterialProperty outlineZtest;
+            MaterialProperty outlineStencilRef;
+            MaterialProperty outlineStencilReadMask;
+            MaterialProperty outlineStencilWriteMask;
+            MaterialProperty outlineStencilComp;
+            MaterialProperty outlineStencilPass;
+            MaterialProperty outlineStencilFail;
+            MaterialProperty outlineStencilZFail;
+            MaterialProperty outlineOffsetFactor;
+            MaterialProperty outlineOffsetUnits;
+            MaterialProperty outlineColorMask;
         MaterialProperty useParallax;
             MaterialProperty parallaxMap;
             MaterialProperty parallax;
@@ -473,7 +473,6 @@ namespace lilToon
                     outlineColor = FindProperty("_OutlineColor", props);
                     outlineTex = FindProperty("_OutlineTex", props);
                     outlineTex_ScrollRotate = FindProperty("_OutlineTex_ScrollRotate", props);
-                    outlineTexHSVG = FindProperty("_OutlineTexHSVG", props);
                     outlineWidth = FindProperty("_OutlineWidth", props);
                     outlineWidthMask = FindProperty("_OutlineWidthMask", props);
                     outlineFixWidth = FindProperty("_OutlineFixWidth", props);
@@ -1140,7 +1139,7 @@ namespace lilToon
                             materialEditor.TexturePropertySingleLine(textureRGBAContent, mainTex, mainColor);
                             if(isCutout || isTransparent)
                             {
-                                SetAlphaIsTransparencyGui();
+                                SetAlphaIsTransparencyGui(mainTex);
                                 AlphamaskToTextureGui(material);
                             }
                             DrawLine();
@@ -1454,11 +1453,9 @@ namespace lilToon
                         if(isOutl)
                         {
                             EditorGUILayout.BeginVertical(boxInnerHalf);
-                            materialEditor.TexturePropertySingleLine(textureRGBAContent, outlineTex, outlineColor);
+                            TextureGui(materialEditor, ref isShowEmissionMap, colorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate);
                             DrawLine();
-                            ToneCorrectionGui(materialEditor, material, outlineTex, outlineColor, outlineTexHSVG);
-                            DrawLine();
-                            UVSettingGui(materialEditor, outlineTex, outlineTex_ScrollRotate);
+                            ToneCorrectionGui(materialEditor, material, outlineTex, outlineColor, outlineTexHSVG, true);
                             DrawLine();
                             materialEditor.TexturePropertySingleLine(new GUIContent(loc["sWidth"], loc["sWidthR"]), outlineWidthMask, outlineWidth);
                             materialEditor.ShaderProperty(outlineFixWidth, loc["sFixWidth"]);
@@ -1792,14 +1789,14 @@ namespace lilToon
                 {
                     if(!isLite & !isFur)
                     {
-                        TextureBakeGui(material, 0);
-                        TextureBakeGui(material, 1);
-                        TextureBakeGui(material, 2);
-                        TextureBakeGui(material, 3);
+                        TextureBakeGui(material, 0, offsetButton);
+                        TextureBakeGui(material, 1, offsetButton);
+                        TextureBakeGui(material, 2, offsetButton);
+                        TextureBakeGui(material, 3, offsetButton);
                     }
-                    if(GUILayout.Button(loc["sRemoveUnused"])) RemoveUnusedTexture(material, isLite, isFur);
-                    if(!isLite && GUILayout.Button(loc["sConvertLite"])) CreateLiteMaterial(material);
-                    if(mtoon != null && GUILayout.Button(loc["sConvertMToon"])) CreateMToonMaterial(material);
+                    if(GUILayout.Button(loc["sRemoveUnused"], offsetButton)) RemoveUnusedTexture(material, isLite, isFur);
+                    if(!isLite && GUILayout.Button(loc["sConvertLite"], offsetButton)) CreateLiteMaterial(material);
+                    if(mtoon != null && GUILayout.Button(loc["sConvertMToon"], offsetButton)) CreateMToonMaterial(material);
                 }
             }
 	    }
@@ -2119,7 +2116,6 @@ namespace lilToon
             AssetDatabase.CreateAsset(newMaterial, newMatPath);
             FileUtil.ReplaceFile(newMatPath, matPath);
             AssetDatabase.DeleteAsset(newMatPath);
-            // Remain in Debug Window
         }
 
         static void LoadPresets()
@@ -2516,14 +2512,30 @@ namespace lilToon
 
             if(isOutl)
             {
+                Texture2D bakedOutlineTex = AutoBakeOutlineTexture(material);
                 liteMaterial.SetColor("_OutlineColor",              outlineColor.colorValue);
-                liteMaterial.SetTexture("_OutlineTex",              outlineTex.textureValue);
+                liteMaterial.SetTexture("_OutlineTex",              bakedOutlineTex);
                 liteMaterial.SetVector("_OutlineTex_ScrollRotate",  outlineTex_ScrollRotate.vectorValue);
                 liteMaterial.SetTexture("_OutlineWidthMask",        outlineWidthMask.textureValue);
                 liteMaterial.SetFloat("_OutlineWidth",              outlineWidth.floatValue);
                 liteMaterial.SetFloat("_OutlineFixWidth",           outlineFixWidth.floatValue);
                 liteMaterial.SetFloat("_OutlineVertexR2Width",      outlineVertexR2Width.floatValue);
                 liteMaterial.SetFloat("_OutlineEnableLighting",     outlineEnableLighting.floatValue);
+                liteMaterial.SetFloat("_OutlineSrcBlend",           outlineSrcBlend.floatValue);
+                liteMaterial.SetFloat("_OutlineDstBlend",           outlineDstBlend.floatValue);
+                liteMaterial.SetFloat("_OutlineBlendOp",            outlineBlendOp.floatValue);
+                liteMaterial.SetFloat("_OutlineSrcBlendFA",         outlineSrcBlendFA.floatValue);
+                liteMaterial.SetFloat("_OutlineDstBlendFA",         outlineDstBlendFA.floatValue);
+                liteMaterial.SetFloat("_OutlineBlendOpFA",          outlineBlendOpFA.floatValue);
+                liteMaterial.SetFloat("_OutlineZWrite",             outlineZwrite.floatValue);
+                liteMaterial.SetFloat("_OutlineZTest",              outlineZtest.floatValue);
+                liteMaterial.SetFloat("_OutlineStencilRef",         outlineStencilRef.floatValue);
+                liteMaterial.SetFloat("_OutlineStencilReadMask",    outlineStencilReadMask.floatValue);
+                liteMaterial.SetFloat("_OutlineStencilWriteMask",   outlineStencilWriteMask.floatValue);
+                liteMaterial.SetFloat("_OutlineStencilComp",        outlineStencilComp.floatValue);
+                liteMaterial.SetFloat("_OutlineStencilPass",        outlineStencilPass.floatValue);
+                liteMaterial.SetFloat("_OutlineStencilFail",        outlineStencilFail.floatValue);
+                liteMaterial.SetFloat("_OutlineStencilZFail",       outlineStencilZFail.floatValue);
             }
 
             Texture2D bakedMatCap = AutoBakeMatCap(liteMaterial);
@@ -2560,12 +2572,14 @@ namespace lilToon
             liteMaterial.SetFloat("_SrcBlend",                  srcBlend.floatValue);
             liteMaterial.SetFloat("_DstBlend",                  dstBlend.floatValue);
             liteMaterial.SetFloat("_BlendOp",                   blendOp.floatValue);
-            liteMaterial.SetFloat("_SrcBlendFA",                  srcBlendFA.floatValue);
-            liteMaterial.SetFloat("_DstBlendFA",                  dstBlendFA.floatValue);
-            liteMaterial.SetFloat("_BlendOpFA",                   blendOpFA.floatValue);
+            liteMaterial.SetFloat("_SrcBlendFA",                srcBlendFA.floatValue);
+            liteMaterial.SetFloat("_DstBlendFA",                dstBlendFA.floatValue);
+            liteMaterial.SetFloat("_BlendOpFA",                 blendOpFA.floatValue);
             liteMaterial.SetFloat("_ZWrite",                    zwrite.floatValue);
             liteMaterial.SetFloat("_ZTest",                     ztest.floatValue);
             liteMaterial.SetFloat("_StencilRef",                stencilRef.floatValue);
+            liteMaterial.SetFloat("_StencilReadMask",           stencilReadMask.floatValue);
+            liteMaterial.SetFloat("_StencilWriteMask",          stencilWriteMask.floatValue);
             liteMaterial.SetFloat("_StencilComp",               stencilComp.floatValue);
             liteMaterial.SetFloat("_StencilPass",               stencilPass.floatValue);
             liteMaterial.SetFloat("_StencilFail",               stencilFail.floatValue);
@@ -2741,7 +2755,7 @@ namespace lilToon
                 materialEditor.ShaderProperty(angle, loc["sAngle"]);
             }
 
-            if(GUILayout.Button(loc["sReset"]) && EditorUtility.DisplayDialog("Reset UV Setting","Are you sure you want to reset UV setting?","Yes","No"))
+            if(GUILayout.Button(loc["sReset"]) && EditorUtility.DisplayDialog(loc["sDialogResetUV"],loc["sDialogResetUVMes"],loc["sYes"],loc["sNo"]))
             {
                 isDecal.floatValue = 0.0f;
                 isLeftOnly.floatValue = 0.0f;
@@ -2755,13 +2769,24 @@ namespace lilToon
             }
         }
 
-        void ToneCorrectionGui(MaterialEditor materialEditor, Material material, MaterialProperty tex, MaterialProperty col, MaterialProperty hsvg)
+        void ToneCorrectionGui(MaterialEditor materialEditor, Material material, MaterialProperty tex, MaterialProperty col, MaterialProperty hsvg, bool isOutline = false)
         {
             materialEditor.ShaderProperty(hsvg, loc["sHue"] + "|" + loc["sSaturation"] + "|" + loc["sValue"] + "|" + loc["sGamma"]);
 
             EditorGUILayout.BeginHorizontal();
             // Bake
-            TextureBakeGui(material, 4);
+            if(isOutline)
+            {
+                if(GUILayout.Button(loc["sBake"]))
+                {
+                    outlineTex.textureValue = AutoBakeOutlineTexture(material);
+                    outlineTexHSVG.vectorValue = defaultHSVG;
+                }
+            }
+            else
+            {
+                TextureBakeGui(material, 4);
+            }
             // Reset
             if(GUILayout.Button(loc["sReset"]))
             {
@@ -2783,190 +2808,212 @@ namespace lilToon
             string[] sBake = {loc["sBakeAll"], loc["sBake1st"], loc["sBake2nd"], loc["sBake3rd"], loc["sBake"], loc["sBake"], loc["sBake"]};
             if(GUILayout.Button(sBake[bakeType]))
             {
-                //bool shouldBake1st = (bakeType == 1 || bakeType == 4) && mainTex.textureValue != null;
-                bool shouldNotBakeColor = (bakeType == 1 || bakeType == 4) && mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == new Vector4(0.0f,1.0f,1.0f,1.0f);
-                bool shouldNotBake1st = mainTex.textureValue == null;
-                bool shouldNotBake2nd = (bakeType == 2 || bakeType == 5) && useMain2ndTex.floatValue == 0.0;
-                bool shouldNotBake3rd = (bakeType == 3 || bakeType == 6) && useMain3rdTex.floatValue == 0.0;
-                bool shouldNotBakeAll = bakeType == 0 && mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == new Vector4(0.0f,1.0f,1.0f,1.0f) && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
-                if(shouldNotBake1st)
+                TextureBake(material, bakeType);
+            }
+        }
+
+        void TextureBakeGui(Material material, int bakeType, GUIStyle guistyle)
+        {
+            // bakeType
+            // 0 : All
+            // 1 : 1st
+            // 2 : 2nd
+            // 3 : 3rd
+            // 4 : 1st Simple Button
+            // 5 : 2nd Simple Button
+            // 6 : 3rd Simple Button
+            string[] sBake = {loc["sBakeAll"], loc["sBake1st"], loc["sBake2nd"], loc["sBake3rd"], loc["sBake"], loc["sBake"], loc["sBake"]};
+            if(GUILayout.Button(sBake[bakeType], guistyle))
+            {
+                TextureBake(material, bakeType);
+            }
+        }
+
+        void TextureBake(Material material, int bakeType)
+        {
+            //bool shouldBake1st = (bakeType == 1 || bakeType == 4) && mainTex.textureValue != null;
+            bool shouldNotBakeColor = (bakeType == 1 || bakeType == 4) && mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == defaultHSVG;
+            bool cannotBake1st = mainTex.textureValue == null;
+            bool shouldNotBake2nd = (bakeType == 2 || bakeType == 5) && useMain2ndTex.floatValue == 0.0;
+            bool shouldNotBake3rd = (bakeType == 3 || bakeType == 6) && useMain3rdTex.floatValue == 0.0;
+            bool shouldNotBakeAll = bakeType == 0 && mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == defaultHSVG && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
+            if(cannotBake1st)
+            {
+                EditorUtility.DisplayDialog(loc["sDialogCannotBake"], loc["sDialogSetMainTex"], loc["sOK"]);
+            }
+            else if(shouldNotBakeColor)
+            {
+                EditorUtility.DisplayDialog(loc["sDialogNoNeedBake"], loc["sDialogNoChange"], loc["sOK"]);
+            }
+            else if(shouldNotBake2nd)
+            {
+                EditorUtility.DisplayDialog(loc["sDialogNoNeedBake"], loc["sDialogNotUse2nd"], loc["sOK"]);
+            }
+            else if(shouldNotBake3rd)
+            {
+                EditorUtility.DisplayDialog(loc["sDialogNoNeedBake"], loc["sDialogNotUse3rd"], loc["sOK"]);
+            }
+            else if(shouldNotBakeAll)
+            {
+                EditorUtility.DisplayDialog(loc["sDialogNoNeedBake"], loc["sDialogNotUseAll"], loc["sOK"]);
+            }
+            else
+            {
+                bool bake2nd = (bakeType == 0 || bakeType == 2 || bakeType == 5) && useMain2ndTex.floatValue != 0.0;
+                bool bake3rd = (bakeType == 0 || bakeType == 3 || bakeType == 6) && useMain3rdTex.floatValue != 0.0;
+                // run bake
+                Texture2D bufMainTexture = (Texture2D)mainTex.textureValue;
+                Material hsvgMaterial = new Material(ltsbaker);
+
+                string path;
+                byte[] bytes;
+
+                Texture2D srcTexture = new Texture2D(2, 2);
+                Texture2D srcMain2 = new Texture2D(2, 2);
+                Texture2D srcMain3 = new Texture2D(2, 2);
+                Texture2D srcMask2 = new Texture2D(2, 2);
+                Texture2D srcMask3 = new Texture2D(2, 2);
+
+                hsvgMaterial.SetColor(mainColor.name,           mainColor.colorValue);
+                hsvgMaterial.SetVector(mainTexHSVG.name,        mainTexHSVG.vectorValue);
+
+                path = AssetDatabase.GetAssetPath(material.GetTexture(mainTex.name));
+                if(path.Length > 0)
                 {
-                    EditorUtility.DisplayDialog("Cannot run a bake", "You need to set texture to Main Color", "OK");
-                }
-                else if(shouldNotBakeColor)
-                {
-                    EditorUtility.DisplayDialog("No need to run a bake", "You are not changing the color.", "OK");
-                }
-                else if(shouldNotBake2nd)
-                {
-                    EditorUtility.DisplayDialog("No need to run a bake", "You are not using the 2nd layer.", "OK");
-                }
-                else if(shouldNotBake3rd)
-                {
-                    EditorUtility.DisplayDialog("No need to run a bake", "You are not using the 3rd layer.", "OK");
-                }
-                else if(shouldNotBakeAll)
-                {
-                    EditorUtility.DisplayDialog("No need to run a bake", "You are not changing the color and not using layers.", "OK");
+                    bytes = File.ReadAllBytes(Path.GetFullPath(path));
+                    srcTexture.LoadImage(bytes);
+                    srcTexture.filterMode = FilterMode.Bilinear;
+                    hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                 }
                 else
                 {
-                    bool bake2nd = (bakeType == 0 || bakeType == 2 || bakeType == 5) && useMain2ndTex.floatValue != 0.0;
-                    bool bake3rd = (bakeType == 0 || bakeType == 3 || bakeType == 6) && useMain3rdTex.floatValue != 0.0;
-                    // run bake
-                    Texture2D bufMainTexture = (Texture2D)mainTex.textureValue;
-                    Material hsvgMaterial = new Material(ltsbaker);
+                    hsvgMaterial.SetTexture(mainTex.name, Texture2D.whiteTexture);
+                }
 
-                    string path;
-                    byte[] bytes;
+                if(bake2nd)
+                {
+                    hsvgMaterial.SetFloat(useMain2ndTex.name,               useMain2ndTex.floatValue);
+                    hsvgMaterial.SetColor(mainColor2nd.name,                mainColor2nd.colorValue);
+                    hsvgMaterial.SetFloat(main2ndTexAngle.name,             main2ndTexAngle.floatValue);
+                    hsvgMaterial.SetFloat(main2ndTexIsDecal.name,           main2ndTexIsDecal.floatValue);
+                    hsvgMaterial.SetFloat(main2ndTexIsLeftOnly.name,        main2ndTexIsLeftOnly.floatValue);
+                    hsvgMaterial.SetFloat(main2ndTexIsRightOnly.name,       main2ndTexIsRightOnly.floatValue);
+                    hsvgMaterial.SetFloat(main2ndTexShouldCopy.name,        main2ndTexShouldCopy.floatValue);
+                    hsvgMaterial.SetFloat(main2ndTexShouldFlipMirror.name,  main2ndTexShouldFlipMirror.floatValue);
+                    hsvgMaterial.SetFloat(main2ndTexShouldFlipCopy.name,    main2ndTexShouldFlipCopy.floatValue);
+                    hsvgMaterial.SetFloat(main2ndTexBlendMode.name,         main2ndTexBlendMode.floatValue);
+                    hsvgMaterial.SetTextureOffset(main2ndTex.name,          material.GetTextureOffset(main2ndTex.name));
+                    hsvgMaterial.SetTextureScale(main2ndTex.name,           material.GetTextureScale(main2ndTex.name));
+                    hsvgMaterial.SetTextureOffset(main2ndBlendMask.name,    material.GetTextureOffset(main2ndBlendMask.name));
+                    hsvgMaterial.SetTextureScale(main2ndBlendMask.name,     material.GetTextureScale(main2ndBlendMask.name));
 
-                    Texture2D srcTexture = new Texture2D(2, 2);
-                    Texture2D srcMain2 = new Texture2D(2, 2);
-                    Texture2D srcMain3 = new Texture2D(2, 2);
-                    Texture2D srcMask2 = new Texture2D(2, 2);
-                    Texture2D srcMask3 = new Texture2D(2, 2);
-
-                    hsvgMaterial.SetColor(mainColor.name,           mainColor.colorValue);
-                    hsvgMaterial.SetVector(mainTexHSVG.name,        mainTexHSVG.vectorValue);
-
-                    path = AssetDatabase.GetAssetPath(material.GetTexture(mainTex.name));
+                    path = AssetDatabase.GetAssetPath(material.GetTexture(main2ndTex.name));
                     if(path.Length > 0)
                     {
                         bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                        srcTexture.LoadImage(bytes);
-                        srcTexture.filterMode = FilterMode.Bilinear;
-                        hsvgMaterial.SetTexture(mainTex.name, srcTexture);
+                        srcMain2.LoadImage(bytes);
+                        srcMain2.filterMode = FilterMode.Bilinear;
+                        hsvgMaterial.SetTexture(main2ndTex.name, srcMain2);
                     }
                     else
                     {
-                        hsvgMaterial.SetTexture(mainTex.name, Texture2D.whiteTexture);
+                        hsvgMaterial.SetTexture(main2ndTex.name, Texture2D.whiteTexture);
                     }
 
+                    path = AssetDatabase.GetAssetPath(material.GetTexture(main2ndBlendMask.name));
+                    if(path.Length > 0)
+                    {
+                        bytes = File.ReadAllBytes(Path.GetFullPath(path));
+                        srcMask2.LoadImage(bytes);
+                        srcMask2.filterMode = FilterMode.Bilinear;
+                        hsvgMaterial.SetTexture(main2ndBlendMask.name, srcMask2);
+                    }
+                    else
+                    {
+                        hsvgMaterial.SetTexture(main2ndBlendMask.name, Texture2D.whiteTexture);
+                    }
+                }
+
+                if(bake3rd)
+                {
+                    hsvgMaterial.SetFloat(useMain3rdTex.name,               useMain3rdTex.floatValue);
+                    hsvgMaterial.SetColor(mainColor3rd.name,                mainColor3rd.colorValue);
+                    hsvgMaterial.SetFloat(main3rdTexAngle.name,             main3rdTexAngle.floatValue);
+                    hsvgMaterial.SetFloat(main3rdTexIsDecal.name,           main3rdTexIsDecal.floatValue);
+                    hsvgMaterial.SetFloat(main3rdTexIsLeftOnly.name,        main3rdTexIsLeftOnly.floatValue);
+                    hsvgMaterial.SetFloat(main3rdTexIsRightOnly.name,       main3rdTexIsRightOnly.floatValue);
+                    hsvgMaterial.SetFloat(main3rdTexShouldCopy.name,        main3rdTexShouldCopy.floatValue);
+                    hsvgMaterial.SetFloat(main3rdTexShouldFlipMirror.name,  main3rdTexShouldFlipMirror.floatValue);
+                    hsvgMaterial.SetFloat(main3rdTexShouldFlipCopy.name,    main3rdTexShouldFlipCopy.floatValue);
+                    hsvgMaterial.SetFloat(main3rdTexBlendMode.name,         main3rdTexBlendMode.floatValue);
+                    hsvgMaterial.SetTextureOffset(main3rdTex.name,          material.GetTextureOffset(main3rdTex.name));
+                    hsvgMaterial.SetTextureScale(main3rdTex.name,           material.GetTextureScale(main3rdTex.name));
+                    hsvgMaterial.SetTextureOffset(main3rdBlendMask.name,    material.GetTextureOffset(main3rdBlendMask.name));
+                    hsvgMaterial.SetTextureScale(main3rdBlendMask.name,     material.GetTextureScale(main3rdBlendMask.name));
+
+                    path = AssetDatabase.GetAssetPath(material.GetTexture(main3rdTex.name));
+                    if(path.Length > 0)
+                    {
+                        bytes = File.ReadAllBytes(Path.GetFullPath(path));
+                        srcMain3.LoadImage(bytes);
+                        srcMain3.filterMode = FilterMode.Bilinear;
+                        hsvgMaterial.SetTexture(main3rdTex.name, srcMain3);
+                    }
+                    else
+                    {
+                        hsvgMaterial.SetTexture(main3rdTex.name, Texture2D.whiteTexture);
+                    }
+
+                    path = AssetDatabase.GetAssetPath(material.GetTexture(main3rdBlendMask.name));
+                    if(path.Length > 0)
+                    {
+                        bytes = File.ReadAllBytes(Path.GetFullPath(path));
+                        srcMask3.LoadImage(bytes);
+                        srcMask3.filterMode = FilterMode.Bilinear;
+                        hsvgMaterial.SetTexture(main3rdBlendMask.name, srcMask3);
+                    }
+                    else
+                    {
+                        hsvgMaterial.SetTexture(main3rdBlendMask.name, Texture2D.whiteTexture);
+                    }
+                }
+
+
+                RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32);
+
+                Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
+
+                Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height);
+                outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
+                outTexture.Apply();
+
+                outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
+                if(outTexture != mainTex.textureValue)
+                {
+                    mainTexHSVG.vectorValue = defaultHSVG;
+                    mainColor.colorValue = Color.white;
                     if(bake2nd)
                     {
-                        hsvgMaterial.SetFloat(useMain2ndTex.name,               useMain2ndTex.floatValue);
-                        hsvgMaterial.SetColor(mainColor2nd.name,                mainColor2nd.colorValue);
-                        hsvgMaterial.SetFloat(main2ndTexAngle.name,             main2ndTexAngle.floatValue);
-                        hsvgMaterial.SetFloat(main2ndTexIsDecal.name,           main2ndTexIsDecal.floatValue);
-                        hsvgMaterial.SetFloat(main2ndTexIsLeftOnly.name,        main2ndTexIsLeftOnly.floatValue);
-                        hsvgMaterial.SetFloat(main2ndTexIsRightOnly.name,       main2ndTexIsRightOnly.floatValue);
-                        hsvgMaterial.SetFloat(main2ndTexShouldCopy.name,        main2ndTexShouldCopy.floatValue);
-                        hsvgMaterial.SetFloat(main2ndTexShouldFlipMirror.name,  main2ndTexShouldFlipMirror.floatValue);
-                        hsvgMaterial.SetFloat(main2ndTexShouldFlipCopy.name,    main2ndTexShouldFlipCopy.floatValue);
-                        hsvgMaterial.SetFloat(main2ndTexBlendMode.name,         main2ndTexBlendMode.floatValue);
-                        hsvgMaterial.SetTextureOffset(main2ndTex.name,          material.GetTextureOffset(main2ndTex.name));
-                        hsvgMaterial.SetTextureScale(main2ndTex.name,           material.GetTextureScale(main2ndTex.name));
-                        hsvgMaterial.SetTextureOffset(main2ndBlendMask.name,    material.GetTextureOffset(main2ndBlendMask.name));
-                        hsvgMaterial.SetTextureScale(main2ndBlendMask.name,     material.GetTextureScale(main2ndBlendMask.name));
-
-                        path = AssetDatabase.GetAssetPath(material.GetTexture(main2ndTex.name));
-                        if(path.Length > 0)
-                        {
-                            bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                            srcMain2.LoadImage(bytes);
-                            srcMain2.filterMode = FilterMode.Bilinear;
-                            hsvgMaterial.SetTexture(main2ndTex.name, srcMain2);
-                        }
-                        else
-                        {
-                            hsvgMaterial.SetTexture(main2ndTex.name, Texture2D.whiteTexture);
-                        }
-
-                        path = AssetDatabase.GetAssetPath(material.GetTexture(main2ndBlendMask.name));
-                        if(path.Length > 0)
-                        {
-                            bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                            srcMask2.LoadImage(bytes);
-                            srcMask2.filterMode = FilterMode.Bilinear;
-                            hsvgMaterial.SetTexture(main2ndBlendMask.name, srcMask2);
-                        }
-                        else
-                        {
-                            hsvgMaterial.SetTexture(main2ndBlendMask.name, Texture2D.whiteTexture);
-                        }
+                        useMain2ndTex.floatValue = 0.0f;
+                        main2ndTex.textureValue = null;
                     }
-
                     if(bake3rd)
                     {
-                        hsvgMaterial.SetFloat(useMain3rdTex.name,               useMain3rdTex.floatValue);
-                        hsvgMaterial.SetColor(mainColor3rd.name,                mainColor3rd.colorValue);
-                        hsvgMaterial.SetFloat(main3rdTexAngle.name,             main3rdTexAngle.floatValue);
-                        hsvgMaterial.SetFloat(main3rdTexIsDecal.name,           main3rdTexIsDecal.floatValue);
-                        hsvgMaterial.SetFloat(main3rdTexIsLeftOnly.name,        main3rdTexIsLeftOnly.floatValue);
-                        hsvgMaterial.SetFloat(main3rdTexIsRightOnly.name,       main3rdTexIsRightOnly.floatValue);
-                        hsvgMaterial.SetFloat(main3rdTexShouldCopy.name,        main3rdTexShouldCopy.floatValue);
-                        hsvgMaterial.SetFloat(main3rdTexShouldFlipMirror.name,  main3rdTexShouldFlipMirror.floatValue);
-                        hsvgMaterial.SetFloat(main3rdTexShouldFlipCopy.name,    main3rdTexShouldFlipCopy.floatValue);
-                        hsvgMaterial.SetFloat(main3rdTexBlendMode.name,         main3rdTexBlendMode.floatValue);
-                        hsvgMaterial.SetTextureOffset(main3rdTex.name,          material.GetTextureOffset(main3rdTex.name));
-                        hsvgMaterial.SetTextureScale(main3rdTex.name,           material.GetTextureScale(main3rdTex.name));
-                        hsvgMaterial.SetTextureOffset(main3rdBlendMask.name,    material.GetTextureOffset(main3rdBlendMask.name));
-                        hsvgMaterial.SetTextureScale(main3rdBlendMask.name,     material.GetTextureScale(main3rdBlendMask.name));
-
-                        path = AssetDatabase.GetAssetPath(material.GetTexture(main3rdTex.name));
-                        if(path.Length > 0)
-                        {
-                            bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                            srcMain3.LoadImage(bytes);
-                            srcMain3.filterMode = FilterMode.Bilinear;
-                            hsvgMaterial.SetTexture(main3rdTex.name, srcMain3);
-                        }
-                        else
-                        {
-                            hsvgMaterial.SetTexture(main3rdTex.name, Texture2D.whiteTexture);
-                        }
-
-                        path = AssetDatabase.GetAssetPath(material.GetTexture(main3rdBlendMask.name));
-                        if(path.Length > 0)
-                        {
-                            bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                            srcMask3.LoadImage(bytes);
-                            srcMask3.filterMode = FilterMode.Bilinear;
-                            hsvgMaterial.SetTexture(main3rdBlendMask.name, srcMask3);
-                        }
-                        else
-                        {
-                            hsvgMaterial.SetTexture(main3rdBlendMask.name, Texture2D.whiteTexture);
-                        }
+                        useMain3rdTex.floatValue = 0.0f;
+                        main3rdTex.textureValue = null;
                     }
-
-
-                    RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32);
-
-                    Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
-
-                    Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height);
-                    outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
-                    outTexture.Apply();
-
-                    outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
-                    if(outTexture != mainTex.textureValue)
-                    {
-                        mainTexHSVG.vectorValue = defaultHSVG;
-                        mainColor.colorValue = Color.white;
-                        if(bake2nd)
-                        {
-                            useMain2ndTex.floatValue = 0.0f;
-                            main2ndTex.textureValue = null;
-                        }
-                        if(bake3rd)
-                        {
-                            useMain3rdTex.floatValue = 0.0f;
-                            main3rdTex.textureValue = null;
-                        }
-                        CopyTextureSetting(bufMainTexture, outTexture);
-                    }
-                    
-                    material.SetTexture(mainTex.name, outTexture);
-
-                    UnityEngine.Object.DestroyImmediate(hsvgMaterial);
-                    UnityEngine.Object.DestroyImmediate(srcTexture);
-                    UnityEngine.Object.DestroyImmediate(srcMain2);
-                    UnityEngine.Object.DestroyImmediate(srcMain3);
-                    UnityEngine.Object.DestroyImmediate(srcMask2);
-                    UnityEngine.Object.DestroyImmediate(srcMask3);
-                    UnityEngine.Object.DestroyImmediate(dstTexture);
+                    CopyTextureSetting(bufMainTexture, outTexture);
                 }
+                
+                material.SetTexture(mainTex.name, outTexture);
+
+                UnityEngine.Object.DestroyImmediate(hsvgMaterial);
+                UnityEngine.Object.DestroyImmediate(srcTexture);
+                UnityEngine.Object.DestroyImmediate(srcMain2);
+                UnityEngine.Object.DestroyImmediate(srcMain3);
+                UnityEngine.Object.DestroyImmediate(srcMask2);
+                UnityEngine.Object.DestroyImmediate(srcMask3);
+                UnityEngine.Object.DestroyImmediate(dstTexture);
             }
         }
 
@@ -2978,9 +3025,9 @@ namespace lilToon
             }
         }
 
-        void SetAlphaIsTransparencyGui()
+        void SetAlphaIsTransparencyGui(MaterialProperty tex)
         {
-            if(mainTex.textureValue != null && !((Texture2D)mainTex.textureValue).alphaIsTransparency)
+            if(tex.textureValue != null && !((Texture2D)tex.textureValue).alphaIsTransparency)
             {
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 GUILayout.Label("This texture is not marked as AlphaIsTransparency", EditorStyles.wordWrappedMiniLabel);
@@ -2988,7 +3035,7 @@ namespace lilToon
                 GUILayout.FlexibleSpace();
                 if(GUILayout.Button("Fix Now"))
                 {
-                    string path = AssetDatabase.GetAssetPath(mainTex.textureValue);
+                    string path = AssetDatabase.GetAssetPath(tex.textureValue);
                     TextureImporter textureImporter = (TextureImporter)TextureImporter.GetAtPath(path);
                     textureImporter.alphaIsTransparency = true;
                     AssetDatabase.ImportAsset(path);
@@ -3000,8 +3047,8 @@ namespace lilToon
 
         Texture2D AutoBakeMainTexture(Material material)
         {
-            bool shouldNotBakeAll = mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == new Vector4(0.0f,1.0f,1.0f,1.0f) && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
-            if(!shouldNotBakeAll && EditorUtility.DisplayDialog("Run bake?", "Do you want to bake main texture?", "Yes", "No"))
+            bool shouldNotBakeAll = mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == defaultHSVG && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
+            if(!shouldNotBakeAll && EditorUtility.DisplayDialog(loc["sDialogRunBake"], loc["sDialogBakeMain"], loc["sYes"], loc["sNo"]))
             {
                 bool bake2nd = useMain2ndTex.floatValue != 0.0;
                 bool bake3rd = useMain3rdTex.floatValue != 0.0;
@@ -3156,7 +3203,7 @@ namespace lilToon
         Texture2D AutoBakeShadowTexture(Material material, Texture2D bakedMainTex)
         {
             bool shouldNotBakeAll = useShadow.floatValue == 0.0 && shadowColor.colorValue == Color.white && shadowColorTex.textureValue == null && shadowStrengthMask.textureValue == null;
-            if(!shouldNotBakeAll && EditorUtility.DisplayDialog("Run bake?", "Do you want to bake shadow texture?", "Yes", "No"))
+            if(!shouldNotBakeAll && EditorUtility.DisplayDialog(loc["sDialogRunBake"], loc["sDialogBakeShadow"], loc["sYes"], loc["sNo"]))
             {
                 // run bake
                 Texture2D bufMainTexture = bakedMainTex;
@@ -3251,7 +3298,7 @@ namespace lilToon
         Texture2D AutoBakeMatCap(Material material)
         {
             bool shouldNotBakeAll = matcapColor.colorValue == Color.white;
-            if(!shouldNotBakeAll && EditorUtility.DisplayDialog("Run bake?", "Do you want to bake matcap?", "Yes", "No"))
+            if(!shouldNotBakeAll && EditorUtility.DisplayDialog(loc["sDialogRunBake"], loc["sDialogBakeMatCap"], loc["sYes"], loc["sNo"]))
             {
                 // run bake
                 Texture2D bufMainTexture = (Texture2D)matcapTex.textureValue;
@@ -3306,8 +3353,8 @@ namespace lilToon
 
         Texture2D AutoBakeTriMask(Material material)
         {
-            bool shouldNotBakeAll = matcapColor.colorValue == Color.white;
-            if(!shouldNotBakeAll && EditorUtility.DisplayDialog("Run bake?", "Do you want to bake TriMask?", "Yes", "No"))
+            bool shouldNotBakeAll = matcapBlendMask.textureValue == null && rimColorTex.textureValue == null && emissionBlendMask.textureValue == null;
+            if(!shouldNotBakeAll && EditorUtility.DisplayDialog(loc["sDialogRunBake"], loc["sDialogBakeTriMask"], loc["sYes"], loc["sNo"]))
             {
                 // run bake
                 Texture2D bufMainTexture = (Texture2D)mainTex.textureValue;
@@ -3321,10 +3368,8 @@ namespace lilToon
                 Texture2D srcMain3 = new Texture2D(2, 2);
 
                 hsvgMaterial.EnableKeyword("_TRIMASK");
-                hsvgMaterial.SetColor(mainColor.name,           Color.white);
-                hsvgMaterial.SetVector(mainTexHSVG.name,        defaultHSVG);
 
-                path = AssetDatabase.GetAssetPath(material.GetTexture(matcapBlendMask.name));
+                path = AssetDatabase.GetAssetPath(matcapBlendMask.textureValue);
                 if(path.Length > 0)
                 {
                     bytes = File.ReadAllBytes(Path.GetFullPath(path));
@@ -3337,7 +3382,7 @@ namespace lilToon
                     hsvgMaterial.SetTexture(mainTex.name, Texture2D.whiteTexture);
                 }
 
-                path = AssetDatabase.GetAssetPath(material.GetTexture(rimColorTex.name));
+                path = AssetDatabase.GetAssetPath(rimColorTex.textureValue);
                 if(path.Length > 0)
                 {
                     bytes = File.ReadAllBytes(Path.GetFullPath(path));
@@ -3350,7 +3395,7 @@ namespace lilToon
                     hsvgMaterial.SetTexture(main2ndTex.name, Texture2D.whiteTexture);
                 }
 
-                path = AssetDatabase.GetAssetPath(material.GetTexture(emissionBlendMask.name));
+                path = AssetDatabase.GetAssetPath(emissionBlendMask.textureValue);
                 if(path.Length > 0)
                 {
                     bytes = File.ReadAllBytes(Path.GetFullPath(path));
@@ -3372,7 +3417,7 @@ namespace lilToon
                 Texture2D outTexture;
                 if(bufMainTexture != null) outTexture = new Texture2D(bufMainTexture.width, bufMainTexture.height);
                 else                       outTexture = new Texture2D(4096, 4096);
-                outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
+                outTexture.ReadPixels(new Rect(0, 0, bufMainTexture.width, bufMainTexture.height), 0, 0);
                 outTexture.Apply();
 
                 outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
@@ -3422,7 +3467,7 @@ namespace lilToon
                 hsvgMaterial.SetTexture(mainTex.name, Texture2D.whiteTexture);
             }
 
-            EditorUtility.DisplayDialog(loc["sBakeAlphamask"],loc["sSelectAlphamask"],"OK");
+            EditorUtility.DisplayDialog(loc["sBakeAlphamask"],loc["sSelectAlphamask"],loc["sOK"]);
             path = EditorUtility.OpenFilePanel(loc["sSelectAlphamask"], Path.GetDirectoryName(AssetDatabase.GetAssetPath(mainTex.textureValue)), "");
             if(path != string.Empty)
             {
@@ -3463,6 +3508,63 @@ namespace lilToon
             UnityEngine.Object.DestroyImmediate(dstTexture);
 
             return outTexture;
+        }
+
+        Texture2D AutoBakeOutlineTexture(Material material)
+        {
+            bool shouldNotBakeOutline = outlineTex.textureValue == null || outlineTexHSVG.vectorValue == defaultHSVG;
+            if(!shouldNotBakeOutline && EditorUtility.DisplayDialog(loc["sDialogRunBake"], loc["sDialogBakeOutline"], loc["sYes"], loc["sNo"]))
+            {
+                // run bake
+                Texture2D bufMainTexture = (Texture2D)outlineTex.textureValue;
+                Material hsvgMaterial = new Material(ltsbaker);
+
+                string path;
+                byte[] bytes;
+
+                Texture2D srcTexture = new Texture2D(2, 2);
+
+                hsvgMaterial.SetColor(mainColor.name,                   Color.white);
+                hsvgMaterial.SetVector(mainTexHSVG.name,                outlineTexHSVG.vectorValue);
+
+                path = AssetDatabase.GetAssetPath(material.GetTexture(outlineTex.name));
+                if(path.Length > 0)
+                {
+                    bytes = File.ReadAllBytes(Path.GetFullPath(path));
+                    srcTexture.LoadImage(bytes);
+                    srcTexture.filterMode = FilterMode.Bilinear;
+                    hsvgMaterial.SetTexture(mainTex.name, srcTexture);
+                }
+                else
+                {
+                    hsvgMaterial.SetTexture(mainTex.name, Texture2D.whiteTexture);
+                }
+
+
+                RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32);
+
+                Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
+
+                Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height);
+                outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
+                outTexture.Apply();
+
+                outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
+                if(outTexture != mainTex.textureValue)
+                {
+                    CopyTextureSetting(bufMainTexture, outTexture);
+                }
+
+                UnityEngine.Object.DestroyImmediate(hsvgMaterial);
+                UnityEngine.Object.DestroyImmediate(srcTexture);
+                UnityEngine.Object.DestroyImmediate(dstTexture);
+
+                return outTexture;
+            }
+            else
+            {
+                return (Texture2D)outlineTex.textureValue;
+            }
         }
 
         void CopyTextureSetting(Texture2D fromTexture, Texture2D toTexture)
@@ -3889,7 +3991,7 @@ namespace lilToon
                     int duration = BitConverter.ToInt32(origGif.GetPropertyItem(20736).Value, 0);
                     int finalWidth = 1;
                     int finalHeight = 1;
-                    if(EditorUtility.DisplayDialog("Convert Gif to Atlas","Do you want to adjust the texture resolution to power of 2?","Yes","No"))
+                    if(EditorUtility.DisplayDialog(loc["sDialogGifToAtlas"],loc["sDialogTexPow2"],loc["sYes"],loc["sNo"]))
                     {
                         while(finalWidth < origGif.Width * loopXY) finalWidth *= 2;
                         while(finalHeight < origGif.Height * loopXY) finalHeight *= 2;
@@ -4370,6 +4472,48 @@ namespace lilToon
         }
 
         [MenuItem("Assets/lilToon/Dot Texture reduction", true, 20)]
+        static bool CheckFormat()
+        {
+            if(Selection.activeObject == null) return false;
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject).ToLower();
+            return path.EndsWith(".png");
+        }
+    }
+
+    // Normal Map DirectX <-> OpenGL
+    public class lilConvertNormal : MonoBehaviour
+    {
+        [MenuItem("Assets/lilToon/Convert Normal Map (DirectX <-> OpenGL)")]
+        static void ConvertNormal()
+        {
+            Texture2D srcTexture = new Texture2D(2, 2, TextureFormat.RGBA32, true, true);
+            Material hsvgMaterial = new Material(Shader.Find("Hidden/ltsother_baker"));
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+            byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
+            srcTexture.LoadImage(bytes);
+            hsvgMaterial.SetTexture("_MainTex", srcTexture);
+            hsvgMaterial.EnableKeyword("_NORMAL_DXGL");
+
+            RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+
+            Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
+
+            Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height, TextureFormat.RGBA32, true, true);
+            outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
+            outTexture.Apply();
+
+            // Save
+            string savePath = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path) + "_conv" + ".png";
+            File.WriteAllBytes(savePath, outTexture.EncodeToPNG());
+            AssetDatabase.Refresh();
+            AssetDatabase.ImportAsset(savePath);
+
+            UnityEngine.Object.DestroyImmediate(hsvgMaterial);
+            UnityEngine.Object.DestroyImmediate(srcTexture);
+            UnityEngine.Object.DestroyImmediate(dstTexture);
+        }
+
+        [MenuItem("Assets/lilToon/Convert Normal Map (DirectX <-> OpenGL)", true, 20)]
         static bool CheckFormat()
         {
             if(Selection.activeObject == null) return false;

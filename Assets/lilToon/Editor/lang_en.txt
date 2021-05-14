@@ -235,6 +235,26 @@ string sOptimization = "Optimization";
     string sRemoveUnused        = "Remove unused textures";
     string sConvertLite         = "Convert to lilToonLite";
     string sConvertMToon        = "Convert to MToon (VRM)";
+    string sYes                 = "Yes";
+    string sNo                  = "No";
+    string sOK                  = "OK";
+    string sDialogResetUV       = "Reset UV Setting";
+    string sDialogResetUVMes    = "Are you sure you want to reset UV setting?";
+    string sDialogCannotBake    = "Cannot run a bake";
+    string sDialogNoNeedBake    = "No need to run a bake";
+    string sDialogSetMainTex    = "You need to set texture to Main Color.";
+    string sDialogNoChange      = "You are not changing the color.";
+    string sDialogNotUse2nd     = "You are not using the 2nd layer.";
+    string sDialogNotUse3rd     = "You are not using the 3rd layer.";
+    string sDialogNotUseAll     = "You are not changing the color and not using layers.";
+    string sDialogRunBake       = "Run bake?";
+    string sDialogBakeMain      = "Do you want to bake main texture?";
+    string sDialogBakeShadow    = "Do you want to bake shadow texture?";
+    string sDialogBakeMatCap    = "Do you want to bake matcap?";
+    string sDialogBakeTriMask   = "Do you want to bake TriMask (Mask of Matcap / Rim / Emission)?";
+    string sDialogBakeOutline   = "Do you want to bake outline texture?";
+    string sDialogGifToAtlas    = "Convert Gif to Atlas";
+    string sDialogTexPow2       = "Do you want to adjust the texture resolution to power of 2?";
 
 
 

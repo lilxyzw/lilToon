@@ -149,6 +149,11 @@ float lilLuminance(float3 rgb)
     #endif
 }
 
+float lilGray(float3 rgb)
+{
+    return dot(rgb, float3(1.0/3.0, 1.0/3.0, 1.0/3.0));
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Lighting
 //unity_SHAr unity_SHAg unity_SHAb unity_SHBr unity_SHBg unity_SHBb unity_SHC

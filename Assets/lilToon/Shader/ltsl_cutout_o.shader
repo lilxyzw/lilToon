@@ -78,7 +78,7 @@
 
         //----------------------------------------------------------------------------------------------------------------------
         // Outline
-                        _OutlineColor               ("Outline Color", Color) = (0.8,0.85,0.9,1)
+        [HDR]           _OutlineColor               ("Outline Color", Color) = (0.8,0.85,0.9,1)
                         _OutlineTex                 ("Texture", 2D) = "white" {}
         [lilUVAnim]     _OutlineTex_ScrollRotate    ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
                         _OutlineWidth               ("Width", Range(0,10)) = 0.05

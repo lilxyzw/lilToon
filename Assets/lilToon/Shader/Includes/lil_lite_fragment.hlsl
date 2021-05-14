@@ -113,7 +113,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         LIL_BRANCH
         if(_UseRim)
         {
-            float3 viewDirection = LIL_GET_VIEWDIR_WS(input.positionWS.xyz);
+            float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
             float nvabs = abs(dot(normalDirection, viewDirection));
             float rim = pow(saturate(1.0 - nvabs), _RimFresnelPower);
             float rimBorderMin = saturate(_RimBorder - _RimBlur * 0.5);

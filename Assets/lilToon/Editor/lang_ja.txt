@@ -235,6 +235,26 @@ string sOptimization = "最適化";
     string sRemoveUnused        = "未使用のテクスチャを外す";
     string sConvertLite         = "lilToonLiteに変換";
     string sConvertMToon        = "MToon(VRM)に変換";
+    string sYes                 = "Yes";
+    string sNo                  = "No";
+    string sOK                  = "OK";
+    string sDialogResetUV       = "UV設定の初期化";
+    string sDialogResetUVMes    = "UV設定を初期化しますか?";
+    string sDialogCannotBake    = "焼き込みを実行できません";
+    string sDialogNoNeedBake    = "焼き込む必要はありません";
+    string sDialogSetMainTex    = "メインカラーにテクスチャを設定する必要があります。";
+    string sDialogNoChange      = "色を変更していません。";
+    string sDialogNotUse2nd     = "メインカラー2ndを利用していません。";
+    string sDialogNotUse3rd     = "メインカラー3rdを利用していません。";
+    string sDialogNotUseAll     = "色の変更とメインカラー2nd・3rdを使用していません。";
+    string sDialogRunBake       = "焼き込みを実行しますか?";
+    string sDialogBakeMain      = "メインカラーをベイクしますか?";
+    string sDialogBakeShadow    = "影テクスチャをベイクしますか?";
+    string sDialogBakeMatCap    = "マットキャップをベイクしますか?";
+    string sDialogBakeTriMask   = "TriMask(マットキャップ、リムライト、発光のマスク)をベイクしますか?";
+    string sDialogBakeOutline   = "輪郭線の色のテクスチャをベイクしますか?";
+    string sDialogGifToAtlas    = "Gifをアトラス化";
+    string sDialogTexPow2       = "テクスチャ全体の解像度を2の累乗に合わせますか?";
 
 
 

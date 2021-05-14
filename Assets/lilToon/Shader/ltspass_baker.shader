@@ -68,7 +68,7 @@
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma shader_feature _ _TRIMASK _ALPHAMASK
+            #pragma shader_feature _ _TRIMASK _ALPHAMASK _NORMAL_DXGL
 
             //------------------------------------------------------------------------------------------------------------------
             // Shader
@@ -101,20 +101,21 @@
 
             float4 frag(v2f input) : SV_Target
             {
-                float2 uvMain = input.uv;
-
                 #ifdef _TRIMASK
                     float4 col1 = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
                     float4 col2 = LIL_SAMPLE_2D(_Main2ndTex,sampler_Main2ndTex,input.uv);
                     float4 col3 = LIL_SAMPLE_2D(_Main3rdTex,sampler_Main3rdTex,input.uv);
-                    float mat = lilLuminance(col1.rgb);
-                    float rim = lilLuminance(col2.rgb);
-                    float emi = lilLuminance(col3.rgb);
+                    float mat = lilGray(col1.rgb);
+                    float rim = lilGray(col2.rgb);
+                    float emi = lilGray(col3.rgb);
                     float4 col = float4(mat,rim,emi,1);
                 #elif _ALPHAMASK
                     float4 col1 = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
                     float4 col2 = LIL_SAMPLE_2D(_Main2ndTex,sampler_Main2ndTex,input.uv);
                     float4 col = float4(col1.rgb,col2.r);
+                #elif _NORMAL_DXGL
+                    float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
+                    col.g = 1.0 - col.g;
                 #else
                     // Main
                     float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
