@@ -236,7 +236,7 @@
                         _OutlineWidth               ("Width", Range(0,10)) = 0.05
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
         [lilToggle]     _OutlineFixWidth            ("Fix Width", Int) = 1
-        [lilToggle]     _OutlineVertexR2Width       ("Vertex R -> Width", Int) = 1
+        [lilToggle]     _OutlineVertexR2Width       ("Vertex R -> Width", Int) = 0
         [lilToggle]     _OutlineEnableLighting      ("Enable Lighting", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------

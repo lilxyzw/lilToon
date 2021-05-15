@@ -337,7 +337,7 @@ MonoBehaviour:
   - name: _OutlineFixWidth
     value: 1
   - name: _OutlineVertexR2Width
-    value: 1
+    value: 0
   - name: _OutlineEnableLighting
     value: 1
   - name: _OutlineCull
