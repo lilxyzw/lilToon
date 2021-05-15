@@ -1,30 +1,32 @@
 # Manual
 
 # Table of Contents
-- [Terms](#anchor0)
-- [Base Setting](#anchor1)
-- [Color](#anchor2)
-    - [Main Color](#anchor2-1)
-    - [Shadow](#anchor2-2)
-    - [Emission](#anchor2-3)
-- [Normal & Reflection](#anchor3)
-    - [Normal Map](#anchor3-1)
-    - [Reflections](#anchor3-2)
-        - [Reflection](#anchor3-2-1)
-        - [MatCap](#anchor3-2-2)
-        - [Rim Light](#anchor3-2-3)
-- [Advanced](#anchor4)
-    - [Outline](#anchor4-1)
-    - [Parallax](#anchor4-2)
-    - [Stencil](#anchor4-3)
-    - [Rendering](#anchor4-4)
-    - [Tessellation](#anchor4-5)
-    - [Refraction](#anchor4-6)
-    - [Fur](#anchor4-7)
-- [Optimization](#anchor5)
+- [Terms](#terms)
+- [Base Setting](#base-setting)
+    - [UV Setting](#uv-setting)
+- [Color](#color)
+    - [Main Color](#main-color)
+        - [Main Color](#main-color-1)
+        - [Main Color 2nd / 3rd](#main-color-2nd--3rd)
+    - [Shadow](#shadow)
+    - [Emission](#emission)
+- [Normal & Reflection](#normal--reflection)
+    - [Normal Map](#normal-map)
+    - [Reflections](#reflections)
+        - [Reflection](#reflection)
+        - [MatCap](#matcap)
+        - [Rim Light](#rim-light)
+- [Advanced](#advanced)
+    - [Outline](#outline)
+    - [Parallax](#parallax)
+    - [Stencil](#stencil)
+    - [Rendering](#rendering)
+    - [Tessellation](#tessellation)
+    - [Refraction](#refraction)
+    - [Fur](#fur)
+- [Optimization](#optimization)
 
 <br/>
-<a id="anchor0"></a>
 
 # Terms
 |Name|Description|
@@ -39,7 +41,6 @@
 |Stencil|Mask done on screen. You can draw eyebrows over hair.|
 
 <br/>
-<a id="anchor1"></a>
 
 # Base Setting
 |Name|Description|
@@ -52,8 +53,8 @@
 |Frip Backface Normal|Reverse backface lighting and other processes.|
 |Backface Force Shadow|Intensity to force the back face to dark.|
 |ZWrite|Whether to write depth. Basically, set it to on.|
-|UV Setting|Tiling is the number of loops in the UV, and Offset is the amount of displacement.|
-|UV Animation|Speed of UV movement and rotation.|
+
+<br/>
 
 <details><summary>List of Rendering Mode</summary>
 
@@ -69,12 +70,19 @@
 </details>
 
 <br/>
-<a id="anchor2"></a>
+
+## UV Setting
+|Name|Description|
+|-|-|
+|Tiling|The number of loops in the UV.|
+|Offset|The amount of displacement.|
+|Angle|The angle of UV.|
+|Scroll|The speed of UV movement.|
+|Rotate|The speed of UV rotation.|
+
+<br/>
 
 # Color
-
-<a id="anchor2-1"></a>
-
 ## Main Color
 ### Main Color
 |Name|Description|
@@ -94,6 +102,7 @@ You can blend colors into the main color. This is the layer function in painting
 |Texture|Specifies the texture. You can also specify a Gif image and click "Convert Gif" to animate it.|
 |As Decal|When it is turned on, the layer is used as a decal.|
 |Mask|Combine layers only in the area specified by the mask.|
+|Enable Lighting|Apply the color of the light to rim light.|
 |Blending Mode|How to combine layers. You can select Normal, Add, Screen, or Multiply.|
 |Bake|Merges the layers into a single texture.|
 
@@ -124,7 +133,6 @@ You can blend colors into the main color. This is the layer function in painting
 </details>
 
 <br/>
-<a id="anchor2-2"></a>
 
 ## Shadow
 |Name|Description|
@@ -140,7 +148,6 @@ You can blend colors into the main color. This is the layer function in painting
 |Receive Shadow|Receive shadows from other objects. It can look unnatural under a roof and is often better to turn it off.|
 
 <br/>
-<a id="anchor2-3"></a>
 
 ## Emission
 |Name|Description|
@@ -156,12 +163,8 @@ You can blend colors into the main color. This is the layer function in painting
 |Fluorescence|Emission glows only when it is dark, but not in a completely dark space. Recommended for brightening the eyes in dark spaces.|
 
 <br/>
-<a id="anchor3"></a>
 
 # Normal & Reflection
-
-<a id="anchor3-1"></a>
-
 ## Normal Map
 |Name|Description|
 |-|-|
@@ -169,10 +172,8 @@ You can blend colors into the main color. This is the layer function in painting
 |Mask|Area and strength to apply normal map.|
 
 <br/>
-<a id="anchor3-2"></a>
 
 ## Reflections
-<a id="anchor3-2-1"></a>
 ### Reflection
 |Name|Description|
 |-|-|
@@ -182,16 +183,14 @@ You can blend colors into the main color. This is the layer function in painting
 |Specular Type|The appearance of light reflection.|
 |Environment Reflections|Reflects environment light.|
 
-<a id="anchor3-2-2"></a>
-### Matcap
+### MatCap
 |Name|Description|
 |-|-|
 |MatCap|Specifies the MatCap.|
 |Mask|Area and strength to apply MatCap.|
-|Blend Light|Apply the color of the light to MatCap.|
+|Enable Lighting|Apply the color of the light to MatCap.|
 |Blending Mode|How to apply MatCap. You can select Normal, Add, Screen, or Multiply.|
 
-<a id="anchor3-2-3"></a>
 ### Rim Light
 |Name|Description|
 |-|-|
@@ -199,16 +198,12 @@ You can blend colors into the main color. This is the layer function in painting
 |Border|Range of rim light.|
 |Blur|Amount of rim light blur.|
 |Fresnel Power|Sharpness of rim light.|
-|Blend Light|Apply the color of the light to rim light.|
+|Enable Lighting|Apply the color of the light to rim light.|
 |Shadow Mask|Turn off rim light in the shadow.|
 
 <br/>
-<a id="anchor4"></a>
 
 # Advanced
-
-<a id="anchor4-1"></a>
-
 ## Outline
 |Name|Description|
 |-|-|
@@ -224,7 +219,6 @@ You can blend colors into the main color. This is the layer function in painting
 |Enable Lighting|Apply changes in brightness due to lighting.|
 
 <br/>
-<a id="anchor4-2"></a>
 
 ## Parallax
 |名前|説明|
@@ -233,7 +227,6 @@ You can blend colors into the main color. This is the layer function in painting
 |Offset|The threshold of parallax map.|
 
 <br/>
-<a id="anchor4-3"></a>
 
 ## Stencil
 If it is complicated and difficult to understand, you can use it without problems by understanding it as follows.
@@ -256,7 +249,6 @@ If it is complicated and difficult to understand, you can use it without problem
 |Reset|Initializes the setting to no stencil.|
 
 <br/>
-<a id="anchor4-4"></a>
 
 ## Rendering
 This is a complex setting that is usually not changed. You can ignore them.
@@ -276,7 +268,6 @@ This is a complex setting that is usually not changed. You can ignore them.
 |Render Queue|A number used to determine the order in which materials are drawn. The higher the value, the later it will be drawn.|
 
 <br/>
-<a id="anchor4-5"></a>
 
 ## Tessellation
 This is an experimental feature that smooths polygons when you get close to them. The load on high-poly models is very high, so it is best to use this only when you want to make a low-poly model look smooth.
@@ -288,7 +279,6 @@ This is an experimental feature that smooths polygons when you get close to them
 |Max Factor|Maximum number of divisions. The higher the value, the more load is applied.|
 
 <br/>
-<a id="anchor4-6"></a>
 
 ## Refraction
 |Name|Description|
@@ -299,7 +289,6 @@ This is an experimental feature that smooths polygons when you get close to them
 |Color|Color of refraction.|
 
 <br/>
-<a id="anchor4-7"></a>
 
 ## Fur
 |Name|Description|
@@ -317,7 +306,6 @@ This is an experimental feature that smooths polygons when you get close to them
 |Layer|The amount of fur. The higher the value, the higher the density, but also the higher the load.|
 
 <br/>
-<a id="anchor5"></a>
 
 # Optimization
 |Name|Description|

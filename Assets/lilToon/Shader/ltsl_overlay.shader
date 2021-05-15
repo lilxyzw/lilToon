@@ -1,4 +1,4 @@
-﻿Shader "Hidden/lilToonLite"
+Shader "_lil/lilToonLiteOverlay"
 {
     Properties
     {
@@ -51,8 +51,8 @@
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilCullMode]                                   _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 5
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 10
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlpha      ("SrcBlendAlpha", Int) = 1
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlpha      ("DstBlendAlpha", Int) = 10
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOp            ("BlendOp", Int) = 0
@@ -78,11 +78,9 @@
     }
     SubShader
     {
-        Tags {"RenderType" = "Opaque" "Queue" = "Geometry"}
-        UsePass "Hidden/ltspass_lite_opaque/FORWARD"
-        UsePass "Hidden/ltspass_lite_opaque/FORWARD_ADD"
-        UsePass "Hidden/ltspass_lite_opaque/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_lite_opaque/META"
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+2"}
+        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
+        UsePass "Hidden/ltspass_lite_transparent/FORWARD_ADD"
     }
     Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"

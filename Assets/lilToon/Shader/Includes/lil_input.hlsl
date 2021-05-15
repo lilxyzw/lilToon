@@ -64,10 +64,12 @@ float4  _MainTexHSVG;
 lilBool _UseMain2ndTex;
 float4  _Color2nd;
 uint    _Main2ndTexBlendMode;
+lilBool _Main2ndEnableLighting;
 
 lilBool _UseMain3rdTex;
 float4  _Color3rd;
 uint    _Main3rdTexBlendMode;
+lilBool _Main3rdEnableLighting;
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Normal Map

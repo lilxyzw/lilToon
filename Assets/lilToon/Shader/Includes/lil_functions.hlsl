@@ -123,6 +123,13 @@ float lilIsIn0to1(float2 f)
     return lilIsIn0to1(f.x) * lilIsIn0to1(f.y);
 }
 
+float3 lilBlendNormal(float3 dstNormal, float3 srcNormal)
+{
+    return float3(dstNormal.xy + srcNormal.xy, dstNormal.z * srcNormal.z);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Color
 float3 lilBlendColor(float3 dstCol, float3 srcCol, float srcA, int blendMode)
 {
     float3 ad = dstCol + srcCol;
@@ -133,11 +140,6 @@ float3 lilBlendColor(float3 dstCol, float3 srcCol, float srcA, int blendMode)
     if(blendMode == 2) outCol = max(ad - mu, dstCol); // Screen
     if(blendMode == 3) outCol = mu;                   // Multiply
     return lerp(dstCol, outCol, srcA);
-}
-
-float3 lilBlendNormal(float3 dstNormal, float3 srcNormal)
-{
-    return float3(dstNormal.xy + srcNormal.xy, dstNormal.z * srcNormal.z);
 }
 
 float lilLuminance(float3 rgb)
@@ -154,8 +156,154 @@ float lilGray(float3 rgb)
     return dot(rgb, float3(1.0/3.0, 1.0/3.0, 1.0/3.0));
 }
 
+float3 lilToneCorrection(float3 c, float4 hsvg)
+{
+    // gamma
+    c = pow(abs(c), hsvg.w);
+    float e = 1.0e-10;
+    // rgb -> hsv
+    float4 p = lerp(float4(c.bg, float2(-1.0, 2.0/3.0)), float4(c.gb, float2(0.0,-1.0/3.0)), step(c.b, c.g));
+    float4 q = lerp(float4(p.xyw, c.r), float4(c.r, p.yzx), step(p.x, c.r));
+    float d = q.x - min(q.w, q.y);
+    float3 hsv = float3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+    // shift
+    hsv = float3(hsv.x+hsvg.x,saturate(hsv.y*hsvg.y),saturate(hsv.z*hsvg.z));
+    // hsv -> rgb
+    return hsv.z - hsv.z * hsv.y + hsv.z * hsv.y * saturate(abs(frac(hsv.x + float3(1.0, 2.0/3.0, 1.0/3.0)) * 6.0 - 3.0) - 1.0);
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
-// Lighting
+// UV
+float2 lilRotateUV(float2 uv, float2x2 rotMatrix)
+{
+    return mul(rotMatrix, uv - 0.5) + 0.5;
+}
+
+float2 lilRotateUV(float2 uv, float angle)
+{
+    float si,co;
+    sincos(angle, si, co);
+    float2 outuv = uv - 0.5;
+    outuv = float2(
+        outuv.x * co - outuv.y * si,
+        outuv.x * si + outuv.y * co
+    );
+    outuv += 0.5;
+    return outuv;
+}
+
+float2 lilCalcUV(float2 uv, float4 uv_st, float4 uv_sr)
+{
+    float2 outuv = uv * uv_st.xy + uv_st.zw + frac(uv_sr.xy * LIL_TIME);
+    outuv = lilRotateUV(outuv, uv_sr.z + uv_sr.w * LIL_TIME);
+    return outuv;
+}
+
+float2 lilCalcDecalUV(float2 uv, float4 uv_ST, float angle, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isRightHand)
+{
+    float2 outUV = uv;
+
+    // Copy
+    if(shouldCopy) outUV.x = abs(outUV.x - 0.5) + 0.5;
+
+    // Scale & Offset
+    outUV = outUV * uv_ST.xy + uv_ST.zw;
+
+    // Flip
+    if(shouldFlipCopy && uv.x<0.5) outUV.x = 1.0 - outUV.x;
+    if(shouldFlipMirror && isRightHand) outUV.x = 1.0 - outUV.x;
+
+    // Hide
+    if(isLeftOnly && isRightHand) outUV.x = -1.0;
+    if(isRightOnly && !isRightHand) outUV.x = -1.0;
+
+    // Rotate
+    outUV = (outUV - uv_ST.zw) / uv_ST.xy;
+    outUV = lilRotateUV(outUV, angle);
+    outUV = outUV * uv_ST.xy + uv_ST.zw;
+
+    return outUV;
+}
+
+float2 lilCalcAtlasAnimation(float2 uv, float4 decalAnimation, float4 decalSubParam)
+{
+    float2 outuv = lerp(float2(uv.x, 1.0-uv.y), 0.5, decalSubParam.z);
+    uint animTime = (uint)(LIL_TIME * decalAnimation.w) % (uint)decalAnimation.z;
+    uint offsetX = animTime % (uint)decalAnimation.x;
+    uint offsetY = animTime / (uint)decalAnimation.x;
+    outuv = (outuv + float2(offsetX,offsetY)) * decalSubParam.xy / decalAnimation.xy - decalAnimation.xy;
+    outuv = float2(outuv.x,-outuv.y);
+    return outuv;
+}
+
+float2 lilCalcUVWithoutAnimation(float2 uv, float4 uv_st, float4 uv_sr)
+{
+    float2 outuv = uv * uv_st.xy + uv_st.zw;
+    outuv = lilRotateUV(outuv, uv_sr.z);
+    return outuv;
+}
+
+float2 lilCalcMatCapUV(float3 normalWS)
+{
+    #if LIL_MATCAP_MODE == 0
+        // Simple
+        return mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5 + 0.5;
+    #elif LIL_MATCAP_MODE == 1
+        // Fix Z-Rotation
+        bool isMirror = unity_CameraProjection._m20 != 0.0 || unity_CameraProjection._m21 != 0.0;
+        float2 outuv = mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5;
+
+        float3 tan = LIL_MATRIX_V._m00_m01_m02;
+        float3 bitan = float3(-LIL_MATRIX_V._m22, 0.0, LIL_MATRIX_V._m20);
+        float co = dot(tan,bitan) / length(bitan);
+        float si = LIL_MATRIX_V._m01;
+        co = isMirror ? -co : co;
+
+        outuv = float2(
+            outuv.x * co - outuv.y * si,
+            outuv.x * si + outuv.y * co
+        );
+        outuv += 0.5;
+        outuv.x = isMirror ? -outuv.x : outuv.x;
+
+        return outuv;
+    #endif
+}
+
+float lilCalcBlink(float4 blink)
+{
+    float outBlink = sin(LIL_TIME * blink.z + blink.w) * 0.5 + 0.5;
+    if(blink.y > 0.5) outBlink = round(outBlink);
+    outBlink = 1.0 - mad(blink.x, -outBlink, blink.x);
+    return outBlink;
+}
+
+float2 lilGetPanoramaUV(float3 viewDirection)
+{
+    return float2(lilAtan2(viewDirection.x, viewDirection.z), lilAcos(viewDirection.y)) * LIL_INV_PI;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Sub Texture
+float4 lilGetSubTex(Texture2D tex, float4 uv_ST, float angle, float2 uv, SamplerState sampstate, bool isDecal, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isRightHand, float4 decalAnimation, float4 decalSubParam)
+{
+    float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
+    float2 uv2samp = lilCalcAtlasAnimation(uv2, decalAnimation, decalSubParam);
+    float4 outCol = LIL_SAMPLE_2D(tex,sampstate,uv2samp);
+    if(isDecal) outCol *= lilIsIn0to1(uv2);
+    return outCol;
+}
+
+float4 lilGetSubTexWithoutAnimation(Texture2D tex, float4 uv_ST, float angle, float2 uv, SamplerState sampstate, bool isDecal, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isRightHand)
+{
+    float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
+    float4 outCol = LIL_SAMPLE_2D(tex,sampstate,uv2);
+    if(isDecal) outCol *= lilIsIn0to1(uv2);
+    return outCol;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// SH Lighting
 //unity_SHAr unity_SHAg unity_SHAb unity_SHBr unity_SHBg unity_SHBb unity_SHC
 float3 lilGetSHZero()
 {
@@ -272,6 +420,8 @@ float3 lilGetSHAverage()
     return x1 / 3;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
+// Lighting
 float3 lilGetLightColor()
 {
     #if LIL_SH_DIRECT_MODE == 0
@@ -436,184 +586,8 @@ float3 lilGetAdditionalLights(float3 positionWS)
     return outCol;
 }
 
-float3 lilFresnelTerm(float3 F0, float cosA)
-{
-    return F0 + (1-F0) * (1-cosA) * (1-cosA) * (1-cosA) * (1-cosA) * (1-cosA);
-}
-
-float3 lilFresnelLerp(float3 F0, float3 F90, float cosA)
-{
-    return lerp(F0, F90, (1-cosA) * (1-cosA) * (1-cosA) * (1-cosA) * (1-cosA));
-}
-
-float3 lilCalcSpecular(float nv, float nl, float nh, float lh, float roughness, float3 specular, bool isSpecularToon, float attenuation = 1.0)
-{
-    #if LIL_SPECULAR_MODE == 0
-        // BRP Specular
-        float roughness2 = max(roughness, 0.002);
-
-        float lambdaV = nl * (nv * (1 - roughness2) + roughness2);
-        float lambdaL = nv * (nl * (1 - roughness2) + roughness2);
-        #if defined(SHADER_API_SWITCH)
-            float sjggx =  0.5f / (lambdaV + lambdaL + 1e-4f);
-        #else
-            float sjggx =  0.5f / (lambdaV + lambdaL + 1e-5f);
-        #endif
-
-        float r2 = roughness2 * roughness2;
-        float d = (nh * r2 - nh) * nh + 1.0f;
-        float ggx = r2 / (d * d + 1e-7f);
-
-        //float specularTerm = SmithJointGGXVisibilityTerm(nl,nv,roughness2) * GGXTerm(nh,roughness2) * LIL_PI;
-        float specularTerm = sjggx * ggx;
-        #ifdef UNITY_COLORSPACE_GAMMA
-            specularTerm = sqrt(max(1e-4h, specularTerm));
-        #endif
-        specularTerm *= nl * attenuation;
-        if(isSpecularToon) return step(0.5, specularTerm);
-        else               return specularTerm * lilFresnelTerm(specular, lh);
-    #elif LIL_SPECULAR_MODE == 1
-        // URP Specular
-        float roughness2 = max(roughness, 0.002);
-        float r2 = roughness2 * roughness2;
-        float d = (nh * r2 - nh) * nh + 1.00001;
-        half specularTerm = r2 / ((d * d) * max(0.1, lh * lh) * (roughness * 4.0 + 2.0));
-        #if defined (SHADER_API_MOBILE) || defined (SHADER_API_SWITCH)
-            specularTerm = clamp(specularTerm, 0.0, 100.0); // Prevent FP16 overflow on mobiles
-        #endif
-        if(isSpecularToon) return step(0.5, specularTerm);
-        else               return specularTerm * specular;
-    #else
-        // Fast Specular
-        float smoothness = 1.0/max(roughness, 0.002);
-        half specularTerm = pow(nh, smoothness);
-        if(isSpecularToon) return step(0.5, specularTerm);
-        else               return specularTerm * smoothness * 0.1 * specular;
-    #endif
-}
-
 //------------------------------------------------------------------------------------------------------------------------------
-// Math
-float2 lilRotateUV(float2 uv, float2x2 rotMatrix)
-{
-    return mul(rotMatrix, uv - 0.5) + 0.5;
-}
-
-float2 lilRotateUV(float2 uv, float angle)
-{
-    float si,co;
-    sincos(angle, si, co);
-    float2 outuv = uv - 0.5;
-    outuv = float2(
-        outuv.x * co - outuv.y * si,
-        outuv.x * si + outuv.y * co
-    );
-    outuv += 0.5;
-    return outuv;
-}
-
-float2 lilCalcUV(float2 uv, float4 uv_st, float4 uv_sr)
-{
-    float2 outuv = uv * uv_st.xy + uv_st.zw + frac(uv_sr.xy * LIL_TIME);
-    outuv = lilRotateUV(outuv, uv_sr.z + uv_sr.w * LIL_TIME);
-    return outuv;
-}
-
-float2 lilCalcDecalUV(float2 uv, float4 uv_ST, float angle, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isRightHand)
-{
-    float2 outUV = uv;
-
-    // Copy
-    if(shouldCopy) outUV.x = abs(outUV.x - 0.5) + 0.5;
-
-    // Scale & Offset
-    outUV = outUV * uv_ST.xy + uv_ST.zw;
-
-    // Flip
-    if(shouldFlipCopy && uv.x<0.5) outUV.x = 1.0 - outUV.x;
-    if(shouldFlipMirror && isRightHand) outUV.x = 1.0 - outUV.x;
-
-    // Hide
-    if(isLeftOnly && isRightHand) outUV.x = -1.0;
-    if(isRightOnly && !isRightHand) outUV.x = -1.0;
-
-    // Rotate
-    outUV = (outUV - uv_ST.zw) / uv_ST.xy;
-    outUV = lilRotateUV(outUV, angle);
-    outUV = outUV * uv_ST.xy + uv_ST.zw;
-
-    return outUV;
-}
-
-float2 lilCalcAtlasAnimation(float2 uv, float4 decalAnimation, float4 decalSubParam)
-{
-    float2 outuv = lerp(float2(uv.x, 1.0-uv.y), 0.5, decalSubParam.z);
-    uint animTime = (uint)(LIL_TIME * decalAnimation.w) % (uint)decalAnimation.z;
-    uint offsetX = animTime % (uint)decalAnimation.x;
-    uint offsetY = animTime / (uint)decalAnimation.x;
-    outuv = (outuv + float2(offsetX,offsetY)) * decalSubParam.xy / decalAnimation.xy - decalAnimation.xy;
-    outuv = float2(outuv.x,-outuv.y);
-    return outuv;
-}
-
-float2 lilCalcUVWithoutAnimation(float2 uv, float4 uv_st, float4 uv_sr)
-{
-    float2 outuv = uv * uv_st.xy + uv_st.zw;
-    outuv = lilRotateUV(outuv, uv_sr.z);
-    return outuv;
-}
-
-float2 lilCalcMatCapUV(float3 normalWS)
-{
-    #if LIL_MATCAP_MODE == 0
-        // Simple
-        return mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5 + 0.5;
-    #elif LIL_MATCAP_MODE == 1
-        // Fix Z-Rotation
-        bool isMirror = unity_CameraProjection._m20 != 0.0 || unity_CameraProjection._m21 != 0.0;
-        float2 outuv = mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5;
-
-        float3 tan = LIL_MATRIX_V._m00_m01_m02;
-        float3 bitan = float3(-LIL_MATRIX_V._m22, 0.0, LIL_MATRIX_V._m20);
-        float co = dot(tan,bitan) / length(bitan);
-        float si = LIL_MATRIX_V._m01;
-        co = isMirror ? -co : co;
-
-        outuv = float2(
-            outuv.x * co - outuv.y * si,
-            outuv.x * si + outuv.y * co
-        );
-        outuv += 0.5;
-        outuv.x = isMirror ? -outuv.x : outuv.x;
-
-        return outuv;
-    #endif
-}
-
-float3 lilToneCorrection(float3 c, float4 hsvg)
-{
-    // gamma
-    c = pow(abs(c), hsvg.w);
-    float e = 1.0e-10;
-    // rgb -> hsv
-    float4 p = lerp(float4(c.bg, float2(-1.0, 2.0/3.0)), float4(c.gb, float2(0.0,-1.0/3.0)), step(c.b, c.g));
-    float4 q = lerp(float4(p.xyw, c.r), float4(c.r, p.yzx), step(p.x, c.r));
-    float d = q.x - min(q.w, q.y);
-    float3 hsv = float3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-    // shift
-    hsv = float3(hsv.x+hsvg.x,saturate(hsv.y*hsvg.y),saturate(hsv.z*hsvg.z));
-    // hsv -> rgb
-    return hsv.z - hsv.z * hsv.y + hsv.z * hsv.y * saturate(abs(frac(hsv.x + float3(1.0, 2.0/3.0, 1.0/3.0)) * 6.0 - 3.0) - 1.0);
-}
-
-float lilCalcBlink(float4 blink)
-{
-    float outBlink = sin(LIL_TIME * blink.z + blink.w) * 0.5 + 0.5;
-    if(blink.y > 0.5) outBlink = round(outBlink);
-    outBlink = 1.0 - mad(blink.x, -outBlink, blink.x);
-    return outBlink;
-}
-
+// Shading
 void lilGetShading(inout float4 col, inout float shadowmix, float3 albedo, float2 uv, float facing, float3 normalDirection, float attenuation, float3 lightDirection, bool cullOff = true)
 {
     UNITY_BRANCH
@@ -712,26 +686,72 @@ void lilGetShadingLite(inout float4 col, inout float shadowmix, float3 albedo, f
     }
 }
 
-float4 lilGetSubTex(Texture2D tex, float4 uv_ST, float angle, float2 uv, SamplerState sampstate, bool isDecal, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isRightHand, float4 decalAnimation, float4 decalSubParam)
+//------------------------------------------------------------------------------------------------------------------------------
+// Specular
+float3 lilFresnelTerm(float3 F0, float cosA)
 {
-    float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
-    float2 uv2samp = lilCalcAtlasAnimation(uv2, decalAnimation, decalSubParam);
-    float4 outCol = LIL_SAMPLE_2D(tex,sampstate,uv2samp);
-    if(isDecal) outCol *= lilIsIn0to1(uv2);
-    return outCol;
+    return F0 + (1-F0) * (1-cosA) * (1-cosA) * (1-cosA) * (1-cosA) * (1-cosA);
 }
 
-float4 lilGetSubTexWithoutAnimation(Texture2D tex, float4 uv_ST, float angle, float2 uv, SamplerState sampstate, bool isDecal, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isRightHand)
+float3 lilFresnelLerp(float3 F0, float3 F90, float cosA)
 {
-    float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
-    float4 outCol = LIL_SAMPLE_2D(tex,sampstate,uv2);
-    if(isDecal) outCol *= lilIsIn0to1(uv2);
-    return outCol;
+    return lerp(F0, F90, (1-cosA) * (1-cosA) * (1-cosA) * (1-cosA) * (1-cosA));
 }
 
-float2 lilGetSphereUV(float3 viewDirection)
+float3 lilCalcSpecular(float nv, float nl, float nh, float lh, float roughness, float3 specular, bool isSpecularToon, float attenuation = 1.0)
 {
-    return float2(lilAtan2(viewDirection.x, viewDirection.z), lilAcos(viewDirection.y)) * LIL_INV_PI;
+    #if LIL_SPECULAR_MODE == 0
+        // BRP Specular
+        float roughness2 = max(roughness, 0.002);
+
+        float lambdaV = nl * (nv * (1 - roughness2) + roughness2);
+        float lambdaL = nv * (nl * (1 - roughness2) + roughness2);
+        #if defined(SHADER_API_SWITCH)
+            float sjggx =  0.5f / (lambdaV + lambdaL + 1e-4f);
+        #else
+            float sjggx =  0.5f / (lambdaV + lambdaL + 1e-5f);
+        #endif
+
+        float r2 = roughness2 * roughness2;
+        float d = (nh * r2 - nh) * nh + 1.0f;
+        float ggx = r2 / (d * d + 1e-7f);
+
+        //float specularTerm = SmithJointGGXVisibilityTerm(nl,nv,roughness2) * GGXTerm(nh,roughness2) * LIL_PI;
+        float specularTerm = sjggx * ggx;
+        #ifdef UNITY_COLORSPACE_GAMMA
+            specularTerm = sqrt(max(1e-4h, specularTerm));
+        #endif
+        specularTerm *= nl * attenuation;
+        if(isSpecularToon) return step(0.5, specularTerm);
+        else               return specularTerm * lilFresnelTerm(specular, lh);
+    #elif LIL_SPECULAR_MODE == 1
+        // URP Specular
+        float roughness2 = max(roughness, 0.002);
+        float r2 = roughness2 * roughness2;
+        float d = (nh * r2 - nh) * nh + 1.00001;
+        half specularTerm = r2 / ((d * d) * max(0.1, lh * lh) * (roughness * 4.0 + 2.0));
+        #if defined (SHADER_API_MOBILE) || defined (SHADER_API_SWITCH)
+            specularTerm = clamp(specularTerm, 0.0, 100.0); // Prevent FP16 overflow on mobiles
+        #endif
+        if(isSpecularToon) return step(0.5, specularTerm);
+        else               return specularTerm * specular;
+    #else
+        // Fast Specular
+        float smoothness = 1.0/max(roughness, 0.002);
+        half specularTerm = pow(nh, smoothness);
+        if(isSpecularToon) return step(0.5, specularTerm);
+        else               return specularTerm * smoothness * 0.1 * specular;
+    #endif
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Tessellation
+float lilCalcEdgeTessFactor(float3 wpos0, float3 wpos1, float edgeLen)
+{
+    float dist = distance (0.5 * (wpos0+wpos1), _WorldSpaceCameraPos);
+    float len = distance(wpos0, wpos1);
+    float f = max(len * _ScreenParams.y / (edgeLen * dist), 1.0);
+    return f;
 }
 
 #endif

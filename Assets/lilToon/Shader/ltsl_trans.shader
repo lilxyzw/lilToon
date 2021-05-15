@@ -34,7 +34,7 @@
         //----------------------------------------------------------------------------------------------------------------------
         // Rim
         [lilToggleLeft] _UseRim                     ("Use Rim", Int) = 0
-                        _RimColor                   ("Color", Color) = (1,1,1,1)
+        [lilHDR]        _RimColor                   ("Color", Color) = (1,1,1,1)
                         _RimBorder                  ("Border", Range(0, 1)) = 0.5
                         _RimBlur                    ("Blur", Range(0, 1)) = 0.1
         [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0

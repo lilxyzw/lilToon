@@ -3,24 +3,23 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Tessellation
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Structure
 struct lilTessellationFactors {
     float edge[3] : SV_TessFactor;
     float inside : SV_InsideTessFactor;
 };
 
-float lilCalcEdgeTessFactor(float3 wpos0, float3 wpos1, float edgeLen)
-{
-    float dist = distance (0.5 * (wpos0+wpos1), _WorldSpaceCameraPos);
-    float len = distance(wpos0, wpos1);
-    float f = max(len * _ScreenParams.y / (edgeLen * dist), 1.0);
-    return f;
-}
-
+//------------------------------------------------------------------------------------------------------------------------------
+// Vertex Shader
 appdata vertTess(appdata input)
 {
     return input;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
+// Hull Shader
 [domain("tri")]
 [partitioning("integer")]
 [outputtopology("triangle_cw")]
@@ -77,6 +76,8 @@ lilTessellationFactors hullConst(InputPatch<appdata, 3> input)
     return output;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
+// Domain Shader
 [domain("tri")]
 v2f domain(lilTessellationFactors hsConst, const OutputPatch<appdata, 3> input, float3 bary : SV_DomainLocation)
 {

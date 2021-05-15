@@ -141,29 +141,6 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             clip(col.a - 0.001);
         #endif
 
-        //--------------------------------------------------------------------------------------------------------------------------
-        // Layer Color
-        bool isRightHand = input.tangentW > 0.0;
-        // 2nd
-        LIL_BRANCH
-        if(_UseMain2ndTex)
-        {
-            _Color2nd *= LIL_GET_SUBTEX(_Main2ndTex, input.uv);
-            col.rgb = lilBlendColor(col.rgb, _Color2nd.rgb, LIL_SAMPLE_2D(_Main2ndBlendMask, sampler_MainTex, uvMain).r * _Color2nd.a, _Main2ndTexBlendMode);
-        }
-
-        // 3rd
-        LIL_BRANCH
-        if(_UseMain3rdTex)
-        {
-            _Color3rd *= LIL_GET_SUBTEX(_Main3rdTex, input.uv);
-            col.rgb = lilBlendColor(col.rgb, _Color3rd.rgb, LIL_SAMPLE_2D(_Main3rdBlendMask, sampler_MainTex, uvMain).r * _Color3rd.a, _Main3rdTexBlendMode);
-        }
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Copy
-        float3 albedo = col.rgb;
-
         //----------------------------------------------------------------------------------------------------------------------
         // Normal
         float3 normalmap = float3(0.0,0.0,1.0);
@@ -190,6 +167,31 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         float nv = saturate(dot(normalDirection, viewDirection));
         float nvabs = abs(dot(normalDirection, viewDirection));
 
+        //--------------------------------------------------------------------------------------------------------------------------
+        // Layer Color
+        bool isRightHand = input.tangentW > 0.0;
+        // 2nd
+        LIL_BRANCH
+        if(_UseMain2ndTex)
+        {
+            _Color2nd *= LIL_GET_SUBTEX(_Main2ndTex, input.uv);
+            _Color2nd.a *= LIL_SAMPLE_2D(_Main2ndBlendMask, sampler_MainTex, uvMain).r;
+            if(_Main2ndEnableLighting) col.rgb = lilBlendColor(col.rgb, _Color2nd.rgb, _Color2nd.a, _Main2ndTexBlendMode);
+        }
+
+        // 3rd
+        LIL_BRANCH
+        if(_UseMain3rdTex)
+        {
+            _Color3rd *= LIL_GET_SUBTEX(_Main3rdTex, input.uv);
+            _Color3rd.a *= LIL_SAMPLE_2D(_Main3rdBlendMask, sampler_MainTex, uvMain).r;
+            if(_Main3rdEnableLighting) col.rgb = lilBlendColor(col.rgb, _Color3rd.rgb, _Color3rd.a, _Main3rdTexBlendMode);
+        }
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Copy
+        float3 albedo = col.rgb;
+
         //----------------------------------------------------------------------------------------------------------------------
         // Lighting
         #ifndef LIL_PASS_FORWARDADD
@@ -208,6 +210,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             lightColor = saturate(lightColor);
             shadowmix = saturate(shadowmix);
             col.rgb = min(col.rgb, albedo);
+
+            if(_UseMain2ndTex && !_Main2ndEnableLighting) col.rgb = lilBlendColor(col.rgb, _Color2nd.rgb, _Color2nd.a, _Main2ndTexBlendMode);
+            if(_UseMain3rdTex && !_Main3rdEnableLighting) col.rgb = lilBlendColor(col.rgb, _Color3rd.rgb, _Color3rd.a, _Main3rdTexBlendMode);
         #else
             col.rgb *= lightColor;
         #endif

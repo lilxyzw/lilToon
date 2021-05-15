@@ -20,7 +20,7 @@
         //----------------------------------------------------------------------------------------------------------------------
         // Main2nd
         [lilToggleLeft] _UseMain2ndTex              ("Use Main 2nd", Int) = 0
-                        _Color2nd                   ("Color", Color) = (1,1,1,1)
+        [lilHDR]        _Color2nd                   ("Color", Color) = (1,1,1,1)
                         _Main2ndTex                 ("Texture", 2D) = "white" {}
         [lilAngle]      _Main2ndTexAngle            ("Angle", Float) = 0
         [lilDecalAnim]  _Main2ndTexDecalAnimation   ("Animation|X Size|Y Size|Frames|FPS", Vector) = (1,1,1,30)
@@ -33,11 +33,12 @@
         [lilToggle]     _Main2ndTexShouldFlipCopy   ("Flip Copy", Int) = 0
         [NoScaleOffset] _Main2ndBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
+        [lilToggle]     _Main2ndEnableLighting      ("Enable Lighting", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main3rd
         [lilToggleLeft] _UseMain3rdTex              ("Use Main 3rd", Int) = 0
-                        _Color3rd                   ("Color", Color) = (1,1,1,1)
+        [lilHDR]        _Color3rd                   ("Color", Color) = (1,1,1,1)
                         _Main3rdTex                 ("Texture", 2D) = "white" {}
         [lilAngle]      _Main3rdTexAngle            ("Angle", Float) = 0
         [lilDecalAnim]  _Main3rdTexDecalAnimation   ("Animation|X Size|Y Size|Frames|FPS", Vector) = (1,1,1,30)
@@ -50,6 +51,7 @@
         [lilToggle]     _Main3rdTexShouldFlipCopy   ("Flip Copy", Int) = 0
         [NoScaleOffset] _Main3rdBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
+        [lilToggle]     _Main3rdEnableLighting      ("Enable Lighting", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // NormalMap
@@ -104,9 +106,9 @@
         //----------------------------------------------------------------------------------------------------------------------
         // MatCap
         [lilToggleLeft] _UseMatCap                  ("Use MatCap", Int) = 0
-                        _MatCapColor                ("Color", Color) = (1,1,1,1)
+        [lilHDR]        _MatCapColor                ("Color", Color) = (1,1,1,1)
         [NoScaleOffset] _MatCapTex                  ("Texture", 2D) = "white" {}
-                        _MatCapBlend                ("Blend", Range(0, 3)) = 1
+                        _MatCapBlend                ("Blend", Range(0, 1)) = 1
         [NoScaleOffset] _MatCapBlendMask            ("Mask", 2D) = "white" {}
         [lilToggle]     _MatCapEnableLighting       ("Enable Lighting", Int) = 1
         [lilBlendMode]  _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
@@ -114,8 +116,8 @@
         //----------------------------------------------------------------------------------------------------------------------
         // Rim
         [lilToggleLeft] _UseRim                     ("Use Rim", Int) = 0
-                        _RimColor                   ("Color", Color) = (1,1,1,1)
-        [NoScaleOffset] _RimColorTex                ("Color", 2D) = "white" {}
+        [lilHDR]        _RimColor                   ("Color", Color) = (1,1,1,1)
+        [NoScaleOffset] _RimColorTex                ("Texture", 2D) = "white" {}
                         _RimBorder                  ("Border", Range(0, 1)) = 0.5
                         _RimBlur                    ("Blur", Range(0, 1)) = 0.1
         [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
@@ -236,7 +238,7 @@
 
         //----------------------------------------------------------------------------------------------------------------------
         // Outline
-        [HDR]           _OutlineColor               ("Outline Color", Color) = (0.8,0.85,0.9,1)
+        [lilHDR]        _OutlineColor               ("Outline Color", Color) = (0.8,0.85,0.9,1)
                         _OutlineTex                 ("Texture", 2D) = "white" {}
         [lilUVAnim]     _OutlineTex_ScrollRotate    ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
         [lilHSVG]       _OutlineTexHSVG             ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
