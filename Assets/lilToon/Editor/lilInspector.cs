@@ -1969,7 +1969,8 @@ namespace lilToon
             Rect position = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect());
             GUIContent icon = EditorGUIUtility.IconContent("BuildSettings.Web.Small");
             icon.text = "BOOTH";
-            GUIStyle style = new GUIStyle();
+            GUIStyle style = new GUIStyle(EditorStyles.label);
+            style.padding = new RectOffset();
             if(GUI.Button(position, icon, style)){
                 Application.OpenURL(boothURL);
             }
@@ -1980,7 +1981,8 @@ namespace lilToon
             Rect position = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect());
             GUIContent icon = EditorGUIUtility.IconContent("BuildSettings.Web.Small");
             icon.text = "GitHub";
-            GUIStyle style = new GUIStyle();
+            GUIStyle style = new GUIStyle(EditorStyles.label);
+            style.padding = new RectOffset();
             if(GUI.Button(position, icon, style)){
                 Application.OpenURL(githubURL);
             }
@@ -1991,7 +1993,8 @@ namespace lilToon
             Rect position = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect());
             GUIContent icon = EditorGUIUtility.IconContent("BuildSettings.Web.Small");
             icon.text = "Twitter";
-            GUIStyle style = new GUIStyle();
+            GUIStyle style = new GUIStyle(EditorStyles.label);
+            style.padding = new RectOffset();
             if(GUI.Button(position, icon, style)){
                 Application.OpenURL(twitterURL);
             }
@@ -4280,7 +4283,11 @@ namespace lilToon
             Color value = prop.colorValue;
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
-            value = EditorGUI.ColorField(position, new GUIContent(label), value, true, true, true);
+            #if UNITY_2018_1_OR_NEWER
+                value = EditorGUI.ColorField(position, new GUIContent(label), value, true, true, true);
+            #else
+                value = EditorGUI.ColorField(position, new GUIContent(label), value, true, true, true, null);
+            #endif
             EditorGUI.showMixedValue = false;
 
             if (EditorGUI.EndChangeCheck())
