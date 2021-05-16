@@ -41,7 +41,7 @@ MonoBehaviour:
   - name: _AsUnlit
     value: 0
   - name: _Cutoff
-    value: 0.5
+    value: 0.01
   - name: _FlipNormal
     value: 0
   - name: _BackfaceForceShadow

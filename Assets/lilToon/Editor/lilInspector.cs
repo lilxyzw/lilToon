@@ -260,8 +260,7 @@ namespace lilToon
             MaterialProperty applySpecular;
             MaterialProperty specularToon;
             MaterialProperty applyReflection;
-            MaterialProperty reflectionUseCubemap;
-            MaterialProperty reflectionCubemap;
+            MaterialProperty reflectionApplyTransparency;
         MaterialProperty useMatCap;
             MaterialProperty matcapTex;
             MaterialProperty matcapColor;
@@ -270,6 +269,7 @@ namespace lilToon
             MaterialProperty matcapEnableLighting;
             MaterialProperty matcapBlendMode;
             MaterialProperty matcapMul;
+            MaterialProperty matcapApplyTransparency;
         MaterialProperty useRim;
             MaterialProperty rimColor;
             MaterialProperty rimColorTex;
@@ -278,6 +278,7 @@ namespace lilToon
             MaterialProperty rimFresnelPower;
             MaterialProperty rimEnableLighting;
             MaterialProperty rimShadowMask;
+            MaterialProperty rimApplyTransparency;
         MaterialProperty useEmission;
             MaterialProperty emissionColor;
             MaterialProperty emissionMap;
@@ -427,7 +428,7 @@ namespace lilToon
             // Check Shader Type
             isLite         = material.shader.name.Contains("Lite");
             isCutout       = material.shader.name.Contains("Cutout");
-            isTransparent  = material.shader.name.Contains("Transparent");
+            isTransparent  = material.shader.name.Contains("Transparent") || material.shader.name.Contains("Overlay");
             isOutl         = material.shader.name.Contains("Outline");
             isRefr         = material.shader.name.Contains("Refraction");
             isBlur         = material.shader.name.Contains("Blur");
@@ -776,6 +777,7 @@ namespace lilToon
                     applySpecular = FindProperty("_ApplySpecular", props);
                     specularToon = FindProperty("_SpecularToon", props);
                     applyReflection = FindProperty("_ApplyReflection", props);
+                    reflectionApplyTransparency = FindProperty("_ReflectionApplyTransparency", props);
                 useMatCap = FindProperty("_UseMatCap", props);
                     matcapTex = FindProperty("_MatCapTex", props);
                     matcapColor = FindProperty("_MatCapColor", props);
@@ -783,6 +785,7 @@ namespace lilToon
                     matcapBlendMask = FindProperty("_MatCapBlendMask", props);
                     matcapEnableLighting = FindProperty("_MatCapEnableLighting", props);
                     matcapBlendMode = FindProperty("_MatCapBlendMode", props);
+                    matcapApplyTransparency = FindProperty("_MatCapApplyTransparency", props);
                 useRim = FindProperty("_UseRim", props);
                     rimColor = FindProperty("_RimColor", props);
                     rimColorTex = FindProperty("_RimColorTex", props);
@@ -791,6 +794,7 @@ namespace lilToon
                     rimFresnelPower = FindProperty("_RimFresnelPower", props);
                     rimEnableLighting = FindProperty("_RimEnableLighting", props);
                     rimShadowMask = FindProperty("_RimShadowMask", props);
+                    rimApplyTransparency = FindProperty("_RimApplyTransparency", props);
                 useEmission = FindProperty("_UseEmission", props);
                     emissionColor = FindProperty("_EmissionColor", props);
                     emissionMap = FindProperty("_EmissionMap", props);
@@ -1088,7 +1092,7 @@ namespace lilToon
                     {
                         SetupMaterialWithRenderingMode(material, renderingMode, isOutl, isLite, isStWr, isTess);
                     }
-                    if(renderingMode == RenderingMode.Cutout)
+                    if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur)
                     {
                         materialEditor.ShaderProperty(cutoff, loc["sCutoff"]);
                     }
@@ -1429,6 +1433,7 @@ namespace lilToon
                                 if(specularMode == 1) {applySpecular.floatValue = 1.0f; specularToon.floatValue = 0.0f;}
                                 if(specularMode == 2) {applySpecular.floatValue = 1.0f; specularToon.floatValue = 1.0f;}
                                 materialEditor.ShaderProperty(applyReflection, loc["sApplyReflection"]);
+                                if(isTransparent) materialEditor.ShaderProperty(reflectionApplyTransparency, loc["sApplyTransparency"]);
                                 EditorGUILayout.EndVertical();
                             }
                             EditorGUILayout.EndVertical();
@@ -1466,6 +1471,7 @@ namespace lilToon
                                 {
                                     EditorGUILayout.HelpBox(loc["sHelpMatCapBlending"],MessageType.Warning);
                                 }
+                                if(isTransparent) materialEditor.ShaderProperty(matcapApplyTransparency, loc["sApplyTransparency"]);
                                 EditorGUILayout.EndVertical();
                             }
                             EditorGUILayout.EndVertical();
@@ -1508,6 +1514,7 @@ namespace lilToon
                                 materialEditor.ShaderProperty(rimFresnelPower, loc["sFresnelPower"]);
                                 materialEditor.ShaderProperty(rimEnableLighting, loc["sEnableLighting"]);
                                 materialEditor.ShaderProperty(rimShadowMask, loc["sShadowMask"]);
+                                if(isTransparent) materialEditor.ShaderProperty(rimApplyTransparency, loc["sApplyTransparency"]);
                                 EditorGUILayout.EndVertical();
                             }
                             EditorGUILayout.EndVertical();
@@ -2205,7 +2212,7 @@ namespace lilToon
                         if(isoutl)  material.shader = ltsto;
                         else        material.shader = ltst;
                     }
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                     if(isoutl)
                     {

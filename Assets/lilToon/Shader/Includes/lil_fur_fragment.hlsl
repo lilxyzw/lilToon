@@ -56,7 +56,7 @@ float4 frag(g2f input) : SV_Target
         col.a = saturate(col.a*5.0-2.0);
     #else
         // Transparent
-        clip(col.a - 0.001);
+        clip(col.a - _Cutoff);
     #endif
 
     #ifndef LIL_PASS_FORWARDADD

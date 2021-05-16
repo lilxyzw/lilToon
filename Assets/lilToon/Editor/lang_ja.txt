@@ -61,6 +61,7 @@ string sScaleX          = "X軸サイズ";
 string sScaleY          = "Y軸サイズ";
 string sVector          = "向き";
 string sLength          = "長さ";
+string sApplyTransparency   = "透明度を適用";
 
 string sReset           = "初期化";
 

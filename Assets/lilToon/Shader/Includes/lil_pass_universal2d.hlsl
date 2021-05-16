@@ -44,7 +44,7 @@ float4 frag(v2f input) : SV_Target
             col.a = saturate((col.a - _Cutoff) / max(fwidth(col.a), 0.0001) + 0.5);
         #endif
     #else
-        clip(col.a - 0.001);
+        clip(col.a - _Cutoff);
     #endif
     return col;
 }

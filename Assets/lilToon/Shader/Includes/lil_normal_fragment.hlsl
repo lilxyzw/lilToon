@@ -43,7 +43,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             col.a = saturate((col.a - _Cutoff) / max(fwidth(col.a), 0.0001) + 0.5);
         #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
             // Transparent
-            clip(col.a - 0.001);
+            clip(col.a - _Cutoff);
         #endif
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             col.a = saturate((col.a - _Cutoff) / max(fwidth(col.a), 0.0001) + 0.5);
         #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
             // Transparent
-            clip(col.a - 0.001);
+            clip(col.a - _Cutoff);
         #endif
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -138,7 +138,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             col.a = saturate((col.a - _Cutoff) / max(fwidth(col.a), 0.0001) + 0.5);
         #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
             // Transparent
-            clip(col.a - 0.001);
+            clip(col.a - _Cutoff);
         #endif
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -215,6 +215,12 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             if(_UseMain3rdTex && !_Main3rdEnableLighting) col.rgb = lilBlendColor(col.rgb, _Color3rd.rgb, _Color3rd.a, _Main3rdTexBlendMode);
         #else
             col.rgb *= lightColor;
+        #endif
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Premultiply
+        #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+            col.rgb *= col.a;
         #endif
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -310,6 +316,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             #endif
             // Mix
             _ReflectionColor *= LIL_SAMPLE_2D(_ReflectionColorTex, sampler_MainTex, uvMain);
+            #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+                if(_ReflectionApplyTransparency) _ReflectionColor.a *= col.a;
+            #endif
             col.rgb += _ReflectionColor.rgb * _ReflectionColor.a * reflectCol;
         }
 
@@ -321,6 +330,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             float2 matUV = lilCalcMatCapUV(normalDirection);
             _MatCapColor *= LIL_SAMPLE_2D(_MatCapTex, sampler_MainTex, matUV);
             if(_MatCapEnableLighting) _MatCapColor.rgb *= lightColor;
+            #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+                if(_MatCapApplyTransparency) _MatCapColor.a *= col.a;
+            #endif
             col.rgb = lilBlendColor(col.rgb, _MatCapColor.rgb, LIL_SAMPLE_2D(_MatCapBlendMask, sampler_MainTex, uvMain).r * _MatCapBlend * _MatCapColor.a, _MatCapBlendMode);
         }
 
@@ -339,6 +351,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             float rimBorderMin = saturate(_RimBorder - _RimBlur * 0.5);
             float rimBorderMax = saturate(_RimBorder + _RimBlur * 0.5);
             rim = saturate((rim - rimBorderMin) / (rimBorderMax - rimBorderMin));
+            #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+                if(_RimApplyTransparency) _RimColor.a *= col.a;
+            #endif
             #ifndef LIL_PASS_FORWARDADD
                 if(_RimShadowMask) rim *= shadowmix;
                 if(_RimEnableLighting) _RimColor.rgb *= lightColor;
@@ -361,6 +376,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 _EmissionColor.rgb = lerp(_EmissionColor.rgb, _EmissionColor.rgb * invLighting, _EmissionFluorescence);
                 float _EmissionBlinkSeq = lilCalcBlink(_EmissionBlink);
                 if(_EmissionUseGrad) _EmissionColor *= LIL_SAMPLE_1D(_EmissionGradTex, sampler_linear_repeat, _EmissionGradSpeed*LIL_TIME);
+                #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+                    _EmissionColor.a *= col.a;
+                #endif
                 emittionColor = LIL_GET_EMIMASK(_EmissionBlendMask,input.uv) * _EmissionBlend * _EmissionBlinkSeq * _EmissionColor.a * _EmissionColor.rgb;
             }
             col.rgb += emittionColor;
@@ -375,15 +393,12 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 _Emission2ndColor.rgb = lerp(_Emission2ndColor.rgb, _Emission2ndColor.rgb * invLighting, _Emission2ndFluorescence);
                 float _Emission2ndBlinkSeq = lilCalcBlink(_Emission2ndBlink);
                 if(_Emission2ndUseGrad) _Emission2ndColor *= LIL_SAMPLE_1D(_Emission2ndGradTex, sampler_linear_repeat, _Emission2ndGradSpeed*LIL_TIME);
+                #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+                    _Emission2ndColor.a *= col.a;
+                #endif
                 emittion2ndColor = LIL_GET_EMIMASK(_Emission2ndBlendMask,input.uv) * _Emission2ndBlend * _Emission2ndBlinkSeq * _Emission2ndColor.a * _Emission2ndColor.rgb;
             }
             col.rgb += emittion2ndColor;
-        #else
-            //----------------------------------------------------------------------------------------------------------------------
-            // Premultiply for ForwardAdd
-            #if LIL_RENDER == 2 && LIL_PREMULTIPLY_FA
-                col.rgb *= col.a;
-            #endif
         #endif
     #endif
 

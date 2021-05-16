@@ -107,6 +107,7 @@ lilBool _ApplySpecular;
 lilBool _SpecularToon;
 lilBool _ApplyReflection;
 float4  _ReflectionColor;
+lilBool _ReflectionApplyTransparency;
 
 //------------------------------------------------------------------------------------------------------------------------------
 // MatCap
@@ -116,6 +117,7 @@ float   _MatCapBlend;
 lilBool _MatCapEnableLighting;
 uint    _MatCapBlendMode;
 lilBool _MatCapMul;
+lilBool _MatCapApplyTransparency;
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Rim light
@@ -126,6 +128,7 @@ float   _RimBlur;
 float   _RimFresnelPower;
 lilBool _RimEnableLighting;
 lilBool _RimShadowMask;
+lilBool _RimApplyTransparency;
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Emission

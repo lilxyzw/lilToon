@@ -222,6 +222,8 @@ MonoBehaviour:
     value: 1
   - name: _ApplyReflection
     value: 0
+  - name: _ReflectionApplyTransparency
+    value: 1
   - name: _UseMatCap
     value: 0
   - name: _MatCapBlend
@@ -229,6 +231,8 @@ MonoBehaviour:
   - name: _MatCapEnableLighting
     value: 1
   - name: _MatCapBlendMode
+    value: 1
+  - name: _MatCapApplyTransparency
     value: 1
   - name: _UseRim
     value: 0
@@ -242,6 +246,8 @@ MonoBehaviour:
     value: 1
   - name: _RimShadowMask
     value: 0
+  - name: _RimApplyTransparency
+    value: 1
   - name: _UseEmission
     value: 0
   - name: _EmissionBlend

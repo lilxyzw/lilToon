@@ -61,6 +61,7 @@ string sScaleX          = "Scale X";
 string sScaleY          = "Scale Y";
 string sVector          = "Vector";
 string sLength          = "Length";
+string sApplyTransparency   = "Apply Transparency";
 
 string sReset           = "Reset";
 

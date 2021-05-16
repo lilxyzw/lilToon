@@ -102,6 +102,7 @@
         [lilToggle]     _ApplyReflection            ("Apply Reflection", Int) = 0
                         _ReflectionColor            ("Color", Color) = (1,1,1,1)
         [NoScaleOffset] _ReflectionColorTex         ("Color", 2D) = "white" {}
+        [lilToggle]     _ReflectionApplyTransparency ("Apply Transparency", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // MatCap
@@ -112,6 +113,7 @@
         [NoScaleOffset] _MatCapBlendMask            ("Mask", 2D) = "white" {}
         [lilToggle]     _MatCapEnableLighting       ("Enable Lighting", Int) = 1
         [lilBlendMode]  _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
+        [lilToggle]     _MatCapApplyTransparency    ("Apply Transparency", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Rim
@@ -123,6 +125,7 @@
         [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
         [lilToggle]     _RimEnableLighting          ("Enable Lighting", Int) = 1
         [lilToggle]     _RimShadowMask              ("Shadow Mask", Int) = 0
+        [lilToggle]     _RimApplyTransparency       ("Apply Transparency", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision

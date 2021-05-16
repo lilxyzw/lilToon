@@ -37,7 +37,7 @@ MonoBehaviour:
   - name: _MatCapColor
     value: {r: 1, g: 1, b: 1, a: 1}
   - name: _RimColor
-    value: {r: 0.5, g: 0.46249998, b: 0.42499986, a: 1}
+    value: {r: 0.5, g: 0.46249998, b: 0.42499983, a: 1}
   - name: _EmissionColor
     value: {r: 1, g: 1, b: 1, a: 1}
   - name: _egc0
@@ -228,6 +228,8 @@ MonoBehaviour:
     value: 1
   - name: _ApplyReflection
     value: 0
+  - name: _ReflectionApplyTransparency
+    value: 1
   - name: _UseMatCap
     value: 0
   - name: _MatCapBlend
@@ -235,6 +237,8 @@ MonoBehaviour:
   - name: _MatCapEnableLighting
     value: 1
   - name: _MatCapBlendMode
+    value: 1
+  - name: _MatCapApplyTransparency
     value: 1
   - name: _UseRim
     value: 1
@@ -247,6 +251,8 @@ MonoBehaviour:
   - name: _RimEnableLighting
     value: 1
   - name: _RimShadowMask
+    value: 1
+  - name: _RimApplyTransparency
     value: 1
   - name: _UseEmission
     value: 0

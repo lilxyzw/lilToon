@@ -41,7 +41,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             clip(col.a - _Cutoff);
         #elif LIL_RENDER == 2
             // Transparent
-            clip(col.a - 0.001);
+            clip(col.a - _Cutoff);
         #endif
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             clip(col.a - _Cutoff);
         #elif LIL_RENDER == 2
             // Transparent
-            clip(col.a - 0.001);
+            clip(col.a - _Cutoff);
         #endif
 
         //----------------------------------------------------------------------------------------------------------------------
