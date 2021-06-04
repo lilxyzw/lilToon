@@ -21,6 +21,7 @@
         [lilToggle]     _Main2ndTexShouldCopy       ("Copy", Int) = 0
         [lilToggle]     _Main2ndTexShouldFlipMirror ("Flip Mirror", Int) = 0
         [lilToggle]     _Main2ndTexShouldFlipCopy   ("Flip Copy", Int) = 0
+        [lilToggle]     _Main2ndTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main2ndBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
 
@@ -36,29 +37,9 @@
         [lilToggle]     _Main3rdTexShouldCopy       ("Copy", Int) = 0
         [lilToggle]     _Main3rdTexShouldFlipMirror ("Flip Mirror", Int) = 0
         [lilToggle]     _Main3rdTexShouldFlipCopy   ("Flip Copy", Int) = 0
+        [lilToggle]     _Main3rdTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main3rdBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // MatCap
-        [lilToggleLeft] _UseMatCap                  ("Use MatCap", Int) = 0
-                        _MatCapColor                ("Color", Color) = (1,1,1,1)
-        [NoScaleOffset] _MatCapTex                  ("Texture", 2D) = "white" {}
-                        _MatCapBlend                ("Blend", Range(0, 3)) = 1
-        [NoScaleOffset] _MatCapBlendMask            ("Mask", 2D) = "white" {}
-        [lilToggle]     _MatCapEnableLighting       ("Enable Lighting", Int) = 1
-        [lilBlendMode]  _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Rim
-        [lilToggleLeft] _UseRim                     ("Use Rim", Int) = 0
-                        _RimColor                   ("Color", Color) = (1,1,1,1)
-        [NoScaleOffset] _RimColorTex                ("Color", 2D) = "white" {}
-                        _RimBorder                  ("Border", Range(0, 1)) = 0.5
-                        _RimBlur                    ("Blur", Range(0, 1)) = 0.1
-        [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
-        [lilToggle]     _RimEnableLighting          ("Enable Lighting", Int) = 1
-        [lilToggle]     _RimShadowMask              ("Shadow Mask", Int) = 0
     }
     SubShader
     {
@@ -72,6 +53,7 @@
 
             //------------------------------------------------------------------------------------------------------------------
             // Shader
+            #define LIL_BAKER
             #define LIL_WITHOUT_ANIMATION
             #include "Includes/lil_pipeline.hlsl"
 

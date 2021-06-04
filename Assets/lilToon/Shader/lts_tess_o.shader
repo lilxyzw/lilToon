@@ -31,6 +31,7 @@
         [lilToggle]     _Main2ndTexShouldCopy       ("Copy", Int) = 0
         [lilToggle]     _Main2ndTexShouldFlipMirror ("Flip Mirror", Int) = 0
         [lilToggle]     _Main2ndTexShouldFlipCopy   ("Flip Copy", Int) = 0
+        [lilToggle]     _Main2ndTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main2ndBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
         [lilToggle]     _Main2ndEnableLighting      ("Enable Lighting", Int) = 1
@@ -49,6 +50,7 @@
         [lilToggle]     _Main3rdTexShouldCopy       ("Copy", Int) = 0
         [lilToggle]     _Main3rdTexShouldFlipMirror ("Flip Mirror", Int) = 0
         [lilToggle]     _Main3rdTexShouldFlipCopy   ("Flip Copy", Int) = 0
+        [lilToggle]     _Main3rdTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main3rdBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
         [lilToggle]     _Main3rdEnableLighting      ("Enable Lighting", Int) = 1
@@ -205,6 +207,11 @@
                         _ParallaxOffset             ("Parallax Offset", float) = 0.5
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Distance Fade
+        [lilHDR]        _DistanceFadeColor          ("Color", Color) = (0,0,0,1)
+        [lil3Param]     _DistanceFade               ("Start|End|Strength", Vector) = (0.1,0.01,1,0)
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilCullMode]                                   _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
@@ -236,7 +243,7 @@
         // Tessellation
                         _TessEdge                   ("Tessellation Edge", Range(1, 100)) = 10
                         _TessStrength               ("Tessellation Strength", Range(0, 1)) = 0.5
-                        _TessShrink                 ("Tessellation Shrink", Range(0, 1)) = 0.5
+                        _TessShrink                 ("Tessellation Shrink", Range(0, 1)) = 0.0
         [IntRange]      _TessFactorMax              ("Tessellation Max", Range(1, 8)) = 3
 
         //----------------------------------------------------------------------------------------------------------------------

@@ -10,6 +10,7 @@ v2f vert(appdata input)
 
     //----------------------------------------------------------------------------------------------------------------------
     // Invisible
+    LIL_BRANCH
     if(_Invisible) return output;
 
     //----------------------------------------------------------------------------------------------------------------------
@@ -17,6 +18,15 @@ v2f vert(appdata input)
     LIL_SETUP_INSTANCE_ID(input);
     LIL_TRANSFER_INSTANCE_ID(input, output);
     LIL_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+
+    #if defined(LIL_OUTLINE)
+        float2 uvMain = lilCalcUV(input.uv, _MainTex_ST);
+        float outlineWidth = _OutlineWidth * 0.01;
+        if(Exists_OutlineWidthMask) outlineWidth *= LIL_SAMPLE_2D_LOD(_OutlineWidthMask, sampler_MainTex, uvMain, 0).r;
+        if(_OutlineVertexR2Width) outlineWidth *= input.color.r;
+        if(_OutlineFixWidth) outlineWidth *= saturate(length(LIL_GET_VIEWDIR_WS(lilOptMul(LIL_MATRIX_M, input.positionOS.xyz).xyz)));
+        input.positionOS.xyz += input.normalOS.xyz * outlineWidth;
+    #endif
 
     //----------------------------------------------------------------------------------------------------------------------
     // Copy
@@ -26,13 +36,8 @@ v2f vert(appdata input)
     #if defined(LIL_OUTLINE)
         //--------------------------------------------------------------------------------------------------------------
         // Outline
-        float2 uvMain = input.uv * _MainTex_ST.xy + _MainTex_ST.zw;
-        _OutlineWidth *= LIL_SAMPLE_2D_LOD(_OutlineWidthMask, sampler_MainTex, uvMain, 0).r * 0.01;
-        if(_OutlineVertexR2Width) _OutlineWidth *= input.color.r;
-        if(_OutlineFixWidth) _OutlineWidth *= saturate(length(LIL_GET_VIEWDIR_WS(vertexInput.positionWS)));
-        vertexInput.positionWS += vertexNormalInput.normalWS * _OutlineWidth;
         output.uv           = input.uv;
-        output.positionCS   = LIL_TRANSFORM_POS_WS_TO_CS(vertexInput.positionWS);
+        output.positionCS   = vertexInput.positionCS;
         #if defined(LIL_PASS_FORWARDADD) || !defined(LIL_BRP)
             output.positionWS   = vertexInput.positionWS;
         #endif

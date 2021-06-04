@@ -2,17 +2,145 @@
 #define LIL_FUNCTIONS_INCLUDED
 
 //------------------------------------------------------------------------------------------------------------------------------
+// Optimized inverse trigonometric function
+// https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/
+float lilAcos(float x) 
+{ 
+    float ox = abs(x); 
+    float res = -0.156583 * ox + LIL_HALF_PI; 
+    res *= sqrt(1.0 - ox); 
+    return (x >= 0.0) ? res : LIL_PI - res; 
+}
+
+float lilAsin(float x)
+{
+    return LIL_HALF_PI - lilAcos(x);
+}
+
+float lilAtanPos(float x) 
+{ 
+    float t0 = (x < 1.0) ? x : 1.0 / x;
+    float t1 = t0 * t0;
+    float poly = 0.0872929f;
+    poly = -0.301895f + poly * t1;
+    poly = 1.0f + poly * t1;
+    poly = poly * t0;
+    return (x < 1.0) ? poly : LIL_HALF_PI - poly;
+}
+
+float lilAtan(float x) 
+{     
+    float t0 = lilAtanPos(abs(x));     
+    return (x < 0.0) ? -t0 : t0; 
+}
+
+float lilAtan2(float x, float y)
+{
+    return lilAtan(x/y) + LIL_PI * (y<0) * (x<0?-1:1);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Math
+#if LIL_ANTIALIAS_MODE == 0
+    float lilIsIn0to1(float f)
+    {
+        return saturate(f) == f;
+    }
+
+    float lilIsIn0to1(float f, float nv)
+    {
+        return saturate(f) == f;
+    }
+
+    float lilTooning(float value, float border)
+    {
+        return step(border, value);
+    }
+
+    float lilTooning(float value, float border, float blur)
+    {
+        float borderMin = saturate(border - blur * 0.5);
+        float borderMax = saturate(border + blur * 0.5);
+        return saturate((value - borderMin) / saturate(borderMax - borderMin));
+    }
+
+    float lilTooning(float value, float border, float blur, float borderRange)
+    {
+        float borderMin = saturate(border - blur * 0.5 - borderRange);
+        float borderMax = saturate(border + blur * 0.5);
+        return saturate((value - borderMin) / saturate(borderMax - borderMin));
+    }
+#else
+    float lilIsIn0to1(float f)
+    {
+        float value = 0.5 - abs(f-0.5);
+        return saturate(value / clamp(fwidth(value), 0.0001, 1.0));
+    }
+
+    float lilIsIn0to1(float f, float nv)
+    {
+        float value = 0.5 - abs(f-0.5);
+        return saturate(value / clamp(fwidth(value), 0.0001, nv));
+    }
+
+    float lilTooning(float value, float border)
+    {
+        return saturate((value - border) / clamp(fwidth(value), 0.0001, 1.0));
+    }
+
+    float lilTooning(float value, float border, float blur)
+    {
+        float borderMin = saturate(border - blur * 0.5);
+        float borderMax = saturate(border + blur * 0.5);
+        return saturate((value - borderMin) / saturate(borderMax - borderMin + fwidth(value)));
+    }
+
+    float lilTooning(float value, float border, float blur, float borderRange)
+    {
+        float borderMin = saturate(border - blur * 0.5 - borderRange);
+        float borderMax = saturate(border + blur * 0.5);
+        return saturate((value - borderMin) / saturate(borderMax - borderMin + fwidth(value)));
+    }
+#endif
+
+float4 lilOptMul(float4x4 mat, float3 pos)
+{
+    return mat._m00_m10_m20_m30 * pos.x + (mat._m01_m11_m21_m31 * pos.y + (mat._m02_m12_m22_m32 * pos.z + mat._m03_m13_m23_m33));
+}
+
+float lilIsIn0to1(float2 f)
+{
+    return lilIsIn0to1(f.x) * lilIsIn0to1(f.y);
+}
+
+float lilIsIn0to1(float2 f, float nv)
+{
+    return lilIsIn0to1(f.x, nv) * lilIsIn0to1(f.y, nv);
+}
+
+float3 lilBlendNormal(float3 dstNormal, float3 srcNormal)
+{
+    return float3(dstNormal.xy + srcNormal.xy, dstNormal.z * srcNormal.z);
+}
+
+float lilMedian(float r, float g, float b) {
+    return max(min(r, g), min(max(r, g), b));
+}
+
+float lilMSDF(float3 msd)
+{
+    float sd = lilMedian(msd.r, msd.g, msd.b);
+    return saturate((sd - 0.5)/clamp(fwidth(sd), 0.01, 1.0));
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
 // Transform
 float3 lilTransformNormalOStoWS(float3 normalOS)
 {
     #ifdef UNITY_ASSUME_UNIFORM_SCALING
-        #ifndef SHADER_STAGE_RAY_TRACING
-            return mul((float3x3)GetObjectToWorldMatrix(), normalOS);
-        #else
-            return mul((float3x3)unity_ObjectToWorld, normalOS);
-        #endif
+        return mul((float3x3)LIL_MATRIX_M, normalOS);
     #else
-        return mul(normalOS, (float3x3)unity_WorldToObject);
+        return mul(normalOS, (float3x3)LIL_MATRIX_I_M);
     #endif
 }
 
@@ -27,23 +155,15 @@ struct lilVertexPositionInputs
 lilVertexPositionInputs lilGetVertexPositionInputs(float4 positionOS)
 {
     lilVertexPositionInputs output;
+    output.positionWS = lilOptMul(LIL_MATRIX_M, positionOS.xyz).xyz;
+    output.positionVS = lilOptMul(LIL_MATRIX_V, output.positionWS).xyz;
+    output.positionCS = lilOptMul(LIL_MATRIX_VP, output.positionWS);
     #if defined(LIL_BRP)
-        output.positionWS = mul(unity_ObjectToWorld, float4(positionOS.xyz,1.0)).xyz;
-        output.positionVS = mul(UNITY_MATRIX_V, float4(output.positionWS, 1.0)).xyz;
-        output.positionCS = UnityWorldToClipPos(output.positionWS);
         output.positionSS = ComputeGrabScreenPos(output.positionCS);
-    #elif defined(LIL_LWRP)
-        VertexPositionInputs input = GetVertexPositionInputs(positionOS.xyz);
-        output.positionWS = input.positionWS;
-        output.positionVS = input.positionVS;
-        output.positionCS = input.positionCS;
-        output.positionSS = ComputeScreenPos(input.positionCS);
     #else
-        VertexPositionInputs input = GetVertexPositionInputs(positionOS.xyz);
-        output.positionWS = input.positionWS;
-        output.positionVS = input.positionVS;
-        output.positionCS = input.positionCS;
-        output.positionSS = input.positionNDC;
+        float4 ndc = output.positionCS * 0.5f;
+        output.positionSS.xy = float2(ndc.x, ndc.y * _ProjectionParams.x) + ndc.w;
+        output.positionSS.zw = output.positionCS.zw;
     #endif
     return output;
 }
@@ -68,69 +188,14 @@ lilVertexNormalInputs lilGetVertexNormalInputs(float3 normalOS, float4 tangentOS
 {
     lilVertexNormalInputs output;
     output.normalWS     = lilTransformNormalOStoWS(normalOS);
-    output.tangentWS    = mul((float3x3)unity_ObjectToWorld, tangentOS.xyz);
-    output.bitangentWS  = cross(output.normalWS, output.tangentWS) * tangentOS.w * unity_WorldTransformParams.w;
+    output.tangentWS    = mul((float3x3)LIL_MATRIX_M, tangentOS.xyz);
+    output.bitangentWS  = cross(output.normalWS, output.tangentWS) * (tangentOS.w * LIL_NEGATIVE_SCALE);
     return output;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Optimized inverse trigonometric function
-// https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/
-float lilAcos(float x) 
-{ 
-    float ox = abs(x); 
-    float res = -0.156583f * ox + LIL_HALF_PI; 
-    res *= sqrt(1.0f - ox); 
-    return (x >= 0) ? res : LIL_PI - res; 
-}
-
-float lilAsin(float x)
-{
-    return LIL_HALF_PI - lilAcos(x);
-}
-
-float lilAtanPos(float x) 
-{ 
-    float t0 = (x < 1.0f) ? x : 1.0f / x;
-    float t1 = t0 * t0;
-    float poly = 0.0872929f;
-    poly = -0.301895f + poly * t1;
-    poly = 1.0f + poly * t1;
-    poly = poly * t0;
-    return (x < 1.0f) ? poly : LIL_HALF_PI - poly;
-}
-
-float lilAtan(float x) 
-{     
-    float t0 = lilAtanPos(abs(x));     
-    return (x < 0.0f) ? -t0 : t0; 
-}
-
-float lilAtan2(float x, float y)
-{
-    return lilAtan(x/y) + LIL_PI * (y<0) * (x<0?-1:1);
-}
-
-//------------------------------------------------------------------------------------------------------------------------------
-// Math
-float lilIsIn0to1(float f)
-{
-    return saturate(f) == f;
-}
-
-float lilIsIn0to1(float2 f)
-{
-    return lilIsIn0to1(f.x) * lilIsIn0to1(f.y);
-}
-
-float3 lilBlendNormal(float3 dstNormal, float3 srcNormal)
-{
-    return float3(dstNormal.xy + srcNormal.xy, dstNormal.z * srcNormal.z);
-}
-
-//------------------------------------------------------------------------------------------------------------------------------
 // Color
-float3 lilBlendColor(float3 dstCol, float3 srcCol, float srcA, int blendMode)
+float3 lilBlendColor(float3 dstCol, float3 srcCol, float srcA, uint blendMode)
 {
     float3 ad = dstCol + srcCol;
     float3 mu = dstCol * srcCol;
@@ -160,11 +225,11 @@ float3 lilToneCorrection(float3 c, float4 hsvg)
 {
     // gamma
     c = pow(abs(c), hsvg.w);
-    float e = 1.0e-10;
     // rgb -> hsv
-    float4 p = lerp(float4(c.bg, float2(-1.0, 2.0/3.0)), float4(c.gb, float2(0.0,-1.0/3.0)), step(c.b, c.g));
-    float4 q = lerp(float4(p.xyw, c.r), float4(c.r, p.yzx), step(p.x, c.r));
+    float4 p = (c.b > c.g) ? float4(c.bg,-1.0,2.0/3.0) : float4(c.gb,0.0,-1.0/3.0);
+    float4 q = (p.x > c.r) ? float4(p.xyw, c.r) : float4(c.r, p.yzx);
     float d = q.x - min(q.w, q.y);
+    float e = 1.0e-10;
     float3 hsv = float3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
     // shift
     hsv = float3(hsv.x+hsvg.x,saturate(hsv.y*hsvg.y),saturate(hsv.z*hsvg.z));
@@ -190,6 +255,11 @@ float2 lilRotateUV(float2 uv, float angle)
     );
     outuv += 0.5;
     return outuv;
+}
+
+float2 lilCalcUV(float2 uv, float4 uv_st)
+{
+    return uv * uv_st.xy + uv_st.zw;
 }
 
 float2 lilCalcUV(float2 uv, float4 uv_st, float4 uv_sr)
@@ -231,16 +301,14 @@ float2 lilCalcAtlasAnimation(float2 uv, float4 decalAnimation, float4 decalSubPa
     uint animTime = (uint)(LIL_TIME * decalAnimation.w) % (uint)decalAnimation.z;
     uint offsetX = animTime % (uint)decalAnimation.x;
     uint offsetY = animTime / (uint)decalAnimation.x;
-    outuv = (outuv + float2(offsetX,offsetY)) * decalSubParam.xy / decalAnimation.xy - decalAnimation.xy;
-    outuv = float2(outuv.x,-outuv.y);
+    outuv = (outuv + float2(offsetX,offsetY)) * decalSubParam.xy / decalAnimation.xy;
+    outuv.y = -outuv.y;
     return outuv;
 }
 
 float2 lilCalcUVWithoutAnimation(float2 uv, float4 uv_st, float4 uv_sr)
 {
-    float2 outuv = uv * uv_st.xy + uv_st.zw;
-    outuv = lilRotateUV(outuv, uv_sr.z);
-    return outuv;
+    return lilRotateUV(uv * uv_st.xy + uv_st.zw, uv_sr.z);
 }
 
 float2 lilCalcMatCapUV(float3 normalWS)
@@ -252,6 +320,7 @@ float2 lilCalcMatCapUV(float3 normalWS)
         // Fix Z-Rotation
         bool isMirror = unity_CameraProjection._m20 != 0.0 || unity_CameraProjection._m21 != 0.0;
         float2 outuv = mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5;
+        //outuv.y = isMirror ? -outuv.y : outuv.y;
 
         float3 tan = LIL_MATRIX_V._m00_m01_m02;
         float3 bitan = float3(-LIL_MATRIX_V._m22, 0.0, LIL_MATRIX_V._m20);
@@ -274,8 +343,7 @@ float lilCalcBlink(float4 blink)
 {
     float outBlink = sin(LIL_TIME * blink.z + blink.w) * 0.5 + 0.5;
     if(blink.y > 0.5) outBlink = round(outBlink);
-    outBlink = 1.0 - mad(blink.x, -outBlink, blink.x);
-    return outBlink;
+    return lerp(1.0, outBlink, blink.x);
 }
 
 float2 lilGetPanoramaUV(float3 viewDirection)
@@ -285,21 +353,51 @@ float2 lilGetPanoramaUV(float3 viewDirection)
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Sub Texture
-float4 lilGetSubTex(Texture2D tex, float4 uv_ST, float angle, float2 uv, SamplerState sampstate, bool isDecal, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isRightHand, float4 decalAnimation, float4 decalSubParam)
+float4 lilGetSubTex(bool existsTex, Texture2D tex, float4 uv_ST, float angle, float2 uv, float nv, SamplerState sampstate, bool isDecal, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isMSDF, bool isRightHand, float4 decalAnimation, float4 decalSubParam)
 {
-    float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
-    float2 uv2samp = lilCalcAtlasAnimation(uv2, decalAnimation, decalSubParam);
-    float4 outCol = LIL_SAMPLE_2D(tex,sampstate,uv2samp);
-    if(isDecal) outCol *= lilIsIn0to1(uv2);
-    return outCol;
+    #if defined(LIL_FEATURE_DECAL)
+        float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
+        #if defined(LIL_FEATURE_ANIMATE_DECAL)
+            float2 uv2samp = lilCalcAtlasAnimation(uv2, decalAnimation, decalSubParam);
+        #else
+            float2 uv2samp = uv2;
+        #endif
+        float4 outCol = 1.0;
+        if(existsTex) outCol = LIL_SAMPLE_2D(tex,sampstate,uv2samp);
+        LIL_BRANCH
+        if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
+        LIL_BRANCH
+        if(isDecal) outCol.a *= lilIsIn0to1(uv2, saturate(nv-0.05));
+        return outCol;
+    #else
+        float2 uv2 = lilCalcUV(uv, uv_ST, angle);
+        float4 outCol = 1.0;
+        if(existsTex) outCol = LIL_SAMPLE_2D(tex,sampstate,uv2);
+        LIL_BRANCH
+        if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
+        return outCol;
+    #endif
 }
 
-float4 lilGetSubTexWithoutAnimation(Texture2D tex, float4 uv_ST, float angle, float2 uv, SamplerState sampstate, bool isDecal, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isRightHand)
+float4 lilGetSubTexWithoutAnimation(bool existsTex, Texture2D tex, float4 uv_ST, float angle, float2 uv, float nv, SamplerState sampstate, bool isDecal, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isMSDF, bool isRightHand)
 {
-    float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
-    float4 outCol = LIL_SAMPLE_2D(tex,sampstate,uv2);
-    if(isDecal) outCol *= lilIsIn0to1(uv2);
-    return outCol;
+    #if defined(LIL_FEATURE_DECAL)
+        float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
+        float4 outCol = 1.0;
+        if(existsTex) outCol = LIL_SAMPLE_2D(tex,sampstate,uv2);
+        LIL_BRANCH
+        if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
+        LIL_BRANCH
+        if(isDecal) outCol.a *= lilIsIn0to1(uv2, saturate(nv-0.05));
+        return outCol;
+    #else
+        float2 uv2 = lilCalcUV(uv, uv_ST, angle);
+        float4 outCol = 1.0;
+        if(existsTex) outCol = LIL_SAMPLE_2D(tex,sampstate,uv2);
+        LIL_BRANCH
+        if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
+        return outCol;
+    #endif
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -521,10 +619,9 @@ float3 lilGetVertexLights(float3 positionWS)
         float4 toLightY = unity_4LightPosY0 - positionWS.y;
         float4 toLightZ = unity_4LightPosZ0 - positionWS.z;
 
-        float4 lengthSq = toLightX * toLightX;
+        float4 lengthSq = toLightX * toLightX + 0.000001;
         lengthSq += toLightY * toLightY;
         lengthSq += toLightZ * toLightZ;
-        lengthSq = max(lengthSq, 0.000001);
 
         #if LIL_VERTEXLIGHT_MODE == 0
             // Off
@@ -561,7 +658,7 @@ float3 lilGetVertexLights(float3 positionWS)
 
         #ifdef _ADDITIONAL_LIGHTS_VERTEX
             uint lightsCount = GetAdditionalLightsCount();
-            for (uint lightIndex = 0; lightIndex < lightsCount; ++lightIndex)
+            for (uint lightIndex = 0; lightIndex < lightsCount; lightIndex++)
             {
                 Light light = GetAdditionalLight(lightIndex, positionWS);
                 outCol += light.color * light.distanceAttenuation;
@@ -576,10 +673,10 @@ float3 lilGetAdditionalLights(float3 positionWS)
 {
     float3 outCol = 0.0;
     #ifdef _ADDITIONAL_LIGHTS
-        int additionalLightsCount = GetAdditionalLightsCount();
-        for (int adlcount = 0; adlcount < additionalLightsCount; ++adlcount)
+        uint lightsCount = GetAdditionalLightsCount();
+        for (uint lightIndex = 0; lightIndex < lightsCount; lightIndex++)
         {
-            Light light = GetAdditionalLight(adlcount, positionWS);
+            Light light = GetAdditionalLight(lightIndex, positionWS);
             outCol += light.distanceAttenuation * light.shadowAttenuation * light.color;
         }
     #endif
@@ -588,114 +685,120 @@ float3 lilGetAdditionalLights(float3 positionWS)
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Shading
+#if !defined(LIL_LITE) && !defined(LIL_BAKER) && defined(LIL_FEATURE_SHADOW)
 void lilGetShading(inout float4 col, inout float shadowmix, float3 albedo, float2 uv, float facing, float3 normalDirection, float attenuation, float3 lightDirection, bool cullOff = true)
 {
-    UNITY_BRANCH
+    LIL_BRANCH
     if(_UseShadow)
     {
         // Shade
-        float directContribution = saturate(dot(lightDirection,normalDirection)*0.5+0.5) * LIL_SAMPLE_2D(_ShadowBorderMask, sampler_MainTex, uv).r;
-        float directContribution2nd = directContribution;
-        float directContributionB = directContribution;
+        float ln = saturate(dot(lightDirection,normalDirection)*0.5+0.5);
+        if(Exists_ShadowBorderMask) ln *= LIL_SAMPLE_2D(_ShadowBorderMask, sampler_MainTex, uv).r;
+        float ln2 = ln;
+        float lnB = ln;
 
         // Shadow
-        #if defined(LIL_USE_SHADOW) || defined(LIL_LIGHTMODE_SHADOWMASK)
-            if(_ShadowReceive) directContribution *= saturate(attenuation + distance(lightDirection, _MainLightPosition.xyz));
-            if(_ShadowReceive) directContributionB *= saturate(attenuation + distance(lightDirection, _MainLightPosition.xyz));
+        #if defined(LIL_USE_SHADOW) || (defined(LIL_LIGHTMODE_SHADOWMASK) && defined(LIL_FEATURE_RECEIVE_SHADOW))
+            float shadowAttenuation = saturate(attenuation + distance(lightDirection, _MainLightPosition.xyz));
+            if(_ShadowReceive) ln *= shadowAttenuation;
+            if(_ShadowReceive) lnB *= shadowAttenuation;
         #endif
 
         // Toon
-        _ShadowBlur *= LIL_SAMPLE_2D(_ShadowBlurMask, sampler_MainTex, uv).r;
-        float shadowBorderMin = saturate(_ShadowBorder - _ShadowBlur * 0.5);
-        float shadowBorderMax = saturate(_ShadowBorder + _ShadowBlur * 0.5);
-        directContribution = saturate((directContribution - shadowBorderMin) / (shadowBorderMax - shadowBorderMin));
-        float shadow2ndBorderMin = saturate(_Shadow2ndBorder - _Shadow2ndBlur * 0.5);
-        float shadow2ndBorderMax = saturate(_Shadow2ndBorder + _Shadow2ndBlur * 0.5);
-        directContribution2nd = saturate((directContribution2nd - shadow2ndBorderMin) / (shadow2ndBorderMax - shadow2ndBorderMin));
-        float shadowBorderMinB = saturate(shadowBorderMin - _ShadowBorderRange);
-        directContributionB = saturate((directContributionB - shadowBorderMinB) / (shadowBorderMax - shadowBorderMinB));
+        float shadowBlur = _ShadowBlur;
+        if(Exists_ShadowBlurMask) shadowBlur *= LIL_SAMPLE_2D(_ShadowBlurMask, sampler_MainTex, uv).r;
+        ln = lilTooning(ln, _ShadowBorder, shadowBlur);
+        ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
+        lnB = lilTooning(lnB, _ShadowBorder, shadowBlur, _ShadowBorderRange);
 
         if(cullOff)
         {
             // Force shadow on back face
-            float bfshadow = facing < 0.0 ? 1.0 - _BackfaceForceShadow : 1.0;
-            directContribution *= bfshadow;
-            directContribution2nd *= bfshadow;
-            directContributionB *= bfshadow;
+            float bfshadow = (facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
+            ln *= bfshadow;
+            ln2 *= bfshadow;
+            lnB *= bfshadow;
         }
 
         // Copy
-        shadowmix = directContribution;
+        shadowmix = ln;
 
         // Strength
+        float shadowStrength = _ShadowStrength;
         #ifdef UNITY_COLORSPACE_GAMMA
-            _ShadowStrength = SRGBToLinear(_ShadowStrength);
+            shadowStrength = SRGBToLinear(shadowStrength);
         #endif
-        _ShadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, sampler_MainTex, uv).r;
-        directContribution = lerp(1.0, directContribution, _ShadowStrength);
+        if(Exists_ShadowStrengthMask) shadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, sampler_MainTex, uv).r;
+        ln = lerp(1.0, ln, shadowStrength);
 
         // Shadow Color 1
-        float4 shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampler_MainTex, uv);
+        float4 shadowColorTex = 0.0;
+        if(Exists_ShadowColorTex) shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampler_MainTex, uv);
         float3 indirectCol = lerp(albedo, shadowColorTex.rgb, shadowColorTex.a) * _ShadowColor.rgb;
         // Shadow Color 2
-        float4 shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, sampler_MainTex, uv);
+        float4 shadow2ndColorTex = 0.0;
+        if(Exists_Shadow2ndColorTex) shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, sampler_MainTex, uv);
         shadow2ndColorTex.rgb = lerp(albedo, shadow2ndColorTex.rgb, shadow2ndColorTex.a) * _Shadow2ndColor.rgb;
-        directContribution2nd = _Shadow2ndColor.a - directContribution2nd * _Shadow2ndColor.a;
-        indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, directContribution2nd);
+        ln2 = _Shadow2ndColor.a - ln2 * _Shadow2ndColor.a;
+        indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, ln2);
         // Multiply Main Color
         indirectCol = lerp(indirectCol, indirectCol*albedo, _ShadowMainStrength);
         // Gradation
-        indirectCol = lerp(indirectCol, albedo, directContributionB * _ShadowBorderColor.rgb);
+        indirectCol = lerp(indirectCol, albedo, lnB * _ShadowBorderColor.rgb);
         // Environment Light
         indirectCol = lerp(indirectCol, albedo, lilGetIndirLightColor() * _ShadowEnvStrength);
 
         // Mix
-        col.rgb = lerp(indirectCol, albedo, directContribution);
+        col.rgb = lerp(indirectCol, albedo, ln);
     }
 }
+#endif
 
+#if defined(LIL_PASS_LITE_INCLUDED)
 void lilGetShadingLite(inout float4 col, inout float shadowmix, float3 albedo, float2 uv, float facing, float3 normalDirection, float3 lightDirection, bool cullOff = true)
 {
-    UNITY_BRANCH
+    LIL_BRANCH
     if(_UseShadow)
     {
         // Shade
-        float directContribution = saturate(dot(lightDirection,normalDirection)*0.5+0.5);
+        float ln = saturate(dot(lightDirection,normalDirection)*0.5+0.5);
 
         // Toon
-        float shadowBorderMin = saturate(_ShadowBorder - _ShadowBlur * 0.5);
-        float shadowBorderMax = saturate(_ShadowBorder + _ShadowBlur * 0.5);
-        directContribution = saturate((directContribution - shadowBorderMin) / (shadowBorderMax - shadowBorderMin));
+        ln = lilTooning(ln, _ShadowBorder, _ShadowBlur);
 
         if(cullOff)
         {
             // Force shadow on back face
-            float bfshadow = facing < 0.0 ? 1.0 - _BackfaceForceShadow : 1.0;
-            directContribution *= bfshadow;
+            float bfshadow = (facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
+            ln *= bfshadow;
         }
 
         // Copy
-        shadowmix = directContribution;
+        shadowmix = ln;
 
         // Shadow Color
-        float4 shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampler_MainTex, uv);
+        float4 shadowColorTex = 1.0;
+        if(Exists_ShadowColorTex) shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampler_MainTex, uv);
         float3 indirectCol = lerp(shadowColorTex.rgb, albedo, lilGetIndirLightColor() * _ShadowEnvStrength);
 
         // Mix
-        col.rgb = lerp(indirectCol, albedo, directContribution);
+        col.rgb = lerp(indirectCol, albedo, ln);
     }
 }
+#endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Specular
 float3 lilFresnelTerm(float3 F0, float cosA)
 {
-    return F0 + (1-F0) * (1-cosA) * (1-cosA) * (1-cosA) * (1-cosA) * (1-cosA);
+    float a = 1.0-cosA;
+    return F0 + (1-F0) * a * a * a * a * a;
 }
 
 float3 lilFresnelLerp(float3 F0, float3 F90, float cosA)
 {
-    return lerp(F0, F90, (1-cosA) * (1-cosA) * (1-cosA) * (1-cosA) * (1-cosA));
+    float a = 1.0-cosA;
+    return lerp(F0, F90, a * a * a * a * a);
 }
 
 float3 lilCalcSpecular(float nv, float nl, float nh, float lh, float roughness, float3 specular, bool isSpecularToon, float attenuation = 1.0)
@@ -704,16 +807,16 @@ float3 lilCalcSpecular(float nv, float nl, float nh, float lh, float roughness, 
         // BRP Specular
         float roughness2 = max(roughness, 0.002);
 
-        float lambdaV = nl * (nv * (1 - roughness2) + roughness2);
-        float lambdaL = nv * (nl * (1 - roughness2) + roughness2);
+        float lambdaV = nl * (nv * (1.0 - roughness2) + roughness2);
+        float lambdaL = nv * (nl * (1.0 - roughness2) + roughness2);
         #if defined(SHADER_API_SWITCH)
-            float sjggx =  0.5f / (lambdaV + lambdaL + 1e-4f);
+            float sjggx =  0.5 / (lambdaV + lambdaL + 1e-4f);
         #else
-            float sjggx =  0.5f / (lambdaV + lambdaL + 1e-5f);
+            float sjggx =  0.5 / (lambdaV + lambdaL + 1e-5f);
         #endif
 
         float r2 = roughness2 * roughness2;
-        float d = (nh * r2 - nh) * nh + 1.0f;
+        float d = (nh * r2 - nh) * nh + 1.0;
         float ggx = r2 / (d * d + 1e-7f);
 
         //float specularTerm = SmithJointGGXVisibilityTerm(nl,nv,roughness2) * GGXTerm(nh,roughness2) * LIL_PI;
@@ -722,24 +825,24 @@ float3 lilCalcSpecular(float nv, float nl, float nh, float lh, float roughness, 
             specularTerm = sqrt(max(1e-4h, specularTerm));
         #endif
         specularTerm *= nl * attenuation;
-        if(isSpecularToon) return step(0.5, specularTerm);
+        if(isSpecularToon) return lilTooning(specularTerm, 0.5);
         else               return specularTerm * lilFresnelTerm(specular, lh);
     #elif LIL_SPECULAR_MODE == 1
         // URP Specular
         float roughness2 = max(roughness, 0.002);
         float r2 = roughness2 * roughness2;
         float d = (nh * r2 - nh) * nh + 1.00001;
-        half specularTerm = r2 / ((d * d) * max(0.1, lh * lh) * (roughness * 4.0 + 2.0));
+        float specularTerm = r2 / ((d * d) * max(0.1, lh * lh) * (roughness * 4.0 + 2.0));
         #if defined (SHADER_API_MOBILE) || defined (SHADER_API_SWITCH)
-            specularTerm = clamp(specularTerm, 0.0, 100.0); // Prevent FP16 overflow on mobiles
+            specularTerm = clamp(specularTerm, 0.0, 100.0);
         #endif
-        if(isSpecularToon) return step(0.5, specularTerm);
+        if(isSpecularToon) return lilTooning(specularTerm, 0.5);
         else               return specularTerm * specular;
     #else
         // Fast Specular
         float smoothness = 1.0/max(roughness, 0.002);
-        half specularTerm = pow(nh, smoothness);
-        if(isSpecularToon) return step(0.5, specularTerm);
+        float specularTerm = pow(nh, smoothness);
+        if(isSpecularToon) return lilTooning(specularTerm, 0.5);
         else               return specularTerm * smoothness * 0.1 * specular;
     #endif
 }
@@ -748,10 +851,8 @@ float3 lilCalcSpecular(float nv, float nl, float nh, float lh, float roughness, 
 // Tessellation
 float lilCalcEdgeTessFactor(float3 wpos0, float3 wpos1, float edgeLen)
 {
-    float dist = distance (0.5 * (wpos0+wpos1), _WorldSpaceCameraPos);
-    float len = distance(wpos0, wpos1);
-    float f = max(len * _ScreenParams.y / (edgeLen * dist), 1.0);
-    return f;
+    float dist = distance(0.5 * (wpos0+wpos1), _WorldSpaceCameraPos);
+    return max(distance(wpos0, wpos1) * _ScreenParams.y / (edgeLen * dist), 1.0);
 }
 
 #endif

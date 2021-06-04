@@ -42,15 +42,15 @@ struct appdata
 
 struct v2g
 {
-    float4 color            : COLOR;
     float2 uv               : TEXCOORD0;
     float3 positionWS       : TEXCOORD1;
-    float3 normalWS         : TEXCOORD2;
-    float3 tangentWS        : TEXCOORD3;
-    float3 bitangentWS      : TEXCOORD4;
-    LIL_VERTEXLIGHT_COORDS(5)
-    LIL_FOG_COORDS(6)
-    LIL_LIGHTMAP_COORDS(7)
+    float3 furVector        : TEXCOORD2;
+    #if !defined(LIL_PASS_FORWARDADD) && defined(LIL_SHOULD_NORMAL)
+        float3 normalWS         : TEXCOORD3;
+    #endif
+    LIL_VERTEXLIGHT_COORDS(4)
+    LIL_FOG_COORDS(5)
+    LIL_LIGHTMAP_COORDS(6)
     LIL_VERTEX_INPUT_INSTANCE_ID
     LIL_VERTEX_OUTPUT_STEREO
 };
@@ -59,10 +59,10 @@ struct g2f
 {
     float4 positionCS       : SV_POSITION;
     float2 uv               : TEXCOORD0;
-    #if defined(LIL_PASS_FORWARDADD) || !defined(LIL_BRP)
+    #if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP)
         float3 positionWS       : TEXCOORD1;
     #endif
-    #if !defined(LIL_PASS_FORWARDADD)
+    #if !defined(LIL_PASS_FORWARDADD) && defined(LIL_SHOULD_NORMAL)
         float3 normalWS         : TEXCOORD2;
     #endif
     float furLayer          : TEXCOORD3;

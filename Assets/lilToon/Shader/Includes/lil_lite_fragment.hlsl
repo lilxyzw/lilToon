@@ -30,7 +30,8 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main Color
-        float4 col = LIL_SAMPLE_2D(_OutlineTex, sampler_OutlineTex, uvMain) * _OutlineColor;
+        float4 col = _OutlineColor;
+        if(Exists_FurVectorTex) col *= LIL_SAMPLE_2D(_OutlineTex, sampler_OutlineTex, uvMain);
 
         //----------------------------------------------------------------------------------------------------------------------
         // Alpha
@@ -54,8 +55,10 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main Color
-        float4 col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain) * _Color;
-        float4 triMask = LIL_SAMPLE_2D(_TriMask, sampler_MainTex, uvMain);
+        float4 col = _Color;
+        if(Exists_MainTex) col *= LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain);
+        float4 triMask = 1.0;
+        if(Exists_TriMask) triMask = LIL_SAMPLE_2D(_TriMask, sampler_MainTex, uvMain);
 
         //----------------------------------------------------------------------------------------------------------------------
         // Alpha
@@ -78,7 +81,8 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         // MatCap
         if(_UseMatCap)
         {
-            float3 matcap = LIL_SAMPLE_2D(_MatCapTex, sampler_MainTex, input.uvMat).rgb;
+            float3 matcap = 1.0;
+            if(Exists_MatCapTex) matcap = LIL_SAMPLE_2D(_MatCapTex, sampler_MainTex, input.uvMat).rgb;
             col.rgb = lerp(col.rgb, _MatCapMul ? col.rgb * matcap : col.rgb + matcap, triMask.r);
         }
 
@@ -116,9 +120,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
             float nvabs = abs(dot(normalDirection, viewDirection));
             float rim = pow(saturate(1.0 - nvabs), _RimFresnelPower);
-            float rimBorderMin = saturate(_RimBorder - _RimBlur * 0.5);
-            float rimBorderMax = saturate(_RimBorder + _RimBlur * 0.5);
-            rim = saturate((rim - rimBorderMin) / (rimBorderMax - rimBorderMin));
+            rim = lilTooning(rim, _RimBorder, _RimBlur);
             #ifndef LIL_PASS_FORWARDADD
                 if(_RimShadowMask) rim *= shadowmix;
             #endif
@@ -130,8 +132,10 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             // Emission
             if(_UseEmission)
             {
-                float _EmissionBlinkSeq = lilCalcBlink(_EmissionBlink);
-                col.rgb += _EmissionBlinkSeq * triMask.b * LIL_GET_EMITEX(_EmissionMap,input.uv).rgb;
+                float emissionBlinkSeq = lilCalcBlink(_EmissionBlink);
+                float4 emissionColor = _EmissionColor;
+                if(Exists_EmissionMap) emissionColor *= LIL_GET_EMITEX(_EmissionMap,input.uv);
+                col.rgb += emissionBlinkSeq * triMask.b * emissionColor.rgb;
             }
         #endif
     #endif

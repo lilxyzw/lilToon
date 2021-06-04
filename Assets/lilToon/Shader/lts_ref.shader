@@ -1,4 +1,4 @@
-﻿Shader "Hidden/lilToonRefraction"
+Shader "Hidden/lilToonRefraction"
 {
     Properties
     {
@@ -31,6 +31,7 @@
         [lilToggle]     _Main2ndTexShouldCopy       ("Copy", Int) = 0
         [lilToggle]     _Main2ndTexShouldFlipMirror ("Flip Mirror", Int) = 0
         [lilToggle]     _Main2ndTexShouldFlipCopy   ("Flip Copy", Int) = 0
+        [lilToggle]     _Main2ndTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main2ndBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
         [lilToggle]     _Main2ndEnableLighting      ("Enable Lighting", Int) = 1
@@ -49,6 +50,7 @@
         [lilToggle]     _Main3rdTexShouldCopy       ("Copy", Int) = 0
         [lilToggle]     _Main3rdTexShouldFlipMirror ("Flip Mirror", Int) = 0
         [lilToggle]     _Main3rdTexShouldFlipCopy   ("Flip Copy", Int) = 0
+        [lilToggle]     _Main3rdTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main3rdBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
         [lilToggle]     _Main3rdEnableLighting      ("Enable Lighting", Int) = 1
@@ -205,6 +207,11 @@
                         _ParallaxOffset             ("Parallax Offset", float) = 0.5
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Distance Fade
+        [lilHDR]        _DistanceFadeColor          ("Color", Color) = (0,0,0,1)
+        [lil3Param]     _DistanceFade               ("Start|End|Strength", Vector) = (0.1,0.01,1,0)
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilCullMode]                                   _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
@@ -239,6 +246,10 @@
         [lilToggle]     _RefractionColorFromMain    ("RefractionColorFromMain", Int) = 0
                         _RefractionColor            ("Color", Color) = (1,1,1,1)
     }
+    HLSLINCLUDE
+        #define LIL_RENDER 2
+        #define LIL_REFRACTION
+    ENDHLSL
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
@@ -281,12 +292,12 @@
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
+
+            // Skip receiving shadow
             #pragma skip_variants SHADOWS_SCREEN
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 2
-            #define LIL_REFRACTION
             #include "Includes/lil_pass_normal.hlsl"
 
             ENDHLSL
@@ -331,7 +342,6 @@
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 2
             #define LIL_PASS_FORWARDADD
             #include "Includes/lil_pass_normal.hlsl"
 

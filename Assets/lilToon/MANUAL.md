@@ -10,7 +10,7 @@
         - [Main Color 2nd / 3rd](#main-color-2nd--3rd)
     - [Shadow](#shadow)
     - [Emission](#emission)
-- [Normal & Reflection](#normal--reflection)
+- [Normal Map & Reflection](#normal-map--reflection)
     - [Normal Map](#normal-map)
     - [Reflections](#reflections)
         - [Reflection](#reflection)
@@ -19,12 +19,15 @@
 - [Advanced](#advanced)
     - [Outline](#outline)
     - [Parallax](#parallax)
+    - [DistanceFade](#distance-fade)
     - [Stencil](#stencil)
     - [Rendering](#rendering)
     - [Tessellation](#tessellation)
     - [Refraction](#refraction)
     - [Fur](#fur)
 - [Optimization](#optimization)
+    - [Optimization](#optimization-1)
+    - [Shader Setting](#shader-setting)
 
 <br/>
 
@@ -66,7 +69,7 @@
 |Refraction|[High-load] The transparent area will appear distorted.|
 |Refraction Blur|[High-load] In addition to refraction, you can also create a frosted glass-like blur.|
 |Fur|[High-load] Furry. In a spotlight, it becomes brighter than other materials.|
-|Fur Cutout|[High-load] Furry. There is no brightness problem, but the appearance is rough.|
+|Fur (Cutout)|[High-load] Furry. There is no brightness problem, but the appearance is rough.|
 </details>
 
 <br/>
@@ -100,6 +103,7 @@ You can blend colors into the main color. This is the layer function in painting
 |Name|Description|
 |-|-|
 |Texture|Specifies the texture. You can also specify a Gif image and click "Convert Gif" to animate it.|
+|MSDF Texture|Sampling as [MSDF Texture](https://github.com/Chlumsky/msdfgen). The rendering will be similar to a vector image.|
 |As Decal|When it is turned on, the layer is used as a decal.|
 |Mask|Combine layers only in the area specified by the mask.|
 |Enable Lighting|Apply the color of the light to rim light.|
@@ -125,8 +129,8 @@ You can blend colors into the main color. This is the layer function in painting
 |Scale X/Y|Scale of decals.|
 |Angle|Angle of decals.|
 |-|-|
-|X/Y Size|The number of frames on each axis.|
-|Frames|Total number of frames.|
+|X/Y Frames|The number of frames on each axis.|
+|Total Frames|Total number of frames.|
 |FPS|Speed of animation.|
 |Ratio X/Y|Ratio of whitespace to be set when there is whitespace to the right or bottom of the texture.|
 |Fix Border|Increasing the value solves the problem when other frames extend beyond the top, bottom, left or right.|
@@ -164,7 +168,7 @@ You can blend colors into the main color. This is the layer function in painting
 
 <br/>
 
-# Normal & Reflection
+# Normal Map & Reflection
 ## Normal Map
 |Name|Description|
 |-|-|
@@ -221,10 +225,20 @@ You can blend colors into the main color. This is the layer function in painting
 <br/>
 
 ## Parallax
-|名前|説明|
+|Name|Description|
 |-|-|
 |Parallax|Parallax map and its scale.|
 |Offset|The threshold of parallax map.|
+
+<br/>
+
+## Distance Fade
+|Name|Description|
+|-|-|
+|Color|Color of fade.|
+|Start Distance|Distance to start the fade.|
+|End Distance|Distance to end the fade|
+|Strength|Strength of fade.|
 
 <br/>
 
@@ -308,6 +322,7 @@ This is an experimental feature that smooths polygons when you get close to them
 <br/>
 
 # Optimization
+## Optimization
 |Name|Description|
 |-|-|
 |Bake all layer|Merge the main color, color correction, and layers 2&3 into one texture. This will reduce the load and the change in appearance when you change to another shader.|
@@ -317,3 +332,8 @@ This is an experimental feature that smooths polygons when you get close to them
 |Remove unused textures|Remove unused textures from the material.|
 |Convert to lilToonLite|Convert the material to lilToonLite.|
 |Convert to MToon(VRM)|Convert the material to MToon.|
+
+<br/>
+
+## Shader Setting
+Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load. When you place an avatar in a world, you need to match the shader settings specified by the world creator because the same settings are applied to all avatars placed in the world.

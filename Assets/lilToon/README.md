@@ -26,7 +26,6 @@ This shader was developed for services that use avatars and has the following fe
 - Extensive support (Unity 2017 - 2021.1, BRP/LWRP/URP)
 - Light synthesis to prevent overexposure
 - Color correction function for easy avatar modification
-- Show/hide switching for each material
 - One-click settings with presets
 - Combine up to 3 layers with main color, and Sublayer also supports GIF animation
 - Features for toon (Outline, Custom shading, Rim light, MatCap, Stencil)

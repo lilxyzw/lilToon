@@ -1,5 +1,9 @@
 Shader "Hidden/ltspass_lite_transparent"
 {
+    HLSLINCLUDE
+        #define LIL_RENDER 2
+        #define LIL_LITE
+    ENDHLSL
     SubShader
     {
         // Forward
@@ -41,7 +45,6 @@ Shader "Hidden/ltspass_lite_transparent"
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 2
             #include "Includes/lil_pass_lite.hlsl"
 
             ENDHLSL
@@ -86,7 +89,6 @@ Shader "Hidden/ltspass_lite_transparent"
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 2
             #define LIL_OUTLINE
             #include "Includes/lil_pass_lite.hlsl"
 
@@ -132,7 +134,6 @@ Shader "Hidden/ltspass_lite_transparent"
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 2
             #define LIL_PASS_FORWARDADD
             #include "Includes/lil_pass_lite.hlsl"
 
@@ -159,8 +160,6 @@ Shader "Hidden/ltspass_lite_transparent"
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_LITE
-            #define LIL_RENDER 2
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -183,9 +182,8 @@ Shader "Hidden/ltspass_lite_transparent"
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 2
-            #define LIL_LITE
             #include "Includes/lil_pass_meta.hlsl"
+
             ENDHLSL
         }
     }

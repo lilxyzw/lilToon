@@ -1,5 +1,8 @@
 Shader "Hidden/ltspass_cutout"
 {
+    HLSLINCLUDE
+        #define LIL_RENDER 1
+    ENDHLSL
     SubShader
     {
         // Forward
@@ -39,9 +42,11 @@ Shader "Hidden/ltspass_cutout"
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
 
+            // Skip receiving shadow
+            #pragma skip_variants SHADOWS_SCREEN
+
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 1
             #include "Includes/lil_pass_normal.hlsl"
 
             ENDHLSL
@@ -87,7 +92,6 @@ Shader "Hidden/ltspass_cutout"
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 1
             #define LIL_OUTLINE
             #include "Includes/lil_pass_normal.hlsl"
 
@@ -134,7 +138,6 @@ Shader "Hidden/ltspass_cutout"
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 1
             #define LIL_PASS_FORWARDADD
             #include "Includes/lil_pass_normal.hlsl"
 
@@ -161,7 +164,6 @@ Shader "Hidden/ltspass_cutout"
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 1
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -184,8 +186,8 @@ Shader "Hidden/ltspass_cutout"
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 1
             #include "Includes/lil_pass_meta.hlsl"
+
             ENDHLSL
         }
     }

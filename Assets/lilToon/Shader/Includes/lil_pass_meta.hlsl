@@ -31,6 +31,7 @@ v2f vert (appdata input)
     v2f output;
     LIL_INITIALIZE_STRUCT(v2f, output);
 
+    LIL_BRANCH
     if(_Invisible) return output;
 
     LIL_TRANSFER_METAPASS(input,output);
@@ -53,28 +54,65 @@ float4 frag(v2f input) : SV_Target
     MetaInput metaInput;
     LIL_INITIALIZE_STRUCT(MetaInput, metaInput);
 
-    float2 uvMain = lilCalcUVWithoutAnimation(input.uv, _MainTex_ST, _MainTex_ScrollRotate);
-    float4 col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain) * _Color;
+    #if defined(LIL_FEATURE_ANIMATE_MAIN_UV)
+        float2 uvMain = lilCalcUVWithoutAnimation(input.uv, _MainTex_ST, _MainTex_ScrollRotate);
+    #else
+        float2 uvMain = lilCalcUV(input.uv, _MainTex_ST);
+    #endif
+    float4 col = _Color;
+    if(Exists_MainTex) col *= LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain);
     metaInput.Albedo = col.rgb;
 
     #ifndef LIL_FUR
-        LIL_BRANCH
-        if(_UseEmission)
-        {
-            _EmissionColor *= LIL_GET_EMITEX(_EmissionMap,input.uv);
-            #ifdef LIL_LITE
-                metaInput.Emission = _EmissionColor.a * _EmissionColor.rgb;
-            #else
-                metaInput.Emission = LIL_GET_EMIMASK(_EmissionBlendMask,input.uv) * _EmissionBlend * _EmissionColor.a * _EmissionColor.rgb;
-            #endif
-        }
-        #if !defined(LIL_LITE)
+        #if defined(LIL_FEATURE_EMISSION_1ST)
             LIL_BRANCH
-            if(_UseEmission2nd)
+            if(_UseEmission)
             {
-                _Emission2ndColor *= LIL_GET_EMITEX(_Emission2ndMap,input.uv);
-                metaInput.Emission += LIL_GET_EMIMASK(_Emission2ndBlendMask,input.uv) * _Emission2ndBlend * _Emission2ndColor.a * _Emission2ndColor.rgb;
+                float4 emissionColor = _EmissionColor;
+                #if defined(LIL_FEATURE_EMISSION_UV) && defined(LIL_FEATURE_ANIMATE_EMISSION_UV)
+                    if(Exists_EmissionMap) emissionColor *= LIL_GET_EMITEX(_EmissionMap,input.uv);
+                #elif defined(LIL_FEATURE_EMISSION_UV)
+                    if(Exists_EmissionMap) emissionColor *= LIL_SAMPLE_2D(_EmissionMap, sampler_EmissionMap, lilCalcUV(input.uv, _EmissionMap_ST));
+                #else
+                    if(Exists_EmissionMap) emissionColor *= LIL_SAMPLE_2D(_EmissionMap, sampler_EmissionMap, uvMain);
+                #endif
+                #ifdef LIL_LITE
+                    metaInput.Emission = emissionColor.a * emissionColor.rgb;
+                #else
+                    #if defined(LIL_FEATURE_EMISSION_MASK_UV) && defined(LIL_FEATURE_ANIMATE_EMISSION_MASK_UV)
+                        if(Exists_EmissionBlendMask) emissionColor *= LIL_GET_EMIMASK(_EmissionBlendMask,input.uv);
+                    #elif defined(LIL_FEATURE_EMISSION_MASK_UV)
+                        if(Exists_EmissionBlendMask) emissionColor *= LIL_SAMPLE_2D(_EmissionBlendMask, sampler_MainTex, lilCalcUV(input.uv, _EmissionBlendMask_ST));
+                    #else
+                        if(Exists_EmissionBlendMask) emissionColor *= LIL_SAMPLE_2D(_EmissionBlendMask, sampler_MainTex, uvMain);
+                    #endif
+                    metaInput.Emission = _EmissionBlend * emissionColor.a * emissionColor.rgb;
+                #endif
             }
+        #endif
+        #if !defined(LIL_LITE)
+            #if defined(LIL_FEATURE_EMISSION_2ND)
+                LIL_BRANCH
+                if(_UseEmission2nd)
+                {
+                    float4 emission2ndColor = _Emission2ndColor;
+                    #if defined(LIL_FEATURE_EMISSION_UV) && defined(LIL_FEATURE_ANIMATE_EMISSION_UV)
+                        if(Exists_Emission2ndMap) emission2ndColor *= LIL_GET_EMITEX(_Emission2ndMap,input.uv);
+                    #elif defined(LIL_FEATURE_EMISSION_UV)
+                        if(Exists_Emission2ndMap) emission2ndColor *= LIL_SAMPLE_2D(_Emission2ndMap, sampler_Emission2ndMap, lilCalcUV(input.uv, _Emission2ndMap_ST));
+                    #else
+                        if(Exists_Emission2ndMap) emission2ndColor *= LIL_SAMPLE_2D(_Emission2ndMap, sampler_Emission2ndMap, uvMain);
+                    #endif
+                    #if defined(LIL_FEATURE_EMISSION_MASK_UV) && defined(LIL_FEATURE_ANIMATE_EMISSION_MASK_UV)
+                        if(Exists_Emission2ndBlendMask) emission2ndColor *= LIL_GET_EMIMASK(_Emission2ndBlendMask,input.uv);
+                    #elif defined(LIL_FEATURE_EMISSION_MASK_UV)
+                        if(Exists_Emission2ndBlendMask) emission2ndColor *= LIL_SAMPLE_2D(_Emission2ndBlendMask, sampler_MainTex, lilCalcUV(input.uv, _Emission2ndBlendMask_ST));
+                    #else
+                        if(Exists_Emission2ndBlendMask) emission2ndColor *= LIL_SAMPLE_2D(_Emission2ndBlendMask, sampler_MainTex, uvMain);
+                    #endif
+                    metaInput.Emission += _Emission2ndBlend * emission2ndColor.a * emission2ndColor.rgb;
+                }
+            #endif
         #endif
     #endif
 

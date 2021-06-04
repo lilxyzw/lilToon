@@ -31,6 +31,7 @@
         [lilToggle]     _Main2ndTexShouldCopy       ("Copy", Int) = 0
         [lilToggle]     _Main2ndTexShouldFlipMirror ("Flip Mirror", Int) = 0
         [lilToggle]     _Main2ndTexShouldFlipCopy   ("Flip Copy", Int) = 0
+        [lilToggle]     _Main2ndTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main2ndBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
         [lilToggle]     _Main2ndEnableLighting      ("Enable Lighting", Int) = 1
@@ -49,6 +50,7 @@
         [lilToggle]     _Main3rdTexShouldCopy       ("Copy", Int) = 0
         [lilToggle]     _Main3rdTexShouldFlipMirror ("Flip Mirror", Int) = 0
         [lilToggle]     _Main3rdTexShouldFlipCopy   ("Flip Copy", Int) = 0
+        [lilToggle]     _Main3rdTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main3rdBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
         [lilToggle]     _Main3rdEnableLighting      ("Enable Lighting", Int) = 1
@@ -203,6 +205,11 @@
         [NoScaleOffset] _ParallaxMap                ("Parallax Map", 2D) = "gray" {}
                         _Parallax                   ("Parallax Scale", float) = 0.02
                         _ParallaxOffset             ("Parallax Offset", float) = 0.5
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Distance Fade
+        [lilHDR]        _DistanceFadeColor          ("Color", Color) = (0,0,0,1)
+        [lil3Param]     _DistanceFade               ("Start|End|Strength", Vector) = (0.1,0.01,1,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced

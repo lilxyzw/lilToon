@@ -7,6 +7,17 @@ using System.IO;
 public class lilStartup {
     static lilStartup()
     {
+        // Shader Setting
+        string shaderSettingPath = Path.GetFullPath("Assets/lilToon/Shader/Includes/lil_setting.hlsl");
+        if(!File.Exists(shaderSettingPath))
+        {
+            StreamWriter sw = new StreamWriter(shaderSettingPath,true);
+            sw.Write("#ifndef LIL_SETTING_INCLUDED\r\n#define LIL_SETTING_INCLUDED\r\n\r\n#define LIL_FEATURE_MAIN_TONE_CORRECTION\r\n#define LIL_FEATURE_SHADOW\r\n#define LIL_FEATURE_TEX_SHADOW_STRENGTH\r\n#define LIL_FEATURE_EMISSION_1ST\r\n#define LIL_FEATURE_NORMAL_1ST\r\n#define LIL_FEATURE_MATCAP\r\n#define LIL_FEATURE_TEX_MATCAP_MASK\r\n#define LIL_FEATURE_RIMLIGHT\r\n#define LIL_FEATURE_TEX_RIMLIGHT_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_WIDTH\r\n\r\n#endif");
+            sw.Close();
+            AssetDatabase.Refresh();
+        }
+
+        // Editor
         #if NET_4_6
             string fullPath = Path.GetFullPath("Assets/csc.rsp");
         #else

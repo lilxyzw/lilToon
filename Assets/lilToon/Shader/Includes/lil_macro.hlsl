@@ -66,10 +66,14 @@
 // 1 : Fix Z-Rotation
 #define LIL_MATCAP_MODE 1
 
+// Antialias mode (Default : 1)
+// 0 : Off
+// 1 : On
+#define LIL_ANTIALIAS_MODE 1
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Replace Macro
 #define LIL_BRANCH                                  UNITY_BRANCH
-#define LIL_MATRIX_V                                UNITY_MATRIX_V
 #define LIL_VERTEX_INPUT_INSTANCE_ID                UNITY_VERTEX_INPUT_INSTANCE_ID
 #define LIL_VERTEX_OUTPUT_STEREO                    UNITY_VERTEX_OUTPUT_STEREO
 #define LIL_SETUP_INSTANCE_ID(i)                    UNITY_SETUP_INSTANCE_ID(i)
@@ -118,7 +122,7 @@
 #endif
 
 // Conbine
-#if defined(SHADOWS_SCREEN) || defined(_MAIN_LIGHT_SHADOWS) || defined(_MAIN_LIGHT_SHADOWS_CASCADE) || defined(_MAIN_LIGHT_SHADOWS_SCREEN)
+#if (defined(SHADOWS_SCREEN) || defined(_MAIN_LIGHT_SHADOWS) || defined(_MAIN_LIGHT_SHADOWS_CASCADE) || defined(_MAIN_LIGHT_SHADOWS_SCREEN)) && defined(LIL_FEATURE_RECEIVE_SHADOW)
     #define LIL_USE_SHADOW
 #endif
 #if defined(LIL_USE_LIGHTMAP) || defined(LIL_USE_DYNAMICLIGHTMAP) || defined(LIL_USE_DIRLIGHTMAP) || defined(LIL_LIGHTMODE_SHADOWMASK)
@@ -127,6 +131,34 @@
 
 // Directional Lightmap
 #undef LIL_USE_DIRLIGHTMAP
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Optimization Macro
+
+// tangent / bitangent / normal
+#if defined(LIL_FEATURE_NORMAL_1ST) || defined(LIL_FEATURE_NORMAL_2ND) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX)
+    #define LIL_SHOULD_TBN
+#endif
+
+// tangentW
+#if (defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD)) && defined(LIL_FEATURE_DECAL)
+    #define LIL_SHOULD_TANGENT_W
+#endif
+
+// tangent (vertex input)
+#if defined(LIL_SHOULD_TBN) || defined(LIL_SHOULD_TANGENT_W)
+    #define LIL_SHOULD_TANGENT
+#endif
+
+// normal (vertex input)
+#if defined(LIL_SHOULD_TANGENT) || defined(LIL_FEATURE_SHADOW) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_MATCAP) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_REFRACTION) || (defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE))
+    #define LIL_SHOULD_NORMAL
+#endif
+
+// positionWS
+#if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX) || defined(LIL_FEATURE_DISTANCE_FADE) || defined(LIL_REFRACTION) || !defined(LIL_BRP)
+    #define LIL_SHOULD_POSITION_WS
+#endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Macro
@@ -195,13 +227,8 @@
     #define LIL_DECODE_DYNAMICLIGHTMAP(lm)          DecodeRealtimeLightmap(lm)
 
     // Lighting
-    struct BRPShadowCoords
-    {
-        float4 pos;
-        UNITY_SHADOW_COORDS(0)
-    };
-    #define LIL_SHADOW_COORDS(idx)                  UNITY_SHADOW_COORDS(idx)
     #if defined(LIL_USE_SHADOW) && !defined(LIL_PASS_FORWARDADD)
+        #define LIL_SHADOW_COORDS(idx)                  UNITY_SHADOW_COORDS(idx)
         #define LIL_TRANSFER_SHADOW(vi,uv,o) \
             BRPShadowCoords brpShadowCoords; \
             brpShadowCoords.pos = vi.positionCS; \
@@ -212,10 +239,23 @@
             brpShadowCoords.pos = i.positionCS; \
             brpShadowCoords._ShadowCoord = i._ShadowCoord; \
             UNITY_LIGHT_ATTENUATION(atten, brpShadowCoords, i.positionWS)
-    #else
+    #elif !defined(LIL_PASS_FORWARDADD)
+        #define LIL_SHADOW_COORDS(idx)
         #define LIL_TRANSFER_SHADOW(vi,uv,o)
-        #define LIL_LIGHT_ATTENUATION(atten,i) UNITY_LIGHT_ATTENUATION(atten, i, i.positionWS)
+        #define LIL_LIGHT_ATTENUATION(atten,i)      float atten = 1.0
+    #else
+        #define LIL_SHADOW_COORDS(idx)
+        #define LIL_TRANSFER_SHADOW(vi,uv,o)
+        #define LIL_LIGHT_ATTENUATION(atten,i) \
+            BRPShadowCoords brpShadowCoords; \
+            brpShadowCoords.pos = i.positionCS; \
+            UNITY_LIGHT_ATTENUATION(atten, brpShadowCoords, i.positionWS)
     #endif
+    struct BRPShadowCoords
+    {
+        float4 pos;
+        LIL_SHADOW_COORDS(0)
+    };
 
     // Shadow caster
     #define LIL_V2F_SHADOW_CASTER                   V2F_SHADOW_CASTER_NOPOS float4 positionCS : SV_POSITION;
@@ -245,6 +285,11 @@
     #define MetaInput                               UnityMetaInput
     #define MetaFragment(input)                     UnityMetaFragment(input)
     #define MetaVertexPosition(pos,uv1,uv2,l,d)     UnityMetaVertexPosition(pos,uv1,uv2,l,d)
+    #define LIL_MATRIX_M                            unity_ObjectToWorld
+    #define LIL_MATRIX_I_M                          unity_WorldToObject
+    #define LIL_MATRIX_V                            unity_MatrixV
+    #define LIL_MATRIX_VP                           unity_MatrixVP
+    #define LIL_NEGATIVE_SCALE                      unity_WorldTransformParams.w
 #else
     // Environment reflection
     #define LIL_GET_ENVIRONMENT_REFLECTION(viewDirection,normalDirection,perceptualRoughness,positionWS,o) \
@@ -305,6 +350,20 @@
     // Transform
     #define LIL_TRANSFORM_POS_OS_TO_WS(positionOS)                  TransformObjectToWorld(positionOS)
     #define LIL_TRANSFORM_POS_WS_TO_CS(positionWS)                  TransformWorldToHClip(positionWS)
+
+    // Support
+    #ifndef SHADER_STAGE_RAY_TRACING
+        #define LIL_MATRIX_M                            GetObjectToWorldMatrix()
+        #define LIL_MATRIX_I_M                          GetWorldToObjectMatrix()
+        #define LIL_MATRIX_V                            GetWorldToViewMatrix()
+        #define LIL_MATRIX_VP                           GetWorldToHClipMatrix()
+    #else
+        #define LIL_MATRIX_M                            ObjectToWorld3x4()
+        #define LIL_MATRIX_I_M                          WorldToObject3x4()
+        #define LIL_MATRIX_V                            GetWorldToViewMatrix()
+        #define LIL_MATRIX_VP                           GetWorldToHClipMatrix()
+    #endif
+    #define LIL_NEGATIVE_SCALE                      GetOddNegativeScale()
 #endif
 
 // Pi
@@ -519,33 +578,17 @@
 #endif
 
 #if defined(LIL_WITHOUT_ANIMATION)
-    #define LIL_GET_SUBTEX(tex,uv)  lilGetSubTexWithoutAnimation(tex, tex##_ST, tex##Angle, uv, sampler##tex, tex##IsDecal, tex##IsLeftOnly, tex##IsRightOnly, tex##ShouldCopy, tex##ShouldFlipMirror, tex##ShouldFlipCopy, isRightHand)
+    #define LIL_GET_SUBTEX(tex,uv)  lilGetSubTexWithoutAnimation(Exists##tex, tex, tex##_ST, tex##Angle, uv, 1, sampler##tex, tex##IsDecal, tex##IsLeftOnly, tex##IsRightOnly, tex##ShouldCopy, tex##ShouldFlipMirror, tex##ShouldFlipCopy, tex##IsMSDF, isRightHand)
     #define LIL_GET_EMITEX(tex,uv)  LIL_SAMPLE_2D(tex, sampler##tex, lilCalcUVWithoutAnimation(uv, tex##_ST, tex##_ScrollRotate))
-    #define LIL_GET_EMIMASK(tex,uv) LIL_SAMPLE_2D(tex, sampler_MainTex, lilCalcUVWithoutAnimation(uv, tex##_ST, tex##_ScrollRotate)).r
+    #define LIL_GET_EMIMASK(tex,uv) LIL_SAMPLE_2D(tex, sampler_MainTex, lilCalcUVWithoutAnimation(uv, tex##_ST, tex##_ScrollRotate))
 #else
-    #define LIL_GET_SUBTEX(tex,uv)  lilGetSubTex(tex, tex##_ST, tex##Angle, uv, sampler##tex, tex##IsDecal, tex##IsLeftOnly, tex##IsRightOnly, tex##ShouldCopy, tex##ShouldFlipMirror, tex##ShouldFlipCopy, isRightHand, tex##DecalAnimation, tex##DecalSubParam)
+    #define LIL_GET_SUBTEX(tex,uv)  lilGetSubTex(Exists##tex, tex, tex##_ST, tex##Angle, uv, nv, sampler##tex, tex##IsDecal, tex##IsLeftOnly, tex##IsRightOnly, tex##ShouldCopy, tex##ShouldFlipMirror, tex##ShouldFlipCopy, tex##IsMSDF, isRightHand, tex##DecalAnimation, tex##DecalSubParam)
     #define LIL_GET_EMITEX(tex,uv)  LIL_SAMPLE_2D(tex, sampler##tex, lilCalcUV(uv, tex##_ST, tex##_ScrollRotate))
-    #define LIL_GET_EMIMASK(tex,uv) LIL_SAMPLE_2D(tex, sampler_MainTex, lilCalcUV(uv, tex##_ST, tex##_ScrollRotate)).r
+    #define LIL_GET_EMIMASK(tex,uv) LIL_SAMPLE_2D(tex, sampler_MainTex, lilCalcUV(uv, tex##_ST, tex##_ScrollRotate))
 #endif
 
 // Meta
 #define LIL_TRANSFER_METAPASS(input,output) \
     output.positionCS = MetaVertexPosition(input.positionOS, input.uv1, input.uv2, unity_LightmapST, unity_DynamicLightmapST)
-
-#define LIL_TEXSUB_PROPERTIES(tex) \
-    float4  tex##_ST; \
-    float   tex##Angle; \
-    float4  tex##DecalAnimation; \
-    float4  tex##DecalSubParam; \
-    lilBool tex##IsDecal; \
-    lilBool tex##IsLeftOnly; \
-    lilBool tex##IsRightOnly; \
-    lilBool tex##ShouldCopy; \
-    lilBool tex##ShouldFlipMirror; \
-    lilBool tex##ShouldFlipCopy;
-
-#define LIL_TEX_PROPERTIES(tex) \
-    float4  tex##_ST; \
-    float4  tex##_ScrollRotate;
 
 #endif

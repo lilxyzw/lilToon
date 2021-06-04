@@ -1,5 +1,3 @@
-#if UNITY_EDITOR
-using UnityEditor;
 using UnityEngine;
 
 public class lilToonPreset : ScriptableObject
@@ -53,5 +51,3 @@ public class lilToonPreset : ScriptableObject
         public Vector2 scale;
     }
 }
-
-#endif

@@ -39,6 +39,11 @@
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Distance Fade
+        [lilHDR]        _DistanceFadeColor          ("Color", Color) = (0,0,0,1)
+        [lil3Param]     _DistanceFade               ("Start|End|Strength", Vector) = (0.1,0.01,1,0)
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilCullMode]                                   _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
@@ -106,6 +111,10 @@
                                                         _FurOffsetUnits         ("Offset Units", Float) = 0
         [lilColorMask]                                  _FurColorMask           ("Color Mask", Int) = 15
     }
+    HLSLINCLUDE
+        #define LIL_RENDER 2
+        #define LIL_FUR
+    ENDHLSL
     SubShader
     {
         Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
@@ -149,8 +158,6 @@
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 2
-            #define LIL_FUR
             #include "Includes/lil_pass_normal.hlsl"
 
             ENDHLSL
@@ -197,8 +204,6 @@
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 2
-            #define LIL_FUR
             #define LIL_PASS_FORWARDADD
             #include "Includes/lil_pass_normal.hlsl"
 
@@ -247,7 +252,6 @@
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 2
             #include "Includes/lil_pass_fur.hlsl"
 
             ENDHLSL
@@ -294,7 +298,6 @@
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 2
             #define LIL_PASS_FORWARDADD
             #include "Includes/lil_pass_fur.hlsl"
 
@@ -321,8 +324,6 @@
 
             //------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_RENDER 2
-            #define LIL_FUR
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }

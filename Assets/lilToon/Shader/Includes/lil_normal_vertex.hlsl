@@ -10,6 +10,7 @@ v2f vert(appdata input)
 
     //----------------------------------------------------------------------------------------------------------------------
     // Invisible
+    LIL_BRANCH
     if(_Invisible) return output;
 
     //----------------------------------------------------------------------------------------------------------------------
@@ -18,26 +19,31 @@ v2f vert(appdata input)
     LIL_TRANSFER_INSTANCE_ID(input, output);
     LIL_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
+    #if defined(LIL_OUTLINE)
+        float2 uvMain = lilCalcUV(input.uv, _MainTex_ST);
+        float outlineWidth = _OutlineWidth * 0.01;
+        if(Exists_OutlineWidthMask) outlineWidth *= LIL_SAMPLE_2D_LOD(_OutlineWidthMask, sampler_MainTex, uvMain, 0).r;
+        if(_OutlineVertexR2Width) outlineWidth *= input.color.r;
+        if(_OutlineFixWidth) outlineWidth *= saturate(length(LIL_GET_VIEWDIR_WS(lilOptMul(LIL_MATRIX_M, input.positionOS.xyz).xyz)));
+        input.positionOS.xyz += input.normalOS.xyz * outlineWidth;
+    #endif
+
     //----------------------------------------------------------------------------------------------------------------------
     // Copy
     LIL_VERTEX_POSITION_INPUTS(input.positionOS, vertexInput);
-    #if defined(LIL_OUTLINE) || defined(LIL_FUR)
+    #if defined(LIL_OUTLINE) || defined(LIL_SHOULD_NORMAL) && (defined(LIL_FUR) || !defined(LIL_SHOULD_TANGENT))
         LIL_VERTEX_NORMAL_INPUTS(input.normalOS, vertexNormalInput);
-    #else
+    #elif defined(LIL_SHOULD_NORMAL)
         LIL_VERTEX_NORMAL_TANGENT_INPUTS(input.normalOS, input.tangentOS, vertexNormalInput);
     #endif
+
+    output.uv           = input.uv;
+    output.positionCS   = vertexInput.positionCS;
 
     #if defined(LIL_OUTLINE)
         //--------------------------------------------------------------------------------------------------------------
         // Outline
-        float2 uvMain = input.uv * _MainTex_ST.xy + _MainTex_ST.zw;
-        _OutlineWidth *= LIL_SAMPLE_2D_LOD(_OutlineWidthMask, sampler_MainTex, uvMain, 0).r * 0.01;
-        if(_OutlineVertexR2Width) _OutlineWidth *= input.color.r;
-        if(_OutlineFixWidth) _OutlineWidth *= saturate(length(LIL_GET_VIEWDIR_WS(vertexInput.positionWS)));
-        vertexInput.positionWS += vertexNormalInput.normalWS * _OutlineWidth;
-        output.uv           = input.uv;
-        output.positionCS   = LIL_TRANSFORM_POS_WS_TO_CS(vertexInput.positionWS);
-        #if defined(LIL_PASS_FORWARDADD) || !defined(LIL_BRP)
+        #if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP)
             output.positionWS   = vertexInput.positionWS;
         #endif
         #if defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE)
@@ -47,31 +53,52 @@ v2f vert(appdata input)
         //--------------------------------------------------------------------------------------------------------------
         // Fur
         #if !defined(LIL_BRP)
-            output.uv           = input.uv;
             output.positionWS   = vertexInput.positionWS;
-            output.positionCS   = vertexInput.positionCS;
-            output.normalWS     = vertexNormalInput.normalWS;
+            #if defined(LIL_SHOULD_NORMAL)
+                output.normalWS     = vertexNormalInput.normalWS;
+            #endif
         #elif defined(LIL_PASS_FORWARDADD)
-            output.uv           = input.uv;
             output.positionWS   = vertexInput.positionWS;
-            output.positionCS   = vertexInput.positionCS;
         #else
             output.uv           = input.uv;
             output.positionCS   = vertexInput.positionCS;
-            output.normalWS     = vertexNormalInput.normalWS;
+            #if defined(LIL_FEATURE_DISTANCE_FADE)
+                output.positionWS   = vertexInput.positionWS;
+            #endif
+            #if defined(LIL_SHOULD_NORMAL)
+                output.normalWS     = vertexNormalInput.normalWS;
+            #endif
         #endif
     #else
         //--------------------------------------------------------------------------------------------------------------
         // Normal
-        output.uv           = input.uv;
-        output.positionWS   = vertexInput.positionWS;
-        output.positionCS   = vertexInput.positionCS;
-        output.normalWS     = vertexNormalInput.normalWS;
-        output.tangentWS    = vertexNormalInput.tangentWS;
-        output.bitangentWS  = vertexNormalInput.bitangentWS;
-        output.tangentW     = input.tangentOS.w;
+        #if defined(LIL_SHOULD_POSITION_WS)
+            output.positionWS   = vertexInput.positionWS;
+        #endif
+        #if defined(LIL_SHOULD_NORMAL)
+            output.normalWS     = vertexNormalInput.normalWS;
+        #endif
+        #if defined(LIL_SHOULD_TBN)
+            output.tangentWS    = vertexNormalInput.tangentWS;
+            output.bitangentWS  = vertexNormalInput.bitangentWS;
+        #endif
+        #if defined(LIL_SHOULD_TANGENT_W)
+            output.tangentW     = input.tangentOS.w;
+        #endif
         #if defined(LIL_REFRACTION) && !defined(LIL_PASS_FORWARDADD)
             output.positionSS = vertexInput.positionSS;
+        #endif
+    #endif
+
+    //----------------------------------------------------------------------------------------------------------------------
+    // Clipping Canceller
+    #if defined(LIL_FEATURE_CLIPPING_CANCELLER)
+        #if defined(UNITY_REVERSED_Z)
+            // DirectX
+            if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0) output.positionCS.z = output.positionCS.z * 0.0001 + output.positionCS.w * 0.999;
+        #else
+            // OpenGL
+            if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0) output.positionCS.z = output.positionCS.z * 0.0001 - output.positionCS.w * 0.999;
         #endif
     #endif
 
