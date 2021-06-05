@@ -401,8 +401,39 @@ float4 lilGetSubTexWithoutAnimation(bool existsTex, Texture2D tex, float4 uv_ST,
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
+// Light Direction
+float3 lilGetLightDirection()
+{
+    #if LIL_LIGHT_DIRECTION_MODE == 0
+        return normalize(_MainLightPosition.xyz + float3(0.0,0.001,0.0));
+    #else
+        return normalize(_MainLightPosition.xyz * lilLuminance(_MainLightColor.rgb) + 
+                        unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + 
+                        float3(0.0,0.001,0.0));
+    #endif
+}
+
+float3 lilGetLightDirection(float3 positionWS)
+{
+    #if defined(POINT) || defined(SPOT) || defined(POINT_COOKIE)
+        return normalize(_MainLightPosition.xyz - positionWS);
+    #else
+        return _MainLightPosition.xyz;
+    #endif
+}
+
+float3 lilGetLightMapDirection(float2 uv)
+{
+    #if defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_DIRLIGHTMAP)
+        float4 lightmapDirection = LIL_SAMPLE_LIGHTMAP(LIL_DIRLIGHTMAP_TEX,  LIL_LIGHTMAP_SAMP, uv);
+        return lightmapDirection.xyz * 2.0 - 1.0;
+    #else
+        return 0;
+    #endif
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
 // SH Lighting
-//unity_SHAr unity_SHAg unity_SHAb unity_SHBr unity_SHBg unity_SHBb unity_SHC
 float3 lilGetSHZero()
 {
     // L0
@@ -446,6 +477,24 @@ float3 lilGetSHLength()
     #else
         return x1 + x2;
     #endif
+}
+
+float3 lilGetSHToon()
+{
+    float3 N = lilGetLightDirection() * 0.666666;
+    float3 res = float3(unity_SHAr.w,unity_SHAg.w,unity_SHAb.w);
+    res.r += dot(unity_SHAr.rgb, N);
+    res.g += dot(unity_SHAg.rgb, N);
+    res.b += dot(unity_SHAb.rgb, N);
+    float4 vB = N.xyzz * N.yzzx;
+    res.r += dot(unity_SHBr, vB);
+    res.g += dot(unity_SHBg, vB);
+    res.b += dot(unity_SHBb, vB);
+    res += unity_SHC.rgb * (N.x * N.x - N.y * N.y);
+    #ifdef UNITY_COLORSPACE_GAMMA
+        res = LinearToSRGB(res);
+    #endif
+    return res;
 }
 
 float3 lilGetSHMagic()
@@ -554,6 +603,9 @@ float3 lilGetLightColor()
     #elif LIL_SH_DIRECT_MODE == 9
         // Strongest direction
         return saturate(_MainLightColor.rgb + lilGetSHStrongest());
+    #elif LIL_SH_DIRECT_MODE == 10
+        // Approximation of Standard (lilToon)
+        return saturate(_MainLightColor.rgb + lilGetSHToon());
     #endif
 }
 
@@ -580,36 +632,6 @@ float3 lilGetLightMapColor(float2 uv)
         outCol += LIL_DECODE_DYNAMICLIGHTMAP(dynlightmap);
     #endif
     return outCol;
-}
-
-float3 lilGetLightMapDirection(float2 uv)
-{
-    #if defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_DIRLIGHTMAP)
-        float4 lightmapDirection = LIL_SAMPLE_LIGHTMAP(LIL_DIRLIGHTMAP_TEX,  LIL_LIGHTMAP_SAMP, uv);
-        return lightmapDirection.xyz * 2.0 - 1.0;
-    #else
-        return 0;
-    #endif
-}
-
-float3 lilGetLightDirection()
-{
-    #if LIL_LIGHT_DIRECTION_MODE == 0
-        return normalize(_MainLightPosition.xyz + float3(0.0,0.001,0.0));
-    #else
-        return normalize(_MainLightPosition.xyz * lilLuminance(_MainLightColor.rgb) + 
-                        unity_SHAr.xyz + unity_SHAg.xyz + unity_SHAb.xyz + 
-                        float3(0.0,0.001,0.0));
-    #endif
-}
-
-float3 lilGetLightDirection(float3 positionWS)
-{
-    #if defined(POINT) || defined(SPOT) || defined(POINT_COOKIE)
-        return normalize(_MainLightPosition.xyz - positionWS);
-    #else
-        return _MainLightPosition.xyz;
-    #endif
 }
 
 float3 lilGetVertexLights(float3 positionWS)
@@ -754,7 +776,7 @@ void lilGetShading(inout float4 col, inout float shadowmix, float3 albedo, float
 }
 #endif
 
-#if defined(LIL_PASS_LITE_INCLUDED)
+#if defined(LIL_LITE)
 void lilGetShadingLite(inout float4 col, inout float shadowmix, float3 albedo, float2 uv, float facing, float3 normalDirection, float3 lightDirection, bool cullOff = true)
 {
     LIL_BRANCH

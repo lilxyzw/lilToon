@@ -25,7 +25,8 @@
 // 7 : Maximum value of 6 directions (Sunao Shader)
 // 8 : Average value of 6 directions (UnlitWF)
 // 9 : Strongest direction
-#define LIL_SH_DIRECT_MODE 1
+// 10 : Approximation of Standard (lilToon)
+#define LIL_SH_DIRECT_MODE 10
 
 // SH sampling mode for indirect light (Default : 0)
 // 0 : unity_SHA.w
