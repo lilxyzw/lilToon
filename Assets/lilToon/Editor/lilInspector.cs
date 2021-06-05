@@ -449,9 +449,12 @@ namespace lilToon
             if(editorSetting == null)
             {
                 editorSetting = new lilToonEditorSetting();
+                AssetDatabase.CreateAsset(editorSetting, editorSettingPath);
                 editorSetting.settingPath = "Assets/lilToon/Editor/setting.asset";
                 editorSetting.unlockShaderSetting = true;
-                AssetDatabase.CreateAsset(editorSetting, editorSettingPath);
+                EditorUtility.SetDirty(editorSetting);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
             }
 
             //------------------------------------------------------------------------------------------------------------------------------
@@ -504,6 +507,9 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_TEX_FUR_NORMAL = false;
                 shaderSetting.LIL_FEATURE_TEX_FUR_MASK = false;
                 shaderSetting.LIL_FEATURE_TEX_TESSELLATION = false;
+                EditorUtility.SetDirty(shaderSetting);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
             }
 
             //------------------------------------------------------------------------------------------------------------------------------
