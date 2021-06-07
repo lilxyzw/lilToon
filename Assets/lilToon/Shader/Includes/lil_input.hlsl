@@ -103,6 +103,12 @@ float4 _GrabTexture_TexelSize;
     #define Exists_Emission2ndBlendMask false
 #endif
 
+#if defined(LIL_FEATURE_TEX_AUDIOLINK_MASK)
+    #define Exists_AudioLinkMask    true
+#else
+    #define Exists_AudioLinkMask    false
+#endif
+
 #if defined(LIL_FEATURE_TEX_OUTLINE_COLOR)
     #define Exists_OutlineTex           true
 #else
@@ -321,9 +327,23 @@ float4  _MainTex_ST;
     float4  _RimColor;
 #endif
 
+// Distance Fade
 #if defined(LIL_FEATURE_DISTANCE_FADE)
     float4 _DistanceFade;
     float4 _DistanceFadeColor;
+#endif
+
+// AudioLink
+#if defined(LIL_FEATURE_AUDIOLINK)
+    float4  _AudioLinkUVParams;
+    #if defined(LIL_FEATURE_AUDIOLINK_VERTEX)
+        float4  _AudioLinkVertexUVParams;
+        float4  _AudioLinkVertexStart;
+        float4  _AudioLinkVertexStrength;
+    #endif
+    #if defined(LIL_FEATURE_AUDIOLINK_LOCAL)
+        float4  _AudioLinkLocalMapParams;
+    #endif
 #endif
 
 // Outline
@@ -440,6 +460,12 @@ float   _OutlineWidth;
 #if defined(LIL_FEATURE_MATCAP)
     uint    _MatCapBlendMode;
 #endif
+#if defined(LIL_FEATURE_AUDIOLINK)
+    uint    _AudioLinkUVMode;
+    #if defined(LIL_FEATURE_AUDIOLINK_VERTEX)
+        uint    _AudioLinkVertexUVMode;
+    #endif
+#endif
 #if defined(LIL_FUR)
     uint    _FurLayerNum;
 #endif
@@ -519,6 +545,27 @@ lilBool _AsUnlit;
 #if defined(LIL_FEATURE_PARALLAX)
     lilBool _UseParallax;
 #endif
+#if defined(LIL_FEATURE_AUDIOLINK)
+    lilBool _UseAudioLink;
+    #if defined(LIL_FEATURE_MAIN2ND)
+        lilBool _AudioLink2Main2nd;
+    #endif
+    #if defined(LIL_FEATURE_MAIN3RD)
+        lilBool _AudioLink2Main3rd;
+    #endif
+    #if defined(LIL_FEATURE_EMISSION_1ST)
+        lilBool _AudioLink2Emission;
+    #endif
+    #if defined(LIL_FEATURE_EMISSION_2ND)
+        lilBool _AudioLink2Emission2nd;
+    #endif
+    #if defined(LIL_FEATURE_AUDIOLINK_VERTEX)
+        lilBool _AudioLink2Vertex;
+    #endif
+    #if defined(LIL_FEATURE_AUDIOLINK_LOCAL)
+        lilBool _AudioLinkAsLocal;
+    #endif
+#endif
 
 lilBool _OutlineFixWidth;
 lilBool _OutlineVertexR2Width;
@@ -561,6 +608,8 @@ TEXTURE2D(_Emission2ndMap);
 TEXTURE2D(_Emission2ndBlendMask);
 TEXTURE2D(_Emission2ndGradTex);
 TEXTURE2D(_ParallaxMap);
+TEXTURE2D(_AudioLinkMask);
+TEXTURE2D(_AudioLinkLocalMap);
 TEXTURE2D(_OutlineTex);
 TEXTURE2D(_OutlineWidthMask);
 TEXTURE2D(_FurNoiseMask);
@@ -573,6 +622,13 @@ SAMPLER(sampler_Main3rdTex);
 SAMPLER(sampler_EmissionMap);
 SAMPLER(sampler_Emission2ndMap);
 SAMPLER(sampler_OutlineTex);
+
+// AudioLink
+#if defined(LIL_FEATURE_AUDIOLINK)
+SAMPLER(sampler_linear_clamp);
+Texture2D<float4> _AudioTexture;
+float4 _AudioTexture_TexelSize;
+#endif
 
 #if Exists_MainTex == false
 #define sampler_MainTex sampler_linear_repeat

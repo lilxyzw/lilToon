@@ -212,6 +212,25 @@ Shader "Hidden/lilToonRefractionBlur"
         [lil3Param]     _DistanceFade               ("Start|End|Strength", Vector) = (0.1,0.01,1,0)
 
         //----------------------------------------------------------------------------------------------------------------------
+        // AudioLink
+        [lilToggleLeft] _UseAudioLink               ("Use AudioLink", Int) = 0
+        [lilALUVMode]   _AudioLinkUVMode            ("UV Mode|None|Rim|UV|Mask", Int) = 1
+        [lilALUVParams] _AudioLinkUVParams          ("Scale|Offset|Angle|Band|Bass|Low Mid|High Mid|Treble", Vector) = (0.25,0,0,0.125)
+        [NoScaleOffset] _AudioLinkMask              ("Mask", 2D) = "blue" {}
+        [lilToggle]     _AudioLink2Main2nd          ("Main 2nd", Int) = 0
+        [lilToggle]     _AudioLink2Main3rd          ("Main 3rd", Int) = 0
+        [lilToggle]     _AudioLink2Emission         ("Emission", Int) = 0
+        [lilToggle]     _AudioLink2Emission2nd      ("Emission 2nd", Int) = 0
+        [lilToggle]     _AudioLink2Vertex           ("Vertex", Int) = 0
+        [lilALUVMode]   _AudioLinkVertexUVMode      ("UV Mode|None|Position|UV|Mask", Int) = 1
+        [lilALUVParams] _AudioLinkVertexUVParams    ("Scale|Offset|Angle|Band|Bass|Low Mid|High Mid|Treble", Vector) = (0.25,0,0,0.125)
+        [lilVec3]       _AudioLinkVertexStart       ("Start Position", Vector) = (0.0,0.0,0.0,0.0)
+        [lilVec3Float]  _AudioLinkVertexStrength    ("Moving Vector|Normal Strength", Vector) = (0.0,0.0,0.0,1.0)
+        [lilToggle]     _AudioLinkAsLocal           ("As Local", Int) = 0
+        [NoScaleOffset] _AudioLinkLocalMap          ("Local Map", 2D) = "black" {}
+        [lilALLocal]    _AudioLinkLocalMapParams    ("BPM|Notes|Offset", Vector) = (120,1,0,0)
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilCullMode]                                   _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1

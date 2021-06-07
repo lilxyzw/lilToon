@@ -217,6 +217,49 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         #endif
 
         //--------------------------------------------------------------------------------------------------------------------------
+        // AudioLink (https://github.com/llealloo/vrc-udon-audio-link)
+        #if defined(LIL_FEATURE_AUDIOLINK)
+            float audioLinkValue = 1.0;
+            if(_UseAudioLink)
+            {
+                audioLinkValue = 0.0;
+                float4 audioLinkMask = 1.0;
+                float2 audioLinkUV;
+                if(_AudioLinkUVMode == 0) audioLinkUV.x = _AudioLinkUVParams.g;
+                if(_AudioLinkUVMode == 1) audioLinkUV.x = _AudioLinkUVParams.r - nv * _AudioLinkUVParams.r + _AudioLinkUVParams.g;
+                if(_AudioLinkUVMode == 2) audioLinkUV.x = lilRotateUV(input.uv, _AudioLinkUVParams.b).x * _AudioLinkUVParams.r + _AudioLinkUVParams.g;
+                audioLinkUV.y = _AudioLinkUVParams.a;
+                // Mask (R:Delay G:Band B:Strength)
+                if(_AudioLinkUVMode == 3 && Exists_AudioLinkMask)
+                {
+                    audioLinkMask = LIL_SAMPLE_2D(_AudioLinkMask, sampler_MainTex, uvMain);
+                    audioLinkUV = audioLinkMask.rg;
+                }
+                // Scaling for _AudioTexture (4/64)
+                #if defined(LIL_FEATURE_AUDIOLINK_LOCAL)
+                    if(!_AudioLinkAsLocal) audioLinkUV.y *= 0.0625;
+                #else
+                    audioLinkUV.y *= 0.0625;
+                #endif
+                // Global
+                if(_AudioTexture_TexelSize.z > 16)
+                {
+                    audioLinkValue = LIL_SAMPLE_2D(_AudioTexture, sampler_linear_clamp, audioLinkUV).r;
+                    audioLinkValue = saturate(audioLinkValue);
+                }
+                // Local
+                #if defined(LIL_FEATURE_AUDIOLINK_LOCAL)
+                    if(_AudioLinkAsLocal)
+                    {
+                        audioLinkUV.x += frac(-LIL_TIME * _AudioLinkLocalMapParams.r / 60 * _AudioLinkLocalMapParams.g) + _AudioLinkLocalMapParams.b;
+                        audioLinkValue = LIL_SAMPLE_2D(_AudioLinkLocalMap, sampler_linear_repeat, audioLinkUV).r;
+                    }
+                #endif
+                audioLinkValue *= audioLinkMask.b;
+            }
+        #endif
+
+        //--------------------------------------------------------------------------------------------------------------------------
         // Layer Color
         #if defined(LIL_SHOULD_TANGENT_W)
             bool isRightHand = input.tangentW > 0.0;
@@ -243,6 +286,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             {
                 if(Exists_Main2ndTex) color2nd *= LIL_GET_SUBTEX(_Main2ndTex, input.uv);
                 if(Exists_Main2ndBlendMask) color2nd.a *= LIL_SAMPLE_2D(_Main2ndBlendMask, sampler_MainTex, uvMain).r;
+                #if defined(LIL_FEATURE_AUDIOLINK)
+                    if(_AudioLink2Main2nd) color2nd.a *= audioLinkValue;
+                #endif
                 if(_Main2ndEnableLighting) col.rgb = lilBlendColor(col.rgb, color2nd.rgb, color2nd.a, _Main2ndTexBlendMode);
             }
         #endif
@@ -267,6 +313,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             {
                 if(Exists_Main3rdTex) color3rd *= LIL_GET_SUBTEX(_Main3rdTex, input.uv);
                 if(Exists_Main3rdBlendMask) color3rd.a *= LIL_SAMPLE_2D(_Main3rdBlendMask, sampler_MainTex, uvMain).r;
+                #if defined(LIL_FEATURE_AUDIOLINK)
+                    if(_AudioLink2Main3rd) color3rd.a *= audioLinkValue;
+                #endif
                 if(_Main3rdEnableLighting) col.rgb = lilBlendColor(col.rgb, color3rd.rgb, color3rd.a, _Main3rdTexBlendMode);
             }
         #endif
@@ -504,6 +553,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                     #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                         emissionColor.a *= col.a;
                     #endif
+                    #if defined(LIL_FEATURE_AUDIOLINK)
+                        if(_AudioLink2Emission) emissionColor.a *= audioLinkValue;
+                    #endif
                     emissionColor.rgb = lerp(emissionColor.rgb, emissionColor.rgb * invLighting, _EmissionFluorescence);
                     col.rgb += _EmissionBlend * lilCalcBlink(_EmissionBlink) * emissionColor.a * emissionColor.rgb;
                 }
@@ -538,6 +590,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                     #endif
                     #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                         emission2ndColor.a *= col.a;
+                    #endif
+                    #if defined(LIL_FEATURE_AUDIOLINK)
+                        if(_AudioLink2Emission2nd) emission2ndColor.a *= audioLinkValue;
                     #endif
                     emission2ndColor.rgb = lerp(emission2ndColor.rgb, emission2ndColor.rgb * invLighting, _Emission2ndFluorescence);
                     col.rgb += _Emission2ndBlend * lilCalcBlink(_Emission2ndBlink) * emission2ndColor.a * emission2ndColor.rgb;

@@ -63,6 +63,7 @@ namespace lilToon
             static bool isShowEmission2ndBlendMask  = false;
 	    static bool isShowParallax          = false;
 	    static bool isShowDistanceFade      = false;
+	    static bool isShowAudioLink         = false;
 	    static bool isShowStencil           = false;
 	    static bool isShowOutline           = false;
             static bool isShowOutlineMap            = false;
@@ -367,6 +368,22 @@ namespace lilToon
         //MaterialProperty useDistanceFade;
             MaterialProperty distanceFadeColor;
             MaterialProperty distanceFade;
+        MaterialProperty useAudioLink;
+            MaterialProperty audioLinkUVMode;
+            MaterialProperty audioLinkUVParams;
+            MaterialProperty audioLinkMask;
+            MaterialProperty audioLink2Main2nd;
+            MaterialProperty audioLink2Main3rd;
+            MaterialProperty audioLink2Emission;
+            MaterialProperty audioLink2Emission2nd;
+            MaterialProperty audioLink2Vertex;
+            MaterialProperty audioLinkVertexUVMode;
+            MaterialProperty audioLinkVertexUVParams;
+            MaterialProperty audioLinkVertexStart;
+            MaterialProperty audioLinkVertexStrength;
+            MaterialProperty audioLinkAsLocal;
+            MaterialProperty audioLinkLocalMap;
+            MaterialProperty audioLinkLocalMapParams;
         //MaterialProperty useRefraction;
             MaterialProperty refractionStrength;
             MaterialProperty refractionFresnelPower;
@@ -487,6 +504,9 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_PARALLAX = false;
                 shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = false;
                 shaderSetting.LIL_FEATURE_DISTANCE_FADE = false;
+                shaderSetting.LIL_FEATURE_AUDIOLINK = false;
+                shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX = false;
+                shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL = false;
                 shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = false;
                 shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = false;
                 shaderSetting.LIL_FEATURE_TEX_LAYER_MASK = false;
@@ -502,6 +522,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_TEX_REFLECTION_COLOR = false;
                 shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK = true;
                 shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR = true;
+                shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK = true;
                 shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR = true;
                 shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH = true;
                 shaderSetting.LIL_FEATURE_TEX_FUR_NORMAL = false;
@@ -923,6 +944,22 @@ namespace lilToon
                     parallaxOffset = FindProperty("_ParallaxOffset", props);
                 distanceFade = FindProperty("_DistanceFade", props);
                     distanceFadeColor = FindProperty("_DistanceFadeColor", props);
+                useAudioLink = FindProperty("_UseAudioLink", props);
+                    audioLinkUVMode = FindProperty("_AudioLinkUVMode", props);
+                    audioLinkUVParams = FindProperty("_AudioLinkUVParams", props);
+                    audioLinkMask = FindProperty("_AudioLinkMask", props);
+                    audioLink2Main2nd = FindProperty("_AudioLink2Main2nd", props);
+                    audioLink2Main3rd = FindProperty("_AudioLink2Main3rd", props);
+                    audioLink2Emission = FindProperty("_AudioLink2Emission", props);
+                    audioLink2Emission2nd = FindProperty("_AudioLink2Emission2nd", props);
+                    audioLink2Vertex = FindProperty("_AudioLink2Vertex", props);
+                    audioLinkVertexUVMode = FindProperty("_AudioLinkVertexUVMode", props);
+                    audioLinkVertexUVParams = FindProperty("_AudioLinkVertexUVParams", props);
+                    audioLinkVertexStart = FindProperty("_AudioLinkVertexStart", props);
+                    audioLinkVertexStrength = FindProperty("_AudioLinkVertexStrength", props);
+                    audioLinkAsLocal = FindProperty("_AudioLinkAsLocal", props);
+                    audioLinkLocalMap = FindProperty("_AudioLinkLocalMap", props);
+                    audioLinkLocalMapParams = FindProperty("_AudioLinkLocalMapParams", props);
                 // Refraction
                 if(isRefr)
                 {
@@ -1762,6 +1799,77 @@ namespace lilToon
                 }
 
                 //------------------------------------------------------------------------------------------------------------------------------
+                // AudioLink
+                if(shaderSetting.LIL_FEATURE_AUDIOLINK && !isFur && !isLite)
+                {
+                    isShowAudioLink = Foldout(loc["sAudioLink"], loc["sAudioLinkTips"], isShowAudioLink);
+                    DrawHelpButton(loc["sAnchorAudioLink"]);
+                    if(isShowAudioLink)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        materialEditor.ShaderProperty(useAudioLink, loc["sAudioLink"]);
+                        if(useAudioLink.floatValue == 1)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            if(shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK)
+                            {
+                                materialEditor.ShaderProperty(audioLinkUVMode, loc["sAudioLinkUVMode"] + "|" + loc["sAudioLinkUVModeNone"] + "|" + loc["sAudioLinkUVModeRim"] + "|" + loc["sAudioLinkUVModeUV"] + "|" + loc["sAudioLinkUVModeMask"]);
+                                if(audioLinkUVMode.floatValue == 3) materialEditor.TexturePropertySingleLine(new GUIContent(loc["sMask"], ""), audioLinkMask);
+                            }
+                            else
+                            {
+                                materialEditor.ShaderProperty(audioLinkUVMode, loc["sAudioLinkUVMode"] + "|" + loc["sAudioLinkUVModeNone"] + "|" + loc["sAudioLinkUVModeRim"] + "|" + loc["sAudioLinkUVModeUV"]);
+                            }
+                            if(audioLinkUVMode.floatValue == 0) materialEditor.ShaderProperty(audioLinkUVParams, loc["sOffset"] + "|" + loc["sAudioLinkBand"] + "|" + loc["sAudioLinkBandBass"] + "|" + loc["sAudioLinkBandLowMid"] + "|" + loc["sAudioLinkBandHighMid"] + "|" + loc["sAudioLinkBandTreble"]);
+                            if(audioLinkUVMode.floatValue == 1) materialEditor.ShaderProperty(audioLinkUVParams, loc["sScale"] + "|" + loc["sOffset"] + "|" + loc["sAudioLinkBand"] + "|" + loc["sAudioLinkBandBass"] + "|" + loc["sAudioLinkBandLowMid"] + "|" + loc["sAudioLinkBandHighMid"] + "|" + loc["sAudioLinkBandTreble"]);
+                            if(audioLinkUVMode.floatValue == 2) materialEditor.ShaderProperty(audioLinkUVParams, loc["sScale"] + "|" + loc["sOffset"] + "|" + loc["sAngle"] + "|" + loc["sAudioLinkBand"] + "|" + loc["sAudioLinkBandBass"] + "|" + loc["sAudioLinkBandLowMid"] + "|" + loc["sAudioLinkBandHighMid"] + "|" + loc["sAudioLinkBandTreble"]);
+                            GUILayout.Label(loc["sAudioLinkApplyTo"], EditorStyles.boldLabel);
+                            EditorGUI.indentLevel++;
+                            if(shaderSetting.LIL_FEATURE_MAIN2ND) materialEditor.ShaderProperty(audioLink2Main2nd, loc["sMainColor2nd"]);
+                            if(shaderSetting.LIL_FEATURE_MAIN3RD) materialEditor.ShaderProperty(audioLink2Main3rd, loc["sMainColor3rd"]);
+                            if(shaderSetting.LIL_FEATURE_EMISSION_1ST) materialEditor.ShaderProperty(audioLink2Emission, loc["sEmission"]);
+                            if(shaderSetting.LIL_FEATURE_EMISSION_2ND) materialEditor.ShaderProperty(audioLink2Emission2nd, loc["sEmission2nd"]);
+                            if(shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX)
+                            {
+                                materialEditor.ShaderProperty(audioLink2Vertex, loc["sVertex"]);
+                                if(audioLink2Vertex.floatValue == 1)
+                                {
+                                    EditorGUI.indentLevel++;
+                                    if(shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK)
+                                    {
+                                        materialEditor.ShaderProperty(audioLinkVertexUVMode, loc["sAudioLinkUVMode"] + "|" + loc["sAudioLinkUVModeNone"] + "|" + loc["sAudioLinkUVModePosition"] + "|" + loc["sAudioLinkUVModeUV"] + "|" + loc["sAudioLinkUVModeMask"]);
+                                        if(audioLinkVertexUVMode.floatValue == 3) materialEditor.TexturePropertySingleLine(new GUIContent(loc["sMask"], ""), audioLinkMask);
+                                    }
+                                    else
+                                    {
+                                        materialEditor.ShaderProperty(audioLinkVertexUVMode, loc["sAudioLinkUVMode"] + "|" + loc["sAudioLinkUVModeNone"] + "|" + loc["sAudioLinkUVModePosition"] + "|" + loc["sAudioLinkUVModeUV"]);
+                                    }
+                                    if(audioLinkVertexUVMode.floatValue == 0) materialEditor.ShaderProperty(audioLinkVertexUVParams, loc["sOffset"] + "|" + loc["sAudioLinkBand"] + "|" + loc["sAudioLinkBandBass"] + "|" + loc["sAudioLinkBandLowMid"] + "|" + loc["sAudioLinkBandHighMid"] + "|" + loc["sAudioLinkBandTreble"]);
+                                    if(audioLinkVertexUVMode.floatValue == 1) materialEditor.ShaderProperty(audioLinkVertexUVParams, loc["sScale"] + "|" + loc["sOffset"] + "|" + loc["sAudioLinkBand"] + "|" + loc["sAudioLinkBandBass"] + "|" + loc["sAudioLinkBandLowMid"] + "|" + loc["sAudioLinkBandHighMid"] + "|" + loc["sAudioLinkBandTreble"]);
+                                    if(audioLinkVertexUVMode.floatValue == 2) materialEditor.ShaderProperty(audioLinkVertexUVParams, loc["sScale"] + "|" + loc["sOffset"] + "|" + loc["sAngle"] + "|" + loc["sAudioLinkBand"] + "|" + loc["sAudioLinkBandBass"] + "|" + loc["sAudioLinkBandLowMid"] + "|" + loc["sAudioLinkBandHighMid"] + "|" + loc["sAudioLinkBandTreble"]);
+                                    if(audioLinkVertexUVMode.floatValue == 1) materialEditor.ShaderProperty(audioLinkVertexStart, loc["sAudioLinkStartPosition"]);
+                                    materialEditor.ShaderProperty(audioLinkVertexStrength, loc["sAudioLinkMovingVector"] + "|" + loc["sAudioLinkNormalStrength"]);
+                                    EditorGUI.indentLevel--;
+                                }
+                            }
+                            EditorGUI.indentLevel--;
+                            if(shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL)
+                            {
+                                DrawLine();
+                                materialEditor.ShaderProperty(audioLinkAsLocal, loc["sAudioLinkAsLocal"]);
+                                if(audioLinkAsLocal.floatValue == 1)
+                                {
+                                    materialEditor.TexturePropertySingleLine(new GUIContent(loc["sAudioLinkLocalMap"], ""), audioLinkLocalMap);
+                                    materialEditor.ShaderProperty(audioLinkLocalMapParams, loc["sAudioLinkLocalMapBPM"] + "|" + loc["sAudioLinkLocalMapNotes"] + "|" + loc["sOffset"]);
+                                }
+                            }
+                            EditorGUILayout.EndVertical();
+                        }
+                        EditorGUILayout.EndVertical();
+                    }
+                }
+
+                //------------------------------------------------------------------------------------------------------------------------------
                 // Refraction
                 if(isRefr)
                 {
@@ -2416,6 +2524,17 @@ namespace lilToon
             lilToggleGUI(loc["sSettingDistanceFade"], ref shaderSetting.LIL_FEATURE_DISTANCE_FADE);
             DrawLine();
 
+            lilToggleGUI(loc["sSettingAudioLink"], ref shaderSetting.LIL_FEATURE_AUDIOLINK);
+            if(shaderSetting.LIL_FEATURE_AUDIOLINK)
+            {
+                EditorGUI.indentLevel++;
+                lilToggleGUI(loc["sSettingAudioLinkVertex"], ref shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX);
+                lilToggleGUI(loc["sSettingAudioLinkMask"], ref shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK);
+                lilToggleGUI(loc["sSettingAudioLinkLocal"], ref shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL);
+                EditorGUI.indentLevel--;
+            }
+            DrawLine();
+
             lilToggleGUI(loc["sSettingTexOutlineColor"], ref shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR);
             if(shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR)
             {
@@ -2510,6 +2629,13 @@ namespace lilToon
             if(shaderSetting.LIL_FEATURE_PARALLAX) sb.Append("#define LIL_FEATURE_PARALLAX\r\n");
             if(shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER) sb.Append("#define LIL_FEATURE_CLIPPING_CANCELLER\r\n");
             if(shaderSetting.LIL_FEATURE_DISTANCE_FADE) sb.Append("#define LIL_FEATURE_DISTANCE_FADE\r\n");
+            if(shaderSetting.LIL_FEATURE_AUDIOLINK)
+            {
+                sb.Append("#define LIL_FEATURE_AUDIOLINK\r\n");
+                if(shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX) sb.Append("#define LIL_FEATURE_AUDIOLINK_VERTEX\r\n");
+                if(shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK) sb.Append("#define LIL_FEATURE_TEX_AUDIOLINK_MASK\r\n");
+                if(shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL) sb.Append("#define LIL_FEATURE_AUDIOLINK_LOCAL\r\n");
+            }
             if(shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR)
             {
                 sb.Append("#define LIL_FEATURE_TEX_OUTLINE_COLOR\r\n");
@@ -2837,6 +2963,10 @@ namespace lilToon
                 if(useMatCap.floatValue == 0.0f || !shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK) matcapBlendMask.textureValue = null;
                 if(useRim.floatValue == 0.0f || !shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR) rimColorTex.textureValue = null;
                 if(useParallax.floatValue == 0.0f) parallaxMap.textureValue = null;
+                if(!shaderSetting.LIL_FEATURE_AUDIOLINK) useAudioLink.floatValue = 0.0f;
+                if(!shaderSetting.LIL_FEATURE_AUDIOLINK || !shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL) audioLinkAsLocal.floatValue = 0.0f;
+                if(useAudioLink.floatValue == 0.0f || audioLinkUVMode.floatValue != 3.0f || !shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK) audioLinkMask.textureValue = null;
+                if(useAudioLink.floatValue == 0.0f || audioLinkAsLocal.floatValue == 0.0f) audioLinkLocalMap.textureValue = null;
             }
         }
 
@@ -4835,6 +4965,29 @@ namespace lilToon
         }
     }
 
+    public class lilVec3Drawer : MaterialPropertyDrawer
+    {
+        // Draw vector4 as vector3
+        // [lilVec3]
+        public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
+        {
+            Vector3 vec = new Vector3(prop.vectorValue.x, prop.vectorValue.y, prop.vectorValue.z);
+            float unused = prop.vectorValue.w;
+
+            EditorGUIUtility.wideMode = true;
+
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.showMixedValue = prop.hasMixedValue;
+            vec = EditorGUI.Vector3Field(position, label, vec);
+            EditorGUI.showMixedValue = false;
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.vectorValue = new Vector4(vec.x, vec.y, vec.z, unused);
+            }
+        }
+    }
+
     public class lilVec3FloatDrawer : MaterialPropertyDrawer
     {
         // Draw vector4 as vector3 and float
@@ -5084,6 +5237,99 @@ namespace lilToon
             if(EditorGUI.EndChangeCheck())
             {
                 prop.vectorValue = new Vector4(param1, param2, param3, unused);
+            }
+        }
+    }
+
+    public class lilALUVMode : MaterialPropertyDrawer
+    {
+        // [lilALUVMode]
+        public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
+        {
+            string[] labels = label.Split('|');
+            float value = prop.floatValue;
+
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.showMixedValue = prop.hasMixedValue;
+            if(labels.Length == 5) value = (float)EditorGUI.Popup(position, labels[0], (int)prop.floatValue, new String[]{labels[1],labels[2],labels[3],labels[4]});
+            if(labels.Length == 4) value = (float)EditorGUI.Popup(position, labels[0], (int)prop.floatValue, new String[]{labels[1],labels[2],labels[3]});
+            EditorGUI.showMixedValue = false;
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.floatValue = value;
+            }
+        }
+    }
+
+    public class lilALUVParams : MaterialPropertyDrawer
+    {
+        // [lilALUVParams]
+        public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
+        {
+            string[] labels = label.Split('|');
+            float scale = prop.vectorValue.x;
+            float offset = prop.vectorValue.y;
+            float angle180 = prop.vectorValue.z / Mathf.PI * 180.0f;
+            float band = (prop.vectorValue.w - 0.125f) * 4.0f;
+
+            EditorGUI.BeginChangeCheck();
+            if(labels.Length == 6)
+            {
+                Rect position1 = EditorGUILayout.GetControlRect();
+                offset = EditorGUI.FloatField(position, labels[0], offset);
+                band = (float)EditorGUI.Popup(position1, labels[1], (int)band, new String[]{labels[2],labels[3],labels[4],labels[5]});
+            }
+            if(labels.Length == 7)
+            {
+                Rect position1 = EditorGUILayout.GetControlRect();
+                Rect position2 = EditorGUILayout.GetControlRect();
+                scale = EditorGUI.FloatField(position, labels[0], scale);
+                offset = EditorGUI.FloatField(position1, labels[1], offset);
+                band = (float)EditorGUI.Popup(position2, labels[2], (int)band, new String[]{labels[3],labels[4],labels[5],labels[6]});
+            }
+            if(labels.Length == 8)
+            {
+                Rect position1 = EditorGUILayout.GetControlRect();
+                Rect position2 = EditorGUILayout.GetControlRect();
+                Rect position3 = EditorGUILayout.GetControlRect();
+                scale = EditorGUI.FloatField(position, labels[0], scale);
+                offset = EditorGUI.FloatField(position1, labels[1], offset);
+                angle180 = EditorGUI.Slider(position2, labels[2], angle180, -180.0f, 180.0f);
+                band = (float)EditorGUI.Popup(position3, labels[3], (int)band, new String[]{labels[4],labels[5],labels[6],labels[7]});
+            }
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.vectorValue = new Vector4(scale, offset, angle180 * Mathf.PI / 180.0f, band / 4.0f + 0.125f);
+            }
+        }
+    }
+
+    public class lilALLocal : MaterialPropertyDrawer
+    {
+        // [lilALLocal]
+        public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
+        {
+            string[] labels = label.Split('|');
+            float BPM = prop.vectorValue.x;
+            float Notes = prop.vectorValue.y;
+            float Offset = prop.vectorValue.z;
+            float unused = prop.vectorValue.w;
+
+            EditorGUI.indentLevel++;
+            Rect position1 = EditorGUILayout.GetControlRect();
+            Rect position2 = EditorGUILayout.GetControlRect();
+
+            EditorGUI.BeginChangeCheck();
+            BPM = EditorGUI.FloatField(position, labels[0], BPM);
+            Notes = EditorGUI.FloatField(position1, labels[1], Notes);
+            Offset = EditorGUI.FloatField(position2, labels[2], Offset);
+            EditorGUI.indentLevel--;
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.vectorValue = new Vector4(BPM, Notes, Offset, unused);
             }
         }
     }

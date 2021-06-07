@@ -20,6 +20,7 @@
     - [Outline](#outline)
     - [Parallax](#parallax)
     - [DistanceFade](#distance-fade)
+    - [AudioLink](#audiolink)
     - [Stencil](#stencil)
     - [Rendering](#rendering)
     - [Tessellation](#tessellation)
@@ -237,8 +238,27 @@ You can blend colors into the main color. This is the layer function in painting
 |-|-|
 |Color|Color of fade.|
 |Start Distance|Distance to start the fade.|
-|End Distance|Distance to end the fade|
+|End Distance|Distance to end the fade.|
 |Strength|Strength of fade.|
+
+<br/>
+
+## AudioLink
+|Name|Description|
+|-|-|
+|UV Mode|The type of UV used to sample the audio effect.|
+|Scale|Amount of timing shift according to UV.|
+|Offset|Amount of timing shift.|
+|Angle|The angle of UV.|
+|Band|Bandwidth (pitch) to be sampled.|
+|Mask|Mask textures that change the AudioLink process. (R:Delay G:Band B:Strength)|
+|Apply to|Target to apply the effect to.|
+|-|-|
+|As Local|Use local textures instead of getting them from AudioLink.|
+|Local Map|Local texture.|
+|BPM|Speed of the song.|
+|Notes|Number to be multiplied by BPM.|
+|Offset|Amount of timing shift.|
 
 <br/>
 

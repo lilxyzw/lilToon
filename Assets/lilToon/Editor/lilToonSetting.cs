@@ -25,6 +25,9 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_PARALLAX;
     public bool LIL_FEATURE_CLIPPING_CANCELLER;
     public bool LIL_FEATURE_DISTANCE_FADE;
+    public bool LIL_FEATURE_AUDIOLINK;
+    public bool LIL_FEATURE_AUDIOLINK_VERTEX;
+    public bool LIL_FEATURE_AUDIOLINK_LOCAL;
     public bool LIL_FEATURE_ANIMATE_OUTLINE_UV;
     public bool LIL_FEATURE_OUTLINE_TONE_CORRECTION;
     public bool LIL_FEATURE_TEX_LAYER_MASK;
@@ -40,6 +43,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_TEX_REFLECTION_COLOR;
     public bool LIL_FEATURE_TEX_MATCAP_MASK;
     public bool LIL_FEATURE_TEX_RIMLIGHT_COLOR;
+    public bool LIL_FEATURE_TEX_AUDIOLINK_MASK;
     public bool LIL_FEATURE_TEX_OUTLINE_COLOR;
     public bool LIL_FEATURE_TEX_OUTLINE_WIDTH;
     public bool LIL_FEATURE_TEX_FUR_NORMAL;

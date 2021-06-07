@@ -30,11 +30,11 @@ sBorderR	Border (R)	範囲 (R)	범위 (R)	边界 (R)	邊界 (R)
 sBlur	Blur	ぼかし	흐림	模糊	模糊
 sBlurR	Blur (R)	ぼかし (R)	흐림 (R)	模糊 (R)	模糊 (R)
 sAlphaR	Alpha (R)	透明度 (R)	투명도 (R)	透明度 (R)	透明度 (R)
-sUseMainColorSO	Use Main Color	メインカラーを使用	기본 색상을 사용	使用主色	使用主色
 sMainColorPower	Main Color Power	メインカラーの強度	기본 색상의 강도	主色功率	主色功率
 sEnableLighting	Enable Lighting	ライティングを適用	라이팅을 적용	启用照明	啟用照明
 sUVSetting	UV Setting	UV設定	UV 설정	UV设置	UV設置
 sUVAnimation	UV Animation	UVアニメーション	UV 애니메이션	UV动画	UV動畫
+sOffset	Offset	Offset	Offset	Offset	Offset
 sScroll	Scroll	スクロール	스크롤	滚动	滾動
 sAngle	Angle	角度	각도	角度	角度
 sRotate	Rotate	回転速度	회전 속도	旋转	旋轉
@@ -59,12 +59,15 @@ sCopyMode	Copy Mode	複製モード	복제 모드	复制模式	複製模式
 sCopyModeNormal	Normal	通常	보통	正常	正常
 sCopyModeSymmetry	Symmetry	左右対称	대칭	对称性	對稱性
 sCopyModeFlip	Flip	反転	반전	翻转	翻轉
+sPosition	Position	座標	좌표	职位	職位
 sPositionX	Position X	X座標	X 좌표	X职位	X職位
 sPositionY	Position Y	Y座標	Y 좌표	Y职位	Y職位
+sScale	Scale	サイズ	크기	尺度	尺度
 sScaleX	Scale X	X軸サイズ	X 축 크기	X尺度	X尺度
 sScaleY	Scale Y	Y軸サイズ	Y 축 크기	Y尺度	Y尺度
 sVector	Vector	向き	방향	向量	向量
 sLength	Length	長さ	길이	长度	長度
+sVertex	Vertex	頂点	정점	顶点	頂點
 sApplyTransparency	Apply Transparency	透明度を適用	투명도 적용	应用透明度	應用透明度
 sReset	Reset	初期化	초기화	重置	重置
 sLimShadowStrength	Shadow Strength	影の強さ	그림자의 힘	阴影强度	陰影強度
@@ -164,6 +167,27 @@ sDistanceFade	Distance Fade	距離フェード	거리 페이드	距离淡化	距
 sDistanceFadeTips	You can set the color change depending on the distance.	距離に応じて色の変更ができます	거리에 따라 색상을 변경할 수 있습니다	你可以根据距离来设置颜色的变化。	你可以根據距離來設置顏色的變化。
 sStartDistance	Start Distance	開始距離	시작 거리	开始距离	開始距離
 sEndDistance	End Distance	終了距離	종료 거리	结束距离	結束距離
+sAudioLink	AudioLink	AudioLink	AudioLink	AudioLink	AudioLink
+sAudioLinkTips	This setting allows you to change the appearance of a material through the AudioLink system.	AudioLinkシステムに合わせてマテリアルを変化させられます	AudioLink 시스템에 의해 재료의 외형을 변화시키는 설정입니다.	根据AudioLink系统更改Material外观的设置。	根據AudioLink系統更改Material外觀的設置。
+sAudioLinkUVMode	UV Mode	UV Mode	UV Mode	UV Mode	UV Mode
+sAudioLinkUVModeNone	None	None	None	None	None
+sAudioLinkUVModeRim	Rim	Rim	Rim	Rim	Rim
+sAudioLinkUVModeUV	UV	UV	UV	UV	UV
+sAudioLinkUVModeMask	Mask	マスク	마스크	蒙版	蒙版
+sAudioLinkUVModePosition	Position	座標	좌표	职位	職位
+sAudioLinkBand	Band	帯域	Band	Band	Band
+sAudioLinkBandBass	Bass	Bass	Bass	Bass	Bass
+sAudioLinkBandLowMid	Low Mid	Low Mid	Low Mid	Low Mid	Low Mid
+sAudioLinkBandHighMid	High Mid	High Mid	High Mid	High Mid	High Mid
+sAudioLinkBandTreble	Treble	Treble	Treble	Treble	Treble
+sAudioLinkApplyTo	Apply to	適用先	대다	申请	申請
+sAudioLinkStartPosition	Start Position	開始点	시작점	初始点	初始點
+sAudioLinkMovingVector	Moving Vector	移動方向	이동 방향	运动方向	運動方向
+sAudioLinkNormalStrength	Normal Strength	法線方向の強度	법선 방향의 강도	法线强度	法線強度
+sAudioLinkAsLocal	As Local	ローカル化	현지	当地	當地
+sAudioLinkLocalMap	Local Map	ローカルマップ	Local Map	Local Map	Local Map
+sAudioLinkLocalMapBPM	BPM	BPM	BPM	BPM	BPM
+sAudioLinkLocalMapNotes	Notes	拍数	Notes	Notes	Notes
 sNormalMapReflection	Normal Map & Reflection	ノーマルマップ・光沢設定	노멀 맵 광택 설정	法线贴图 & 反射设置	法線貼圖 & 反射設置
 sNormalMapSetting	Normal Map	ノーマルマップ設定	노멀 맵 설정	法线贴图设置	法線貼圖設置
 sNormalMapTips	You can set the normal map.	ノーマルマップの設定ができます	노멀 맵을 설정할 수 있습니다	你可以设置法线贴图。	你可以設置法線貼圖。
@@ -326,6 +350,10 @@ sSettingTexRimLightColor	Rim Light Color Texture	リムライト色テクスチ�
 sSettingParallax	Parallax	視差マップ	시차 맵	视差	視差
 sSettingClippingCanceller	Distance Clipping Canceller	距離クリッピングキャンセラー	거리 클리핑 취소 기	距离剪裁取消器	距離剪裁取消器
 sSettingDistanceFade	Distance Fade	距離フェード	거리 페이드	距离淡化	距離淡化
+sSettingAudioLink	AudioLink	AudioLink	AudioLink	AudioLink	AudioLink
+sSettingAudioLinkVertex	Vertex	頂点	정점	顶点	頂點
+sSettingAudioLinkMask	Mask (R:Delay G:Band B:Strength)	マスク (R:Delay G:Band B:Strength)	Mask (R:Delay G:Band B:Strength)	Mask (R:Delay G:Band B:Strength)	Mask (R:Delay G:Band B:Strength)
+sSettingAudioLinkLocal	Local	ローカル	Local	Local	Local
 sSettingAnimateOutlineUV	Animate Outline UV	輪郭線UVアニメーション	윤곽선 UV 애니메이션	轮廓UV动画和角度	輪廓UV動畫和角度
 sSettingTexOutlineColor	Outline Color Texture	輪郭線色テクスチャ	윤곽선 색상 질감	轮廓颜色纹理	輪廓顏色紋理
 sSettingOutlineToneCorrection	Outline Tone Correction	色調補正	색상 보정	轮廓色调校正	輪廓色調校正
@@ -353,6 +381,7 @@ sAnchorAdvanced	#advanced	#拡張設定	#advanced	#advanced	#advanced
 sAnchorOutline	#outline	#輪郭線設定	#outline	#outline	#outline
 sAnchorParallax	#parallax	#視差マップ	#parallax	#parallax	#parallax
 sAnchorDistanceFade	#distance-fade	#距離フェード	#distance-fade	#distance-fade	#distance-fade
+sAnchorAudioLink	#audiolink	#audiolink	#audiolink	#audiolink	#audiolink
 sAnchorStencil	#stencil	#ステンシル設定	#stencil	#stencil	#stencil
 sAnchorRendering	#rendering	#レンダリング設定	#rendering	#rendering	#rendering
 sAnchorTessellation	#tessellation	#テッセレーション	#tessellation	#tessellation	#tessellation
