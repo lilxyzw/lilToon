@@ -10,16 +10,13 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
     LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
     LIL_GET_VERTEXLIGHT(input, vertexLightColor);
     LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
-    if(_AsUnlit)
-    {
-        #if !defined(LIL_PASS_FORWARDADD)
-            lightColor = 1.0;
-            vertexLightColor = 0.0;
-            additionalLightColor = 0.0;
-        #else
-            lightColor = 0.0;
-        #endif
-    }
+    #if !defined(LIL_PASS_FORWARDADD)
+        lightColor = lerp(lightColor, 1.0, _AsUnlit);
+        vertexLightColor = lerp(vertexLightColor, 0.0, _AsUnlit);
+        additionalLightColor = lerp(additionalLightColor, 0.0, _AsUnlit);
+    #else
+        lightColor = lerp(lightColor, 0.0, _AsUnlit);
+    #endif
 
     //----------------------------------------------------------------------------------------------------------------------
     // Apply Matelial & Lighting
@@ -47,7 +44,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //----------------------------------------------------------------------------------------------------------------------
         // Lighting
-        if(_OutlineEnableLighting) col.rgb *= saturate(lightColor + vertexLightColor + additionalLightColor);
+        col.rgb = lerp(col.rgb, col.rgb * saturate(lightColor + vertexLightColor + additionalLightColor), _OutlineEnableLighting);
     #else
         //----------------------------------------------------------------------------------------------------------------------
         // UV
@@ -94,8 +91,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         // Lighting
         #ifndef LIL_PASS_FORWARDADD
             float shadowmix = 1.0;
-            lilGetShadingLite(col, shadowmix, albedo, uvMain, facing, normalDirection, lightDirection);
-            col.rgb *= lightColor;
+            lilGetShadingLite(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, lightDirection);
 
             lightColor += vertexLightColor;
             shadowmix += lilLuminance(vertexLightColor);

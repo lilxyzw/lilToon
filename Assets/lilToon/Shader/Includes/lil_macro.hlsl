@@ -14,7 +14,7 @@
 // 1 : On (for BlendOp Max)
 #define LIL_PREMULTIPLY_FA 1
 
-// SH sampling mode for direct light (Default : 1)
+// SH sampling mode for direct light (Default : 10)
 // 0 : Length of unity_SHA, SHB, SHC
 // 1 : Length of unity_SHA, SHB (Arktoon / ArxCharacterShaders)
 // 2 : Length of unity_SHA
@@ -28,11 +28,12 @@
 // 10 : Approximation of Standard (lilToon)
 #define LIL_SH_DIRECT_MODE 10
 
-// SH sampling mode for indirect light (Default : 0)
+// SH sampling mode for indirect light (Default : 3)
 // 0 : unity_SHA.w
 // 1 : Minimum value of 6 directions
 // 2 : Weakest direction
-#define LIL_SH_INDIRECT_MODE 0
+// 3 : Approximation of Standard (lilToon)
+#define LIL_SH_INDIRECT_MODE 3
 
 // Light direction mode (Default : 1)
 // 0 : Directional light Only
@@ -379,6 +380,7 @@
 
 // Time
 #define LIL_TIME            _Time.y
+#define LIL_INTER_TIME      lilIntervalTime(_TimeInterval)
 
 // Interpolation for Tessellation
 #define LIL_TRI_INTERPOLATION(i,o,bary,type) o.type = bary.x * i[0].type + bary.y * i[1].type + bary.z * i[2].type

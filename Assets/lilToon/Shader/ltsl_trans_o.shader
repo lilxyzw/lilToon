@@ -5,7 +5,7 @@
         //----------------------------------------------------------------------------------------------------------------------
         // Base
         [lilToggle]     _Invisible                  ("Invisible", Int) = 0
-        [lilToggle]     _AsUnlit                    ("As Unlit", Int) = 0
+                        _AsUnlit                    ("As Unlit", Range(0, 1)) = 0
                         _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.5
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
@@ -85,7 +85,7 @@
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
         [lilToggle]     _OutlineFixWidth            ("Fix Width", Int) = 1
         [lilToggle]     _OutlineVertexR2Width       ("Vertex R -> Width", Int) = 0
-        [lilToggle]     _OutlineEnableLighting      ("Enable Lighting", Int) = 1
+                        _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Outline Advanced

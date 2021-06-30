@@ -10,16 +10,13 @@ float4 frag(g2f input) : SV_Target
     LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
     LIL_GET_VERTEXLIGHT(input, vertexLightColor);
     LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
-    if(_AsUnlit)
-    {
-        #if !defined(LIL_PASS_FORWARDADD)
-            lightColor = 1.0;
-            vertexLightColor = 0.0;
-            additionalLightColor = 0.0;
-        #else
-            lightColor = 0.0;
-        #endif
-    }
+    #if !defined(LIL_PASS_FORWARDADD)
+        lightColor = lerp(lightColor, 1.0, _AsUnlit);
+        vertexLightColor = lerp(vertexLightColor, 0.0, _AsUnlit);
+        additionalLightColor = lerp(additionalLightColor, 0.0, _AsUnlit);
+    #else
+        lightColor = lerp(lightColor, 0.0, _AsUnlit);
+    #endif
 
     float facing = 1.0;
 
@@ -71,9 +68,11 @@ float4 frag(g2f input) : SV_Target
         #if defined(LIL_FEATURE_SHADOW)
             float3 normalDirection = normalize(input.normalWS);
             float shadowmix = 1.0;
-            lilGetShading(col, shadowmix, albedo, uvMain, facing, normalDirection, 1, lightDirection, false);
+            lilGetShading(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, 1, lightDirection, false);
+        #else
+            col.rgb *= lightColor;
         #endif
-        col.rgb *= lightColor + vertexLightColor + additionalLightColor;
+        col.rgb += albedo * (vertexLightColor + additionalLightColor);
         col.rgb = min(col.rgb, albedo);
     #else
         col.rgb *= lightColor;

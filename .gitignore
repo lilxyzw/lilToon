@@ -46,3 +46,11 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+# lilToon Settings
+setting.asset
+setting.asset.meta
+EditorSetting.asset
+EditorSetting.asset.meta
+lil_setting.hlsl
+lil_setting.hlsl.meta

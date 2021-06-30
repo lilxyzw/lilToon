@@ -133,6 +133,11 @@ float lilMSDF(float3 msd)
     return saturate((sd - 0.5)/clamp(fwidth(sd), 0.01, 1.0));
 }
 
+float lilIntervalTime(float interval)
+{
+    return floor(LIL_TIME / interval) * interval;
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Transform
 float3 lilTransformNormalOStoWS(float3 normalOS)
@@ -567,6 +572,24 @@ float3 lilGetSHAverage()
     return x1 / 3;
 }
 
+float3 lilGetSHToonMin()
+{
+    float3 N = -lilGetLightDirection() * 0.666666;
+    float3 res = float3(unity_SHAr.w,unity_SHAg.w,unity_SHAb.w);
+    res.r += dot(unity_SHAr.rgb, N);
+    res.g += dot(unity_SHAg.rgb, N);
+    res.b += dot(unity_SHAb.rgb, N);
+    float4 vB = N.xyzz * N.yzzx;
+    res.r += dot(unity_SHBr, vB);
+    res.g += dot(unity_SHBg, vB);
+    res.b += dot(unity_SHBb, vB);
+    res += unity_SHC.rgb * (N.x * N.x - N.y * N.y);
+    #ifdef UNITY_COLORSPACE_GAMMA
+        res = LinearToSRGB(res);
+    #endif
+    return res;
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Lighting
 float3 lilGetLightColor()
@@ -617,6 +640,8 @@ float3 lilGetIndirLightColor()
         return saturate(lilGetSHMin());
     #elif LIL_SH_INDIRECT_MODE == 2
         return saturate(lilGetSHWeakest());
+    #elif LIL_SH_INDIRECT_MODE == 3
+        return saturate(lilGetSHToonMin());
     #endif
 }
 
@@ -708,7 +733,7 @@ float3 lilGetAdditionalLights(float3 positionWS)
 //------------------------------------------------------------------------------------------------------------------------------
 // Shading
 #if !defined(LIL_LITE) && !defined(LIL_BAKER) && defined(LIL_FEATURE_SHADOW)
-void lilGetShading(inout float4 col, inout float shadowmix, float3 albedo, float2 uv, float facing, float3 normalDirection, float attenuation, float3 lightDirection, bool cullOff = true)
+void lilGetShading(inout float4 col, inout float shadowmix, float3 albedo, float3 lightColor, float2 uv, float facing, float3 normalDirection, float attenuation, float3 lightDirection, bool cullOff = true)
 {
     LIL_BRANCH
     if(_UseShadow)
@@ -765,19 +790,30 @@ void lilGetShading(inout float4 col, inout float shadowmix, float3 albedo, float
         indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, ln2);
         // Multiply Main Color
         indirectCol = lerp(indirectCol, indirectCol*albedo, _ShadowMainStrength);
-        // Gradation
-        indirectCol = lerp(indirectCol, albedo, lnB * _ShadowBorderColor.rgb);
+
+        // Apply Light
+        float3 directCol = albedo * lightColor;
+        indirectCol = indirectCol * lightColor;
+
         // Environment Light
         indirectCol = lerp(indirectCol, albedo, lilGetIndirLightColor() * _ShadowEnvStrength);
+        // Fix
+        indirectCol = min(indirectCol, directCol);
+        // Gradation
+        indirectCol = lerp(indirectCol, directCol, lnB * _ShadowBorderColor.rgb);
 
         // Mix
-        col.rgb = lerp(indirectCol, albedo, ln);
+        col.rgb = lerp(indirectCol, directCol, ln);
+    }
+    else
+    {
+        col.rgb *= lightColor;
     }
 }
 #endif
 
 #if defined(LIL_LITE)
-void lilGetShadingLite(inout float4 col, inout float shadowmix, float3 albedo, float2 uv, float facing, float3 normalDirection, float3 lightDirection, bool cullOff = true)
+void lilGetShadingLite(inout float4 col, inout float shadowmix, float3 albedo, float3 lightColor, float2 uv, float facing, float3 normalDirection, float3 lightDirection, bool cullOff = true)
 {
     LIL_BRANCH
     if(_UseShadow)
@@ -801,10 +837,21 @@ void lilGetShadingLite(inout float4 col, inout float shadowmix, float3 albedo, f
         // Shadow Color
         float4 shadowColorTex = 1.0;
         if(Exists_ShadowColorTex) shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampler_MainTex, uv);
-        float3 indirectCol = lerp(shadowColorTex.rgb, albedo, lilGetIndirLightColor() * _ShadowEnvStrength);
+        float3 indirectCol = shadowColorTex.rgb;
+        // Apply Light
+        float3 directCol = albedo * lightColor;
+        indirectCol = indirectCol * lightColor;
+        // Environment Light
+        indirectCol = lerp(indirectCol, albedo, lilGetIndirLightColor() * _ShadowEnvStrength);
+        // Fix
+        indirectCol = min(indirectCol, directCol);
 
         // Mix
-        col.rgb = lerp(indirectCol, albedo, ln);
+        col.rgb = lerp(indirectCol, directCol, ln);
+    }
+    else
+    {
+        col.rgb *= lightColor;
     }
 }
 #endif

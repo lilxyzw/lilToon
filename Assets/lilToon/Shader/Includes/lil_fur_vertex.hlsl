@@ -36,8 +36,8 @@ v2g vert(appdata input)
     output.furVector = _FurVector.xyz;
     if(_VertexColor2FurVector) output.furVector = lilBlendNormal(output.furVector, input.color.xyz);
     if(Exists_FurVectorTex) output.furVector = lilBlendNormal(output.furVector, UnpackNormalScale(LIL_SAMPLE_2D_LOD(_FurVectorTex, sampler_MainTex, input.uv * _MainTex_ST.xy + _MainTex_ST.zw, 0), _FurVectorScale));
-    output.furVector = normalize(mul(output.furVector, tbnOS));
-    output.furVector = lilTransformNormalOStoWS(output.furVector);
+    output.furVector = mul(normalize(output.furVector), tbnOS) * _FurVector.w;
+    output.furVector = mul((float3x3)LIL_MATRIX_M, output.furVector);
     output.furVector.y -= _FurGravity * length(output.furVector);
 
     //----------------------------------------------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ void geom(triangle v2g input[3], inout TriangleStream<g2f> outStream)
                     output.furLayer = 0;
                     outStream.Append(output);
 
-                    output.positionWS.xyz += fvmix * _FurVector.w;
+                    output.positionWS.xyz += fvmix;
                     output.positionCS = LIL_TRANSFORM_POS_WS_TO_CS(output.positionWS);
                     output.furLayer = 1;
                     outStream.Append(output);
@@ -123,7 +123,7 @@ void geom(triangle v2g input[3], inout TriangleStream<g2f> outStream)
                     output.furLayer = 0;
                     outStream.Append(output);
 
-                    positionWS.xyz += fvmix * _FurVector.w;
+                    positionWS.xyz += fvmix;
                     output.positionCS = LIL_TRANSFORM_POS_WS_TO_CS(positionWS);
                     output.furLayer = 1;
                     outStream.Append(output);
@@ -133,7 +133,7 @@ void geom(triangle v2g input[3], inout TriangleStream<g2f> outStream)
                     output.furLayer = 0;
                     outStream.Append(output);
 
-                    output.positionWS.xyz += fvmix * _FurVector.w;
+                    output.positionWS.xyz += fvmix;
                     output.positionCS = LIL_TRANSFORM_POS_WS_TO_CS(output.positionWS);
                     output.furLayer = 1;
                     outStream.Append(output);

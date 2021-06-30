@@ -201,6 +201,7 @@ sSmoothness	Smoothness	滑らかさ	부드러움	平滑度	平滑度
 sSmoothnessR	Smoothness (R)	滑らかさ (R)	부드러움 (R)	平滑度 (R)	平滑度 (R)
 sMetallic	Metallic	金属度	금속도	金属程度	金屬程度
 sMetallicR	Metallic (R)	金属度 (R)	금속도 (R)	金属程度 (R)	金屬程度 (R)
+sReflectance	Reflectance	反射率	반사율	反射率	反射率
 sSpecularMode	Specular Mode	光沢のタイプ	광택 타입	反射模式	反射模式
 sSpecularNone	None	無効	무효	无	無
 sSpecularReal	Realistic	リアル	리얼	现实	現實

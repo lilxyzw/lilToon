@@ -276,6 +276,7 @@ namespace lilToon
             MaterialProperty metallicGlossMap;
             MaterialProperty smoothness;
             MaterialProperty smoothnessTex;
+            MaterialProperty reflectance;
             MaterialProperty reflectionColor;
             MaterialProperty reflectionColorTex;
             MaterialProperty applySpecular;
@@ -889,6 +890,7 @@ namespace lilToon
                     smoothnessTex = FindProperty("_SmoothnessTex", props);
                     metallic = FindProperty("_Metallic", props);
                     metallicGlossMap = FindProperty("_MetallicGlossMap", props);
+                    reflectance = FindProperty("_Reflectance", props);
                     reflectionColor = FindProperty("_ReflectionColor", props);
                     reflectionColorTex = FindProperty("_ReflectionColorTex", props);
                     applySpecular = FindProperty("_ApplySpecular", props);
@@ -1038,8 +1040,10 @@ namespace lilToon
                     if(renderingModeBuf != renderingMode)
                     {
                         SetupMaterialWithRenderingMode(material, renderingMode, isOutl, isLite, isStWr, isTess);
+                        if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.FurCutout) cutoff.floatValue = 0.5f;
+                        if(renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur) cutoff.floatValue = 0.001f;
                     }
-                    if(renderingMode == RenderingMode.Cutout)
+                    if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur || renderingMode == RenderingMode.FurCutout)
                     {
                         materialEditor.ShaderProperty(cutoff, loc["sCutoff"]);
                     }
@@ -1230,8 +1234,10 @@ namespace lilToon
                     if(renderingModeBuf != renderingMode)
                     {
                         SetupMaterialWithRenderingMode(material, renderingMode, isOutl, isLite, isStWr, isTess);
+                        if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.FurCutout) cutoff.floatValue = 0.5f;
+                        if(renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur) cutoff.floatValue = 0.001f;
                     }
-                    if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur)
+                    if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur || renderingMode == RenderingMode.FurCutout)
                     {
                         materialEditor.ShaderProperty(cutoff, loc["sCutoff"]);
                     }
@@ -1611,8 +1617,12 @@ namespace lilToon
                             {
                                 EditorGUILayout.BeginVertical(boxInnerHalf);
                                 if(shaderSetting.LIL_FEATURE_TEX_REFLECTION_SMOOTHNESS) materialEditor.TexturePropertySingleLine(new GUIContent(loc["sSmoothness"], loc["sSmoothnessR"]), smoothnessTex, smoothness);
+                                else                                                    materialEditor.ShaderProperty(smoothness, loc["sSmoothness"]);
                                 if(shaderSetting.LIL_FEATURE_TEX_REFLECTION_METALLIC) materialEditor.TexturePropertySingleLine(new GUIContent(loc["sMetallic"], loc["sMetallicR"]), metallicGlossMap, metallic);
+                                else                                                  materialEditor.ShaderProperty(metallic, loc["sMetallic"]);
+                                materialEditor.ShaderProperty(reflectance, loc["sReflectance"]);
                                 if(shaderSetting.LIL_FEATURE_TEX_REFLECTION_COLOR) materialEditor.TexturePropertySingleLine(colorRGBAContent, reflectionColorTex, reflectionColor);
+                                else                                               materialEditor.ShaderProperty(reflectionColor, loc["sColor"]);
                                 int specularMode = 0;
                                 if(specularToon.floatValue == 0.0f) specularMode = 1;
                                 if(specularToon.floatValue == 1.0f) specularMode = 2;

@@ -10,16 +10,13 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
     LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
     LIL_GET_VERTEXLIGHT(input, vertexLightColor);
     LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
-    if(_AsUnlit)
-    {
-        #if !defined(LIL_PASS_FORWARDADD)
-            lightColor = 1.0;
-            vertexLightColor = 0.0;
-            additionalLightColor = 0.0;
-        #else
-            lightColor = 0.0;
-        #endif
-    }
+    #if !defined(LIL_PASS_FORWARDADD)
+        lightColor = lerp(lightColor, 1.0, _AsUnlit);
+        vertexLightColor = lerp(vertexLightColor, 0.0, _AsUnlit);
+        additionalLightColor = lerp(additionalLightColor, 0.0, _AsUnlit);
+    #else
+        lightColor = lerp(lightColor, 0.0, _AsUnlit);
+    #endif
 
     //--------------------------------------------------------------------------------------------------------------------------
     // Apply Matelial & Lighting
@@ -58,7 +55,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //----------------------------------------------------------------------------------------------------------------------
         // Lighting
-        if(_OutlineEnableLighting) col.rgb *= saturate(lightColor + vertexLightColor + additionalLightColor);
+        col.rgb = lerp(col.rgb, col.rgb * saturate(lightColor + vertexLightColor + additionalLightColor), _OutlineEnableLighting);
     #elif defined(LIL_FUR)
         //--------------------------------------------------------------------------------------------------------------------------
         // UV
@@ -103,9 +100,10 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 float3 normalDirection = normalize(input.normalWS);
                 normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
                 float shadowmix = 1.0;
-                lilGetShading(col, shadowmix, albedo, uvMain, facing, normalDirection, 1, lightDirection);
+                lilGetShading(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, 1, lightDirection);
             #endif
-            col.rgb *= saturate(lightColor + vertexLightColor + additionalLightColor);
+            col.rgb += albedo * vertexLightColor + albedo * additionalLightColor;
+            col.rgb = min(col.rgb, albedo);
         #else
             col.rgb *= lightColor;
             // Premultiply for ForwardAdd
@@ -289,7 +287,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 #if defined(LIL_FEATURE_AUDIOLINK)
                     if(_AudioLink2Main2nd) color2nd.a *= audioLinkValue;
                 #endif
-                if(_Main2ndEnableLighting) col.rgb = lilBlendColor(col.rgb, color2nd.rgb, color2nd.a, _Main2ndTexBlendMode);
+                col.rgb = lilBlendColor(col.rgb, color2nd.rgb, color2nd.a * _Main2ndEnableLighting, _Main2ndTexBlendMode);
             }
         #endif
 
@@ -316,7 +314,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 #if defined(LIL_FEATURE_AUDIOLINK)
                     if(_AudioLink2Main3rd) color3rd.a *= audioLinkValue;
                 #endif
-                if(_Main3rdEnableLighting) col.rgb = lilBlendColor(col.rgb, color3rd.rgb, color3rd.a, _Main3rdTexBlendMode);
+                col.rgb = lilBlendColor(col.rgb, color3rd.rgb, color3rd.a * _Main3rdEnableLighting, _Main3rdTexBlendMode);
             }
         #endif
 
@@ -329,9 +327,10 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         #ifndef LIL_PASS_FORWARDADD
             float shadowmix = 1.0;
             #if defined(LIL_FEATURE_SHADOW)
-                lilGetShading(col, shadowmix, albedo, uvMain, facing, normalDirection, attenuation, lightDirection);
+                lilGetShading(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, attenuation, lightDirection);
+            #else
+                col.rgb *= lightColor;
             #endif
-            col.rgb *= lightColor;
 
             lightColor += vertexLightColor;
             shadowmix += lilLuminance(vertexLightColor);
@@ -346,18 +345,18 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             col.rgb = min(col.rgb, albedo);
 
             #if defined(LIL_FEATURE_MAIN2ND)
-                if(_UseMain2ndTex && !_Main2ndEnableLighting) col.rgb = lilBlendColor(col.rgb, color2nd.rgb, color2nd.a, _Main2ndTexBlendMode);
+                if(_UseMain2ndTex) col.rgb = lilBlendColor(col.rgb, color2nd.rgb, color2nd.a - color2nd.a * _Main2ndEnableLighting, _Main2ndTexBlendMode);
             #endif
             #if defined(LIL_FEATURE_MAIN3RD)
-                if(_UseMain3rdTex && !_Main3rdEnableLighting) col.rgb = lilBlendColor(col.rgb, color3rd.rgb, color3rd.a, _Main3rdTexBlendMode);
+                if(_UseMain3rdTex) col.rgb = lilBlendColor(col.rgb, color3rd.rgb, color3rd.a - color3rd.a * _Main3rdEnableLighting, _Main3rdTexBlendMode);
             #endif
         #else
             col.rgb *= lightColor;
             #if defined(LIL_FEATURE_MAIN2ND)
-                if(_UseMain2ndTex && !_Main2ndEnableLighting) col.rgb = col.rgb - col.rgb * color2nd.a;
+                if(_UseMain2ndTex) col.rgb = lerp(col.rgb, 0, color2nd.a - color2nd.a * _Main2ndEnableLighting);
             #endif
             #if defined(LIL_FEATURE_MAIN3RD)
-                if(_UseMain3rdTex && !_Main3rdEnableLighting) col.rgb = col.rgb - col.rgb * color3rd.a;
+                if(_UseMain3rdTex) col.rgb = lerp(col.rgb, 0, color3rd.a - color3rd.a * _Main3rdEnableLighting);
             #endif
         #endif
 
@@ -422,7 +421,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 float metallic = _Metallic;
                 if(Exists_MetallicGlossMap) metallic *= LIL_SAMPLE_2D(_MetallicGlossMap, sampler_MainTex, uvMain).r;
                 col.rgb = col.rgb - metallic * col.rgb;
-                float3 specular = lerp(LIL_DIELECTRIC_SPECULAR.rgb,albedo,metallic);
+                float3 specular = lerp(_Reflectance,albedo,metallic);
                 // Specular
                 #ifndef LIL_PASS_FORWARDADD
                     LIL_BRANCH
@@ -483,7 +482,11 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 float2 matUV = lilCalcMatCapUV(normalDirection);
                 float4 matCapColor = _MatCapColor;
                 if(Exists_MatCapTex) matCapColor *= LIL_SAMPLE_2D(_MatCapTex, sampler_MainTex, matUV);
-                if(_MatCapEnableLighting) matCapColor.rgb *= lightColor;
+                #ifndef LIL_PASS_FORWARDADD
+                    matCapColor.rgb = lerp(matCapColor.rgb, matCapColor.rgb * lightColor, _RimEnableLighting);
+                #else
+                    matCapColor.rgb *= lightColor * _RimEnableLighting;
+                #endif
                 #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                     if(_MatCapApplyTransparency) matCapColor.a *= col.a;
                 #endif
@@ -500,7 +503,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 if(_UseRim)
             #else
                 LIL_BRANCH
-                if(_UseRim && _RimEnableLighting)
+                if(_UseRim)
             #endif
             {
                 float4 rimColor = _RimColor;
@@ -512,10 +515,10 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 #endif
                 #ifndef LIL_PASS_FORWARDADD
                     if(_RimShadowMask) rim *= shadowmix;
-                    if(_RimEnableLighting) rimColor.rgb *= lightColor;
+                    rimColor.rgb = lerp(rimColor.rgb, rimColor.rgb * lightColor, _RimEnableLighting);
                     col.rgb += rim * rimColor.a * rimColor.rgb;
                 #else
-                    col.rgb += rim * rimColor.a * rimColor.rgb * lightColor;
+                    col.rgb += rim * _RimEnableLighting * rimColor.a * rimColor.rgb * lightColor;
                 #endif
             }
         #endif

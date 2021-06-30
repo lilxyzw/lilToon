@@ -173,6 +173,7 @@ float4  _EmissionMap_ScrollRotate;
 float4  _OutlineColor;
 float4  _OutlineTex_ST;
 float4  _OutlineTex_ScrollRotate;
+float   _AsUnlit;
 float   _Cutoff;
 float   _FlipNormal;
 float   _BackfaceForceShadow;
@@ -183,8 +184,8 @@ float   _RimBorder;
 float   _RimBlur;
 float   _RimFresnelPower;
 float   _OutlineWidth;
+float   _OutlineEnableLighting;
 lilBool _Invisible;
-lilBool _AsUnlit;
 lilBool _UseShadow;
 lilBool _UseMatCap;
 lilBool _MatCapMul;
@@ -193,7 +194,6 @@ lilBool _RimShadowMask;
 lilBool _UseEmission;
 lilBool _OutlineFixWidth;
 lilBool _OutlineVertexR2Width;
-lilBool _OutlineEnableLighting;
 CBUFFER_END
 #elif defined(LIL_BAKER)
 CBUFFER_START(UnityPerMaterial)
@@ -371,15 +371,18 @@ float4  _OutlineTex_ST;
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Float
+float   _AsUnlit;
 #if LIL_RENDER != 0
     float   _Cutoff;
 #endif
 float   _FlipNormal;
 #if defined(LIL_FEATURE_MAIN2ND)
     float   _Main2ndTexAngle;
+    float   _Main2ndEnableLighting;
 #endif
 #if defined(LIL_FEATURE_MAIN3RD)
     float   _Main3rdTexAngle;
+    float   _Main3rdEnableLighting;
 #endif
 #if defined(LIL_FEATURE_SHADOW)
     float   _BackfaceForceShadow;
@@ -401,14 +404,17 @@ float   _FlipNormal;
 #if defined(LIL_FEATURE_REFLECTION)
     float   _Smoothness;
     float   _Metallic;
+    float   _Reflectance;
 #endif
 #if defined(LIL_FEATURE_MATCAP)
     float   _MatCapBlend;
+    float   _MatCapEnableLighting;
 #endif
 #if defined(LIL_FEATURE_RIMLIGHT)
     float   _RimBorder;
     float   _RimBlur;
     float   _RimFresnelPower;
+    float   _RimEnableLighting;
 #endif
 #if defined(LIL_FEATURE_EMISSION_1ST)
     float   _EmissionBlend;
@@ -432,6 +438,7 @@ float   _FlipNormal;
 #endif
 
 float   _OutlineWidth;
+float   _OutlineEnableLighting;
 
 #if defined(LIL_FUR)
     float   _FurVectorScale;
@@ -473,10 +480,8 @@ float   _OutlineWidth;
 //------------------------------------------------------------------------------------------------------------------------------
 // Bool
 lilBool _Invisible;
-lilBool _AsUnlit;
 #if defined(LIL_FEATURE_MAIN2ND)
     lilBool _UseMain2ndTex;
-    lilBool _Main2ndEnableLighting;
     lilBool _Main2ndTexIsMSDF;
     #if defined(LIL_FEATURE_DECAL)
         lilBool _Main2ndTexIsDecal;
@@ -489,7 +494,6 @@ lilBool _AsUnlit;
 #endif
 #if defined(LIL_FEATURE_MAIN3RD)
     lilBool _UseMain3rdTex;
-    lilBool _Main3rdEnableLighting;
     lilBool _Main3rdTexIsMSDF;
     #if defined(LIL_FEATURE_DECAL)
         lilBool _Main3rdTexIsDecal;
@@ -521,12 +525,10 @@ lilBool _AsUnlit;
 #endif
 #if defined(LIL_FEATURE_MATCAP)
     lilBool _UseMatCap;
-    lilBool _MatCapEnableLighting;
     lilBool _MatCapApplyTransparency;
 #endif
 #if defined(LIL_FEATURE_RIMLIGHT)
     lilBool _UseRim;
-    lilBool _RimEnableLighting;
     lilBool _RimShadowMask;
     lilBool _RimApplyTransparency;
 #endif
@@ -569,7 +571,6 @@ lilBool _AsUnlit;
 
 lilBool _OutlineFixWidth;
 lilBool _OutlineVertexR2Width;
-lilBool _OutlineEnableLighting;
 
 #if defined(LIL_FUR)
     lilBool _VertexColor2FurVector;

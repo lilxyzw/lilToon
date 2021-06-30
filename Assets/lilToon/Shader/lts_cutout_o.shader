@@ -5,7 +5,7 @@
         //----------------------------------------------------------------------------------------------------------------------
         // Base
         [lilToggle]     _Invisible                  ("Invisible", Int) = 0
-        [lilToggle]     _AsUnlit                    ("As Unlit", Int) = 0
+                        _AsUnlit                    ("As Unlit", Range(0, 1)) = 0
                         _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.5
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
@@ -34,7 +34,7 @@
         [lilToggle]     _Main2ndTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main2ndBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
-        [lilToggle]     _Main2ndEnableLighting      ("Enable Lighting", Int) = 1
+                        _Main2ndEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main3rd
@@ -53,7 +53,7 @@
         [lilToggle]     _Main3rdTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main3rdBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
-        [lilToggle]     _Main3rdEnableLighting      ("Enable Lighting", Int) = 1
+                        _Main3rdEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // NormalMap
@@ -98,6 +98,8 @@
         // Metallic
         [Gamma]         _Metallic                   ("Metallic", Range(0, 1)) = 0
         [NoScaleOffset] _MetallicGlossMap           ("Metallic", 2D) = "white" {}
+        // Reflectance
+        [Gamma]         _Reflectance                ("Reflectance", Range(0, 1)) = 0.04
         // Reflection
         [lilToggle]     _ApplySpecular              ("Apply Specular", Int) = 1
         [lilToggle]     _SpecularToon               ("Specular Toon", Int) = 1
@@ -113,7 +115,7 @@
         [NoScaleOffset] _MatCapTex                  ("Texture", 2D) = "white" {}
                         _MatCapBlend                ("Blend", Range(0, 1)) = 1
         [NoScaleOffset] _MatCapBlendMask            ("Mask", 2D) = "white" {}
-        [lilToggle]     _MatCapEnableLighting       ("Enable Lighting", Int) = 1
+                        _MatCapEnableLighting       ("Enable Lighting", Range(0, 1)) = 1
         [lilBlendMode]  _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCapApplyTransparency    ("Apply Transparency", Int) = 1
 
@@ -125,7 +127,7 @@
                         _RimBorder                  ("Border", Range(0, 1)) = 0.5
                         _RimBlur                    ("Blur", Range(0, 1)) = 0.1
         [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
-        [lilToggle]     _RimEnableLighting          ("Enable Lighting", Int) = 1
+                        _RimEnableLighting          ("Enable Lighting", Range(0, 1)) = 1
         [lilToggle]     _RimShadowMask              ("Shadow Mask", Int) = 0
         [lilToggle]     _RimApplyTransparency       ("Apply Transparency", Int) = 1
 
@@ -268,7 +270,7 @@
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
         [lilToggle]     _OutlineFixWidth            ("Fix Width", Int) = 1
         [lilToggle]     _OutlineVertexR2Width       ("Vertex R -> Width", Int) = 0
-        [lilToggle]     _OutlineEnableLighting      ("Enable Lighting", Int) = 1
+                        _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Outline Advanced
