@@ -18,74 +18,6 @@ namespace lilToon
     public class lilToonInspector : ShaderGUI
     {
         //------------------------------------------------------------------------------------------------------------------------------
-        // Editor
-        #if UNITY_2019_1_OR_NEWER
-            static Color lineColor          = new Color(0.35f,0.35f,0.35f,1.0f);
-        #else
-            static Color lineColor          = new Color(0.4f,0.4f,0.4f,1.0f);
-        #endif
-
-        static Vector4 defaultHSVG = new Vector4(0.0f,1.0f,1.0f,1.0f);
-        const string versionInfo = "lilToon 1.0";
-        const string boothURL = "https://lilxyzw.booth.pm/";
-        const string githubURL = "https://github.com/lilxyzw/lilToon";
-        const string twitterURL = "https://twitter.com/lil_xyzw";
-        const string editorSettingPath = "Assets/lilToon/EditorSetting.asset";
-
-        // Editor Setting
-        static lilToonEditorSetting editorSetting;
-
-        // Shader Setting
-        static lilToonSetting shaderSetting;
-
-        // Rendering Mode
-        static RenderingMode renderingModeBuf;
-        static bool isLite         = false;
-        static bool isCutout       = false;
-        static bool isTransparent  = false;
-        static bool isOutl         = false;
-        static bool isRefr         = false;
-        static bool isBlur         = false;
-        static bool isFur          = false;
-        static bool isStWr         = false;
-        static bool isTess         = false;
-
-        // Toggle show / hide
-	    static bool isShowMainUV            = false;
-	    static bool isShowMain              = false;
-	    static bool isShowShadow            = false;
-	    static bool isShowBump              = false;
-	    static bool isShowReflections       = false;
-	    static bool isShowEmission          = false;
-            static bool isShowEmissionMap           = false;
-            static bool isShowEmissionBlendMask     = false;
-            static bool isShowEmission2ndMap        = false;
-            static bool isShowEmission2ndBlendMask  = false;
-	    static bool isShowParallax          = false;
-	    static bool isShowDistanceFade      = false;
-	    static bool isShowAudioLink         = false;
-	    static bool isShowStencil           = false;
-	    static bool isShowOutline           = false;
-            static bool isShowOutlineMap            = false;
-	    static bool isShowRefraction        = false;
-	    static bool isShowFur               = false;
-	    static bool isShowTess              = false;
-	    static bool isShowRendering         = false;
-	    static bool isShowOptimization      = false;
-	    static bool isShowBlend             = false;
-	    static bool isShowBlendAdd          = false;
-	    static bool isShowBlendOutline      = false;
-	    static bool isShowBlendAddOutline   = false;
-	    static bool isShowBlendFur          = false;
-	    static bool isShowBlendAddFur       = false;
-	    static bool isShowWebPages          = false;
-	    static bool isShowShaderSetting     = false;
-	    static bool isShaderSettingChanged  = false;
-
-        static lilToonPreset[] presets;
-        static bool[] isShowCategorys = new bool[(int)lilPresetCategory.Other+1]{false,false,false,false,false,false,false};
-
-        //------------------------------------------------------------------------------------------------------------------------------
         // Enum
         enum EditorMode
         {
@@ -125,15 +57,19 @@ namespace lilToon
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
-        // Language
-        static int languageNum = 0;
-        static string languageNames = "";
-        static string languageName = "English";
-        static Dictionary<string, string> loc = new Dictionary<string, string>();
+        // Constant
+        #if UNITY_2019_1_OR_NEWER
+            static Color lineColor          = new Color(0.35f,0.35f,0.35f,1.0f);
+        #else
+            static Color lineColor          = new Color(0.4f,0.4f,0.4f,1.0f);
+        #endif
 
-        //------------------------------------------------------------------------------------------------------------------------------
-        // Editor Mode
-        static EditorMode editorMode = EditorMode.Simple;
+        static Vector4 defaultHSVG = new Vector4(0.0f,1.0f,1.0f,1.0f);
+        const string versionInfo = "lilToon 1.0";
+        const string boothURL = "https://lilxyzw.booth.pm/";
+        const string githubURL = "https://github.com/lilxyzw/lilToon";
+        const string twitterURL = "https://twitter.com/lil_xyzw";
+        const string editorSettingPath = "Assets/lilToonSetting/EditorSetting.asset";
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Shader
@@ -175,6 +111,63 @@ namespace lilToon
         static Shader ltsptesst = Shader.Find("Hidden/ltspass_tess_transparent");
 
         static Shader mtoon     = Shader.Find("VRM/MToon");
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Editor
+        static lilToonEditorSetting editorSetting;
+        static lilToonSetting shaderSetting;
+        static EditorMode editorMode = EditorMode.Simple;
+        static lilToonPreset[] presets;
+
+        static int languageNum = 0;
+        static string languageNames = "";
+        static string languageName = "English";
+        static Dictionary<string, string> loc = new Dictionary<string, string>();
+
+	    static bool isShowMainUV            = false;
+	    static bool isShowMain              = false;
+	    static bool isShowShadow            = false;
+	    static bool isShowBump              = false;
+	    static bool isShowReflections       = false;
+	    static bool isShowEmission          = false;
+            static bool isShowEmissionMap           = false;
+            static bool isShowEmissionBlendMask     = false;
+            static bool isShowEmission2ndMap        = false;
+            static bool isShowEmission2ndBlendMask  = false;
+	    static bool isShowParallax          = false;
+	    static bool isShowDistanceFade      = false;
+	    static bool isShowAudioLink         = false;
+	    static bool isShowStencil           = false;
+	    static bool isShowOutline           = false;
+            static bool isShowOutlineMap            = false;
+	    static bool isShowRefraction        = false;
+	    static bool isShowFur               = false;
+	    static bool isShowTess              = false;
+	    static bool isShowRendering         = false;
+	    static bool isShowOptimization      = false;
+	    static bool isShowBlend             = false;
+	    static bool isShowBlendAdd          = false;
+	    static bool isShowBlendOutline      = false;
+	    static bool isShowBlendAddOutline   = false;
+	    static bool isShowBlendFur          = false;
+	    static bool isShowBlendAddFur       = false;
+	    static bool isShowWebPages          = false;
+	    static bool isShowShaderSetting     = false;
+	    static bool isShaderSettingChanged  = false;
+        static bool[] isShowCategorys = new bool[(int)lilPresetCategory.Other+1]{false,false,false,false,false,false,false};
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Material
+        static RenderingMode renderingModeBuf;
+        static bool isLite         = false;
+        static bool isCutout       = false;
+        static bool isTransparent  = false;
+        static bool isOutl         = false;
+        static bool isRefr         = false;
+        static bool isBlur         = false;
+        static bool isFur          = false;
+        static bool isStWr         = false;
+        static bool isTess         = false;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Material properties
@@ -431,6 +424,7 @@ namespace lilToon
             MaterialProperty tessShrink;
             MaterialProperty tessFactorMax;
 
+        //------------------------------------------------------------------------------------------------------------------------------
         // Emittion Gradient
         Gradient emiGrad = new Gradient();
         Gradient emi2Grad = new Gradient();
@@ -462,77 +456,9 @@ namespace lilToon
             #endif
 
             //------------------------------------------------------------------------------------------------------------------------------
-            // Editor Setting
-            editorSetting = (lilToonEditorSetting)AssetDatabase.LoadAssetAtPath(editorSettingPath, typeof(lilToonEditorSetting));
-            if(editorSetting == null)
-            {
-                editorSetting = new lilToonEditorSetting();
-                AssetDatabase.CreateAsset(editorSetting, editorSettingPath);
-                editorSetting.settingPath = "Assets/lilToon/Editor/setting.asset";
-                editorSetting.unlockShaderSetting = true;
-                EditorUtility.SetDirty(editorSetting);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-            }
-
-            //------------------------------------------------------------------------------------------------------------------------------
-            // Shader Setting
-            shaderSetting = (lilToonSetting)AssetDatabase.LoadAssetAtPath(editorSetting.settingPath, typeof(lilToonSetting));
-            if(shaderSetting == null)
-            {
-                shaderSetting = new lilToonSetting();
-                AssetDatabase.CreateAsset(shaderSetting, editorSetting.settingPath);
-                shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV = false;
-                shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION = true;
-                shaderSetting.LIL_FEATURE_MAIN2ND = false;
-                shaderSetting.LIL_FEATURE_MAIN3RD = false;
-                shaderSetting.LIL_FEATURE_DECAL = false;
-                shaderSetting.LIL_FEATURE_ANIMATE_DECAL = false;
-                shaderSetting.LIL_FEATURE_SHADOW = true;
-                shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = false;
-                shaderSetting.LIL_FEATURE_EMISSION_1ST = true;
-                shaderSetting.LIL_FEATURE_EMISSION_2ND = false;
-                shaderSetting.LIL_FEATURE_EMISSION_UV = false;
-                shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV = false;
-                shaderSetting.LIL_FEATURE_EMISSION_MASK_UV = false;
-                shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_MASK_UV = false;
-                shaderSetting.LIL_FEATURE_EMISSION_GRADATION = false;
-                shaderSetting.LIL_FEATURE_NORMAL_1ST = true;
-                shaderSetting.LIL_FEATURE_NORMAL_2ND = false;
-                shaderSetting.LIL_FEATURE_REFLECTION = false;
-                shaderSetting.LIL_FEATURE_MATCAP = true;
-                shaderSetting.LIL_FEATURE_RIMLIGHT = true;
-                shaderSetting.LIL_FEATURE_PARALLAX = false;
-                shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = false;
-                shaderSetting.LIL_FEATURE_DISTANCE_FADE = false;
-                shaderSetting.LIL_FEATURE_AUDIOLINK = false;
-                shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX = false;
-                shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL = false;
-                shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = false;
-                shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = false;
-                shaderSetting.LIL_FEATURE_TEX_LAYER_MASK = false;
-                shaderSetting.LIL_FEATURE_TEX_SHADOW_BLUR = false;
-                shaderSetting.LIL_FEATURE_TEX_SHADOW_BORDER = false;
-                shaderSetting.LIL_FEATURE_TEX_SHADOW_STRENGTH = true;
-                shaderSetting.LIL_FEATURE_TEX_SHADOW_1ST = false;
-                shaderSetting.LIL_FEATURE_TEX_SHADOW_2ND = false;
-                shaderSetting.LIL_FEATURE_TEX_EMISSION_MASK = false;
-                shaderSetting.LIL_FEATURE_TEX_NORMAL_MASK = false;
-                shaderSetting.LIL_FEATURE_TEX_REFLECTION_SMOOTHNESS = false;
-                shaderSetting.LIL_FEATURE_TEX_REFLECTION_METALLIC = false;
-                shaderSetting.LIL_FEATURE_TEX_REFLECTION_COLOR = false;
-                shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK = true;
-                shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR = true;
-                shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK = true;
-                shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR = true;
-                shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH = true;
-                shaderSetting.LIL_FEATURE_TEX_FUR_NORMAL = false;
-                shaderSetting.LIL_FEATURE_TEX_FUR_MASK = false;
-                shaderSetting.LIL_FEATURE_TEX_TESSELLATION = false;
-                EditorUtility.SetDirty(shaderSetting);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-            }
+            // Initialize Setting
+            InitializeEditorSetting();
+            InitializeShaderSetting();
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Load Material
@@ -559,427 +485,12 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Load Properties
-            if(isLite)
-            {
-                invisible = FindProperty("_Invisible", props);
-                asUnlit = FindProperty("_AsUnlit", props);
-                cutoff = FindProperty("_Cutoff", props);
-                flipNormal = FindProperty("_FlipNormal", props);
-                backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
-                mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
-                triMask = FindProperty("_TriMask", props);
-                    cull = FindProperty("_Cull", props);
-                    srcBlend = FindProperty("_SrcBlend", props);
-                    dstBlend = FindProperty("_DstBlend", props);
-                    srcBlendAlpha = FindProperty("_SrcBlendAlpha", props);
-                    dstBlendAlpha = FindProperty("_DstBlendAlpha", props);
-                    blendOp = FindProperty("_BlendOp", props);
-                    blendOpAlpha = FindProperty("_BlendOpAlpha", props);
-                    srcBlendFA = FindProperty("_SrcBlendFA", props);
-                    dstBlendFA = FindProperty("_DstBlendFA", props);
-                    srcBlendAlphaFA = FindProperty("_SrcBlendAlphaFA", props);
-                    dstBlendAlphaFA = FindProperty("_DstBlendAlphaFA", props);
-                    blendOpFA = FindProperty("_BlendOpFA", props);
-                    blendOpAlphaFA = FindProperty("_BlendOpAlphaFA", props);
-                    zwrite = FindProperty("_ZWrite", props);
-                    ztest = FindProperty("_ZTest", props);
-                    stencilRef = FindProperty("_StencilRef", props);
-                    stencilReadMask = FindProperty("_StencilReadMask", props);
-                    stencilWriteMask = FindProperty("_StencilWriteMask", props);
-                    stencilComp = FindProperty("_StencilComp", props);
-                    stencilPass = FindProperty("_StencilPass", props);
-                    stencilFail = FindProperty("_StencilFail", props);
-                    stencilZFail = FindProperty("_StencilZFail", props);
-                    offsetFactor = FindProperty("_OffsetFactor", props);
-                    offsetUnits = FindProperty("_OffsetUnits", props);
-                    colorMask = FindProperty("_ColorMask", props);
-                // Main
-                //useMainTex = FindProperty("_UseMainTex", props);
-                    mainColor = FindProperty("_Color", props);
-                    mainTex = FindProperty("_MainTex", props);
-                // Shadow
-                useShadow = FindProperty("_UseShadow", props);
-                    shadowBorder = FindProperty("_ShadowBorder", props);
-                    shadowBlur = FindProperty("_ShadowBlur", props);
-                    shadowColorTex = FindProperty("_ShadowColorTex", props);
-                    shadowEnvStrength = FindProperty("_ShadowEnvStrength", props);
-                // Outline
-                if(isOutl)
-                {
-                    outlineColor = FindProperty("_OutlineColor", props);
-                    outlineTex = FindProperty("_OutlineTex", props);
-                    outlineTex_ScrollRotate = FindProperty("_OutlineTex_ScrollRotate", props);
-                    outlineWidth = FindProperty("_OutlineWidth", props);
-                    outlineWidthMask = FindProperty("_OutlineWidthMask", props);
-                    outlineFixWidth = FindProperty("_OutlineFixWidth", props);
-                    outlineVertexR2Width = FindProperty("_OutlineVertexR2Width", props);
-                    outlineEnableLighting = FindProperty("_OutlineEnableLighting", props);
-                    outlineCull = FindProperty("_OutlineCull", props);
-                    outlineSrcBlend = FindProperty("_OutlineSrcBlend", props);
-                    outlineDstBlend = FindProperty("_OutlineDstBlend", props);
-                    outlineSrcBlendAlpha = FindProperty("_OutlineSrcBlendAlpha", props);
-                    outlineDstBlendAlpha = FindProperty("_OutlineDstBlendAlpha", props);
-                    outlineBlendOp = FindProperty("_OutlineBlendOp", props);
-                    outlineBlendOpAlpha = FindProperty("_OutlineBlendOpAlpha", props);
-                    outlineSrcBlendFA = FindProperty("_OutlineSrcBlendFA", props);
-                    outlineDstBlendFA = FindProperty("_OutlineDstBlendFA", props);
-                    outlineSrcBlendAlphaFA = FindProperty("_OutlineSrcBlendAlphaFA", props);
-                    outlineDstBlendAlphaFA = FindProperty("_OutlineDstBlendAlphaFA", props);
-                    outlineBlendOpFA = FindProperty("_OutlineBlendOpFA", props);
-                    outlineBlendOpAlphaFA = FindProperty("_OutlineBlendOpAlphaFA", props);
-                    outlineZwrite = FindProperty("_OutlineZWrite", props);
-                    outlineZtest = FindProperty("_OutlineZTest", props);
-                    outlineStencilRef = FindProperty("_OutlineStencilRef", props);
-                    outlineStencilReadMask = FindProperty("_OutlineStencilReadMask", props);
-                    outlineStencilWriteMask = FindProperty("_OutlineStencilWriteMask", props);
-                    outlineStencilComp = FindProperty("_OutlineStencilComp", props);
-                    outlineStencilPass = FindProperty("_OutlineStencilPass", props);
-                    outlineStencilFail = FindProperty("_OutlineStencilFail", props);
-                    outlineStencilZFail = FindProperty("_OutlineStencilZFail", props);
-                    outlineOffsetFactor = FindProperty("_OutlineOffsetFactor", props);
-                    outlineOffsetUnits = FindProperty("_OutlineOffsetUnits", props);
-                    outlineColorMask = FindProperty("_OutlineColorMask", props);
-                }
-                useMatCap = FindProperty("_UseMatCap", props);
-                    matcapTex = FindProperty("_MatCapTex", props);
-                    matcapMul = FindProperty("_MatCapMul", props);
-                useRim = FindProperty("_UseRim", props);
-                    rimColor = FindProperty("_RimColor", props);
-                    rimBorder = FindProperty("_RimBorder", props);
-                    rimBlur = FindProperty("_RimBlur", props);
-                    rimFresnelPower = FindProperty("_RimFresnelPower", props);
-                    rimShadowMask = FindProperty("_RimShadowMask", props);
-                useEmission = FindProperty("_UseEmission", props);
-                    emissionColor = FindProperty("_EmissionColor", props);
-                    emissionMap = FindProperty("_EmissionMap", props);
-                    emissionMap_ScrollRotate = FindProperty("_EmissionMap_ScrollRotate", props);
-                    emissionBlink = FindProperty("_EmissionBlink", props);
-            }
-            else if(isFur)
-            {
-                invisible = FindProperty("_Invisible", props);
-                asUnlit = FindProperty("_AsUnlit", props);
-                cutoff = FindProperty("_Cutoff", props);
-                flipNormal = FindProperty("_FlipNormal", props);
-                backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
-                mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
-                    cull = FindProperty("_Cull", props);
-                    srcBlend = FindProperty("_SrcBlend", props);
-                    dstBlend = FindProperty("_DstBlend", props);
-                    srcBlendAlpha = FindProperty("_SrcBlendAlpha", props);
-                    dstBlendAlpha = FindProperty("_DstBlendAlpha", props);
-                    blendOp = FindProperty("_BlendOp", props);
-                    blendOpAlpha = FindProperty("_BlendOpAlpha", props);
-                    srcBlendFA = FindProperty("_SrcBlendFA", props);
-                    dstBlendFA = FindProperty("_DstBlendFA", props);
-                    srcBlendAlphaFA = FindProperty("_SrcBlendAlphaFA", props);
-                    dstBlendAlphaFA = FindProperty("_DstBlendAlphaFA", props);
-                    blendOpFA = FindProperty("_BlendOpFA", props);
-                    blendOpAlphaFA = FindProperty("_BlendOpAlphaFA", props);
-                    zwrite = FindProperty("_ZWrite", props);
-                    ztest = FindProperty("_ZTest", props);
-                    stencilRef = FindProperty("_StencilRef", props);
-                    stencilReadMask = FindProperty("_StencilReadMask", props);
-                    stencilWriteMask = FindProperty("_StencilWriteMask", props);
-                    stencilComp = FindProperty("_StencilComp", props);
-                    stencilPass = FindProperty("_StencilPass", props);
-                    stencilFail = FindProperty("_StencilFail", props);
-                    stencilZFail = FindProperty("_StencilZFail", props);
-                    offsetFactor = FindProperty("_OffsetFactor", props);
-                    offsetUnits = FindProperty("_OffsetUnits", props);
-                    colorMask = FindProperty("_ColorMask", props);
-                // Main
-                //useMainTex = FindProperty("_UseMainTex", props);
-                    mainColor = FindProperty("_Color", props);
-                    mainTex = FindProperty("_MainTex", props);
-                    mainTexHSVG = FindProperty("_MainTexHSVG", props);
-                // Shadow
-                useShadow = FindProperty("_UseShadow", props);
-                    shadowBorder = FindProperty("_ShadowBorder", props);
-                    shadowBorderMask = FindProperty("_ShadowBorderMask", props);
-                    shadowBlur = FindProperty("_ShadowBlur", props);
-                    shadowBlurMask = FindProperty("_ShadowBlurMask", props);
-                    shadowStrength = FindProperty("_ShadowStrength", props);
-                    shadowStrengthMask = FindProperty("_ShadowStrengthMask", props);
-                    shadowColor = FindProperty("_ShadowColor", props);
-                    shadowColorTex = FindProperty("_ShadowColorTex", props);
-                    shadow2ndBorder = FindProperty("_Shadow2ndBorder", props);
-                    shadow2ndBlur = FindProperty("_Shadow2ndBlur", props);
-                    shadow2ndColor = FindProperty("_Shadow2ndColor", props);
-                    shadow2ndColorTex = FindProperty("_Shadow2ndColorTex", props);
-                    shadowMainStrength = FindProperty("_ShadowMainStrength", props);
-                    shadowEnvStrength = FindProperty("_ShadowEnvStrength", props);
-                    shadowBorderColor = FindProperty("_ShadowBorderColor", props);
-                    shadowBorderRange = FindProperty("_ShadowBorderRange", props);
-                    shadowReceive = FindProperty("_ShadowReceive", props);
-                distanceFade = FindProperty("_DistanceFade", props);
-                    distanceFadeColor = FindProperty("_DistanceFadeColor", props);
-                //useFur = FindProperty("_UseFur", props);
-                    furNoiseMask = FindProperty("_FurNoiseMask", props);
-                    furMask = FindProperty("_FurMask", props);
-                    furVectorTex = FindProperty("_FurVectorTex", props);
-                    furVectorScale = FindProperty("_FurVectorScale", props);
-                    furVector = FindProperty("_FurVector", props);
-                    furGravity = FindProperty("_FurGravity", props);
-                    furAO = FindProperty("_FurAO", props);
-                    vertexColor2FurVector = FindProperty("_VertexColor2FurVector", props);
-                    furLayerNum = FindProperty("_FurLayerNum", props);
-                    furCull = FindProperty("_FurCull", props);
-                    furSrcBlend = FindProperty("_FurSrcBlend", props);
-                    furDstBlend = FindProperty("_FurDstBlend", props);
-                    furSrcBlendAlpha = FindProperty("_FurSrcBlendAlpha", props);
-                    furDstBlendAlpha = FindProperty("_FurDstBlendAlpha", props);
-                    furBlendOp = FindProperty("_FurBlendOp", props);
-                    furBlendOpAlpha = FindProperty("_FurBlendOpAlpha", props);
-                    furSrcBlendFA = FindProperty("_FurSrcBlendFA", props);
-                    furDstBlendFA = FindProperty("_FurDstBlendFA", props);
-                    furSrcBlendAlphaFA = FindProperty("_FurSrcBlendAlphaFA", props);
-                    furDstBlendAlphaFA = FindProperty("_FurDstBlendAlphaFA", props);
-                    furBlendOpFA = FindProperty("_FurBlendOpFA", props);
-                    furBlendOpAlphaFA = FindProperty("_FurBlendOpAlphaFA", props);
-                    furZwrite = FindProperty("_FurZWrite", props);
-                    furZtest = FindProperty("_FurZTest", props);
-                    furStencilRef = FindProperty("_FurStencilRef", props);
-                    furStencilReadMask = FindProperty("_FurStencilReadMask", props);
-                    furStencilWriteMask = FindProperty("_FurStencilWriteMask", props);
-                    furStencilComp = FindProperty("_FurStencilComp", props);
-                    furStencilPass = FindProperty("_FurStencilPass", props);
-                    furStencilFail = FindProperty("_FurStencilFail", props);
-                    furStencilZFail = FindProperty("_FurStencilZFail", props);
-                    furOffsetFactor = FindProperty("_FurOffsetFactor", props);
-                    furOffsetUnits = FindProperty("_FurOffsetUnits", props);
-                    furColorMask = FindProperty("_FurColorMask", props);
-            }
-            else
-            {
-                invisible = FindProperty("_Invisible", props);
-                asUnlit = FindProperty("_AsUnlit", props);
-                cutoff = FindProperty("_Cutoff", props);
-                flipNormal = FindProperty("_FlipNormal", props);
-                backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
-                mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
-                    cull = FindProperty("_Cull", props);
-                    srcBlend = FindProperty("_SrcBlend", props);
-                    dstBlend = FindProperty("_DstBlend", props);
-                    srcBlendAlpha = FindProperty("_SrcBlendAlpha", props);
-                    dstBlendAlpha = FindProperty("_DstBlendAlpha", props);
-                    blendOp = FindProperty("_BlendOp", props);
-                    blendOpAlpha = FindProperty("_BlendOpAlpha", props);
-                    srcBlendFA = FindProperty("_SrcBlendFA", props);
-                    dstBlendFA = FindProperty("_DstBlendFA", props);
-                    srcBlendAlphaFA = FindProperty("_SrcBlendAlphaFA", props);
-                    dstBlendAlphaFA = FindProperty("_DstBlendAlphaFA", props);
-                    blendOpFA = FindProperty("_BlendOpFA", props);
-                    blendOpAlphaFA = FindProperty("_BlendOpAlphaFA", props);
-                    zwrite = FindProperty("_ZWrite", props);
-                    ztest = FindProperty("_ZTest", props);
-                    stencilRef = FindProperty("_StencilRef", props);
-                    stencilReadMask = FindProperty("_StencilReadMask", props);
-                    stencilWriteMask = FindProperty("_StencilWriteMask", props);
-                    stencilComp = FindProperty("_StencilComp", props);
-                    stencilPass = FindProperty("_StencilPass", props);
-                    stencilFail = FindProperty("_StencilFail", props);
-                    stencilZFail = FindProperty("_StencilZFail", props);
-                    offsetFactor = FindProperty("_OffsetFactor", props);
-                    offsetUnits = FindProperty("_OffsetUnits", props);
-                    colorMask = FindProperty("_ColorMask", props);
-                // Main
-                //useMainTex = FindProperty("_UseMainTex", props);
-                    mainColor = FindProperty("_Color", props);
-                    mainTex = FindProperty("_MainTex", props);
-                    mainTexHSVG = FindProperty("_MainTexHSVG", props);
-                useMain2ndTex = FindProperty("_UseMain2ndTex", props);
-                    mainColor2nd = FindProperty("_Color2nd", props);
-                    main2ndTex = FindProperty("_Main2ndTex", props);
-                    main2ndTexAngle = FindProperty("_Main2ndTexAngle", props);
-                    main2ndTexDecalAnimation = FindProperty("_Main2ndTexDecalAnimation", props);
-                    main2ndTexDecalSubParam = FindProperty("_Main2ndTexDecalSubParam", props);
-                    main2ndTexIsDecal = FindProperty("_Main2ndTexIsDecal", props);
-                    main2ndTexIsLeftOnly = FindProperty("_Main2ndTexIsLeftOnly", props);
-                    main2ndTexIsRightOnly = FindProperty("_Main2ndTexIsRightOnly", props);
-                    main2ndTexShouldCopy = FindProperty("_Main2ndTexShouldCopy", props);
-                    main2ndTexShouldFlipMirror = FindProperty("_Main2ndTexShouldFlipMirror", props);
-                    main2ndTexShouldFlipCopy = FindProperty("_Main2ndTexShouldFlipCopy", props);
-                    main2ndTexIsMSDF = FindProperty("_Main2ndTexIsMSDF", props);
-                    main2ndBlendMask = FindProperty("_Main2ndBlendMask", props);
-                    main2ndTexBlendMode = FindProperty("_Main2ndTexBlendMode", props);
-                    main2ndEnableLighting = FindProperty("_Main2ndEnableLighting", props);
-                useMain3rdTex = FindProperty("_UseMain3rdTex", props);
-                    mainColor3rd = FindProperty("_Color3rd", props);
-                    main3rdTex = FindProperty("_Main3rdTex", props);
-                    main3rdTexAngle = FindProperty("_Main3rdTexAngle", props);
-                    main3rdTexIsDecal = FindProperty("_Main3rdTexIsDecal", props);
-                    main3rdTexDecalAnimation = FindProperty("_Main3rdTexDecalAnimation", props);
-                    main3rdTexDecalSubParam = FindProperty("_Main3rdTexDecalSubParam", props);
-                    main3rdTexIsLeftOnly = FindProperty("_Main3rdTexIsLeftOnly", props);
-                    main3rdTexIsRightOnly = FindProperty("_Main3rdTexIsRightOnly", props);
-                    main3rdTexShouldCopy = FindProperty("_Main3rdTexShouldCopy", props);
-                    main3rdTexShouldFlipMirror = FindProperty("_Main3rdTexShouldFlipMirror", props);
-                    main3rdTexShouldFlipCopy = FindProperty("_Main3rdTexShouldFlipCopy", props);
-                    main3rdTexIsMSDF = FindProperty("_Main3rdTexIsMSDF", props);
-                    main3rdBlendMask = FindProperty("_Main3rdBlendMask", props);
-                    main3rdTexBlendMode = FindProperty("_Main3rdTexBlendMode", props);
-                    main3rdEnableLighting = FindProperty("_Main3rdEnableLighting", props);
-                // Shadow
-                useShadow = FindProperty("_UseShadow", props);
-                    shadowBorder = FindProperty("_ShadowBorder", props);
-                    shadowBorderMask = FindProperty("_ShadowBorderMask", props);
-                    shadowBlur = FindProperty("_ShadowBlur", props);
-                    shadowBlurMask = FindProperty("_ShadowBlurMask", props);
-                    shadowStrength = FindProperty("_ShadowStrength", props);
-                    shadowStrengthMask = FindProperty("_ShadowStrengthMask", props);
-                    shadowColor = FindProperty("_ShadowColor", props);
-                    shadowColorTex = FindProperty("_ShadowColorTex", props);
-                    shadow2ndBorder = FindProperty("_Shadow2ndBorder", props);
-                    shadow2ndBlur = FindProperty("_Shadow2ndBlur", props);
-                    shadow2ndColor = FindProperty("_Shadow2ndColor", props);
-                    shadow2ndColorTex = FindProperty("_Shadow2ndColorTex", props);
-                    shadowMainStrength = FindProperty("_ShadowMainStrength", props);
-                    shadowEnvStrength = FindProperty("_ShadowEnvStrength", props);
-                    shadowBorderColor = FindProperty("_ShadowBorderColor", props);
-                    shadowBorderRange = FindProperty("_ShadowBorderRange", props);
-                    shadowReceive = FindProperty("_ShadowReceive", props);
-                // Outline
-                if(isOutl)
-                {
-                    outlineColor = FindProperty("_OutlineColor", props);
-                    outlineTex = FindProperty("_OutlineTex", props);
-                    outlineTex_ScrollRotate = FindProperty("_OutlineTex_ScrollRotate", props);
-                    outlineTexHSVG = FindProperty("_OutlineTexHSVG", props);
-                    outlineWidth = FindProperty("_OutlineWidth", props);
-                    outlineWidthMask = FindProperty("_OutlineWidthMask", props);
-                    outlineFixWidth = FindProperty("_OutlineFixWidth", props);
-                    outlineVertexR2Width = FindProperty("_OutlineVertexR2Width", props);
-                    outlineEnableLighting = FindProperty("_OutlineEnableLighting", props);
-                    outlineCull = FindProperty("_OutlineCull", props);
-                    outlineSrcBlend = FindProperty("_OutlineSrcBlend", props);
-                    outlineDstBlend = FindProperty("_OutlineDstBlend", props);
-                    outlineSrcBlendAlpha = FindProperty("_OutlineSrcBlendAlpha", props);
-                    outlineDstBlendAlpha = FindProperty("_OutlineDstBlendAlpha", props);
-                    outlineBlendOp = FindProperty("_OutlineBlendOp", props);
-                    outlineBlendOpAlpha = FindProperty("_OutlineBlendOpAlpha", props);
-                    outlineSrcBlendFA = FindProperty("_OutlineSrcBlendFA", props);
-                    outlineDstBlendFA = FindProperty("_OutlineDstBlendFA", props);
-                    outlineSrcBlendAlphaFA = FindProperty("_OutlineSrcBlendAlphaFA", props);
-                    outlineDstBlendAlphaFA = FindProperty("_OutlineDstBlendAlphaFA", props);
-                    outlineBlendOpFA = FindProperty("_OutlineBlendOpFA", props);
-                    outlineBlendOpAlphaFA = FindProperty("_OutlineBlendOpAlphaFA", props);
-                    outlineZwrite = FindProperty("_OutlineZWrite", props);
-                    outlineZtest = FindProperty("_OutlineZTest", props);
-                    outlineStencilRef = FindProperty("_OutlineStencilRef", props);
-                    outlineStencilReadMask = FindProperty("_OutlineStencilReadMask", props);
-                    outlineStencilWriteMask = FindProperty("_OutlineStencilWriteMask", props);
-                    outlineStencilComp = FindProperty("_OutlineStencilComp", props);
-                    outlineStencilPass = FindProperty("_OutlineStencilPass", props);
-                    outlineStencilFail = FindProperty("_OutlineStencilFail", props);
-                    outlineStencilZFail = FindProperty("_OutlineStencilZFail", props);
-                    outlineOffsetFactor = FindProperty("_OutlineOffsetFactor", props);
-                    outlineOffsetUnits = FindProperty("_OutlineOffsetUnits", props);
-                    outlineColorMask = FindProperty("_OutlineColorMask", props);
-                }
-                // Normal
-                useBumpMap = FindProperty("_UseBumpMap", props);
-                    bumpMap = FindProperty("_BumpMap", props);
-                    bumpScale = FindProperty("_BumpScale", props);
-                useBump2ndMap = FindProperty("_UseBump2ndMap", props);
-                    bump2ndMap = FindProperty("_Bump2ndMap", props);
-                    bump2ndScale = FindProperty("_Bump2ndScale", props);
-                    bump2ndScaleMask = FindProperty("_Bump2ndScaleMask", props);
-                useReflection = FindProperty("_UseReflection", props);
-                    smoothness = FindProperty("_Smoothness", props);
-                    smoothnessTex = FindProperty("_SmoothnessTex", props);
-                    metallic = FindProperty("_Metallic", props);
-                    metallicGlossMap = FindProperty("_MetallicGlossMap", props);
-                    reflectance = FindProperty("_Reflectance", props);
-                    reflectionColor = FindProperty("_ReflectionColor", props);
-                    reflectionColorTex = FindProperty("_ReflectionColorTex", props);
-                    applySpecular = FindProperty("_ApplySpecular", props);
-                    specularToon = FindProperty("_SpecularToon", props);
-                    applyReflection = FindProperty("_ApplyReflection", props);
-                    reflectionApplyTransparency = FindProperty("_ReflectionApplyTransparency", props);
-                useMatCap = FindProperty("_UseMatCap", props);
-                    matcapTex = FindProperty("_MatCapTex", props);
-                    matcapColor = FindProperty("_MatCapColor", props);
-                    matcapBlend = FindProperty("_MatCapBlend", props);
-                    matcapBlendMask = FindProperty("_MatCapBlendMask", props);
-                    matcapEnableLighting = FindProperty("_MatCapEnableLighting", props);
-                    matcapBlendMode = FindProperty("_MatCapBlendMode", props);
-                    matcapApplyTransparency = FindProperty("_MatCapApplyTransparency", props);
-                useRim = FindProperty("_UseRim", props);
-                    rimColor = FindProperty("_RimColor", props);
-                    rimColorTex = FindProperty("_RimColorTex", props);
-                    rimBorder = FindProperty("_RimBorder", props);
-                    rimBlur = FindProperty("_RimBlur", props);
-                    rimFresnelPower = FindProperty("_RimFresnelPower", props);
-                    rimEnableLighting = FindProperty("_RimEnableLighting", props);
-                    rimShadowMask = FindProperty("_RimShadowMask", props);
-                    rimApplyTransparency = FindProperty("_RimApplyTransparency", props);
-                useEmission = FindProperty("_UseEmission", props);
-                    emissionColor = FindProperty("_EmissionColor", props);
-                    emissionMap = FindProperty("_EmissionMap", props);
-                    emissionMap_ScrollRotate = FindProperty("_EmissionMap_ScrollRotate", props);
-                    emissionBlend = FindProperty("_EmissionBlend", props);
-                    emissionBlendMask = FindProperty("_EmissionBlendMask", props);
-                    emissionBlendMask_ScrollRotate = FindProperty("_EmissionBlendMask_ScrollRotate", props);
-                    emissionBlink = FindProperty("_EmissionBlink", props);
-                    emissionUseGrad = FindProperty("_EmissionUseGrad", props);
-                    emissionGradTex = FindProperty("_EmissionGradTex", props);
-                    emissionGradSpeed = FindProperty("_EmissionGradSpeed", props);
-                    emissionParallaxDepth = FindProperty("_EmissionParallaxDepth", props);
-                    emissionFluorescence = FindProperty("_EmissionFluorescence", props);
-                useEmission2nd = FindProperty("_UseEmission2nd", props);
-                    emission2ndColor = FindProperty("_Emission2ndColor", props);
-                    emission2ndMap = FindProperty("_Emission2ndMap", props);
-                    emission2ndMap_ScrollRotate = FindProperty("_Emission2ndMap_ScrollRotate", props);
-                    emission2ndBlend = FindProperty("_Emission2ndBlend", props);
-                    emission2ndBlendMask = FindProperty("_Emission2ndBlendMask", props);
-                    emission2ndBlendMask_ScrollRotate = FindProperty("_Emission2ndBlendMask_ScrollRotate", props);
-                    emission2ndBlink = FindProperty("_Emission2ndBlink", props);
-                    emission2ndUseGrad = FindProperty("_Emission2ndUseGrad", props);
-                    emission2ndGradTex = FindProperty("_Emission2ndGradTex", props);
-                    emission2ndGradSpeed = FindProperty("_Emission2ndGradSpeed", props);
-                    emission2ndParallaxDepth = FindProperty("_Emission2ndParallaxDepth", props);
-                    emission2ndFluorescence = FindProperty("_Emission2ndFluorescence", props);
-                useParallax = FindProperty("_UseParallax", props);
-                    parallaxMap = FindProperty("_ParallaxMap", props);
-                    parallax = FindProperty("_Parallax", props);
-                    parallaxOffset = FindProperty("_ParallaxOffset", props);
-                distanceFade = FindProperty("_DistanceFade", props);
-                    distanceFadeColor = FindProperty("_DistanceFadeColor", props);
-                useAudioLink = FindProperty("_UseAudioLink", props);
-                    audioLinkUVMode = FindProperty("_AudioLinkUVMode", props);
-                    audioLinkUVParams = FindProperty("_AudioLinkUVParams", props);
-                    audioLinkMask = FindProperty("_AudioLinkMask", props);
-                    audioLink2Main2nd = FindProperty("_AudioLink2Main2nd", props);
-                    audioLink2Main3rd = FindProperty("_AudioLink2Main3rd", props);
-                    audioLink2Emission = FindProperty("_AudioLink2Emission", props);
-                    audioLink2Emission2nd = FindProperty("_AudioLink2Emission2nd", props);
-                    audioLink2Vertex = FindProperty("_AudioLink2Vertex", props);
-                    audioLinkVertexUVMode = FindProperty("_AudioLinkVertexUVMode", props);
-                    audioLinkVertexUVParams = FindProperty("_AudioLinkVertexUVParams", props);
-                    audioLinkVertexStart = FindProperty("_AudioLinkVertexStart", props);
-                    audioLinkVertexStrength = FindProperty("_AudioLinkVertexStrength", props);
-                    audioLinkAsLocal = FindProperty("_AudioLinkAsLocal", props);
-                    audioLinkLocalMap = FindProperty("_AudioLinkLocalMap", props);
-                    audioLinkLocalMapParams = FindProperty("_AudioLinkLocalMapParams", props);
-                // Refraction
-                if(isRefr)
-                {
-                    refractionStrength = FindProperty("_RefractionStrength", props);
-                    refractionFresnelPower = FindProperty("_RefractionFresnelPower", props);
-                    refractionColorFromMain = FindProperty("_RefractionColorFromMain", props);
-                    refractionColor = FindProperty("_RefractionColor", props);
-                }
-                // Tessellation
-                if(isTess)
-                {
-                    tessEdge = FindProperty("_TessEdge", props);
-                    tessStrength = FindProperty("_TessStrength", props);
-                    tessShrink = FindProperty("_TessShrink", props);
-                    tessFactorMax = FindProperty("_TessFactorMax", props);
-                }
-            }
+            if(isLite)      LoadLiteProperties(props);
+            else if(isFur)  LoadFurProperties(props);
+            else            LoadProperties(props);
 
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Stencil
             isStWr         = (stencilPass.floatValue == (float)UnityEngine.Rendering.StencilOp.Replace);
 
             //------------------------------------------------------------------------------------------------------------------------------
@@ -996,9 +507,8 @@ namespace lilToon
             string sCullModes = loc["sCullMode"] + "|" + loc["sCullModeOff"] + "|" + loc["sCullModeFront"] + "|" + loc["sCullModeBack"];
             string sBlendModes = loc["sBlendMode"] + "|" + loc["sBlendModeNormal"] + "|" + loc["sBlendModeAdd"] + "|" + loc["sBlendModeScreen"] + "|" + loc["sBlendModeMul"];
             string blinkSetting = loc["sBlinkStrength"] + "|" + loc["sBlinkType"] + "|" + loc["sBlinkSpeed"] + "|" + loc["sBlinkOffset"];
-            string[] sEditorModeList = {loc["sEditorModeSimple"],loc["sEditorModeAdvanced"],loc["sEditorModePreset"]};
-            string[] sRenderingModeList = {loc["sRenderingModeOpaque"],loc["sRenderingModeCutout"],loc["sRenderingModeTransparent"],loc["sRenderingModeRefraction"],loc["sRenderingModeRefractionBlur"],loc["sRenderingModeFur"],loc["sRenderingModeFurCutout"]};
-            string[] sRenderingModeListLite = {loc["sRenderingModeOpaque"],loc["sRenderingModeCutout"],loc["sRenderingModeTransparent"]};
+            string[] sRenderingModeList = {loc["sRenderingModeOpaque"], loc["sRenderingModeCutout"], loc["sRenderingModeTransparent"], loc["sRenderingModeRefraction"], loc["sRenderingModeRefractionBlur"], loc["sRenderingModeFur"], loc["sRenderingModeFurCutout"]};
+            string[] sRenderingModeListLite = {loc["sRenderingModeOpaque"], loc["sRenderingModeCutout"], loc["sRenderingModeTransparent"]};
             GUIContent textureRGBAContent = new GUIContent(loc["sTexture"], loc["sTextureRGBA"]);
             GUIContent colorRGBAContent = new GUIContent(loc["sColor"], loc["sTextureRGBA"]);
             GUIContent maskBlendContent = new GUIContent(loc["sMask"], loc["sBlendR"]);
@@ -1008,19 +518,7 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Editor Mode
-            editorMode = (EditorMode)EditorGUILayout.Popup(loc["sEditorMode"], (int)editorMode, sEditorModeList);
-            switch (editorMode)
-            {
-                case EditorMode.Simple:
-                    EditorGUILayout.HelpBox(loc["sHelpSimple"],MessageType.Info);
-                    break;
-                case EditorMode.Advanced:
-                    EditorGUILayout.HelpBox(loc["sHelpAdvanced"],MessageType.Info);
-                    break;
-                case EditorMode.Preset:
-                    EditorGUILayout.HelpBox(loc["sHelpPreset"],MessageType.Info);
-                    break;
-            }
+            SelectEditorMode();
             EditorGUILayout.Space();
 
             //------------------------------------------------------------------------------------------------------------------------------
@@ -1079,36 +577,43 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     //}
+
                     // Shadow
+                    EditorGUILayout.BeginVertical(boxOuter);
+                    materialEditor.ShaderProperty(useShadow, loc["sShadow"]);
                     if(useShadow.floatValue == 1)
                     {
-                        EditorGUILayout.BeginVertical(boxOuter);
-                        EditorGUILayout.LabelField(loc["sLimShadowStrength"], customToggleFont);
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         materialEditor.TexturePropertySingleLine(new GUIContent(loc["sShadow1stColor"], loc["sTextureRGBA"]), shadowColorTex);
                         EditorGUILayout.EndVertical();
-                        EditorGUILayout.EndVertical();
                     }
+                    EditorGUILayout.EndVertical();
+
                     // Outline
+                    EditorGUILayout.BeginVertical(boxOuter);
+                    if(isOutl != EditorGUILayout.ToggleLeft(loc["sOutline"], isOutl, customToggleFont))
+                    {
+                        SetupMaterialWithRenderingMode(material, renderingModeBuf, !isOutl, isLite, isStWr, isTess);
+                    }
                     if(isOutl)
                     {
-                        EditorGUILayout.BeginVertical(boxOuter);
-                        EditorGUILayout.LabelField(loc["sLimOutline"], customToggleFont);
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         materialEditor.TexturePropertySingleLine(textureRGBAContent, outlineTex, outlineColor);
-                        EditorGUILayout.EndVertical();
+                        materialEditor.TexturePropertySingleLine(new GUIContent(loc["sWidth"], loc["sWidthR"]), outlineWidthMask, outlineWidth);
                         EditorGUILayout.EndVertical();
                     }
+                    EditorGUILayout.EndVertical();
+
                     // Emission
+                    EditorGUILayout.BeginVertical(boxOuter);
+                    materialEditor.ShaderProperty(useEmission, loc["sEmission"]);
                     if(useEmission.floatValue == 1)
                     {
-                        EditorGUILayout.BeginVertical(boxOuter);
-                        EditorGUILayout.LabelField(loc["sLimEmission"], customToggleFont);
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         materialEditor.TexturePropertySingleLine(textureRGBAContent, emissionMap);
                         EditorGUILayout.EndVertical();
-                        EditorGUILayout.EndVertical();
                     }
+                    EditorGUILayout.EndVertical();
                 }
 
                 //------------------------------------------------------------------------------------------------------------------------------
@@ -1125,6 +630,27 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     //}
+
+                    // Shadow
+                    if(shaderSetting.LIL_FEATURE_SHADOW)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        materialEditor.ShaderProperty(useShadow, loc["sShadow"]);
+                        if(useShadow.floatValue == 1)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            if(shaderSetting.LIL_FEATURE_TEX_SHADOW_STRENGTH)   materialEditor.TexturePropertySingleLine(maskStrengthContent, shadowStrengthMask, shadowStrength);
+                            else                                                materialEditor.ShaderProperty(shadowStrength, loc["sStrength"]);
+                            if(shaderSetting.LIL_FEATURE_TEX_SHADOW_1ST)    materialEditor.TexturePropertySingleLine(new GUIContent(loc["sShadow1stColor"], loc["sTextureRGBA"]), shadowColorTex, shadowColor);
+                            else                                            materialEditor.ShaderProperty(shadowColor, loc["sShadow1stColor"]);
+                            if(shaderSetting.LIL_FEATURE_TEX_SHADOW_2ND)    materialEditor.TexturePropertySingleLine(new GUIContent(loc["sShadow2ndColor"], loc["sTextureRGBA"]), shadow2ndColorTex, shadow2ndColor);
+                            else                                            materialEditor.ShaderProperty(shadow2ndColor, loc["sShadow2ndColor"]);
+                            materialEditor.ShaderProperty(shadowMainStrength, loc["sMainColorPower"]);
+                            materialEditor.ShaderProperty(shadowBorderColor, loc["sShadowBorderColor"]);
+                            EditorGUILayout.EndVertical();
+                        }
+                        EditorGUILayout.EndVertical();
+                    }
                 }
 
                 //------------------------------------------------------------------------------------------------------------------------------
@@ -1142,6 +668,7 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     //}
+
                     // Main 2nd
                     if(shaderSetting.LIL_FEATURE_MAIN2ND && useMain2ndTex.floatValue == 1)
                     {
@@ -1152,6 +679,7 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
+
                     // Main 3rd
                     if(shaderSetting.LIL_FEATURE_MAIN3RD && useMain3rdTex.floatValue == 1)
                     {
@@ -1162,53 +690,74 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
+
                     // Shadow
-                    if(shaderSetting.LIL_FEATURE_SHADOW && useShadow.floatValue == 1)
+                    if(shaderSetting.LIL_FEATURE_SHADOW)
                     {
                         EditorGUILayout.BeginVertical(boxOuter);
-                        EditorGUILayout.LabelField(loc["sLimShadowStrength"], customToggleFont);
-                        EditorGUILayout.BeginVertical(boxInnerHalf);
-                        if(shaderSetting.LIL_FEATURE_TEX_SHADOW_STRENGTH)   materialEditor.TexturePropertySingleLine(maskStrengthContent, shadowStrengthMask, shadowStrength);
-                        else                                                materialEditor.ShaderProperty(shadowStrength, loc["sStrength"]);
-                        if(shaderSetting.LIL_FEATURE_TEX_SHADOW_1ST)    materialEditor.TexturePropertySingleLine(new GUIContent(loc["sShadow1stColor"], loc["sTextureRGBA"]), shadowColorTex, shadowColor);
-                        else                                            materialEditor.ShaderProperty(shadowColor, loc["sShadow1stColor"]);
-                        if(shaderSetting.LIL_FEATURE_TEX_SHADOW_2ND)    materialEditor.TexturePropertySingleLine(new GUIContent(loc["sShadow2ndColor"], loc["sTextureRGBA"]), shadow2ndColorTex, shadow2ndColor);
-                        else                                            materialEditor.ShaderProperty(shadow2ndColor, loc["sShadow2ndColor"]);
-                        materialEditor.ShaderProperty(shadowMainStrength, loc["sMainColorPower"]);
-                        materialEditor.ShaderProperty(shadowBorderColor, loc["sShadowBorderColor"]);
-                        EditorGUILayout.EndVertical();
+                        materialEditor.ShaderProperty(useShadow, loc["sShadow"]);
+                        if(useShadow.floatValue == 1)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            if(shaderSetting.LIL_FEATURE_TEX_SHADOW_STRENGTH)   materialEditor.TexturePropertySingleLine(maskStrengthContent, shadowStrengthMask, shadowStrength);
+                            else                                                materialEditor.ShaderProperty(shadowStrength, loc["sStrength"]);
+                            if(shaderSetting.LIL_FEATURE_TEX_SHADOW_1ST)    materialEditor.TexturePropertySingleLine(new GUIContent(loc["sShadow1stColor"], loc["sTextureRGBA"]), shadowColorTex, shadowColor);
+                            else                                            materialEditor.ShaderProperty(shadowColor, loc["sShadow1stColor"]);
+                            if(shaderSetting.LIL_FEATURE_TEX_SHADOW_2ND)    materialEditor.TexturePropertySingleLine(new GUIContent(loc["sShadow2ndColor"], loc["sTextureRGBA"]), shadow2ndColorTex, shadow2ndColor);
+                            else                                            materialEditor.ShaderProperty(shadow2ndColor, loc["sShadow2ndColor"]);
+                            materialEditor.ShaderProperty(shadowMainStrength, loc["sMainColorPower"]);
+                            materialEditor.ShaderProperty(shadowBorderColor, loc["sShadowBorderColor"]);
+                            EditorGUILayout.EndVertical();
+                        }
                         EditorGUILayout.EndVertical();
                     }
+
                     // Outline
-                    if(isOutl)
+                    if(!isRefr & !isFur)
                     {
                         EditorGUILayout.BeginVertical(boxOuter);
-                        EditorGUILayout.LabelField(loc["sLimOutline"], customToggleFont);
-                        EditorGUILayout.BeginVertical(boxInnerHalf);
-                        if(shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR) materialEditor.TexturePropertySingleLine(textureRGBAContent, outlineTex, outlineColor);
-                        else                                            materialEditor.ShaderProperty(outlineColor, loc["sColor"]);
-                        if(shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION) ToneCorrectionGUI(materialEditor, material, outlineTex, outlineColor, outlineTexHSVG, true);
-                        EditorGUILayout.EndVertical();
+                        if(isOutl != EditorGUILayout.ToggleLeft(loc["sOutline"], isOutl, customToggleFont))
+                        {
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, !isOutl, isLite, isStWr, isTess);
+                        }
+                        if(isOutl)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            if(shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR) materialEditor.TexturePropertySingleLine(textureRGBAContent, outlineTex, outlineColor);
+                            else                                            materialEditor.ShaderProperty(outlineColor, loc["sColor"]);
+                            if(shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION) ToneCorrectionGUI(materialEditor, material, outlineTex, outlineColor, outlineTexHSVG, true);
+                            if(shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH) materialEditor.TexturePropertySingleLine(new GUIContent(loc["sWidth"], loc["sWidthR"]), outlineWidthMask, outlineWidth);
+                            else                                            materialEditor.ShaderProperty(outlineWidth, loc["sWidth"]);
+                            EditorGUILayout.EndVertical();
+                        }
                         EditorGUILayout.EndVertical();
                     }
+
                     // Emission
-                    if(shaderSetting.LIL_FEATURE_EMISSION_1ST && useEmission.floatValue == 1)
+                    if(shaderSetting.LIL_FEATURE_EMISSION_1ST)
                     {
                         EditorGUILayout.BeginVertical(boxOuter);
-                        EditorGUILayout.LabelField(loc["sLimEmission"], customToggleFont);
-                        EditorGUILayout.BeginVertical(boxInnerHalf);
-                        materialEditor.TexturePropertySingleLine(textureRGBAContent, emissionMap, emissionColor);
-                        EditorGUILayout.EndVertical();
+                        materialEditor.ShaderProperty(useEmission, loc["sEmission"]);
+                        if(useEmission.floatValue == 1)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            materialEditor.TexturePropertySingleLine(textureRGBAContent, emissionMap, emissionColor);
+                            EditorGUILayout.EndVertical();
+                        }
                         EditorGUILayout.EndVertical();
                     }
+
                     // Emission 2nd
-                    if(shaderSetting.LIL_FEATURE_EMISSION_2ND && useEmission2nd.floatValue == 1)
+                    if(shaderSetting.LIL_FEATURE_EMISSION_2ND)
                     {
                         EditorGUILayout.BeginVertical(boxOuter);
-                        EditorGUILayout.LabelField(loc["sLimEmission2nd"], customToggleFont);
-                        EditorGUILayout.BeginVertical(boxInnerHalf);
-                        materialEditor.TexturePropertySingleLine(textureRGBAContent, emission2ndMap, emission2ndColor);
-                        EditorGUILayout.EndVertical();
+                        materialEditor.ShaderProperty(useEmission2nd, loc["sEmission2nd"]);
+                        if(useEmission2nd.floatValue == 1)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            materialEditor.TexturePropertySingleLine(textureRGBAContent, emission2ndMap, emission2ndColor);
+                            EditorGUILayout.EndVertical();
+                        }
                         EditorGUILayout.EndVertical();
                     }
                 }
@@ -2265,16 +1814,530 @@ namespace lilToon
             // Preset
             if(editorMode == EditorMode.Preset)
             {
-                GUILayout.Label(" " + loc["sPresets"], EditorStyles.boldLabel);
-                if(presets == null) LoadPresets();
-                ShowPresets(material);
-                EditorGUILayout.Space();
-                GUILayout.BeginHorizontal();
-                if(GUILayout.Button(loc["sPresetRefresh"])) LoadPresets();
-                if(GUILayout.Button(loc["sPresetSave"])) EditorWindow.GetWindow<lilPresetWindow>();
-                GUILayout.EndHorizontal();
+                DrawPreset(material);
             }
 	    }
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Property loader
+        void LoadProperties(MaterialProperty[] props)
+        {
+            invisible = FindProperty("_Invisible", props);
+            asUnlit = FindProperty("_AsUnlit", props);
+            cutoff = FindProperty("_Cutoff", props);
+            flipNormal = FindProperty("_FlipNormal", props);
+            backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
+            mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
+                cull = FindProperty("_Cull", props);
+                srcBlend = FindProperty("_SrcBlend", props);
+                dstBlend = FindProperty("_DstBlend", props);
+                srcBlendAlpha = FindProperty("_SrcBlendAlpha", props);
+                dstBlendAlpha = FindProperty("_DstBlendAlpha", props);
+                blendOp = FindProperty("_BlendOp", props);
+                blendOpAlpha = FindProperty("_BlendOpAlpha", props);
+                srcBlendFA = FindProperty("_SrcBlendFA", props);
+                dstBlendFA = FindProperty("_DstBlendFA", props);
+                srcBlendAlphaFA = FindProperty("_SrcBlendAlphaFA", props);
+                dstBlendAlphaFA = FindProperty("_DstBlendAlphaFA", props);
+                blendOpFA = FindProperty("_BlendOpFA", props);
+                blendOpAlphaFA = FindProperty("_BlendOpAlphaFA", props);
+                zwrite = FindProperty("_ZWrite", props);
+                ztest = FindProperty("_ZTest", props);
+                stencilRef = FindProperty("_StencilRef", props);
+                stencilReadMask = FindProperty("_StencilReadMask", props);
+                stencilWriteMask = FindProperty("_StencilWriteMask", props);
+                stencilComp = FindProperty("_StencilComp", props);
+                stencilPass = FindProperty("_StencilPass", props);
+                stencilFail = FindProperty("_StencilFail", props);
+                stencilZFail = FindProperty("_StencilZFail", props);
+                offsetFactor = FindProperty("_OffsetFactor", props);
+                offsetUnits = FindProperty("_OffsetUnits", props);
+                colorMask = FindProperty("_ColorMask", props);
+            // Main
+            //useMainTex = FindProperty("_UseMainTex", props);
+                mainColor = FindProperty("_Color", props);
+                mainTex = FindProperty("_MainTex", props);
+                mainTexHSVG = FindProperty("_MainTexHSVG", props);
+            useMain2ndTex = FindProperty("_UseMain2ndTex", props);
+                mainColor2nd = FindProperty("_Color2nd", props);
+                main2ndTex = FindProperty("_Main2ndTex", props);
+                main2ndTexAngle = FindProperty("_Main2ndTexAngle", props);
+                main2ndTexDecalAnimation = FindProperty("_Main2ndTexDecalAnimation", props);
+                main2ndTexDecalSubParam = FindProperty("_Main2ndTexDecalSubParam", props);
+                main2ndTexIsDecal = FindProperty("_Main2ndTexIsDecal", props);
+                main2ndTexIsLeftOnly = FindProperty("_Main2ndTexIsLeftOnly", props);
+                main2ndTexIsRightOnly = FindProperty("_Main2ndTexIsRightOnly", props);
+                main2ndTexShouldCopy = FindProperty("_Main2ndTexShouldCopy", props);
+                main2ndTexShouldFlipMirror = FindProperty("_Main2ndTexShouldFlipMirror", props);
+                main2ndTexShouldFlipCopy = FindProperty("_Main2ndTexShouldFlipCopy", props);
+                main2ndTexIsMSDF = FindProperty("_Main2ndTexIsMSDF", props);
+                main2ndBlendMask = FindProperty("_Main2ndBlendMask", props);
+                main2ndTexBlendMode = FindProperty("_Main2ndTexBlendMode", props);
+                main2ndEnableLighting = FindProperty("_Main2ndEnableLighting", props);
+            useMain3rdTex = FindProperty("_UseMain3rdTex", props);
+                mainColor3rd = FindProperty("_Color3rd", props);
+                main3rdTex = FindProperty("_Main3rdTex", props);
+                main3rdTexAngle = FindProperty("_Main3rdTexAngle", props);
+                main3rdTexIsDecal = FindProperty("_Main3rdTexIsDecal", props);
+                main3rdTexDecalAnimation = FindProperty("_Main3rdTexDecalAnimation", props);
+                main3rdTexDecalSubParam = FindProperty("_Main3rdTexDecalSubParam", props);
+                main3rdTexIsLeftOnly = FindProperty("_Main3rdTexIsLeftOnly", props);
+                main3rdTexIsRightOnly = FindProperty("_Main3rdTexIsRightOnly", props);
+                main3rdTexShouldCopy = FindProperty("_Main3rdTexShouldCopy", props);
+                main3rdTexShouldFlipMirror = FindProperty("_Main3rdTexShouldFlipMirror", props);
+                main3rdTexShouldFlipCopy = FindProperty("_Main3rdTexShouldFlipCopy", props);
+                main3rdTexIsMSDF = FindProperty("_Main3rdTexIsMSDF", props);
+                main3rdBlendMask = FindProperty("_Main3rdBlendMask", props);
+                main3rdTexBlendMode = FindProperty("_Main3rdTexBlendMode", props);
+                main3rdEnableLighting = FindProperty("_Main3rdEnableLighting", props);
+            // Shadow
+            useShadow = FindProperty("_UseShadow", props);
+                shadowBorder = FindProperty("_ShadowBorder", props);
+                shadowBorderMask = FindProperty("_ShadowBorderMask", props);
+                shadowBlur = FindProperty("_ShadowBlur", props);
+                shadowBlurMask = FindProperty("_ShadowBlurMask", props);
+                shadowStrength = FindProperty("_ShadowStrength", props);
+                shadowStrengthMask = FindProperty("_ShadowStrengthMask", props);
+                shadowColor = FindProperty("_ShadowColor", props);
+                shadowColorTex = FindProperty("_ShadowColorTex", props);
+                shadow2ndBorder = FindProperty("_Shadow2ndBorder", props);
+                shadow2ndBlur = FindProperty("_Shadow2ndBlur", props);
+                shadow2ndColor = FindProperty("_Shadow2ndColor", props);
+                shadow2ndColorTex = FindProperty("_Shadow2ndColorTex", props);
+                shadowMainStrength = FindProperty("_ShadowMainStrength", props);
+                shadowEnvStrength = FindProperty("_ShadowEnvStrength", props);
+                shadowBorderColor = FindProperty("_ShadowBorderColor", props);
+                shadowBorderRange = FindProperty("_ShadowBorderRange", props);
+                shadowReceive = FindProperty("_ShadowReceive", props);
+            // Outline
+            if(isOutl)
+            {
+                outlineColor = FindProperty("_OutlineColor", props);
+                outlineTex = FindProperty("_OutlineTex", props);
+                outlineTex_ScrollRotate = FindProperty("_OutlineTex_ScrollRotate", props);
+                outlineTexHSVG = FindProperty("_OutlineTexHSVG", props);
+                outlineWidth = FindProperty("_OutlineWidth", props);
+                outlineWidthMask = FindProperty("_OutlineWidthMask", props);
+                outlineFixWidth = FindProperty("_OutlineFixWidth", props);
+                outlineVertexR2Width = FindProperty("_OutlineVertexR2Width", props);
+                outlineEnableLighting = FindProperty("_OutlineEnableLighting", props);
+                outlineCull = FindProperty("_OutlineCull", props);
+                outlineSrcBlend = FindProperty("_OutlineSrcBlend", props);
+                outlineDstBlend = FindProperty("_OutlineDstBlend", props);
+                outlineSrcBlendAlpha = FindProperty("_OutlineSrcBlendAlpha", props);
+                outlineDstBlendAlpha = FindProperty("_OutlineDstBlendAlpha", props);
+                outlineBlendOp = FindProperty("_OutlineBlendOp", props);
+                outlineBlendOpAlpha = FindProperty("_OutlineBlendOpAlpha", props);
+                outlineSrcBlendFA = FindProperty("_OutlineSrcBlendFA", props);
+                outlineDstBlendFA = FindProperty("_OutlineDstBlendFA", props);
+                outlineSrcBlendAlphaFA = FindProperty("_OutlineSrcBlendAlphaFA", props);
+                outlineDstBlendAlphaFA = FindProperty("_OutlineDstBlendAlphaFA", props);
+                outlineBlendOpFA = FindProperty("_OutlineBlendOpFA", props);
+                outlineBlendOpAlphaFA = FindProperty("_OutlineBlendOpAlphaFA", props);
+                outlineZwrite = FindProperty("_OutlineZWrite", props);
+                outlineZtest = FindProperty("_OutlineZTest", props);
+                outlineStencilRef = FindProperty("_OutlineStencilRef", props);
+                outlineStencilReadMask = FindProperty("_OutlineStencilReadMask", props);
+                outlineStencilWriteMask = FindProperty("_OutlineStencilWriteMask", props);
+                outlineStencilComp = FindProperty("_OutlineStencilComp", props);
+                outlineStencilPass = FindProperty("_OutlineStencilPass", props);
+                outlineStencilFail = FindProperty("_OutlineStencilFail", props);
+                outlineStencilZFail = FindProperty("_OutlineStencilZFail", props);
+                outlineOffsetFactor = FindProperty("_OutlineOffsetFactor", props);
+                outlineOffsetUnits = FindProperty("_OutlineOffsetUnits", props);
+                outlineColorMask = FindProperty("_OutlineColorMask", props);
+            }
+            // Normal
+            useBumpMap = FindProperty("_UseBumpMap", props);
+                bumpMap = FindProperty("_BumpMap", props);
+                bumpScale = FindProperty("_BumpScale", props);
+            useBump2ndMap = FindProperty("_UseBump2ndMap", props);
+                bump2ndMap = FindProperty("_Bump2ndMap", props);
+                bump2ndScale = FindProperty("_Bump2ndScale", props);
+                bump2ndScaleMask = FindProperty("_Bump2ndScaleMask", props);
+            useReflection = FindProperty("_UseReflection", props);
+                smoothness = FindProperty("_Smoothness", props);
+                smoothnessTex = FindProperty("_SmoothnessTex", props);
+                metallic = FindProperty("_Metallic", props);
+                metallicGlossMap = FindProperty("_MetallicGlossMap", props);
+                reflectance = FindProperty("_Reflectance", props);
+                reflectionColor = FindProperty("_ReflectionColor", props);
+                reflectionColorTex = FindProperty("_ReflectionColorTex", props);
+                applySpecular = FindProperty("_ApplySpecular", props);
+                specularToon = FindProperty("_SpecularToon", props);
+                applyReflection = FindProperty("_ApplyReflection", props);
+                reflectionApplyTransparency = FindProperty("_ReflectionApplyTransparency", props);
+            useMatCap = FindProperty("_UseMatCap", props);
+                matcapTex = FindProperty("_MatCapTex", props);
+                matcapColor = FindProperty("_MatCapColor", props);
+                matcapBlend = FindProperty("_MatCapBlend", props);
+                matcapBlendMask = FindProperty("_MatCapBlendMask", props);
+                matcapEnableLighting = FindProperty("_MatCapEnableLighting", props);
+                matcapBlendMode = FindProperty("_MatCapBlendMode", props);
+                matcapApplyTransparency = FindProperty("_MatCapApplyTransparency", props);
+            useRim = FindProperty("_UseRim", props);
+                rimColor = FindProperty("_RimColor", props);
+                rimColorTex = FindProperty("_RimColorTex", props);
+                rimBorder = FindProperty("_RimBorder", props);
+                rimBlur = FindProperty("_RimBlur", props);
+                rimFresnelPower = FindProperty("_RimFresnelPower", props);
+                rimEnableLighting = FindProperty("_RimEnableLighting", props);
+                rimShadowMask = FindProperty("_RimShadowMask", props);
+                rimApplyTransparency = FindProperty("_RimApplyTransparency", props);
+            useEmission = FindProperty("_UseEmission", props);
+                emissionColor = FindProperty("_EmissionColor", props);
+                emissionMap = FindProperty("_EmissionMap", props);
+                emissionMap_ScrollRotate = FindProperty("_EmissionMap_ScrollRotate", props);
+                emissionBlend = FindProperty("_EmissionBlend", props);
+                emissionBlendMask = FindProperty("_EmissionBlendMask", props);
+                emissionBlendMask_ScrollRotate = FindProperty("_EmissionBlendMask_ScrollRotate", props);
+                emissionBlink = FindProperty("_EmissionBlink", props);
+                emissionUseGrad = FindProperty("_EmissionUseGrad", props);
+                emissionGradTex = FindProperty("_EmissionGradTex", props);
+                emissionGradSpeed = FindProperty("_EmissionGradSpeed", props);
+                emissionParallaxDepth = FindProperty("_EmissionParallaxDepth", props);
+                emissionFluorescence = FindProperty("_EmissionFluorescence", props);
+            useEmission2nd = FindProperty("_UseEmission2nd", props);
+                emission2ndColor = FindProperty("_Emission2ndColor", props);
+                emission2ndMap = FindProperty("_Emission2ndMap", props);
+                emission2ndMap_ScrollRotate = FindProperty("_Emission2ndMap_ScrollRotate", props);
+                emission2ndBlend = FindProperty("_Emission2ndBlend", props);
+                emission2ndBlendMask = FindProperty("_Emission2ndBlendMask", props);
+                emission2ndBlendMask_ScrollRotate = FindProperty("_Emission2ndBlendMask_ScrollRotate", props);
+                emission2ndBlink = FindProperty("_Emission2ndBlink", props);
+                emission2ndUseGrad = FindProperty("_Emission2ndUseGrad", props);
+                emission2ndGradTex = FindProperty("_Emission2ndGradTex", props);
+                emission2ndGradSpeed = FindProperty("_Emission2ndGradSpeed", props);
+                emission2ndParallaxDepth = FindProperty("_Emission2ndParallaxDepth", props);
+                emission2ndFluorescence = FindProperty("_Emission2ndFluorescence", props);
+            useParallax = FindProperty("_UseParallax", props);
+                parallaxMap = FindProperty("_ParallaxMap", props);
+                parallax = FindProperty("_Parallax", props);
+                parallaxOffset = FindProperty("_ParallaxOffset", props);
+            distanceFade = FindProperty("_DistanceFade", props);
+                distanceFadeColor = FindProperty("_DistanceFadeColor", props);
+            useAudioLink = FindProperty("_UseAudioLink", props);
+                audioLinkUVMode = FindProperty("_AudioLinkUVMode", props);
+                audioLinkUVParams = FindProperty("_AudioLinkUVParams", props);
+                audioLinkMask = FindProperty("_AudioLinkMask", props);
+                audioLink2Main2nd = FindProperty("_AudioLink2Main2nd", props);
+                audioLink2Main3rd = FindProperty("_AudioLink2Main3rd", props);
+                audioLink2Emission = FindProperty("_AudioLink2Emission", props);
+                audioLink2Emission2nd = FindProperty("_AudioLink2Emission2nd", props);
+                audioLink2Vertex = FindProperty("_AudioLink2Vertex", props);
+                audioLinkVertexUVMode = FindProperty("_AudioLinkVertexUVMode", props);
+                audioLinkVertexUVParams = FindProperty("_AudioLinkVertexUVParams", props);
+                audioLinkVertexStart = FindProperty("_AudioLinkVertexStart", props);
+                audioLinkVertexStrength = FindProperty("_AudioLinkVertexStrength", props);
+                audioLinkAsLocal = FindProperty("_AudioLinkAsLocal", props);
+                audioLinkLocalMap = FindProperty("_AudioLinkLocalMap", props);
+                audioLinkLocalMapParams = FindProperty("_AudioLinkLocalMapParams", props);
+            // Refraction
+            if(isRefr)
+            {
+                refractionStrength = FindProperty("_RefractionStrength", props);
+                refractionFresnelPower = FindProperty("_RefractionFresnelPower", props);
+                refractionColorFromMain = FindProperty("_RefractionColorFromMain", props);
+                refractionColor = FindProperty("_RefractionColor", props);
+            }
+            // Tessellation
+            if(isTess)
+            {
+                tessEdge = FindProperty("_TessEdge", props);
+                tessStrength = FindProperty("_TessStrength", props);
+                tessShrink = FindProperty("_TessShrink", props);
+                tessFactorMax = FindProperty("_TessFactorMax", props);
+            }
+        }
+
+        void LoadFurProperties(MaterialProperty[] props)
+        {
+            invisible = FindProperty("_Invisible", props);
+            asUnlit = FindProperty("_AsUnlit", props);
+            cutoff = FindProperty("_Cutoff", props);
+            flipNormal = FindProperty("_FlipNormal", props);
+            backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
+            mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
+                cull = FindProperty("_Cull", props);
+                srcBlend = FindProperty("_SrcBlend", props);
+                dstBlend = FindProperty("_DstBlend", props);
+                srcBlendAlpha = FindProperty("_SrcBlendAlpha", props);
+                dstBlendAlpha = FindProperty("_DstBlendAlpha", props);
+                blendOp = FindProperty("_BlendOp", props);
+                blendOpAlpha = FindProperty("_BlendOpAlpha", props);
+                srcBlendFA = FindProperty("_SrcBlendFA", props);
+                dstBlendFA = FindProperty("_DstBlendFA", props);
+                srcBlendAlphaFA = FindProperty("_SrcBlendAlphaFA", props);
+                dstBlendAlphaFA = FindProperty("_DstBlendAlphaFA", props);
+                blendOpFA = FindProperty("_BlendOpFA", props);
+                blendOpAlphaFA = FindProperty("_BlendOpAlphaFA", props);
+                zwrite = FindProperty("_ZWrite", props);
+                ztest = FindProperty("_ZTest", props);
+                stencilRef = FindProperty("_StencilRef", props);
+                stencilReadMask = FindProperty("_StencilReadMask", props);
+                stencilWriteMask = FindProperty("_StencilWriteMask", props);
+                stencilComp = FindProperty("_StencilComp", props);
+                stencilPass = FindProperty("_StencilPass", props);
+                stencilFail = FindProperty("_StencilFail", props);
+                stencilZFail = FindProperty("_StencilZFail", props);
+                offsetFactor = FindProperty("_OffsetFactor", props);
+                offsetUnits = FindProperty("_OffsetUnits", props);
+                colorMask = FindProperty("_ColorMask", props);
+            // Main
+            //useMainTex = FindProperty("_UseMainTex", props);
+                mainColor = FindProperty("_Color", props);
+                mainTex = FindProperty("_MainTex", props);
+                mainTexHSVG = FindProperty("_MainTexHSVG", props);
+            // Shadow
+            useShadow = FindProperty("_UseShadow", props);
+                shadowBorder = FindProperty("_ShadowBorder", props);
+                shadowBorderMask = FindProperty("_ShadowBorderMask", props);
+                shadowBlur = FindProperty("_ShadowBlur", props);
+                shadowBlurMask = FindProperty("_ShadowBlurMask", props);
+                shadowStrength = FindProperty("_ShadowStrength", props);
+                shadowStrengthMask = FindProperty("_ShadowStrengthMask", props);
+                shadowColor = FindProperty("_ShadowColor", props);
+                shadowColorTex = FindProperty("_ShadowColorTex", props);
+                shadow2ndBorder = FindProperty("_Shadow2ndBorder", props);
+                shadow2ndBlur = FindProperty("_Shadow2ndBlur", props);
+                shadow2ndColor = FindProperty("_Shadow2ndColor", props);
+                shadow2ndColorTex = FindProperty("_Shadow2ndColorTex", props);
+                shadowMainStrength = FindProperty("_ShadowMainStrength", props);
+                shadowEnvStrength = FindProperty("_ShadowEnvStrength", props);
+                shadowBorderColor = FindProperty("_ShadowBorderColor", props);
+                shadowBorderRange = FindProperty("_ShadowBorderRange", props);
+                shadowReceive = FindProperty("_ShadowReceive", props);
+            distanceFade = FindProperty("_DistanceFade", props);
+                distanceFadeColor = FindProperty("_DistanceFadeColor", props);
+            //useFur = FindProperty("_UseFur", props);
+                furNoiseMask = FindProperty("_FurNoiseMask", props);
+                furMask = FindProperty("_FurMask", props);
+                furVectorTex = FindProperty("_FurVectorTex", props);
+                furVectorScale = FindProperty("_FurVectorScale", props);
+                furVector = FindProperty("_FurVector", props);
+                furGravity = FindProperty("_FurGravity", props);
+                furAO = FindProperty("_FurAO", props);
+                vertexColor2FurVector = FindProperty("_VertexColor2FurVector", props);
+                furLayerNum = FindProperty("_FurLayerNum", props);
+                furCull = FindProperty("_FurCull", props);
+                furSrcBlend = FindProperty("_FurSrcBlend", props);
+                furDstBlend = FindProperty("_FurDstBlend", props);
+                furSrcBlendAlpha = FindProperty("_FurSrcBlendAlpha", props);
+                furDstBlendAlpha = FindProperty("_FurDstBlendAlpha", props);
+                furBlendOp = FindProperty("_FurBlendOp", props);
+                furBlendOpAlpha = FindProperty("_FurBlendOpAlpha", props);
+                furSrcBlendFA = FindProperty("_FurSrcBlendFA", props);
+                furDstBlendFA = FindProperty("_FurDstBlendFA", props);
+                furSrcBlendAlphaFA = FindProperty("_FurSrcBlendAlphaFA", props);
+                furDstBlendAlphaFA = FindProperty("_FurDstBlendAlphaFA", props);
+                furBlendOpFA = FindProperty("_FurBlendOpFA", props);
+                furBlendOpAlphaFA = FindProperty("_FurBlendOpAlphaFA", props);
+                furZwrite = FindProperty("_FurZWrite", props);
+                furZtest = FindProperty("_FurZTest", props);
+                furStencilRef = FindProperty("_FurStencilRef", props);
+                furStencilReadMask = FindProperty("_FurStencilReadMask", props);
+                furStencilWriteMask = FindProperty("_FurStencilWriteMask", props);
+                furStencilComp = FindProperty("_FurStencilComp", props);
+                furStencilPass = FindProperty("_FurStencilPass", props);
+                furStencilFail = FindProperty("_FurStencilFail", props);
+                furStencilZFail = FindProperty("_FurStencilZFail", props);
+                furOffsetFactor = FindProperty("_FurOffsetFactor", props);
+                furOffsetUnits = FindProperty("_FurOffsetUnits", props);
+                furColorMask = FindProperty("_FurColorMask", props);
+        }
+
+        void LoadLiteProperties(MaterialProperty[] props)
+        {
+            invisible = FindProperty("_Invisible", props);
+            asUnlit = FindProperty("_AsUnlit", props);
+            cutoff = FindProperty("_Cutoff", props);
+            flipNormal = FindProperty("_FlipNormal", props);
+            backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
+            mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
+            triMask = FindProperty("_TriMask", props);
+                cull = FindProperty("_Cull", props);
+                srcBlend = FindProperty("_SrcBlend", props);
+                dstBlend = FindProperty("_DstBlend", props);
+                srcBlendAlpha = FindProperty("_SrcBlendAlpha", props);
+                dstBlendAlpha = FindProperty("_DstBlendAlpha", props);
+                blendOp = FindProperty("_BlendOp", props);
+                blendOpAlpha = FindProperty("_BlendOpAlpha", props);
+                srcBlendFA = FindProperty("_SrcBlendFA", props);
+                dstBlendFA = FindProperty("_DstBlendFA", props);
+                srcBlendAlphaFA = FindProperty("_SrcBlendAlphaFA", props);
+                dstBlendAlphaFA = FindProperty("_DstBlendAlphaFA", props);
+                blendOpFA = FindProperty("_BlendOpFA", props);
+                blendOpAlphaFA = FindProperty("_BlendOpAlphaFA", props);
+                zwrite = FindProperty("_ZWrite", props);
+                ztest = FindProperty("_ZTest", props);
+                stencilRef = FindProperty("_StencilRef", props);
+                stencilReadMask = FindProperty("_StencilReadMask", props);
+                stencilWriteMask = FindProperty("_StencilWriteMask", props);
+                stencilComp = FindProperty("_StencilComp", props);
+                stencilPass = FindProperty("_StencilPass", props);
+                stencilFail = FindProperty("_StencilFail", props);
+                stencilZFail = FindProperty("_StencilZFail", props);
+                offsetFactor = FindProperty("_OffsetFactor", props);
+                offsetUnits = FindProperty("_OffsetUnits", props);
+                colorMask = FindProperty("_ColorMask", props);
+            // Main
+            //useMainTex = FindProperty("_UseMainTex", props);
+                mainColor = FindProperty("_Color", props);
+                mainTex = FindProperty("_MainTex", props);
+            // Shadow
+            useShadow = FindProperty("_UseShadow", props);
+                shadowBorder = FindProperty("_ShadowBorder", props);
+                shadowBlur = FindProperty("_ShadowBlur", props);
+                shadowColorTex = FindProperty("_ShadowColorTex", props);
+                shadowEnvStrength = FindProperty("_ShadowEnvStrength", props);
+            // Outline
+            if(isOutl)
+            {
+                outlineColor = FindProperty("_OutlineColor", props);
+                outlineTex = FindProperty("_OutlineTex", props);
+                outlineTex_ScrollRotate = FindProperty("_OutlineTex_ScrollRotate", props);
+                outlineWidth = FindProperty("_OutlineWidth", props);
+                outlineWidthMask = FindProperty("_OutlineWidthMask", props);
+                outlineFixWidth = FindProperty("_OutlineFixWidth", props);
+                outlineVertexR2Width = FindProperty("_OutlineVertexR2Width", props);
+                outlineEnableLighting = FindProperty("_OutlineEnableLighting", props);
+                outlineCull = FindProperty("_OutlineCull", props);
+                outlineSrcBlend = FindProperty("_OutlineSrcBlend", props);
+                outlineDstBlend = FindProperty("_OutlineDstBlend", props);
+                outlineSrcBlendAlpha = FindProperty("_OutlineSrcBlendAlpha", props);
+                outlineDstBlendAlpha = FindProperty("_OutlineDstBlendAlpha", props);
+                outlineBlendOp = FindProperty("_OutlineBlendOp", props);
+                outlineBlendOpAlpha = FindProperty("_OutlineBlendOpAlpha", props);
+                outlineSrcBlendFA = FindProperty("_OutlineSrcBlendFA", props);
+                outlineDstBlendFA = FindProperty("_OutlineDstBlendFA", props);
+                outlineSrcBlendAlphaFA = FindProperty("_OutlineSrcBlendAlphaFA", props);
+                outlineDstBlendAlphaFA = FindProperty("_OutlineDstBlendAlphaFA", props);
+                outlineBlendOpFA = FindProperty("_OutlineBlendOpFA", props);
+                outlineBlendOpAlphaFA = FindProperty("_OutlineBlendOpAlphaFA", props);
+                outlineZwrite = FindProperty("_OutlineZWrite", props);
+                outlineZtest = FindProperty("_OutlineZTest", props);
+                outlineStencilRef = FindProperty("_OutlineStencilRef", props);
+                outlineStencilReadMask = FindProperty("_OutlineStencilReadMask", props);
+                outlineStencilWriteMask = FindProperty("_OutlineStencilWriteMask", props);
+                outlineStencilComp = FindProperty("_OutlineStencilComp", props);
+                outlineStencilPass = FindProperty("_OutlineStencilPass", props);
+                outlineStencilFail = FindProperty("_OutlineStencilFail", props);
+                outlineStencilZFail = FindProperty("_OutlineStencilZFail", props);
+                outlineOffsetFactor = FindProperty("_OutlineOffsetFactor", props);
+                outlineOffsetUnits = FindProperty("_OutlineOffsetUnits", props);
+                outlineColorMask = FindProperty("_OutlineColorMask", props);
+            }
+            useMatCap = FindProperty("_UseMatCap", props);
+                matcapTex = FindProperty("_MatCapTex", props);
+                matcapMul = FindProperty("_MatCapMul", props);
+            useRim = FindProperty("_UseRim", props);
+                rimColor = FindProperty("_RimColor", props);
+                rimBorder = FindProperty("_RimBorder", props);
+                rimBlur = FindProperty("_RimBlur", props);
+                rimFresnelPower = FindProperty("_RimFresnelPower", props);
+                rimShadowMask = FindProperty("_RimShadowMask", props);
+            useEmission = FindProperty("_UseEmission", props);
+                emissionColor = FindProperty("_EmissionColor", props);
+                emissionMap = FindProperty("_EmissionMap", props);
+                emissionMap_ScrollRotate = FindProperty("_EmissionMap_ScrollRotate", props);
+                emissionBlink = FindProperty("_EmissionBlink", props);
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Initialize
+        static void InitializeEditorSetting()
+        {
+            editorSetting = (lilToonEditorSetting)AssetDatabase.LoadAssetAtPath(editorSettingPath, typeof(lilToonEditorSetting));
+            if(editorSetting == null)
+            {
+                editorSetting = new lilToonEditorSetting();
+                AssetDatabase.CreateAsset(editorSetting, editorSettingPath);
+                editorSetting.settingPath = "Assets/lilToonSetting/ShaderSetting.asset";
+                editorSetting.unlockShaderSetting = true;
+                EditorUtility.SetDirty(editorSetting);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+        }
+
+        static void InitializeShaderSetting()
+        {
+            shaderSetting = (lilToonSetting)AssetDatabase.LoadAssetAtPath(editorSetting.settingPath, typeof(lilToonSetting));
+            if(shaderSetting == null)
+            {
+                shaderSetting = new lilToonSetting();
+                AssetDatabase.CreateAsset(shaderSetting, editorSetting.settingPath);
+                shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV = false;
+                shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION = true;
+                shaderSetting.LIL_FEATURE_MAIN2ND = false;
+                shaderSetting.LIL_FEATURE_MAIN3RD = false;
+                shaderSetting.LIL_FEATURE_DECAL = false;
+                shaderSetting.LIL_FEATURE_ANIMATE_DECAL = false;
+                shaderSetting.LIL_FEATURE_SHADOW = true;
+                shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = false;
+                shaderSetting.LIL_FEATURE_EMISSION_1ST = true;
+                shaderSetting.LIL_FEATURE_EMISSION_2ND = false;
+                shaderSetting.LIL_FEATURE_EMISSION_UV = false;
+                shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV = false;
+                shaderSetting.LIL_FEATURE_EMISSION_MASK_UV = false;
+                shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_MASK_UV = false;
+                shaderSetting.LIL_FEATURE_EMISSION_GRADATION = false;
+                shaderSetting.LIL_FEATURE_NORMAL_1ST = true;
+                shaderSetting.LIL_FEATURE_NORMAL_2ND = false;
+                shaderSetting.LIL_FEATURE_REFLECTION = false;
+                shaderSetting.LIL_FEATURE_MATCAP = true;
+                shaderSetting.LIL_FEATURE_RIMLIGHT = true;
+                shaderSetting.LIL_FEATURE_PARALLAX = false;
+                shaderSetting.LIL_FEATURE_POM = false;
+                shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = false;
+                shaderSetting.LIL_FEATURE_DISTANCE_FADE = false;
+                shaderSetting.LIL_FEATURE_AUDIOLINK = false;
+                shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX = false;
+                shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL = false;
+                shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = false;
+                shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = false;
+                shaderSetting.LIL_FEATURE_TEX_LAYER_MASK = false;
+                shaderSetting.LIL_FEATURE_TEX_SHADOW_BLUR = false;
+                shaderSetting.LIL_FEATURE_TEX_SHADOW_BORDER = false;
+                shaderSetting.LIL_FEATURE_TEX_SHADOW_STRENGTH = true;
+                shaderSetting.LIL_FEATURE_TEX_SHADOW_1ST = false;
+                shaderSetting.LIL_FEATURE_TEX_SHADOW_2ND = false;
+                shaderSetting.LIL_FEATURE_TEX_EMISSION_MASK = false;
+                shaderSetting.LIL_FEATURE_TEX_NORMAL_MASK = false;
+                shaderSetting.LIL_FEATURE_TEX_REFLECTION_SMOOTHNESS = false;
+                shaderSetting.LIL_FEATURE_TEX_REFLECTION_METALLIC = false;
+                shaderSetting.LIL_FEATURE_TEX_REFLECTION_COLOR = false;
+                shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK = true;
+                shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR = true;
+                shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK = true;
+                shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR = true;
+                shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH = true;
+                shaderSetting.LIL_FEATURE_TEX_FUR_NORMAL = false;
+                shaderSetting.LIL_FEATURE_TEX_FUR_MASK = false;
+                shaderSetting.LIL_FEATURE_TEX_TESSELLATION = false;
+                EditorUtility.SetDirty(shaderSetting);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+        }
+
+        static void SelectEditorMode()
+        {
+            string[] sEditorModeList = {loc["sEditorModeSimple"],loc["sEditorModeAdvanced"],loc["sEditorModePreset"]};
+            editorMode = (EditorMode)EditorGUILayout.Popup(loc["sEditorMode"], (int)editorMode, sEditorModeList);
+            switch (editorMode)
+            {
+                case EditorMode.Simple:
+                    EditorGUILayout.HelpBox(loc["sHelpSimple"],MessageType.Info);
+                    break;
+                case EditorMode.Advanced:
+                    EditorGUILayout.HelpBox(loc["sHelpAdvanced"],MessageType.Info);
+                    break;
+                case EditorMode.Preset:
+                    EditorGUILayout.HelpBox(loc["sHelpPreset"],MessageType.Info);
+                    break;
+            }
+        }
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Editor
@@ -2296,39 +2359,15 @@ namespace lilToon
             }
         }
 
-        static void DrawBoothPage()
+        static void DrawWebButton(string text, string URL)
         {
             Rect position = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect());
             GUIContent icon = EditorGUIUtility.IconContent("BuildSettings.Web.Small");
-            icon.text = "BOOTH";
+            icon.text = text;
             GUIStyle style = new GUIStyle(EditorStyles.label);
             style.padding = new RectOffset();
             if(GUI.Button(position, icon, style)){
-                Application.OpenURL(boothURL);
-            }
-        }
-
-        static void DrawGitHubPage()
-        {
-            Rect position = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect());
-            GUIContent icon = EditorGUIUtility.IconContent("BuildSettings.Web.Small");
-            icon.text = "GitHub";
-            GUIStyle style = new GUIStyle(EditorStyles.label);
-            style.padding = new RectOffset();
-            if(GUI.Button(position, icon, style)){
-                Application.OpenURL(githubURL);
-            }
-        }
-
-        static void DrawTwitterPage()
-        {
-            Rect position = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect());
-            GUIContent icon = EditorGUIUtility.IconContent("BuildSettings.Web.Small");
-            icon.text = "Twitter";
-            GUIStyle style = new GUIStyle(EditorStyles.label);
-            style.padding = new RectOffset();
-            if(GUI.Button(position, icon, style)){
-                Application.OpenURL(twitterURL);
+                Application.OpenURL(URL);
             }
         }
 
@@ -2344,9 +2383,9 @@ namespace lilToon
             if(isShowWebPages)
             {
                 EditorGUI.indentLevel++;
-                DrawBoothPage();
-                DrawGitHubPage();
-                DrawTwitterPage();
+                DrawWebButton("BOOTH", boothURL);
+                DrawWebButton("GitHub", githubURL);
+                DrawWebButton("Twitter", twitterURL);
                 EditorGUI.indentLevel--;
             }
         }
@@ -2526,6 +2565,12 @@ namespace lilToon
             DrawLine();
 
             lilToggleGUI(loc["sSettingParallax"], ref shaderSetting.LIL_FEATURE_PARALLAX);
+            if(shaderSetting.LIL_FEATURE_PARALLAX)
+            {
+                EditorGUI.indentLevel++;
+                lilToggleGUI(loc["sSettingPOM"], ref shaderSetting.LIL_FEATURE_POM);
+                EditorGUI.indentLevel--;
+            }
             DrawLine();
 
             lilToggleGUI(loc["sSettingClippingCanceller"], ref shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER);
@@ -2636,7 +2681,11 @@ namespace lilToon
                 sb.Append("#define LIL_FEATURE_RIMLIGHT\r\n");
                 if(shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR) sb.Append("#define LIL_FEATURE_TEX_RIMLIGHT_COLOR\r\n");
             }
-            if(shaderSetting.LIL_FEATURE_PARALLAX) sb.Append("#define LIL_FEATURE_PARALLAX\r\n");
+            if(shaderSetting.LIL_FEATURE_PARALLAX)
+            {
+                sb.Append("#define LIL_FEATURE_PARALLAX\r\n");
+                if(shaderSetting.LIL_FEATURE_POM) sb.Append("#define LIL_FEATURE_POM\r\n");
+            }
             if(shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER) sb.Append("#define LIL_FEATURE_CLIPPING_CANCELLER\r\n");
             if(shaderSetting.LIL_FEATURE_DISTANCE_FADE) sb.Append("#define LIL_FEATURE_DISTANCE_FADE\r\n");
             if(shaderSetting.LIL_FEATURE_AUDIOLINK)
@@ -2657,7 +2706,7 @@ namespace lilToon
             if(shaderSetting.LIL_FEATURE_TEX_FUR_MASK) sb.Append("#define LIL_FEATURE_TEX_FUR_MASK\r\n");
             sb.Append("\r\n#endif");
             string shaderSettingString = sb.ToString();
-            StreamWriter sw = new StreamWriter(Path.GetFullPath("Assets/lilToon/Shader/Includes/lil_setting.hlsl"),false);
+            StreamWriter sw = new StreamWriter(Path.GetFullPath("Assets/lilToonSetting/lil_setting.hlsl"),false);
             sw.Write(shaderSettingString);
             sw.Close();
             RewriteReceiveShadow(ltspo, shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW);
@@ -2703,6 +2752,18 @@ namespace lilToon
             StreamWriter sw = new StreamWriter(path,false);
             sw.Write(s);
             sw.Close();
+        }
+
+        static void DrawPreset(Material material)
+        {
+            GUILayout.Label(" " + loc["sPresets"], EditorStyles.boldLabel);
+            if(presets == null) LoadPresets();
+            ShowPresets(material);
+            EditorGUILayout.Space();
+            GUILayout.BeginHorizontal();
+            if(GUILayout.Button(loc["sPresetRefresh"])) LoadPresets();
+            if(GUILayout.Button(loc["sPresetSave"])) EditorWindow.GetWindow<lilPresetWindow>();
+            GUILayout.EndHorizontal();
         }
 
         //------------------------------------------------------------------------------------------------------------------------------

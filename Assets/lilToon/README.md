@@ -2,9 +2,14 @@
 Version 1.0
 
 # Overview
-A toon shader developed for Unity.  
-It is compatible with all Unity lighting and adjusts the brightness to be similar to Standard Shader without losing the look of the material.
+This shader was developed for services using avatars (VRChat, etc.) and has the following features.
+- Easy to use (One-click settings from presets, Saving your own presets, Color correction and exporting textures)
+- Beautiful (Prevent overexposure, Anti-aliased shading)
+- Lightweight (Automatically rewrites shaders and turns features on / off)
+- Available in various versions (Unity 2017-2021, BRP/LWRP/URP)
+- Compatible with all lighting and similar in brightness to StandardShader
 
+# Support
 Supported Unity versions
 - Unity 2017 - Unity 2021.1
 
@@ -21,22 +26,23 @@ Supported Rendering Pipelines
 - Refraction shaders are supported only for BRP
 
 # Features
-This shader was developed for services that use avatars and has the following features.
-- Support for all lighting in Unity (The brightness calculation is almost identical to Standard Shader)
-- Extensive support (Unity 2017 - 2021.1, BRP/LWRP/URP)
-- Light synthesis to prevent overexposure
-- Color correction function for easy avatar modification
-- One-click settings with presets
-- Combine up to 3 layers with main color, and Sublayer also supports GIF animation
-- Features for toon (Outline, Custom shading, Rim light, MatCap, Stencil)
-- Features for Photorealistic (Normal map, Smoothness, Metallic, Emission, Parallax)
-- UV scrolling & rotation available for almost all textures
-- Parallax compatible emission (x2 layers)
-- Pseudo-fluorescence that glows in dark spaces and when there is a little light (Recommended for making eyes glow)
-- Fur, Refraction, Tessellation
+- Main color x3 layers (Decal, Layer mask, Gif animation, Normal / Additive / Multiplicative / Screen blending)
+- Color correction, UV Scrolling & Rotation
+- Flexible shadows (2 shadows, SSS, Environment light compositing, AO mask to adjust the ease of shadowing)
+- Emission x2 layers (Animation, Mask, Blinking, Color change over time, Parallax)
+- Normal map x2 layers
+- Specular reflection
+- MatCap (Z-axis rotation cancellation, Normal / Additive / Multiplicative / Screen blending)
+- Rim light
+- Outline (Color specification by texture, Mask, Thickness based on vertex color and distance)
+- Fur, Refraction
+- Distance Clipping Canceler
+- Distance Fade (Changes color according to distance)
+- AudioLink (Animate materials in sync with sound in supported VRChat worlds)
+- Tessellation (For video production due to high load)
 
 # License
-It is available under the MIT License. Please refer to the "LICENSE" included in the package.
+lilToon is available under the MIT License. Please refer to the "LICENSE" included in the package.
 
 # Usage - Material Setup
 1. Drag and drop unitypackage to the Unity window to import it.
@@ -45,11 +51,7 @@ It is available under the MIT License. Please refer to the "LICENSE" included in
 4. If no texture has been applied, set the texture to "Main Color".
 5. To make the material transparent, change "Rendering Mode" to "Cutout" or "Transparent".
 
-|Rendering Mode|Description|
-|-|-|
-|Opacue|Ignore transparency.|
-|Cutout|Transparency is used, but translucent drawing is not possible.|
-|Transparent|Transparency is used. If two transparent objects overlap, one of them may not be visible.|
+Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md) for more detailed settings.
 
 # Common Problems
 - The shadows on face are dirty.  

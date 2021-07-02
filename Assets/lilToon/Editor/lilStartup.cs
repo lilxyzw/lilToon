@@ -7,8 +7,12 @@ using System.IO;
 public class lilStartup {
     static lilStartup()
     {
+        // Setting Folder
+        string settingFolderPath = Path.GetFullPath("Assets/lilToonSetting");
+        if(!Directory.Exists(settingFolderPath)) Directory.CreateDirectory(settingFolderPath);
+
         // Shader Setting
-        string shaderSettingPath = Path.GetFullPath("Assets/lilToon/Shader/Includes/lil_setting.hlsl");
+        string shaderSettingPath = Path.GetFullPath("Assets/lilToonSetting/lil_setting.hlsl");
         if(!File.Exists(shaderSettingPath))
         {
             StreamWriter sw = new StreamWriter(shaderSettingPath,true);
@@ -23,14 +27,14 @@ public class lilStartup {
         #else
             string fullPath = Path.GetFullPath("Assets/mcs.rsp");
         #endif
-        string edotorPath = "Assets/lilToon/Editor/lilInspector.cs";
+        string editorPath = "Assets/lilToon/Editor/lilInspector.cs";
         if(!File.Exists(fullPath))
         {
             StreamWriter sw = new StreamWriter(fullPath,true);
             sw.Write("-r:System.Drawing.dll\n-define:SYSTEM_DRAWING");
             sw.Close();
             AssetDatabase.Refresh();
-            AssetDatabase.ImportAsset(edotorPath);
+            AssetDatabase.ImportAsset(editorPath);
         }
 
         StreamReader sr = new StreamReader(fullPath);
@@ -43,7 +47,7 @@ public class lilStartup {
             sw.Write("\n-r:System.Drawing.dll\n-define:SYSTEM_DRAWING");
             sw.Close();
             AssetDatabase.Refresh();
-            AssetDatabase.ImportAsset(edotorPath);
+            AssetDatabase.ImportAsset(editorPath);
         }
         else if(!s.Contains("define:SYSTEM_DRAWING"))
         {
@@ -51,7 +55,7 @@ public class lilStartup {
             sw.Write("\n-define:SYSTEM_DRAWING");
             sw.Close();
             AssetDatabase.Refresh();
-            AssetDatabase.ImportAsset(edotorPath);
+            AssetDatabase.ImportAsset(editorPath);
         }
     }
 }

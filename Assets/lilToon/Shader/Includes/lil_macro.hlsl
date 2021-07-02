@@ -406,6 +406,8 @@
     #define LIL_SAMPLE_2D(tex,samp,uv)              tex.Sample(samp,uv)
     #define LIL_SAMPLE_2D_ST(tex,samp,uv)           tex.Sample(samp,uv*tex##_ST.xy+tex##_ST.zw)
     #define LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)      tex.SampleLevel(sampler_linear_repeat,uv,lod)
+    #define LIL_SAMPLE_2D_BIAS(tex,samp,uv,bias)    tex.SampleBias(samp,uv,bias)
+    #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)   tex.SampleGrad(samp,uv,dx,dy)
     #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)  tex.Sample(samp,float3(uv,index))
     #define LIL_SAMPLE_3D(tex,samp,coord)           tex.Sample(samp,coord)
     #if !defined TEXTURE2D
@@ -422,6 +424,8 @@
     #define LIL_SAMPLE_2D(tex,samp,uv)              tex2D(tex,uv)
     #define LIL_SAMPLE_2D_ST(tex,samp,uv)           tex2D(tex,uv*tex##_ST.xy+tex##_ST.zw)
     #define LIL_SAMPLE_2D_LOD(tex,samp,uv)          tex2Dlod(tex,float4(uv,0,lod))
+    #define LIL_SAMPLE_2D_BIAS(tex,samp,uv,bias)    tex2Dbias(tex,float4(uv,0,bias))
+    #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)   tex2Dgrad(tex,float4(uv,dx,dy))
     #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)  tex2DArray(tex,float3(uv,index))
     #define LIL_SAMPLE_3D(tex,samp,uv)              tex3D(tex,uv)
     #if !defined TEXTURE2D
@@ -433,6 +437,12 @@
     #if !defined SAMPLER
         #define SAMPLER(tex)
     #endif
+#endif
+
+#if defined(LIL_FEATURE_PARALLAX) && defined(LIL_FEATURE_POM)
+    #define LIL_SAMPLE_2D_POM(tex,samp,uv,dx,dy)    LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)
+#else
+    #define LIL_SAMPLE_2D_POM(tex,samp,uv,dx,dy)    LIL_SAMPLE_2D(tex,samp,uv)
 #endif
 
 // Transform

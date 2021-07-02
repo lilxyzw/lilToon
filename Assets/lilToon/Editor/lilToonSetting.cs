@@ -23,6 +23,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_MATCAP;
     public bool LIL_FEATURE_RIMLIGHT;
     public bool LIL_FEATURE_PARALLAX;
+    public bool LIL_FEATURE_POM;
     public bool LIL_FEATURE_CLIPPING_CANCELLER;
     public bool LIL_FEATURE_DISTANCE_FADE;
     public bool LIL_FEATURE_AUDIOLINK;

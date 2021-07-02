@@ -28,7 +28,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         //----------------------------------------------------------------------------------------------------------------------
         // Main Color
         float4 col = _OutlineColor;
-        if(Exists_FurVectorTex) col *= LIL_SAMPLE_2D(_OutlineTex, sampler_OutlineTex, uvMain);
+        if(Exists_OutlineTex) col *= LIL_SAMPLE_2D(_OutlineTex, sampler_OutlineTex, uvMain);
 
         //----------------------------------------------------------------------------------------------------------------------
         // Alpha

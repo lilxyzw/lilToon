@@ -136,12 +136,45 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         //--------------------------------------------------------------------------------------------------------------------------
         // Parallax
         #if defined(LIL_FEATURE_PARALLAX)
+            float2 ddxMain = ddx(uvMain);
+            float2 ddyMain = ddy(uvMain);
             LIL_BRANCH
             if(Exists_ParallaxMap && _UseParallax)
             {
-                float height = (LIL_SAMPLE_2D_LOD(_ParallaxMap,sampler_linear_repeat,uvMain,0).r - _ParallaxOffset) * _Parallax;
-                uvMain += height * parallaxOffset;
-                input.uv += height * parallaxOffset;
+                #if defined(LIL_FEATURE_POM)
+                    // POM
+                    #define LIL_POM_DETAIL 200
+                    float height;
+                    float height2;
+                    float3 rayStep = -parallaxViewDirection;
+                    float3 rayPos = float3(uvMain, 1.0) + (1.0-_ParallaxOffset) * _Parallax * parallaxViewDirection;
+                    rayStep.xy *= _MainTex_ST.xy;
+                    rayStep = rayStep / LIL_POM_DETAIL;
+                    rayStep.z /= _Parallax;
+
+                    for(int i = 0; i < LIL_POM_DETAIL * 2 * _Parallax; ++i)
+                    {
+                        height2 = height;
+                        rayPos += rayStep;
+                        height = LIL_SAMPLE_2D_LOD(_ParallaxMap,sampler_linear_repeat,rayPos.xy,0).r;
+                        if(height >= rayPos.z) break;
+                    }
+
+                    float2 prevObjPoint = rayPos.xy - rayStep.xy;
+                    float nextHeight = height - rayPos.z;
+                    float prevHeight = height2 - rayPos.z + rayStep.z;
+
+                    float weight = nextHeight / (nextHeight - prevHeight);
+                    rayPos.xy = lerp(rayPos.xy, prevObjPoint, weight);
+
+                    input.uv += rayPos.xy - uvMain;
+                    uvMain = rayPos.xy;
+                #else
+                    // Parallax
+                    float height = (LIL_SAMPLE_2D_LOD(_ParallaxMap,sampler_linear_repeat,uvMain,0).r - _ParallaxOffset) * _Parallax;
+                    uvMain += height * parallaxOffset;
+                    input.uv += height * parallaxOffset;
+                #endif
             }
         #endif
 
@@ -150,7 +183,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         float4 col = 1.0;
         if(Exists_MainTex)
         {
-            col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain);
+            col = LIL_SAMPLE_2D_POM(_MainTex, sampler_MainTex, uvMain, ddxMain, ddyMain);
             #if defined(LIL_FEATURE_MAIN_TONE_CORRECTION)
                 col.rgb = lilToneCorrection(col.rgb, _MainTexHSVG);
             #endif
