@@ -23,7 +23,7 @@
 // tangentW             : Handedness
 // vl                   : Vertex lighting
 // furLayer             : Fur Layer (in:0 out:1)
-// LIL_FOG_COORDS(()    : Fog
+// LIL_FOG_COORDS()     : Fog
 // LIL_SHADOW_COORDS()  : Shadow
 // LIL_LIGHTMAP_COORDS(): Lightmap
 // LIL_VERTEX_INPUT_INSTANCE_ID
