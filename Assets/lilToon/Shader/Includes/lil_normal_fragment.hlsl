@@ -190,8 +190,41 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         }
         col *= _Color;
 
+        // Dissolve
+        #if defined(LIL_FEATURE_DISSOLVE) && LIL_RENDER != 0
+            float dissolveAlpha = 0.0;
+            #if defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
+                lilCalcDissolveWithNoise(
+                    col.a,
+                    dissolveAlpha,
+                    input.uv,
+                    input.positionOS,
+                    _DissolveParams,
+                    _DissolvePos,
+                    _DissolveMask,
+                    _DissolveMask_ST,
+                    _DissolveNoiseMask,
+                    _DissolveNoiseMask_ST,
+                    _DissolveNoiseMask_ScrollRotate,
+                    _DissolveNoiseStrength
+                );
+            #else
+                lilCalcDissolve(
+                    col.a,
+                    dissolveAlpha,
+                    input.uv,
+                    input.positionOS,
+                    _DissolveParams,
+                    _DissolvePos,
+                    _DissolveMask,
+                    _DissolveMask_ST
+                );
+            #endif
+        #endif
+
         //----------------------------------------------------------------------------------------------------------------------
         // Alpha
+        float alpha = col.a;
         #if LIL_RENDER == 0
             // Opaque
         #elif LIL_RENDER == 1
@@ -311,12 +344,44 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 bool _Main2ndTexShouldFlipMirror = false;
                 bool _Main2ndTexShouldFlipCopy = false;
             #endif
+            #if defined(LIL_FEATURE_LAYER_DISSOLVE)
+                float main2ndDissolveAlpha = 0.0;
+            #endif
             float4 color2nd = _Color2nd;
             LIL_BRANCH
             if(_UseMain2ndTex)
             {
                 if(Exists_Main2ndTex) color2nd *= LIL_GET_SUBTEX(_Main2ndTex, input.uv);
                 if(Exists_Main2ndBlendMask) color2nd.a *= LIL_SAMPLE_2D(_Main2ndBlendMask, sampler_MainTex, uvMain).r;
+                #if defined(LIL_FEATURE_LAYER_DISSOLVE)
+                    #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+                        lilCalcDissolveWithNoise(
+                            color2nd.a,
+                            main2ndDissolveAlpha,
+                            input.uv,
+                            input.positionOS,
+                            _Main2ndDissolveParams,
+                            _Main2ndDissolvePos,
+                            _Main2ndDissolveMask,
+                            _Main2ndDissolveMask_ST,
+                            _Main2ndDissolveNoiseMask,
+                            _Main2ndDissolveNoiseMask_ST,
+                            _Main2ndDissolveNoiseMask_ScrollRotate,
+                            _Main2ndDissolveNoiseStrength
+                        );
+                    #else
+                        lilCalcDissolve(
+                            color2nd.a,
+                            main2ndDissolveAlpha,
+                            input.uv,
+                            input.positionOS,
+                            _Main2ndDissolveParams,
+                            _Main2ndDissolvePos,
+                            _Main2ndDissolveMask,
+                            _Main2ndDissolveMask_ST
+                        );
+                    #endif
+                #endif
                 #if defined(LIL_FEATURE_AUDIOLINK)
                     if(_AudioLink2Main2nd) color2nd.a *= audioLinkValue;
                 #endif
@@ -338,12 +403,44 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 bool _Main3rdTexShouldFlipMirror = false;
                 bool _Main3rdTexShouldFlipCopy = false;
             #endif
+            #if defined(LIL_FEATURE_LAYER_DISSOLVE)
+                float main3rdDissolveAlpha = 0.0;
+            #endif
             float4 color3rd = _Color3rd;
             LIL_BRANCH
             if(_UseMain3rdTex)
             {
                 if(Exists_Main3rdTex) color3rd *= LIL_GET_SUBTEX(_Main3rdTex, input.uv);
                 if(Exists_Main3rdBlendMask) color3rd.a *= LIL_SAMPLE_2D(_Main3rdBlendMask, sampler_MainTex, uvMain).r;
+                #if defined(LIL_FEATURE_LAYER_DISSOLVE)
+                    #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+                        lilCalcDissolveWithNoise(
+                            color3rd.a,
+                            main3rdDissolveAlpha,
+                            input.uv,
+                            input.positionOS,
+                            _Main3rdDissolveParams,
+                            _Main3rdDissolvePos,
+                            _Main3rdDissolveMask,
+                            _Main3rdDissolveMask_ST,
+                            _Main3rdDissolveNoiseMask,
+                            _Main3rdDissolveNoiseMask_ST,
+                            _Main3rdDissolveNoiseMask_ScrollRotate,
+                            _Main3rdDissolveNoiseStrength
+                        );
+                    #else
+                        lilCalcDissolve(
+                            color3rd.a,
+                            main3rdDissolveAlpha,
+                            input.uv,
+                            input.positionOS,
+                            _Main3rdDissolveParams,
+                            _Main3rdDissolvePos,
+                            _Main3rdDissolveMask,
+                            _Main3rdDissolveMask_ST
+                        );
+                    #endif
+                #endif
                 #if defined(LIL_FEATURE_AUDIOLINK)
                     if(_AudioLink2Main3rd) color3rd.a *= audioLinkValue;
                 #endif
@@ -633,6 +730,20 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                     emission2ndColor.rgb = lerp(emission2ndColor.rgb, emission2ndColor.rgb * invLighting, _Emission2ndFluorescence);
                     col.rgb += _Emission2ndBlend * lilCalcBlink(_Emission2ndBlink) * emission2ndColor.a * emission2ndColor.rgb;
                 }
+            #endif
+
+            // Dissolve
+            #if defined(LIL_FEATURE_DISSOLVE) && LIL_RENDER != 0
+                col.rgb += _DissolveColor.rgb * dissolveAlpha;
+            #endif
+
+            #if defined(LIL_FEATURE_LAYER_DISSOLVE)
+                #if defined(LIL_FEATURE_MAIN2ND)
+                    col.rgb += _Main2ndDissolveColor.rgb * main2ndDissolveAlpha;
+                #endif
+                #if defined(LIL_FEATURE_MAIN3RD)
+                    col.rgb += _Main3rdDissolveColor.rgb * main3rdDissolveAlpha;
+                #endif
             #endif
         #endif
     #endif

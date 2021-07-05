@@ -35,6 +35,13 @@ Shader "Hidden/lilToonRefractionBlur"
         [NoScaleOffset] _Main2ndBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
                         _Main2ndEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
+                        _Main2ndDissolveMask        ("Dissolve Mask", 2D) = "white" {}
+                        _Main2ndDissolveNoiseMask   ("Dissolve Noise Mask", 2D) = "gray" {}
+        [lilUVAnim]     _Main2ndDissolveNoiseMask_ScrollRotate ("Scroll", Vector) = (0,0,0,0)
+                        _Main2ndDissolveNoiseStrength ("Dissolve Noise Strength", float) = 0.1
+        [lilHDR]        _Main2ndDissolveColor       ("Dissolve Color", Color) = (1,1,1,1)
+        [lilDissolve]   _Main2ndDissolveParams      ("Dissolve Mode|None|Alpha|UV|Position|Dissolve Shape|Point|Line|Border|Blur", Vector) = (0,0,0.5,0.1)
+        [lilDissolveP]  _Main2ndDissolvePos         ("Dissolve Position", Vector) = (0,0,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main3rd
@@ -54,6 +61,13 @@ Shader "Hidden/lilToonRefractionBlur"
         [NoScaleOffset] _Main3rdBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
                         _Main3rdEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
+                        _Main3rdDissolveMask        ("Dissolve Mask", 2D) = "white" {}
+                        _Main3rdDissolveNoiseMask   ("Dissolve Noise Mask", 2D) = "gray" {}
+        [lilUVAnim]     _Main3rdDissolveNoiseMask_ScrollRotate ("Scroll", Vector) = (0,0,0,0)
+                        _Main3rdDissolveNoiseStrength ("Dissolve Noise Strength", float) = 0.1
+        [lilHDR]        _Main3rdDissolveColor       ("Dissolve Color", Color) = (1,1,1,1)
+        [lilDissolve]   _Main3rdDissolveParams      ("Dissolve Mode|None|Alpha|UV|Position|Dissolve Shape|Point|Line|Border|Blur", Vector) = (0,0,0.5,0.1)
+        [lilDissolveP]  _Main3rdDissolvePos         ("Dissolve Position", Vector) = (0,0,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // NormalMap
@@ -233,6 +247,16 @@ Shader "Hidden/lilToonRefractionBlur"
         [lilALLocal]    _AudioLinkLocalMapParams    ("BPM|Notes|Offset", Vector) = (120,1,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Dissolve
+                        _DissolveMask               ("Dissolve Mask", 2D) = "white" {}
+                        _DissolveNoiseMask          ("Dissolve Noise Mask", 2D) = "gray" {}
+        [lilUVAnim]     _DissolveNoiseMask_ScrollRotate ("Scroll", Vector) = (0,0,0,0)
+                        _DissolveNoiseStrength      ("Dissolve Noise Strength", float) = 0.1
+        [lilHDR]        _DissolveColor              ("Dissolve Color", Color) = (1,1,1,1)
+        [lilDissolve]   _DissolveParams             ("Dissolve Mode|None|Alpha|UV|Position|Dissolve Shape|Point|Line|Border|Blur", Vector) = (0,0,0.5,0.1)
+        [lilDissolveP]  _DissolvePos                ("Dissolve Position", Vector) = (0,0,0,0)
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilCullMode]                                   _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
@@ -272,6 +296,10 @@ Shader "Hidden/lilToonRefractionBlur"
         #define LIL_REFRACTION
         #define LIL_REFRACTION_BLUR2
     ENDHLSL
+
+//----------------------------------------------------------------------------------------------------------------------
+// BRP Start
+//
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
@@ -412,6 +440,443 @@ Shader "Hidden/lilToonRefractionBlur"
         UsePass "Hidden/ltspass_transparent/SHADOW_CASTER"
         UsePass "Hidden/ltspass_transparent/META"
     }
+//
+// BRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// LWRP Start
+/*
+    //------------------------------------------------------------------------------------------------------------------
+    // Lightweight Render Pipeline SM4.5
+    SubShader
+    {
+        Tags {"RenderType" = "Opaque" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+
+        // GrabPass
+        GrabPass {}
+
+        // Blur
+        Pass
+        {
+            Name "FORWARD_BLUR"
+            Tags {"LightMode" = "SRPDefaultUnlit"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+		    Cull [_Cull]
+            Blend One Zero
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Shader
+            #include "Includes/lil_pass_refblur.hlsl"
+
+            ENDHLSL
+        }
+
+        // GrabPass
+        GrabPass {}
+
+        // Forward
+        Pass
+        {
+            Name "FORWARD"
+            Tags {"LightMode" = "LightweightForward"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            // Skip receiving shadow
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_normal.hlsl"
+
+            ENDHLSL
+        }
+
+        UsePass "Hidden/ltspass_transparent/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_transparent/DEPTHONLY"
+        UsePass "Hidden/ltspass_transparent/META"
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Lightweight Render Pipeline
+    SubShader
+    {
+        Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
+
+        // GrabPass
+        GrabPass {}
+
+        // Blur
+        Pass
+        {
+            Name "FORWARD_BLUR"
+            Tags {"LightMode" = "SRPDefaultUnlit"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+		    Cull [_Cull]
+            Blend One Zero
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 3.5
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile_instancing
+
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Shader
+            #include "Includes/lil_pass_refblur.hlsl"
+
+            ENDHLSL
+        }
+
+        // GrabPass
+        GrabPass {}
+
+        // Forward
+        Pass
+        {
+            Name "FORWARD"
+            Tags {"LightMode" = "LightweightForward"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 3.5
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+
+            // Skip receiving shadow
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_normal.hlsl"
+
+            ENDHLSL
+        }
+
+        UsePass "Hidden/ltspass_transparent/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_transparent/DEPTHONLY"
+        UsePass "Hidden/ltspass_transparent/META"
+    }
+*/
+// LWRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// URP Start
+/*
+    //------------------------------------------------------------------------------------------------------------------
+    // Universal Render Pipeline SM4.5
+    SubShader
+    {
+        Tags {"RenderType" = "Opaque" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+
+        // GrabPass
+        GrabPass {}
+
+        // Blur
+        Pass
+        {
+            Name "FORWARD_BLUR"
+            Tags {"LightMode" = "SRPDefaultUnlit"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+		    Cull [_Cull]
+            Blend One Zero
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Shader
+            #include "Includes/lil_pass_refblur.hlsl"
+
+            ENDHLSL
+        }
+
+        // GrabPass
+        GrabPass {}
+
+        // Forward
+        Pass
+        {
+            Name "FORWARD"
+            Tags {"LightMode" = "UniversalForward"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            // Skip receiving shadow
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_normal.hlsl"
+
+            ENDHLSL
+        }
+
+        UsePass "Hidden/ltspass_transparent/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_transparent/DEPTHONLY"
+        UsePass "Hidden/ltspass_transparent/DEPTHNORMALS"
+        UsePass "Hidden/ltspass_transparent/UNIVERSAL2D"
+        UsePass "Hidden/ltspass_transparent/META"
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Universal Render Pipeline
+    SubShader
+    {
+        Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
+
+        // GrabPass
+        GrabPass {}
+
+        // Blur
+        Pass
+        {
+            Name "FORWARD_BLUR"
+            Tags {"LightMode" = "SRPDefaultUnlit"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+		    Cull [_Cull]
+            Blend One Zero
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 3.5
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile_instancing
+
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Shader
+            #include "Includes/lil_pass_refblur.hlsl"
+
+            ENDHLSL
+        }
+
+        // GrabPass
+        GrabPass {}
+
+        // Forward
+        Pass
+        {
+            Name "FORWARD"
+            Tags {"LightMode" = "UniversalForward"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 3.5
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+
+            // Skip receiving shadow
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_normal.hlsl"
+
+            ENDHLSL
+        }
+
+        UsePass "Hidden/ltspass_transparent/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_transparent/DEPTHONLY"
+        UsePass "Hidden/ltspass_transparent/DEPTHNORMALS"
+        UsePass "Hidden/ltspass_transparent/UNIVERSAL2D"
+        UsePass "Hidden/ltspass_transparent/META"
+    }
+*/
+// URP End
+
     Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"
 }

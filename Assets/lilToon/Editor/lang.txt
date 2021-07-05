@@ -82,7 +82,7 @@ sShaderTypeNormal	Normal	Normal (通常版)	Normal	Normal	Normal
 sShaderTypeLite	Lite	Lite (軽量版)	Lite	Lite	Lite
 sRenderingMode	Rendering Mode	透過モード	투명 모드	Rendering Mode	Rendering Mode
 sRenderingModeOpaque	Opaque	不透明	불투명	不透明	不透明
-sRenderingModeCutout	Cutout	透明・不透明をくっきり分ける	단편	镂空	鏤空
+sRenderingModeCutout	Cutout	カットアウト	단편	镂空	鏤空
 sRenderingModeTransparent	Transparent	半透明	반투명	透明	透明
 sRenderingModeRefraction	Refraction	屈折	굴절	折射	折射
 sRenderingModeRefractionBlur	Refraction Blur	屈折ぼかし	굴절 흐림	折射模糊	折射模糊
@@ -188,6 +188,16 @@ sAudioLinkAsLocal	As Local	ローカル化	현지	当地	當地
 sAudioLinkLocalMap	Local Map	ローカルマップ	Local Map	Local Map	Local Map
 sAudioLinkLocalMapBPM	BPM	BPM	BPM	BPM	BPM
 sAudioLinkLocalMapNotes	Notes	拍数	Notes	Notes	Notes
+sDissolve	Dissolve	Dissolve	Dissolve	Dissolve	Dissolve
+sDissolveTips	Settings for dissolving a material	マテリアルが溶けるような表現ができます	재료를 용해시키기위한 설정	用于溶解材料的设置	用於溶解材料的設置
+sDissolveMode	Dissolve Mode	Dissolve Mode	Dissolve Mode	Dissolve Mode	Dissolve Mode
+sDissolveModeNone	None	None	None	None	None
+sDissolveModeAlpha	Alpha	透明度	Alpha	Alpha	Alpha
+sDissolveModeUV	UV	UV	UV	UV	UV
+sDissolveModePosition	Position	座標	좌표	职位	職位
+sDissolveShape	Shape	形状	모양	形状	形狀
+sDissolveShapePoint	Point	点	점	点	點
+sDissolveShapeLine	Line	線	선	线	線
 sNormalMapReflection	Normal Map & Reflection	ノーマルマップ・光沢設定	노멀 맵 광택 설정	法线贴图 & 反射设置	法線貼圖 & 反射設置
 sNormalMapSetting	Normal Map	ノーマルマップ設定	노멀 맵 설정	法线贴图设置	法線貼圖設置
 sNormalMapTips	You can set the normal map.	ノーマルマップの設定ができます	노멀 맵을 설정할 수 있습니다	你可以设置法线贴图。	你可以設置法線貼圖。
@@ -233,6 +243,8 @@ sBlendOpAlpha	BlendOp Alpha	BlendOp Alpha	BlendOp Alpha	BlendOp Alpha	BlendOp Al
 sRenderingReset	Reset Rendering Properties	レンダリング設定を初期化	렌더링 설정을 재설정	重置渲染设置	重置渲染設置
 sOptimization	Optimization	最適化	최적화	优化	優化
 sOptimizationTips	You can optimize the material to reduce the load.	マテリアルを最適化して負荷を低減できます	물질을 최적화하여 부하를 줄일 수 있습니다	你可以对材料进行优化，以减少负荷。	你可以對材料進行優化，以減少負荷。
+sCustomProperties	Custom Properties	カスタムプロパティ	사용자 정의 속성	自定义属性	自定義屬性
+sCustomPropertiesTips	Displays the properties added by the user.	ユーザーが追加したプロパティが表示されます	사용자가 추가 된 속성을 표시합니다	显示用户添加的属性	顯示用戶添加的屬性
 sBake	Bake	焼き込み	굽기	烘烤	烘烤
 sBakeAll	Bake all layer	全て焼き込み	모든 굽기	烘烤所有层	烘烤所有層
 sBake1st	Bake Color Shift	色替えを焼き込み	색상 기준을 굽기	烘烤颜色转移	烘烤顏色轉移
@@ -322,6 +334,7 @@ sSettingMain3rd	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	主色3rd
 sSettingDecal	Decal	デカール	데칼	Decal	Decal
 sSettingAnimateDecal	Decal Animation	デカールアニメーション	데칼 애니메이션	Decal动画	Decal動畫
 sSettingTexLayerMask	Layer Mask	レイヤーマスク	레이어 마스크	图层蒙版	圖層蒙版
+sSettingLayerDissolve	Layer Dissolve	レイヤーDissolve	Layer Dissolve	Layer Dissolve	Layer Dissolve
 sSettingShadow	Shadow	影	그림자	阴影	陰影
 sSettingReceiveShadow	Receive Shadow	影の受け取り	그림자 받고	接收阴影	接收陰影
 sSettingTexShadowBlur	Shadow Blur Mask	ぼかし量マスク	흐림 효과 마스크	阴影模糊掩码	陰影模糊掩碼
@@ -356,6 +369,8 @@ sSettingAudioLink	AudioLink	AudioLink	AudioLink	AudioLink	AudioLink
 sSettingAudioLinkVertex	Vertex	頂点	정점	顶点	頂點
 sSettingAudioLinkMask	Mask (R:Delay G:Band B:Strength)	マスク (R:Delay G:Band B:Strength)	Mask (R:Delay G:Band B:Strength)	Mask (R:Delay G:Band B:Strength)	Mask (R:Delay G:Band B:Strength)
 sSettingAudioLinkLocal	Local	ローカル	Local	Local	Local
+sSettingDissolve	Dissolve	Dissolve	Dissolve	Dissolve	Dissolve
+sSettingTexDissolveNoise	Noise	ノイズ	Noise	Noise	Noise
 sSettingAnimateOutlineUV	Animate Outline UV	輪郭線UVアニメーション	윤곽선 UV 애니메이션	轮廓UV动画和角度	輪廓UV動畫和角度
 sSettingTexOutlineColor	Outline Color Texture	輪郭線色テクスチャ	윤곽선 색상 질감	轮廓颜色纹理	輪廓顏色紋理
 sSettingOutlineToneCorrection	Outline Tone Correction	色調補正	색상 보정	轮廓色调校正	輪廓色調校正
@@ -384,6 +399,7 @@ sAnchorOutline	#outline	#輪郭線設定	#outline	#outline	#outline
 sAnchorParallax	#parallax	#視差マップ	#parallax	#parallax	#parallax
 sAnchorDistanceFade	#distance-fade	#距離フェード	#distance-fade	#distance-fade	#distance-fade
 sAnchorAudioLink	#audiolink	#audiolink	#audiolink	#audiolink	#audiolink
+sAnchorDissolve	#dissolve	#dissolve	#dissolve	#dissolve	#dissolve
 sAnchorStencil	#stencil	#ステンシル設定	#stencil	#stencil	#stencil
 sAnchorRendering	#rendering	#レンダリング設定	#rendering	#rendering	#rendering
 sAnchorTessellation	#tessellation	#テッセレーション	#tessellation	#tessellation	#tessellation

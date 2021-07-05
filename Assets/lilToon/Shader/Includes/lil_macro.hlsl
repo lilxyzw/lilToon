@@ -158,6 +158,11 @@
 #endif
 
 // positionWS
+#if (defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD)) && defined(LIL_FEATURE_LAYER_DISSOLVE) || defined(LIL_FEATURE_DISSOLVE)
+    #define LIL_SHOULD_POSITION_OS
+#endif
+
+// positionWS
 #if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX) || defined(LIL_FEATURE_DISTANCE_FADE) || defined(LIL_REFRACTION) || !defined(LIL_BRP)
     #define LIL_SHOULD_POSITION_WS
 #endif

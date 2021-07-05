@@ -1,4 +1,4 @@
-﻿Shader "Hidden/lilToonLiteCutout"
+Shader "Hidden/lilToonLiteCutout"
 {
     Properties
     {
@@ -76,6 +76,10 @@
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+// BRP Start
+//
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
@@ -84,6 +88,39 @@
         UsePass "Hidden/ltspass_lite_cutout/SHADOW_CASTER"
         UsePass "Hidden/ltspass_lite_cutout/META"
     }
+//
+// BRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// LWRP Start
+/*
+    SubShader
+    {
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
+        UsePass "Hidden/ltspass_lite_cutout/FORWARD"
+        UsePass "Hidden/ltspass_lite_cutout/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_lite_cutout/DEPTHONLY"
+        UsePass "Hidden/ltspass_lite_cutout/META"
+    }
+*/
+// LWRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// URP Start
+/*
+    SubShader
+    {
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
+        UsePass "Hidden/ltspass_lite_cutout/FORWARD"
+        UsePass "Hidden/ltspass_lite_cutout/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_lite_cutout/DEPTHONLY"
+        UsePass "Hidden/ltspass_lite_cutout/DEPTHNORMALS"
+        UsePass "Hidden/ltspass_lite_cutout/UNIVERSAL2D"
+        UsePass "Hidden/ltspass_lite_cutout/META"
+    }
+*/
+// URP End
+
     Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"
 }

@@ -13,8 +13,9 @@
 // LIL_VERTEX_INPUT_INSTANCE_ID
 
 // positionCS           : Clip space position
+// positionOS           : Object space position
 // positionWS           : World space position
-// positionSS          : Normalized device coordinates
+// positionSS           : Screen space coordinates
 // uv                   : UV
 // uvMat                : MatCap UV
 // normalWS             : World space normal
@@ -103,26 +104,29 @@
     {
         float4 positionCS       : SV_POSITION;
         float2 uv               : TEXCOORD0;
+        #if defined(LIL_SHOULD_POSITION_OS)
+            float3 positionOS       : TEXCOORD1;
+        #endif
         #if defined(LIL_SHOULD_POSITION_WS)
-            float3 positionWS       : TEXCOORD1;
+            float3 positionWS       : TEXCOORD2;
         #endif
         #if defined(LIL_SHOULD_NORMAL)
-            float3 normalWS         : TEXCOORD2;
+            float3 normalWS         : TEXCOORD3;
         #endif
         #if defined(LIL_SHOULD_TBN)
-            float3 tangentWS        : TEXCOORD3;
-            float3 bitangentWS      : TEXCOORD4;
+            float3 tangentWS        : TEXCOORD4;
+            float3 bitangentWS      : TEXCOORD5;
         #endif
         #if defined(LIL_SHOULD_TANGENT_W)
-            float  tangentW         : TEXCOORD5;
+            float  tangentW         : TEXCOORD6;
         #endif
         #ifdef LIL_REFRACTION
-            float4 positionSS      : TEXCOORD6;
+            float4 positionSS      : TEXCOORD7;
         #endif
-        LIL_VERTEXLIGHT_COORDS(7)
-        LIL_FOG_COORDS(8)
-        LIL_SHADOW_COORDS(9)
-        LIL_LIGHTMAP_COORDS(10)
+        LIL_VERTEXLIGHT_COORDS(8)
+        LIL_FOG_COORDS(9)
+        LIL_SHADOW_COORDS(10)
+        LIL_LIGHTMAP_COORDS(11)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };

@@ -1,4 +1,4 @@
-﻿Shader "Hidden/ltsother_baker"
+Shader "Hidden/ltsother_baker"
 {
     Properties
     {

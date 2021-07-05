@@ -1,4 +1,4 @@
-﻿Shader "Hidden/lilToonFurCutout"
+Shader "Hidden/lilToonFurCutout"
 {
     Properties
     {
@@ -115,6 +115,10 @@
         #define LIL_RENDER 1
         #define LIL_FUR
     ENDHLSL
+
+//----------------------------------------------------------------------------------------------------------------------
+// BRP Start
+//
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
@@ -333,6 +337,863 @@
             ENDHLSL
         }
     }
+//
+// BRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// LWRP Start
+/*
+    //------------------------------------------------------------------------------------------------------------------
+    // Lightweight Render Pipeline SM4.5
+    SubShader
+    {
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest" "ShaderModel" = "4.5"}
+
+        // ForwardLit
+        Pass
+        {
+            Name "FORWARD"
+            Tags {"LightMode" = "SRPDefaultUnlit"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask On
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_normal.hlsl"
+
+            ENDHLSL
+        }
+
+        // Fur
+        Pass
+        {
+            Name "FORWARD_FUR"
+            Tags {"LightMode" = "LightweightForward"}
+
+            Stencil
+            {
+                Ref [_FurStencilRef]
+                ReadMask [_FurStencilReadMask]
+                WriteMask [_FurStencilWriteMask]
+                Comp [_FurStencilComp]
+                Pass [_FurStencilPass]
+                Fail [_FurStencilFail]
+                ZFail [_FurStencilZFail]
+            }
+            Cull [_FurCull]
+            ZWrite [_FurZWrite]
+            ZTest [_FurZTest]
+            ColorMask [_FurColorMask]
+            Offset [_FurOffsetFactor], [_FurOffsetUnits]
+            BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
+            Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
+            AlphaToMask On
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma geometry geom
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma require geometry
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_fur.hlsl"
+
+            ENDHLSL
+        }
+
+        // ShadowCaster
+        Pass
+        {
+            Name "SHADOW_CASTER"
+            Tags {"LightMode" = "ShadowCaster"}
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_shadowcaster.hlsl"
+
+            ENDHLSL
+        }
+
+        // DepthOnly
+        Pass
+        {
+            Name "DEPTHONLY"
+            Tags {"LightMode" = "DepthOnly"}
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_depthonly.hlsl"
+
+            ENDHLSL
+        }
+
+        // Meta
+        Pass
+        {
+            Name "META"
+            Tags {"LightMode" = "Meta"}
+            Cull Off
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_meta.hlsl"
+            ENDHLSL
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Lightweight Render Pipeline
+    SubShader
+    {
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
+
+        // ForwardLit
+        Pass
+        {
+            Name "FORWARD"
+            Tags {"LightMode" = "SRPDefaultUnlit"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask On
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.0
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_normal.hlsl"
+
+            ENDHLSL
+        }
+
+        // Fur
+        Pass
+        {
+            Name "FORWARD_FUR"
+            Tags {"LightMode" = "LightweightForward"}
+
+            Stencil
+            {
+                Ref [_FurStencilRef]
+                ReadMask [_FurStencilReadMask]
+                WriteMask [_FurStencilWriteMask]
+                Comp [_FurStencilComp]
+                Pass [_FurStencilPass]
+                Fail [_FurStencilFail]
+                ZFail [_FurStencilZFail]
+            }
+            Cull [_FurCull]
+            ZWrite [_FurZWrite]
+            ZTest [_FurZTest]
+            ColorMask [_FurColorMask]
+            Offset [_FurOffsetFactor], [_FurOffsetUnits]
+            BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
+            Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
+            AlphaToMask On
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma geometry geom
+            #pragma fragment frag
+            #pragma target 4.0
+            #pragma require geometry
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_fur.hlsl"
+
+            ENDHLSL
+        }
+
+        // ShadowCaster
+        Pass
+        {
+            Name "SHADOW_CASTER"
+            Tags {"LightMode" = "ShadowCaster"}
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 3.5
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+            #pragma multi_compile_instancing
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_shadowcaster.hlsl"
+
+            ENDHLSL
+        }
+
+        // DepthOnly
+        Pass
+        {
+            Name "DEPTHONLY"
+            Tags {"LightMode" = "DepthOnly"}
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 3.5
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile_instancing
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_depthonly.hlsl"
+
+            ENDHLSL
+        }
+
+        // Meta
+        Pass
+        {
+            Name "META"
+            Tags {"LightMode" = "Meta"}
+            Cull Off
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma exclude_renderers gles gles3 glcore
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_meta.hlsl"
+            ENDHLSL
+        }
+    }
+*/
+// LWRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// URP Start
+/*
+    //------------------------------------------------------------------------------------------------------------------
+    // Universal Render Pipeline SM4.5
+    SubShader
+    {
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest" "ShaderModel" = "4.5"}
+
+        // ForwardLit
+        Pass
+        {
+            Name "FORWARD"
+            Tags {"LightMode" = "SRPDefaultUnlit"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask On
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_normal.hlsl"
+
+            ENDHLSL
+        }
+
+        // Fur
+        Pass
+        {
+            Name "FORWARD_FUR"
+            Tags {"LightMode" = "UniversalForward"}
+
+            Stencil
+            {
+                Ref [_FurStencilRef]
+                ReadMask [_FurStencilReadMask]
+                WriteMask [_FurStencilWriteMask]
+                Comp [_FurStencilComp]
+                Pass [_FurStencilPass]
+                Fail [_FurStencilFail]
+                ZFail [_FurStencilZFail]
+            }
+            Cull [_FurCull]
+            ZWrite [_FurZWrite]
+            ZTest [_FurZTest]
+            ColorMask [_FurColorMask]
+            Offset [_FurOffsetFactor], [_FurOffsetUnits]
+            BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
+            Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
+            AlphaToMask On
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma geometry geom
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma require geometry
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_fur.hlsl"
+
+            ENDHLSL
+        }
+
+        // ShadowCaster
+        Pass
+        {
+            Name "SHADOW_CASTER"
+            Tags {"LightMode" = "ShadowCaster"}
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_shadowcaster.hlsl"
+
+            ENDHLSL
+        }
+
+        // DepthOnly
+        Pass
+        {
+            Name "DEPTHONLY"
+            Tags {"LightMode" = "DepthOnly"}
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_depthonly.hlsl"
+
+            ENDHLSL
+        }
+
+        // DepthNormals
+        Pass
+        {
+            Name "DEPTHNORMALS"
+            Tags {"LightMode" = "DepthNormals"}
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma multi_compile_instancing
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_depthnormals.hlsl"
+
+            ENDHLSL
+        }
+
+        // Universal2D
+        Pass
+        {
+            Name "UNIVERSAL2D"
+            Tags {"LightMode" = "Universal2D"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_universal2d.hlsl"
+            ENDHLSL
+        }
+
+        // Meta
+        Pass
+        {
+            Name "META"
+            Tags {"LightMode" = "Meta"}
+            Cull Off
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_meta.hlsl"
+            ENDHLSL
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Universal Render Pipeline
+    SubShader
+    {
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
+
+        // ForwardLit
+        Pass
+        {
+            Name "FORWARD"
+            Tags {"LightMode" = "SRPDefaultUnlit"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask On
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.0
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_normal.hlsl"
+
+            ENDHLSL
+        }
+
+        // Fur
+        Pass
+        {
+            Name "FORWARD_FUR"
+            Tags {"LightMode" = "UniversalForward"}
+
+            Stencil
+            {
+                Ref [_FurStencilRef]
+                ReadMask [_FurStencilReadMask]
+                WriteMask [_FurStencilWriteMask]
+                Comp [_FurStencilComp]
+                Pass [_FurStencilPass]
+                Fail [_FurStencilFail]
+                ZFail [_FurStencilZFail]
+            }
+            Cull [_FurCull]
+            ZWrite [_FurZWrite]
+            ZTest [_FurZTest]
+            ColorMask [_FurColorMask]
+            Offset [_FurOffsetFactor], [_FurOffsetUnits]
+            BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
+            Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
+            AlphaToMask On
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma geometry geom
+            #pragma fragment frag
+            #pragma target 4.0
+            #pragma require geometry
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_fur.hlsl"
+
+            ENDHLSL
+        }
+
+        // ShadowCaster
+        Pass
+        {
+            Name "SHADOW_CASTER"
+            Tags {"LightMode" = "ShadowCaster"}
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 3.5
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+            #pragma multi_compile_instancing
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_shadowcaster.hlsl"
+
+            ENDHLSL
+        }
+
+        // DepthOnly
+        Pass
+        {
+            Name "DEPTHONLY"
+            Tags {"LightMode" = "DepthOnly"}
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 3.5
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile_instancing
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_depthonly.hlsl"
+
+            ENDHLSL
+        }
+
+        // DepthNormals
+        Pass
+        {
+            Name "DEPTHNORMALS"
+            Tags {"LightMode" = "DepthNormals"}
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 3.5
+            #pragma only_renderers gles gles3 glcore d3d11
+            #pragma multi_compile_instancing
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_depthnormals.hlsl"
+
+            ENDHLSL
+        }
+
+        // Universal2D
+        Pass
+        {
+            Name "UNIVERSAL2D"
+            Tags {"LightMode" = "Universal2D"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma only_renderers gles gles3 glcore d3d11
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_universal2d.hlsl"
+            ENDHLSL
+        }
+
+        // Meta
+        Pass
+        {
+            Name "META"
+            Tags {"LightMode" = "Meta"}
+            Cull Off
+
+            HLSLPROGRAM
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma exclude_renderers gles gles3 glcore
+
+            //------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_meta.hlsl"
+            ENDHLSL
+        }
+    }
+*/
+// URP End
+
     Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"
 }

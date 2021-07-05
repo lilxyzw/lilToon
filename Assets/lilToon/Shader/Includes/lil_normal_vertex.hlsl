@@ -18,6 +18,9 @@ v2f vert(appdata input)
     LIL_SETUP_INSTANCE_ID(input);
     LIL_TRANSFER_INSTANCE_ID(input, output);
     LIL_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+
+    //----------------------------------------------------------------------------------------------------------------------
+    // UV
     float2 uvMain = lilCalcUV(input.uv, _MainTex_ST);
 
     //----------------------------------------------------------------------------------------------------------------------
@@ -116,6 +119,9 @@ v2f vert(appdata input)
     #else
         //--------------------------------------------------------------------------------------------------------------
         // Normal
+        #if defined(LIL_SHOULD_POSITION_OS)
+            output.positionOS   = input.positionOS;
+        #endif
         #if defined(LIL_SHOULD_POSITION_WS)
             output.positionWS   = vertexInput.positionWS;
         #endif

@@ -50,6 +50,7 @@ MIT Licenseで公開しています。同梱のLICENSEをご確認ください�
 3. Inspector上部の"Shader"から"lilToon"を選択
 4. テクスチャが反映されていない場合は"メインカラー"にテクスチャを設定
 5. テクスチャを透過する場合は"Rendering Mode(透過モード)"を"カットアウト"または"半透明"に変更
+6. 機能を追加したい場合は詳細設定内の"[シェーダー設定](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md#シェーダー設定)"を変更
 
 より詳しい設定については[マニュアル](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md)を参照してください。
 

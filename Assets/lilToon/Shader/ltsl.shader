@@ -1,4 +1,4 @@
-﻿Shader "Hidden/lilToonLite"
+Shader "Hidden/lilToonLite"
 {
     Properties
     {
@@ -76,6 +76,10 @@
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+// BRP Start
+//
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Geometry"}
@@ -84,6 +88,39 @@
         UsePass "Hidden/ltspass_lite_opaque/SHADOW_CASTER"
         UsePass "Hidden/ltspass_lite_opaque/META"
     }
+//
+// BRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// LWRP Start
+/*
+    SubShader
+    {
+        Tags {"RenderType" = "Opaque" "Queue" = "Geometry"}
+        UsePass "Hidden/ltspass_lite_opaque/FORWARD"
+        UsePass "Hidden/ltspass_lite_opaque/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_lite_opaque/DEPTHONLY"
+        UsePass "Hidden/ltspass_lite_opaque/META"
+    }
+*/
+// LWRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// URP Start
+/*
+    SubShader
+    {
+        Tags {"RenderType" = "Opaque" "Queue" = "Geometry"}
+        UsePass "Hidden/ltspass_lite_opaque/FORWARD"
+        UsePass "Hidden/ltspass_lite_opaque/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_lite_opaque/DEPTHONLY"
+        UsePass "Hidden/ltspass_lite_opaque/DEPTHNORMALS"
+        UsePass "Hidden/ltspass_lite_opaque/UNIVERSAL2D"
+        UsePass "Hidden/ltspass_lite_opaque/META"
+    }
+*/
+// URP End
+
     Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"
 }

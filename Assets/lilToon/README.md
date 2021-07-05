@@ -2,7 +2,7 @@
 Version 1.0
 
 # Overview
-This shader was developed for services using avatars (VRChat, etc.) and has the following features.
+This shader is developed for services using avatars (VRChat, etc.) and has the following features.
 - Easy to use (One-click settings from presets, Saving your own presets, Color correction and exporting textures)
 - Beautiful (Prevent overexposure, Anti-aliased shading)
 - Lightweight (Automatically rewrites shaders and turns features on / off)
@@ -50,8 +50,9 @@ lilToon is available under the MIT License. Please refer to the "LICENSE" includ
 3. Select "lilToon" from "Shader" at the top of Inspector.
 4. If no texture has been applied, set the texture to "Main Color".
 5. To make the material transparent, change "Rendering Mode" to "Cutout" or "Transparent".
+6. If you want to add more features, change the "[Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting)" in the Advanced settings.
 
-Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md) for more detailed settings.
+Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md) for more detailed settings.
 
 # Common Problems
 - The shadows on face are dirty.  

@@ -267,6 +267,18 @@ float2 lilCalcUV(float2 uv, float4 uv_st)
     return uv * uv_st.xy + uv_st.zw;
 }
 
+float2 lilCalcUV(float2 uv, float4 uv_st, float angle)
+{
+    float2 outuv = uv * uv_st.xy + uv_st.zw;
+    outuv = lilRotateUV(outuv, angle);
+    return outuv;
+}
+
+float2 lilCalcUV(float2 uv, float4 uv_st, float2 uv_sr)
+{
+    return uv * uv_st.xy + uv_st.zw + frac(uv_sr * LIL_TIME);
+}
+
 float2 lilCalcUV(float2 uv, float4 uv_st, float4 uv_sr)
 {
     float2 outuv = uv * uv_st.xy + uv_st.zw + frac(uv_sr.xy * LIL_TIME);
@@ -274,7 +286,16 @@ float2 lilCalcUV(float2 uv, float4 uv_st, float4 uv_sr)
     return outuv;
 }
 
-float2 lilCalcDecalUV(float2 uv, float4 uv_ST, float angle, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isRightHand)
+float2 lilCalcDecalUV(
+    float2 uv,
+    float4 uv_ST,
+    float angle,
+    bool isLeftOnly,
+    bool isRightOnly,
+    bool shouldCopy,
+    bool shouldFlipMirror,
+    bool shouldFlipCopy,
+    bool isRightHand)
 {
     float2 outUV = uv;
 
@@ -356,9 +377,109 @@ float2 lilGetPanoramaUV(float3 viewDirection)
     return float2(lilAtan2(viewDirection.x, viewDirection.z), lilAcos(viewDirection.y)) * LIL_INV_PI;
 }
 
+void lilCalcDissolve(
+    inout float alpha,
+    inout float dissolveAlpha,
+    float2 uv,
+    float3 positionOS,
+    float4 dissolveParams,
+    float4 dissolvePos,
+    TEXTURE2D(dissolveMask),
+    float4 dissolveMask_ST)
+{
+    if(dissolveParams.r)
+    {
+        float dissolveMaskVal = 1.0;
+        if(dissolveParams.r == 1.0)
+        {
+            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, sampler_MainTex, lilCalcUV(uv, dissolveMask_ST)).r;
+        }
+        if(dissolveParams.r == 1.0)
+        {
+            dissolveAlpha = 1.0 - saturate(abs(dissolveMaskVal - dissolveParams.b) / dissolveParams.a);
+            dissolveMaskVal = dissolveMaskVal > dissolveParams.b ? 1.0 : 0.0;
+        }
+        if(dissolveParams.r == 2.0)
+        {
+            dissolveAlpha = dissolveParams.g == 1.0 ? lilRotateUV(uv, dissolvePos.w).x : distance(uv, dissolvePos.xy);
+            dissolveMaskVal *= dissolveAlpha > dissolveParams.b ? 1.0 : 0.0;
+            dissolveAlpha = 1.0 - saturate(abs(dissolveAlpha - dissolveParams.b) / dissolveParams.a);
+        }
+        if(dissolveParams.r == 3.0)
+        {
+            dissolveAlpha = dissolveParams.g == 1.0 ? dot(positionOS, normalize(dissolvePos.xyz)).x : distance(positionOS, dissolvePos.xyz);
+            dissolveMaskVal *= dissolveAlpha > dissolveParams.b ? 1.0 : 0.0;
+            dissolveAlpha = 1.0 - saturate(abs(dissolveAlpha - dissolveParams.b) / dissolveParams.a);
+        }
+        alpha *= dissolveMaskVal;
+    }
+}
+
+void lilCalcDissolveWithNoise(
+    inout float alpha,
+    inout float dissolveAlpha,
+    float2 uv,
+    float3 positionOS,
+    float4 dissolveParams,
+    float4 dissolvePos,
+    TEXTURE2D(dissolveMask),
+    float4 dissolveMask_ST,
+    TEXTURE2D(dissolveNoiseMask),
+    float4 dissolveNoiseMask_ST,
+    float4 dissolveNoiseMask_ScrollRotate,
+    float dissolveNoiseStrength)
+{
+    if(dissolveParams.r)
+    {
+        float dissolveMaskVal = 1.0;
+        float dissolveNoise = 0.0;
+        if(dissolveParams.r == 1.0)
+        {
+            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, sampler_MainTex, lilCalcUV(uv, dissolveMask_ST)).r;
+        }
+        dissolveNoise = LIL_SAMPLE_2D(dissolveNoiseMask, sampler_MainTex, lilCalcUV(uv, dissolveNoiseMask_ST, dissolveNoiseMask_ScrollRotate.xy)).r - 0.5;
+        dissolveNoise *= dissolveNoiseStrength;
+        if(dissolveParams.r == 1.0)
+        {
+            dissolveAlpha = 1.0 - saturate(abs(dissolveMaskVal + dissolveNoise - dissolveParams.b) / dissolveParams.a);
+            dissolveMaskVal = dissolveMaskVal + dissolveNoise > dissolveParams.b ? 1.0 : 0.0;
+        }
+        if(dissolveParams.r == 2.0)
+        {
+            dissolveAlpha = dissolveParams.g == 1.0 ? dot(uv, normalize(dissolvePos.xy)) + dissolveNoise : distance(uv, dissolvePos.xy) + dissolveNoise;
+            dissolveMaskVal *= dissolveAlpha > dissolveParams.b ? 1.0 : 0.0;
+            dissolveAlpha = 1.0 - saturate(abs(dissolveAlpha - dissolveParams.b) / dissolveParams.a);
+        }
+        if(dissolveParams.r == 3.0)
+        {
+            dissolveAlpha = dissolveParams.g == 1.0 ? dot(positionOS, normalize(dissolvePos.xyz)) + dissolveNoise : distance(positionOS, dissolvePos.xyz) + dissolveNoise;
+            dissolveMaskVal *= dissolveAlpha > dissolveParams.b ? 1.0 : 0.0;
+            dissolveAlpha = 1.0 - saturate(abs(dissolveAlpha - dissolveParams.b) / dissolveParams.a);
+        }
+        alpha *= dissolveMaskVal;
+    }
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Sub Texture
-float4 lilGetSubTex(bool existsTex, Texture2D tex, float4 uv_ST, float angle, float2 uv, float nv, SamplerState sampstate, bool isDecal, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isMSDF, bool isRightHand, float4 decalAnimation, float4 decalSubParam)
+float4 lilGetSubTex(
+    bool existsTex,
+    Texture2D tex,
+    float4 uv_ST,
+    float angle,
+    float2 uv,
+    float nv,
+    SamplerState sampstate,
+    bool isDecal,
+    bool isLeftOnly,
+    bool isRightOnly,
+    bool shouldCopy,
+    bool shouldFlipMirror,
+    bool shouldFlipCopy,
+    bool isMSDF,
+    bool isRightHand,
+    float4 decalAnimation,
+    float4 decalSubParam)
 {
     #if defined(LIL_FEATURE_DECAL)
         float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
@@ -384,7 +505,22 @@ float4 lilGetSubTex(bool existsTex, Texture2D tex, float4 uv_ST, float angle, fl
     #endif
 }
 
-float4 lilGetSubTexWithoutAnimation(bool existsTex, Texture2D tex, float4 uv_ST, float angle, float2 uv, float nv, SamplerState sampstate, bool isDecal, bool isLeftOnly, bool isRightOnly, bool shouldCopy, bool shouldFlipMirror, bool shouldFlipCopy, bool isMSDF, bool isRightHand)
+float4 lilGetSubTexWithoutAnimation(
+    bool existsTex,
+    Texture2D tex,
+    float4 uv_ST,
+    float angle,
+    float2 uv,
+    float nv,
+    SamplerState sampstate,
+    bool isDecal,
+    bool isLeftOnly,
+    bool isRightOnly,
+    bool shouldCopy,
+    bool shouldFlipMirror,
+    bool shouldFlipCopy,
+    bool isMSDF,
+    bool isRightHand)
 {
     #if defined(LIL_FEATURE_DECAL)
         float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
@@ -733,7 +869,17 @@ float3 lilGetAdditionalLights(float3 positionWS)
 //------------------------------------------------------------------------------------------------------------------------------
 // Shading
 #if !defined(LIL_LITE) && !defined(LIL_BAKER) && defined(LIL_FEATURE_SHADOW)
-void lilGetShading(inout float4 col, inout float shadowmix, float3 albedo, float3 lightColor, float2 uv, float facing, float3 normalDirection, float attenuation, float3 lightDirection, bool cullOff = true)
+void lilGetShading(
+    inout float4 col,
+    inout float shadowmix,
+    float3 albedo,
+    float3 lightColor,
+    float2 uv,
+    float facing,
+    float3 normalDirection,
+    float attenuation,
+    float3 lightDirection,
+    bool cullOff = true)
 {
     LIL_BRANCH
     if(_UseShadow)
@@ -813,7 +959,16 @@ void lilGetShading(inout float4 col, inout float shadowmix, float3 albedo, float
 #endif
 
 #if defined(LIL_LITE)
-void lilGetShadingLite(inout float4 col, inout float shadowmix, float3 albedo, float3 lightColor, float2 uv, float facing, float3 normalDirection, float3 lightDirection, bool cullOff = true)
+void lilGetShadingLite(
+    inout float4 col,
+    inout float shadowmix,
+    float3 albedo,
+    float3 lightColor,
+    float2 uv,
+    float facing,
+    float3 normalDirection,
+    float3 lightDirection,
+    bool cullOff = true)
 {
     LIL_BRANCH
     if(_UseShadow)

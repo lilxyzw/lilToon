@@ -14,7 +14,7 @@
 
 // positionCS           : Clip space position
 // positionWS           : World space position
-// positionNDC          : Normalized device coordinates
+// positionSS           : Screen space coordinates
 // uv                   : UV
 // uvMat                : MatCap UV
 // normalWS             : World space normal

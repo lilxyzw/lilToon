@@ -18,6 +18,30 @@ namespace lilToon
     public class lilToonInspector : ShaderGUI
     {
         //------------------------------------------------------------------------------------------------------------------------------
+        // Custom properties
+        // If there are properties you have added, add them here.
+        static bool isCustomShader = false;
+
+        //MaterialProperty exampleProperty;
+
+        void LoadCustomProperties(MaterialProperty[] props, Material material)
+        {
+            //if(material.shader.name.Contains("Example"))
+            //{
+            //    isCustomShader = true;
+            //    exampleProperty = FindProperty("_ExampleProperty", props);
+            //}
+        }
+
+        void DrawCustomProperties(MaterialEditor materialEditor, Material material)
+        {
+            //if(material.shader.name.Contains("Example"))
+            //{
+            //    materialEditor.ShaderProperty(exampleProperty, "Example Property");
+            //}
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------------
         // Enum
         enum EditorMode
         {
@@ -137,6 +161,13 @@ namespace lilToon
 	    static bool isShowParallax          = false;
 	    static bool isShowDistanceFade      = false;
 	    static bool isShowAudioLink         = false;
+	    static bool isShowDissolve          = false;
+            static bool isShowMain2ndDissolveMask  = false;
+            static bool isShowMain2ndDissolveNoiseMask  = false;
+            static bool isShowMain3rdDissolveMask  = false;
+            static bool isShowMain3rdDissolveNoiseMask  = false;
+            static bool isShowDissolveMask         = false;
+            static bool isShowDissolveNoiseMask         = false;
 	    static bool isShowStencil           = false;
 	    static bool isShowOutline           = false;
             static bool isShowOutlineMap            = false;
@@ -145,6 +176,7 @@ namespace lilToon
 	    static bool isShowTess              = false;
 	    static bool isShowRendering         = false;
 	    static bool isShowOptimization      = false;
+        static bool isShowCustomProperties  = false;
 	    static bool isShowBlend             = false;
 	    static bool isShowBlendAdd          = false;
 	    static bool isShowBlendOutline      = false;
@@ -223,6 +255,13 @@ namespace lilToon
             MaterialProperty main2ndBlendMask;
             MaterialProperty main2ndTexBlendMode;
             MaterialProperty main2ndEnableLighting;
+            MaterialProperty main2ndDissolveMask;
+            MaterialProperty main2ndDissolveNoiseMask;
+            MaterialProperty main2ndDissolveNoiseMask_ScrollRotate;
+            MaterialProperty main2ndDissolveNoiseStrength;
+            MaterialProperty main2ndDissolveColor;
+            MaterialProperty main2ndDissolveParams;
+            MaterialProperty main2ndDissolvePos;
         MaterialProperty useMain3rdTex;
             MaterialProperty mainColor3rd;
             MaterialProperty main3rdTex;
@@ -239,6 +278,13 @@ namespace lilToon
             MaterialProperty main3rdBlendMask;
             MaterialProperty main3rdTexBlendMode;
             MaterialProperty main3rdEnableLighting;
+            MaterialProperty main3rdDissolveMask;
+            MaterialProperty main3rdDissolveNoiseMask;
+            MaterialProperty main3rdDissolveNoiseMask_ScrollRotate;
+            MaterialProperty main3rdDissolveNoiseStrength;
+            MaterialProperty main3rdDissolveColor;
+            MaterialProperty main3rdDissolveParams;
+            MaterialProperty main3rdDissolvePos;
         MaterialProperty useShadow;
             MaterialProperty shadowBorder;
             MaterialProperty shadowBorderMask;
@@ -378,6 +424,14 @@ namespace lilToon
             MaterialProperty audioLinkAsLocal;
             MaterialProperty audioLinkLocalMap;
             MaterialProperty audioLinkLocalMapParams;
+        //MaterialProperty useDissolve;
+            MaterialProperty dissolveMask;
+            MaterialProperty dissolveNoiseMask;
+            MaterialProperty dissolveNoiseMask_ScrollRotate;
+            MaterialProperty dissolveNoiseStrength;
+            MaterialProperty dissolveColor;
+            MaterialProperty dissolveParams;
+            MaterialProperty dissolvePos;
         //MaterialProperty useRefraction;
             MaterialProperty refractionStrength;
             MaterialProperty refractionFresnelPower;
@@ -475,6 +529,8 @@ namespace lilToon
             isFur          = material.shader.name.Contains("Fur");
             isTess         = material.shader.name.Contains("Tessellation");
 
+            isCustomShader = material.shader.name.Contains("Overlay");
+
                                 renderingModeBuf = RenderingMode.Opaque;
             if(isCutout)        renderingModeBuf = RenderingMode.Cutout;
             if(isTransparent)   renderingModeBuf = RenderingMode.Transparent;
@@ -488,6 +544,8 @@ namespace lilToon
             if(isLite)      LoadLiteProperties(props);
             else if(isFur)  LoadFurProperties(props);
             else            LoadProperties(props);
+
+            LoadCustomProperties(props, material);
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Stencil
@@ -507,6 +565,9 @@ namespace lilToon
             string sCullModes = loc["sCullMode"] + "|" + loc["sCullModeOff"] + "|" + loc["sCullModeFront"] + "|" + loc["sCullModeBack"];
             string sBlendModes = loc["sBlendMode"] + "|" + loc["sBlendModeNormal"] + "|" + loc["sBlendModeAdd"] + "|" + loc["sBlendModeScreen"] + "|" + loc["sBlendModeMul"];
             string blinkSetting = loc["sBlinkStrength"] + "|" + loc["sBlinkType"] + "|" + loc["sBlinkSpeed"] + "|" + loc["sBlinkOffset"];
+            string sDissolveParams = loc["sDissolveMode"] + "|" + loc["sDissolveModeNone"] + "|" + loc["sDissolveModeAlpha"] + "|" + loc["sDissolveModeUV"] + "|" + loc["sDissolveModePosition"] + "|" + loc["sDissolveShape"] + "|" + loc["sDissolveShapePoint"] + "|" + loc["sDissolveShapeLine"] + "|" + loc["sBorder"] + "|" + loc["sBlur"];
+            string sDissolveParamsMode = loc["sDissolve"] + "|" + loc["sDissolveModeNone"] + "|" + loc["sDissolveModeAlpha"] + "|" + loc["sDissolveModeUV"] + "|" + loc["sDissolveModePosition"];
+            string sDissolveParamsOther = loc["sDissolveShape"] + "|" + loc["sDissolveShapePoint"] + "|" + loc["sDissolveShapeLine"] + "|" + loc["sBorder"] + "|" + loc["sBlur"] + "|Dummy";
             string[] sRenderingModeList = {loc["sRenderingModeOpaque"], loc["sRenderingModeCutout"], loc["sRenderingModeTransparent"], loc["sRenderingModeRefraction"], loc["sRenderingModeRefractionBlur"], loc["sRenderingModeFur"], loc["sRenderingModeFurCutout"]};
             string[] sRenderingModeListLite = {loc["sRenderingModeOpaque"], loc["sRenderingModeCutout"], loc["sRenderingModeTransparent"]};
             GUIContent textureRGBAContent = new GUIContent(loc["sTexture"], loc["sTextureRGBA"]);
@@ -515,6 +576,7 @@ namespace lilToon
             GUIContent maskStrengthContent = new GUIContent(loc["sStrengthMask"], loc["sStrengthR"]);
             GUIContent normalMapContent = new GUIContent(loc["sNormalMap"], loc["sNormalRGB"]);
             GUIContent triMaskContent = new GUIContent(loc["sTriMask"], loc["sTriMaskRGB"]);
+            GUIContent noiseMaskContent = new GUIContent(loc["sNoise"], loc["sNoiseR"]);
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Editor Mode
@@ -532,20 +594,23 @@ namespace lilToon
                 EditorGUILayout.BeginVertical(boxInnerHalf);
                 materialEditor.ShaderProperty(invisible, loc["sInvisible"]);
                 {
-                    RenderingMode renderingMode;
-                    if(isLite) renderingMode = (RenderingMode)EditorGUILayout.Popup(loc["sRenderingMode"], (int)renderingModeBuf, sRenderingModeListLite);
-                    else       renderingMode = (RenderingMode)EditorGUILayout.Popup(loc["sRenderingMode"], (int)renderingModeBuf, sRenderingModeList);
-                    if(renderingModeBuf != renderingMode)
+                    if(!isCustomShader)
                     {
-                        SetupMaterialWithRenderingMode(material, renderingMode, isOutl, isLite, isStWr, isTess);
-                        if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.FurCutout) cutoff.floatValue = 0.5f;
-                        if(renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur) cutoff.floatValue = 0.001f;
+                        RenderingMode renderingMode;
+                        if(isLite) renderingMode = (RenderingMode)EditorGUILayout.Popup(loc["sRenderingMode"], (int)renderingModeBuf, sRenderingModeListLite);
+                        else       renderingMode = (RenderingMode)EditorGUILayout.Popup(loc["sRenderingMode"], (int)renderingModeBuf, sRenderingModeList);
+                        if(renderingModeBuf != renderingMode)
+                        {
+                            SetupMaterialWithRenderingMode(material, renderingMode, isOutl, isLite, isStWr, isTess);
+                            if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.FurCutout) cutoff.floatValue = 0.5f;
+                            if(renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur) cutoff.floatValue = 0.001f;
+                        }
                     }
-                    if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur || renderingMode == RenderingMode.FurCutout)
+                    if(renderingModeBuf == RenderingMode.Cutout || renderingModeBuf == RenderingMode.Transparent || renderingModeBuf == RenderingMode.Fur || renderingModeBuf == RenderingMode.FurCutout)
                     {
                         materialEditor.ShaderProperty(cutoff, loc["sCutoff"]);
                     }
-                    if(renderingMode >= RenderingMode.Transparent && renderingMode != RenderingMode.FurCutout)
+                    if(renderingModeBuf >= RenderingMode.Transparent && renderingModeBuf != RenderingMode.FurCutout)
                     {
                         EditorGUILayout.HelpBox(loc["sHelpRenderingTransparent"],MessageType.Warning);
                     }
@@ -777,20 +842,23 @@ namespace lilToon
                 {
                     materialEditor.ShaderProperty(invisible, loc["sInvisible"]);
                     materialEditor.ShaderProperty(asUnlit, loc["sAsUnlit"]);
-                    RenderingMode renderingMode;
-                    if(isLite) renderingMode = (RenderingMode)EditorGUILayout.Popup(loc["sRenderingMode"], (int)renderingModeBuf, sRenderingModeListLite);
-                    else       renderingMode = (RenderingMode)EditorGUILayout.Popup(loc["sRenderingMode"], (int)renderingModeBuf, sRenderingModeList);
-                    if(renderingModeBuf != renderingMode)
+                    if(!isCustomShader)
                     {
-                        SetupMaterialWithRenderingMode(material, renderingMode, isOutl, isLite, isStWr, isTess);
-                        if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.FurCutout) cutoff.floatValue = 0.5f;
-                        if(renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur) cutoff.floatValue = 0.001f;
+                        RenderingMode renderingMode;
+                        if(isLite) renderingMode = (RenderingMode)EditorGUILayout.Popup(loc["sRenderingMode"], (int)renderingModeBuf, sRenderingModeListLite);
+                        else       renderingMode = (RenderingMode)EditorGUILayout.Popup(loc["sRenderingMode"], (int)renderingModeBuf, sRenderingModeList);
+                        if(renderingModeBuf != renderingMode)
+                        {
+                            SetupMaterialWithRenderingMode(material, renderingMode, isOutl, isLite, isStWr, isTess);
+                            if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.FurCutout) cutoff.floatValue = 0.5f;
+                            if(renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur) cutoff.floatValue = 0.001f;
+                        }
                     }
-                    if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur || renderingMode == RenderingMode.FurCutout)
+                    if(renderingModeBuf == RenderingMode.Cutout || renderingModeBuf == RenderingMode.Transparent || renderingModeBuf == RenderingMode.Fur || renderingModeBuf == RenderingMode.FurCutout)
                     {
                         materialEditor.ShaderProperty(cutoff, loc["sCutoff"]);
                     }
-                    if(renderingMode >= RenderingMode.Transparent && renderingMode != RenderingMode.FurCutout)
+                    if(renderingModeBuf >= RenderingMode.Transparent && renderingModeBuf != RenderingMode.FurCutout)
                     {
                         EditorGUILayout.HelpBox(loc["sHelpRenderingTransparent"],MessageType.Warning);
                     }
@@ -917,6 +985,22 @@ namespace lilToon
                                 if(shaderSetting.LIL_FEATURE_TEX_LAYER_MASK) materialEditor.TexturePropertySingleLine(maskBlendContent, main2ndBlendMask);
                                 materialEditor.ShaderProperty(main2ndEnableLighting, loc["sEnableLighting"]);
                                 materialEditor.ShaderProperty(main2ndTexBlendMode, sBlendModes);
+                                if(shaderSetting.LIL_FEATURE_LAYER_DISSOLVE)
+                                {
+                                    DrawLine();
+                                    materialEditor.ShaderProperty(main2ndDissolveParams, sDissolveParams);
+                                    if(main2ndDissolveParams.vectorValue.x == 1.0f)                                                TextureGUI(materialEditor, ref isShowMain2ndDissolveMask, maskBlendContent, main2ndDissolveMask);
+                                    if(main2ndDissolveParams.vectorValue.x == 2.0f && main2ndDissolveParams.vectorValue.y == 0.0f) materialEditor.ShaderProperty(main2ndDissolvePos, loc["sPosition"] + "|2");
+                                    if(main2ndDissolveParams.vectorValue.x == 2.0f && main2ndDissolveParams.vectorValue.y == 1.0f) materialEditor.ShaderProperty(main2ndDissolvePos, loc["sVector"] + "|2");
+                                    if(main2ndDissolveParams.vectorValue.x == 3.0f && main2ndDissolveParams.vectorValue.y == 0.0f) materialEditor.ShaderProperty(main2ndDissolvePos, loc["sPosition"] + "|3");
+                                    if(main2ndDissolveParams.vectorValue.x == 3.0f && main2ndDissolveParams.vectorValue.y == 1.0f) materialEditor.ShaderProperty(main2ndDissolvePos, loc["sVector"] + "|3");
+                                    if(main2ndDissolveParams.vectorValue.x != 0.0f)
+                                    {
+                                        if(shaderSetting.LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE) TextureGUI(materialEditor, ref isShowMain2ndDissolveNoiseMask, noiseMaskContent, main2ndDissolveNoiseMask, main2ndDissolveNoiseStrength, main2ndDissolveNoiseMask_ScrollRotate);
+                                        materialEditor.ShaderProperty(main2ndDissolveColor, loc["sColor"]);
+                                    }
+                                }
+                                DrawLine();
                                 TextureBakeGUI(material, 5);
                                 EditorGUILayout.EndVertical();
                             }
@@ -941,6 +1025,22 @@ namespace lilToon
                                 if(shaderSetting.LIL_FEATURE_TEX_LAYER_MASK) materialEditor.TexturePropertySingleLine(maskBlendContent, main3rdBlendMask);
                                 materialEditor.ShaderProperty(main3rdEnableLighting, loc["sEnableLighting"]);
                                 materialEditor.ShaderProperty(main3rdTexBlendMode, sBlendModes);
+                                if(shaderSetting.LIL_FEATURE_LAYER_DISSOLVE)
+                                {
+                                    DrawLine();
+                                    materialEditor.ShaderProperty(main3rdDissolveParams, sDissolveParams);
+                                    if(main3rdDissolveParams.vectorValue.x == 1.0f)                                                TextureGUI(materialEditor, ref isShowMain3rdDissolveMask, maskBlendContent, main3rdDissolveMask);
+                                    if(main3rdDissolveParams.vectorValue.x == 2.0f && main3rdDissolveParams.vectorValue.y == 0.0f) materialEditor.ShaderProperty(main3rdDissolvePos, loc["sPosition"] + "|2");
+                                    if(main3rdDissolveParams.vectorValue.x == 2.0f && main3rdDissolveParams.vectorValue.y == 1.0f) materialEditor.ShaderProperty(main3rdDissolvePos, loc["sVector"] + "|2");
+                                    if(main3rdDissolveParams.vectorValue.x == 3.0f && main3rdDissolveParams.vectorValue.y == 0.0f) materialEditor.ShaderProperty(main3rdDissolvePos, loc["sPosition"] + "|3");
+                                    if(main3rdDissolveParams.vectorValue.x == 3.0f && main3rdDissolveParams.vectorValue.y == 1.0f) materialEditor.ShaderProperty(main3rdDissolvePos, loc["sVector"] + "|3");
+                                    if(main3rdDissolveParams.vectorValue.x != 0.0f)
+                                    {
+                                        if(shaderSetting.LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE) TextureGUI(materialEditor, ref isShowMain3rdDissolveNoiseMask, noiseMaskContent, main3rdDissolveNoiseMask, main3rdDissolveNoiseStrength, main3rdDissolveNoiseMask_ScrollRotate);
+                                        materialEditor.ShaderProperty(main3rdDissolveColor, loc["sColor"]);
+                                    }
+                                }
+                                DrawLine();
                                 TextureBakeGUI(material, 6);
                                 EditorGUILayout.EndVertical();
                             }
@@ -1429,6 +1529,36 @@ namespace lilToon
                 }
 
                 //------------------------------------------------------------------------------------------------------------------------------
+                // Dissolve
+                if(shaderSetting.LIL_FEATURE_DISSOLVE && !isFur && !isLite && renderingModeBuf != RenderingMode.Opaque)
+                {
+                    isShowDissolve = Foldout(loc["sDissolve"], loc["sDissolve"], isShowDissolve);
+                    DrawHelpButton(loc["sAnchorDissolve"]);
+                    if(isShowDissolve)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        materialEditor.ShaderProperty(dissolveParams, sDissolveParamsMode);
+                        if(dissolveParams.vectorValue.x != 0)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            materialEditor.ShaderProperty(dissolveParams, sDissolveParamsOther);
+                            if(dissolveParams.vectorValue.x == 1.0f)                                         TextureGUI(materialEditor, ref isShowDissolveMask, maskBlendContent, dissolveMask);
+                            if(dissolveParams.vectorValue.x == 2.0f && dissolveParams.vectorValue.y == 0.0f) materialEditor.ShaderProperty(dissolvePos, loc["sPosition"] + "|2");
+                            if(dissolveParams.vectorValue.x == 2.0f && dissolveParams.vectorValue.y == 1.0f) materialEditor.ShaderProperty(dissolvePos, loc["sVector"] + "|2");
+                            if(dissolveParams.vectorValue.x == 3.0f && dissolveParams.vectorValue.y == 0.0f) materialEditor.ShaderProperty(dissolvePos, loc["sPosition"] + "|3");
+                            if(dissolveParams.vectorValue.x == 3.0f && dissolveParams.vectorValue.y == 1.0f) materialEditor.ShaderProperty(dissolvePos, loc["sVector"] + "|3");
+                            if(shaderSetting.LIL_FEATURE_TEX_DISSOLVE_NOISE)
+                            {
+                                TextureGUI(materialEditor, ref isShowDissolveNoiseMask, noiseMaskContent, dissolveNoiseMask, dissolveNoiseStrength, dissolveNoiseMask_ScrollRotate);
+                            }
+                            materialEditor.ShaderProperty(dissolveColor, loc["sColor"]);
+                            EditorGUILayout.EndVertical();
+                        }
+                        EditorGUILayout.EndVertical();
+                    }
+                }
+
+                //------------------------------------------------------------------------------------------------------------------------------
                 // Refraction
                 if(isRefr)
                 {
@@ -1808,6 +1938,20 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                     }
                 }
+
+
+                //------------------------------------------------------------------------------------------------------------------------------
+                // Custom Properties
+                if(isCustomShader)
+                {
+                    EditorGUILayout.Space();
+                    GUILayout.Label(" " + loc["sCustomProperties"], EditorStyles.boldLabel);
+                    isShowCustomProperties = Foldout(loc["sCustomProperties"], loc["sCustomPropertiesTips"], isShowCustomProperties);
+                    if(isShowCustomProperties)
+                    {
+                        DrawCustomProperties(materialEditor, material);
+                    }
+                }
             }
 
             //------------------------------------------------------------------------------------------------------------------------------
@@ -1874,6 +2018,13 @@ namespace lilToon
                 main2ndBlendMask = FindProperty("_Main2ndBlendMask", props);
                 main2ndTexBlendMode = FindProperty("_Main2ndTexBlendMode", props);
                 main2ndEnableLighting = FindProperty("_Main2ndEnableLighting", props);
+                main2ndDissolveMask = FindProperty("_Main2ndDissolveMask", props);
+                main2ndDissolveNoiseMask = FindProperty("_Main2ndDissolveNoiseMask", props);
+                main2ndDissolveNoiseMask_ScrollRotate = FindProperty("_Main2ndDissolveNoiseMask_ScrollRotate", props);
+                main2ndDissolveNoiseStrength = FindProperty("_Main2ndDissolveNoiseStrength", props);
+                main2ndDissolveColor = FindProperty("_Main2ndDissolveColor", props);
+                main2ndDissolveParams = FindProperty("_Main2ndDissolveParams", props);
+                main2ndDissolvePos = FindProperty("_Main2ndDissolvePos", props);
             useMain3rdTex = FindProperty("_UseMain3rdTex", props);
                 mainColor3rd = FindProperty("_Color3rd", props);
                 main3rdTex = FindProperty("_Main3rdTex", props);
@@ -1890,6 +2041,13 @@ namespace lilToon
                 main3rdBlendMask = FindProperty("_Main3rdBlendMask", props);
                 main3rdTexBlendMode = FindProperty("_Main3rdTexBlendMode", props);
                 main3rdEnableLighting = FindProperty("_Main3rdEnableLighting", props);
+                main3rdDissolveMask = FindProperty("_Main3rdDissolveMask", props);
+                main3rdDissolveNoiseMask = FindProperty("_Main3rdDissolveNoiseMask", props);
+                main3rdDissolveNoiseMask_ScrollRotate = FindProperty("_Main3rdDissolveNoiseMask_ScrollRotate", props);
+                main3rdDissolveNoiseStrength = FindProperty("_Main3rdDissolveNoiseStrength", props);
+                main3rdDissolveColor = FindProperty("_Main3rdDissolveColor", props);
+                main3rdDissolveParams = FindProperty("_Main3rdDissolveParams", props);
+                main3rdDissolvePos = FindProperty("_Main3rdDissolvePos", props);
             // Shadow
             useShadow = FindProperty("_UseShadow", props);
                 shadowBorder = FindProperty("_ShadowBorder", props);
@@ -2032,6 +2190,14 @@ namespace lilToon
                 audioLinkAsLocal = FindProperty("_AudioLinkAsLocal", props);
                 audioLinkLocalMap = FindProperty("_AudioLinkLocalMap", props);
                 audioLinkLocalMapParams = FindProperty("_AudioLinkLocalMapParams", props);
+            //MaterialProperty useDissolve = FindProperty("_UseDissolve", props);
+                dissolveMask = FindProperty("_DissolveMask", props);
+                dissolveNoiseMask = FindProperty("_DissolveNoiseMask", props);
+                dissolveNoiseMask_ScrollRotate = FindProperty("_DissolveNoiseMask_ScrollRotate", props);
+                dissolveNoiseStrength = FindProperty("_DissolveNoiseStrength", props);
+                dissolveColor = FindProperty("_DissolveColor", props);
+                dissolveParams = FindProperty("_DissolveParams", props);
+                dissolvePos = FindProperty("_DissolvePos", props);
             // Refraction
             if(isRefr)
             {
@@ -2273,6 +2439,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_MAIN3RD = false;
                 shaderSetting.LIL_FEATURE_DECAL = false;
                 shaderSetting.LIL_FEATURE_ANIMATE_DECAL = false;
+                shaderSetting.LIL_FEATURE_LAYER_DISSOLVE = false;
                 shaderSetting.LIL_FEATURE_SHADOW = true;
                 shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = false;
                 shaderSetting.LIL_FEATURE_EMISSION_1ST = true;
@@ -2294,6 +2461,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_AUDIOLINK = false;
                 shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX = false;
                 shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL = false;
+                shaderSetting.LIL_FEATURE_DISSOLVE = false;
                 shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = false;
                 shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = false;
                 shaderSetting.LIL_FEATURE_TEX_LAYER_MASK = false;
@@ -2492,6 +2660,13 @@ namespace lilToon
                 lilToggleGUI(loc["sSettingDecal"], ref shaderSetting.LIL_FEATURE_DECAL);
                 lilToggleGUI(loc["sSettingAnimateDecal"], ref shaderSetting.LIL_FEATURE_ANIMATE_DECAL);
                 lilToggleGUI(loc["sSettingTexLayerMask"], ref shaderSetting.LIL_FEATURE_TEX_LAYER_MASK);
+                lilToggleGUI(loc["sSettingLayerDissolve"], ref shaderSetting.LIL_FEATURE_LAYER_DISSOLVE);
+                if(shaderSetting.LIL_FEATURE_LAYER_DISSOLVE)
+                {
+                    EditorGUI.indentLevel++;
+                    lilToggleGUI(loc["sSettingTexDissolveNoise"], ref shaderSetting.LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE);
+                    EditorGUI.indentLevel--;
+                }
                 EditorGUI.indentLevel--;
             }
             DrawLine();
@@ -2590,6 +2765,15 @@ namespace lilToon
             }
             DrawLine();
 
+            lilToggleGUI(loc["sSettingDissolve"], ref shaderSetting.LIL_FEATURE_DISSOLVE);
+            if(shaderSetting.LIL_FEATURE_DISSOLVE)
+            {
+                EditorGUI.indentLevel++;
+                lilToggleGUI(loc["sSettingTexDissolveNoise"], ref shaderSetting.LIL_FEATURE_TEX_DISSOLVE_NOISE);
+                EditorGUI.indentLevel--;
+            }
+            DrawLine();
+
             lilToggleGUI(loc["sSettingTexOutlineColor"], ref shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR);
             if(shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR)
             {
@@ -2634,6 +2818,11 @@ namespace lilToon
                 if(shaderSetting.LIL_FEATURE_DECAL) sb.Append("#define LIL_FEATURE_DECAL\r\n");
                 if(shaderSetting.LIL_FEATURE_ANIMATE_DECAL) sb.Append("#define LIL_FEATURE_ANIMATE_DECAL\r\n");
                 if(shaderSetting.LIL_FEATURE_TEX_LAYER_MASK) sb.Append("#define LIL_FEATURE_TEX_LAYER_MASK\r\n");
+                if(shaderSetting.LIL_FEATURE_LAYER_DISSOLVE)
+                {
+                    sb.Append("#define LIL_FEATURE_LAYER_DISSOLVE\r\n");
+                    if(shaderSetting.LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE) sb.Append("#define LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE\r\n");
+                }
             }
 
             if(shaderSetting.LIL_FEATURE_SHADOW)
@@ -2694,6 +2883,11 @@ namespace lilToon
                 if(shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX) sb.Append("#define LIL_FEATURE_AUDIOLINK_VERTEX\r\n");
                 if(shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK) sb.Append("#define LIL_FEATURE_TEX_AUDIOLINK_MASK\r\n");
                 if(shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL) sb.Append("#define LIL_FEATURE_AUDIOLINK_LOCAL\r\n");
+            }
+            if(shaderSetting.LIL_FEATURE_DISSOLVE)
+            {
+                sb.Append("#define LIL_FEATURE_DISSOLVE\r\n");
+                if(shaderSetting.LIL_FEATURE_TEX_DISSOLVE_NOISE) sb.Append("#define LIL_FEATURE_TEX_DISSOLVE_NOISE\r\n");
             }
             if(shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR)
             {
@@ -3726,6 +3920,55 @@ namespace lilToon
                 materialEditor.ShaderProperty(dstA, loc["sDstBlendAlpha"]);
                 materialEditor.ShaderProperty(opRGB, loc["sBlendOpRGB"]);
                 materialEditor.ShaderProperty(opA, loc["sBlendOpAlpha"]);
+                EditorGUI.indentLevel--;
+            }
+        }
+
+        void TextureGUI(MaterialEditor materialEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName)
+        {
+            // Make space for foldout
+            EditorGUI.indentLevel++;
+            Rect rect = materialEditor.TexturePropertySingleLine(guiContent, textureName);
+            EditorGUI.indentLevel--;
+            rect.x += 10;
+            isShow = EditorGUI.Foldout(rect, isShow, "");
+            if(isShow)
+            {
+                EditorGUI.indentLevel++;
+                materialEditor.TextureScaleOffsetProperty(textureName);
+                EditorGUI.indentLevel--;
+            }
+        }
+
+        void TextureGUI(MaterialEditor materialEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba)
+        {
+            // Make space for foldout
+            EditorGUI.indentLevel++;
+            Rect rect = materialEditor.TexturePropertySingleLine(guiContent, textureName, rgba);
+            EditorGUI.indentLevel--;
+            rect.x += 10;
+            isShow = EditorGUI.Foldout(rect, isShow, "");
+            if(isShow)
+            {
+                EditorGUI.indentLevel++;
+                materialEditor.TextureScaleOffsetProperty(textureName);
+                EditorGUI.indentLevel--;
+            }
+        }
+
+        void TextureGUI(MaterialEditor materialEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate)
+        {
+            // Make space for foldout
+            EditorGUI.indentLevel++;
+            Rect rect = materialEditor.TexturePropertySingleLine(guiContent, textureName, rgba);
+            EditorGUI.indentLevel--;
+            rect.x += 10;
+            isShow = EditorGUI.Foldout(rect, isShow, "");
+            if(isShow)
+            {
+                EditorGUI.indentLevel++;
+                materialEditor.TextureScaleOffsetProperty(textureName);
+                materialEditor.ShaderProperty(scrollRotate, loc["sScroll"]);
                 EditorGUI.indentLevel--;
             }
         }
@@ -5122,39 +5365,53 @@ namespace lilToon
 
             EditorGUI.BeginChangeCheck();
 
-            // Angle
-            angle = EditorGUI.Slider(position, labels[0], angle, -180.0f, 180.0f);
+            if(labels.Length == 1)
+            {
+                float labelWidth = EditorGUIUtility.labelWidth;
+                Rect labelRect = new Rect(position.x, position.y, labelWidth, position.height);
+                EditorGUI.PrefixLabel(labelRect, new GUIContent(labels[0]));
+                int indentBuf = EditorGUI.indentLevel;
+                EditorGUI.indentLevel = 0;
+                Rect vecRect = new Rect(position.x + labelWidth, position.y, position.width - labelWidth, position.height);
+                scroll = EditorGUI.Vector2Field(vecRect, GUIContent.none, scroll);
+                EditorGUI.indentLevel = indentBuf;
+            }
+            else
+            {
+                // Angle
+                angle = EditorGUI.Slider(position, labels[0], angle, -180.0f, 180.0f);
 
-            #if UNITY_2019_1_OR_NEWER
-                Color lineColor = new Color(0.35f,0.35f,0.35f,1.0f);
-            #else
-                Color lineColor = new Color(0.4f,0.4f,0.4f,1.0f);
-            #endif
-            EditorGUI.DrawRect(EditorGUI.IndentedRect(EditorGUILayout.GetControlRect(false, 1)), lineColor);
+                #if UNITY_2019_1_OR_NEWER
+                    Color lineColor = new Color(0.35f,0.35f,0.35f,1.0f);
+                #else
+                    Color lineColor = new Color(0.4f,0.4f,0.4f,1.0f);
+                #endif
+                EditorGUI.DrawRect(EditorGUI.IndentedRect(EditorGUILayout.GetControlRect(false, 1)), lineColor);
 
-            // Heading (UV Animation)
-            EditorGUILayout.LabelField(labels[1], EditorStyles.boldLabel);
+                // Heading (UV Animation)
+                EditorGUILayout.LabelField(labels[1], EditorStyles.boldLabel);
 
-            Rect positionVec2 = EditorGUILayout.GetControlRect();
+                Rect positionVec2 = EditorGUILayout.GetControlRect();
 
-            // Scroll label
-            float labelWidth = EditorGUIUtility.labelWidth;
-            Rect labelRect = new Rect(positionVec2.x, positionVec2.y, labelWidth, positionVec2.height);
-            EditorGUI.PrefixLabel(labelRect, new GUIContent(labels[2]));
+                // Scroll label
+                float labelWidth = EditorGUIUtility.labelWidth;
+                Rect labelRect = new Rect(positionVec2.x, positionVec2.y, labelWidth, positionVec2.height);
+                EditorGUI.PrefixLabel(labelRect, new GUIContent(labels[2]));
 
-            // Copy & Reset indent
-            int indentBuf = EditorGUI.indentLevel;
-            EditorGUI.indentLevel = 0;
+                // Copy & Reset indent
+                int indentBuf = EditorGUI.indentLevel;
+                EditorGUI.indentLevel = 0;
 
-            // Scroll
-            Rect vecRect = new Rect(positionVec2.x + labelWidth, positionVec2.y, positionVec2.width - labelWidth, positionVec2.height);
-            scroll = EditorGUI.Vector2Field(vecRect, GUIContent.none, scroll);
+                // Scroll
+                Rect vecRect = new Rect(positionVec2.x + labelWidth, positionVec2.y, positionVec2.width - labelWidth, positionVec2.height);
+                scroll = EditorGUI.Vector2Field(vecRect, GUIContent.none, scroll);
 
-            // Revert indent
-            EditorGUI.indentLevel = indentBuf;
+                // Revert indent
+                EditorGUI.indentLevel = indentBuf;
 
-            // Rotate
-            rotate = EditorGUI.FloatField(EditorGUILayout.GetControlRect(), labels[3], rotate);
+                // Rotate
+                rotate = EditorGUI.FloatField(EditorGUILayout.GetControlRect(), labels[3], rotate);
+            }
 
             if(EditorGUI.EndChangeCheck())
             {
@@ -5401,6 +5658,153 @@ namespace lilToon
             if(EditorGUI.EndChangeCheck())
             {
                 prop.vectorValue = new Vector4(BPM, Notes, Offset, unused);
+            }
+        }
+    }
+
+    public class lilDissolve : MaterialPropertyDrawer
+    {
+        // [lilDissolve]
+        public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
+        {
+            string[] labels = label.Split('|');
+            float type = prop.vectorValue.x;
+            float shape = prop.vectorValue.y;
+            float border = prop.vectorValue.z;
+            float blur = prop.vectorValue.w;
+
+            EditorGUI.BeginChangeCheck();
+            if(labels.Length == 5)
+            {
+                #if UNITY_2019_1_OR_NEWER
+                    type = (float)EditorGUI.Popup(position, labels[0], (int)type, new String[]{labels[1],labels[2],labels[3],labels[4]});
+                #else
+                    GUIStyle customToggleFont = new GUIStyle();
+                    customToggleFont.normal.textColor = Color.white;
+                    customToggleFont.contentOffset = new Vector2(2f,0f);
+                    float labelWidth = EditorGUIUtility.labelWidth;
+                    Rect labelRect = new Rect(position.x, position.y, labelWidth, position.height);
+                    EditorGUI.PrefixLabel(labelRect, new GUIContent(labels[0]), customToggleFont);
+                    type = (float)EditorGUI.Popup(position, " ", (int)type, new String[]{labels[1],labels[2],labels[3],labels[4]});
+                #endif
+            }
+            if(labels.Length == 6)
+            {
+                if(type == 1.0f)
+                {
+                    Rect position1 = EditorGUILayout.GetControlRect();
+                    border = EditorGUI.Slider(position, labels[3], border, -1.0f, 2.0f);
+                    blur = EditorGUI.Slider(position1, labels[4], blur, 0.0f, 1.0f);
+                }
+                if(type == 2.0f)
+                {
+                    Rect position1 = EditorGUILayout.GetControlRect();
+                    Rect position2 = EditorGUILayout.GetControlRect();
+                    shape = (float)EditorGUI.Popup(position, labels[0], (int)shape, new String[]{labels[1],labels[2]});
+                    border = EditorGUI.FloatField(position1, labels[3], border);
+                    blur = EditorGUI.FloatField(position2, labels[4], blur);
+                }
+                if(type == 3.0f)
+                {
+                    Rect position1 = EditorGUILayout.GetControlRect();
+                    Rect position2 = EditorGUILayout.GetControlRect();
+                    shape = (float)EditorGUI.Popup(position, labels[0], (int)shape, new String[]{labels[1],labels[2]});
+                    border = EditorGUI.FloatField(position1, labels[3], border);
+                    blur = EditorGUI.FloatField(position2, labels[4], blur);
+                }
+            }
+            if(labels.Length == 10)
+            {
+                type = (float)EditorGUI.Popup(position, labels[0], (int)type, new String[]{labels[1],labels[2],labels[3],labels[4]});
+                if(type == 1.0f)
+                {
+                    Rect position1 = EditorGUILayout.GetControlRect();
+                    Rect position2 = EditorGUILayout.GetControlRect();
+                    border = EditorGUI.Slider(position1, labels[8], border, -1.0f, 2.0f);
+                    blur = EditorGUI.Slider(position2, labels[9], blur, 0.0f, 1.0f);
+                }
+                if(type == 2.0f)
+                {
+                    Rect position1 = EditorGUILayout.GetControlRect();
+                    Rect position2 = EditorGUILayout.GetControlRect();
+                    Rect position3 = EditorGUILayout.GetControlRect();
+                    shape = (float)EditorGUI.Popup(position1, labels[5], (int)shape, new String[]{labels[6],labels[7]});
+                    border = EditorGUI.FloatField(position2, labels[8], border);
+                    blur = EditorGUI.FloatField(position3, labels[9], blur);
+                }
+                if(type == 3.0f)
+                {
+                    Rect position1 = EditorGUILayout.GetControlRect();
+                    Rect position2 = EditorGUILayout.GetControlRect();
+                    Rect position3 = EditorGUILayout.GetControlRect();
+                    shape = (float)EditorGUI.Popup(position1, labels[5], (int)shape, new String[]{labels[6],labels[7]});
+                    border = EditorGUI.FloatField(position2, labels[8], border);
+                    blur = EditorGUI.FloatField(position3, labels[9], blur);
+                }
+            }
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.vectorValue = new Vector4(type, shape, border, blur);
+            }
+        }
+    }
+
+    public class lilDissolveP : MaterialPropertyDrawer
+    {
+        // [lilDissolveP]
+        public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
+        {
+            string[] labels = label.Split('|');
+
+            if(labels.Length == 2)
+            {
+                int type = int.Parse(labels[1]);
+                if(type == 1)
+                {
+                    EditorGUI.BeginChangeCheck();
+                    float value = EditorGUI.FloatField(position, labels[0], prop.vectorValue.x);
+                    if(EditorGUI.EndChangeCheck())
+                    {
+                        prop.vectorValue = new Vector4(value, prop.vectorValue.y, prop.vectorValue.z, prop.vectorValue.w);
+                    }
+                }
+                if(type == 2)
+                {
+                    EditorGUI.BeginChangeCheck();
+                    Vector2 vec = EditorGUI.Vector2Field(position, labels[0], new Vector2(prop.vectorValue.x, prop.vectorValue.y));
+                    if(EditorGUI.EndChangeCheck())
+                    {
+                        prop.vectorValue = new Vector4(vec.x, vec.y, prop.vectorValue.z, prop.vectorValue.w);
+                    }
+                }
+                if(type == 3)
+                {
+                    EditorGUI.BeginChangeCheck();
+                    Vector3 vec = EditorGUI.Vector3Field(position, labels[0], new Vector3(prop.vectorValue.x, prop.vectorValue.y, prop.vectorValue.z));
+                    if(EditorGUI.EndChangeCheck())
+                    {
+                        prop.vectorValue = new Vector4(vec.x, vec.y, vec.z, prop.vectorValue.w);
+                    }
+                }
+                if(type == 3)
+                {
+                    EditorGUI.BeginChangeCheck();
+                    Vector4 vec = EditorGUI.Vector4Field(position, labels[0], prop.vectorValue);
+                    if(EditorGUI.EndChangeCheck())
+                    {
+                        prop.vectorValue = vec;
+                    }
+                }
+            }
+            else
+            {
+                EditorGUI.BeginChangeCheck();
+                Vector4 vec = EditorGUI.Vector4Field(position, labels[0], prop.vectorValue);
+                if(EditorGUI.EndChangeCheck())
+                {
+                    prop.vectorValue = vec;
+                }
             }
         }
     }

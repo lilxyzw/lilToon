@@ -1,4 +1,4 @@
-﻿Shader "Hidden/lilToonTessellationCutoutOutline"
+Shader "Hidden/lilToonTessellationCutoutOutline"
 {
     Properties
     {
@@ -35,6 +35,13 @@
         [NoScaleOffset] _Main2ndBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
                         _Main2ndEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
+                        _Main2ndDissolveMask        ("Dissolve Mask", 2D) = "white" {}
+                        _Main2ndDissolveNoiseMask   ("Dissolve Noise Mask", 2D) = "gray" {}
+        [lilUVAnim]     _Main2ndDissolveNoiseMask_ScrollRotate ("Scroll", Vector) = (0,0,0,0)
+                        _Main2ndDissolveNoiseStrength ("Dissolve Noise Strength", float) = 0.1
+        [lilHDR]        _Main2ndDissolveColor       ("Dissolve Color", Color) = (1,1,1,1)
+        [lilDissolve]   _Main2ndDissolveParams      ("Dissolve Mode|None|Alpha|UV|Position|Dissolve Shape|Point|Line|Border|Blur", Vector) = (0,0,0.5,0.1)
+        [lilDissolveP]  _Main2ndDissolvePos         ("Dissolve Position", Vector) = (0,0,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main3rd
@@ -54,6 +61,13 @@
         [NoScaleOffset] _Main3rdBlendMask           ("Mask", 2D) = "white" {}
         [lilBlendMode]  _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
                         _Main3rdEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
+                        _Main3rdDissolveMask        ("Dissolve Mask", 2D) = "white" {}
+                        _Main3rdDissolveNoiseMask   ("Dissolve Noise Mask", 2D) = "gray" {}
+        [lilUVAnim]     _Main3rdDissolveNoiseMask_ScrollRotate ("Scroll", Vector) = (0,0,0,0)
+                        _Main3rdDissolveNoiseStrength ("Dissolve Noise Strength", float) = 0.1
+        [lilHDR]        _Main3rdDissolveColor       ("Dissolve Color", Color) = (1,1,1,1)
+        [lilDissolve]   _Main3rdDissolveParams      ("Dissolve Mode|None|Alpha|UV|Position|Dissolve Shape|Point|Line|Border|Blur", Vector) = (0,0,0.5,0.1)
+        [lilDissolveP]  _Main3rdDissolvePos         ("Dissolve Position", Vector) = (0,0,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // NormalMap
@@ -233,6 +247,16 @@
         [lilALLocal]    _AudioLinkLocalMapParams    ("BPM|Notes|Offset", Vector) = (120,1,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Dissolve
+                        _DissolveMask               ("Dissolve Mask", 2D) = "white" {}
+                        _DissolveNoiseMask          ("Dissolve Noise Mask", 2D) = "gray" {}
+        [lilUVAnim]     _DissolveNoiseMask_ScrollRotate ("Scroll", Vector) = (0,0,0,0)
+                        _DissolveNoiseStrength      ("Dissolve Noise Strength", float) = 0.1
+        [lilHDR]        _DissolveColor              ("Dissolve Color", Color) = (1,1,1,1)
+        [lilDissolve]   _DissolveParams             ("Dissolve Mode|None|Alpha|UV|Position|Dissolve Shape|Point|Line|Border|Blur", Vector) = (0,0,0.5,0.1)
+        [lilDissolveP]  _DissolvePos                ("Dissolve Position", Vector) = (0,0,0,0)
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilCullMode]                                   _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
@@ -307,6 +331,10 @@
                                                         _OutlineOffsetUnits         ("Offset Units", Float) = 0
         [lilColorMask]                                  _OutlineColorMask           ("Color Mask", Int) = 15
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+// BRP Start
+//
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
@@ -316,6 +344,41 @@
         UsePass "Hidden/ltspass_tess_cutout/SHADOW_CASTER"
         UsePass "Hidden/ltspass_tess_cutout/META"
     }
+//
+// BRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// LWRP Start
+/*
+    SubShader
+    {
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
+        UsePass "Hidden/ltspass_tess_cutout/FORWARD"
+        UsePass "Hidden/ltspass_tess_cutout/FORWARD_OUTLINE"
+        UsePass "Hidden/ltspass_tess_cutout/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_tess_cutout/DEPTHONLY"
+        UsePass "Hidden/ltspass_tess_cutout/META"
+    }
+*/
+// LWRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// URP Start
+/*
+    SubShader
+    {
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
+        UsePass "Hidden/ltspass_tess_cutout/FORWARD"
+        UsePass "Hidden/ltspass_tess_cutout/FORWARD_OUTLINE"
+        UsePass "Hidden/ltspass_tess_cutout/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_tess_cutout/DEPTHONLY"
+        UsePass "Hidden/ltspass_tess_cutout/DEPTHNORMALS"
+        UsePass "Hidden/ltspass_tess_cutout/UNIVERSAL2D"
+        UsePass "Hidden/ltspass_tess_cutout/META"
+    }
+*/
+// URP End
+
     Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"
 }

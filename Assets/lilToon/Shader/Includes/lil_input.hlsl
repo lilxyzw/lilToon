@@ -29,6 +29,22 @@ float4 _GrabTexture_TexelSize;
     #define Exists_Main3rdBlendMask     false
 #endif
 
+#if defined(LIL_FEATURE_LAYER_DISSOLVE)
+    #define Exists_Main2ndDissolveMask    true
+    #define Exists_Main3rdDissolveMask    true
+#else
+    #define Exists_Main2ndDissolveMask    false
+    #define Exists_Main3rdDissolveMask    false
+#endif
+
+#if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+    #define Exists_Main2ndDissolveNoiseMask    true
+    #define Exists_Main3rdDissolveNoiseMask    true
+#else
+    #define Exists_Main2ndDissolveNoiseMask    false
+    #define Exists_Main3rdDissolveNoiseMask    false
+#endif
+
 #if defined(LIL_FEATURE_TEX_NORMAL_MASK)
     #define Exists_Bump2ndScaleMask     true
 #else
@@ -109,6 +125,12 @@ float4 _GrabTexture_TexelSize;
     #define Exists_AudioLinkMask    false
 #endif
 
+#if defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
+    #define Exists_DissolveNoiseMask    true
+#else
+    #define Exists_DissolveNoiseMask    false
+#endif
+
 #if defined(LIL_FEATURE_TEX_OUTLINE_COLOR)
     #define Exists_OutlineTex           true
 #else
@@ -144,6 +166,7 @@ float4 _GrabTexture_TexelSize;
 #define Exists_Emission2ndMap       true
 #define Exists_Emission2ndGradTex   true
 #define Exists_ParallaxMap          true
+#define Exists_DissolveMask         true
 #define Exists_FurNoiseMask         true
 #define Exists_TriMask              true
 
@@ -161,70 +184,70 @@ float4 _GrabTexture_TexelSize;
 #define lilBool uint
 
 #if defined(LIL_LITE)
-CBUFFER_START(UnityPerMaterial)
-float4  _Color;
-float4  _MainTex_ST;
-float4  _MainTex_ScrollRotate;
-float4  _RimColor;
-float4  _EmissionColor;
-float4  _EmissionBlink;
-float4  _EmissionMap_ST;
-float4  _EmissionMap_ScrollRotate;
-float4  _OutlineColor;
-float4  _OutlineTex_ST;
-float4  _OutlineTex_ScrollRotate;
-float   _AsUnlit;
-float   _Cutoff;
-float   _FlipNormal;
-float   _BackfaceForceShadow;
-float   _ShadowBorder;
-float   _ShadowBlur;
-float   _ShadowEnvStrength;
-float   _RimBorder;
-float   _RimBlur;
-float   _RimFresnelPower;
-float   _OutlineWidth;
-float   _OutlineEnableLighting;
-lilBool _Invisible;
-lilBool _UseShadow;
-lilBool _UseMatCap;
-lilBool _MatCapMul;
-lilBool _UseRim;
-lilBool _RimShadowMask;
-lilBool _UseEmission;
-lilBool _OutlineFixWidth;
-lilBool _OutlineVertexR2Width;
-CBUFFER_END
+    CBUFFER_START(UnityPerMaterial)
+    float4  _Color;
+    float4  _MainTex_ST;
+    float4  _MainTex_ScrollRotate;
+    float4  _RimColor;
+    float4  _EmissionColor;
+    float4  _EmissionBlink;
+    float4  _EmissionMap_ST;
+    float4  _EmissionMap_ScrollRotate;
+    float4  _OutlineColor;
+    float4  _OutlineTex_ST;
+    float4  _OutlineTex_ScrollRotate;
+    float   _AsUnlit;
+    float   _Cutoff;
+    float   _FlipNormal;
+    float   _BackfaceForceShadow;
+    float   _ShadowBorder;
+    float   _ShadowBlur;
+    float   _ShadowEnvStrength;
+    float   _RimBorder;
+    float   _RimBlur;
+    float   _RimFresnelPower;
+    float   _OutlineWidth;
+    float   _OutlineEnableLighting;
+    lilBool _Invisible;
+    lilBool _UseShadow;
+    lilBool _UseMatCap;
+    lilBool _MatCapMul;
+    lilBool _UseRim;
+    lilBool _RimShadowMask;
+    lilBool _UseEmission;
+    lilBool _OutlineFixWidth;
+    lilBool _OutlineVertexR2Width;
+    CBUFFER_END
 #elif defined(LIL_BAKER)
-CBUFFER_START(UnityPerMaterial)
-float4  _Color;
-float4  _MainTex_ST;
-float4  _MainTexHSVG;
-float4  _Color2nd;
-float4  _Main2ndTex_ST;
-float4  _Color3rd;
-float4  _Main3rdTex_ST;
-float   _Main2ndTexAngle;
-float   _Main3rdTexAngle;
-uint    _Main2ndTexBlendMode;
-uint    _Main3rdTexBlendMode;
-lilBool _UseMain2ndTex;
-lilBool _Main2ndTexIsDecal;
-lilBool _Main2ndTexIsLeftOnly;
-lilBool _Main2ndTexIsRightOnly;
-lilBool _Main2ndTexShouldCopy;
-lilBool _Main2ndTexShouldFlipMirror;
-lilBool _Main2ndTexShouldFlipCopy;
-lilBool _Main2ndTexIsMSDF;
-lilBool _UseMain3rdTex;
-lilBool _Main3rdTexIsDecal;
-lilBool _Main3rdTexIsLeftOnly;
-lilBool _Main3rdTexIsRightOnly;
-lilBool _Main3rdTexShouldCopy;
-lilBool _Main3rdTexShouldFlipMirror;
-lilBool _Main3rdTexShouldFlipCopy;
-lilBool _Main3rdTexIsMSDF;
-CBUFFER_END
+    CBUFFER_START(UnityPerMaterial)
+    float4  _Color;
+    float4  _MainTex_ST;
+    float4  _MainTexHSVG;
+    float4  _Color2nd;
+    float4  _Main2ndTex_ST;
+    float4  _Color3rd;
+    float4  _Main3rdTex_ST;
+    float   _Main2ndTexAngle;
+    float   _Main3rdTexAngle;
+    uint    _Main2ndTexBlendMode;
+    uint    _Main3rdTexBlendMode;
+    lilBool _UseMain2ndTex;
+    lilBool _Main2ndTexIsDecal;
+    lilBool _Main2ndTexIsLeftOnly;
+    lilBool _Main2ndTexIsRightOnly;
+    lilBool _Main2ndTexShouldCopy;
+    lilBool _Main2ndTexShouldFlipMirror;
+    lilBool _Main2ndTexShouldFlipCopy;
+    lilBool _Main2ndTexIsMSDF;
+    lilBool _UseMain3rdTex;
+    lilBool _Main3rdTexIsDecal;
+    lilBool _Main3rdTexIsLeftOnly;
+    lilBool _Main3rdTexIsRightOnly;
+    lilBool _Main3rdTexShouldCopy;
+    lilBool _Main3rdTexShouldFlipMirror;
+    lilBool _Main3rdTexShouldFlipCopy;
+    lilBool _Main3rdTexIsMSDF;
+    CBUFFER_END
 #else
 CBUFFER_START(UnityPerMaterial)
 //------------------------------------------------------------------------------------------------------------------------------
@@ -247,6 +270,16 @@ float4  _MainTex_ST;
         float4  _Main2ndTexDecalAnimation;
         float4  _Main2ndTexDecalSubParam;
     #endif
+    #if defined(LIL_FEATURE_LAYER_DISSOLVE)
+        float4  _Main2ndDissolveMask_ST;
+        float4  _Main2ndDissolveColor;
+        float4  _Main2ndDissolveParams;
+        float4  _Main2ndDissolvePos;
+        #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+            float4  _Main2ndDissolveNoiseMask_ST;
+            float4  _Main2ndDissolveNoiseMask_ScrollRotate;
+        #endif
+    #endif
 #endif
 
 // Main3rd
@@ -256,6 +289,16 @@ float4  _MainTex_ST;
     #if defined(LIL_FEATURE_DECAL) && defined(LIL_FEATURE_ANIMATE_DECAL)
         float4  _Main3rdTexDecalAnimation;
         float4  _Main3rdTexDecalSubParam;
+    #endif
+    #if defined(LIL_FEATURE_LAYER_DISSOLVE)
+        float4  _Main3rdDissolveMask_ST;
+        float4  _Main3rdDissolveColor;
+        float4  _Main3rdDissolveParams;
+        float4  _Main3rdDissolvePos;
+        #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+            float4  _Main3rdDissolveNoiseMask_ST;
+            float4  _Main3rdDissolveNoiseMask_ScrollRotate;
+        #endif
     #endif
 #endif
 
@@ -346,6 +389,18 @@ float4  _MainTex_ST;
     #endif
 #endif
 
+// Dissolve
+#if defined(LIL_FEATURE_DISSOLVE)
+    float4  _DissolveMask_ST;
+    float4  _DissolveColor;
+    float4  _DissolveParams;
+    float4  _DissolvePos;
+    #if defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
+        float4  _DissolveNoiseMask_ST;
+        float4  _DissolveNoiseMask_ScrollRotate;
+    #endif
+#endif
+
 // Outline
 float4  _OutlineColor;
 float4  _OutlineTex_ST;
@@ -379,10 +434,16 @@ float   _FlipNormal;
 #if defined(LIL_FEATURE_MAIN2ND)
     float   _Main2ndTexAngle;
     float   _Main2ndEnableLighting;
+    #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+        float   _Main2ndDissolveNoiseStrength;
+    #endif
 #endif
 #if defined(LIL_FEATURE_MAIN3RD)
     float   _Main3rdTexAngle;
     float   _Main3rdEnableLighting;
+    #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+        float   _Main3rdDissolveNoiseStrength;
+    #endif
 #endif
 #if defined(LIL_FEATURE_SHADOW)
     float   _BackfaceForceShadow;
@@ -435,6 +496,11 @@ float   _FlipNormal;
 #if defined(LIL_FEATURE_PARALLAX)
     float   _Parallax;
     float   _ParallaxOffset;
+#endif
+
+// Dissolve
+#if defined(LIL_FEATURE_DISSOLVE) &&  defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
+    float   _DissolveNoiseStrength;
 #endif
 
 float   _OutlineWidth;
@@ -586,8 +652,12 @@ CBUFFER_END
 TEXTURE2D(_MainTex);
 TEXTURE2D(_Main2ndTex);
 TEXTURE2D(_Main2ndBlendMask);
+TEXTURE2D(_Main2ndDissolveMask);
+TEXTURE2D(_Main2ndDissolveNoiseMask);
 TEXTURE2D(_Main3rdTex);
 TEXTURE2D(_Main3rdBlendMask);
+TEXTURE2D(_Main3rdDissolveMask);
+TEXTURE2D(_Main3rdDissolveNoiseMask);
 TEXTURE2D(_BumpMap);
 TEXTURE2D(_Bump2ndMap);
 TEXTURE2D(_Bump2ndScaleMask);
@@ -611,6 +681,8 @@ TEXTURE2D(_Emission2ndGradTex);
 TEXTURE2D(_ParallaxMap);
 TEXTURE2D(_AudioLinkMask);
 TEXTURE2D(_AudioLinkLocalMap);
+TEXTURE2D(_DissolveMask);
+TEXTURE2D(_DissolveNoiseMask);
 TEXTURE2D(_OutlineTex);
 TEXTURE2D(_OutlineWidthMask);
 TEXTURE2D(_FurNoiseMask);

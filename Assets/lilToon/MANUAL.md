@@ -21,6 +21,7 @@
     - [Parallax](#parallax)
     - [DistanceFade](#distance-fade)
     - [AudioLink](#audiolink)
+    - [Dissolve](#dissolve)
     - [Stencil](#stencil)
     - [Rendering](#rendering)
     - [Tessellation](#tessellation)
@@ -137,6 +138,8 @@ You can blend colors into the main color. This is the layer function in painting
 |Fix Border|Increasing the value solves the problem when other frames extend beyond the top, bottom, left or right.|
 </details>
 
+-> [Dissolve Mode](#dissolve)
+
 <br/>
 
 ## Shadow
@@ -251,14 +254,29 @@ You can blend colors into the main color. This is the layer function in painting
 |Offset|Amount of timing shift.|
 |Angle|The angle of UV.|
 |Band|Bandwidth (pitch) to be sampled.|
-|Mask|Mask textures that change the AudioLink process. (R:Delay G:Band B:Strength)|
+|Mask|Mask texture that change the AudioLink process. (R:Delay G:Band B:Strength)|
 |Apply to|Target to apply the effect to.|
 |-|-|
-|As Local|Use local textures instead of getting them from AudioLink.|
+|As Local|Use local texture instead of getting them from AudioLink.|
 |Local Map|Local texture.|
 |BPM|Speed of the song.|
 |Notes|Number to be multiplied by BPM.|
 |Offset|Amount of timing shift.|
+
+<br/>
+
+## Dissolve
+|Name|Description|
+|-|-|
+|Dissolve|The type of effect.|
+|Shape|The shape of effect.|
+|Border|Range of effect.|
+|Blur|Amount of effect blur.|
+|Mask|(Mask mode) Mask texture of the effect.|
+|Position|(UV / Position mode) Start position of the effect.|
+|Vector|(UV / Position mode) Direction of movement of the effect.|
+|Noise|Mask texture to add detail to effect.|
+|Color|Color of effect.|
 
 <br/>
 

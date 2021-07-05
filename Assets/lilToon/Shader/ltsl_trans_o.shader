@@ -1,4 +1,4 @@
-﻿Shader "Hidden/lilToonLiteTransparentOutline"
+Shader "Hidden/lilToonLiteTransparentOutline"
 {
     Properties
     {
@@ -115,6 +115,10 @@
                                                         _OutlineOffsetUnits         ("Offset Units", Float) = 0
         [lilColorMask]                                  _OutlineColorMask           ("Color Mask", Int) = 15
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+// BRP Start
+//
     SubShader
     {
         Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+2"}
@@ -124,6 +128,41 @@
         UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
         UsePass "Hidden/ltspass_lite_transparent/META"
     }
+//
+// BRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// LWRP Start
+/*
+    SubShader
+    {
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+2"}
+        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
+        UsePass "Hidden/ltspass_lite_transparent/FORWARD_OUTLINE"
+        UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_lite_transparent/DEPTHONLY"
+        UsePass "Hidden/ltspass_lite_transparent/META"
+    }
+*/
+// LWRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// URP Start
+/*
+    SubShader
+    {
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+2"}
+        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
+        UsePass "Hidden/ltspass_lite_transparent/FORWARD_OUTLINE"
+        UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_lite_transparent/DEPTHONLY"
+        UsePass "Hidden/ltspass_lite_transparent/DEPTHNORMALS"
+        UsePass "Hidden/ltspass_lite_transparent/UNIVERSAL2D"
+        UsePass "Hidden/ltspass_lite_transparent/META"
+    }
+*/
+// URP End
+
     Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"
 }

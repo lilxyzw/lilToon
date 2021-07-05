@@ -76,12 +76,41 @@ Shader "_lil/lilToonLiteOverlay"
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+// BRP Start
+//
     SubShader
     {
         Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+2"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
         UsePass "Hidden/ltspass_lite_transparent/FORWARD_ADD"
     }
+//
+// BRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// LWRP Start
+/*
+    SubShader
+    {
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+2"}
+        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
+    }
+*/
+// LWRP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// URP Start
+/*
+    SubShader
+    {
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+2"}
+        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
+    }
+*/
+// URP End
+
     Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"
 }
