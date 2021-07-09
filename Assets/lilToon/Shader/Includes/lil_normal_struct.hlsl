@@ -36,6 +36,10 @@
         float4 positionOS   : POSITION;
         float3 normalOS     : NORMAL;
         float2 uv           : TEXCOORD0;
+        #if defined(LIL_FEATURE_ENCRYPTION)
+            float2 uv6          : TEXCOORD6;
+            float2 uv7          : TEXCOORD7;
+        #endif
         float4 color        : COLOR;
         LIL_VERTEX_INPUT_LIGHTMAP_UV
         LIL_VERTEX_INPUT_INSTANCE_ID
@@ -63,6 +67,10 @@
         float4 positionOS   : POSITION;
         #if defined(LIL_SHOULD_NORMAL) || defined(LIL_TESSELLATION)
             float3 normalOS     : NORMAL;
+        #endif
+        #if defined(LIL_FEATURE_ENCRYPTION)
+            float2 uv6          : TEXCOORD6;
+            float2 uv7          : TEXCOORD7;
         #endif
         float2 uv           : TEXCOORD0;
         LIL_VERTEX_INPUT_LIGHTMAP_UV
@@ -94,6 +102,10 @@
         #endif
         #if defined(LIL_SHOULD_TANGENT)
             float4 tangentOS    : TANGENT;
+        #endif
+        #if defined(LIL_FEATURE_ENCRYPTION)
+            float2 uv6          : TEXCOORD6;
+            float2 uv7          : TEXCOORD7;
         #endif
         float2 uv           : TEXCOORD0;
         LIL_VERTEX_INPUT_LIGHTMAP_UV

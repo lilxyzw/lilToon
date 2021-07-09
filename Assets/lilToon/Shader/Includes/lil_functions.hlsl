@@ -139,6 +139,30 @@ float lilIntervalTime(float interval)
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
+// Encryption (https://github.com/rygo6/GTAvaCrypt)
+#if !defined(LIL_LITE) && !defined(LIL_BAKER) &&  defined(LIL_FEATURE_ENCRYPTION)
+float4 vertexDecode(float4 positionOS, float3 normal, float2 uv6, float2 uv7)
+{
+    if(_IgnoreEncryption) return positionOS;
+
+    float4 keys = floor(_Keys + 0.5);
+    keys = keys.x == 0 ? float4(0,0,0,0) : floor(keys / 3) * 3 + 1;
+
+    keys.x *= 1;
+    keys.y *= 2;
+    keys.z *= 3;
+    keys.w *= 4;
+
+    positionOS.xyz -= normal * uv6.x * (sin((keys.z - keys.y) * 2) * cos(keys.w - keys.x));
+    positionOS.xyz -= normal * uv6.y * (sin((keys.w - keys.x) * 3) * cos(keys.z - keys.y));
+    positionOS.xyz -= normal * uv7.x * (sin((keys.x - keys.w) * 4) * cos(keys.y - keys.z));
+    positionOS.xyz -= normal * uv7.y * (sin((keys.y - keys.z) * 5) * cos(keys.x - keys.w));
+
+    return positionOS;
+}
+#endif
+
+//------------------------------------------------------------------------------------------------------------------------------
 // Transform
 float3 lilTransformNormalOStoWS(float3 normalOS)
 {
@@ -240,6 +264,23 @@ float3 lilToneCorrection(float3 c, float4 hsvg)
     hsv = float3(hsv.x+hsvg.x,saturate(hsv.y*hsvg.y),saturate(hsv.z*hsvg.z));
     // hsv -> rgb
     return hsv.z - hsv.z * hsv.y + hsv.z * hsv.y * saturate(abs(frac(hsv.x + float3(1.0, 2.0/3.0, 1.0/3.0)) * 6.0 - 3.0) - 1.0);
+}
+
+float3 lilGradationMap(float3 col, TEXTURE2D(gradationMap), SAMPLER(sampstate), float strength)
+{
+    if(strength == 0.0) return col;
+    #if !defined(LIL_COLORSPACE_GAMMA)
+        col = LinearToSRGB(col);
+    #endif
+    float R = LIL_SAMPLE_1D(gradationMap, sampstate, col.r).r;
+    float G = LIL_SAMPLE_1D(gradationMap, sampstate, col.g).g;
+    float B = LIL_SAMPLE_1D(gradationMap, sampstate, col.b).b;
+    float3 outrgb = float3(R,G,B);
+    #if !defined(LIL_COLORSPACE_GAMMA)
+        col = SRGBToLinear(col);
+        outrgb = SRGBToLinear(outrgb);
+    #endif
+    return lerp(col, outrgb, strength);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -469,7 +510,7 @@ float4 lilGetSubTex(
     float angle,
     float2 uv,
     float nv,
-    SamplerState sampstate,
+    SAMPLER(sampstate),
     bool isDecal,
     bool isLeftOnly,
     bool isRightOnly,
@@ -975,31 +1016,43 @@ void lilGetShadingLite(
     {
         // Shade
         float ln = saturate(dot(lightDirection,normalDirection)*0.5+0.5);
+        float ln2 = ln;
+        float lnB = ln;
 
         // Toon
         ln = lilTooning(ln, _ShadowBorder, _ShadowBlur);
+        ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
+        lnB = lilTooning(lnB, _ShadowBorder, _ShadowBlur, _ShadowBorderRange);
 
         if(cullOff)
         {
             // Force shadow on back face
             float bfshadow = (facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
             ln *= bfshadow;
+            ln2 *= bfshadow;
+            lnB *= bfshadow;
         }
 
         // Copy
         shadowmix = ln;
 
-        // Shadow Color
-        float4 shadowColorTex = 1.0;
-        if(Exists_ShadowColorTex) shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampler_MainTex, uv);
-        float3 indirectCol = shadowColorTex.rgb;
+        // Shadow Color 1
+        float4 shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampler_MainTex, uv);
+        float3 indirectCol = lerp(albedo, shadowColorTex.rgb, shadowColorTex.a);
+        // Shadow Color 2
+        float4 shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, sampler_MainTex, uv);
+        indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, shadow2ndColorTex.a - ln2 * shadow2ndColorTex.a);
+
         // Apply Light
         float3 directCol = albedo * lightColor;
         indirectCol = indirectCol * lightColor;
+
         // Environment Light
         indirectCol = lerp(indirectCol, albedo, lilGetIndirLightColor() * _ShadowEnvStrength);
         // Fix
         indirectCol = min(indirectCol, directCol);
+        // Gradation
+        indirectCol = lerp(indirectCol, directCol, lnB * _ShadowBorderColor.rgb);
 
         // Mix
         col.rgb = lerp(indirectCol, directCol, ln);

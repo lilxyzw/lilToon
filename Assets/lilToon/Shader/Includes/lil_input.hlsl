@@ -13,6 +13,7 @@ TEXTURE2D(_BackgroundTexture);
 TEXTURE2D(_GrabTexture);
 TEXTURE2D(_CameraDepthTexture);
 SAMPLER(sampler_linear_repeat);
+SAMPLER(sampler_linear_clamp);
 SAMPLER(sampler_DitherMaskLOD);
 SAMPLER(sampler_BackgroundTexture);
 SAMPLER(sampler_GrabTexture);
@@ -188,6 +189,7 @@ float4 _GrabTexture_TexelSize;
     float4  _Color;
     float4  _MainTex_ST;
     float4  _MainTex_ScrollRotate;
+    float4  _ShadowBorderColor;
     float4  _RimColor;
     float4  _EmissionColor;
     float4  _EmissionBlink;
@@ -202,7 +204,10 @@ float4 _GrabTexture_TexelSize;
     float   _BackfaceForceShadow;
     float   _ShadowBorder;
     float   _ShadowBlur;
+    float   _Shadow2ndBorder;
+    float   _Shadow2ndBlur;
     float   _ShadowEnvStrength;
+    float   _ShadowBorderRange;
     float   _RimBorder;
     float   _RimBlur;
     float   _RimFresnelPower;
@@ -227,6 +232,7 @@ float4 _GrabTexture_TexelSize;
     float4  _Main2ndTex_ST;
     float4  _Color3rd;
     float4  _Main3rdTex_ST;
+    float   _MainGradationStrength;
     float   _Main2ndTexAngle;
     float   _Main3rdTexAngle;
     uint    _Main2ndTexBlendMode;
@@ -401,6 +407,11 @@ float4  _MainTex_ST;
     #endif
 #endif
 
+// Encryption
+#if defined(LIL_FEATURE_ENCRYPTION)
+    float4  _Keys;
+#endif
+
 // Outline
 float4  _OutlineColor;
 float4  _OutlineTex_ST;
@@ -431,6 +442,9 @@ float   _AsUnlit;
     float   _Cutoff;
 #endif
 float   _FlipNormal;
+#if defined(LIL_FEATURE_MAIN_GRADATION_MAP)
+    float   _MainGradationStrength;
+#endif
 #if defined(LIL_FEATURE_MAIN2ND)
     float   _Main2ndTexAngle;
     float   _Main2ndEnableLighting;
@@ -634,6 +648,9 @@ lilBool _Invisible;
         lilBool _AudioLinkAsLocal;
     #endif
 #endif
+#if defined(LIL_FEATURE_ENCRYPTION)
+    lilBool _IgnoreEncryption;
+#endif
 
 lilBool _OutlineFixWidth;
 lilBool _OutlineVertexR2Width;
@@ -650,6 +667,7 @@ CBUFFER_END
 //------------------------------------------------------------------------------------------------------------------------------
 // Texture
 TEXTURE2D(_MainTex);
+TEXTURE2D(_MainGradationTex);
 TEXTURE2D(_Main2ndTex);
 TEXTURE2D(_Main2ndBlendMask);
 TEXTURE2D(_Main2ndDissolveMask);
@@ -698,7 +716,6 @@ SAMPLER(sampler_OutlineTex);
 
 // AudioLink
 #if defined(LIL_FEATURE_AUDIOLINK)
-SAMPLER(sampler_linear_clamp);
 Texture2D<float4> _AudioTexture;
 float4 _AudioTexture_TexelSize;
 #endif

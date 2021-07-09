@@ -34,8 +34,12 @@ struct appdata
     float4 positionOS   : POSITION;
     float3 normalOS     : NORMAL;
     float4 tangentOS    : TANGENT;
-    float4 color        : COLOR;
     float2 uv           : TEXCOORD0;
+    #if defined(LIL_FEATURE_ENCRYPTION)
+        float2 uv6          : TEXCOORD6;
+        float2 uv7          : TEXCOORD7;
+    #endif
+    float4 color        : COLOR;
     LIL_VERTEX_INPUT_LIGHTMAP_UV
     LIL_VERTEX_INPUT_INSTANCE_ID
 };

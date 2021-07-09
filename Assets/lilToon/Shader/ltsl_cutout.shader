@@ -23,7 +23,12 @@ Shader "Hidden/lilToonLiteCutout"
                         _ShadowBorder               ("Border", Range(0, 1)) = 0.5
                         _ShadowBlur                 ("Blur", Range(0, 1)) = 0.1
         [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
+                        _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
+                        _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
+        [NoScaleOffset] _Shadow2ndColorTex          ("Shadow 2nd Color", 2D) = "black" {}
                         _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 1
+                        _ShadowBorderColor          ("Border Color", Color) = (1,0,0,1)
+                        _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // MatCap

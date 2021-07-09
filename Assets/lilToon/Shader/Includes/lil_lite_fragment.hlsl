@@ -28,7 +28,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         //----------------------------------------------------------------------------------------------------------------------
         // Main Color
         float4 col = _OutlineColor;
-        if(Exists_OutlineTex) col *= LIL_SAMPLE_2D(_OutlineTex, sampler_OutlineTex, uvMain);
+        col *= LIL_SAMPLE_2D(_OutlineTex, sampler_OutlineTex, uvMain);
 
         //----------------------------------------------------------------------------------------------------------------------
         // Alpha
@@ -53,9 +53,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         //----------------------------------------------------------------------------------------------------------------------
         // Main Color
         float4 col = _Color;
-        if(Exists_MainTex) col *= LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain);
+        col *= LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain);
         float4 triMask = 1.0;
-        if(Exists_TriMask) triMask = LIL_SAMPLE_2D(_TriMask, sampler_MainTex, uvMain);
+        triMask = LIL_SAMPLE_2D(_TriMask, sampler_MainTex, uvMain);
 
         //----------------------------------------------------------------------------------------------------------------------
         // Alpha
@@ -79,7 +79,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         if(_UseMatCap)
         {
             float3 matcap = 1.0;
-            if(Exists_MatCapTex) matcap = LIL_SAMPLE_2D(_MatCapTex, sampler_MainTex, input.uvMat).rgb;
+            matcap = LIL_SAMPLE_2D(_MatCapTex, sampler_MainTex, input.uvMat).rgb;
             col.rgb = lerp(col.rgb, _MatCapMul ? col.rgb * matcap : col.rgb + matcap, triMask.r);
         }
 
@@ -130,7 +130,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             {
                 float emissionBlinkSeq = lilCalcBlink(_EmissionBlink);
                 float4 emissionColor = _EmissionColor;
-                if(Exists_EmissionMap) emissionColor *= LIL_GET_EMITEX(_EmissionMap,input.uv);
+                emissionColor *= LIL_GET_EMITEX(_EmissionMap,input.uv);
                 col.rgb += emissionBlinkSeq * triMask.b * emissionColor.rgb;
             }
         #endif

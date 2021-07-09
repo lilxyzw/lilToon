@@ -4,6 +4,7 @@ public class lilToonSetting : ScriptableObject
 {
     public bool LIL_FEATURE_ANIMATE_MAIN_UV;
     public bool LIL_FEATURE_MAIN_TONE_CORRECTION;
+    public bool LIL_FEATURE_MAIN_GRADATION_MAP;
     public bool LIL_FEATURE_MAIN2ND;
     public bool LIL_FEATURE_MAIN3RD;
     public bool LIL_FEATURE_DECAL;
@@ -31,6 +32,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_AUDIOLINK_VERTEX;
     public bool LIL_FEATURE_AUDIOLINK_LOCAL;
     public bool LIL_FEATURE_DISSOLVE;
+    public bool LIL_FEATURE_ENCRYPTION;
     public bool LIL_FEATURE_ANIMATE_OUTLINE_UV;
     public bool LIL_FEATURE_OUTLINE_TONE_CORRECTION;
     public bool LIL_FEATURE_TEX_LAYER_MASK;

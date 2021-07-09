@@ -20,6 +20,12 @@ v2f vert(appdata input)
     LIL_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
     //----------------------------------------------------------------------------------------------------------------------
+    // Encryption
+    #if defined(LIL_FEATURE_ENCRYPTION)
+        input.positionOS = vertexDecode(input.positionOS, input.normalOS, input.uv6, input.uv7);
+    #endif
+
+    //----------------------------------------------------------------------------------------------------------------------
     // UV
     float2 uvMain = lilCalcUV(input.uv, _MainTex_ST);
 

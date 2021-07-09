@@ -8,6 +8,8 @@ Shader "Hidden/ltsother_baker"
                         _MainTex                    ("Texture", 2D) = "white" {}
         [lilUVAnim]     _MainTex_ScrollRotate       ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
         [lilHSVG]       _MainTexHSVG                ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
+                        _MainGradationStrength      ("Gradation Strength", Range(0, 1)) = 0
+        [NoScaleOffset] _MainGradationTex           ("Gradation Map", 2D) = "white" {}
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main2nd
@@ -102,6 +104,9 @@ Shader "Hidden/ltsother_baker"
                     // Main
                     float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
                     col.rgb = lilToneCorrection(col.rgb, _MainTexHSVG);
+                    #if defined(LIL_FEATURE_MAIN_GRADATION_MAP)
+                        col.rgb = lilGradationMap(col.rgb, _MainGradationTex, sampler_linear_clamp, _MainGradationStrength);
+                    #endif
                     col *= _Color;
 
                     bool isRightHand = input.tangentW > 0.0;

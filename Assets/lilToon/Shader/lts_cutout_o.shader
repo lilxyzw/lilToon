@@ -16,6 +16,8 @@ Shader "Hidden/lilToonCutoutOutline"
                         _MainTex                    ("Texture", 2D) = "white" {}
         [lilUVAnim]     _MainTex_ScrollRotate       ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
         [lilHSVG]       _MainTexHSVG                ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
+                        _MainGradationStrength      ("Gradation Strength", Range(0, 1)) = 0
+        [NoScaleOffset] _MainGradationTex           ("Gradation Map", 2D) = "white" {}
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main2nd
@@ -255,6 +257,11 @@ Shader "Hidden/lilToonCutoutOutline"
         [lilHDR]        _DissolveColor              ("Dissolve Color", Color) = (1,1,1,1)
         [lilDissolve]   _DissolveParams             ("Dissolve Mode|None|Alpha|UV|Position|Dissolve Shape|Point|Line|Border|Blur", Vector) = (0,0,0.5,0.1)
         [lilDissolveP]  _DissolvePos                ("Dissolve Position", Vector) = (0,0,0,0)
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Encryption
+        [lilToggle]     _IgnoreEncryption           ("Ignore Encryption", Int) = 0
+                        _Keys                       ("Keys", Vector) = (0,0,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced

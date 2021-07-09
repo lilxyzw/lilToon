@@ -112,6 +112,7 @@ sMainColorTips	You can set the color and transparency.	色や透明度の設定�
 sMainColor	Main Color	メインカラー	메인 컬러	主色	主色
 sMainColor2nd	Main Color 2nd	メインカラー2nd	메인 컬러 2nd	主色2nd	主色2nd
 sMainColor3rd	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	主色3rd	主色3rd
+sGradationMap	Gradation Map	グラデーションマップ	그라디언트 맵	渐变映射	漸變映射
 sShadowSetting	Shadow	影設定	그림자 설정	阴影设置	陰影設置
 sShadowTips	You can set the color and range of the shadow.	影の色や範囲の設定ができます	그림자의 색상과 범위를 설정할 수 있습니다	你可以设置阴影的颜色和范围。	你可以設置陰影的顏色和範圍。
 sShadow	Shadow	影	그림자	阴影	陰影
@@ -198,6 +199,10 @@ sDissolveModePosition	Position	座標	좌표	职位	職位
 sDissolveShape	Shape	形状	모양	形状	形狀
 sDissolveShapePoint	Point	点	점	点	點
 sDissolveShapeLine	Line	線	선	线	線
+sEncryption	Encryption	暗号化	암호화	加密	加密
+sEncryptionTips	Decrypt the mesh from 4 keys.	4つのキーによってメッシュを復号化します	4 개의 키를 사용하여 메쉬를 해독합니다	从4个密钥解密该网状	從4個密鑰解密該網狀
+sIgnoreEncryption	Ignore Encryption	Ignore Encryption	Ignore Encryption	Ignore Encryption	Ignore Encryption
+sKeys	Keys	Keys	Keys	Keys	Keys
 sNormalMapReflection	Normal Map & Reflection	ノーマルマップ・光沢設定	노멀 맵 광택 설정	法线贴图 & 反射设置	法線貼圖 & 反射設置
 sNormalMapSetting	Normal Map	ノーマルマップ設定	노멀 맵 설정	法线贴图设置	法線貼圖設置
 sNormalMapTips	You can set the normal map.	ノーマルマップの設定ができます	노멀 맵을 설정할 수 있습니다	你可以设置法线贴图。	你可以設置法線貼圖。
@@ -276,6 +281,7 @@ sDialogBakeOutline	Do you want to bake outline texture?	輪郭線の色のテク
 sDialogGifToAtlas	Convert Gif to Atlas	Gifをアトラス化	Gif를 아틀라스 화	将Gif转换成Atlas	將Gif轉換成Atlas
 sDialogTexPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャ全体の解像度を2の累乗に合わせますか?	텍스처 전체 해상도를 2의 거듭 제곱에 맞게 하시겠습니까?	你想把纹理分辨率调整为2的幂吗？	你想把紋理分辨率調整為2的冪嗎？
 sPresets	Presets	プリセット	프리셋	预设	預設
+sPresetsNotAvailable	Presets are not available for this shader	プリセットはこのシェーダーでは利用可能ではありません	사전 설정이 쉐이더를 사용할 수 없습니다	预设在此着色器中不可用	預設在此著色器中不可用
 sPresetRefresh	Refresh List	リストを更新	목록을 업데이트	刷新列表	刷新列表
 sPresetSave	Save Preset	プリセットを保存	프리셋 저장	保存预设	保存預設
 sPresetCategory	Category	カテゴリー	카테고리	类别	類別
@@ -329,6 +335,7 @@ sShaderSettingTips	You can toggle unused functions.	不要な機能を無効化�
 sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	在这里关闭的功能将从着色器中删除。通过关闭不使用的功能，你可以减少你的头像的大小，同时也可以减少负载。	在這里關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的頭像的大小，同時也可以減少負載。​​
 sSettingAnimateMainUV	UV Animation & Angle	UVアニメーション&角度	UV 애니메이션 & 각도	UV动画和角度	UV動畫和角度
 sSettingMainToneCorrection	Tone Correction	色調補正	색상 보정	色调校正	色調校正
+sSettingMainGradationMap	Gradation Map	グラデーションマップ	그라디언트 맵	渐变映射	漸變映射
 sSettingMain2nd	Main Color 2nd	メインカラー2nd	메인 컬러 2nd	主色2nd	主色2nd
 sSettingMain3rd	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	主色3rd	主色3rd
 sSettingDecal	Decal	デカール	데칼	Decal	Decal
@@ -371,6 +378,7 @@ sSettingAudioLinkMask	Mask (R:Delay G:Band B:Strength)	マスク (R:Delay G:Band
 sSettingAudioLinkLocal	Local	ローカル	Local	Local	Local
 sSettingDissolve	Dissolve	Dissolve	Dissolve	Dissolve	Dissolve
 sSettingTexDissolveNoise	Noise	ノイズ	Noise	Noise	Noise
+sSettingEncryption	Encryption	暗号化	암호화	加密	加密
 sSettingAnimateOutlineUV	Animate Outline UV	輪郭線UVアニメーション	윤곽선 UV 애니메이션	轮廓UV动画和角度	輪廓UV動畫和角度
 sSettingTexOutlineColor	Outline Color Texture	輪郭線色テクスチャ	윤곽선 색상 질감	轮廓颜色纹理	輪廓顏色紋理
 sSettingOutlineToneCorrection	Outline Tone Correction	色調補正	색상 보정	轮廓色调校正	輪廓色調校正
@@ -400,6 +408,7 @@ sAnchorParallax	#parallax	#視差マップ	#parallax	#parallax	#parallax
 sAnchorDistanceFade	#distance-fade	#距離フェード	#distance-fade	#distance-fade	#distance-fade
 sAnchorAudioLink	#audiolink	#audiolink	#audiolink	#audiolink	#audiolink
 sAnchorDissolve	#dissolve	#dissolve	#dissolve	#dissolve	#dissolve
+sAnchorEncryption	#encryption	#暗号化	#encryption	#encryption	#encryption
 sAnchorStencil	#stencil	#ステンシル設定	#stencil	#stencil	#stencil
 sAnchorRendering	#rendering	#レンダリング設定	#rendering	#rendering	#rendering
 sAnchorTessellation	#tessellation	#テッセレーション	#tessellation	#tessellation	#tessellation

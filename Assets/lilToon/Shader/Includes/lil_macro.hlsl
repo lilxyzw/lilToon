@@ -408,6 +408,7 @@
 // Texture
 #if defined(SHADER_API_D3D11) || defined(SHADER_API_XBOXONE) || defined(UNITY_COMPILER_HLSLCC) || defined(SHADER_API_PSSL) || (defined(SHADER_TARGET_SURFACE_ANALYSIS) && !defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER))
     #define LIL_SAMPLE_1D(tex,samp,uv)              tex.Sample(samp,uv)
+    #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)      tex.SampleLevel(sampler_linear_repeat,uv,lod)
     #define LIL_SAMPLE_2D(tex,samp,uv)              tex.Sample(samp,uv)
     #define LIL_SAMPLE_2D_ST(tex,samp,uv)           tex.Sample(samp,uv*tex##_ST.xy+tex##_ST.zw)
     #define LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)      tex.SampleLevel(sampler_linear_repeat,uv,lod)
@@ -426,9 +427,10 @@
     #endif
 #else
     #define LIL_SAMPLE_1D(tex,samp,uv)              tex1D(tex,uv)
+    #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)      tex1Dlod(tex,float4(uv,0,0,lod))
     #define LIL_SAMPLE_2D(tex,samp,uv)              tex2D(tex,uv)
     #define LIL_SAMPLE_2D_ST(tex,samp,uv)           tex2D(tex,uv*tex##_ST.xy+tex##_ST.zw)
-    #define LIL_SAMPLE_2D_LOD(tex,samp,uv)          tex2Dlod(tex,float4(uv,0,lod))
+    #define LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)      tex2Dlod(tex,float4(uv,0,lod))
     #define LIL_SAMPLE_2D_BIAS(tex,samp,uv,bias)    tex2Dbias(tex,float4(uv,0,bias))
     #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)   tex2Dgrad(tex,float4(uv,dx,dy))
     #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)  tex2DArray(tex,float3(uv,index))

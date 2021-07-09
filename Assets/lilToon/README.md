@@ -40,6 +40,7 @@ Supported Rendering Pipelines
 - Distance Fade (Changes color according to distance)
 - AudioLink (Animate materials in sync with sound in supported VRChat worlds)
 - Tessellation (For video production due to high load)
+- Mesh Encryption
 
 # License
 lilToon is available under the MIT License. Please refer to the "LICENSE" included in the package.
@@ -69,7 +70,7 @@ The following settings improve the problem of different brightness in one part o
 - Check the "Mip Maps Preserve Coverage" checkbox for textures used in Cutout materials.
 
 # About Lite version
-The Lite version is a greatly optimized version that maintains the appearance of the normal version to some extent. It is recommended for use in crowded situations, avatar displays in world, mobile devices, etc. It is recommended to convert materials created with the normal version to the Lite version instead of setting materials directly from the Lite version for more intuitive material setting.
+Lite version is a greatly optimized version that maintains the appearance of the normal version to some extent. This version is recommended for avatar displays because it has no shader settings and its features are unified. It is recommended to convert materials created with Normal version to the Lite version instead of setting materials directly from Lite version for more intuitive material setting.
 
 # Change log
 ## v1.0

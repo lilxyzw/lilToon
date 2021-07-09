@@ -187,6 +187,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             #if defined(LIL_FEATURE_MAIN_TONE_CORRECTION)
                 col.rgb = lilToneCorrection(col.rgb, _MainTexHSVG);
             #endif
+            #if defined(LIL_FEATURE_MAIN_GRADATION_MAP)
+                col.rgb = lilGradationMap(col.rgb, _MainGradationTex, sampler_linear_clamp, _MainGradationStrength);
+            #endif
         }
         col *= _Color;
 

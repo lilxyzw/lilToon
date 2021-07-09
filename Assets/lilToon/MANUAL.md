@@ -22,6 +22,7 @@
     - [DistanceFade](#distance-fade)
     - [AudioLink](#audiolink)
     - [Dissolve](#dissolve)
+    - [Encryption](#encryption)
     - [Stencil](#stencil)
     - [Rendering](#rendering)
     - [Tessellation](#tessellation)
@@ -98,6 +99,7 @@
 |Saturation|Intensity of a color|
 |Value|Lightness or darkness of a color.|
 |Gamma|Emphasizes contrast.|
+|Gradation Map|Color correct with gradient.|
 |Bake|Export the color-corrected texture.|
 
 ### Main Color 2nd / 3rd
@@ -277,6 +279,17 @@ You can blend colors into the main color. This is the layer function in painting
 |Vector|(UV / Position mode) Direction of movement of the effect.|
 |Noise|Mask texture to add detail to effect.|
 |Color|Color of effect.|
+
+<br/>
+
+## Encryption
+[AvaterEncryption](https://github.com/lilxyzw/AvaterEncryption)
+Decrypt the mesh from 4 keys.  
+It can be used to prevent ripping, but not completely.
+|Name|Description|
+|-|-|
+|Ignore Encryption|The type of effect.|
+|Keys|The shape of effect.|
 
 <br/>
 

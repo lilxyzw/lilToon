@@ -22,7 +22,7 @@ v2f vert(appdata input)
     #if defined(LIL_OUTLINE)
         float2 uvMain = lilCalcUV(input.uv, _MainTex_ST);
         float outlineWidth = _OutlineWidth * 0.01;
-        if(Exists_OutlineWidthMask) outlineWidth *= LIL_SAMPLE_2D_LOD(_OutlineWidthMask, sampler_MainTex, uvMain, 0).r;
+        outlineWidth *= LIL_SAMPLE_2D_LOD(_OutlineWidthMask, sampler_MainTex, uvMain, 0).r;
         if(_OutlineVertexR2Width) outlineWidth *= input.color.r;
         if(_OutlineFixWidth) outlineWidth *= saturate(length(LIL_GET_VIEWDIR_WS(lilOptMul(LIL_MATRIX_M, input.positionOS.xyz).xyz)));
         input.positionOS.xyz += input.normalOS.xyz * outlineWidth;

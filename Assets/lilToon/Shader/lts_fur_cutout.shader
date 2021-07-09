@@ -44,6 +44,11 @@ Shader "Hidden/lilToonFurCutout"
         [lil3Param]     _DistanceFade               ("Start|End|Strength", Vector) = (0.1,0.01,1,0)
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Encryption
+        [lilToggle]     _IgnoreEncryption           ("Ignore Encryption", Int) = 0
+                        _Keys                       ("Keys", Vector) = (0,0,0,0)
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilCullMode]                                   _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
