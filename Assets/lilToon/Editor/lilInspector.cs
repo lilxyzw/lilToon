@@ -2851,7 +2851,7 @@ namespace lilToon
             editorSetting = (lilToonEditorSetting)AssetDatabase.LoadAssetAtPath(editorSettingPath, typeof(lilToonEditorSetting));
             if(editorSetting == null)
             {
-                editorSetting = new lilToonEditorSetting();
+                editorSetting = ScriptableObject.CreateInstance<lilToonEditorSetting>();
                 AssetDatabase.CreateAsset(editorSetting, editorSettingPath);
                 editorSetting.settingPath = "Assets/lilToonSetting/ShaderSetting.asset";
                 editorSetting.unlockShaderSetting = true;
@@ -2866,7 +2866,7 @@ namespace lilToon
             shaderSetting = (lilToonSetting)AssetDatabase.LoadAssetAtPath(editorSetting.settingPath, typeof(lilToonSetting));
             if(shaderSetting == null)
             {
-                shaderSetting = new lilToonSetting();
+                shaderSetting = ScriptableObject.CreateInstance<lilToonSetting>();
                 AssetDatabase.CreateAsset(shaderSetting, editorSetting.settingPath);
                 shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV = false;
                 shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION = false;
