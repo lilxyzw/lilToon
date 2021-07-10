@@ -260,8 +260,8 @@ sSelectAlphamask	Select Alphamask	アルファマスクを選択してくださ�
 sRemoveUnused	Remove unused textures	未使用のテクスチャを外す	사용하지 않는 텍스처를 제거	移除未使用的纹理	移除未使用的紋理
 sConvertLite	Convert to lilToonLite	lilToonLiteに変換	lilToonLite로 변환	转换为lilToonLite	轉換為lilToonLite
 sConvertMToon	Convert to MToon (VRM)	MToon(VRM)に変換	MToon (VRM)로 변환	转换为MToon (VRM)	轉換為MToon (VRM)
-sYes	Yes	Yes	Yes	Yes	Yes
-sNo	No	No	No	No	No
+sYes	Yes	はい	Yes	Yes	Yes
+sNo	No	いいえ	No	No	No
 sOK	OK	OK	OK	OK	OK
 sDialogResetUV	Reset UV Setting	UV設定の初期化	UV 설정 초기화	重置UV设置	重置UV設置
 sDialogResetUVMes	Are you sure you want to reset UV setting?	UV設定を初期化しますか?	UV 설정을 초기화 하시겠습니까?	你确定要重置UV设置吗？	你確定要重置UV設置嗎？
@@ -281,7 +281,7 @@ sDialogBakeOutline	Do you want to bake outline texture?	輪郭線の色のテク
 sDialogGifToAtlas	Convert Gif to Atlas	Gifをアトラス化	Gif를 아틀라스 화	将Gif转换成Atlas	將Gif轉換成Atlas
 sDialogTexPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャ全体の解像度を2の累乗に合わせますか?	텍스처 전체 해상도를 2의 거듭 제곱에 맞게 하시겠습니까?	你想把纹理分辨率调整为2的幂吗？	你想把紋理分辨率調整為2的冪嗎？
 sPresets	Presets	プリセット	프리셋	预设	預設
-sPresetsNotAvailable	Presets are not available for this shader	プリセットはこのシェーダーでは利用可能ではありません	사전 설정이 쉐이더를 사용할 수 없습니다	预设在此着色器中不可用	預設在此著色器中不可用
+sPresetsNotAvailable	Presets are not available for this shader.	プリセットはこのシェーダーでは利用できません。	사전 설정이 쉐이더를 사용할 수 없습니다.	预设在此着色器中不可用。	預設在此著色器中不可用。
 sPresetRefresh	Refresh List	リストを更新	목록을 업데이트	刷新列表	刷新列表
 sPresetSave	Save Preset	プリセットを保存	프리셋 저장	保存预设	保存預設
 sPresetCategory	Category	カテゴリー	카테고리	类别	類別

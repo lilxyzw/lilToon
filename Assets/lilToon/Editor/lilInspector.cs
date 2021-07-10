@@ -88,6 +88,7 @@ namespace lilToon
         const string boothURL = "https://lilxyzw.booth.pm/";
         const string githubURL = "https://github.com/lilxyzw/lilToon";
         const string editorSettingPath = "Assets/lilToonSetting/EditorSetting.asset";
+        const string avatarEncryptionPath = "Assets/AvaterEncryption/Editor/AvaCryptRootEditor.cs";
 
         static Vector4 defaultHSVG = new Vector4(0.0f,1.0f,1.0f,1.0f);
         #if UNITY_2019_1_OR_NEWER
@@ -528,6 +529,8 @@ namespace lilToon
                 GUIStyle offsetButton = new GUIStyle(GUI.skin.button);
                 offsetButton.margin.left = 20;
             #endif
+            GUIStyle wrapLabel = new GUIStyle(GUI.skin.label);
+            wrapLabel.wordWrap = true;
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Initialize Setting
@@ -2376,7 +2379,7 @@ namespace lilToon
             // Preset
             if(editorMode == EditorMode.Preset)
             {
-                if(isLite)  EditorGUILayout.LabelField(loc["sPresetsNotAvailable"]);
+                if(isLite)  EditorGUILayout.LabelField(loc["sPresetsNotAvailable"], wrapLabel);
                 else        DrawPreset(material);
             }
 	    }
@@ -3231,8 +3234,15 @@ namespace lilToon
             }
             DrawLine();
 
-            lilToggleGUI(loc["sSettingEncryption"], ref shaderSetting.LIL_FEATURE_ENCRYPTION);
-            DrawLine();
+            if(File.Exists(avatarEncryptionPath))
+            {
+                lilToggleGUI(loc["sSettingEncryption"], ref shaderSetting.LIL_FEATURE_ENCRYPTION);
+                DrawLine();
+            }
+            else
+            {
+                shaderSetting.LIL_FEATURE_ENCRYPTION = false;
+            }
 
             lilToggleGUI(loc["sSettingTexOutlineColor"], ref shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR);
             if(shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR)
@@ -4015,7 +4025,7 @@ namespace lilToon
                 }
                 liteMaterial.SetFloat("_ShadowEnvStrength",         shadowEnvStrength.floatValue);
                 liteMaterial.SetColor("_ShadowBorderColor",         shadowBorderColor.colorValue);
-                liteMaterial.SetFloat("_ShadowBorderBlur",          shadowBorderRange.floatValue);
+                liteMaterial.SetFloat("_ShadowBorderRange",         shadowBorderRange.floatValue);
             }
 
             if(isOutl)
@@ -4075,7 +4085,7 @@ namespace lilToon
             }
 
             Texture2D bakedTriMask = AutoBakeTriMask(liteMaterial);
-            if(bakedTriMask == null) liteMaterial.SetTexture("_TriMask", bakedTriMask);
+            if(bakedTriMask != null) liteMaterial.SetTexture("_TriMask", bakedTriMask);
 
             liteMaterial.SetFloat("_SrcBlend",                  srcBlend.floatValue);
             liteMaterial.SetFloat("_DstBlend",                  dstBlend.floatValue);

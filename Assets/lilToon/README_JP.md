@@ -40,7 +40,7 @@ Unityバージョン
 - 距離フェード（距離に応じて色を変える）
 - AudioLink（対応VRChatワールドで音に同期してマテリアルをアニメーション）
 - テッセレーション（自動ハイポリ化、高負荷なので映像制作向け）
-- メッシュの暗号化
+- メッシュの暗号化 (別途[AvatarEncryption](https://github.com/lilxyzw/AvaterEncryption)の導入が必要です)
 
 # ライセンス
 MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください。

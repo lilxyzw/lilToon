@@ -40,7 +40,7 @@ Supported Rendering Pipelines
 - Distance Fade (Changes color according to distance)
 - AudioLink (Animate materials in sync with sound in supported VRChat worlds)
 - Tessellation (For video production due to high load)
-- Mesh Encryption
+- Mesh Encryption ([AvatarEncryption](https://github.com/lilxyzw/AvaterEncryption) is required)
 
 # License
 lilToon is available under the MIT License. Please refer to the `LICENSE` included in the package.
