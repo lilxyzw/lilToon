@@ -43,31 +43,31 @@ Unityバージョン
 - メッシュの暗号化
 
 # ライセンス
-MIT Licenseで公開しています。同梱のLICENSEをご確認ください。
+MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください。
 
 # 使い方 - 新規セットアップ
 1. unitypackageをUnityウィンドウにドラッグ＆ドロップでインポート
 2. Projectからマテリアルを選択
-3. Inspector上部の"Shader"から"lilToon"を選択
-4. テクスチャが反映されていない場合は"メインカラー"にテクスチャを設定
-5. テクスチャを透過する場合は"Rendering Mode(透過モード)"を"カットアウト"または"半透明"に変更
+3. Inspector上部の`Shader`から`lilToon`を選択
+4. テクスチャが反映されていない場合は`メインカラー`にテクスチャを設定
+5. テクスチャを透過する場合は`Rendering Mode(透過モード)`を`カットアウト`または`半透明`に変更
 6. 機能を追加したい場合は詳細設定内の"[シェーダー設定](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md#シェーダー設定)"を変更
 
 より詳しい設定については[マニュアル](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md)を参照してください。
 
 # よくあるトラブル
 - 顔にかかる影が気になる  
-  → "マスクと強度"にマスクテクスチャを指定することで部分的に影を消すことができます。
+  → `マスクと強度`にマスクテクスチャを指定することで部分的に影を消すことができます。
 - 輪郭線が汚くなる  
-  → "マスクと太さ"にマスクテクスチャを指定することで部分的に輪郭線を消したり太さを調整したりすることができます。
+  → `マスクと太さ`にマスクテクスチャを指定することで部分的に輪郭線を消したり太さを調整したりすることができます。
 - 明るい場所で影が薄くなる  
-  → "環境光の強さ"の数値を下げると明るい場所でも影が強く出ます。
+  → `環境光の強さ`の数値を下げると明るい場所でも影が強く出ます。
 
 # シェーダー外のおすすめ設定
 以下の設定で顔など一部分だけ明るさが違う現象を緩和できます。また、テクスチャの透過が綺麗になります。
-- Hierarchyからメッシュを選択し、"Root Bone"、"Bounds"、"Anchor Override"の設定を統一、"Recieve Shadows"をオフにする
-- Projectから透過テクスチャを選択し、Inspectorから"Alpha Is Transparency"にチェックを入れる
-- Cutoutマテリアルに使われるテクスチャは"Mip Maps Preserve Coverage"にチェックを入れる
+- Hierarchyからメッシュを選択し、`Root Bone`、`Bounds`、`Anchor Override`の設定を統一、`Recieve Shadows`をオフにする
+- Projectから透過テクスチャを選択し、Inspectorから`Alpha Is Transparency`にチェックを入れる
+- Cutoutマテリアルに使われるテクスチャは`Mip Maps Preserve Coverage`にチェックを入れる
 
 # Liteバージョンについて
 通常版の見た目をある程度維持しつつ大幅に軽量化したものです。こちらはシェーダー設定がなく機能が統一されているためアバター展示にオススメです。Lite版から直接マテリアルを設定せず、通常版で作成したものを変換するとより直感的にマテリアル設定が可能です。

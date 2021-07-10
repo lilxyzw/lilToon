@@ -141,7 +141,7 @@ float lilIntervalTime(float interval)
 //------------------------------------------------------------------------------------------------------------------------------
 // Encryption (https://github.com/rygo6/GTAvaCrypt)
 #if !defined(LIL_LITE) && !defined(LIL_BAKER) &&  defined(LIL_FEATURE_ENCRYPTION)
-float4 vertexDecode(float4 positionOS, float3 normal, float2 uv6, float2 uv7)
+float4 vertexDecode(float4 positionOS, float3 normalOS, float2 uv6, float2 uv7)
 {
     if(_IgnoreEncryption) return positionOS;
 
@@ -153,10 +153,10 @@ float4 vertexDecode(float4 positionOS, float3 normal, float2 uv6, float2 uv7)
     keys.z *= 3;
     keys.w *= 4;
 
-    positionOS.xyz -= normal * uv6.x * (sin((keys.z - keys.y) * 2) * cos(keys.w - keys.x));
-    positionOS.xyz -= normal * uv6.y * (sin((keys.w - keys.x) * 3) * cos(keys.z - keys.y));
-    positionOS.xyz -= normal * uv7.x * (sin((keys.x - keys.w) * 4) * cos(keys.y - keys.z));
-    positionOS.xyz -= normal * uv7.y * (sin((keys.y - keys.z) * 5) * cos(keys.x - keys.w));
+    positionOS.xyz -= normalOS * uv6.x * (sin((keys.z - keys.y) * 2) * cos(keys.w - keys.x));
+    positionOS.xyz -= normalOS * uv6.y * (sin((keys.w - keys.x) * 3) * cos(keys.z - keys.y));
+    positionOS.xyz -= normalOS * uv7.x * (sin((keys.x - keys.w) * 4) * cos(keys.y - keys.z));
+    positionOS.xyz -= normalOS * uv7.y * (sin((keys.y - keys.z) * 5) * cos(keys.x - keys.w));
 
     return positionOS;
 }

@@ -43,31 +43,31 @@ Supported Rendering Pipelines
 - Mesh Encryption
 
 # License
-lilToon is available under the MIT License. Please refer to the "LICENSE" included in the package.
+lilToon is available under the MIT License. Please refer to the `LICENSE` included in the package.
 
 # Usage - Material Setup
 1. Drag and drop unitypackage to the Unity window to import it.
 2. Select a material from Project.
-3. Select "lilToon" from "Shader" at the top of Inspector.
-4. If no texture has been applied, set the texture to "Main Color".
-5. To make the material transparent, change "Rendering Mode" to "Cutout" or "Transparent".
+3. Select `lilToon` from `Shader` at the top of Inspector.
+4. If no texture has been applied, set the texture to `Main Color`.
+5. To make the material transparent, change `Rendering Mode` to `Cutout` or `Transparent`.
 6. If you want to add more features, change the "[Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting)" in the Advanced settings.
 
 Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md) for more detailed settings.
 
 # Common Problems
 - The shadows on face are dirty.  
-  → You can specify a mask texture in "Mask & Strength" to partially remove shadows.
+  → You can specify a mask texture in `Mask & Strength` to partially remove shadows.
 - Outline becomes dirty.  
-  → You can specify a mask texture in "Mask & Width" to partially remove outline or adjust the thickness.
+  → You can specify a mask texture in `Mask & Width` to partially remove outline or adjust the thickness.
 - Shadows are weak in bright places.  
-  → "Environment Strength" value affects the strength of shadows in bright places.
+  → `Environment Strength` value affects the strength of shadows in bright places.
 
 # Recommended settings outside the shader
 The following settings improve the problem of different brightness in one part of the model. Also, texture transparency artifacts are removed.
-- Select the mesh from the Hierarchy, unify the "Root Bone", "Bounds", and "Anchor Override" settings, and turn off "Recieve Shadows".
-- Select a transparent texture from Project and check "Alpha Is Transparency" in Inspector.
-- Check the "Mip Maps Preserve Coverage" checkbox for textures used in Cutout materials.
+- Select the mesh from the Hierarchy, unify the `Root Bone`, `Bounds`, and `Anchor Override` settings, and turn off `Recieve Shadows`.
+- Select a transparent texture from Project and check `Alpha Is Transparency` in Inspector.
+- Check the `Mip Maps Preserve Coverage` checkbox for textures used in Cutout materials.
 
 # About Lite version
 Lite version is a greatly optimized version that maintains the appearance of the normal version to some extent. This version is recommended for avatar displays because it has no shader settings and its features are unified. It is recommended to convert materials created with Normal version to the Lite version instead of setting materials directly from Lite version for more intuitive material setting.

@@ -106,7 +106,7 @@
 You can blend colors into the main color. This is the layer function in painting software.
 |Name|Description|
 |-|-|
-|Texture|Specifies the texture. You can also specify a Gif image and click "Convert Gif" to animate it.|
+|Texture|Specifies the texture. You can also specify a Gif image and click `Convert Gif` to animate it.|
 |MSDF Texture|Sampling as [MSDF Texture](https://github.com/Chlumsky/msdfgen). The rendering will be similar to a vector image.|
 |As Decal|When it is turned on, the layer is used as a decal.|
 |Mask|Combine layers only in the area specified by the mask.|
@@ -308,7 +308,7 @@ If it is complicated and difficult to understand, you can use it without problem
 |Comp|How to compare IDs. Material is drawn when the conditions are met.|
 |Pass|Whether to rewrite the ID when the material is drawn.|
 |Fail|Whether to rewrite the ID when the material is not drawn.|
-|ZFail|Whether to rewrite the ID if there is an object in front of the material and it is not drawn, but the "Comp" condition is met.|
+|ZFail|Whether to rewrite the ID if there is an object in front of the material and it is not drawn, but the `Comp` condition is met.|
 |Set Writer|Apply the material settings for writing the stencil|
 |Set Reader|Apply the material settings for reading the stencil|
 |Reset|Initializes the setting to no stencil.|
@@ -327,7 +327,7 @@ This is a complex setting that is usually not changed. You can ignore them.
 |Offset Units|Increase or decrease the depth.|
 |SrcBlend|Value to be multiplied by the color calculated by the shader.|
 |DstBlend|Value to be multiplied by the color already on the screen.|
-|BlendOp|How to synthesize the calculation results. If you set it to anything other than Add, SrcBlend and DstBlend will be ignored.|
+|BlendOp|How to synthesize the calculation results. If you set it to anything other than `Add`, `SrcBlend` and `DstBlend` will be ignored.|
 |ForwardAdd*|Setting used only when composing additional lights.|
 |Enable GPU Instancing|Whether to perform GPU Instancing.|
 |Render Queue|A number used to determine the order in which materials are drawn. The higher the value, the later it will be drawn.|
