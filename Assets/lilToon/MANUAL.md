@@ -288,8 +288,8 @@ Decrypt the mesh from 4 keys.
 It can be used to prevent ripping, but not completely.
 |Name|Description|
 |-|-|
-|Ignore Encryption|The type of effect.|
-|Keys|The shape of effect.|
+|Ignore Encryption|Turn this on if you do not want to encrypt the mesh.|
+|Keys|Decryption keys.|
 
 <br/>
 

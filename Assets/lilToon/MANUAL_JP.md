@@ -288,8 +288,8 @@
 リッピング防止に使用できますが、完全に防げるわけではありません。
 |Name|Description|
 |-|-|
-|Ignore Encryption|The type of effect.|
-|Keys|The shape of effect.|
+|Ignore Encryption|メッシュを暗号化したくない場合はこれをオンにしてください。|
+|Keys|復号化のキーです。|
 
 <br/>
 
