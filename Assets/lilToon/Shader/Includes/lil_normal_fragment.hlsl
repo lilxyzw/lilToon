@@ -41,6 +41,38 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         }
         col *= _OutlineColor;
 
+        // Dissolve
+        #if defined(LIL_FEATURE_DISSOLVE) && LIL_RENDER != 0
+            float dissolveAlpha = 0.0;
+            #if defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
+                lilCalcDissolveWithNoise(
+                    col.a,
+                    dissolveAlpha,
+                    input.uv,
+                    input.positionOS,
+                    _DissolveParams,
+                    _DissolvePos,
+                    _DissolveMask,
+                    _DissolveMask_ST,
+                    _DissolveNoiseMask,
+                    _DissolveNoiseMask_ST,
+                    _DissolveNoiseMask_ScrollRotate,
+                    _DissolveNoiseStrength
+                );
+            #else
+                lilCalcDissolve(
+                    col.a,
+                    dissolveAlpha,
+                    input.uv,
+                    input.positionOS,
+                    _DissolveParams,
+                    _DissolvePos,
+                    _DissolveMask,
+                    _DissolveMask_ST
+                );
+            #endif
+        #endif
+
         //----------------------------------------------------------------------------------------------------------------------
         // Alpha
         #if LIL_RENDER == 0

@@ -96,6 +96,9 @@ v2f vert(appdata input)
     #if defined(LIL_OUTLINE)
         //--------------------------------------------------------------------------------------------------------------
         // Outline
+        #if defined(LIL_SHOULD_POSITION_OS)
+            output.positionOS   = input.positionOS;
+        #endif
         #if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP)
             output.positionWS   = vertexInput.positionWS;
         #endif

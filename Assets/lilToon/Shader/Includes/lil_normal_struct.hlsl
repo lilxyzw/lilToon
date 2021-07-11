@@ -49,15 +49,18 @@
     {
         float4 positionCS       : SV_POSITION;
         float2 uv               : TEXCOORD0;
+        #if defined(LIL_SHOULD_POSITION_OS)
+            float3 positionOS       : TEXCOORD1;
+        #endif
         #if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP)
-            float3 positionWS       : TEXCOORD1;
+            float3 positionWS       : TEXCOORD2;
         #endif
         #if defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE)
-            float3 normalWS         : TEXCOORD2;
+            float3 normalWS         : TEXCOORD3;
         #endif
-        LIL_VERTEXLIGHT_COORDS(3)
-        LIL_FOG_COORDS(4)
-        LIL_LIGHTMAP_COORDS(5)
+        LIL_VERTEXLIGHT_COORDS(4)
+        LIL_FOG_COORDS(5)
+        LIL_LIGHTMAP_COORDS(6)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
