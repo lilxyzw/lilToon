@@ -55,6 +55,17 @@ lilToon is available under the MIT License. Please refer to the `LICENSE` includ
 
 Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md) for more detailed settings.
 
+# How to distribute your works that use lilToon
+Shader settings are stored in the `lilToonSetting` folder, so it is recommended to include this folder in the unitypackage.  
+If you have not changed shader settings, you do not need to include them.  
+The following is the detailed procedure.
+1. 制作物のフォルダを選択
+2. ctrlを押しながら`lilToonSetting`フォルダを選択
+3. （シェーダーを同梱する場合のみ）ctrlを押しながら`lilToon`フォルダを選択
+4. 右クリックし`Export package...`を選択
+5. `Include Dependencies`のチェックを外す
+6. `Export...`を押してunitypackageを保存
+
 # Common Problems
 - The shadows on face are dirty.  
   → You can specify a mask texture in `Mask & Strength` to partially remove shadows.

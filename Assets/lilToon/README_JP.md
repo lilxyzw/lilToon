@@ -55,6 +55,17 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 
 より詳しい設定については[マニュアル](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md)を参照してください。
 
+# lilToonを用いた制作物の配布手順について
+`lilToonSetting`フォルダにシェーダー設定が保存されているためこちらも含めてunitypackage化することをオススメします。  
+シェーダー設定を変更していない場合は同梱する必要はありません。  
+詳細な手順は次の通りです。
+1. 制作物のフォルダを選択
+2. ctrlを押しながら`lilToonSetting`フォルダを選択
+3. （シェーダーを同梱する場合のみ）ctrlを押しながら`lilToon`フォルダを選択
+4. 右クリックし`Export package...`を選択
+5. `Include Dependencies`のチェックを外す
+6. `Export...`を押してunitypackageを保存
+
 # よくあるトラブル
 - 顔にかかる影が気になる  
   → `マスクと強度`にマスクテクスチャを指定することで部分的に影を消すことができます。
