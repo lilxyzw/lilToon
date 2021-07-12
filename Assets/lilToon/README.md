@@ -11,7 +11,7 @@ This shader is developed for services using avatars (VRChat, etc.) and has the f
 
 # Support
 Supported Unity versions
-- Unity 2017 - Unity 2021.1
+- Unity 2017 - Unity 2021.2
 
 Supported Shader Models
 - Normal: SM4.0 / ES3.0 or later

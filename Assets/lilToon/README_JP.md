@@ -11,7 +11,7 @@ Version 1.0
 
 # 対応状況
 Unityバージョン
-- Unity 2017 - Unity 2021.1
+- Unity 2017 - Unity 2021.2
 
 シェーダーモデル
 - 通常版: SM4.0・ES3.0以降
