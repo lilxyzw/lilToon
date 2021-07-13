@@ -132,7 +132,7 @@ namespace lilToon
                 #else
                     yield return webRequest.Send();
                 #endif
-                if(!webRequest.isNetworkError)
+                if(webRequest.result != UnityWebRequest.Result.ConnectionError)
                 {
                     StreamWriter sw = new StreamWriter(versionInfoTempPath,false);
                     sw.Write(webRequest.downloadHandler.text);
