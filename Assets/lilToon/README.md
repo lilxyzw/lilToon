@@ -46,7 +46,9 @@ Supported Rendering Pipelines
 lilToon is available under the MIT License. Please refer to the `LICENSE` included in the package.
 
 # Usage - Material Setup
-1. Drag and drop unitypackage to the Unity window to import it.
+1. Import lilToon into Unity using one of the following methods.  
+    i. Drag and drop unitypackage to the Unity window to import it.  
+    ii. Import ```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master``` from UPM.  
 2. Select a material from Project.
 3. Select `lilToon` from `Shader` at the top of Inspector.
 4. If no texture has been applied, set the texture to `Main Color`.
