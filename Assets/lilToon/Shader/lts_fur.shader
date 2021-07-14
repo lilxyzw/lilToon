@@ -50,7 +50,7 @@ Shader "Hidden/lilToonFur"
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced
-        [lilCullMode]                                   _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
+        [lilEnum]                                       _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 10
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlpha      ("SrcBlendAlpha", Int) = 1

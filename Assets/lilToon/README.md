@@ -46,7 +46,9 @@ Supported Rendering Pipelines
 lilToon is available under the MIT License. Please refer to the `LICENSE` included in the package.
 
 # Usage - Material Setup
-1. Drag and drop unitypackage to the Unity window to import it.
+1. Import lilToon into Unity using one of the following methods.  
+    i. Drag and drop unitypackage to the Unity window to import it.  
+    ii. Import ```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master``` from UPM.  
 2. Select a material from Project.
 3. Select `lilToon` from `Shader` at the top of Inspector.
 4. If no texture has been applied, set the texture to `Main Color`.
@@ -59,12 +61,12 @@ Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Asse
 Shader settings are stored in the `lilToonSetting` folder, so it is recommended to include this folder in the unitypackage.  
 If you have not changed shader settings, you do not need to include them.  
 The following is the detailed procedure.
-1. 制作物のフォルダを選択
-2. ctrlを押しながら`lilToonSetting`フォルダを選択
-3. （シェーダーを同梱する場合のみ）ctrlを押しながら`lilToon`フォルダを選択
-4. 右クリックし`Export package...`を選択
-5. `Include Dependencies`のチェックを外す
-6. `Export...`を押してunitypackageを保存
+1. Select the folder of your works.
+2. hold down ctrl and select `lilToonSetting` folder.
+3. (only if you want to include shaders) hold down ctrl and select the `lilToon` folder.
+4. Right click and select `Export package...`.
+5. uncheck `Include Dependencies`.
+6. Press `Export...` to save the unitypackage.
 
 # Common Problems
 - The shadows on face are dirty.  
@@ -82,6 +84,12 @@ The following settings improve the problem of different brightness in one part o
 
 # About Lite version
 Lite version is a greatly optimized version that maintains the appearance of the normal version to some extent. This version is recommended for avatar displays because it has no shader settings and its features are unified. It is recommended to convert materials created with Normal version to the Lite version instead of setting materials directly from Lite version for more intuitive material setting.
+
+# References
+- [UnlitWF (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite)
+- [Arktoon-Shaders (synqark)](https://github.com/synqark/Arktoon-Shaders)
+- [Optimized inverse trigonometric function](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
+- [視差オクルージョンマッピング(parallax occlution mapping)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # Change log
 ## v1.0

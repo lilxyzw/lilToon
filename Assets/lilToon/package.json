@@ -1,0 +1,9 @@
+{
+  "name": "jp.lilxyzw.liltoon",
+  "displayName": "lilToon",
+  "version": "1.0.1",
+  "unity": "2017.1",
+  "description": "Feature-rich toon shader.",
+  "keywords": ["Toon", "Shader", "Material"],
+  "license": "MIT"
+}

@@ -87,7 +87,8 @@ void geom(triangle v2g input[3], inout TriangleStream<g2f> outStream)
         #endif
 
         //--------------------------------------------------------------------------------------------------------------
-        // Fin
+        // FakeFur (whiteflare)
+        // https://github.com/whiteflare/Unlit_WF_ShaderSuite
         for (uint fl = 0; fl < _FurLayerNum; fl++)
         {
             float lpmix = fl/(float)_FurLayerNum;

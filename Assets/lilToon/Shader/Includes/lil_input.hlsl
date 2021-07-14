@@ -235,8 +235,10 @@ float4 _GrabTexture_TexelSize;
     float   _MainGradationStrength;
     float   _Main2ndTexAngle;
     float   _Main3rdTexAngle;
+    float   _AlphaMaskValue;
     uint    _Main2ndTexBlendMode;
     uint    _Main3rdTexBlendMode;
+    uint    _AlphaMaskMode;
     lilBool _UseMain2ndTex;
     lilBool _Main2ndTexIsDecal;
     lilBool _Main2ndTexIsLeftOnly;
@@ -459,6 +461,9 @@ float   _FlipNormal;
         float   _Main3rdDissolveNoiseStrength;
     #endif
 #endif
+#if defined(LIL_FEATURE_ALPHAMASK)
+    float   _AlphaMaskValue;
+#endif
 #if defined(LIL_FEATURE_SHADOW)
     float   _BackfaceForceShadow;
     float   _ShadowStrength;
@@ -543,6 +548,9 @@ float   _OutlineEnableLighting;
 #endif
 #if defined(LIL_FEATURE_MAIN3RD)
     uint    _Main3rdTexBlendMode;
+#endif
+#if defined(LIL_FEATURE_ALPHAMASK)
+    uint    _AlphaMaskMode;
 #endif
 #if defined(LIL_FEATURE_MATCAP)
     uint    _MatCapBlendMode;
@@ -676,6 +684,7 @@ TEXTURE2D(_Main3rdTex);
 TEXTURE2D(_Main3rdBlendMask);
 TEXTURE2D(_Main3rdDissolveMask);
 TEXTURE2D(_Main3rdDissolveNoiseMask);
+TEXTURE2D(_AlphaMask);
 TEXTURE2D(_BumpMap);
 TEXTURE2D(_Bump2ndMap);
 TEXTURE2D(_Bump2ndScaleMask);

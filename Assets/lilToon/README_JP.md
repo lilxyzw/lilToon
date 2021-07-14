@@ -46,7 +46,9 @@ Unityバージョン
 MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください。
 
 # 使い方 - 新規セットアップ
-1. unitypackageをUnityウィンドウにドラッグ＆ドロップでインポート
+1. 下記いずれかの方法でUnityにlilToonをインポート  
+    i. unitypackageをUnityウィンドウにドラッグ＆ドロップでインポート  
+    ii. UPMから```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master```をインポート  
 2. Projectからマテリアルを選択
 3. Inspector上部の`Shader`から`lilToon`を選択
 4. テクスチャが反映されていない場合は`メインカラー`にテクスチャを設定
@@ -82,6 +84,12 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 
 # Liteバージョンについて
 通常版の見た目をある程度維持しつつ大幅に軽量化したものです。こちらはシェーダー設定がなく機能が統一されているためアバター展示にオススメです。Lite版から直接マテリアルを設定せず、通常版で作成したものを変換するとより直感的にマテリアル設定が可能です。
+
+# リファレンス
+- [UnlitWF (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite)
+- [Arktoon-Shaders (synqark)](https://github.com/synqark/Arktoon-Shaders)
+- [Optimized inverse trigonometric function](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
+- [視差オクルージョンマッピング(parallax occlution mapping)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # 変更履歴
 ## v1.0

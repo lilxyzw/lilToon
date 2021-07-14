@@ -302,6 +302,9 @@ namespace lilToon
             MaterialProperty main3rdDissolveColor;
             MaterialProperty main3rdDissolveParams;
             MaterialProperty main3rdDissolvePos;
+        MaterialProperty alphaMaskMode;
+            MaterialProperty alphaMask;
+            MaterialProperty alphaMaskValue;
         MaterialProperty useShadow;
             MaterialProperty shadowBorder;
             MaterialProperty shadowBorderMask;
@@ -587,6 +590,7 @@ namespace lilToon
             languageNum = selectLang(languageNum);
             string sCullModes = loc["sCullMode"] + "|" + loc["sCullModeOff"] + "|" + loc["sCullModeFront"] + "|" + loc["sCullModeBack"];
             string sBlendModes = loc["sBlendMode"] + "|" + loc["sBlendModeNormal"] + "|" + loc["sBlendModeAdd"] + "|" + loc["sBlendModeScreen"] + "|" + loc["sBlendModeMul"];
+            string sAlphaMaskModes = loc["sAlphaMask"] + "|" + loc["sAlphaMaskModeNone"] + "|" + loc["sAlphaMaskModeReplace"] + "|" + loc["sAlphaMaskModeMul"];
             string blinkSetting = loc["sBlinkStrength"] + "|" + loc["sBlinkType"] + "|" + loc["sBlinkSpeed"] + "|" + loc["sBlinkOffset"];
             string sDissolveParams = loc["sDissolveMode"] + "|" + loc["sDissolveModeNone"] + "|" + loc["sDissolveModeAlpha"] + "|" + loc["sDissolveModeUV"] + "|" + loc["sDissolveModePosition"] + "|" + loc["sDissolveShape"] + "|" + loc["sDissolveShapePoint"] + "|" + loc["sDissolveShapeLine"] + "|" + loc["sBorder"] + "|" + loc["sBlur"];
             string sDissolveParamsMode = loc["sDissolve"] + "|" + loc["sDissolveModeNone"] + "|" + loc["sDissolveModeAlpha"] + "|" + loc["sDissolveModeUV"] + "|" + loc["sDissolveModePosition"];
@@ -596,6 +600,7 @@ namespace lilToon
             GUIContent textureRGBAContent = new GUIContent(loc["sTexture"], loc["sTextureRGBA"]);
             GUIContent colorRGBAContent = new GUIContent(loc["sColor"], loc["sTextureRGBA"]);
             GUIContent maskBlendContent = new GUIContent(loc["sMask"], loc["sBlendR"]);
+            GUIContent alphaMaskContent = new GUIContent(loc["sAlphaMask"], loc["sAlphaR"]);
             GUIContent maskStrengthContent = new GUIContent(loc["sStrengthMask"], loc["sStrengthR"]);
             GUIContent normalMapContent = new GUIContent(loc["sNormalMap"], loc["sNormalRGB"]);
             GUIContent triMaskContent = new GUIContent(loc["sTriMask"], loc["sTriMaskRGB"]);
@@ -968,7 +973,6 @@ namespace lilToon
                         if(isCutout || isTransparent)
                         {
                             SetAlphaIsTransparencyGUI(mainTex);
-                            AlphamaskToTextureGUI(material);
                         }
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
@@ -1391,7 +1395,6 @@ namespace lilToon
                             //{
                                 EditorGUILayout.BeginVertical(boxInnerHalf);
                                 materialEditor.TexturePropertySingleLine(textureRGBAContent, mainTex, mainColor);
-                                AlphamaskToTextureGUI(material);
                                 EditorGUILayout.EndVertical();
                             //}
                             EditorGUILayout.EndVertical();
@@ -1411,7 +1414,6 @@ namespace lilToon
                                 if(isCutout || isTransparent)
                                 {
                                     SetAlphaIsTransparencyGUI(mainTex);
-                                    AlphamaskToTextureGUI(material);
                                 }
                                 if(shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION)
                                 {
@@ -1509,6 +1511,22 @@ namespace lilToon
                                     }
                                     DrawLine();
                                     TextureBakeGUI(material, 6);
+                                    EditorGUILayout.EndVertical();
+                                }
+                                EditorGUILayout.EndVertical();
+                            }
+
+                            //------------------------------------------------------------------------------------------------------------------------------
+                            // Alpha Mask
+                            if(shaderSetting.LIL_FEATURE_ALPHAMASK)
+                            {
+                                EditorGUILayout.BeginVertical(boxOuter);
+                                materialEditor.ShaderProperty(alphaMaskMode, sAlphaMaskModes);
+                                if(alphaMaskMode.floatValue != 0)
+                                {
+                                    EditorGUILayout.BeginVertical(boxInnerHalf);
+                                    materialEditor.TexturePropertySingleLine(alphaMaskContent, alphaMask, alphaMaskValue);
+                                    AlphamaskToTextureGUI(material);
                                     EditorGUILayout.EndVertical();
                                 }
                                 EditorGUILayout.EndVertical();
@@ -1933,11 +1951,15 @@ namespace lilToon
 
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Dissolve
-                    if(shaderSetting.LIL_FEATURE_DISSOLVE && !isFur && renderingModeBuf != RenderingMode.Opaque)
+                    if(shaderSetting.LIL_FEATURE_DISSOLVE && !isFur)
                     {
                         isShowDissolve = Foldout(loc["sDissolve"], loc["sDissolve"], isShowDissolve);
                         DrawHelpButton(loc["sAnchorDissolve"]);
-                        if(isShowDissolve)
+                        if(isShowDissolve && renderingModeBuf == RenderingMode.Opaque)
+                        {
+                            GUILayout.Label(loc["sDissolveWarnOpaque"], wrapLabel);
+                        }
+                        if(isShowDissolve && renderingModeBuf != RenderingMode.Opaque)
                         {
                             EditorGUILayout.BeginVertical(boxOuter);
                             materialEditor.ShaderProperty(dissolveParams, sDissolveParamsMode);
@@ -2472,6 +2494,10 @@ namespace lilToon
                 main3rdDissolveColor = FindProperty("_Main3rdDissolveColor", props);
                 main3rdDissolveParams = FindProperty("_Main3rdDissolveParams", props);
                 main3rdDissolvePos = FindProperty("_Main3rdDissolvePos", props);
+            // Alpha Mask
+            alphaMaskMode = FindProperty("_AlphaMaskMode", props);
+                alphaMask = FindProperty("_AlphaMask", props);
+                alphaMaskValue = FindProperty("_AlphaMaskValue", props);
             // Shadow
             useShadow = FindProperty("_UseShadow", props);
                 shadowBorder = FindProperty("_ShadowBorder", props);
@@ -3131,6 +3157,9 @@ namespace lilToon
             }
             DrawLine();
 
+            lilToggleGUI(loc["sSettingAlphaMask"], ref shaderSetting.LIL_FEATURE_ALPHAMASK);
+            DrawLine();
+
             lilToggleGUI(loc["sSettingShadow"], ref shaderSetting.LIL_FEATURE_SHADOW);
             if(shaderSetting.LIL_FEATURE_SHADOW)
             {
@@ -3295,6 +3324,8 @@ namespace lilToon
                     if(shaderSetting.LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE) sb.Append("#define LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE\r\n");
                 }
             }
+
+            if(shaderSetting.LIL_FEATURE_ALPHAMASK) sb.Append("#define LIL_FEATURE_ALPHAMASK\r\n");
 
             if(shaderSetting.LIL_FEATURE_SHADOW)
             {
@@ -4337,11 +4368,18 @@ namespace lilToon
             }
         }
 
+
         void AlphamaskToTextureGUI(Material material)
         {
             if(mainTex.textureValue != null && GUILayout.Button(loc["sBakeAlphamask"]))
             {
-                mainTex.textureValue = AutoBakeAlphaMask(material);
+                Texture2D bakedTexture = AutoBakeAlphaMask(material);
+                if(bakedTexture == mainTex.textureValue) return;
+
+                mainTex.textureValue = bakedTexture;
+                alphaMaskMode.floatValue = 0.0f;
+                alphaMask.textureValue = null;
+                alphaMaskValue.floatValue = 0.0f;
             }
         }
 
@@ -5098,11 +5136,13 @@ namespace lilToon
             byte[] bytes;
 
             Texture2D srcTexture = new Texture2D(2, 2);
-            Texture2D srcMain2 = new Texture2D(2, 2);
+            Texture2D srcAlphaMask = new Texture2D(2, 2);
 
             hsvgMaterial.EnableKeyword("_ALPHAMASK");
             hsvgMaterial.SetColor(mainColor.name,           Color.white);
             hsvgMaterial.SetVector(mainTexHSVG.name,        defaultHSVG);
+            hsvgMaterial.SetFloat(alphaMaskMode.name,       alphaMaskMode.floatValue);
+            hsvgMaterial.SetFloat(alphaMaskValue.name,      alphaMaskValue.floatValue);
 
             path = AssetDatabase.GetAssetPath(bufMainTexture);
             if(!String.IsNullOrEmpty(path))
@@ -5117,14 +5157,13 @@ namespace lilToon
                 hsvgMaterial.SetTexture(mainTex.name, Texture2D.whiteTexture);
             }
 
-            EditorUtility.DisplayDialog(loc["sBakeAlphamask"],loc["sSelectAlphamask"],loc["sOK"]);
-            path = EditorUtility.OpenFilePanel(loc["sSelectAlphamask"], Path.GetDirectoryName(AssetDatabase.GetAssetPath(mainTex.textureValue)), "");
+            path = AssetDatabase.GetAssetPath(material.GetTexture(alphaMask.name));
             if(!String.IsNullOrEmpty(path))
             {
                 bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                srcMain2.LoadImage(bytes);
-                srcMain2.filterMode = FilterMode.Bilinear;
-                hsvgMaterial.SetTexture(main2ndTex.name, srcMain2);
+                srcAlphaMask.LoadImage(bytes);
+                srcAlphaMask.filterMode = FilterMode.Bilinear;
+                hsvgMaterial.SetTexture(alphaMask.name, srcAlphaMask);
             }
             else
             {
@@ -6037,42 +6076,54 @@ namespace lilToon
         }
     }
 
-    public class lilCullMode : MaterialPropertyDrawer
+    public class lilEnum : MaterialPropertyDrawer
     {
-        // CullMode (Off Front Back)
-        // [lilCullMode]
+        // [lilEnum]
         public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
         {
             string[] labels = label.Split('|');
+            string[] enums = new string[labels.Length-1];
+            Array.Copy(labels, 1, enums, 0, labels.Length-1);
 
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
-            float cullFloat = (float)EditorGUI.Popup(position, labels[0], (int)prop.floatValue, new String[]{labels[1],labels[2],labels[3]});
+            float value = (float)EditorGUI.Popup(position, labels[0], (int)prop.floatValue, enums);
             EditorGUI.showMixedValue = false;
 
             if(EditorGUI.EndChangeCheck())
             {
-                prop.floatValue = cullFloat;
+                prop.floatValue = value;
             }
         }
     }
 
-    public class lilBlendMode : MaterialPropertyDrawer
+    public class lilEnumLabel : MaterialPropertyDrawer
     {
-        // BlendMode (Normal Add Screen Multiply)
-        // [lilBlendMode]
+        // [lilEnum]
         public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
         {
             string[] labels = label.Split('|');
+            string[] enums = new string[labels.Length-1];
+            Array.Copy(labels, 1, enums, 0, labels.Length-1);
 
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
-            float blendFloat = (float)EditorGUI.Popup(position, labels[0], (int)prop.floatValue, new String[]{labels[1],labels[2],labels[3],labels[4]});
+            #if UNITY_2019_1_OR_NEWER
+                float value = (float)EditorGUI.Popup(position, labels[0], (int)prop.floatValue, enums);
+            #else
+                GUIStyle customToggleFont = new GUIStyle();
+                customToggleFont.normal.textColor = Color.white;
+                customToggleFont.contentOffset = new Vector2(2f,0f);
+                float labelWidth = EditorGUIUtility.labelWidth;
+                Rect labelRect = new Rect(position.x, position.y, labelWidth, position.height);
+                EditorGUI.PrefixLabel(labelRect, new GUIContent(labels[0]), customToggleFont);
+                float value = (float)EditorGUI.Popup(position, " ", (int)prop.floatValue, enums);
+            #endif
             EditorGUI.showMixedValue = false;
 
             if(EditorGUI.EndChangeCheck())
             {
-                prop.floatValue = blendFloat;
+                prop.floatValue = value;
             }
         }
     }

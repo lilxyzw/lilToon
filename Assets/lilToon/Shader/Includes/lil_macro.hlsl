@@ -14,27 +14,6 @@
 // 1 : On (for BlendOp Max)
 #define LIL_PREMULTIPLY_FA 1
 
-// SH sampling mode for direct light (Default : 10)
-// 0 : Length of unity_SHA, SHB, SHC
-// 1 : Length of unity_SHA, SHB (Arktoon / ArxCharacterShaders)
-// 2 : Length of unity_SHA
-// 3 : Length of unity_SHA, SHB / ShadeSH9(unity_SHA) (Poiyomi Toon Shader)
-// 4 : unity_SHA.w (VRChat Mobile Toon Lit / MnMrShader / Reflex Shader)
-// 5 : Average value of 2 directions, top and bottom (MToon)
-// 6 : Maximum value of unity_SHA.w, SampleSH(down), 0.05 (UTS2)
-// 7 : Maximum value of 6 directions (Sunao Shader)
-// 8 : Average value of 6 directions (UnlitWF)
-// 9 : Strongest direction
-// 10 : Approximation of Standard (lilToon)
-#define LIL_SH_DIRECT_MODE 10
-
-// SH sampling mode for indirect light (Default : 3)
-// 0 : unity_SHA.w
-// 1 : Minimum value of 6 directions
-// 2 : Weakest direction
-// 3 : Approximation of Standard (lilToon)
-#define LIL_SH_INDIRECT_MODE 3
-
 // Light direction mode (Default : 1)
 // 0 : Directional light Only
 // 1 : Blend SH light

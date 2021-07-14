@@ -616,51 +616,6 @@ float3 lilGetLightMapDirection(float2 uv)
 
 //------------------------------------------------------------------------------------------------------------------------------
 // SH Lighting
-float3 lilGetSHZero()
-{
-    // L0
-    #ifdef LIL_COLORSPACE_GAMMA
-        return LinearToSRGB(float3(unity_SHAr.w,unity_SHAg.w,unity_SHAb.w));
-    #else
-        return float3(unity_SHAr.w,unity_SHAg.w,unity_SHAb.w);
-    #endif
-}
-
-float3 lilGetSHLength()
-{
-    float3 x1, x2;
-    // L0 & L1
-    x1.r = length(unity_SHAr);
-    x1.g = length(unity_SHAg);
-    x1.b = length(unity_SHAb);
-
-    #if LIL_SH_DIRECT_MODE == 0
-        // L2
-        x2.r = sqrt(dot(unity_SHBr,unity_SHBr)+dot(unity_SHC.r,unity_SHC.r));
-        x2.g = sqrt(dot(unity_SHBg,unity_SHBg)+dot(unity_SHC.g,unity_SHC.g));
-        x2.b = sqrt(dot(unity_SHBb,unity_SHBb)+dot(unity_SHC.b,unity_SHC.b));
-    #elif LIL_SH_DIRECT_MODE == 1
-        // L2
-        x2.r = length(unity_SHBr);
-        x2.g = length(unity_SHBg);
-        x2.b = length(unity_SHBb);
-    #elif LIL_SH_DIRECT_MODE == 2
-        // L2
-        x2 = 0.0;
-    #else
-        // L2
-        x2.r = length(unity_SHBr);
-        x2.g = length(unity_SHBg);
-        x2.b = length(unity_SHBb);
-    #endif
-
-    #ifdef UNITY_COLORSPACE_GAMMA
-        return LinearToSRGB(x1 + x2);
-    #else
-        return x1 + x2;
-    #endif
-}
-
 float3 lilGetSHToon()
 {
     float3 N = lilGetLightDirection() * 0.666666;
@@ -677,76 +632,6 @@ float3 lilGetSHToon()
         res = LinearToSRGB(res);
     #endif
     return res;
-}
-
-float3 lilGetSHMagic()
-{
-    // return ShadeSH9(normalize(unity_SHAr+unity_SHAg+unity_SHAb));
-    float4 N = normalize(unity_SHAr+unity_SHAg+unity_SHAb);
-    float3 res;
-    res.r = dot(unity_SHAr, N);
-    res.g = dot(unity_SHAg, N);
-    res.b = dot(unity_SHAb, N);
-
-    float4 vB = N.xyzz * N.yzzx;
-    res.r += dot(unity_SHBr, vB);
-    res.g += dot(unity_SHBg, vB);
-    res.b += dot(unity_SHBb, vB);
-
-    res += unity_SHC.rgb * (N.x * N.x - N.y * N.y);
-
-    #ifdef UNITY_COLORSPACE_GAMMA
-        res = LinearToSRGB(res);
-    #endif
-
-    return res;
-}
-
-float3 lilGetSHStrongest()
-{
-    return SampleSH(normalize(unity_SHAr.rgb+unity_SHAg.rgb+unity_SHAb.rgb));
-}
-
-float3 lilGetSHWeakest()
-{
-    return SampleSH(-normalize(unity_SHAr.rgb+unity_SHAg.rgb+unity_SHAb.rgb));
-}
-
-float3 lilGetSHMax()
-{
-    float3 x1;
-	x1 =         SampleSH(float3(+1.0, 0.0, 0.0));
-	x1 = max(x1, SampleSH(float3(-1.0, 0.0, 0.0)));
-	x1 = max(x1, SampleSH(float3( 0.0,+1.0, 0.0)));
-	x1 = max(x1, SampleSH(float3( 0.0,-1.0, 0.0)));
-	x1 = max(x1, SampleSH(float3( 0.0, 0.0,+1.0)));
-	x1 = max(x1, SampleSH(float3( 0.0, 0.0,-1.0)));
-    return x1;
-}
-
-float3 lilGetSHMin()
-{
-    float3 x1;
-	x1 =         SampleSH(float3(+1.0, 0.0, 0.0));
-	x1 = min(x1, SampleSH(float3(-1.0, 0.0, 0.0)));
-	x1 = min(x1, SampleSH(float3( 0.0,+1.0, 0.0)));
-	x1 = min(x1, SampleSH(float3( 0.0,-1.0, 0.0)));
-	x1 = min(x1, SampleSH(float3( 0.0, 0.0,+1.0)));
-	x1 = min(x1, SampleSH(float3( 0.0, 0.0,-1.0)));
-    return x1;
-}
-
-float3 lilGetSHAverage()
-{
-    float3 x1 = 0;
-    x1 += SampleSH(float3(+1.0, 0.0, 0.0));
-    x1 += SampleSH(float3(-1.0, 0.0, 0.0));
-    x1 += SampleSH(float3( 0.0, 0.0,+1.0));
-    x1 += SampleSH(float3( 0.0, 0.0,-1.0));
-    x1 /= 4;
-    x1 += SampleSH(float3( 0.0,+1.0, 0.0));
-    x1 += SampleSH(float3( 0.0,-1.0, 0.0));
-    return x1 / 3;
 }
 
 float3 lilGetSHToonMin()
@@ -771,55 +656,12 @@ float3 lilGetSHToonMin()
 // Lighting
 float3 lilGetLightColor()
 {
-    #if LIL_SH_DIRECT_MODE == 0
-        // Length of unity_SHA, SHB, SHC
-        return saturate(_MainLightColor.rgb + lilGetSHLength());
-    #elif LIL_SH_DIRECT_MODE == 1
-        // Length of unity_SHA, SHB (Arktoon / ArxCharacterShaders)
-        return saturate(_MainLightColor.rgb + lilGetSHLength());
-    #elif LIL_SH_DIRECT_MODE == 2
-        // Length of unity_SHA
-        return saturate(_MainLightColor.rgb + lilGetSHLength());
-    #elif LIL_SH_DIRECT_MODE == 3
-        // Length of unity_SHA, SHB / ShadeSH9(unity_SHA) (Poiyomi Toon Shader)
-        return saturate(lerp(saturate(lilGetSHMagic()+_MainLightColor.rgb), lilGetSHLength(), 0.2));
-    #elif LIL_SH_DIRECT_MODE == 4
-        // unity_SHA.w (VRChat Mobile Toon Lit / MnMrShader / Reflex Shader)
-        return saturate(_MainLightColor.rgb + lilGetSHZero());
-    #elif LIL_SH_DIRECT_MODE == 5
-        // Average value of 2 directions, top and bottom (MToon)
-        return saturate(_MainLightColor.rgb + (SampleSH(float3(0.0,1.0,0.0)) + SampleSH(float3(0.0,-1.0,0.0)))*0.5);
-    #elif LIL_SH_DIRECT_MODE == 6
-        // Maximum value of unity_SHA.w, SampleSH(down), 0.05 (UTS2)
-        float unlitIntensity = 1.0;
-        float3 shLight = max(lilGetSHZero(), SampleSH(float3(0.0,-1.0,0.0))) * unlitIntensity;
-        return clamp(0.05 * unlitIntensity, 1.0, max(_MainLightColor.rgb, shLight));
-    #elif LIL_SH_DIRECT_MODE == 7
-        // Maximum value of 6 directions (Sunao Shader)
-        return saturate(_MainLightColor.rgb + lilGetSHMax());
-    #elif LIL_SH_DIRECT_MODE == 8
-        // Average value of 6 directions (UnlitWF)
-        return saturate(_MainLightColor.rgb + lilGetSHAverage());
-    #elif LIL_SH_DIRECT_MODE == 9
-        // Strongest direction
-        return saturate(_MainLightColor.rgb + lilGetSHStrongest());
-    #elif LIL_SH_DIRECT_MODE == 10
-        // Approximation of Standard (lilToon)
-        return saturate(_MainLightColor.rgb + lilGetSHToon());
-    #endif
+    return saturate(_MainLightColor.rgb + lilGetSHToon());
 }
 
 float3 lilGetIndirLightColor()
 {
-    #if LIL_SH_INDIRECT_MODE == 0
-        return saturate(lilGetSHZero());
-    #elif LIL_SH_INDIRECT_MODE == 1
-        return saturate(lilGetSHMin());
-    #elif LIL_SH_INDIRECT_MODE == 2
-        return saturate(lilGetSHWeakest());
-    #elif LIL_SH_INDIRECT_MODE == 3
-        return saturate(lilGetSHToonMin());
-    #endif
+    return saturate(lilGetSHToonMin());
 }
 
 float3 lilGetLightMapColor(float2 uv)
