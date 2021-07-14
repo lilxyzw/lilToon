@@ -296,9 +296,11 @@
         #if defined(SHADOWS_SCREEN) || defined(_MAIN_LIGHT_SHADOWS_SCREEN)
             #define LIL_TRANSFER_SHADOW(vi,uv,o)        o.shadowCoord = ComputeScreenPos(vi.positionCS);
         #else
-            #define LIL_TRANSFER_SHADOW(vi,uv,o)        o.shadowCoord = TransformWorldToShadowCoord(vi.positionWS);
+            #define LIL_TRANSFER_SHADOW(vi,uv,o)        o.shadowCoord = float4(vi.positionWS, 1.0);
         #endif
-        #define LIL_LIGHT_ATTENUATION(atten,i)      float atten = MainLightRealtimeShadow(i.shadowCoord)
+        #define LIL_LIGHT_ATTENUATION(atten,i) \
+            float4 shadowCoord = TransformWorldToShadowCoord(i.shadowCoord); \
+            float atten = MainLightRealtimeShadow(shadowCoord)
     #else
         #define LIL_SHADOW_COORDS(idx)
         #define LIL_TRANSFER_SHADOW(vi,uv,o)
