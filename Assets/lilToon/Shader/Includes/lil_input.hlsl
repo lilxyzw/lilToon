@@ -201,6 +201,7 @@ float4 _GrabTexture_TexelSize;
     float   _AsUnlit;
     float   _Cutoff;
     float   _FlipNormal;
+    float   _VertexLightStrength;
     float   _BackfaceForceShadow;
     float   _ShadowBorder;
     float   _ShadowBlur;
@@ -444,6 +445,7 @@ float   _AsUnlit;
     float   _Cutoff;
 #endif
 float   _FlipNormal;
+float   _VertexLightStrength;
 #if defined(LIL_FEATURE_MAIN_GRADATION_MAP)
     float   _MainGradationStrength;
 #endif

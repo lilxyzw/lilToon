@@ -9,6 +9,7 @@ Shader "Hidden/lilToonLiteTransparentOutline"
                         _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.5
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
+                        _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
         [NoScaleOffset] _TriMask                    ("TriMask", 2D) = "white" {}
 
         //----------------------------------------------------------------------------------------------------------------------

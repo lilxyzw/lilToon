@@ -718,7 +718,7 @@ float3 lilGetVertexLights(float3 positionWS)
         outCol =          outCol + unity_LightColor[2].rgb * atten.z;
         outCol = saturate(outCol + unity_LightColor[3].rgb * atten.w);
 
-        return outCol;
+        return outCol * _VertexLightStrength;
     #else
         float3 outCol = 0.0;
 
@@ -731,7 +731,7 @@ float3 lilGetVertexLights(float3 positionWS)
             }
         #endif
 
-        return outCol;
+        return outCol * _VertexLightStrength;
     #endif
 }
 

@@ -95,6 +95,7 @@ sCullModeFront	Front	Front (背面のみ描画)	Front	Front	Front
 sCullModeBack	Back	Back (前面のみ描画)	Back	Back	Back
 sFlipBackfaceNormal	Flip Backface Normal	背面の法線を反転	뒷면의 법선 반전	翻转背影法线	翻轉背影法線
 sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면을 그림자로	背面的力量阴影	背面的力量陰影
+sVertexLightStrength	Vertex Light Strength	頂点ライトの強度	Vertex Light Strength	Vertex Light Strength	Vertex Light Strength
 sHelpRenderingTransparent	When two transparent materials overlap, one of them may become invisible.	透過マテリアル同士が重なったときに片方が見えなくなる場合があります	투명 Material끼리 겹친 때 한쪽이 보이지 않을 수 있습니다	当两个透明Material重叠时，其中一个可能会变得不可见。	當兩個透明Material重疊時，其中一個可能會變得不可見。
 sHelpCullMode	If the material does not look right, set the CullMode to Off or Back.	表示がおかしい場合はCullModeをOffもしくはBackにしてください	표시가 이상한 경우는 CullMode을 Off 또는 Back합니다	如果材质看起来不对，请将CullMode设置为Off或Back。	如果材質看起來不對，請將CullMode設置為Off或Back。
 sHelpZWrite	If the material does not look right, turn on ZWrite.	表示がおかしい場合はZWriteをオンにしてください	표시가 이상한 경우는 ZWrite을 선택하십시오	如果材质看起来不对，请打开ZWrite。	如果材質看起來不對，請打開ZWrite。

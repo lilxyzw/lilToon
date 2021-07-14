@@ -659,9 +659,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 float4 matCapColor = _MatCapColor;
                 if(Exists_MatCapTex) matCapColor *= LIL_SAMPLE_2D(_MatCapTex, sampler_MainTex, matUV);
                 #ifndef LIL_PASS_FORWARDADD
-                    matCapColor.rgb = lerp(matCapColor.rgb, matCapColor.rgb * lightColor, _RimEnableLighting);
+                    matCapColor.rgb = lerp(matCapColor.rgb, matCapColor.rgb * lightColor, _MatCapEnableLighting);
                 #else
-                    matCapColor.rgb *= lightColor * _RimEnableLighting;
+                    if(_MatCapBlendMode < 3) matCapColor.rgb *= lightColor * _MatCapEnableLighting;
                 #endif
                 #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                     if(_MatCapApplyTransparency) matCapColor.a *= col.a;
