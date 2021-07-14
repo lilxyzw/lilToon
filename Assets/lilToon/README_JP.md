@@ -46,7 +46,9 @@ Unityバージョン
 MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください。
 
 # 使い方 - 新規セットアップ
-1. unitypackageをUnityウィンドウにドラッグ＆ドロップでインポート
+1. 下記いずれかの方法でUnityにlilToonをインポート  
+    i. unitypackageをUnityウィンドウにドラッグ＆ドロップでインポート  
+    ii. UPMから```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master```をインポート  
 2. Projectからマテリアルを選択
 3. Inspector上部の`Shader`から`lilToon`を選択
 4. テクスチャが反映されていない場合は`メインカラー`にテクスチャを設定
