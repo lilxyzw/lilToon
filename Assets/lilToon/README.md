@@ -88,8 +88,10 @@ Lite version is a greatly optimized version that maintains the appearance of the
 # References
 - [UnlitWF (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite)
 - [Arktoon-Shaders (synqark)](https://github.com/synqark/Arktoon-Shaders)
-- [Optimized inverse trigonometric function](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
-- [視差オクルージョンマッピング(parallax occlution mapping)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
+- [MToon (Santarh)](https://github.com/Santarh/MToon)
+- [Optimized inverse trigonometric function (seblagarde)](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
+- [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
+- [GTAvaCrypt (rygo6)](https://github.com/rygo6/GTAvaCrypt)
 
 # Change log
 ## v1.0
