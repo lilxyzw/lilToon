@@ -83,6 +83,11 @@ The following settings improve the problem of different brightness in one part o
 # About Lite version
 Lite version is a greatly optimized version that maintains the appearance of the normal version to some extent. This version is recommended for avatar displays because it has no shader settings and its features are unified. It is recommended to convert materials created with Normal version to the Lite version instead of setting materials directly from Lite version for more intuitive material setting.
 
+# Reference technology and copyright
+The following techniques were used for this project.
+- [FakeFur (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite)
+- [Optimized inverse trigonometric function](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
+
 # Change log
 ## v1.0
 - Opening to the public

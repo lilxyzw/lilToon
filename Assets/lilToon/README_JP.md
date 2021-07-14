@@ -83,6 +83,11 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 # Liteバージョンについて
 通常版の見た目をある程度維持しつつ大幅に軽量化したものです。こちらはシェーダー設定がなく機能が統一されているためアバター展示にオススメです。Lite版から直接マテリアルを設定せず、通常版で作成したものを変換するとより直感的にマテリアル設定が可能です。
 
+# 参考技術および著作権表示
+以下の技術を参考に制作しました。
+- [FakeFur (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite)
+- [Optimized inverse trigonometric function](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
+
 # 変更履歴
 ## v1.0
 - 公開開始
