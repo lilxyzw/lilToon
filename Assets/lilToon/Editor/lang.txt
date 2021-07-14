@@ -84,8 +84,8 @@ sRenderingMode	Rendering Mode	透過モード	투명 모드	Rendering Mode	Rende
 sRenderingModeOpaque	Opaque	不透明	불투명	不透明	不透明
 sRenderingModeCutout	Cutout	カットアウト	단편	镂空	鏤空
 sRenderingModeTransparent	Transparent	半透明	반투명	透明	透明
-sRenderingModeRefraction	Refraction	屈折	굴절	折射	折射
-sRenderingModeRefractionBlur	Refraction Blur	屈折ぼかし	굴절 흐림	折射模糊	折射模糊
+sRenderingModeRefraction	[high-load] Refraction	[高負荷] 屈折	[과부하] 굴절	[高负荷] 折射	[高負荷] 折射
+sRenderingModeRefractionBlur	[high-load] Refraction Blur	[高負荷] 屈折ぼかし	[과부하] 굴절 흐림	[高负荷] 折射模糊	[高負荷] 折射模糊
 sRenderingModeFur	Fur	ファー	퍼	毛皮	毛皮
 sRenderingModeFurCutout	Fur (Cutout)	ファー (カットアウト)	퍼 (단편)	毛皮(镂空)	毛皮(鏤空)
 sCutoff	Cutoff	Cutoff (透明にする範囲)	Cutoff	Cutoff	Cutoff
@@ -376,7 +376,7 @@ sSettingTexMatCapMask	MatCap Mask	マットキャップマスク	매트 캡 마�
 sSettingRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
 sSettingTexRimLightColor	Rim Light Color Texture	リムライト色テクスチャ	림 라이트 색상 질감	Rim Light颜色纹理	Rim Light顏色紋理
 sSettingParallax	Parallax	視差マップ	시차 맵	视差	視差
-sSettingPOM	POM	POM	POM	POM	POM
+sSettingPOM	[high-load] POM	[高負荷] POM	[과부하] POM	[高负荷] POM	[高負荷] POM
 sSettingClippingCanceller	Distance Clipping Canceller	距離クリッピングキャンセラー	거리 클리핑 취소 기	距离剪裁取消器	距離剪裁取消器
 sSettingDistanceFade	Distance Fade	距離フェード	거리 페이드	距离淡化	距離淡化
 sSettingAudioLink	AudioLink	AudioLink	AudioLink	AudioLink	AudioLink

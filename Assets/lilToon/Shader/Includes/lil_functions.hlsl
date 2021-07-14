@@ -678,6 +678,7 @@ float3 lilGetLightMapColor(float2 uv)
     return outCol;
 }
 
+#if !defined(LIL_BAKER)
 float3 lilGetVertexLights(float3 positionWS)
 {
     #ifdef LIL_BRP
@@ -734,6 +735,7 @@ float3 lilGetVertexLights(float3 positionWS)
         return outCol * _VertexLightStrength;
     #endif
 }
+#endif
 
 float3 lilGetAdditionalLights(float3 positionWS)
 {
