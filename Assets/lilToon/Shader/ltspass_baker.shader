@@ -25,7 +25,7 @@ Shader "Hidden/ltsother_baker"
         [lilToggle]     _Main2ndTexShouldFlipCopy   ("Flip Copy", Int) = 0
         [lilToggle]     _Main2ndTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main2ndBlendMask           ("Mask", 2D) = "white" {}
-        [lilBlendMode]  _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
+        [lilEnum]       _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main3rd
@@ -41,7 +41,13 @@ Shader "Hidden/ltsother_baker"
         [lilToggle]     _Main3rdTexShouldFlipCopy   ("Flip Copy", Int) = 0
         [lilToggle]     _Main3rdTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main3rdBlendMask           ("Mask", 2D) = "white" {}
-        [lilBlendMode]  _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
+        [lilEnum]       _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Alpha Mask
+        [lilEnumLabel]  _AlphaMaskMode              ("AlphaMask|", Int) = 0
+        [NoScaleOffset] _AlphaMask                  ("AlphaMask", 2D) = "white" {}
+                        _AlphaMaskValue             ("AlphaMaskValue", Range(-1,1)) = 0
     }
     SubShader
     {
@@ -94,9 +100,10 @@ Shader "Hidden/ltsother_baker"
                     float emi = lilGray(col3.rgb);
                     float4 col = float4(mat,rim,emi,1);
                 #elif _ALPHAMASK
-                    float4 col1 = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
-                    float4 col2 = LIL_SAMPLE_2D(_Main2ndTex,sampler_Main2ndTex,input.uv);
-                    float4 col = float4(col1.rgb,col2.r);
+                    float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
+                    float alphaMask = LIL_SAMPLE_2D(_AlphaMask,sampler_MainTex,input.uv).r;
+                    alphaMask = saturate(alphaMask + _AlphaMaskValue);
+                    col.a = _AlphaMaskMode == 1 ? alphaMask : col.a * alphaMask;
                 #elif _NORMAL_DXGL
                     float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
                     col.g = 1.0 - col.g;

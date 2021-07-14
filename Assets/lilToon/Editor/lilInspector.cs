@@ -973,7 +973,6 @@ namespace lilToon
                         if(isCutout || isTransparent)
                         {
                             SetAlphaIsTransparencyGUI(mainTex);
-                            AlphamaskToTextureGUI(material);
                         }
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
@@ -1396,7 +1395,6 @@ namespace lilToon
                             //{
                                 EditorGUILayout.BeginVertical(boxInnerHalf);
                                 materialEditor.TexturePropertySingleLine(textureRGBAContent, mainTex, mainColor);
-                                AlphamaskToTextureGUI(material);
                                 EditorGUILayout.EndVertical();
                             //}
                             EditorGUILayout.EndVertical();
@@ -1416,7 +1414,6 @@ namespace lilToon
                                 if(isCutout || isTransparent)
                                 {
                                     SetAlphaIsTransparencyGUI(mainTex);
-                                    AlphamaskToTextureGUI(material);
                                 }
                                 if(shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION)
                                 {
@@ -1529,6 +1526,7 @@ namespace lilToon
                                 {
                                     EditorGUILayout.BeginVertical(boxInnerHalf);
                                     materialEditor.TexturePropertySingleLine(alphaMaskContent, alphaMask, alphaMaskValue);
+                                    AlphamaskToTextureGUI(material);
                                     EditorGUILayout.EndVertical();
                                 }
                                 EditorGUILayout.EndVertical();
@@ -4366,11 +4364,18 @@ namespace lilToon
             }
         }
 
+
         void AlphamaskToTextureGUI(Material material)
         {
             if(mainTex.textureValue != null && GUILayout.Button(loc["sBakeAlphamask"]))
             {
-                mainTex.textureValue = AutoBakeAlphaMask(material);
+                Texture2D bakedTexture = AutoBakeAlphaMask(material);
+                if(bakedTexture == mainTex.textureValue) return;
+
+                mainTex.textureValue = bakedTexture;
+                alphaMaskMode.floatValue = 0.0f;
+                alphaMask.textureValue = null;
+                alphaMaskValue.floatValue = 0.0f;
             }
         }
 
@@ -5127,11 +5132,13 @@ namespace lilToon
             byte[] bytes;
 
             Texture2D srcTexture = new Texture2D(2, 2);
-            Texture2D srcMain2 = new Texture2D(2, 2);
+            Texture2D srcAlphaMask = new Texture2D(2, 2);
 
             hsvgMaterial.EnableKeyword("_ALPHAMASK");
             hsvgMaterial.SetColor(mainColor.name,           Color.white);
             hsvgMaterial.SetVector(mainTexHSVG.name,        defaultHSVG);
+            hsvgMaterial.SetFloat(alphaMaskMode.name,       alphaMaskMode.floatValue);
+            hsvgMaterial.SetFloat(alphaMaskValue.name,      alphaMaskValue.floatValue);
 
             path = AssetDatabase.GetAssetPath(bufMainTexture);
             if(!String.IsNullOrEmpty(path))
@@ -5146,14 +5153,13 @@ namespace lilToon
                 hsvgMaterial.SetTexture(mainTex.name, Texture2D.whiteTexture);
             }
 
-            EditorUtility.DisplayDialog(loc["sBakeAlphamask"],loc["sSelectAlphamask"],loc["sOK"]);
-            path = EditorUtility.OpenFilePanel(loc["sSelectAlphamask"], Path.GetDirectoryName(AssetDatabase.GetAssetPath(mainTex.textureValue)), "");
+            path = AssetDatabase.GetAssetPath(material.GetTexture(alphaMask.name));
             if(!String.IsNullOrEmpty(path))
             {
                 bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                srcMain2.LoadImage(bytes);
-                srcMain2.filterMode = FilterMode.Bilinear;
-                hsvgMaterial.SetTexture(main2ndTex.name, srcMain2);
+                srcAlphaMask.LoadImage(bytes);
+                srcAlphaMask.filterMode = FilterMode.Bilinear;
+                hsvgMaterial.SetTexture(alphaMask.name, srcAlphaMask);
             }
             else
             {
