@@ -1951,11 +1951,15 @@ namespace lilToon
 
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Dissolve
-                    if(shaderSetting.LIL_FEATURE_DISSOLVE && !isFur && renderingModeBuf != RenderingMode.Opaque)
+                    if(shaderSetting.LIL_FEATURE_DISSOLVE && !isFur)
                     {
                         isShowDissolve = Foldout(loc["sDissolve"], loc["sDissolve"], isShowDissolve);
                         DrawHelpButton(loc["sAnchorDissolve"]);
-                        if(isShowDissolve)
+                        if(isShowDissolve && renderingModeBuf == RenderingMode.Opaque)
+                        {
+                            GUILayout.Label(loc["sDissolveWarnOpaque"], wrapLabel);
+                        }
+                        if(isShowDissolve && renderingModeBuf != RenderingMode.Opaque)
                         {
                             EditorGUILayout.BeginVertical(boxOuter);
                             materialEditor.ShaderProperty(dissolveParams, sDissolveParamsMode);

@@ -195,6 +195,7 @@ sAudioLinkLocalMapBPM	BPM	BPM	BPM	BPM	BPM
 sAudioLinkLocalMapNotes	Notes	拍数	Notes	Notes	Notes
 sDissolve	Dissolve	Dissolve	Dissolve	Dissolve	Dissolve
 sDissolveTips	Settings for dissolving a material	マテリアルが溶けるような表現ができます	재료를 용해시키기위한 설정	用于溶解材料的设置	用於溶解材料的設置
+sDissolveWarnOpaque	If you want to use Dissolve, you need to change the "Rendering Mode" to Cutout or Transparent.	Dissolveを使う場合は"透過モード"をカットアウトか半透明に変更する必要があります。	Dissolve를 사용하려면 "Rendering Mode"를 단편 또는 반투명로 변경해야합니다.	如果要使用Dissolve，则需要将“Rendering Mode”更改为镂空或透明。	如果要使用Dissolve，則需要將“Rendering Mode”更改為鏤空或透明。
 sDissolveMode	Dissolve Mode	Dissolve Mode	Dissolve Mode	Dissolve Mode	Dissolve Mode
 sDissolveModeNone	None	None	None	None	None
 sDissolveModeAlpha	Alpha	透明度	Alpha	Alpha	Alpha
