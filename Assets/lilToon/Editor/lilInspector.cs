@@ -1760,7 +1760,7 @@ namespace lilToon
                                     else                                            materialEditor.ShaderProperty(matcapBlend, loc["sBlend"]);
                                     materialEditor.ShaderProperty(matcapEnableLighting, loc["sEnableLighting"]);
                                     materialEditor.ShaderProperty(matcapBlendMode, sBlendModes);
-                                    if(matcapEnableLighting.floatValue == 1.0f && matcapBlendMode.floatValue == 3.0f)
+                                    if(matcapEnableLighting.floatValue != 0.0f && matcapBlendMode.floatValue == 3.0f)
                                     {
                                         EditorGUILayout.HelpBox(loc["sHelpMatCapBlending"],MessageType.Warning);
                                     }
