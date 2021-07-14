@@ -258,6 +258,17 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         #endif
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Alpha Mask
+        #if defined(LIL_FEATURE_ALPHAMASK) && LIL_RENDER != 0
+            if(_AlphaMaskMode)
+            {
+                float alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, uvMain).r;
+                alphaMask = saturate(alphaMask + _AlphaMaskValue);
+                col.a = _AlphaMaskMode == 1 ? alphaMask : col.a * alphaMask;
+            }
+        #endif
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Alpha
         float alpha = col.a;
         #if LIL_RENDER == 0

@@ -10,6 +10,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_DECAL;
     public bool LIL_FEATURE_ANIMATE_DECAL;
     public bool LIL_FEATURE_LAYER_DISSOLVE;
+    public bool LIL_FEATURE_ALPHAMASK;
     public bool LIL_FEATURE_SHADOW;
     public bool LIL_FEATURE_RECEIVE_SHADOW;
     public bool LIL_FEATURE_EMISSION_1ST;

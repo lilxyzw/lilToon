@@ -35,7 +35,7 @@ Shader "Hidden/lilToonOutline"
         [lilToggle]     _Main2ndTexShouldFlipCopy   ("Flip Copy", Int) = 0
         [lilToggle]     _Main2ndTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main2ndBlendMask           ("Mask", 2D) = "white" {}
-        [lilBlendMode]  _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
+        [lilEnum]       _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
                         _Main2ndEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
                         _Main2ndDissolveMask        ("Dissolve Mask", 2D) = "white" {}
                         _Main2ndDissolveNoiseMask   ("Dissolve Noise Mask", 2D) = "gray" {}
@@ -61,7 +61,7 @@ Shader "Hidden/lilToonOutline"
         [lilToggle]     _Main3rdTexShouldFlipCopy   ("Flip Copy", Int) = 0
         [lilToggle]     _Main3rdTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main3rdBlendMask           ("Mask", 2D) = "white" {}
-        [lilBlendMode]  _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
+        [lilEnum]       _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
                         _Main3rdEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
                         _Main3rdDissolveMask        ("Dissolve Mask", 2D) = "white" {}
                         _Main3rdDissolveNoiseMask   ("Dissolve Noise Mask", 2D) = "gray" {}
@@ -70,6 +70,12 @@ Shader "Hidden/lilToonOutline"
         [lilHDR]        _Main3rdDissolveColor       ("Dissolve Color", Color) = (1,1,1,1)
         [lilDissolve]   _Main3rdDissolveParams      ("Dissolve Mode|None|Alpha|UV|Position|Dissolve Shape|Point|Line|Border|Blur", Vector) = (0,0,0.5,0.1)
         [lilDissolveP]  _Main3rdDissolvePos         ("Dissolve Position", Vector) = (0,0,0,0)
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Alpha Mask
+        [lilEnumLabel]  _AlphaMaskMode              ("AlphaMask|", Int) = 0
+        [NoScaleOffset] _AlphaMask                  ("AlphaMask", 2D) = "white" {}
+                        _AlphaMaskValue             ("AlphaMaskValue", Range(-1,1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // NormalMap
@@ -132,7 +138,7 @@ Shader "Hidden/lilToonOutline"
                         _MatCapBlend                ("Blend", Range(0, 1)) = 1
         [NoScaleOffset] _MatCapBlendMask            ("Mask", 2D) = "white" {}
                         _MatCapEnableLighting       ("Enable Lighting", Range(0, 1)) = 1
-        [lilBlendMode]  _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
+        [lilEnum]       _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCapApplyTransparency    ("Apply Transparency", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -265,7 +271,7 @@ Shader "Hidden/lilToonOutline"
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced
-        [lilCullMode]                                   _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
+        [lilEnum]                                       _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 0
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlpha      ("SrcBlendAlpha", Int) = 1

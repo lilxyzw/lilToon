@@ -113,6 +113,10 @@ sMainColor	Main Color	メインカラー	메인 컬러	主色	主色
 sMainColor2nd	Main Color 2nd	メインカラー2nd	메인 컬러 2nd	主色2nd	主色2nd
 sMainColor3rd	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	主色3rd	主色3rd
 sGradationMap	Gradation Map	グラデーションマップ	그라디언트 맵	渐变映射	漸變映射
+sAlphaMask	Alpha Mask	アルファマスク	알파 마스크	Alpha蒙版	Alpha蒙版
+sAlphaMaskModeNone	None	None	None	None	None
+sAlphaMaskModeReplace	Replace	置き換え	Replace	Replace	Replace
+sAlphaMaskModeMul	Multiply	乗算	Multiply	Multiply	Multiply
 sShadowSetting	Shadow	影設定	그림자 설정	阴影设置	陰影設置
 sShadowTips	You can set the color and range of the shadow.	影の色や範囲の設定ができます	그림자의 색상과 범위를 설정할 수 있습니다	你可以设置阴影的颜色和范围。	你可以設置陰影的顏色和範圍。
 sShadow	Shadow	影	그림자	阴影	陰影
@@ -342,6 +346,7 @@ sSettingDecal	Decal	デカール	데칼	Decal	Decal
 sSettingAnimateDecal	Decal Animation	デカールアニメーション	데칼 애니메이션	Decal动画	Decal動畫
 sSettingTexLayerMask	Layer Mask	レイヤーマスク	레이어 마스크	图层蒙版	圖層蒙版
 sSettingLayerDissolve	Layer Dissolve	レイヤーDissolve	Layer Dissolve	Layer Dissolve	Layer Dissolve
+sSettingAlphaMask	Alpha Mask	アルファマスク	알파 마스크	Alpha蒙版	Alpha蒙版
 sSettingShadow	Shadow	影	그림자	阴影	陰影
 sSettingReceiveShadow	Receive Shadow	影の受け取り	그림자 받고	接收阴影	接收陰影
 sSettingTexShadowBlur	Shadow Blur Mask	ぼかし量マスク	흐림 효과 마스크	阴影模糊掩码	陰影模糊掩碼
@@ -394,6 +399,7 @@ sAnchorColor	#color	#色設定	#color	#color	#color
 sAnchorMainColor	#main-color	#基本色設定	#main-color	#main-color	#main-color
 sAnchorMainColor1	#main-color-1	#メインカラー	#main-color-1	#main-color-1	#main-color-1
 sAnchorMainColor2	#main-color-2nd--3rd	#メインカラー2nd3rd	#main-color-2nd--3rd	#main-color-2nd--3rd	#main-color-2nd--3rd
+sAnchorAlphaMask	#alpha-mask	#アルファマスク	#alpha-mask	#alpha-mask	#alpha-mask
 sAnchorShadow	#shadow	#影設定	#shadow	#shadow	#shadow
 sAnchorEmission	#emission	#発光設定	#emission	#emission	#emission
 sAnchorNormalReflection	#normal-map--reflection	#ノーマルマップ光沢設定	#normal-map--reflection	#normal-map--reflection	#normal-map--reflection
