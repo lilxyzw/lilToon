@@ -143,6 +143,17 @@ Shader "Hidden/lilToonTessellationOutline"
         [lilToggle]     _MatCapApplyTransparency    ("Apply Transparency", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
+        // MatCap 2nd
+        [lilToggleLeft] _UseMatCap2nd               ("Use MatCap 2nd", Int) = 0
+        [lilHDR]        _MatCap2ndColor             ("Color", Color) = (1,1,1,1)
+        [NoScaleOffset] _MatCap2ndTex               ("Texture", 2D) = "white" {}
+                        _MatCap2ndBlend             ("Blend", Range(0, 1)) = 1
+        [NoScaleOffset] _MatCap2ndBlendMask         ("Mask", 2D) = "white" {}
+                        _MatCap2ndEnableLighting    ("Enable Lighting", Range(0, 1)) = 1
+        [lilEnum]       _MatCap2ndBlendMode         ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
+        [lilToggle]     _MatCap2ndApplyTransparency ("Apply Transparency", Int) = 1
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Rim
         [lilToggleLeft] _UseRim                     ("Use Rim", Int) = 0
         [lilHDR]        _RimColor                   ("Color", Color) = (1,1,1,1)

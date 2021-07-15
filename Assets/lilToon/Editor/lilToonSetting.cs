@@ -24,6 +24,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_NORMAL_2ND;
     public bool LIL_FEATURE_REFLECTION;
     public bool LIL_FEATURE_MATCAP;
+    public bool LIL_FEATURE_MATCAP_2ND;
     public bool LIL_FEATURE_RIMLIGHT;
     public bool LIL_FEATURE_PARALLAX;
     public bool LIL_FEATURE_POM;

@@ -41,6 +41,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         }
         col *= _OutlineColor;
 
+        //----------------------------------------------------------------------------------------------------------------------
         // Dissolve
         #if defined(LIL_FEATURE_DISSOLVE) && LIL_RENDER != 0
             float dissolveAlpha = 0.0;
@@ -225,6 +226,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         }
         col *= _Color;
 
+        //----------------------------------------------------------------------------------------------------------------------
         // Dissolve
         #if defined(LIL_FEATURE_DISSOLVE) && LIL_RENDER != 0
             float dissolveAlpha = 0.0;
@@ -651,11 +653,19 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //----------------------------------------------------------------------------------------------------------------------
         // MatCap
+        #if defined(LIL_FEATURE_MATCAP) && defined(LIL_FEATURE_MATCAP_2ND)
+            float2 matUV = float2(0,0);
+            LIL_BRANCH
+            if(_UseMatCap || _UseMatCap2nd) matUV = lilCalcMatCapUV(normalDirection);
+        #endif
+
         #if defined(LIL_FEATURE_MATCAP)
             LIL_BRANCH
             if(_UseMatCap)
             {
-                float2 matUV = lilCalcMatCapUV(normalDirection);
+                #if !defined(LIL_FEATURE_MATCAP_2ND)
+                    float2 matUV = lilCalcMatCapUV(normalDirection);
+                #endif
                 float4 matCapColor = _MatCapColor;
                 if(Exists_MatCapTex) matCapColor *= LIL_SAMPLE_2D(_MatCapTex, sampler_MainTex, matUV);
                 #ifndef LIL_PASS_FORWARDADD
@@ -668,6 +678,28 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 #endif
                 if(Exists_MatCapBlendMask) matCapColor.a *= LIL_SAMPLE_2D(_MatCapBlendMask, sampler_MainTex, uvMain).r;
                 col.rgb = lilBlendColor(col.rgb, matCapColor.rgb, _MatCapBlend * matCapColor.a, _MatCapBlendMode);
+            }
+        #endif
+
+        #if defined(LIL_FEATURE_MATCAP_2ND)
+            LIL_BRANCH
+            if(_UseMatCap2nd)
+            {
+                #if !defined(LIL_FEATURE_MATCAP)
+                    float2 matUV = lilCalcMatCapUV(normalDirection);
+                #endif
+                float4 matCap2ndColor = _MatCap2ndColor;
+                if(Exists_MatCapTex) matCap2ndColor *= LIL_SAMPLE_2D(_MatCap2ndTex, sampler_MainTex, matUV);
+                #ifndef LIL_PASS_FORWARDADD
+                    matCap2ndColor.rgb = lerp(matCap2ndColor.rgb, matCap2ndColor.rgb * lightColor, _MatCap2ndEnableLighting);
+                #else
+                    if(_MatCap2ndBlendMode < 3) matCap2ndColor.rgb *= lightColor * _MatCap2ndEnableLighting;
+                #endif
+                #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+                    if(_MatCap2ndApplyTransparency) matCap2ndColor.a *= col.a;
+                #endif
+                if(Exists_MatCap2ndBlendMask) matCap2ndColor.a *= LIL_SAMPLE_2D(_MatCap2ndBlendMask, sampler_MainTex, uvMain).r;
+                col.rgb = lilBlendColor(col.rgb, matCap2ndColor.rgb, _MatCap2ndBlend * matCap2ndColor.a, _MatCap2ndBlendMode);
             }
         #endif
 

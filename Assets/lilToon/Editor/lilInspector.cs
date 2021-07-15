@@ -352,6 +352,15 @@ namespace lilToon
             MaterialProperty matcapBlendMode;
             MaterialProperty matcapMul;
             MaterialProperty matcapApplyTransparency;
+        MaterialProperty useMatCap2nd;
+            MaterialProperty matcap2ndTex;
+            MaterialProperty matcap2ndColor;
+            MaterialProperty matcap2ndBlend;
+            MaterialProperty matcap2ndBlendMask;
+            MaterialProperty matcap2ndEnableLighting;
+            MaterialProperty matcap2ndBlendMode;
+            MaterialProperty matcap2ndMul;
+            MaterialProperty matcap2ndApplyTransparency;
         MaterialProperty useRim;
             MaterialProperty rimColor;
             MaterialProperty rimColorTex;
@@ -1771,6 +1780,31 @@ namespace lilToon
                             }
 
                             //------------------------------------------------------------------------------------------------------------------------------
+                            // MatCap 2nd
+                            if(shaderSetting.LIL_FEATURE_MATCAP_2ND)
+                            {
+                                EditorGUILayout.BeginVertical(boxOuter);
+                                materialEditor.ShaderProperty(useMatCap2nd, loc["sMatCap2nd"]);
+                                DrawHelpButton(loc["sAnchorMatCap"]);
+                                if(useMatCap2nd.floatValue == 1)
+                                {
+                                    EditorGUILayout.BeginVertical(boxInnerHalf);
+                                    materialEditor.TexturePropertySingleLine(new GUIContent(loc["sMatCap"], loc["sTextureRGBA"]), matcap2ndTex, matcap2ndColor);
+                                    if(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK)   materialEditor.TexturePropertySingleLine(maskBlendContent, matcap2ndBlendMask, matcap2ndBlend);
+                                    else                                            materialEditor.ShaderProperty(matcap2ndBlend, loc["sBlend"]);
+                                    materialEditor.ShaderProperty(matcap2ndEnableLighting, loc["sEnableLighting"]);
+                                    materialEditor.ShaderProperty(matcap2ndBlendMode, sBlendModes);
+                                    if(matcap2ndEnableLighting.floatValue != 0.0f && matcap2ndBlendMode.floatValue == 3.0f)
+                                    {
+                                        EditorGUILayout.HelpBox(loc["sHelpMatCapBlending"],MessageType.Warning);
+                                    }
+                                    if(isTransparent) materialEditor.ShaderProperty(matcap2ndApplyTransparency, loc["sApplyTransparency"]);
+                                    EditorGUILayout.EndVertical();
+                                }
+                                EditorGUILayout.EndVertical();
+                            }
+
+                            //------------------------------------------------------------------------------------------------------------------------------
                             // Rim
                             if(shaderSetting.LIL_FEATURE_RIMLIGHT)
                             {
@@ -2587,6 +2621,14 @@ namespace lilToon
                 matcapEnableLighting = FindProperty("_MatCapEnableLighting", props);
                 matcapBlendMode = FindProperty("_MatCapBlendMode", props);
                 matcapApplyTransparency = FindProperty("_MatCapApplyTransparency", props);
+            useMatCap2nd = FindProperty("_UseMatCap2nd", props);
+                matcap2ndTex = FindProperty("_MatCap2ndTex", props);
+                matcap2ndColor = FindProperty("_MatCap2ndColor", props);
+                matcap2ndBlend = FindProperty("_MatCap2ndBlend", props);
+                matcap2ndBlendMask = FindProperty("_MatCap2ndBlendMask", props);
+                matcap2ndEnableLighting = FindProperty("_MatCap2ndEnableLighting", props);
+                matcap2ndBlendMode = FindProperty("_MatCap2ndBlendMode", props);
+                matcap2ndApplyTransparency = FindProperty("_MatCap2ndApplyTransparency", props);
             useRim = FindProperty("_UseRim", props);
                 rimColor = FindProperty("_RimColor", props);
                 rimColorTex = FindProperty("_RimColorTex", props);
@@ -3217,7 +3259,8 @@ namespace lilToon
             DrawLine();
 
             lilToggleGUI(loc["sSettingMatCap"], ref shaderSetting.LIL_FEATURE_MATCAP);
-            if(shaderSetting.LIL_FEATURE_MATCAP)
+            lilToggleGUI(loc["sSettingMatCap2nd"], ref shaderSetting.LIL_FEATURE_MATCAP_2ND);
+            if(shaderSetting.LIL_FEATURE_MATCAP || shaderSetting.LIL_FEATURE_MATCAP_2ND)
             {
                 EditorGUI.indentLevel++;
                 lilToggleGUI(loc["sSettingTexMatCapMask"], ref shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK);
@@ -3368,9 +3411,10 @@ namespace lilToon
                 if(shaderSetting.LIL_FEATURE_TEX_REFLECTION_METALLIC) sb.Append("#define LIL_FEATURE_TEX_REFLECTION_METALLIC\r\n");
                 if(shaderSetting.LIL_FEATURE_TEX_REFLECTION_COLOR) sb.Append("#define LIL_FEATURE_TEX_REFLECTION_COLOR\r\n");
             }
-            if(shaderSetting.LIL_FEATURE_MATCAP)
+            if(shaderSetting.LIL_FEATURE_MATCAP) sb.Append("#define LIL_FEATURE_MATCAP\r\n");
+            if(shaderSetting.LIL_FEATURE_MATCAP_2ND) sb.Append("#define LIL_FEATURE_MATCAP_2ND\r\n");
+            if(shaderSetting.LIL_FEATURE_MATCAP || shaderSetting.LIL_FEATURE_MATCAP_2ND)
             {
-                sb.Append("#define LIL_FEATURE_MATCAP\r\n");
                 if(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK) sb.Append("#define LIL_FEATURE_TEX_MATCAP_MASK\r\n");
             }
             if(shaderSetting.LIL_FEATURE_RIMLIGHT)

@@ -18,6 +18,7 @@ SAMPLER(sampler_DitherMaskLOD);
 SAMPLER(sampler_BackgroundTexture);
 SAMPLER(sampler_GrabTexture);
 SAMPLER(sampler_CameraDepthTexture);
+float4 _BackgroundTexture_TexelSize;
 float4 _GrabTexture_TexelSize;
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -102,8 +103,10 @@ float4 _GrabTexture_TexelSize;
 
 #if defined(LIL_FEATURE_TEX_MATCAP_MASK)
     #define Exists_MatCapBlendMask      true
+    #define Exists_MatCap2ndBlendMask   true
 #else
     #define Exists_MatCapBlendMask      false
+    #define Exists_MatCap2ndBlendMask   false
 #endif
 
 #if defined(LIL_FEATURE_TEX_RIMLIGHT_COLOR)
@@ -162,6 +165,7 @@ float4 _GrabTexture_TexelSize;
 #define Exists_BumpMap              true
 #define Exists_Bump2ndMap           true
 #define Exists_MatCapTex            true
+#define Exists_MatCap2ndTex         true
 #define Exists_EmissionMap          true
 #define Exists_EmissionGradTex      true
 #define Exists_Emission2ndMap       true
@@ -374,6 +378,11 @@ float4  _MainTex_ST;
     float4  _MatCapColor;
 #endif
 
+// MatCap 2nd
+#if defined(LIL_FEATURE_MATCAP_2ND)
+    float4  _MatCap2ndColor;
+#endif
+
 // Rim Light
 #if defined(LIL_FEATURE_RIMLIGHT)
     float4  _RimColor;
@@ -492,6 +501,10 @@ float   _VertexLightStrength;
     float   _MatCapBlend;
     float   _MatCapEnableLighting;
 #endif
+#if defined(LIL_FEATURE_MATCAP_2ND)
+    float   _MatCap2ndBlend;
+    float   _MatCap2ndEnableLighting;
+#endif
 #if defined(LIL_FEATURE_RIMLIGHT)
     float   _RimBorder;
     float   _RimBlur;
@@ -557,6 +570,9 @@ float   _OutlineEnableLighting;
 #if defined(LIL_FEATURE_MATCAP)
     uint    _MatCapBlendMode;
 #endif
+#if defined(LIL_FEATURE_MATCAP_2ND)
+    uint    _MatCap2ndBlendMode;
+#endif
 #if defined(LIL_FEATURE_AUDIOLINK)
     uint    _AudioLinkUVMode;
     #if defined(LIL_FEATURE_AUDIOLINK_VERTEX)
@@ -616,6 +632,10 @@ lilBool _Invisible;
 #if defined(LIL_FEATURE_MATCAP)
     lilBool _UseMatCap;
     lilBool _MatCapApplyTransparency;
+#endif
+#if defined(LIL_FEATURE_MATCAP_2ND)
+    lilBool _UseMatCap2nd;
+    lilBool _MatCap2ndApplyTransparency;
 #endif
 #if defined(LIL_FEATURE_RIMLIGHT)
     lilBool _UseRim;
@@ -700,6 +720,8 @@ TEXTURE2D(_MetallicGlossMap);
 TEXTURE2D(_ReflectionColorTex);
 TEXTURE2D(_MatCapTex);
 TEXTURE2D(_MatCapBlendMask);
+TEXTURE2D(_MatCap2ndTex);
+TEXTURE2D(_MatCap2ndBlendMask);
 TEXTURE2D(_RimColorTex);
 TEXTURE2D(_EmissionMap);
 TEXTURE2D(_EmissionBlendMask);

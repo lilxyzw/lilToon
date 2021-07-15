@@ -229,6 +229,7 @@ sSpecularReal	Realistic	リアル	리얼	现实	現實
 sSpecularToon	Toon	トゥーン	툰	卡通	卡通
 sApplyReflection	Environment Reflections	環境光の反射	환경 빛의 반사	环境反射	環境反射
 sMatCap	MatCap	マットキャップ	매트 캡	MatCap	MatCap
+sMatCap2nd	MatCap 2nd	マットキャップ2nd	매트 캡 2nd	MatCap 2nd	MatCap 2nd
 sHelpMatCapBlending	Turn off "Enable Lighting" in multiply mode.	乗算モードでは"ライティングを適用"を0にしてください	곱셈 모드에서는 조명의 합성을 취소하십시오	关闭乘法模式下的 启用照明。	關閉乘法模式下的 啟用照明。
 sRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
 sFresnelPower	Fresnel Power	リムライトの細さ	림 라이트의 벌금	菲涅尔功率	菲涅爾功率
@@ -372,6 +373,7 @@ sSettingTexReflectionSmoothness	Reflection Smoothness Mask	滑らかさマスク
 sSettingTexReflectionMetallic	Reflection Metallic Mask	金属度マスク	금속도 마스크	反射金属程度蒙版	反射金屬程度蒙版
 sSettingTexReflectionColor	Reflection Color Texture	反射色テクスチャ	반사 색상 질감	反射颜色纹理	反射顏色紋理
 sSettingMatCap	MatCap	マットキャップ	매트 캡	MatCap	MatCap
+sSettingMatCap2nd	MatCap 2nd	マットキャップ2nd	매트 캡 2nd	MatCap 2nd	MatCap 2nd
 sSettingTexMatCapMask	MatCap Mask	マットキャップマスク	매트 캡 마스크	MatCap蒙版	MatCap蒙版
 sSettingRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
 sSettingTexRimLightColor	Rim Light Color Texture	リムライト色テクスチャ	림 라이트 색상 질감	Rim Light颜色纹理	Rim Light顏色紋理
