@@ -8,6 +8,7 @@
     - [Main Color](#main-color)
         - [Main Color](#main-color-1)
         - [Main Color 2nd / 3rd](#main-color-2nd--3rd)
+        - [Alpha Mask](#alpha-mask)
     - [Shadow](#shadow)
     - [Emission](#emission)
 - [Normal Map & Reflection](#normal-map--reflection)
@@ -59,6 +60,8 @@
 |Frip Backface Normal|Reverse backface lighting and other processes.|
 |Backface Force Shadow|Intensity to force the back face to dark.|
 |ZWrite|Whether to write depth. Basically, set it to on.|
+|Vertex Light Strength|If you have multiple meshes, you can mitigate the difference in brightness between them by setting this property to 0.|
+|Lower brightness limit|Limiting the darkness of a material by lighting|
 
 <br/>
 
@@ -141,6 +144,12 @@ You can blend colors into the main color. This is the layer function in painting
 </details>
 
 -> [Dissolve Mode](#dissolve)
+
+### Alpha Mask
+|Name|Description|
+|-|-|
+|Alpha Mask|None: Disables the function / Replace: Replace the transparency of the main texture / Multiply: Multiplies the transparency of the main texture|
+|Bake Alphamask|Applies a mask with a specified transparency to the texture.|
 
 <br/>
 

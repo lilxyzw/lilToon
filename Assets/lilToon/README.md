@@ -86,13 +86,24 @@ The following settings improve the problem of different brightness in one part o
 Lite version is a greatly optimized version that maintains the appearance of the normal version to some extent. This version is recommended for avatar displays because it has no shader settings and its features are unified. It is recommended to convert materials created with Normal version to the Lite version instead of setting materials directly from Lite version for more intuitive material setting.
 
 # References
-- [UnlitWF (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite) - I referred to many parts of both scripts and shaders, such as far shaders and property deletion.
-- [Arktoon-Shaders (synqark)](https://github.com/synqark/Arktoon-Shaders) - I'm referred to the shadow setting part.
-- [MToon (Santarh)](https://github.com/Santarh/MToon) - Comparing parameters when implementing `Convert to MToon (VRM)`
+- [UnlitWF (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite) / [MIT LICENCE](https://github.com/whiteflare/Unlit_WF_ShaderSuite/blob/master/LICENSE)  
+I referred to many parts of both scripts and shaders, such as far shaders and property deletion.
+- [Arktoon-Shaders (synqark)](https://github.com/synqark/Arktoon-Shaders) / [MIT LICENCE](https://github.com/synqark/Arktoon-Shaders/blob/master/LICENSE)  
+I'm referred to the shadow setting part.
+- [MToon (Santarh)](https://github.com/Santarh/MToon) / [MIT LICENCE](https://github.com/Santarh/MToon/blob/master/LICENSE)  
+Comparing parameters when implementing `Convert to MToon (VRM)`
+- [GTAvaCrypt (rygo6)](https://github.com/rygo6/GTAvaCrypt) / [MIT LICENCE](https://github.com/rygo6/GTAvaCrypt/blob/master/LICENSE)
 - [Optimized inverse trigonometric function (seblagarde)](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
-- [GTAvaCrypt (rygo6)](https://github.com/rygo6/GTAvaCrypt)
 
 # Change log
+## v1.1
+- Added Alpha Mask
+- Added MatCap 2nd
+- Added properties to adjust Lower brightness limit and vertex light strength
+- Fixed a bug where CascadeShadow was not working properly in URP
+- Fixed a bug in MatCap where "Apply Lighting" was not working properly
+- Added warnings for high-load functions (refraction / POM)
+- Added references
 ## v1.0
 - Opening to the public

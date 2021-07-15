@@ -86,13 +86,24 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 通常版の見た目をある程度維持しつつ大幅に軽量化したものです。こちらはシェーダー設定がなく機能が統一されているためアバター展示にオススメです。Lite版から直接マテリアルを設定せず、通常版で作成したものを変換するとより直感的にマテリアル設定が可能です。
 
 # リファレンス
-- [UnlitWF (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite) - ファーシェーダーやプロパティ削除機能等、スクリプト・シェーダーともに非常に多くの部分を参考にさせていただきました
-- [Arktoon-Shaders (synqark)](https://github.com/synqark/Arktoon-Shaders) - 影設定部分で参考にさせていただきました
-- [MToon (Santarh)](https://github.com/Santarh/MToon) - `MToon(VRM)に変換`実装時に各種パラメータの比較を行いました
+- [UnlitWF (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite) / [MIT LICENCE](https://github.com/whiteflare/Unlit_WF_ShaderSuite/blob/master/LICENSE)  
+ファーシェーダーやプロパティ削除機能等、スクリプト・シェーダーともに非常に多くの部分を参考にさせていただきました。
+- [Arktoon-Shaders (synqark)](https://github.com/synqark/Arktoon-Shaders) / [MIT LICENCE](https://github.com/synqark/Arktoon-Shaders/blob/master/LICENSE)  
+影設定部分で参考にさせていただきました。
+- [MToon (Santarh)](https://github.com/Santarh/MToon) / [MIT LICENCE](https://github.com/Santarh/MToon/blob/master/LICENSE)  
+`MToon(VRM)に変換`の実装時に各種パラメータの比較を行いました。
+- [GTAvaCrypt (rygo6)](https://github.com/rygo6/GTAvaCrypt) - [MIT LICENCE](https://github.com/rygo6/GTAvaCrypt/blob/master/LICENSE)
 - [Optimized inverse trigonometric function (seblagarde)](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
-- [GTAvaCrypt (rygo6)](https://github.com/rygo6/GTAvaCrypt)
 
 # 変更履歴
+## v1.1
+- アルファマスクの追加
+- マットキャップ2ndの追加
+- 明るさの下限や頂点ライトの強度を調整可能に
+- URPにおいてCascadeShadowがうまく動作していなかった点
+- マットキャップの"ライティングを適用"が正しく動作していなかった点
+- 負荷が比較的高い機能に警告を追加 (屈折・POM)
+- 参考文献の追記
 ## v1.0
 - 公開開始
