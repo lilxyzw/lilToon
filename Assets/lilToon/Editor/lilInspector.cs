@@ -224,6 +224,7 @@ namespace lilToon
         MaterialProperty flipNormal;
         MaterialProperty backfaceForceShadow;
         MaterialProperty vertexLightStrength;
+        MaterialProperty lightMinLimit;
         MaterialProperty triMask;
             MaterialProperty cull;
             MaterialProperty srcBlend;
@@ -943,6 +944,7 @@ namespace lilToon
                             EditorGUILayout.HelpBox(loc["sHelpZWrite"],MessageType.Warning);
                         }
                         materialEditor.ShaderProperty(vertexLightStrength, loc["sVertexLightStrength"]);
+                        materialEditor.ShaderProperty(lightMinLimit, loc["sLightMinLimit"]);
                         DrawLine();
                         materialEditor.TexturePropertySingleLine(triMaskContent, triMask);
                     }
@@ -1365,6 +1367,7 @@ namespace lilToon
                             EditorGUILayout.HelpBox(loc["sHelpZWrite"],MessageType.Warning);
                         }
                         materialEditor.ShaderProperty(vertexLightStrength, loc["sVertexLightStrength"]);
+                        materialEditor.ShaderProperty(lightMinLimit, loc["sLightMinLimit"]);
                     }
                     EditorGUILayout.EndVertical();
 
@@ -2453,6 +2456,7 @@ namespace lilToon
             flipNormal = FindProperty("_FlipNormal", props);
             backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
+            lightMinLimit = FindProperty("_LightMinLimit", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
                 cull = FindProperty("_Cull", props);
                 srcBlend = FindProperty("_SrcBlend", props);
@@ -2723,6 +2727,7 @@ namespace lilToon
             flipNormal = FindProperty("_FlipNormal", props);
             backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
+            lightMinLimit = FindProperty("_LightMinLimit", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
                 cull = FindProperty("_Cull", props);
                 srcBlend = FindProperty("_SrcBlend", props);
@@ -2823,6 +2828,7 @@ namespace lilToon
             flipNormal = FindProperty("_FlipNormal", props);
             backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
+            lightMinLimit = FindProperty("_LightMinLimit", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
             triMask = FindProperty("_TriMask", props);
                 cull = FindProperty("_Cull", props);

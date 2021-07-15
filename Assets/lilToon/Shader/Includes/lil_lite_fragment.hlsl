@@ -43,8 +43,13 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         #endif
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Copy
+        float3 albedo = col.rgb;
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Lighting
         col.rgb = lerp(col.rgb, col.rgb * saturate(lightColor + vertexLightColor + additionalLightColor), _OutlineEnableLighting);
+        col.rgb = max(col.rgb, albedo * _LightMinLimit);
     #else
         //----------------------------------------------------------------------------------------------------------------------
         // UV
@@ -104,6 +109,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             lightColor = saturate(lightColor);
             shadowmix = saturate(shadowmix);
             col.rgb = min(col.rgb, albedo);
+            col.rgb = max(col.rgb, albedo * _LightMinLimit);
         #else
             col.rgb *= lightColor;
         #endif

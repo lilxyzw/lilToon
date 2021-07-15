@@ -74,6 +74,7 @@ float4 frag(g2f input) : SV_Target
         #endif
         col.rgb += albedo * (vertexLightColor + additionalLightColor);
         col.rgb = min(col.rgb, albedo);
+        col.rgb = max(col.rgb, albedo * _LightMinLimit);
     #else
         col.rgb *= lightColor;
     #endif

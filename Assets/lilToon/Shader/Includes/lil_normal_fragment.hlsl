@@ -87,8 +87,13 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         #endif
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Copy
+        float3 albedo = col.rgb;
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Lighting
         col.rgb = lerp(col.rgb, col.rgb * saturate(lightColor + vertexLightColor + additionalLightColor), _OutlineEnableLighting);
+        col.rgb = max(col.rgb, albedo * _LightMinLimit);
     #elif defined(LIL_FUR)
         //--------------------------------------------------------------------------------------------------------------------------
         // UV
@@ -137,6 +142,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             #endif
             col.rgb += albedo * vertexLightColor + albedo * additionalLightColor;
             col.rgb = min(col.rgb, albedo);
+            col.rgb = max(col.rgb, albedo * _LightMinLimit);
         #else
             col.rgb *= lightColor;
             // Premultiply for ForwardAdd
@@ -521,6 +527,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             lightColor = saturate(lightColor);
             shadowmix = saturate(shadowmix);
             col.rgb = min(col.rgb, albedo);
+            col.rgb = max(col.rgb, albedo * _LightMinLimit);
 
             #if defined(LIL_FEATURE_MAIN2ND)
                 if(_UseMain2ndTex) col.rgb = lilBlendColor(col.rgb, color2nd.rgb, color2nd.a - color2nd.a * _Main2ndEnableLighting, _Main2ndTexBlendMode);

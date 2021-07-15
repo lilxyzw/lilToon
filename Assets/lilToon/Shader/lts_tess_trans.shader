@@ -10,6 +10,7 @@ Shader "Hidden/lilToonTessellationTransparent"
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
                         _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
+                        _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
