@@ -86,9 +86,9 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 通常版の見た目をある程度維持しつつ大幅に軽量化したものです。こちらはシェーダー設定がなく機能が統一されているためアバター展示にオススメです。Lite版から直接マテリアルを設定せず、通常版で作成したものを変換するとより直感的にマテリアル設定が可能です。
 
 # リファレンス
-- [UnlitWF (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite)
-- [Arktoon-Shaders (synqark)](https://github.com/synqark/Arktoon-Shaders)
-- [MToon (Santarh)](https://github.com/Santarh/MToon)
+- [UnlitWF (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite) - ファーシェーダーやプロパティ削除機能等、スクリプト・シェーダーともに非常に多くの部分を参考にさせていただきました
+- [Arktoon-Shaders (synqark)](https://github.com/synqark/Arktoon-Shaders) - 影設定部分で参考にさせていただきました
+- [MToon (Santarh)](https://github.com/Santarh/MToon) - `MToon(VRM)に変換`実装時に各種パラメータの比較を行いました
 - [Optimized inverse trigonometric function (seblagarde)](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 - [GTAvaCrypt (rygo6)](https://github.com/rygo6/GTAvaCrypt)

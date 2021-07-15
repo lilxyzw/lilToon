@@ -86,9 +86,9 @@ The following settings improve the problem of different brightness in one part o
 Lite version is a greatly optimized version that maintains the appearance of the normal version to some extent. This version is recommended for avatar displays because it has no shader settings and its features are unified. It is recommended to convert materials created with Normal version to the Lite version instead of setting materials directly from Lite version for more intuitive material setting.
 
 # References
-- [UnlitWF (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite)
-- [Arktoon-Shaders (synqark)](https://github.com/synqark/Arktoon-Shaders)
-- [MToon (Santarh)](https://github.com/Santarh/MToon)
+- [UnlitWF (whiteflare)](https://github.com/whiteflare/Unlit_WF_ShaderSuite) - I referred to many parts of both scripts and shaders, such as far shaders and property deletion.
+- [Arktoon-Shaders (synqark)](https://github.com/synqark/Arktoon-Shaders) - I'm referred to the shadow setting part.
+- [MToon (Santarh)](https://github.com/Santarh/MToon) - Comparing parameters when implementing `Convert to MToon (VRM)`
 - [Optimized inverse trigonometric function (seblagarde)](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 - [GTAvaCrypt (rygo6)](https://github.com/rygo6/GTAvaCrypt)
