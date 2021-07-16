@@ -57,6 +57,12 @@ lilToon is available under the MIT License. Please refer to the `LICENSE` includ
 
 Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md) for more detailed settings.
 
+# Usage - Update
+1. Import lilToon into Unity using one of the following methods.  
+    i. Drag and drop unitypackage to the Unity window to import it.  
+    ii. Import ```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master``` from UPM.  
+2. Click `Assets/lilToon/Refresh Shaders` in the top menu bar.
+
 # How to distribute your works that use lilToon
 Shader settings are stored in the `lilToonSetting` folder, so it is recommended to include this folder in the unitypackage.  
 If you have not changed shader settings, you do not need to include them.  
@@ -69,6 +75,8 @@ The following is the detailed procedure.
 6. Press `Export...` to save the unitypackage.
 
 # Common Problems
+- Material error has occurred.
+  → Clicking `Assets/lilToon/Refresh Shaders` in the top menu bar may help.
 - The shadows on face are dirty.  
   → You can specify a mask texture in `Mask & Strength` to partially remove shadows.
 - Outline becomes dirty.  
@@ -97,6 +105,10 @@ Comparing parameters when implementing `Convert to MToon (VRM)`
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # Change log
+## v1.1.1
+- Show warning when property alpha is 0
+- Support for changing editor theme
+- Added shader refresh
 ## v1.1
 - Added Alpha Mask
 - Added MatCap 2nd

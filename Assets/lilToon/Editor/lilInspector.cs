@@ -82,20 +82,16 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
-        const string currentVersionName = "1.1a";
-        const int currentVersionValue = 3;
+        public const string currentVersionName = "1.1.1";
+        public const int currentVersionValue = 4;
 
-        const string boothURL = "https://lilxyzw.booth.pm/";
-        const string githubURL = "https://github.com/lilxyzw/lilToon";
-        const string editorSettingPath = "Assets/lilToonSetting/EditorSetting.asset";
-        const string avatarEncryptionPath = "Assets/AvaterEncryption/Editor/AvaCryptRootEditor.cs";
+        public const string boothURL = "https://lilxyzw.booth.pm/";
+        public const string githubURL = "https://github.com/lilxyzw/lilToon";
+        public const string editorSettingPath = "Assets/lilToonSetting/EditorSetting.asset";
+        public const string avatarEncryptionPath = "Assets/AvaterEncryption/Editor/AvaCryptRootEditor.cs";
 
         static Vector4 defaultHSVG = new Vector4(0.0f,1.0f,1.0f,1.0f);
-        #if UNITY_2019_1_OR_NEWER
-            static Color lineColor          = new Color(0.35f,0.35f,0.35f,1.0f);
-        #else
-            static Color lineColor          = new Color(0.4f,0.4f,0.4f,1.0f);
-        #endif
+        public static Color lineColor = EditorGUIUtility.isProSkin ? new Color(0.35f,0.35f,0.35f,1.0f) : new Color(0.4f,0.4f,0.4f,1.0f);
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Shader
@@ -524,25 +520,32 @@ namespace lilToon
 	    {
             //------------------------------------------------------------------------------------------------------------------------------
             // EditorAssets
-            #if UNITY_2019_1_OR_NEWER
-                GUIStyle boxOuter        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_outer_2019.guiskin", typeof(GUISkin))).box);
-                GUIStyle boxInnerHalf    = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_inner_half_2019.guiskin", typeof(GUISkin))).box);
-                GUIStyle boxInner        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_inner_2019.guiskin", typeof(GUISkin))).box);
-                GUIStyle customBox       = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_custom_box_2019.guiskin", typeof(GUISkin))).box);
-                GUIStyle customToggleFont = EditorStyles.label;
-                GUIStyle offsetButton = new GUIStyle(GUI.skin.button);
+            GUIStyle boxOuter        = GUI.skin.box;
+            GUIStyle boxInnerHalf    = GUI.skin.box;
+            GUIStyle boxInner        = GUI.skin.box;
+            GUIStyle customBox       = GUI.skin.box;
+            GUIStyle customToggleFont = EditorStyles.label;
+            GUIStyle offsetButton = new GUIStyle(GUI.skin.button);
+            if(EditorGUIUtility.isProSkin)
+            {
+                boxOuter        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_outer_2019.guiskin", typeof(GUISkin))).box);
+                boxInnerHalf    = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_inner_half_2019.guiskin", typeof(GUISkin))).box);
+                boxInner        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_inner_2019.guiskin", typeof(GUISkin))).box);
+                customBox       = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_custom_box_2019.guiskin", typeof(GUISkin))).box);
+                customToggleFont = EditorStyles.label;
                 offsetButton.margin.left = 24;
-            #else
-                GUIStyle boxOuter        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_outer_2018.guiskin", typeof(GUISkin))).box);
-                GUIStyle boxInnerHalf    = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_inner_half_2018.guiskin", typeof(GUISkin))).box);
-                GUIStyle boxInner        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_inner_2018.guiskin", typeof(GUISkin))).box);
-                GUIStyle customBox       = GUI.skin.box;
-                GUIStyle customToggleFont = new GUIStyle();
+            }
+            else
+            {
+                boxOuter        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_outer_2018.guiskin", typeof(GUISkin))).box);
+                boxInnerHalf    = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_inner_half_2018.guiskin", typeof(GUISkin))).box);
+                boxInner        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath("Assets/lilToon/Editor/gui_box_inner_2018.guiskin", typeof(GUISkin))).box);
+                customBox       = GUI.skin.box;
+                customToggleFont = new GUIStyle();
                 customToggleFont.normal.textColor = Color.white;
                 customToggleFont.contentOffset = new Vector2(2f,0f);
-                GUIStyle offsetButton = new GUIStyle(GUI.skin.button);
                 offsetButton.margin.left = 20;
-            #endif
+            }
             GUIStyle wrapLabel = new GUIStyle(GUI.skin.label);
             wrapLabel.wordWrap = true;
 
@@ -827,6 +830,7 @@ namespace lilToon
                             else                                            materialEditor.ShaderProperty(shadowColor, loc["sShadow1stColor"]);
                             if(shaderSetting.LIL_FEATURE_TEX_SHADOW_2ND)    materialEditor.TexturePropertySingleLine(new GUIContent(loc["sShadow2ndColor"], loc["sTextureRGBA"]), shadow2ndColorTex, shadow2ndColor);
                             else                                            materialEditor.ShaderProperty(shadow2ndColor, loc["sShadow2ndColor"]);
+                            if(shadow2ndColor.colorValue.a == 0) EditorGUILayout.HelpBox(loc["sColorAlphaZeroWarn"],MessageType.Warning);
                             materialEditor.ShaderProperty(shadowMainStrength, loc["sMainColorPower"]);
                             materialEditor.ShaderProperty(shadowBorderColor, loc["sShadowBorderColor"]);
                             EditorGUILayout.EndVertical();
@@ -872,6 +876,7 @@ namespace lilToon
                         {
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             materialEditor.TexturePropertySingleLine(textureRGBAContent, emissionMap, emissionColor);
+                            if(emissionColor.colorValue.a == 0) EditorGUILayout.HelpBox(loc["sColorAlphaZeroWarn"],MessageType.Warning);
                             EditorGUILayout.EndVertical();
                         }
                         EditorGUILayout.EndVertical();
@@ -886,6 +891,7 @@ namespace lilToon
                         {
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             materialEditor.TexturePropertySingleLine(textureRGBAContent, emission2ndMap, emission2ndColor);
+                            if(emission2ndColor.colorValue.a == 0) EditorGUILayout.HelpBox(loc["sColorAlphaZeroWarn"],MessageType.Warning);
                             EditorGUILayout.EndVertical();
                         }
                         EditorGUILayout.EndVertical();
@@ -1574,6 +1580,7 @@ namespace lilToon
                                 DrawLine();
                                 if(shaderSetting.LIL_FEATURE_TEX_SHADOW_2ND)    materialEditor.TexturePropertySingleLine(new GUIContent(loc["sShadow2ndColor"], loc["sTextureRGBA"]), shadow2ndColorTex, shadow2ndColor);
                                 else                                            materialEditor.ShaderProperty(shadow2ndColor, loc["sShadow2ndColor"]);
+                                if(shadow2ndColor.colorValue.a == 0)            EditorGUILayout.HelpBox(loc["sColorAlphaZeroWarn"],MessageType.Warning);
                                 materialEditor.ShaderProperty(shadow2ndBorder, loc["sBorder"]);
                                 materialEditor.ShaderProperty(shadow2ndBlur, loc["sBlur"]);
                                 DrawLine();
@@ -1609,6 +1616,7 @@ namespace lilToon
                                     {
                                         EditorGUILayout.BeginVertical(boxInnerHalf);
                                         TextureGUI(materialEditor, ref isShowEmissionMap, colorRGBAContent, emissionMap, emissionColor, emissionMap_ScrollRotate, shaderSetting.LIL_FEATURE_EMISSION_UV, shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV);
+                                        if(emissionColor.colorValue.a == 0) EditorGUILayout.HelpBox(loc["sColorAlphaZeroWarn"],MessageType.Warning);
                                         DrawLine();
                                         if(shaderSetting.LIL_FEATURE_TEX_EMISSION_MASK)
                                         {
@@ -1643,6 +1651,7 @@ namespace lilToon
                                     {
                                         EditorGUILayout.BeginVertical(boxInnerHalf);
                                         TextureGUI(materialEditor, ref isShowEmission2ndMap, colorRGBAContent, emission2ndMap, emission2ndColor, emission2ndMap_ScrollRotate, shaderSetting.LIL_FEATURE_EMISSION_UV, shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV);
+                                        if(emission2ndColor.colorValue.a == 0) EditorGUILayout.HelpBox(loc["sColorAlphaZeroWarn"],MessageType.Warning);
                                         DrawLine();
                                         if(shaderSetting.LIL_FEATURE_TEX_EMISSION_MASK)
                                         {
@@ -1742,6 +1751,7 @@ namespace lilToon
                                     materialEditor.ShaderProperty(reflectance, loc["sReflectance"]);
                                     if(shaderSetting.LIL_FEATURE_TEX_REFLECTION_COLOR) materialEditor.TexturePropertySingleLine(colorRGBAContent, reflectionColorTex, reflectionColor);
                                     else                                               materialEditor.ShaderProperty(reflectionColor, loc["sColor"]);
+                                    if(reflectionColor.colorValue.a == 0) EditorGUILayout.HelpBox(loc["sColorAlphaZeroWarn"],MessageType.Warning);
                                     int specularMode = 0;
                                     if(specularToon.floatValue == 0.0f) specularMode = 1;
                                     if(specularToon.floatValue == 1.0f) specularMode = 2;
@@ -1768,6 +1778,7 @@ namespace lilToon
                                 {
                                     EditorGUILayout.BeginVertical(boxInnerHalf);
                                     materialEditor.TexturePropertySingleLine(new GUIContent(loc["sMatCap"], loc["sTextureRGBA"]), matcapTex, matcapColor);
+                                    if(matcapColor.colorValue.a == 0) EditorGUILayout.HelpBox(loc["sColorAlphaZeroWarn"],MessageType.Warning);
                                     if(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK)   materialEditor.TexturePropertySingleLine(maskBlendContent, matcapBlendMask, matcapBlend);
                                     else                                            materialEditor.ShaderProperty(matcapBlend, loc["sBlend"]);
                                     materialEditor.ShaderProperty(matcapEnableLighting, loc["sEnableLighting"]);
@@ -1793,6 +1804,7 @@ namespace lilToon
                                 {
                                     EditorGUILayout.BeginVertical(boxInnerHalf);
                                     materialEditor.TexturePropertySingleLine(new GUIContent(loc["sMatCap"], loc["sTextureRGBA"]), matcap2ndTex, matcap2ndColor);
+                                    if(matcap2ndColor.colorValue.a == 0) EditorGUILayout.HelpBox(loc["sColorAlphaZeroWarn"],MessageType.Warning);
                                     if(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK)   materialEditor.TexturePropertySingleLine(maskBlendContent, matcap2ndBlendMask, matcap2ndBlend);
                                     else                                            materialEditor.ShaderProperty(matcap2ndBlend, loc["sBlend"]);
                                     materialEditor.ShaderProperty(matcap2ndEnableLighting, loc["sEnableLighting"]);
@@ -1819,6 +1831,7 @@ namespace lilToon
                                     EditorGUILayout.BeginVertical(boxInnerHalf);
                                     if(shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR)    materialEditor.TexturePropertySingleLine(colorRGBAContent, rimColorTex, rimColor);
                                     else                                                materialEditor.ShaderProperty(rimColor, loc["sColor"]);
+                                    if(rimColor.colorValue.a == 0) EditorGUILayout.HelpBox(loc["sColorAlphaZeroWarn"],MessageType.Warning);
                                     DrawLine();
                                     rimBorder.floatValue = 1.0f - EditorGUILayout.Slider(loc["sBorder"], 1.0f - rimBorder.floatValue, 0.0f, 1.0f);
                                     materialEditor.ShaderProperty(rimBlur, loc["sBlur"]);
@@ -2956,6 +2969,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_DECAL = false;
                 shaderSetting.LIL_FEATURE_ANIMATE_DECAL = false;
                 shaderSetting.LIL_FEATURE_LAYER_DISSOLVE = false;
+                shaderSetting.LIL_FEATURE_ALPHAMASK = false;
                 shaderSetting.LIL_FEATURE_SHADOW = true;
                 shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = false;
                 shaderSetting.LIL_FEATURE_EMISSION_1ST = true;
@@ -2969,6 +2983,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_NORMAL_2ND = false;
                 shaderSetting.LIL_FEATURE_REFLECTION = false;
                 shaderSetting.LIL_FEATURE_MATCAP = true;
+                shaderSetting.LIL_FEATURE_MATCAP_2ND = false;
                 shaderSetting.LIL_FEATURE_RIMLIGHT = true;
                 shaderSetting.LIL_FEATURE_PARALLAX = false;
                 shaderSetting.LIL_FEATURE_POM = false;
@@ -3040,7 +3055,7 @@ namespace lilToon
             }
         }
 
-        static void DrawLine()
+        public static void DrawLine()
         {
             EditorGUI.DrawRect(EditorGUI.IndentedRect(EditorGUILayout.GetControlRect(false, 1)), lineColor);
         }
@@ -3181,7 +3196,7 @@ namespace lilToon
 
             if(isShaderSettingChanged && GUILayout.Button("Apply", applyButton))
             {
-                lilApplyShaderSetting();
+                lilApplyShaderSetting(shaderSetting);
                 isShaderSettingChanged = false;
             }
 
@@ -3359,7 +3374,7 @@ namespace lilToon
             value = EditorGUILayout.ToggleLeft(label, value);
         }
 
-        static void lilApplyShaderSetting()
+        public static void lilApplyShaderSetting(lilToonSetting shaderSetting)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("#ifndef LIL_SETTING_INCLUDED\r\n#define LIL_SETTING_INCLUDED\r\n\r\n");
@@ -5863,14 +5878,17 @@ namespace lilToon
             bool value = (prop.floatValue != 0.0f);
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
-            #if UNITY_2019_1_OR_NEWER
+            if(EditorGUIUtility.isProSkin)
+            {
                 value = EditorGUI.ToggleLeft(position, label, value);
-            #else
+            }
+            else
+            {
                 GUIStyle customToggleFont = new GUIStyle();
                 customToggleFont.normal.textColor = Color.white;
                 customToggleFont.contentOffset = new Vector2(2f,0f);
                 value = EditorGUI.ToggleLeft(position, label, value, customToggleFont);
-            #endif
+            }
             EditorGUI.showMixedValue = false;
 
             if(EditorGUI.EndChangeCheck())
@@ -6030,12 +6048,7 @@ namespace lilToon
                 // Angle
                 angle = EditorGUI.Slider(position, labels[0], angle, -180.0f, 180.0f);
 
-                #if UNITY_2019_1_OR_NEWER
-                    Color lineColor = new Color(0.35f,0.35f,0.35f,1.0f);
-                #else
-                    Color lineColor = new Color(0.4f,0.4f,0.4f,1.0f);
-                #endif
-                EditorGUI.DrawRect(EditorGUI.IndentedRect(EditorGUILayout.GetControlRect(false, 1)), lineColor);
+                lilToonInspector.DrawLine();
 
                 // Heading (UV Animation)
                 EditorGUILayout.LabelField(labels[1], EditorStyles.boldLabel);
@@ -6163,17 +6176,21 @@ namespace lilToon
 
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
-            #if UNITY_2019_1_OR_NEWER
-                float value = (float)EditorGUI.Popup(position, labels[0], (int)prop.floatValue, enums);
-            #else
+            float value = prop.floatValue;
+            if(EditorGUIUtility.isProSkin)
+            {
+                value = (float)EditorGUI.Popup(position, labels[0], (int)prop.floatValue, enums);
+            }
+            else
+            {
                 GUIStyle customToggleFont = new GUIStyle();
                 customToggleFont.normal.textColor = Color.white;
                 customToggleFont.contentOffset = new Vector2(2f,0f);
                 float labelWidth = EditorGUIUtility.labelWidth;
                 Rect labelRect = new Rect(position.x, position.y, labelWidth, position.height);
                 EditorGUI.PrefixLabel(labelRect, new GUIContent(labels[0]), customToggleFont);
-                float value = (float)EditorGUI.Popup(position, " ", (int)prop.floatValue, enums);
-            #endif
+                value = (float)EditorGUI.Popup(position, " ", (int)prop.floatValue, enums);
+            }
             EditorGUI.showMixedValue = false;
 
             if(EditorGUI.EndChangeCheck())
@@ -6337,9 +6354,12 @@ namespace lilToon
             EditorGUI.BeginChangeCheck();
             if(labels.Length == 5)
             {
-                #if UNITY_2019_1_OR_NEWER
+                if(EditorGUIUtility.isProSkin)
+                {
                     type = (float)EditorGUI.Popup(position, labels[0], (int)type, new String[]{labels[1],labels[2],labels[3],labels[4]});
-                #else
+                }
+                else
+                {
                     GUIStyle customToggleFont = new GUIStyle();
                     customToggleFont.normal.textColor = Color.white;
                     customToggleFont.contentOffset = new Vector2(2f,0f);
@@ -6347,7 +6367,7 @@ namespace lilToon
                     Rect labelRect = new Rect(position.x, position.y, labelWidth, position.height);
                     EditorGUI.PrefixLabel(labelRect, new GUIContent(labels[0]), customToggleFont);
                     type = (float)EditorGUI.Popup(position, " ", (int)type, new String[]{labels[1],labels[2],labels[3],labels[4]});
-                #endif
+                }
             }
             if(labels.Length == 6)
             {
@@ -6472,6 +6492,48 @@ namespace lilToon
 
     //------------------------------------------------------------------------------------------------------------------------------
     // MenuItem
+
+    public class ShaderRefresh : MonoBehaviour
+    {
+        [MenuItem("Assets/lilToon/Refresh Shaders")]
+        static void RefreshShaders()
+        {
+            string[] shaderGuids = AssetDatabase.FindAssets("t:shader", lilStartup.shaderFolderPaths);
+            if(shaderGuids.Length > 33)
+            {
+                // Render Pipeline
+                // BRP : null
+                // LWRP : LightweightPipeline.LightweightRenderPipelineAsset
+                // URP : Universal.UniversalRenderPipelineAsset
+                lilStartup.lilRenderPipeline lilRP = lilStartup.lilRenderPipeline.BRP;
+                if(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset != null)
+                {
+                    string renderPipelineName = UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.ToString();
+                    if(String.IsNullOrEmpty(renderPipelineName))        lilRP = lilStartup.lilRenderPipeline.BRP;
+                    else if(renderPipelineName.Contains("Lightweight")) lilRP = lilStartup.lilRenderPipeline.LWRP;
+                    else if(renderPipelineName.Contains("Universal"))   lilRP = lilStartup.lilRenderPipeline.URP;
+                }
+                else
+                {
+                    lilRP = lilStartup.lilRenderPipeline.BRP;
+                }
+                foreach(string shaderGuid in shaderGuids)
+                {
+                    string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
+                    lilStartup.RewriteShaderRP(shaderPath, lilRP);
+                }
+                lilStartup.RewriteShaderRP(lilStartup.shaderPipelinePath, lilRP);
+                lilToonEditorSetting editorSetting = (lilToonEditorSetting)AssetDatabase.LoadAssetAtPath(lilToonInspector.editorSettingPath, typeof(lilToonEditorSetting));
+                if(editorSetting != null)
+                {
+                    lilToonSetting shaderSetting = (lilToonSetting)AssetDatabase.LoadAssetAtPath(editorSetting.settingPath, typeof(lilToonSetting));
+                    if(shaderSetting = null) lilToonInspector.lilApplyShaderSetting(shaderSetting);
+                }
+                AssetDatabase.Refresh();
+            }
+        }
+    }
+
     #if SYSTEM_DRAWING
         public class lilGifToAtlas : MonoBehaviour
         {

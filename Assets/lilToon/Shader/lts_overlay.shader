@@ -1,4 +1,4 @@
-Shader "_lil/lilToonOverlay"
+Shader "_lil/[Optional] lilToonOverlay"
 {
     Properties
     {

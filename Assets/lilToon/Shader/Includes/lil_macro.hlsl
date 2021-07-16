@@ -529,7 +529,7 @@
         float3 lightColor = _MainLightColor.rgb; \
         float3 lightDirection = lilGetLightDirection(); \
         float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
-        lightColor = saturate(lightColor + max(lightmapColor,lilGetSHLength()))
+        lightColor = saturate(lightColor + max(lightmapColor,lilGetSHToon()))
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_DYNAMICLIGHTMAP)
     // Mixed Lightmap (Baked Indirect) or Lightmap (Non-Directional)
     #undef LIL_USE_DYNAMICLIGHTMAP

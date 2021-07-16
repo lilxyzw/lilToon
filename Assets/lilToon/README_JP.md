@@ -57,6 +57,12 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 
 より詳しい設定については[マニュアル](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md)を参照してください。
 
+# 使い方 - アップデート
+1. 下記いずれかの方法でUnityにlilToonをインポート  
+    i. unitypackageをUnityウィンドウにドラッグ＆ドロップでインポート  
+    ii. UPMから```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master```をインポート  
+2. 上部メニューバーの`Assets/lilToon/Refresh Shaders`をクリック
+
 # lilToonを用いた制作物の配布手順について
 `lilToonSetting`フォルダにシェーダー設定が保存されているためこちらも含めてunitypackage化することをオススメします。  
 シェーダー設定を変更していない場合は同梱する必要はありません。  
@@ -69,6 +75,8 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 6. `Export...`を押してunitypackageを保存
 
 # よくあるトラブル
+- マテリアルエラーが発生した  
+  → 上部メニューバーの`Assets/lilToon/Refresh Shaders`をクリックすると改善される場合があります
 - 顔にかかる影が気になる  
   → `マスクと強度`にマスクテクスチャを指定することで部分的に影を消すことができます。
 - 輪郭線が汚くなる  
@@ -97,6 +105,10 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # 変更履歴
+## v1.1.1
+- プロパティのアルファが0のときに警告を表示
+- エディターのテーマ変更に対応
+- シェーダーリフレッシュの追加
 ## v1.1
 - アルファマスクの追加
 - マットキャップ2ndの追加

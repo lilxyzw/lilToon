@@ -11,7 +11,7 @@ namespace lilToon
     public class lilStartup {
         //------------------------------------------------------------------------------------------------------------------------------
         // Enum
-        enum lilRenderPipeline
+        public enum lilRenderPipeline
         {
             BRP,
             LWRP,
@@ -145,7 +145,7 @@ namespace lilToon
             }
         }
 
-        static void RewriteShaderRP(string shaderPath, lilRenderPipeline lilRP)
+        public static void RewriteShaderRP(string shaderPath, lilRenderPipeline lilRP)
         {
             string path = shaderPath;
             StreamReader sr = new StreamReader(path);
