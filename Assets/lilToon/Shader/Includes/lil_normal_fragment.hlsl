@@ -75,6 +75,17 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         #endif
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Alpha Mask
+        #if defined(LIL_FEATURE_ALPHAMASK) && LIL_RENDER != 0
+            if(_AlphaMaskMode)
+            {
+                float alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, uvMain).r;
+                alphaMask = saturate(alphaMask + _AlphaMaskValue);
+                col.a = _AlphaMaskMode == 1 ? alphaMask : col.a * alphaMask;
+            }
+        #endif
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Alpha
         #if LIL_RENDER == 0
             // Opaque
@@ -660,18 +671,40 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //----------------------------------------------------------------------------------------------------------------------
         // MatCap
+        float2 matUV = float2(0,0);
+        float2 mat2ndUV = float2(0,0);
         #if defined(LIL_FEATURE_MATCAP) && defined(LIL_FEATURE_MATCAP_2ND)
-            float2 matUV = float2(0,0);
-            LIL_BRANCH
-            if(_UseMatCap || _UseMatCap2nd) matUV = lilCalcMatCapUV(normalDirection);
+            #if !defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+                LIL_BRANCH
+                if(_UseMatCap || _UseMatCap2nd)
+                {
+                    matUV = lilCalcMatCapUV(normalDirection);
+                    mat2ndUV = matUV;
+                }
+            #endif
         #endif
 
         #if defined(LIL_FEATURE_MATCAP)
             LIL_BRANCH
             if(_UseMatCap)
             {
-                #if !defined(LIL_FEATURE_MATCAP_2ND)
-                    float2 matUV = lilCalcMatCapUV(normalDirection);
+                #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+                    LIL_BRANCH
+                    if(_MatCapCustomNormal)
+                    {
+                        float4 normalTex = LIL_SAMPLE_2D_ST(_MatCapBumpMap, sampler_MainTex, uvMain);
+                        float3 normalmap = UnpackNormalScale(normalTex, _MatCapBumpScale);
+
+                        float3 matcapNormalDirection = normalize(mul(normalmap, tbnWS));
+                        matcapNormalDirection = facing < (_FlipNormal-1.0) ? -matcapNormalDirection : matcapNormalDirection;
+                        matUV = lilCalcMatCapUV(matcapNormalDirection);
+                    }
+                    else
+                    {
+                        matUV = lilCalcMatCapUV(normalDirection);
+                    }
+                #elif !defined(LIL_FEATURE_MATCAP_2ND)
+                    matUV = lilCalcMatCapUV(normalDirection);
                 #endif
                 float4 matCapColor = _MatCapColor;
                 if(Exists_MatCapTex) matCapColor *= LIL_SAMPLE_2D(_MatCapTex, sampler_MainTex, matUV);
@@ -692,11 +725,25 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             LIL_BRANCH
             if(_UseMatCap2nd)
             {
-                #if !defined(LIL_FEATURE_MATCAP)
-                    float2 matUV = lilCalcMatCapUV(normalDirection);
+                #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+                    LIL_BRANCH
+                    if(_MatCap2ndCustomNormal)
+                    {
+                        float4 normalTex = LIL_SAMPLE_2D_ST(_MatCap2ndBumpMap, sampler_MainTex, uvMain);
+                        float3 normalmap = UnpackNormalScale(normalTex, _MatCap2ndBumpScale);
+                        float3 matcap2ndNormalDirection = normalize(mul(normalmap, tbnWS));
+                        matcap2ndNormalDirection = facing < (_FlipNormal-1.0) ? -matcap2ndNormalDirection : matcap2ndNormalDirection;
+                        mat2ndUV = lilCalcMatCapUV(matcap2ndNormalDirection);
+                    }
+                    else
+                    {
+                        mat2ndUV = lilCalcMatCapUV(normalDirection);
+                    }
+                #elif !defined(LIL_FEATURE_MATCAP_2ND)
+                    mat2ndUV = lilCalcMatCapUV(normalDirection);
                 #endif
                 float4 matCap2ndColor = _MatCap2ndColor;
-                if(Exists_MatCapTex) matCap2ndColor *= LIL_SAMPLE_2D(_MatCap2ndTex, sampler_MainTex, matUV);
+                if(Exists_MatCapTex) matCap2ndColor *= LIL_SAMPLE_2D(_MatCap2ndTex, sampler_MainTex, mat2ndUV);
                 #ifndef LIL_PASS_FORWARDADD
                     matCap2ndColor.rgb = lerp(matCap2ndColor.rgb, matCap2ndColor.rgb * lightColor, _MatCap2ndEnableLighting);
                 #else
@@ -721,19 +768,61 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 if(_UseRim)
             #endif
             {
-                float4 rimColor = _RimColor;
-                if(Exists_RimColorTex) rimColor *= LIL_SAMPLE_2D(_RimColorTex, sampler_MainTex, uvMain);
-                float rim = pow(saturate(1.0 - nvabs), _RimFresnelPower);
-                rim = lilTooning(rim, _RimBorder, _RimBlur);
-                #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
-                    if(_RimApplyTransparency) rim *= col.a;
-                #endif
-                #ifndef LIL_PASS_FORWARDADD
-                    if(_RimShadowMask) rim *= shadowmix;
-                    rimColor.rgb = lerp(rimColor.rgb, rimColor.rgb * lightColor, _RimEnableLighting);
-                    col.rgb += rim * rimColor.a * rimColor.rgb;
+                #if defined(LIL_FEATURE_RIMLIGHT_DIRECTION)
+                    float4 rimColor = _RimColor;
+                    float4 rimIndirColor = _RimIndirColor;
+                    if(Exists_RimColorTex)
+                    {
+                        float4 rimColorTex = LIL_SAMPLE_2D(_RimColorTex, sampler_MainTex, uvMain);
+                        rimColor *= rimColorTex;
+                        rimIndirColor *= rimColorTex;
+                    }
+
+                    float lnRaw = dot(lightDirection,normalDirection) * 0.5 + 0.5;
+                    float lnDir = saturate((lnRaw + _RimDirRange) / (1.0 + _RimDirRange));
+                    float lnIndir = saturate((1.0-lnRaw + _RimIndirRange) / (1.0 + _RimIndirRange));
+                    float rim = pow(saturate(1.0 - nvabs), _RimFresnelPower);
+                    float rimDir = lerp(rim, rim*lnDir, _RimDirStrength);
+                    float rimIndir = rim * lnIndir * _RimDirStrength;
+                    rimDir = lilTooning(rimDir, _RimBorder, _RimBlur);
+                    rimIndir = lilTooning(rimIndir, _RimIndirBorder, _RimIndirBlur);
+
+                    #ifndef LIL_PASS_FORWARDADD
+                        if(_RimShadowMask)
+                        {
+                            rimDir *= shadowmix;
+                            rimIndir *= shadowmix;
+                        }
+                    #endif
+                    #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+                        if(_RimApplyTransparency)
+                        {
+                            rimDir *= col.a;
+                            rimIndir *= col.a;
+                        }
+                    #endif
+                    float3 rimSum = rimDir * rimColor.a * rimColor.rgb + rimIndir * rimIndirColor.a * rimIndirColor.rgb;
+                    #ifndef LIL_PASS_FORWARDADD
+                        rimSum = lerp(rimSum, rimSum * lightColor, _RimEnableLighting);
+                        col.rgb += rimSum;
+                    #else
+                        col.rgb += rimSum * _RimEnableLighting * lightColor;
+                    #endif
                 #else
-                    col.rgb += rim * _RimEnableLighting * rimColor.a * rimColor.rgb * lightColor;
+                    float4 rimColor = _RimColor;
+                    if(Exists_RimColorTex) rimColor *= LIL_SAMPLE_2D(_RimColorTex, sampler_MainTex, uvMain);
+                    float rim = pow(saturate(1.0 - nvabs), _RimFresnelPower);
+                    rim = lilTooning(rim, _RimBorder, _RimBlur);
+                    #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+                        if(_RimApplyTransparency) rim *= col.a;
+                    #endif
+                    #ifndef LIL_PASS_FORWARDADD
+                        if(_RimShadowMask) rim *= shadowmix;
+                        rimColor.rgb = lerp(rimColor.rgb, rimColor.rgb * lightColor, _RimEnableLighting);
+                        col.rgb += rim * rimColor.a * rimColor.rgb;
+                    #else
+                        col.rgb += rim * _RimEnableLighting * rimColor.a * rimColor.rgb * lightColor;
+                    #endif
                 #endif
             }
         #endif

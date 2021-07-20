@@ -142,6 +142,9 @@ Shader "Hidden/lilToonCutoutOutline"
                         _MatCapEnableLighting       ("Enable Lighting", Range(0, 1)) = 1
         [lilEnum]       _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCapApplyTransparency    ("Apply Transparency", Int) = 1
+        [lilToggle]     _MatCapCustomNormal         ("MatCap Custom Normal Map", Int) = 0
+        [Normal]        _MatCapBumpMap              ("Normal Map", 2D) = "bump" {}
+                        _MatCapBumpScale            ("Scale", Range(-10,10)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // MatCap 2nd
@@ -153,6 +156,9 @@ Shader "Hidden/lilToonCutoutOutline"
                         _MatCap2ndEnableLighting    ("Enable Lighting", Range(0, 1)) = 1
         [lilEnum]       _MatCap2ndBlendMode         ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCap2ndApplyTransparency ("Apply Transparency", Int) = 1
+        [lilToggle]     _MatCap2ndCustomNormal      ("MatCap Custom Normal Map", Int) = 0
+        [Normal]        _MatCap2ndBumpMap           ("Normal Map", 2D) = "bump" {}
+                        _MatCap2ndBumpScale         ("Scale", Range(-10,10)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Rim
@@ -165,6 +171,12 @@ Shader "Hidden/lilToonCutoutOutline"
                         _RimEnableLighting          ("Enable Lighting", Range(0, 1)) = 1
         [lilToggle]     _RimShadowMask              ("Shadow Mask", Int) = 0
         [lilToggle]     _RimApplyTransparency       ("Apply Transparency", Int) = 1
+                        _RimDirStrength             ("Light direction strength", Range(0, 1)) = 0
+                        _RimDirRange                ("Direction range", Range(-1, 1)) = 0
+                        _RimIndirRange              ("Indirection range", Range(-1, 1)) = 0
+        [lilHDR]        _RimIndirColor              ("Indirection Color", Color) = (1,1,1,1)
+                        _RimIndirBorder             ("Indirection Border", Range(0, 1)) = 0.5
+                        _RimIndirBlur               ("Indirection Blur", Range(0, 1)) = 0.1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision
@@ -316,7 +328,7 @@ Shader "Hidden/lilToonCutoutOutline"
                         _OutlineTex                 ("Texture", 2D) = "white" {}
         [lilUVAnim]     _OutlineTex_ScrollRotate    ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
         [lilHSVG]       _OutlineTexHSVG             ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
-                        _OutlineWidth               ("Width", Range(0,10)) = 0.05
+        [lilOLWidth]    _OutlineWidth               ("Width", Range(0,1)) = 0.05
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
         [lilToggle]     _OutlineFixWidth            ("Fix Width", Int) = 1
         [lilToggle]     _OutlineVertexR2Width       ("Vertex R -> Width", Int) = 0

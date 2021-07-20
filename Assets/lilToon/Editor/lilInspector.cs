@@ -82,8 +82,8 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
-        public const string currentVersionName = "1.1.1";
-        public const int currentVersionValue = 4;
+        public const string currentVersionName = "1.1.2";
+        public const int currentVersionValue = 5;
 
         public const string boothURL = "https://lilxyzw.booth.pm/";
         public const string githubURL = "https://github.com/lilxyzw/lilToon";
@@ -349,6 +349,9 @@ namespace lilToon
             MaterialProperty matcapBlendMode;
             MaterialProperty matcapMul;
             MaterialProperty matcapApplyTransparency;
+            MaterialProperty matcapCustomNormal;
+            MaterialProperty matcapBumpMap;
+            MaterialProperty matcapBumpScale;
         MaterialProperty useMatCap2nd;
             MaterialProperty matcap2ndTex;
             MaterialProperty matcap2ndColor;
@@ -358,6 +361,9 @@ namespace lilToon
             MaterialProperty matcap2ndBlendMode;
             MaterialProperty matcap2ndMul;
             MaterialProperty matcap2ndApplyTransparency;
+            MaterialProperty matcap2ndCustomNormal;
+            MaterialProperty matcap2ndBumpMap;
+            MaterialProperty matcap2ndBumpScale;
         MaterialProperty useRim;
             MaterialProperty rimColor;
             MaterialProperty rimColorTex;
@@ -367,6 +373,12 @@ namespace lilToon
             MaterialProperty rimEnableLighting;
             MaterialProperty rimShadowMask;
             MaterialProperty rimApplyTransparency;
+            MaterialProperty rimDirStrength;
+            MaterialProperty rimDirRange;
+            MaterialProperty rimIndirRange;
+            MaterialProperty rimIndirColor;
+            MaterialProperty rimIndirBorder;
+            MaterialProperty rimIndirBlur;
         MaterialProperty useEmission;
             MaterialProperty emissionColor;
             MaterialProperty emissionMap;
@@ -1788,6 +1800,16 @@ namespace lilToon
                                         EditorGUILayout.HelpBox(loc["sHelpMatCapBlending"],MessageType.Warning);
                                     }
                                     if(isTransparent) materialEditor.ShaderProperty(matcapApplyTransparency, loc["sApplyTransparency"]);
+                                    if(shaderSetting.LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+                                    {
+                                        DrawLine();
+                                        materialEditor.ShaderProperty(matcapCustomNormal, loc["sMatCapCustomNormal"]);
+                                        if(matcapCustomNormal.floatValue == 1)
+                                        {
+                                            materialEditor.TexturePropertySingleLine(normalMapContent, matcapBumpMap, matcapBumpScale);
+                                            materialEditor.TextureScaleOffsetProperty(matcapBumpMap);
+                                        }
+                                    }
                                     EditorGUILayout.EndVertical();
                                 }
                                 EditorGUILayout.EndVertical();
@@ -1814,6 +1836,16 @@ namespace lilToon
                                         EditorGUILayout.HelpBox(loc["sHelpMatCapBlending"],MessageType.Warning);
                                     }
                                     if(isTransparent) materialEditor.ShaderProperty(matcap2ndApplyTransparency, loc["sApplyTransparency"]);
+                                    if(shaderSetting.LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+                                    {
+                                        DrawLine();
+                                        materialEditor.ShaderProperty(matcap2ndCustomNormal, loc["sMatCapCustomNormal"]);
+                                        if(matcap2ndCustomNormal.floatValue == 1)
+                                        {
+                                            materialEditor.TexturePropertySingleLine(normalMapContent, matcap2ndBumpMap, matcap2ndBumpScale);
+                                            materialEditor.TextureScaleOffsetProperty(matcap2ndBumpMap);
+                                        }
+                                    }
                                     EditorGUILayout.EndVertical();
                                 }
                                 EditorGUILayout.EndVertical();
@@ -1833,9 +1865,37 @@ namespace lilToon
                                     else                                                materialEditor.ShaderProperty(rimColor, loc["sColor"]);
                                     if(rimColor.colorValue.a == 0) EditorGUILayout.HelpBox(loc["sColorAlphaZeroWarn"],MessageType.Warning);
                                     DrawLine();
-                                    rimBorder.floatValue = 1.0f - EditorGUILayout.Slider(loc["sBorder"], 1.0f - rimBorder.floatValue, 0.0f, 1.0f);
-                                    materialEditor.ShaderProperty(rimBlur, loc["sBlur"]);
-                                    materialEditor.ShaderProperty(rimFresnelPower, loc["sFresnelPower"]);
+                                    if(shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION)
+                                    {
+                                        materialEditor.ShaderProperty(rimDirStrength, loc["sRimLightDirection"]);
+                                        if(rimDirStrength.floatValue != 0)
+                                        {
+                                            EditorGUI.indentLevel++;
+                                            materialEditor.ShaderProperty(rimDirRange, loc["sRimDirectionRange"]);
+                                            rimBorder.floatValue = 1.0f - EditorGUILayout.Slider(loc["sBorder"], 1.0f - rimBorder.floatValue, 0.0f, 1.0f);
+                                            materialEditor.ShaderProperty(rimBlur, loc["sBlur"]);
+                                            DrawLine();
+                                            materialEditor.ShaderProperty(rimIndirRange, loc["sRimIndirectionRange"]);
+                                            materialEditor.ShaderProperty(rimIndirColor, loc["sColor"]);
+                                            rimIndirBorder.floatValue = 1.0f - EditorGUILayout.Slider(loc["sBorder"], 1.0f - rimIndirBorder.floatValue, 0.0f, 1.0f);
+                                            materialEditor.ShaderProperty(rimIndirBlur, loc["sBlur"]);
+                                            EditorGUI.indentLevel--;
+                                            DrawLine();
+                                            materialEditor.ShaderProperty(rimFresnelPower, loc["sFresnelPower"]);
+                                        }
+                                        else
+                                        {
+                                            rimBorder.floatValue = 1.0f - EditorGUILayout.Slider(loc["sBorder"], 1.0f - rimBorder.floatValue, 0.0f, 1.0f);
+                                            materialEditor.ShaderProperty(rimBlur, loc["sBlur"]);
+                                            materialEditor.ShaderProperty(rimFresnelPower, loc["sFresnelPower"]);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        rimBorder.floatValue = 1.0f - EditorGUILayout.Slider(loc["sBorder"], 1.0f - rimBorder.floatValue, 0.0f, 1.0f);
+                                        materialEditor.ShaderProperty(rimBlur, loc["sBlur"]);
+                                        materialEditor.ShaderProperty(rimFresnelPower, loc["sFresnelPower"]);
+                                    }
                                     DrawLine();
                                     materialEditor.ShaderProperty(rimEnableLighting, loc["sEnableLighting"]);
                                     materialEditor.ShaderProperty(rimShadowMask, loc["sShadowMask"]);
@@ -2638,6 +2698,9 @@ namespace lilToon
                 matcapEnableLighting = FindProperty("_MatCapEnableLighting", props);
                 matcapBlendMode = FindProperty("_MatCapBlendMode", props);
                 matcapApplyTransparency = FindProperty("_MatCapApplyTransparency", props);
+                matcapCustomNormal = FindProperty("_MatCapCustomNormal", props);
+                matcapBumpMap = FindProperty("_MatCapBumpMap", props);
+                matcapBumpScale = FindProperty("_MatCapBumpScale", props);
             useMatCap2nd = FindProperty("_UseMatCap2nd", props);
                 matcap2ndTex = FindProperty("_MatCap2ndTex", props);
                 matcap2ndColor = FindProperty("_MatCap2ndColor", props);
@@ -2646,6 +2709,9 @@ namespace lilToon
                 matcap2ndEnableLighting = FindProperty("_MatCap2ndEnableLighting", props);
                 matcap2ndBlendMode = FindProperty("_MatCap2ndBlendMode", props);
                 matcap2ndApplyTransparency = FindProperty("_MatCap2ndApplyTransparency", props);
+                matcap2ndCustomNormal = FindProperty("_MatCap2ndCustomNormal", props);
+                matcap2ndBumpMap = FindProperty("_MatCap2ndBumpMap", props);
+                matcap2ndBumpScale = FindProperty("_MatCap2ndBumpScale", props);
             useRim = FindProperty("_UseRim", props);
                 rimColor = FindProperty("_RimColor", props);
                 rimColorTex = FindProperty("_RimColorTex", props);
@@ -2655,6 +2721,12 @@ namespace lilToon
                 rimEnableLighting = FindProperty("_RimEnableLighting", props);
                 rimShadowMask = FindProperty("_RimShadowMask", props);
                 rimApplyTransparency = FindProperty("_RimApplyTransparency", props);
+                rimDirStrength = FindProperty("_RimDirStrength", props);
+                rimDirRange = FindProperty("_RimDirRange", props);
+                rimIndirRange = FindProperty("_RimIndirRange", props);
+                rimIndirColor = FindProperty("_RimIndirColor", props);
+                rimIndirBorder = FindProperty("_RimIndirBorder", props);
+                rimIndirBlur = FindProperty("_RimIndirBlur", props);
             useEmission = FindProperty("_UseEmission", props);
                 emissionColor = FindProperty("_EmissionColor", props);
                 emissionMap = FindProperty("_EmissionMap", props);
@@ -2985,6 +3057,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_MATCAP = true;
                 shaderSetting.LIL_FEATURE_MATCAP_2ND = false;
                 shaderSetting.LIL_FEATURE_RIMLIGHT = true;
+                shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION = false;
                 shaderSetting.LIL_FEATURE_PARALLAX = false;
                 shaderSetting.LIL_FEATURE_POM = false;
                 shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = false;
@@ -3008,6 +3081,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_TEX_REFLECTION_METALLIC = false;
                 shaderSetting.LIL_FEATURE_TEX_REFLECTION_COLOR = false;
                 shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK = true;
+                shaderSetting.LIL_FEATURE_TEX_MATCAP_NORMALMAP = false;
                 shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR = true;
                 shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK = false;
                 shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR = true;
@@ -3285,6 +3359,7 @@ namespace lilToon
             {
                 EditorGUI.indentLevel++;
                 lilToggleGUI(loc["sSettingTexMatCapMask"], ref shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK);
+                lilToggleGUI(loc["sSettingTexMatCapNormal"], ref shaderSetting.LIL_FEATURE_TEX_MATCAP_NORMALMAP);
                 EditorGUI.indentLevel--;
             }
             DrawLine();
@@ -3294,6 +3369,7 @@ namespace lilToon
             {
                 EditorGUI.indentLevel++;
                 lilToggleGUI(loc["sSettingTexRimLightColor"], ref shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR);
+                lilToggleGUI(loc["sSettingTexRimLightDirection"], ref shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION);
                 EditorGUI.indentLevel--;
             }
             DrawLine();
@@ -3437,11 +3513,13 @@ namespace lilToon
             if(shaderSetting.LIL_FEATURE_MATCAP || shaderSetting.LIL_FEATURE_MATCAP_2ND)
             {
                 if(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK) sb.Append("#define LIL_FEATURE_TEX_MATCAP_MASK\r\n");
+                if(shaderSetting.LIL_FEATURE_TEX_MATCAP_NORMALMAP) sb.Append("#define LIL_FEATURE_TEX_MATCAP_NORMALMAP\r\n");
             }
             if(shaderSetting.LIL_FEATURE_RIMLIGHT)
             {
                 sb.Append("#define LIL_FEATURE_RIMLIGHT\r\n");
                 if(shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR) sb.Append("#define LIL_FEATURE_TEX_RIMLIGHT_COLOR\r\n");
+                if(shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION) sb.Append("#define LIL_FEATURE_RIMLIGHT_DIRECTION\r\n");
             }
             if(shaderSetting.LIL_FEATURE_PARALLAX)
             {
@@ -6490,6 +6568,31 @@ namespace lilToon
         }
     }
 
+    public class lilOLWidth : MaterialPropertyDrawer
+    {
+        // [lilOLWidth]
+        public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
+        {
+            float value = prop.floatValue;
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.showMixedValue = prop.hasMixedValue;
+            if(value > 0.999f)
+            {
+                value = EditorGUI.FloatField(position, label, value);
+            }
+            else
+            {
+                value = EditorGUI.Slider(position, label, value, 0.0f, 1.0f);
+            }
+            EditorGUI.showMixedValue = false;
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.floatValue = value;
+            }
+        }
+    }
+
     //------------------------------------------------------------------------------------------------------------------------------
     // MenuItem
 
@@ -6527,7 +6630,7 @@ namespace lilToon
                 if(editorSetting != null)
                 {
                     lilToonSetting shaderSetting = (lilToonSetting)AssetDatabase.LoadAssetAtPath(editorSetting.settingPath, typeof(lilToonSetting));
-                    if(shaderSetting = null) lilToonInspector.lilApplyShaderSetting(shaderSetting);
+                    if(shaderSetting != null) lilToonInspector.lilApplyShaderSetting(shaderSetting);
                 }
                 AssetDatabase.Refresh();
             }
@@ -6694,6 +6797,130 @@ namespace lilToon
             if(Selection.activeObject == null) return false;
             string path = AssetDatabase.GetAssetPath(Selection.activeObject).ToLower();
             return path.EndsWith(".png");
+        }
+    }
+
+    public class lilFixLighting : MonoBehaviour
+    {
+        public const string anchorName = "AutoAnchorObject";
+        // Dot Texture reduction
+        [MenuItem("GameObject/[lilToon] Fix Lighting", false, 20)]
+        static void FixLighting()
+        {
+            GameObject gameObject = Selection.activeGameObject;
+            if(gameObject == null)
+            {
+                EditorUtility.DisplayDialog("[lilToon] Fix Lighting","Select gameobject before run","OK");
+                return;
+            }
+
+            // Create Anchor
+            if(gameObject.transform.Find(anchorName) != null)
+            {
+                DestroyImmediate(gameObject.transform.Find(anchorName).gameObject);
+            }
+            GameObject anchorObject = new GameObject(anchorName);
+
+            // Calculate avatar size
+            float minX =  10000.0f;
+            float minY =  10000.0f;
+            float minZ =  10000.0f;
+            float maxX = -10000.0f;
+            float maxY = -10000.0f;
+            float maxZ = -10000.0f;
+            Transform[] objTransforms = gameObject.GetComponentsInChildren<Transform>(true);
+            foreach(Transform objTransform in objTransforms)
+            {
+                minX = minX < objTransform.position.x ? minX : objTransform.position.x;
+                minY = minY < objTransform.position.y ? minY : objTransform.position.y;
+                minZ = minZ < objTransform.position.z ? minZ : objTransform.position.z;
+                maxX = maxX > objTransform.position.x ? maxX : objTransform.position.x;
+                maxY = maxY > objTransform.position.y ? maxY : objTransform.position.y;
+                maxZ = maxZ > objTransform.position.z ? maxZ : objTransform.position.z;
+            }
+
+            Vector3 centerPosition = new Vector3((minX + maxX) / 2.0f, (minY + maxY) / 2.0f, (minZ + maxZ) / 2.0f);
+
+            //anchorObject.transform.position = centerPosition;
+            anchorObject.transform.position = new Vector3(gameObject.transform.position.x, centerPosition.y, gameObject.transform.position.z);
+            anchorObject.transform.parent = gameObject.transform;
+
+            minX -= anchorObject.transform.position.x;
+            minY -= anchorObject.transform.position.y;
+            minZ -= anchorObject.transform.position.z;
+            maxX -= anchorObject.transform.position.x;
+            maxY -= anchorObject.transform.position.y;
+            maxZ -= anchorObject.transform.position.z;
+
+            float avatarWidth = -minX;
+            avatarWidth = -minY > avatarWidth ? -minY : avatarWidth;
+            avatarWidth = -minZ > avatarWidth ? -minZ : avatarWidth;
+            avatarWidth =  maxX > avatarWidth ?  maxX : avatarWidth;
+            avatarWidth =  maxY > avatarWidth ?  maxY : avatarWidth;
+            avatarWidth =  maxZ > avatarWidth ?  maxZ : avatarWidth;
+            avatarWidth *= 2.5f;
+
+            // MeshRenderer
+            MeshRenderer[] meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>(true);
+            if(meshRenderers.Length != 0)
+            {
+                foreach(MeshRenderer meshRenderer in meshRenderers)
+                {
+                    // Fix vertex light
+                    foreach(Material material in meshRenderer.sharedMaterials)
+                    {
+                        if(material.shader.name.Contains("lilToon"))
+                        {
+                            material.SetFloat("_VertexLightStrength", 0.0f);
+                            EditorUtility.SetDirty(material);
+                        }
+                    }
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+
+                    // Fix renderer settings
+                    meshRenderer.probeAnchor = anchorObject.transform;
+                    meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.BlendProbes;
+                    meshRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.BlendProbes;
+                    if(meshRenderer.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.Off)
+                    {
+                        meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+                    }
+                }
+            }
+
+            // SkinnedMeshRenderer
+            SkinnedMeshRenderer[] skinnedMeshRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+            if(skinnedMeshRenderers.Length != 0)
+            {
+                foreach(SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
+                {
+                    // Fix vertex light
+                    foreach(Material material in skinnedMeshRenderer.sharedMaterials)
+                    {
+                        if(material.shader.name.Contains("lilToon"))
+                        {
+                            material.SetFloat("_VertexLightStrength", 0.0f);
+                            EditorUtility.SetDirty(material);
+                        }
+                    }
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+
+                    // Fix renderer settings
+                    skinnedMeshRenderer.probeAnchor = anchorObject.transform;
+                    skinnedMeshRenderer.rootBone = anchorObject.transform;
+                    skinnedMeshRenderer.localBounds = new Bounds(new Vector3(0, 0, 0), new Vector3(avatarWidth, avatarWidth, avatarWidth));
+                    skinnedMeshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.BlendProbes;
+                    skinnedMeshRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.BlendProbes;
+                    if(skinnedMeshRenderer.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.Off)
+                    {
+                        skinnedMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+                    }
+                }
+            }
+
+            EditorUtility.DisplayDialog("[lilToon] Fix Lighting","Complete!","OK");
         }
     }
 }

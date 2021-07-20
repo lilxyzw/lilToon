@@ -105,6 +105,12 @@ Comparing parameters when implementing `Convert to MToon (VRM)`
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # Change log
+## v1.1.2
+- Added custom normal map for MatCap
+- Added customization of Rim Light by light direction
+- One-click lighting settings for meshes and materials
+- Outline width can now be set to any value
+- Alpha masks can now be applied to outline
 ## v1.1.1
 - Show warning when property alpha is 0
 - Support for changing editor theme

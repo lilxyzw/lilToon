@@ -209,6 +209,7 @@ You can blend colors into the main color. This is the layer function in painting
 |Mask|Area and strength to apply MatCap.|
 |Enable Lighting|Apply the color of the light to MatCap.|
 |Blending Mode|How to apply MatCap. You can select Normal, Add, Screen, or Multiply.|
+|Custom normal map|Custom normal map for MatCap.|
 
 ### Rim Light
 |Name|Description|
@@ -219,6 +220,9 @@ You can blend colors into the main color. This is the layer function in painting
 |Fresnel Power|Sharpness of rim light.|
 |Enable Lighting|Apply the color of the light to rim light.|
 |Shadow Mask|Turn off rim light in the shadow.|
+|Light direction strength|Influence of light direction.|
+|Direct light width|Range of direct light.|
+|Indirect light width|Range of indirect light (shadow).|
 
 <br/>
 

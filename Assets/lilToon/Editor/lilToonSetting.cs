@@ -26,6 +26,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_MATCAP;
     public bool LIL_FEATURE_MATCAP_2ND;
     public bool LIL_FEATURE_RIMLIGHT;
+    public bool LIL_FEATURE_RIMLIGHT_DIRECTION;
     public bool LIL_FEATURE_PARALLAX;
     public bool LIL_FEATURE_POM;
     public bool LIL_FEATURE_CLIPPING_CANCELLER;
@@ -50,6 +51,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_TEX_REFLECTION_METALLIC;
     public bool LIL_FEATURE_TEX_REFLECTION_COLOR;
     public bool LIL_FEATURE_TEX_MATCAP_MASK;
+    public bool LIL_FEATURE_TEX_MATCAP_NORMALMAP;
     public bool LIL_FEATURE_TEX_RIMLIGHT_COLOR;
     public bool LIL_FEATURE_TEX_AUDIOLINK_MASK;
     public bool LIL_FEATURE_TEX_DISSOLVE_NOISE;

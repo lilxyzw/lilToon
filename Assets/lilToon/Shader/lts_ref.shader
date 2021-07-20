@@ -142,6 +142,9 @@ Shader "Hidden/lilToonRefraction"
                         _MatCapEnableLighting       ("Enable Lighting", Range(0, 1)) = 1
         [lilEnum]       _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCapApplyTransparency    ("Apply Transparency", Int) = 1
+        [lilToggle]     _MatCapCustomNormal         ("MatCap Custom Normal Map", Int) = 0
+        [Normal]        _MatCapBumpMap              ("Normal Map", 2D) = "bump" {}
+                        _MatCapBumpScale            ("Scale", Range(-10,10)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // MatCap 2nd
@@ -153,6 +156,9 @@ Shader "Hidden/lilToonRefraction"
                         _MatCap2ndEnableLighting    ("Enable Lighting", Range(0, 1)) = 1
         [lilEnum]       _MatCap2ndBlendMode         ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCap2ndApplyTransparency ("Apply Transparency", Int) = 1
+        [lilToggle]     _MatCap2ndCustomNormal      ("MatCap Custom Normal Map", Int) = 0
+        [Normal]        _MatCap2ndBumpMap           ("Normal Map", 2D) = "bump" {}
+                        _MatCap2ndBumpScale         ("Scale", Range(-10,10)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Rim
@@ -165,6 +171,12 @@ Shader "Hidden/lilToonRefraction"
                         _RimEnableLighting          ("Enable Lighting", Range(0, 1)) = 1
         [lilToggle]     _RimShadowMask              ("Shadow Mask", Int) = 0
         [lilToggle]     _RimApplyTransparency       ("Apply Transparency", Int) = 1
+                        _RimDirStrength             ("Light direction strength", Range(0, 1)) = 0
+                        _RimDirRange                ("Direction range", Range(-1, 1)) = 0
+                        _RimIndirRange              ("Indirection range", Range(-1, 1)) = 0
+        [lilHDR]        _RimIndirColor              ("Indirection Color", Color) = (1,1,1,1)
+                        _RimIndirBorder             ("Indirection Border", Range(0, 1)) = 0.5
+                        _RimIndirBlur               ("Indirection Blur", Range(0, 1)) = 0.1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision

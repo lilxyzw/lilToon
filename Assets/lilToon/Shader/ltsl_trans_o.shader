@@ -88,7 +88,7 @@ Shader "Hidden/lilToonLiteTransparentOutline"
         [lilHDR]        _OutlineColor               ("Outline Color", Color) = (0.8,0.85,0.9,1)
                         _OutlineTex                 ("Texture", 2D) = "white" {}
         [lilUVAnim]     _OutlineTex_ScrollRotate    ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
-                        _OutlineWidth               ("Width", Range(0,10)) = 0.05
+        [lilOLWidth]    _OutlineWidth               ("Width", Range(0,1)) = 0.05
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
         [lilToggle]     _OutlineFixWidth            ("Fix Width", Int) = 1
         [lilToggle]     _OutlineVertexR2Width       ("Vertex R -> Width", Int) = 0

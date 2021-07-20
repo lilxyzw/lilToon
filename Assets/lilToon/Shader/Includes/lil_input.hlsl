@@ -377,16 +377,25 @@ float4  _MainTex_ST;
 // MatCap
 #if defined(LIL_FEATURE_MATCAP)
     float4  _MatCapColor;
+    #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+        float4  _MatCapBumpMap_ST;
+    #endif
 #endif
 
 // MatCap 2nd
 #if defined(LIL_FEATURE_MATCAP_2ND)
     float4  _MatCap2ndColor;
+    #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+        float4  _MatCap2ndBumpMap_ST;
+    #endif
 #endif
 
 // Rim Light
 #if defined(LIL_FEATURE_RIMLIGHT)
     float4  _RimColor;
+    #if defined(LIL_FEATURE_RIMLIGHT_DIRECTION)
+        float4 _RimIndirColor;
+    #endif
 #endif
 
 // Distance Fade
@@ -502,16 +511,29 @@ float   _LightMinLimit;
 #if defined(LIL_FEATURE_MATCAP)
     float   _MatCapBlend;
     float   _MatCapEnableLighting;
+    #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+        float   _MatCapBumpScale;
+    #endif
 #endif
 #if defined(LIL_FEATURE_MATCAP_2ND)
     float   _MatCap2ndBlend;
     float   _MatCap2ndEnableLighting;
+    #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+        float   _MatCap2ndBumpScale;
+    #endif
 #endif
 #if defined(LIL_FEATURE_RIMLIGHT)
     float   _RimBorder;
     float   _RimBlur;
     float   _RimFresnelPower;
     float   _RimEnableLighting;
+    #if defined(LIL_FEATURE_RIMLIGHT_DIRECTION)
+        float   _RimDirStrength;
+        float   _RimDirRange;
+        float   _RimIndirRange;
+        float   _RimIndirBorder;
+        float   _RimIndirBlur;
+    #endif
 #endif
 #if defined(LIL_FEATURE_EMISSION_1ST)
     float   _EmissionBlend;
@@ -634,10 +656,16 @@ lilBool _Invisible;
 #if defined(LIL_FEATURE_MATCAP)
     lilBool _UseMatCap;
     lilBool _MatCapApplyTransparency;
+    #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+        lilBool _MatCapCustomNormal;
+    #endif
 #endif
 #if defined(LIL_FEATURE_MATCAP_2ND)
     lilBool _UseMatCap2nd;
     lilBool _MatCap2ndApplyTransparency;
+    #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+        lilBool _MatCap2ndCustomNormal;
+    #endif
 #endif
 #if defined(LIL_FEATURE_RIMLIGHT)
     lilBool _UseRim;
@@ -722,8 +750,10 @@ TEXTURE2D(_MetallicGlossMap);
 TEXTURE2D(_ReflectionColorTex);
 TEXTURE2D(_MatCapTex);
 TEXTURE2D(_MatCapBlendMask);
+TEXTURE2D(_MatCapBumpMap);
 TEXTURE2D(_MatCap2ndTex);
 TEXTURE2D(_MatCap2ndBlendMask);
+TEXTURE2D(_MatCap2ndBumpMap);
 TEXTURE2D(_RimColorTex);
 TEXTURE2D(_EmissionMap);
 TEXTURE2D(_EmissionBlendMask);

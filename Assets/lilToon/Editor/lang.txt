@@ -233,9 +233,13 @@ sApplyReflection	Environment Reflections	環境光の反射	환경 빛의 반사
 sMatCap	MatCap	マットキャップ	매트 캡	MatCap	MatCap
 sMatCap2nd	MatCap 2nd	マットキャップ2nd	매트 캡 2nd	MatCap 2nd	MatCap 2nd
 sHelpMatCapBlending	Turn off "Enable Lighting" in multiply mode.	乗算モードでは"ライティングを適用"を0にしてください	곱셈 모드에서는 조명의 합성을 취소하십시오	关闭乘法模式下的 启用照明。	關閉乘法模式下的 啟用照明。
+sMatCapCustomNormal	Custom normal map	カスタムノーマルマップ	맞춤 노멀 맵	自定义法线贴图	自定義法線貼圖
 sRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
 sFresnelPower	Fresnel Power	リムライトの細さ	림 라이트의 벌금	菲涅尔功率	菲涅爾功率
 sShadowMask	Shadow Mask	影部分で無効化	그림자 부분에서 비활성화	阴影蒙版	陰影蒙版
+sRimLightDirection	Light direction strength	ライト方向の影響度	라이트 방향의 강도	光线方向影响	光線方向影響
+sRimDirectionRange	Direct light width	直接光の幅	직접 빛의 폭	直射光宽	直射光寬
+sRimIndirectionRange	Indirect light width	間接光の幅	간접 조명의 폭	间接光宽	間接光寬
 sStencilSetting	Stencil	ステンシル設定	Stencil 설정	Stencil设置	Stencil設置
 sStencilTips	You can set the Stencil	ステンシル(眉毛を髪の上に表示するなど)の設定ができます	Stencil (눈썹을 머리 위에 표시하는 등)을 설정할 수 있습니다	你可以配置详细的Stencil设置。	你可以配置詳細的Stencil設置。
 sAdvanced	Advanced	拡張設定	고급 설정	扩展设置	擴展設置
@@ -377,8 +381,10 @@ sSettingTexReflectionColor	Reflection Color Texture	反射色テクスチャ	반
 sSettingMatCap	MatCap	マットキャップ	매트 캡	MatCap	MatCap
 sSettingMatCap2nd	MatCap 2nd	マットキャップ2nd	매트 캡 2nd	MatCap 2nd	MatCap 2nd
 sSettingTexMatCapMask	MatCap Mask	マットキャップマスク	매트 캡 마스크	MatCap蒙版	MatCap蒙版
+sSettingTexMatCapNormal	Custom normal map	カスタムノーマルマップ	맞춤 노멀 맵	自定义法线贴图	自定義法線貼圖
 sSettingRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
 sSettingTexRimLightColor	Rim Light Color Texture	リムライト色テクスチャ	림 라이트 색상 질감	Rim Light颜色纹理	Rim Light顏色紋理
+sSettingTexRimLightDirection	Light Direction Customize	ライト方向によるカスタマイズ	라이트 방향 의한 맞춤형	定制由光方向	定制由光方向
 sSettingParallax	Parallax	視差マップ	시차 맵	视差	視差
 sSettingPOM	[high-load] POM	[高負荷] POM	[과부하] POM	[高负荷] POM	[高負荷] POM
 sSettingClippingCanceller	Distance Clipping Canceller	距離クリッピングキャンセラー	거리 클리핑 취소 기	距离剪裁取消器	距離剪裁取消器
