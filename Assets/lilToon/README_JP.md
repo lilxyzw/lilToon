@@ -105,6 +105,9 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # 変更履歴
+## v1.1.3
+- バージョンチェック失敗時にInspectorが表示されない問題の修正
+- `[lilToon] Fix Lighting`でClothコンポーネントがある、もしくはボーンが無い場合に壊れる問題の修正
 ## v1.1.2
 - マットキャップにカスタムノーマルマップを追加
 - リムライトにライト方向によるカスタマイズ機能を追加

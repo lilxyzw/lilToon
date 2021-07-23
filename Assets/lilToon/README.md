@@ -105,6 +105,9 @@ Comparing parameters when implementing `Convert to MToon (VRM)`
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # Change log
+## v1.1.3
+- Fixed problem with Inspector not showing up when version check fails
+- Fixed `[lilToon] Fix Lighting` breaking when an object has a Cloth component or no bones
 ## v1.1.2
 - Added custom normal map for MatCap
 - Added customization of Rim Light by light direction

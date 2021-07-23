@@ -82,8 +82,8 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
-        public const string currentVersionName = "1.1.2";
-        public const int currentVersionValue = 5;
+        public const string currentVersionName = "1.1.3";
+        public const int currentVersionValue = 6;
 
         public const string boothURL = "https://lilxyzw.booth.pm/";
         public const string githubURL = "https://github.com/lilxyzw/lilToon";
@@ -3119,6 +3119,12 @@ namespace lilToon
         {
             if(String.IsNullOrEmpty(latestVersion.latest_vertion_name))
             {
+                if(!File.Exists(lilStartup.versionInfoTempPath))
+                {
+                    latestVersion.latest_vertion_name = currentVersionName;
+                    latestVersion.latest_vertion_value = currentVersionValue;
+                    return;
+                }
                 StreamReader sr = new StreamReader(lilStartup.versionInfoTempPath);
                 string s = sr.ReadToEnd();
                 sr.Close();
@@ -6596,7 +6602,7 @@ namespace lilToon
     //------------------------------------------------------------------------------------------------------------------------------
     // MenuItem
 
-    public class ShaderRefresh : MonoBehaviour
+    public class lilShaderRefresh : MonoBehaviour
     {
         [MenuItem("Assets/lilToon/Refresh Shaders")]
         static void RefreshShaders()
@@ -6909,13 +6915,18 @@ namespace lilToon
 
                     // Fix renderer settings
                     skinnedMeshRenderer.probeAnchor = anchorObject.transform;
-                    skinnedMeshRenderer.rootBone = anchorObject.transform;
-                    skinnedMeshRenderer.localBounds = new Bounds(new Vector3(0, 0, 0), new Vector3(avatarWidth, avatarWidth, avatarWidth));
                     skinnedMeshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.BlendProbes;
                     skinnedMeshRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.BlendProbes;
                     if(skinnedMeshRenderer.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.Off)
                     {
                         skinnedMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+                    }
+
+                    // Fix bounds
+                    if(skinnedMeshRenderer.gameObject.GetComponent<Cloth>() == null && skinnedMeshRenderer.bones != null && skinnedMeshRenderer.bones.Length != 0)
+                    {
+                        skinnedMeshRenderer.rootBone = anchorObject.transform;
+                        skinnedMeshRenderer.localBounds = new Bounds(new Vector3(0, 0, 0), new Vector3(avatarWidth, avatarWidth, avatarWidth));
                     }
                 }
             }
