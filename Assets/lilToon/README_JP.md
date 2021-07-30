@@ -1,5 +1,5 @@
 # lilToon
-Version 1.1.4
+Version 1.1.4a
 
 # 概要
 アバターを用いたサービス（VRChat等）向けに開発したシェーダーで以下のような特徴があります。
@@ -108,6 +108,8 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # 変更履歴
+## v1.1.4a
+- `Setup from FBX`がUnity2017.3以前、Unity2019.3以降で動かない問題の修正
 ## v1.1.4
 - unitypackageインポート時のマテリアル・アニメーションの自動スキャン機能を追加
 - `Auto shader setting`を追加、プロジェクト内の全マテリアル・アニメーションをスキャンし自動でシェーダー設定を最適化します

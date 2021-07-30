@@ -145,7 +145,11 @@ namespace lilToon
                 if(!path.ToLower().EndsWith(".fbx")) continue;
 
                 ModelImporter importer = (ModelImporter)ModelImporter.GetAtPath(path);
-                importer.importMaterials = true;
+                #if UNITY_2019_3_OR_NEWER
+                    importer.materialImportMode = ModelImporterMaterialImportMode.ImportStandard;
+                #else
+                    importer.importMaterials = true;
+                #endif
 
                 string dirPath = Path.GetDirectoryName(path);
                 string materialFolder = dirPath + "/Materials";
@@ -188,7 +192,9 @@ namespace lilToon
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
 
-                importer.SearchAndRemapMaterials(ModelImporterMaterialName.BasedOnMaterialName, ModelImporterMaterialSearch.Local);
+                #if UNITY_2017_3_OR_NEWER
+                    importer.SearchAndRemapMaterials(ModelImporterMaterialName.BasedOnMaterialName, ModelImporterMaterialSearch.Local);
+                #endif
                 AssetDatabase.ImportAsset(path);
                 AssetDatabase.Refresh();
             }

@@ -1,5 +1,5 @@
 # lilToon
-Version 1.1.4
+Version 1.1.4a
 
 # Overview
 This shader is developed for services using avatars (VRChat, etc.) and has the following features.
@@ -108,6 +108,8 @@ Comparing parameters when implementing `Convert to MToon (VRM)`
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # Change log
+## v1.1.4a
+- Fixed an issue where `Setup from FBX` did not work in Unity 2017.3 or earlier, Unity 2019.3 or later
 ## v1.1.4
 - Added auto-scan materials and animations when importing unitypackage
 - Added `Auto shader setting`, which scans all materials and animations in the project and automatically optimizes Shader Setting
