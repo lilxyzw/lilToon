@@ -59,5 +59,8 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_TEX_OUTLINE_WIDTH;
     public bool LIL_FEATURE_TEX_FUR_NORMAL;
     public bool LIL_FEATURE_TEX_FUR_MASK;
+    public bool LIL_FEATURE_TEX_FUR_LENGTH;
     public bool LIL_FEATURE_TEX_TESSELLATION;
+    public bool isLocked;
+    public bool shouldNotScan;
 }

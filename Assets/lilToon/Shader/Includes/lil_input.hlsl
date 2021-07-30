@@ -153,6 +153,12 @@ float4 _GrabTexture_TexelSize;
     #define Exists_FurMask              false
 #endif
 
+#if defined(LIL_FEATURE_TEX_FUR_LENGTH)
+    #define Exists_FurLengthMask        true
+#else
+    #define Exists_FurLengthMask        false
+#endif
+
 #if defined(LIL_FEATURE_TEX_FUR_NORMAL)
     #define Exists_FurVectorTex         true
 #else
@@ -770,6 +776,7 @@ TEXTURE2D(_OutlineTex);
 TEXTURE2D(_OutlineWidthMask);
 TEXTURE2D(_FurNoiseMask);
 TEXTURE2D(_FurMask);
+TEXTURE2D(_FurLengthMask);
 TEXTURE2D(_FurVectorTex);
 TEXTURE2D(_TriMask);
 SAMPLER(sampler_MainTex);

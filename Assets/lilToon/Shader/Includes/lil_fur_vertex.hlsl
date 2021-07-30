@@ -108,6 +108,8 @@ void geom(triangle v2g input[3], inout TriangleStream<g2f> outStream)
                     output.vl = lerp(input[ii2].vl,vlc,lpmix);
                 #endif
 
+                if(Exists_FurLengthMask) fvmix *= LIL_SAMPLE_2D_LOD(_FurLengthMask, sampler_MainTex, output.uv * _MainTex_ST.xy + _MainTex_ST.zw, 0).r;
+
                 #if (!defined(LIL_PASS_FORWARDADD) && defined(LIL_FEATURE_DISTANCE_FADE)) || !defined(LIL_BRP)
                     output.positionWS = lerp(input[ii2].positionWS,wpc,lpmix);
                     output.positionCS = LIL_TRANSFORM_POS_WS_TO_CS(output.positionWS);

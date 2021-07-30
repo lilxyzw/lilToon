@@ -52,6 +52,11 @@
 // 1 : On
 #define LIL_ANTIALIAS_MODE 1
 
+// Light Probe Proxy Volumes
+#define LIL_LPPV_MODE 0
+// 0 : Off
+// 1 : On
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Replace Macro
 #define LIL_BRANCH                                  UNITY_BRANCH
@@ -113,6 +118,11 @@
 // Directional Lightmap
 #undef LIL_USE_DIRLIGHTMAP
 
+// Light Probe Proxy Volumes
+#if (LIL_LPPV_MODE != 0) && UNITY_LIGHT_PROBE_PROXY_VOLUME
+    #define LIL_USE_LPPV
+#endif
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Optimization Macro
 
@@ -142,7 +152,7 @@
 #endif
 
 // positionWS
-#if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX) || defined(LIL_FEATURE_DISTANCE_FADE) || defined(LIL_REFRACTION) || !defined(LIL_BRP)
+#if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX) || defined(LIL_FEATURE_DISTANCE_FADE) || defined(LIL_REFRACTION) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
     #define LIL_SHOULD_POSITION_WS
 #endif
 
@@ -470,6 +480,12 @@
     #define LIL_TRANSFER_LIGHTMAPUV(uv1,o)
 #endif
 
+#if defined(LIL_USE_LPPV)
+    #define LIL_GET_LIGHTCOLOR lilGetLightColor(input.positionWS)
+#else
+    #define LIL_GET_LIGHTCOLOR lilGetLightColor()
+#endif
+
 // Main Light (Color / Direction / Attenuation)
 #if defined(LIL_PASS_FORWARDADD)
     // Point Light & Spot Light (ForwardAdd)
@@ -481,7 +497,7 @@
     // Mixed Lightmap (Shadowmask)
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = lilGetLightColor(); \
+        float3 lightColor = LIL_GET_LIGHTCOLOR; \
         float3 lightDirection = lilGetLightDirection(); \
         float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
         lightColor = max(lightColor, lightmapColor); \
@@ -492,7 +508,7 @@
     #undef LIL_USE_DYNAMICLIGHTMAP
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = lilGetLightColor(); \
+        float3 lightColor = LIL_GET_LIGHTCOLOR; \
         float3 lightDirection = lilGetLightDirection(); \
         float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
         lightColor = max(lightColor, lightmapColor); \
@@ -505,7 +521,7 @@
     // Use Lightmap as Shadowmask
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = lilGetLightColor(); \
+        float3 lightColor = LIL_GET_LIGHTCOLOR; \
         float3 lightDirection = lilGetLightDirection(); \
         float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
         lightColor = max(lightColor, lightmapColor); \
@@ -516,7 +532,7 @@
     // Lightmap (Directional)
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = lilGetLightColor(); \
+        float3 lightColor = LIL_GET_LIGHTCOLOR; \
         float3 lightDirection = lilGetLightDirection(); \
         float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
         float3 lightmapDirection = lilGetLightMapDirection(input.uvLM); \
@@ -535,7 +551,7 @@
     #undef LIL_USE_DYNAMICLIGHTMAP
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = lilGetLightColor(); \
+        float3 lightColor = LIL_GET_LIGHTCOLOR; \
         float3 lightDirection = lilGetLightDirection(); \
         float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
         lightColor = saturate(lightColor + lightmapColor)
@@ -551,7 +567,7 @@
     // Realtime
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = lilGetLightColor(); \
+        float3 lightColor = LIL_GET_LIGHTCOLOR; \
         float3 lightDirection = lilGetLightDirection(); \
         float3 lightmapColor = 0
 #endif

@@ -5,7 +5,7 @@ Shader "Hidden/lilToonFurCutout"
         //----------------------------------------------------------------------------------------------------------------------
         // Base
         [lilToggle]     _Invisible                  ("Invisible", Int) = 0
-        [lilToggle]     _AsUnlit                    ("As Unlit", Int) = 0
+                        _AsUnlit                    ("As Unlit", Range(0, 1)) = 0
                         _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.5
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
@@ -43,7 +43,7 @@ Shader "Hidden/lilToonFurCutout"
         //----------------------------------------------------------------------------------------------------------------------
         // Distance Fade
         [lilHDR]        _DistanceFadeColor          ("Color", Color) = (0,0,0,1)
-        [lil3Param]     _DistanceFade               ("Start|End|Strength", Vector) = (0.1,0.01,1,0)
+        [lil3Param]     _DistanceFade               ("Start|End|Strength", Vector) = (0.1,0.01,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Encryption
@@ -82,6 +82,7 @@ Shader "Hidden/lilToonFurCutout"
         // Fur
                         _FurNoiseMask               ("Fur Noise", 2D) = "white" {}
         [NoScaleOffset] _FurMask                    ("Fur Mask", 2D) = "white" {}
+        [NoScaleOffset] _FurLengthMask              ("Fur Length Mask", 2D) = "white" {}
         [NoScaleOffset][Normal] _FurVectorTex       ("Fur Vector", 2D) = "bump" {}
                         _FurVectorScale             ("Fur Vector scale", Range(-10,10)) = 1
         [lilVec3Float]  _FurVector                  ("Fur Vector|Fur Length", Vector) = (0.0,0.0,1.0,0.2)

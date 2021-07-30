@@ -634,6 +634,43 @@ float3 lilGetSHToon()
     return res;
 }
 
+float3 lilGetSHToon(float3 positionWS)
+{
+    float4 SHAr = unity_SHAr;
+    float4 SHAg = unity_SHAg;
+    float4 SHAb = unity_SHAb;
+    #if defined(LIL_USE_LPPV)
+        if(unity_ProbeVolumeParams.x == 1.0)
+        {
+            
+            float3 position = (unity_ProbeVolumeParams.y == 1.0) ? lilOptMul(unity_ProbeVolumeWorldToObject, positionWS).xyz : positionWS;
+            float3 texCoord = (position - unity_ProbeVolumeMin.xyz) * unity_ProbeVolumeSizeInv.xyz;
+            texCoord.x = texCoord.x * 0.25;
+            float texCoordX = clamp(texCoord.x, 0.5 * unity_ProbeVolumeParams.z, 0.25 - 0.5 * unity_ProbeVolumeParams.z);
+            texCoord.x = texCoordX;
+            SHAr = LIL_SAMPLE_3D(unity_ProbeVolumeSH, samplerunity_ProbeVolumeSH, texCoord);
+            texCoord.x = texCoordX + 0.25;
+            SHAg = LIL_SAMPLE_3D(unity_ProbeVolumeSH, samplerunity_ProbeVolumeSH, texCoord);
+            texCoord.x = texCoordX + 0.5;
+            SHAb = LIL_SAMPLE_3D(unity_ProbeVolumeSH, samplerunity_ProbeVolumeSH, texCoord);
+        }
+    #endif
+    float3 N = lilGetLightDirection() * 0.666666;
+    float3 res = float3(SHAr.w,SHAg.w,SHAb.w);
+    res.r += dot(SHAr.rgb, N);
+    res.g += dot(SHAg.rgb, N);
+    res.b += dot(SHAb.rgb, N);
+    float4 vB = N.xyzz * N.yzzx;
+    res.r += dot(unity_SHBr, vB);
+    res.g += dot(unity_SHBg, vB);
+    res.b += dot(unity_SHBb, vB);
+    res += unity_SHC.rgb * (N.x * N.x - N.y * N.y);
+    #ifdef UNITY_COLORSPACE_GAMMA
+        res = LinearToSRGB(res);
+    #endif
+    return res;
+}
+
 float3 lilGetSHToonMin()
 {
     float3 N = -lilGetLightDirection() * 0.666666;
@@ -657,6 +694,11 @@ float3 lilGetSHToonMin()
 float3 lilGetLightColor()
 {
     return saturate(_MainLightColor.rgb + lilGetSHToon());
+}
+
+float3 lilGetLightColor(float3 positionWS)
+{
+    return saturate(_MainLightColor.rgb + lilGetSHToon(positionWS));
 }
 
 float3 lilGetIndirLightColor()

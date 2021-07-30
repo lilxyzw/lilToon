@@ -9,123 +9,122 @@ using System.Collections;
 namespace lilToon
 {
     public class lilStartup {
-        //------------------------------------------------------------------------------------------------------------------------------
-        // Enum
-        public enum lilRenderPipeline
-        {
-            BRP,
-            LWRP,
-            URP
-        }
-
-        public const string startupTempPath = "Temp/lilToonStartup";
-        public const string versionInfoTempPath = "Temp/lilToonVersion";
-        public const string versionInfoURL = "https://raw.githubusercontent.com/lilxyzw/lilToon/master/version.json";
-        public static string[] shaderFolderPaths = new[] {"Assets/lilToon/Shader"};
-        public const string shaderPipelinePath = "Assets/lilToon/Shader/Includes/lil_pipeline.hlsl";
-        public const string settingFolderPath = "Assets/lilToonSetting";
-        public const string shaderSettingPath = "Assets/lilToonSetting/lil_setting.hlsl";
-        public const string editorPath = "Assets/lilToon/Editor/lilInspector.cs";
-        #if NET_4_6
-            const string rspPath = "Assets/csc.rsp";
-        #else
-            const string rspPath = "Assets/mcs.rsp";
-        #endif
-
         [InitializeOnLoadMethod]
         static void lilStartupMethod()
         {
-            // Version check
-            if(!File.Exists(versionInfoTempPath))
-            {
-                CoroutineHandler.StartStaticCoroutine(GetLatestVersionInfo());
-            }
-
-            // TODO: sometimes this does not work
-            AssetDatabase.importPackageCompleted += OnImportPackageCompleted =>
-            {
-                if(!File.Exists(startupTempPath))
-                {
-                    string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
-                    if(shaderGuids.Length > 33)
-                    {
-                        // Make marker
-                        File.Create(startupTempPath);
-
-                        // Render Pipeline
-                        // BRP : null
-                        // LWRP : LightweightPipeline.LightweightRenderPipelineAsset
-                        // URP : Universal.UniversalRenderPipelineAsset
-                        lilRenderPipeline lilRP = lilRenderPipeline.BRP;
-                        if(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset != null)
-                        {
-                            string renderPipelineName = UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.ToString();
-                            if(String.IsNullOrEmpty(renderPipelineName))        lilRP = lilRenderPipeline.BRP;
-                            else if(renderPipelineName.Contains("Lightweight")) lilRP = lilRenderPipeline.LWRP;
-                            else if(renderPipelineName.Contains("Universal"))   lilRP = lilRenderPipeline.URP;
-                        }
-                        else
-                        {
-                            lilRP = lilRenderPipeline.BRP;
-                        }
-                        foreach(string shaderGuid in shaderGuids)
-                        {
-                            string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
-                            RewriteShaderRP(shaderPath, lilRP);
-                        }
-                        RewriteShaderRP(shaderPipelinePath, lilRP);
-                        AssetDatabase.Refresh();
-                    }
-                }
-            };
-
-            // Setting Folder
-            if(!Directory.Exists(settingFolderPath)) Directory.CreateDirectory(settingFolderPath);
-
-            // Shader Setting
-            if(!File.Exists(shaderSettingPath))
-            {
-                StreamWriter sw = new StreamWriter(shaderSettingPath,true);
-                sw.Write("#ifndef LIL_SETTING_INCLUDED\r\n#define LIL_SETTING_INCLUDED\r\n\r\n#define LIL_FEATURE_MAIN_TONE_CORRECTION\r\n#define LIL_FEATURE_SHADOW\r\n#define LIL_FEATURE_TEX_SHADOW_STRENGTH\r\n#define LIL_FEATURE_EMISSION_1ST\r\n#define LIL_FEATURE_NORMAL_1ST\r\n#define LIL_FEATURE_MATCAP\r\n#define LIL_FEATURE_TEX_MATCAP_MASK\r\n#define LIL_FEATURE_RIMLIGHT\r\n#define LIL_FEATURE_TEX_RIMLIGHT_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_WIDTH\r\n\r\n#endif");
-                sw.Close();
-                AssetDatabase.Refresh();
-            }
-
             // Editor
-            if(!File.Exists(rspPath))
+            if(!File.Exists(lilToonInspector.rspPath))
             {
-                StreamWriter sw = new StreamWriter(rspPath,true);
+                StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
                 sw.Write("-r:System.Drawing.dll\n-define:SYSTEM_DRAWING");
                 sw.Close();
                 AssetDatabase.Refresh();
-                AssetDatabase.ImportAsset(editorPath);
+                AssetDatabase.ImportAsset(lilToonInspector.editorPath);
             }
 
-            StreamReader sr = new StreamReader(rspPath);
+            StreamReader sr = new StreamReader(lilToonInspector.rspPath);
             string s = sr.ReadToEnd();
             sr.Close();
 
             if(!s.Contains("r:System.Drawing.dll"))
             {
-                StreamWriter sw = new StreamWriter(rspPath,true);
-                sw.Write("\n-r:System.Drawing.dll\n-define:SYSTEM_DRAWING");
+                StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
+                sw.Write("\n-r:System.Drawing.dll");
                 sw.Close();
-                AssetDatabase.Refresh();
-                AssetDatabase.ImportAsset(editorPath);
+                AssetDatabase.ImportAsset(lilToonInspector.editorPath);
             }
-            else if(!s.Contains("define:SYSTEM_DRAWING"))
+            if(!s.Contains("define:SYSTEM_DRAWING"))
             {
-                StreamWriter sw = new StreamWriter(rspPath,true);
+                StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
                 sw.Write("\n-define:SYSTEM_DRAWING");
                 sw.Close();
-                AssetDatabase.Refresh();
-                AssetDatabase.ImportAsset(editorPath);
+                AssetDatabase.ImportAsset(lilToonInspector.editorPath);
             }
+
+            AssetDatabase.Refresh();
+
+            // Version check
+            if(!File.Exists(lilToonInspector.versionInfoTempPath))
+            {
+                CoroutineHandler.StartStaticCoroutine(GetLatestVersionInfo());
+            }
+
+            lilToonInspector.ApplyEditorSettingTemp();
+            lilToonInspector.edSet.languageNum = lilToonInspector.InitializeLanguage(lilToonInspector.edSet.languageNum);
+
+            // Setting Folder
+            if(!Directory.Exists(lilToonInspector.settingFolderPath)) Directory.CreateDirectory(lilToonInspector.settingFolderPath);
+
+            if(!File.Exists(lilToonInspector.shaderSettingHLSLPath))
+            {
+                StreamWriter sw = new StreamWriter(lilToonInspector.shaderSettingHLSLPath,false);
+                sw.Write("//INITIALIZE\r\n#ifndef LIL_SETTING_INCLUDED\r\n#define LIL_SETTING_INCLUDED\r\n\r\n#define LIL_FEATURE_MAIN_TONE_CORRECTION\r\n#define LIL_FEATURE_SHADOW\r\n#define LIL_FEATURE_TEX_SHADOW_STRENGTH\r\n#define LIL_FEATURE_EMISSION_1ST\r\n#define LIL_FEATURE_NORMAL_1ST\r\n#define LIL_FEATURE_MATCAP\r\n#define LIL_FEATURE_TEX_MATCAP_MASK\r\n#define LIL_FEATURE_RIMLIGHT\r\n#define LIL_FEATURE_TEX_RIMLIGHT_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_WIDTH\r\n\r\n#endif");
+                sw.Close();
+                AssetDatabase.ImportAsset(lilToonInspector.shaderSettingHLSLPath);
+                Debug.Log("Generate setting hlsl file");
+            }
+
+            AssetDatabase.importPackageCompleted += OnImportPackageCompleted =>
+            {
+                lilToonSetting shaderSetting = null;
+                lilToonInspector.InitializeShaderSetting(ref shaderSetting);
+                lilToonInspector.InitializeSettingHLSL(ref shaderSetting);
+
+                // Scan imported assets
+                if(File.Exists(lilToonInspector.packageListTempPath))
+                {
+                    if(EditorUtility.DisplayDialog("lilToon",lilToonInspector.GetLoc("sUtilImportTargetFound"),lilToonInspector.GetLoc("sYes"),lilToonInspector.GetLoc("sCancel")))
+                    {
+                        StreamReader srPackage = new StreamReader(lilToonInspector.packageListTempPath);
+                        string tempPackage = srPackage.ReadToEnd();
+                        srPackage.Close();
+
+                        string[] importedAssets = tempPackage.Split('\n');
+
+                        foreach(string str in importedAssets)
+                        {
+                            if(str.EndsWith(".mat") && AssetDatabase.GetMainAssetTypeAtPath(str) == typeof(Material))
+                            {
+                                Material material = (Material)AssetDatabase.LoadAssetAtPath(str, typeof(Material));
+                                if(!material.shader.name.Contains("lilToon") || material.shader.name.Contains("Lite")) continue;
+                                lilToonInspector.SetupShaderSettingFromMaterial(material, ref shaderSetting);
+                            }
+                            if(str.EndsWith(".anim") && AssetDatabase.GetMainAssetTypeAtPath(str) == typeof(AnimationClip))
+                            {
+                                AnimationClip clip = (AnimationClip)AssetDatabase.LoadAssetAtPath(str, typeof(AnimationClip));
+                                lilToonInspector.SetupShaderSettingFromAnimationClip(clip, ref shaderSetting);
+                            }
+                        }
+
+                        // Apply
+                        EditorUtility.SetDirty(shaderSetting);
+                        AssetDatabase.SaveAssets();
+                        lilToonInspector.ApplyShaderSetting(shaderSetting);
+                        AssetDatabase.Refresh();
+                        Debug.Log("Finish scanning assets");
+                    }
+                    File.Delete(lilToonInspector.packageListTempPath);
+                }
+
+                // Delete old file
+                if(File.Exists(lilToonInspector.editorSettingPath))
+                {
+                    string[] GUIDs = AssetDatabase.FindAssets("t:lilToonEditorSetting");
+                    foreach(string GUID in GUIDs)
+                    {
+                        AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(GUID));
+                    }
+                    AssetDatabase.DeleteAsset(lilToonInspector.editorSettingPath);
+                }
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            };
         }
 
         static IEnumerator GetLatestVersionInfo()
         {
-            using(UnityWebRequest webRequest = UnityWebRequest.Get(versionInfoURL))
+            using(UnityWebRequest webRequest = UnityWebRequest.Get(lilToonInspector.versionInfoURL))
             {
                 #if UNITY_2017_2_OR_NEWER
                     yield return webRequest.SendWebRequest();
@@ -138,90 +137,10 @@ namespace lilToon
                 if (!webRequest.isNetworkError)
                 #endif
                 {
-                    StreamWriter sw = new StreamWriter(versionInfoTempPath,false);
+                    StreamWriter sw = new StreamWriter(lilToonInspector.versionInfoTempPath,false);
                     sw.Write(webRequest.downloadHandler.text);
                     sw.Close();
                 }
-            }
-        }
-
-        public static void RewriteShaderRP(string shaderPath, lilRenderPipeline lilRP)
-        {
-            string path = shaderPath;
-            StreamReader sr = new StreamReader(path);
-            string s = sr.ReadToEnd();
-            sr.Close();
-            RewriteBRP(ref s, lilRP == lilRenderPipeline.BRP);
-            RewriteLWRP(ref s, lilRP == lilRenderPipeline.LWRP);
-            RewriteURP(ref s, lilRP == lilRenderPipeline.URP);
-            StreamWriter sw = new StreamWriter(path,false);
-            sw.Write(s);
-            sw.Close();
-        }
-
-        static void RewriteBRP(ref string s, bool isActive)
-        {
-            if(isActive)
-            {
-                s = s.Replace(
-                    "// BRP Start\r\n/*",
-                    "// BRP Start\r\n//");
-                s = s.Replace(
-                    "*/\r\n// BRP End",
-                    "//\r\n// BRP End");
-            }
-            else
-            {
-                s = s.Replace(
-                    "// BRP Start\r\n//",
-                    "// BRP Start\r\n/*");
-                s = s.Replace(
-                    "//\r\n// BRP End",
-                    "*/\r\n// BRP End");
-            }
-        }
-
-        static void RewriteLWRP(ref string s, bool isActive)
-        {
-            if(isActive)
-            {
-                s = s.Replace(
-                    "// LWRP Start\r\n/*",
-                    "// LWRP Start\r\n//");
-                s = s.Replace(
-                    "*/\r\n// LWRP End",
-                    "//\r\n// LWRP End");
-            }
-            else
-            {
-                s = s.Replace(
-                    "// LWRP Start\r\n//",
-                    "// LWRP Start\r\n/*");
-                s = s.Replace(
-                    "//\r\n// LWRP End",
-                    "*/\r\n// LWRP End");
-            }
-        }
-
-        static void RewriteURP(ref string s, bool isActive)
-        {
-            if(isActive)
-            {
-                s = s.Replace(
-                    "// URP Start\r\n/*",
-                    "// URP Start\r\n//");
-                s = s.Replace(
-                    "*/\r\n// URP End",
-                    "//\r\n// URP End");
-            }
-            else
-            {
-                s = s.Replace(
-                    "// URP Start\r\n//",
-                    "// URP Start\r\n/*");
-                s = s.Replace(
-                    "//\r\n// URP End",
-                    "*/\r\n// URP End");
             }
         }
     }

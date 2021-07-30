@@ -1,5 +1,5 @@
 # lilToon
-Version 1.0
+Version 1.1.4
 
 # 概要
 アバターを用いたサービス（VRChat等）向けに開発したシェーダーで以下のような特徴があります。
@@ -51,9 +51,10 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
     ii. UPMから```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master```をインポート  
 2. Projectからマテリアルを選択
 3. Inspector上部の`Shader`から`lilToon`を選択
-4. テクスチャが反映されていない場合は`メインカラー`にテクスチャを設定
-5. テクスチャを透過する場合は`Rendering Mode(透過モード)`を`カットアウト`または`半透明`に変更
-6. 機能を追加したい場合は詳細設定内の"[シェーダー設定](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md#シェーダー設定)"を変更
+4. (エディタの言語が異なる場合のみ) `Language`を`Japanese`に変更
+5. テクスチャが反映されていない場合は`メインカラー`にテクスチャを設定
+6. テクスチャを透過する場合は`Rendering Mode(透過モード)`を`カットアウト`または`半透明`に変更
+7. 機能を追加したい場合は詳細設定内の[シェーダー設定](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md#シェーダー設定)を変更
 
 より詳しい設定については[マニュアル](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md)を参照してください。
 
@@ -64,15 +65,12 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 2. 上部メニューバーの`Assets/lilToon/Refresh Shaders`をクリック
 
 # lilToonを用いた制作物の配布手順について
-`lilToonSetting`フォルダにシェーダー設定が保存されているためこちらも含めてunitypackage化することをオススメします。  
-シェーダー設定を変更していない場合は同梱する必要はありません。  
-詳細な手順は次の通りです。
+シェーダー設定を変更された場合に見た目が変化しないように、マテリアルを右クリックし`Assets/lilToon/Remove unused properties`を実行しておくことをオススメします。また以前はlilToonSettingの同梱が必要でしたが、現在は不要になりました。アセットのインポート時にマテリアルとアニメーションをスキャンし自動で設定されます。  
 1. 制作物のフォルダを選択
-2. ctrlを押しながら`lilToonSetting`フォルダを選択
-3. （シェーダーを同梱する場合のみ）ctrlを押しながら`lilToon`フォルダを選択
-4. 右クリックし`Export package...`を選択
-5. `Include Dependencies`のチェックを外す
-6. `Export...`を押してunitypackageを保存
+2. （シェーダーを同梱する場合のみ）ctrlを押しながら`lilToon`フォルダを選択
+3. 右クリックし`Export package...`を選択
+4. `Include Dependencies`のチェックを外す
+5. `Export...`を押してunitypackageを保存
 
 # よくあるトラブル
 - マテリアルエラーが発生した  
@@ -83,10 +81,15 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
   → `マスクと太さ`にマスクテクスチャを指定することで部分的に輪郭線を消したり太さを調整したりすることができます。
 - 明るい場所で影が薄くなる  
   → `環境光の強さ`の数値を下げると明るい場所でも影が強く出ます。
+- 部位によって明るさが変わる  
+  → アバターを右クリックし`[lilToon] Fix Lighting`を選択することで自動で修正されます。
+- 一部機能が存在しないように見える  
+  → 機能を追加したい場合は詳細設定の一番下のの[シェーダー設定](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md#シェーダー設定)を変更してください
+- シェーダー設定でどれをオンにすべきかわからない  
+  → 上部メニューバーから`Assets/lilToon/Auto shader setting`を実行することで自動でシェーダー設定が行えます。
 
 # シェーダー外のおすすめ設定
 以下の設定で顔など一部分だけ明るさが違う現象を緩和できます。また、テクスチャの透過が綺麗になります。
-- Hierarchyからメッシュを選択し、`Root Bone`、`Bounds`、`Anchor Override`の設定を統一、`Recieve Shadows`をオフにする
 - Projectから透過テクスチャを選択し、Inspectorから`Alpha Is Transparency`にチェックを入れる
 - Cutoutマテリアルに使われるテクスチャは`Mip Maps Preserve Coverage`にチェックを入れる
 
@@ -105,6 +108,16 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # 変更履歴
+## v1.1.4
+- unitypackageインポート時のマテリアル・アニメーションの自動スキャン機能を追加
+- `Auto shader setting`を追加、プロジェクト内の全マテリアル・アニメーションをスキャンし自動でシェーダー設定を最適化します
+- `Remove unused properties`を追加、シェーダー設定を追加でオンにしても見た目に影響が出ないようにマテリアルを最適化します
+- `Setup from FBX`を追加、FBXファイルから自動でマテリアルの生成、プリセットの適用、輪郭線マスク、影マスクの適用を行います
+- `シェーダー設定`のロックを追加
+- 一部プロパティの表示名の変更 (`環境光の強さ`→`影色への環境光影響度`、`太さを補正`→`距離に応じた太さ補正`)
+- 再生ボタンを押してもInspectorの状態が維持されるように変更
+- ファーシェーダーの`Unlit化`のプロパティをスライダー化
+- ファーシェーダーに長さ調整用のマスクを追加
 ## v1.1.3
 - バージョンチェック失敗時にInspectorが表示されない問題の修正
 - `[lilToon] Fix Lighting`でClothコンポーネントがある、もしくはボーンが無い場合に壊れる問題の修正

@@ -127,7 +127,7 @@ sReceiveShadow	Receive Shadow	影を受け取る	그림자를받는	接收阴影
 sShadowColor	ShadowColor	影色	그림자 색	阴影颜色	陰影顏色
 sShadow1stColor	1st Color	影色1	그림자 색 1	颜色1	顏色1
 sShadow2ndColor	2nd Color	影色2	그림자 색 2	颜色2	顏色2
-sShadowEnvStrength	Environment Strength	環境光の強さ	환경 광의 강도	环境强度	環境強度
+sShadowEnvStrength	Environment strength on shadow color	影色への環境光影響度	그림자 색에 환경 광의 영향	环境强度	環境強度
 sShadowBorderColor	Border Color	境界の色	경계의 색상	边界颜色	邊界顏色
 sShadowBorderRange	Border Range	境界の幅	경계의 폭	边界范围	邊界範圍
 sOutlineSetting	Outline	輪郭線設定	윤곽선 설정	轮廓设置	輪廓設置
@@ -135,7 +135,7 @@ sOutlineTips	You can set the color and thickness of the outline.	輪郭線の色
 sOutline	Outline	輪郭線	윤곽선	轮廓	輪廓
 sWidth	Mask & Width	マスクと太さ	마스크와 굵기	蒙版 & 宽度	蒙版 & 寬度
 sWidthR	Width (R)	太さ (R)	두께 (R)	宽度 (R)	寬度 (R)
-sFixWidth	Fix Width	太さを補正	두께를 보정	修复宽度	修復寬度
+sFixWidth	Fix width by distance	距離に応じた太さ補正	거리에서 두께을 보정	按距离正确宽度	按距離正確寬度
 sVertexR2Width	Vertex R -> Width	Vertex R -> Width	Vertex R -> Width	Vertex R -> Width	Vertex R -> Width
 sRefractionSetting	Refraction	屈折設定	굴절 설정	折射设置	折射設置
 sRefractionTips	You can set the refraction strength and color.	屈折の強さや色の設定ができます	굴절 강도와 색상을 설정할 수 있습니다	你可以设置折射强度和颜色。	你可以設置折射強度和顏色。
@@ -276,6 +276,8 @@ sConvertMToon	Convert to MToon (VRM)	MToon(VRM)に変換	MToon (VRM)로 변환	�
 sYes	Yes	はい	Yes	Yes	Yes
 sNo	No	いいえ	No	No	No
 sOK	OK	OK	OK	OK	OK
+sCancel	Cancel	キャンセル	Cancel	Cancel	Cancel
+sComplete	Complete!	完了しました。	Complete!	Complete!	Complete!
 sDialogResetUV	Reset UV Setting	UV設定の初期化	UV 설정 초기화	重置UV设置	重置UV設置
 sDialogResetUVMes	Are you sure you want to reset UV setting?	UV設定を初期化しますか?	UV 설정을 초기화 하시겠습니까?	你确定要重置UV设置吗？	你確定要重置UV設置嗎？
 sDialogCannotBake	Cannot run a bake	焼き込みを実行できません	버닝을 실행할 수 없습니다	不能运行烘烤	不能運行烘烤
@@ -346,6 +348,8 @@ sPresetFurMask	Fur Mask	ファーマスク	퍼 마스크	毛皮蒙版	毛皮蒙�
 sShaderSetting	Shader Setting (for all materials)	シェーダー設定 (全マテリアル共通)	쉐이더 설정 (전체 재료 공통)	着色器设置（用于所有材质）	著色器設置（用於所有材質）
 sShaderSettingTips	You can toggle unused functions.	不要な機能を無効化できます	불필요한 기능을 비활성화 할 수 있습니다	你可以切换不使用的功能。	你可以切換不使用的功能。
 sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	在这里关闭的功能将从着色器中删除。通过关闭不使用的功能，你可以减少你的头像的大小，同时也可以减少负载。	在這里關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的頭像的大小，同時也可以減少負載。​​
+sSettingCancelAutoScan	Do not auto-scan on import	インポート時に自動スキャンしない	Do not auto-scan on import	Do not auto-scan on import	Do not auto-scan on import
+sSettingLock	Lock	ロック	Lock	Lock	Lock
 sSettingAnimateMainUV	UV Animation & Angle	UVアニメーション&角度	UV 애니메이션 & 각도	UV动画和角度	UV動畫和角度
 sSettingMainToneCorrection	Tone Correction	色調補正	색상 보정	色调校正	色調校正
 sSettingMainGradationMap	Gradation Map	グラデーションマップ	그라디언트 맵	渐变映射	漸變映射
@@ -402,6 +406,7 @@ sSettingOutlineToneCorrection	Outline Tone Correction	色調補正	색상 보정
 sSettingTexOutlineWidth	Outline Width Mask	輪郭線太さマスク	윤곽선 두께 마스크	轮廓宽度掩码	輪廓寬度掩碼
 sSettingTexFurNormal	Fur Normal Map	ファーノーマルマップ	퍼 노멀 맵	毛皮法线贴图	毛皮法線貼圖
 sSettingTexFurMask	Fur Mask	ファーマスク	퍼 마스크	毛皮蒙版	毛皮蒙版
+sSettingTexFurLength	Fur Length Mask	ファー長さマスク	퍼 길이 마스크	毛皮长度蒙版	毛皮長度蒙版
 sSettingTessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	Tessellation (极高的负荷)	Tessellation (極高的負荷)
 sManualURL	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md
 sAnchorTerms	#terms	#登場する用語	#terms	#terms	#terms
@@ -434,3 +439,12 @@ sAnchorRefraction	#refraction	#屈折設定	#refraction	#refraction	#refraction
 sAnchorFur	#fur	#ファー設定	#fur	#fur	#fur
 sAnchorOptimization	#optimization	#最適化	#optimization	#optimization	#optimization
 sAnchorShaderSetting	#shader-setting	#シェーダー設定	#shader-setting	#shader-setting	#shader-setting
+sUtilGif2AtlasPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャの解像度を2の累乗に合わせますか？	텍스처의 해상도를 2의 거듭 제곱에 맞게 싶으십니까?	您想将纹理分辨率匹配到 2 的幂吗？	您想將紋理分辨率匹配到 2 的冪嗎？
+sUtilDotTexRedRatio	Select a reduction ratio	縮小率を選択してください。	축소 비율을 선택하십시오.	请选择一个缩小比例。	請選擇一個縮小比例。
+sUtilShaderNotFound	Shader is not found.	シェーダーが見つかりません。	쉐이더가 없습니다.	未找到着色器。	未找到著色器。
+sUtilShaderSettingLocked	ShaderSetting is locked.	シェーダー設定がロックされています。	쉐이더 설정이 잠겨 있습니다.	着色器设置被锁定。	著色器設置被鎖定。
+sUtilShaderSettingNotFound	ShaderSetting is not found.	シェーダー設定が見つかりません。	쉐이더 설정을 찾을 수 없습니다.	未找到着色器设置。	未找到著色器設置。
+sUtilSelectGameObject	Select gameobject before run.	実行前にオブジェクトを選択してください。	실행 전에 개체를 선택하십시오.	请在执行前选择对象。	請在執行前選擇對象。
+sUtilSelectPresets	Select presets	プリセットを選択してください。	사전 설정을 선택하십시오.	请选择一个预设。	請選擇一個預設。
+sUtilMaterialAlreadyExist	Materials may already exist. Are you sure you want to overwrite it?	マテリアルが既に存在している可能性があります。上書きしてもよろしいですか？	재료가 이미있을 수 있습니다. 덮어 하시겠습니까?	该材料可能已经存在。 您确定要覆盖它吗？	該材料可能已經存在。 您確定要覆蓋它嗎？
+sUtilImportTargetFound	Material or animation found. Do you want to scan it?	マテリアルまたはアニメーションが見つかりました。スキャンしますか？	Material 나 Animation이 발견되었습니다. 스캔 하시겠습니까?	找到了Material或Animation。 您要扫描吗？	找到了Material或Animation。 您要掃描嗎？

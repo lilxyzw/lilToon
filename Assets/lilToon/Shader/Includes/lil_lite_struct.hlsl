@@ -44,7 +44,7 @@
     {
         float4 positionCS       : SV_POSITION;
         float2 uv               : TEXCOORD0;
-        #if defined(LIL_PASS_FORWARDADD) || !defined(LIL_BRP)
+        #if defined(LIL_PASS_FORWARDADD) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
             float3 positionWS       : TEXCOORD1;
         #endif
         #if defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE)

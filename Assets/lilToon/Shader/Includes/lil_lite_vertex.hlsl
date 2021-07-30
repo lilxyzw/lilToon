@@ -38,7 +38,7 @@ v2f vert(appdata input)
         // Outline
         output.uv           = input.uv;
         output.positionCS   = vertexInput.positionCS;
-        #if defined(LIL_PASS_FORWARDADD) || !defined(LIL_BRP)
+        #if defined(LIL_PASS_FORWARDADD) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
             output.positionWS   = vertexInput.positionWS;
         #endif
         #if defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE)

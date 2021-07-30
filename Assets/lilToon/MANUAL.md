@@ -2,6 +2,7 @@
 
 # Table of Contents
 - [Terms](#terms)
+- [Upper part of Inspector](#upper-part-of-inspector)
 - [Base Setting](#base-setting)
     - [UV Setting](#uv-setting)
 - [Color](#color)
@@ -32,6 +33,7 @@
 - [Optimization](#optimization)
     - [Optimization](#optimization-1)
     - [Shader Setting](#shader-setting)
+- [Additional menu items](#additional-menu-items)
 
 <br/>
 
@@ -46,6 +48,25 @@
 |MatCap|Texture with light reflections drawn in.|
 |Rim Light|Light that brightens only the outline of an object.|
 |Stencil|Mask done on screen. You can draw eyebrows over hair.|
+
+<br/>
+
+# Upper part of Inspector
+|Name|Description|
+|-|-|
+|Language|Language of the editor. In this document, I use the name when it is set to `English`.|
+|Editor Mode|Display mode of editor.|
+
+<br/>
+
+<details><summary>List of Editor Mode</summary>
+
+|Editor Mode|Description|
+|-|-|
+|Simple|Displays only simple properties.|
+|Advanced|Displays all properties.|
+|Preset|List of Presets.|
+</details>
 
 <br/>
 
@@ -401,3 +422,33 @@ This is an experimental feature that smooths polygons when you get close to them
 
 ## Shader Setting
 Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load. When you place an avatar in a world, you need to match the shader settings specified by the world creator because the same settings are applied to all avatars placed in the world.
+
+<br/>
+
+# Additional menu items
+Several utilities are added to the top menu bar and right-click menu.
+|Name|Description|
+|-|-|
+|[lilToon] Fix lighting|For objects with multiple meshes. Fix the differences in lighting between meshes by unifying the MeshRenderer settings and disabling vertex lighting for materials.|
+|Refresh shaders|Reapply the render pipeline and shader settings to try to automatically fix the error.|
+|Auto shader setting|Scans all materials and animations in the project and automatically optimizes Shader Setting.|
+|Remove unused properties|Remove unused properties to reduce the build size, while allowing additional shader settings to be turned on without affecting the appearance.|
+|Setup from FBX|Automatically generate materials from FBX files, apply presets, outline mask, and shadow mask. Rendering mode will be changed to Cutout if the material or texture name contains `cutout`, or to Transparent if it contains `alpha` or `fade` or `transparent`. See the list below for texture search naming conventions.|
+|Convert normal map (DirectX <-> OpenGL)|Convert normal maps between DirectX and OpenGL.|
+|Convert Gif to Atlas|Generates an atlas texture from a Gif. The process is the same as `Convert Gif` in the material settings.|
+|Dot texture reduction|Reduces the size of dots without blurring.|
+
+<br/>
+
+<details><summary>Texture naming conventions</summary>
+
+Case differences will be ignored. Also, if a texture has been assigned to the material, the original texture will be used.
+|Properties|Naming convention|
+|-|-|
+|Main texture|Contains the material name and has a name that sounds like the main texture.<br/>(ex: material name: face)<br/>- OK: face.png / texture_face.png<br/>- NG: face_outline_mask.png / face_smoothness.png|
+|Outline mask|Contains the material name and `outline`.<br/>(ex: material name: face)<br/>- OK: face_outline.png / face_outline_mask.png<br/>- NG: face_mask.png / face_ol_mask.png|
+|Shadow mask|Contains the material name, and either `shadow`/`shade`, and either `mask`/`strength`.<br/>(ex: material name: face)<br/>- OK: face_shadow_mask.png / face_shadow_strength_mask.png<br/>- NG: face_shadow_color.png / face_shadow.png|
+
+Words that are not recognized as main textures  
+`mask`, `shadow`, `shade`, `outline`, `normal`, `bumpmap`, `matcap`, `rimlight`, `emittion`, `reflection`, `specular`, `roughness`, `smoothness`, `metallic`, `metalness`, `opacity`, `parallax`, `displacement`, `height`, `ambient`, `occlusion`
+</details>

@@ -1,5 +1,5 @@
 # lilToon
-Version 1.0
+Version 1.1.4
 
 # Overview
 This shader is developed for services using avatars (VRChat, etc.) and has the following features.
@@ -53,7 +53,7 @@ lilToon is available under the MIT License. Please refer to the `LICENSE` includ
 3. Select `lilToon` from `Shader` at the top of Inspector.
 4. If no texture has been applied, set the texture to `Main Color`.
 5. To make the material transparent, change `Rendering Mode` to `Cutout` or `Transparent`.
-6. If you want to add more features, change the "[Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting)" in the Advanced settings.
+6. If you want to add more features, change the [Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting) in the Advanced settings.
 
 Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md) for more detailed settings.
 
@@ -64,18 +64,15 @@ Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Asse
 2. Click `Assets/lilToon/Refresh Shaders` in the top menu bar.
 
 # How to distribute your works that use lilToon
-Shader settings are stored in the `lilToonSetting` folder, so it is recommended to include this folder in the unitypackage.  
-If you have not changed shader settings, you do not need to include them.  
-The following is the detailed procedure.
+I recommend right-clicking on the material and running `lilToon/Remove unused properties` so that the appearance does not change when shader settings are changed. It used to be necessary to include lilToonSetting, but now it is not necessary. `Shader Setting` is automatically optimized by scanning materials and animations when importing assets.  
 1. Select the folder of your works.
-2. hold down ctrl and select `lilToonSetting` folder.
-3. (only if you want to include shaders) hold down ctrl and select the `lilToon` folder.
-4. Right click and select `Export package...`.
-5. uncheck `Include Dependencies`.
-6. Press `Export...` to save the unitypackage.
+2. (only if you want to include shaders) hold down ctrl and select the `lilToon` folder.
+3. Right click and select `Export package...`.
+4. uncheck `Include Dependencies`.
+5. Press `Export...` to save the unitypackage.
 
 # Common Problems
-- Material error has occurred.
+- Material error has occurred.  
   → Clicking `Assets/lilToon/Refresh Shaders` in the top menu bar may help.
 - The shadows on face are dirty.  
   → You can specify a mask texture in `Mask & Strength` to partially remove shadows.
@@ -83,6 +80,12 @@ The following is the detailed procedure.
   → You can specify a mask texture in `Mask & Width` to partially remove outline or adjust the thickness.
 - Shadows are weak in bright places.  
   → `Environment Strength` value affects the strength of shadows in bright places.
+- Different meshes have different lighting.  
+  → Right click on your avatar and select `[lilToon] Fix Lighting` to automatically fix this.
+- Some functions seem to be missing.  
+  → If you want to add more features, change the [Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting) in the Advanced settings.
+- I don't know which ones to turn on in shader settings.  
+  → The shader settings are automatically set by running `Assets/lilToon/Auto shader setting` from the top menu bar.
 
 # Recommended settings outside the shader
 The following settings improve the problem of different brightness in one part of the model. Also, texture transparency artifacts are removed.
@@ -105,6 +108,16 @@ Comparing parameters when implementing `Convert to MToon (VRM)`
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # Change log
+## v1.1.4
+- Added auto-scan materials and animations when importing unitypackage
+- Added `Auto shader setting`, which scans all materials and animations in the project and automatically optimizes Shader Setting
+- Added `Remove unused properties`, optimizes materials so that turning on additional shader settings does not affect their appearance
+- Added `Setup from FBX`, automatically generate materials from FBX files, apply presets, outline mask, and shadow mask
+- Added lock for `Shader Setting`
+- Changed the display name of some properties (`Environment Strength` → `Environment strength on shadow color`, `Fix Width` → `Fix width by distance`)
+- Inspector will be preserved in play mode
+- Changed the `As Unlit` parameter of the fur shader to a slider
+- Added length mask to fur shader
 ## v1.1.3
 - Fixed problem with Inspector not showing up when version check fails
 - Fixed `[lilToon] Fix Lighting` breaking when an object has a Cloth component or no bones
