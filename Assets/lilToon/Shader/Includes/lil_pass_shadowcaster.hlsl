@@ -60,9 +60,16 @@ float4 frag(v2f input) : SV_Target
         #endif
         float alpha = _Color.a;
         if(Exists_MainTex) alpha *= LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain).a;
-        #if LIL_RENDER == 1
-            clip(alpha - _Cutoff);
-        #else
+        #if !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_ALPHAMASK)
+            if(_AlphaMaskMode)
+            {
+                float alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, uvMain).r;
+                alphaMask = saturate(alphaMask + _AlphaMaskValue);
+                alpha = _AlphaMaskMode == 1 ? alphaMask : alpha * alphaMask;
+            }
+        #endif
+        clip(alpha - _Cutoff);
+        #if LIL_RENDER == 2
             half alphaRef = LIL_SAMPLE_3D(_DitherMaskLOD, sampler_DitherMaskLOD, float3(input.positionCS.xy*0.25,alpha*0.9375)).a;
             clip(alphaRef - 0.01);
         #endif

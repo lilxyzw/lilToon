@@ -96,7 +96,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         // Lighting
         #ifndef LIL_PASS_FORWARDADD
             float shadowmix = 1.0;
-            lilGetShadingLite(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, lightDirection);
+            lilGetShadingLite(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, lightDirection, sampler_MainTex);
 
             lightColor += vertexLightColor;
             shadowmix += lilLuminance(vertexLightColor);

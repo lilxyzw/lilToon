@@ -421,7 +421,7 @@ This is an experimental feature that smooths polygons when you get close to them
 <br/>
 
 ## Shader Setting
-Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load. When you place an avatar in a world, you need to match the shader settings specified by the world creator because the same settings are applied to all avatars placed in the world.
+Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.
 
 <br/>
 

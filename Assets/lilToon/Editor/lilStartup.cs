@@ -12,6 +12,11 @@ namespace lilToon
         [InitializeOnLoadMethod]
         static void lilStartupMethod()
         {
+            string editorPath = lilToonInspector.GetEditorPath();
+            string editorSettingPath = lilToonInspector.GetEditorSettingPath();
+            string settingFolderPath = lilToonInspector.GetSettingFolderPath();
+            string shaderSettingHLSLPath = lilToonInspector.GetShaderSettingHLSLPath();
+
             // Editor
             if(!File.Exists(lilToonInspector.rspPath))
             {
@@ -19,7 +24,7 @@ namespace lilToon
                 sw.Write("-r:System.Drawing.dll\n-define:SYSTEM_DRAWING");
                 sw.Close();
                 AssetDatabase.Refresh();
-                AssetDatabase.ImportAsset(lilToonInspector.editorPath);
+                AssetDatabase.ImportAsset(editorPath);
             }
 
             StreamReader sr = new StreamReader(lilToonInspector.rspPath);
@@ -31,14 +36,14 @@ namespace lilToon
                 StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
                 sw.Write("\n-r:System.Drawing.dll");
                 sw.Close();
-                AssetDatabase.ImportAsset(lilToonInspector.editorPath);
+                AssetDatabase.ImportAsset(editorPath);
             }
             if(!s.Contains("define:SYSTEM_DRAWING"))
             {
                 StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
                 sw.Write("\n-define:SYSTEM_DRAWING");
                 sw.Close();
-                AssetDatabase.ImportAsset(lilToonInspector.editorPath);
+                AssetDatabase.ImportAsset(editorPath);
             }
 
             AssetDatabase.Refresh();
@@ -53,14 +58,14 @@ namespace lilToon
             lilToonInspector.edSet.languageNum = lilToonInspector.InitializeLanguage(lilToonInspector.edSet.languageNum);
 
             // Setting Folder
-            if(!Directory.Exists(lilToonInspector.settingFolderPath)) Directory.CreateDirectory(lilToonInspector.settingFolderPath);
+            if(!Directory.Exists(settingFolderPath)) Directory.CreateDirectory(settingFolderPath);
 
-            if(!File.Exists(lilToonInspector.shaderSettingHLSLPath))
+            if(!File.Exists(shaderSettingHLSLPath))
             {
-                StreamWriter sw = new StreamWriter(lilToonInspector.shaderSettingHLSLPath,false);
+                StreamWriter sw = new StreamWriter(shaderSettingHLSLPath,false);
                 sw.Write("//INITIALIZE\r\n#ifndef LIL_SETTING_INCLUDED\r\n#define LIL_SETTING_INCLUDED\r\n\r\n#define LIL_FEATURE_MAIN_TONE_CORRECTION\r\n#define LIL_FEATURE_SHADOW\r\n#define LIL_FEATURE_TEX_SHADOW_STRENGTH\r\n#define LIL_FEATURE_EMISSION_1ST\r\n#define LIL_FEATURE_NORMAL_1ST\r\n#define LIL_FEATURE_MATCAP\r\n#define LIL_FEATURE_TEX_MATCAP_MASK\r\n#define LIL_FEATURE_RIMLIGHT\r\n#define LIL_FEATURE_TEX_RIMLIGHT_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_WIDTH\r\n\r\n#endif");
                 sw.Close();
-                AssetDatabase.ImportAsset(lilToonInspector.shaderSettingHLSLPath);
+                AssetDatabase.ImportAsset(shaderSettingHLSLPath);
                 Debug.Log("Generate setting hlsl file");
             }
 
@@ -107,14 +112,14 @@ namespace lilToon
                 }
 
                 // Delete old file
-                if(File.Exists(lilToonInspector.editorSettingPath))
+                if(File.Exists(editorSettingPath))
                 {
                     string[] GUIDs = AssetDatabase.FindAssets("t:lilToonEditorSetting");
                     foreach(string GUID in GUIDs)
                     {
                         AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(GUID));
                     }
-                    AssetDatabase.DeleteAsset(lilToonInspector.editorSettingPath);
+                    AssetDatabase.DeleteAsset(editorSettingPath);
                 }
 
                 AssetDatabase.SaveAssets();

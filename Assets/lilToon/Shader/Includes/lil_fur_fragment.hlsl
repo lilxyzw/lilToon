@@ -68,7 +68,7 @@ float4 frag(g2f input) : SV_Target
         #if defined(LIL_FEATURE_SHADOW)
             float3 normalDirection = normalize(input.normalWS);
             float shadowmix = 1.0;
-            lilGetShading(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, 1, lightDirection, false);
+            lilGetShading(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, 1, lightDirection, sampler_MainTex, false);
         #else
             col.rgb *= lightColor;
         #endif

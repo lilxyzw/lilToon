@@ -1,101 +1,101 @@
 Language	English	Japanese	Korean	Chinese Simplified	Chinese Traditional
-sLanguageWarning			기계 번역을 사용하기 때문에 번역이 정확하지 않을 수있다.	翻译可能不准确，因为使用了机器翻译。	翻譯可能不准確，因為使用了機器翻譯。
+sLanguageWarning			기계번역을 사용하고 있기 때문에 번역이 정확하지 않을 수 있습니다.	翻译可能不准确，因为使用了机器翻译。	翻譯可能不准確，因為使用了機器翻譯。
 sEditorMode	Editor Mode	編集モード	편집 모드	编辑器模式	編輯器模式
 sEditorModeSimple	Simple	簡易設定	간이 설정	简单设置	簡單設置
-sEditorModeAdvanced	Advanced	詳細設定	고급	详细设置	詳細設置
+sEditorModeAdvanced	Advanced	詳細設定	상세 설정	详细设置	詳細設置
 sEditorModePreset	Preset	プリセット	프리셋	预设	預設
-sHelpSimple	In this mode, you can easily edit the appearance.	簡単に見た目を編集するモードです。	간단한 설정을하는 모드입니다.	这种模式进行简单的设置。	這種模式進行簡單的設置。
-sHelpAdvanced	In this mode, you can make detailed settings for the material.	詳細設定を行うモードです。	고급 설정하는 모드입니다.	此模式用于进行详细设置。	此模式用於進行詳細設置。
-sHelpPreset	In this mode, you can easily set up materials from presets.	プリセットから一括で設定するモードです。	프리셋에서 일괄 적으로 설정하는 모드입니다.	在这个模式下，你可以很容易地从预设中设置材料。	在這個模式下，你可以很容易地從預設中設置材料。
-sColor	Color	色	색상	颜色	顏色
+sHelpSimple	In this mode, you can easily edit the appearance.	簡単に見た目を編集するモードです。	간단하게 외형을 편집하는 모드입니다.	这种模式进行简单的设置。	這種模式進行簡單的設置。
+sHelpAdvanced	In this mode, you can make detailed settings for the material.	詳細設定を行うモードです。	상세 설정을 실시하는 모드입니다.	此模式用于进行详细设置。	此模式用於進行詳細設置。
+sHelpPreset	In this mode, you can easily set up materials from presets.	プリセットから一括で設定するモードです。	프리셋에서 일괄로 설정하는 모드입니다.	在这个模式下，你可以很容易地从预设中设置材料。	在這個模式下，你可以很容易地從預設中設置材料。
+sColor	Color	色	색	颜色	顏色
 sGamma	Gamma	ガンマ	감마	伽玛	伽瑪
 sHue	Hue	色相	색상	色相	色相
 sSaturation	Saturation	彩度	채도	饱和度	飽和度
-sValue	Value	明度	밝기	亮度	亮度
+sValue	Value	明度	명도	亮度	亮度
 sStrength	Strength	強度	강도	强度	強度
 sStrengthMask	Mask & Strength	マスクと強度	마스크와 강도	蒙版 & 强度	蒙版 & 強度
 sStrengthR	Strength (R)	強度 (R)	강도 (R)	强度 (R)	強度 (R)
 sTexture	Texture	テクスチャ	텍스처	纹理	紋理
-sTextureRGBA	Color (RGB) and Transparency (A)	色(RGB)と透明度(A)	색상 (RGB) 과 투명도 (A)	颜色 (RGB) & 透明度 (A)	顏色 (RGB) & 透明度 (A)
+sTextureRGBA	Color (RGB) and Transparency (A)	色(RGB)と透明度(A)	색 (RGB) 과 투명도 (A)	颜色 (RGB) & 透明度 (A)	顏色 (RGB) & 透明度 (A)
 sMask	Mask	マスク	마스크	蒙版	蒙版
 sBlendR	Blend (R)	合成度 (R)	합성 (R)	混合 (R)	混合 (R)
 sBlendMode	Blending Mode	合成モード	합성 모드	混合模式	混合模式
-sBlendModeNormal	Normal	通常	보통	Normal	Normal
-sBlendModeAdd	Add	加算	추가	Add	Add
+sBlendModeNormal	Normal	通常	표준	Normal	Normal
+sBlendModeAdd	Add	加算	가산	Add	Add
 sBlendModeScreen	Screen	スクリーン	스크린	Screen	Screen
 sBlendModeMul	Multiply	乗算	곱하기	Multiply	Multiply
 sBorder	Border	範囲	범위	边界	邊界
 sBorderAO	AO & Border	AOと影範囲	AO과 그림자 범위	AO & 边界	AO & 邊界
 sBorderR	Border (R)	範囲 (R)	범위 (R)	边界 (R)	邊界 (R)
-sBlur	Blur	ぼかし	흐림	模糊	模糊
-sBlurR	Blur (R)	ぼかし (R)	흐림 (R)	模糊 (R)	模糊 (R)
+sBlur	Blur	ぼかし	흐리게	模糊	模糊
+sBlurR	Blur (R)	ぼかし (R)	흐리게 (R)	模糊 (R)	模糊 (R)
 sAlphaR	Alpha (R)	透明度 (R)	투명도 (R)	透明度 (R)	透明度 (R)
-sMainColorPower	Main Color Power	メインカラーの強度	기본 색상의 강도	主色功率	主色功率
+sMainColorPower	Main Color Power	メインカラーの強度	메인 컬러의 강도	主色功率	主色功率
 sEnableLighting	Enable Lighting	ライティングを適用	라이팅을 적용	启用照明	啟用照明
 sUVSetting	UV Setting	UV設定	UV 설정	UV设置	UV設置
 sUVAnimation	UV Animation	UVアニメーション	UV 애니메이션	UV动画	UV動畫
 sOffset	Offset	Offset	Offset	Offset	Offset
 sScroll	Scroll	スクロール	스크롤	滚动	滾動
 sAngle	Angle	角度	각도	角度	角度
-sRotate	Rotate	回転速度	회전 속도	旋转	旋轉
+sRotate	Rotate	回転速度	회전속도	旋转	旋轉
 sAsMSDF	MSDF Texture	MSDFテクスチャ	MSDF 텍스처	MSDF纹理	MSDF紋理
 sAsDecal	As Decal	デカール化	데칼 화	作为Decal	作為Decal
 sAnimation	Animation	アニメーション	애니메이션	动画	動畫
-sXFrames	X Frames	X軸のフレーム数	X 축 프레임 수	X轴帧数	X軸幀數
-sYFrames	Y Frames	Y軸のフレーム数	Y 축 프레임 수	Y轴帧数	Y軸幀數
+sXFrames	X Frames	X軸のフレーム数	X축 프레임 수	X轴帧数	X軸幀數
+sYFrames	Y Frames	Y軸のフレーム数	Y축 프레임 수	Y轴帧数	Y軸幀數
 sFrames	Frames	合計フレーム数	총 프레임 수	总帧数	總幀數
 sFPS	FPS	FPS	FPS	FPS	FPS
-sXRatio	Ratio X	X軸比率	X 축 비율	X比率	X比率
-sYRatio	Ratio Y	Y軸比率	Y 축 비율	Y比率	Y比率
-sFixBorder	Fix Border	境界を調整	경계를 조정	修复边界	修復邊界
+sXRatio	Ratio X	X軸比率	X축 비율	X比率	X比率
+sYRatio	Ratio Y	Y軸比率	Y축 비율	Y比率	Y比率
+sFixBorder	Fix Border	境界を調整	경계 이동	修复边界	修復邊界
 sConvertGif	Convert Gif	Gifを変換	GIF 변환	转换Gif	轉換Gif
 sMirrorMode	Mirror Mode	ミラーモード	거울 모드	镜像模式	鏡像模式
 sMirrorModeNormal	Normal	通常	보통	正常	正常
 sMirrorModeFlip	Flip	反転	반전	翻转	翻轉
-sMirrorModeLeft	Left Only	左のみ	왼쪽에만	只向左	只向左
-sMirrorModeRight	Right Only	右のみ	오른쪽 만	只向右	只向右
-sMirrorModeRightFlip	Flip Right Only	右のみ・反転	오른쪽 만 · 반전	只向右翻转	只向右翻轉
+sMirrorModeLeft	Left Only	左のみ	왼쪽만	只向左	只向左
+sMirrorModeRight	Right Only	右のみ	오른쪽만	只向右	只向右
+sMirrorModeRightFlip	Flip Right Only	右のみ・反転	오른쪽만 · 반전	只向右翻转	只向右翻轉
 sCopyMode	Copy Mode	複製モード	복제 모드	复制模式	複製模式
 sCopyModeNormal	Normal	通常	보통	正常	正常
 sCopyModeSymmetry	Symmetry	左右対称	대칭	对称性	對稱性
 sCopyModeFlip	Flip	反転	반전	翻转	翻轉
 sPosition	Position	座標	좌표	职位	職位
-sPositionX	Position X	X座標	X 좌표	X职位	X職位
-sPositionY	Position Y	Y座標	Y 좌표	Y职位	Y職位
+sPositionX	Position X	X座標	X좌표	X职位	X職位
+sPositionY	Position Y	Y座標	Y좌표	Y职位	Y職位
 sScale	Scale	サイズ	크기	尺度	尺度
-sScaleX	Scale X	X軸サイズ	X 축 크기	X尺度	X尺度
-sScaleY	Scale Y	Y軸サイズ	Y 축 크기	Y尺度	Y尺度
+sScaleX	Scale X	X軸サイズ	X축 크기	X尺度	X尺度
+sScaleY	Scale Y	Y軸サイズ	Y축 크기	Y尺度	Y尺度
 sVector	Vector	向き	방향	向量	向量
 sLength	Length	長さ	길이	长度	長度
-sVertex	Vertex	頂点	정점	顶点	頂點
-sColorAlphaZeroWarn	To enable the property, increase the alpha value.	プロパティを有効にするには透明度の値を上げて下さい。	속성을 활성화하려면 Alpha 값을 올려주세요.	增加 Alpha 值以启用该属性。	增加 Alpha 值以啟用該屬性。
+sVertex	Vertex	頂点	꼭짓점	顶点	頂點
+sColorAlphaZeroWarn	To enable the property, increase the alpha value.	プロパティを有効にするには透明度の値を上げて下さい。	속성을 유효하게 하려면 알파 값을 올려 주십시오.	增加 Alpha 值以启用该属性。	增加 Alpha 值以啟用該屬性。
 sApplyTransparency	Apply Transparency	透明度を適用	투명도 적용	应用透明度	應用透明度
 sReset	Reset	初期化	초기화	重置	重置
-sLimShadowStrength	Shadow Strength	影の強さ	그림자의 힘	阴影强度	陰影強度
-sLimOutline	Outline	輪郭線の色	외곽선 색상	轮廓	輪廓
+sLimShadowStrength	Shadow Strength	影の強さ	그림자 강도	阴影强度	陰影強度
+sLimOutline	Outline	輪郭線の色	윤곽선의 색	轮廓	輪廓
 sLimEmission	Emission	発光色	발광색	发光	發光
 sLimEmission2nd	Emission 2nd	発光色2nd	발광색 2nd	发光2nd	發光2nd
 sBaseSetting	Base Setting	基本設定	기본 설정	基本设置	基本設置
 sInvisible	Invisible	非表示	숨기기	不可见	不可見
 sAsUnlit	As Unlit	Unlit化	Unlit 화	作为Unlit	作為Unlit
-sShaderType	Shader Tyoe	シェーダーの種類	쉐이더 유형	Shader Tyoe	Shader Tyoe
+sShaderType	Shader Tyoe	シェーダーの種類	셰이더 유형	Shader Tyoe	Shader Tyoe
 sShaderTypeNormal	Normal	Normal (通常版)	Normal	Normal	Normal
 sShaderTypeLite	Lite	Lite (軽量版)	Lite	Lite	Lite
 sRenderingMode	Rendering Mode	透過モード	투명 모드	Rendering Mode	Rendering Mode
 sRenderingModeOpaque	Opaque	不透明	불투명	不透明	不透明
-sRenderingModeCutout	Cutout	カットアウト	단편	镂空	鏤空
-sRenderingModeTransparent	Transparent	半透明	반투명	透明	透明
+sRenderingModeCutout	Cutout	カットアウト	컷아웃	镂空	鏤空
+sRenderingModeTransparent	Transparent	半透明	투명한	透明	透明
 sRenderingModeRefraction	[high-load] Refraction	[高負荷] 屈折	[과부하] 굴절	[高负荷] 折射	[高負荷] 折射
-sRenderingModeRefractionBlur	[high-load] Refraction Blur	[高負荷] 屈折ぼかし	[과부하] 굴절 흐림	[高负荷] 折射模糊	[高負荷] 折射模糊
+sRenderingModeRefractionBlur	[high-load] Refraction Blur	[高負荷] 屈折ぼかし	[과부하] 굴절 흐리게	[高负荷] 折射模糊	[高負荷] 折射模糊
 sRenderingModeFur	Fur	ファー	퍼	毛皮	毛皮
-sRenderingModeFurCutout	Fur (Cutout)	ファー (カットアウト)	퍼 (단편)	毛皮(镂空)	毛皮(鏤空)
-sCutoff	Cutoff	Cutoff (透明にする範囲)	Cutoff	Cutoff	Cutoff
+sRenderingModeFurCutout	Fur (Cutout)	ファー (カットアウト)	퍼 (컷아웃)	毛皮(镂空)	毛皮(鏤空)
+sCutoff	Cutoff	Cutoff (完全透明にする範囲)	Cutoff	Cutoff	Cutoff
 sCullMode	Cull Mode	Cull Mode (描画面)	Cull Mode	Cull Mode	Cull Mode
 sCullModeOff	Off	Off (両面を描画)	Off	Off	Off
 sCullModeFront	Front	Front (背面のみ描画)	Front	Front	Front
 sCullModeBack	Back	Back (前面のみ描画)	Back	Back	Back
-sFlipBackfaceNormal	Flip Backface Normal	背面の法線を反転	뒷면의 법선 반전	翻转背影法线	翻轉背影法線
-sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면을 그림자로	背面的力量阴影	背面的力量陰影
+sFlipBackfaceNormal	Flip Backface Normal	背面の法線を反転	후면의 법선을 반전	翻转背影法线	翻轉背影法線
+sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면에 그림자를 드리우다	背面的力量阴影	背面的力量陰影
 sVertexLightStrength	Vertex Light Strength	頂点ライトの強度	Vertex Light Strength	Vertex Light Strength	Vertex Light Strength
 sLightMinLimit	Lower brightness limit	明るさの下限	Lower brightness limit	Lower brightness limit	Lower brightness limit
 sHelpRenderingTransparent	When two transparent materials overlap, one of them may become invisible.	透過マテリアル同士が重なったときに片方が見えなくなる場合があります	투명 Material끼리 겹친 때 한쪽이 보이지 않을 수 있습니다	当两个透明Material重叠时，其中一个可能会变得不可见。	當兩個透明Material重疊時，其中一個可能會變得不可見。
@@ -117,6 +117,7 @@ sMainColor2nd	Main Color 2nd	メインカラー2nd	메인 컬러 2nd	主色2nd	�
 sMainColor3rd	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	主色3rd	主色3rd
 sGradationMap	Gradation Map	グラデーションマップ	그라디언트 맵	渐变映射	漸變映射
 sAlphaMask	Alpha Mask	アルファマスク	알파 마스크	Alpha蒙版	Alpha蒙版
+sAlphaMaskWarnOpaque	If you want to use Alpha Mask, you need to change the "Rendering Mode" to Cutout or Transparent.	アルファマスクを使う場合は"透過モード"をカットアウトか半透明に変更する必要があります。	알파 마스크를 사용하려면 "Rendering Mode"를 단편 또는 반투명로 변경해야합니다.	如果要使用Alpha蒙版，则需要将“Rendering Mode”更改为镂空或透明。	如果要使用Alpha蒙版，則需要將“Rendering Mode”更改為鏤空或透明。
 sAlphaMaskModeNone	None	None	None	None	None
 sAlphaMaskModeReplace	Replace	置き換え	Replace	Replace	Replace
 sAlphaMaskModeMul	Multiply	乗算	Multiply	Multiply	Multiply
@@ -127,20 +128,20 @@ sReceiveShadow	Receive Shadow	影を受け取る	그림자를받는	接收阴影
 sShadowColor	ShadowColor	影色	그림자 색	阴影颜色	陰影顏色
 sShadow1stColor	1st Color	影色1	그림자 색 1	颜色1	顏色1
 sShadow2ndColor	2nd Color	影色2	그림자 색 2	颜色2	顏色2
-sShadowEnvStrength	Environment strength on shadow color	影色への環境光影響度	그림자 색에 환경 광의 영향	环境强度	環境強度
-sShadowBorderColor	Border Color	境界の色	경계의 색상	边界颜色	邊界顏色
+sShadowEnvStrength	Environment strength on shadow color	影色への環境光影響度	그림자 색에 환경 광의 영향	阴影颜色的环境强度	陰影顏色的環境強度
+sShadowBorderColor	Border Color	境界の色	경계의 색	边界颜色	邊界顏色
 sShadowBorderRange	Border Range	境界の幅	경계의 폭	边界范围	邊界範圍
 sOutlineSetting	Outline	輪郭線設定	윤곽선 설정	轮廓设置	輪廓設置
-sOutlineTips	You can set the color and thickness of the outline.	輪郭線の色や太さの設定ができます	윤곽선의 색상과 굵기를 설정할 수 있습니다	你可以设置轮廓的颜色和厚度。	你可以設置輪廓的顏色和厚度。
+sOutlineTips	You can set the color and thickness of the outline.	輪郭線の色や太さの設定ができます	윤곽선의 색과 굵기를 설정할 수 있습니다	你可以设置轮廓的颜色和厚度。	你可以設置輪廓的顏色和厚度。
 sOutline	Outline	輪郭線	윤곽선	轮廓	輪廓
 sWidth	Mask & Width	マスクと太さ	마스크와 굵기	蒙版 & 宽度	蒙版 & 寬度
-sWidthR	Width (R)	太さ (R)	두께 (R)	宽度 (R)	寬度 (R)
-sFixWidth	Fix width by distance	距離に応じた太さ補正	거리에서 두께을 보정	按距离正确宽度	按距離正確寬度
+sWidthR	Width (R)	太さ (R)	굵기 (R)	宽度 (R)	寬度 (R)
+sFixWidth	Fix width by distance	距離に応じた太さ補正	거리에 따른 굵기 보정	按距离正确宽度	按距離正確寬度
 sVertexR2Width	Vertex R -> Width	Vertex R -> Width	Vertex R -> Width	Vertex R -> Width	Vertex R -> Width
 sRefractionSetting	Refraction	屈折設定	굴절 설정	折射设置	折射設置
-sRefractionTips	You can set the refraction strength and color.	屈折の強さや色の設定ができます	굴절 강도와 색상을 설정할 수 있습니다	你可以设置折射强度和颜色。	你可以設置折射強度和顏色。
+sRefractionTips	You can set the refraction strength and color.	屈折の強さや色の設定ができます	굴절의 강도나 색을 설정할 수 있습니다	你可以设置折射强度和颜色。	你可以設置折射強度和顏色。
 sRefraction	Refraction	屈折	굴절	折射	折射
-sRefractionFresnel	Fresnel	フレネル	프레 넬	菲涅尔	菲涅爾
+sRefractionFresnel	Fresnel	フレネル	프레넬	菲涅尔	菲涅爾
 sColorFromMain	Get color from Main	メインカラーから色を取得	메인 컬러에서 색상 가져 오기	从主色获取颜色	從主色獲取顏色
 sFurSetting	Fur	ファー設定	퍼 설정	毛皮设置	毛皮設置
 sFurTips	You can set the length and direction of the fur.	ファーの長さや向き、質感の設定ができます	퍼의 길이와 방향, 질감을 설정할 수 있습니다	你可以设置毛皮的长度和方向。	你可以設置毛皮的長度和方向。
@@ -149,13 +150,13 @@ sGravity	Gravity	重力	중력	重力	重力
 sAO	AO	陰影	AO	AO	AO
 sVertexColor2Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> Vector
 sLayerNum	Layer Counts	レイヤー数	레이어 수	层数	層數
-sTessellation	Tessellation	テッセレーション	Tessellation	Tessellation	Tessellation
-sTessellationTips	You can set the tessellation.	テッセレーションのかかり方を設定できます	Tessellation을 설정할 수 있습니다.	你可以设置Tessellation。	你可以設置Tessellation。
+sTessellation	Tessellation	テッセレーション	텟세레이션	Tessellation	Tessellation
+sTessellationTips	You can set the tessellation.	テッセレーションのかかり方を設定できます	텟세레이션을 설정할 수 있습니다.	你可以设置Tessellation。	你可以設置Tessellation。
 sTessellationEdge	Threshold length	閾値	길이의 한계	阈值长度	閾值長度
 sTessellationShrink	Shrink	縮小補正	축소	缩减	縮減
-sTessellationFactor	Max Factor	最大分割数	최대 분할 수	最大系数	最大係數
+sTessellationFactor	Max Factor	最大分割数	최대 분할수	最大系数	最大係數
 sEmissionSetting	Emission	発光設定	발광 설정	发光设置	發光設置
-sEmissionTips	You can set the color and blinking of the light.	発光の色や点滅に関する設定ができます	발광 색상이나 점멸 관한 설정을 할 수 있습니다	你可以设置灯光的颜色和闪烁。	你可以設置燈光的顏色和閃爍。
+sEmissionTips	You can set the color and blinking of the light.	発光の色や点滅に関する設定ができます	발광의 색이나 점멸에 관한 설정이 가능합니다	你可以设置灯光的颜色和闪烁。	你可以設置燈光的顏色和閃爍。
 sEmission	Emission	発光テクスチャ	발광	发光	發光
 sEmission2nd	Emission 2nd	発光テクスチャ2nd	발광 2nd	发光2nd	發光2nd
 sBlinkStrength	Blink Strength	点滅の強さ	점멸 힘	闪烁强度	閃爍強度
@@ -163,9 +164,9 @@ sBlinkType	Blink Type	点滅タイプ	점멸 타입	闪烁类型	閃爍類型
 sBlinkSpeed	Blink Speed	点滅の速度	점멸 속도	闪烁速度	閃爍速度
 sBlinkOffset	Blink Offset	点滅のズレ	점멸의 차이	闪烁偏移	閃爍偏移
 sGradation	Gradation	グラデーション	그라데이션	渐变	漸變
-sGradTexSpeed	Texture & Speed	テクスチャ & 変化速度	텍스처 및 변화 속도	纹理 & 速度	紋理 & 速度
-sGradColor	Color	色	색상	颜色	顏色
-sParallaxDepth	Parallax Depth	視差の強さ	시차의 힘	视差深度	視差深度
+sGradTexSpeed	Texture & Speed	テクスチャ & 変化速度	텍스처 & 변화 속도	纹理 & 速度	紋理 & 速度
+sGradColor	Color	色	색	颜色	顏色
+sParallaxDepth	Parallax Depth	視差の強さ	시차의 강도	视差深度	視差深度
 sFluorescence	Fluorescence	蛍光	형광	荧光	熒光
 sParallax	Parallax	視差マップ	시차	视差	視差
 sParallaxTips	You can set the parallax.	視差マップに関する設定ができます	시차에 대한 설정을 할 수 있습니다	你可以设置视差。	你可以設置視差。
@@ -188,17 +189,17 @@ sAudioLinkBandBass	Bass	Bass	Bass	Bass	Bass
 sAudioLinkBandLowMid	Low Mid	Low Mid	Low Mid	Low Mid	Low Mid
 sAudioLinkBandHighMid	High Mid	High Mid	High Mid	High Mid	High Mid
 sAudioLinkBandTreble	Treble	Treble	Treble	Treble	Treble
-sAudioLinkApplyTo	Apply to	適用先	대다	申请	申請
-sAudioLinkStartPosition	Start Position	開始点	시작점	初始点	初始點
+sAudioLinkApplyTo	Apply to	適用先	적용처	申请	申請
+sAudioLinkStartPosition	Start Position	開始点	원점	初始点	初始點
 sAudioLinkMovingVector	Moving Vector	移動方向	이동 방향	运动方向	運動方向
 sAudioLinkNormalStrength	Normal Strength	法線方向の強度	법선 방향의 강도	法线强度	法線強度
-sAudioLinkAsLocal	As Local	ローカル化	현지	当地	當地
+sAudioLinkAsLocal	As Local	ローカル化	로컬	当地	當地
 sAudioLinkLocalMap	Local Map	ローカルマップ	Local Map	Local Map	Local Map
 sAudioLinkLocalMapBPM	BPM	BPM	BPM	BPM	BPM
 sAudioLinkLocalMapNotes	Notes	拍数	Notes	Notes	Notes
 sDissolve	Dissolve	Dissolve	Dissolve	Dissolve	Dissolve
-sDissolveTips	Settings for dissolving a material	マテリアルが溶けるような表現ができます	재료를 용해시키기위한 설정	用于溶解材料的设置	用於溶解材料的設置
-sDissolveWarnOpaque	If you want to use Dissolve, you need to change the "Rendering Mode" to Cutout or Transparent.	Dissolveを使う場合は"透過モード"をカットアウトか半透明に変更する必要があります。	Dissolve를 사용하려면 "Rendering Mode"를 단편 또는 반투명로 변경해야합니다.	如果要使用Dissolve，则需要将“Rendering Mode”更改为镂空或透明。	如果要使用Dissolve，則需要將“Rendering Mode”更改為鏤空或透明。
+sDissolveTips	Settings for dissolving a material	マテリアルが溶けるような表現ができます	머티리얼이 녹는듯한 표현을 할 수 있습니다	用于溶解材料的设置	用於溶解材料的設置
+sDissolveWarnOpaque	If you want to use Dissolve, you need to change the "Rendering Mode" to Cutout or Transparent.	Dissolveを使う場合は"透過モード"をカットアウトか半透明に変更する必要があります。	Dissolve를 사용하는 경우 "투과모드"를 컷아웃이나 투명한으로 변경해야 합니다	如果要使用Dissolve，则需要将“Rendering Mode”更改为镂空或透明。	如果要使用Dissolve，則需要將“Rendering Mode”更改為鏤空或透明。
 sDissolveMode	Dissolve Mode	Dissolve Mode	Dissolve Mode	Dissolve Mode	Dissolve Mode
 sDissolveModeNone	None	None	None	None	None
 sDissolveModeAlpha	Alpha	透明度	Alpha	Alpha	Alpha
@@ -208,7 +209,7 @@ sDissolveShape	Shape	形状	모양	形状	形狀
 sDissolveShapePoint	Point	点	점	点	點
 sDissolveShapeLine	Line	線	선	线	線
 sEncryption	Encryption	暗号化	암호화	加密	加密
-sEncryptionTips	Decrypt the mesh from 4 keys.	4つのキーによってメッシュを復号化します	4 개의 키를 사용하여 메쉬를 해독합니다	从4个密钥解密该网状	從4個密鑰解密該網狀
+sEncryptionTips	Decrypt the mesh from 4 keys.	4つのキーによってメッシュを復号化します	4개의 키를 사용하여 메쉬를 복호화합니다	从4个密钥解密该网状	從4個密鑰解密該網狀
 sIgnoreEncryption	Ignore Encryption	Ignore Encryption	Ignore Encryption	Ignore Encryption	Ignore Encryption
 sKeys	Keys	Keys	Keys	Keys	Keys
 sNormalMapReflection	Normal Map & Reflection	ノーマルマップ・光沢設定	노멀 맵 광택 설정	法线贴图 & 反射设置	法線貼圖 & 反射設置
@@ -229,20 +230,21 @@ sSpecularMode	Specular Mode	光沢のタイプ	광택 타입	反射模式	反射
 sSpecularNone	None	無効	무효	无	無
 sSpecularReal	Realistic	リアル	리얼	现实	現實
 sSpecularToon	Toon	トゥーン	툰	卡通	卡通
-sApplyReflection	Environment Reflections	環境光の反射	환경 빛의 반사	环境反射	環境反射
+sApplyReflection	Environment Reflections	環境光の反射	환경광 반사	环境反射	環境反射
 sMatCap	MatCap	マットキャップ	매트 캡	MatCap	MatCap
 sMatCap2nd	MatCap 2nd	マットキャップ2nd	매트 캡 2nd	MatCap 2nd	MatCap 2nd
-sHelpMatCapBlending	Turn off "Enable Lighting" in multiply mode.	乗算モードでは"ライティングを適用"を0にしてください	곱셈 모드에서는 조명의 합성을 취소하십시오	关闭乘法模式下的 启用照明。	關閉乘法模式下的 啟用照明。
-sMatCapCustomNormal	Custom normal map	カスタムノーマルマップ	맞춤 노멀 맵	自定义法线贴图	自定義法線貼圖
+sHelpMatCapBlending	Turn off "Enable Lighting" in multiply mode.	乗算モードでは"ライティングを適用"を0にしてください	곱셈 모드에서는 "라이팅을 적용"을 0으로 해 주세요	关闭乘法模式下的 启用照明。	關閉乘法模式下的 啟用照明。
+sMatCapCustomNormal	Custom normal map	カスタムノーマルマップ	커스텀 노멀 맵	自定义法线贴图	自定義法線貼圖
+sMatCapZRotCancel	Z-axis rotation cancellation	Z軸回転キャンセル	Z축 회전 취소	Z轴旋转取消	Z軸旋轉取消
 sRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
 sFresnelPower	Fresnel Power	リムライトの細さ	림 라이트의 벌금	菲涅尔功率	菲涅爾功率
-sShadowMask	Shadow Mask	影部分で無効化	그림자 부분에서 비활성화	阴影蒙版	陰影蒙版
-sRimLightDirection	Light direction strength	ライト方向の影響度	라이트 방향의 강도	光线方向影响	光線方向影響
+sShadowMask	Shadow Mask	影部分で無効化	그림자 속에서 무효화	阴影蒙版	陰影蒙版
+sRimLightDirection	Light direction strength	ライト方向の影響度	라이트 방향의 영향도	光线方向影响	光線方向影響
 sRimDirectionRange	Direct light width	直接光の幅	직접 빛의 폭	直射光宽	直射光寬
 sRimIndirectionRange	Indirect light width	間接光の幅	간접 조명의 폭	间接光宽	間接光寬
 sStencilSetting	Stencil	ステンシル設定	Stencil 설정	Stencil设置	Stencil設置
 sStencilTips	You can set the Stencil	ステンシル(眉毛を髪の上に表示するなど)の設定ができます	Stencil (눈썹을 머리 위에 표시하는 등)을 설정할 수 있습니다	你可以配置详细的Stencil设置。	你可以配置詳細的Stencil設置。
-sAdvanced	Advanced	拡張設定	고급 설정	扩展设置	擴展設置
+sAdvanced	Advanced	拡張設定	확장 설정	扩展设置	擴展設置
 sRenderingSetting	Rendering	レンダリング設定	렌더링 설정	渲染设置	渲染設置
 sRenderingTips	You can configure detailed rendering settings.	細かいレンダリングの設定ができます。	세세한 렌더링 설정을 할 수 있습니다.	你可以配置详细的渲染设置。	你可以配置詳細的渲染設置。
 sZWrite	ZWrite	ZWrite	ZWrite	ZWrite	ZWrite
@@ -258,11 +260,11 @@ sSrcBlendAlpha	SrcBlend Alpha	SrcBlend Alpha	SrcBlend Alpha	SrcBlend Alpha	SrcBl
 sDstBlendAlpha	DstBlend Alpha	DstBlend Alpha	DstBlend Alpha	DstBlend Alpha	DstBlend Alpha
 sBlendOpRGB	BlendOp RGB	BlendOp RGB	BlendOp RGB	BlendOp RGB	BlendOp RGB
 sBlendOpAlpha	BlendOp Alpha	BlendOp Alpha	BlendOp Alpha	BlendOp Alpha	BlendOp Alpha
-sRenderingReset	Reset Rendering Properties	レンダリング設定を初期化	렌더링 설정을 재설정	重置渲染设置	重置渲染設置
+sRenderingReset	Reset Rendering Properties	レンダリング設定を初期化	렌더링 설정을 초기화	重置渲染设置	重置渲染設置
 sOptimization	Optimization	最適化	최적화	优化	優化
-sOptimizationTips	You can optimize the material to reduce the load.	マテリアルを最適化して負荷を低減できます	물질을 최적화하여 부하를 줄일 수 있습니다	你可以对材料进行优化，以减少负荷。	你可以對材料進行優化，以減少負荷。
-sCustomProperties	Custom Properties	カスタムプロパティ	사용자 정의 속성	自定义属性	自定義屬性
-sCustomPropertiesTips	Displays the properties added by the user.	ユーザーが追加したプロパティが表示されます	사용자가 추가 된 속성을 표시합니다	显示用户添加的属性	顯示用戶添加的屬性
+sOptimizationTips	You can optimize the material to reduce the load.	マテリアルを最適化して負荷を低減できます	머티리얼을최적화하여부하를저감할수있습니다	你可以对材料进行优化，以减少负荷。	你可以對材料進行優化，以減少負荷。
+sCustomProperties	Custom Properties	カスタムプロパティ	커스텀 프로퍼티	自定义属性	自定義屬性
+sCustomPropertiesTips	Displays the properties added by the user.	ユーザーが追加したプロパティが表示されます	사용자가 추가한 속성이 표시됩니다	显示用户添加的属性	顯示用戶添加的屬性
 sBake	Bake	焼き込み	굽기	烘烤	烘烤
 sBakeAll	Bake all layer	全て焼き込み	모든 굽기	烘烤所有层	烘烤所有層
 sBake1st	Bake Color Shift	色替えを焼き込み	색상 기준을 굽기	烘烤颜色转移	烘烤顏色轉移
@@ -270,7 +272,7 @@ sBake2nd	Bake 2nd Layer	レイヤー2を焼き込み	레이어 2를 굽기	烘�
 sBake3rd	Bake 3rd layer	レイヤー3を焼き込み	레이어 3을 굽기	烘焙第三层	烘焙第三層
 sBakeAlphamask	Bake Alphamask	アルファマスクを焼き込み	알파 마스크를 굽기	烘焙Alphamask	烘焙Alphamask
 sSelectAlphamask	Select Alphamask	アルファマスクを選択してください	알파 마스크를 선택하십시오	选择Alphamask	選擇Alphamask
-sRemoveUnused	Remove unused textures	未使用のテクスチャを外す	사용하지 않는 텍스처를 제거	移除未使用的纹理	移除未使用的紋理
+sRemoveUnused	Remove unused textures	未使用のテクスチャを外す	미사용 텍스처 해제	移除未使用的纹理	移除未使用的紋理
 sConvertLite	Convert to lilToonLite	lilToonLiteに変換	lilToonLite로 변환	转换为lilToonLite	轉換為lilToonLite
 sConvertMToon	Convert to MToon (VRM)	MToon(VRM)に変換	MToon (VRM)로 변환	转换为MToon (VRM)	轉換為MToon (VRM)
 sYes	Yes	はい	Yes	Yes	Yes
@@ -439,6 +441,10 @@ sAnchorRefraction	#refraction	#屈折設定	#refraction	#refraction	#refraction
 sAnchorFur	#fur	#ファー設定	#fur	#fur	#fur
 sAnchorOptimization	#optimization	#最適化	#optimization	#optimization	#optimization
 sAnchorShaderSetting	#shader-setting	#シェーダー設定	#shader-setting	#shader-setting	#shader-setting
+sReadmeURL	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README_JP.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md
+sReadmeAnchorProblem	#common-problems	#よくあるトラブル	#common-problems	#common-problems	#common-problems
+sWhenInTrouble	When in trouble...	困ったときは…	곤란할 때는...	遇到麻烦时...	遇到麻煩時...
+sCommonProblems	Common Problems	よくあるトラブル	일반적인 문제	常见问题	常見問題
 sUtilGif2AtlasPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャの解像度を2の累乗に合わせますか？	텍스처의 해상도를 2의 거듭 제곱에 맞게 싶으십니까?	您想将纹理分辨率匹配到 2 的幂吗？	您想將紋理分辨率匹配到 2 的冪嗎？
 sUtilDotTexRedRatio	Select a reduction ratio	縮小率を選択してください。	축소 비율을 선택하십시오.	请选择一个缩小比例。	請選擇一個縮小比例。
 sUtilShaderNotFound	Shader is not found.	シェーダーが見つかりません。	쉐이더가 없습니다.	未找到着色器。	未找到著色器。

@@ -37,6 +37,7 @@ Shader "Hidden/lilToonLiteTransparentOutline"
         [lilToggleLeft] _UseMatCap                  ("Use MatCap", Int) = 0
         [NoScaleOffset] _MatCapTex                  ("Texture", 2D) = "white" {}
         [lilToggle]     _MatCapMul                  ("Multiply", Int) = 0
+        [lilToggle]     _MatCapZRotCancel           ("Z-axis rotation cancellation", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Rim

@@ -575,7 +575,7 @@
 // Vertex Light
 #if defined(LIL_USE_VERTEXLIGHT) && (defined(_ADDITIONAL_LIGHTS_VERTEX) || defined(VERTEXLIGHT_ON) || defined(LIL_TESSELLATION))
     #define LIL_VERTEXLIGHT_COORDS(idx) float3 vl : TEXCOORD##idx;
-    #define LIL_CALC_VERTEXLIGHT(i,o) o.vl = lilGetVertexLights(i.positionWS)
+    #define LIL_CALC_VERTEXLIGHT(i,o) o.vl = lilGetVertexLights(i.positionWS,_VertexLightStrength)
     #define LIL_GET_VERTEXLIGHT(i,o) float3 o = i.vl
 #elif defined(LIL_USE_VERTEXLIGHT)
     #define LIL_VERTEXLIGHT_COORDS(idx) float3 vl : TEXCOORD##idx;

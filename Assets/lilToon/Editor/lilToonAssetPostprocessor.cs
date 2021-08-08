@@ -9,6 +9,8 @@ namespace lilToon
     {
         static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
+            string shaderSettingHLSLPath = lilToonInspector.GetShaderSettingHLSLPath();
+
             // Runs only when there is no user action
             if(Event.current != null) return;
 
@@ -34,9 +36,9 @@ namespace lilToon
 
             // Check shader setting
             string shaderSettingString = "//INITIALIZE";
-            if(File.Exists(lilToonInspector.shaderSettingHLSLPath))
+            if(File.Exists(shaderSettingHLSLPath))
             {
-                StreamReader srSetting = new StreamReader(lilToonInspector.shaderSettingHLSLPath);
+                StreamReader srSetting = new StreamReader(shaderSettingHLSLPath);
                 shaderSettingString = srSetting.ReadToEnd();
                 srSetting.Close();
             }

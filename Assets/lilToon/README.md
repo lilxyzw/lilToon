@@ -1,5 +1,5 @@
 # lilToon
-Version 1.1.4a
+Version 1.1.5
 
 # Overview
 This shader is developed for services using avatars (VRChat, etc.) and has the following features.
@@ -74,18 +74,39 @@ I recommend right-clicking on the material and running `lilToon/Remove unused pr
 # Common Problems
 - Material error has occurred.  
   → Clicking `Assets/lilToon/Refresh Shaders` in the top menu bar may help.
+- Cannot use alpha mask  
+  → Please check the following
+  - Check and apply the alpha mask in [Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting) in the Advanced settings.
+  - Set rendering mode to `Cutout` or `Transparent`
+  - Assign a texture to `Alpha Mask` in the Main Color menu
+- Some functions seem to be missing.  
+  → If you want to add more features, change the [Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting) in the Advanced settings.
+- UI is not displayed when selecting a material / There is an error in the editor  
+  → You may have a mix of older versions of lilToon. Delete the `lilToon` folder and then import unitypackage again.
+- Different meshes have different lighting.  
+  → Right click on your avatar and select `[lilToon] Fix Lighting` to automatically fix this.
 - The shadows on face are dirty.  
   → You can specify a mask texture in `Mask & Strength` to partially remove shadows.
 - Outline becomes dirty.  
   → You can specify a mask texture in `Mask & Width` to partially remove outline or adjust the thickness.
 - Shadows are weak in bright places.  
   → `Environment Strength` value affects the strength of shadows in bright places.
-- Different meshes have different lighting.  
-  → Right click on your avatar and select `[lilToon] Fix Lighting` to automatically fix this.
-- Some functions seem to be missing.  
-  → If you want to add more features, change the [Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting) in the Advanced settings.
 - I don't know which ones to turn on in shader settings.  
   → The shader settings are automatically set by running `Assets/lilToon/Auto shader setting` from the top menu bar.
+
+If you have any other problems and suspect a bug, please contact me on [Twitter](https://twitter.com/lil_xyzw), [GitHub](https://github.com/lilxyzw/lilToon), or [BOOTH](https://lilxyzw.booth.pm/).  
+Please refer to the following template when reporting a bug.
+```
+Bug: 
+Reproduction method: 
+
+# Optional
+Unity version: 
+Shader setting: 
+VRChat World: 
+Screenshots: 
+Console logs: 
+```
 
 # Recommended settings outside the shader
 The following settings improve the problem of different brightness in one part of the model. Also, texture transparency artifacts are removed.
@@ -104,10 +125,19 @@ I'm referred to the shadow setting part.
 - [MToon (Santarh)](https://github.com/Santarh/MToon) / [MIT LICENCE](https://github.com/Santarh/MToon/blob/master/LICENSE)  
 Comparing parameters when implementing `Convert to MToon (VRM)`
 - [GTAvaCrypt (rygo6)](https://github.com/rygo6/GTAvaCrypt) / [MIT LICENCE](https://github.com/rygo6/GTAvaCrypt/blob/master/LICENSE)
+- [Multi-channel signed distance field generator](https://github.com/Chlumsky/msdfgen) / [MIT LICENCE](https://github.com/Chlumsky/msdfgen/blob/master/LICENSE.txt)
 - [Optimized inverse trigonometric function (seblagarde)](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # Change log
+## v1.1.5
+- Added `When in trouble...`
+- Improved transparency processing
+- Organize the UI
+- Added on / off of Z-axis rotation cancellation of MatCap
+- Fixed shader folder to be movable
+- Fixed an issue where opaque materials would show alpha mask properties
+- Fixed some translations
 ## v1.1.4a
 - Fixed an issue where `Setup from FBX` did not work in Unity 2017.3 or earlier, Unity 2019.3 or later
 ## v1.1.4

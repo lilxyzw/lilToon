@@ -1,5 +1,5 @@
 # lilToon
-Version 1.1.4a
+Version 1.1.5
 
 # 概要
 アバターを用いたサービス（VRChat等）向けに開発したシェーダーで以下のような特徴があります。
@@ -75,18 +75,39 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 # よくあるトラブル
 - マテリアルエラーが発生した  
   → 上部メニューバーの`Assets/lilToon/Refresh Shaders`をクリックすると改善される場合があります
+- アルファマスクが使えない  
+  → 以下をご確認ください
+  - 詳細設定の一番下の[シェーダー設定](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md#シェーダー設定)で`アルファマスク`にチェックを入れて`Apply`されているか
+  - 透過モードが`カットアウト`もしくは`半透明`になっているか
+  - 基本色設定内のアルファマスクでテクスチャを割り当てているか
+- 一部機能が存在しないように見える  
+  → 機能を追加したい場合は詳細設定の一番下の[シェーダー設定](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md#シェーダー設定)を変更してください
+- マテリアルを選択してもUIが表示されない・エディタにエラーがある  
+  → 古いバージョンのlilToonが混在している可能性があります。`lilToon`フォルダを削除してから再度インポートし直して下さい。
+- 部位によって明るさが変わる  
+  → アバターを右クリックし`[lilToon] Fix Lighting`を選択することで自動で修正されます。
+- 明るい場所で影が薄くなる  
+  → `環境光の強さ`の数値を下げると明るい場所でも影が強く出ます。
 - 顔にかかる影が気になる  
   → `マスクと強度`にマスクテクスチャを指定することで部分的に影を消すことができます。
 - 輪郭線が汚くなる  
   → `マスクと太さ`にマスクテクスチャを指定することで部分的に輪郭線を消したり太さを調整したりすることができます。
-- 明るい場所で影が薄くなる  
-  → `環境光の強さ`の数値を下げると明るい場所でも影が強く出ます。
-- 部位によって明るさが変わる  
-  → アバターを右クリックし`[lilToon] Fix Lighting`を選択することで自動で修正されます。
-- 一部機能が存在しないように見える  
-  → 機能を追加したい場合は詳細設定の一番下のの[シェーダー設定](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md#シェーダー設定)を変更してください
 - シェーダー設定でどれをオンにすべきかわからない  
   → 上部メニューバーから`Assets/lilToon/Auto shader setting`を実行することで自動でシェーダー設定が行えます。
+
+これ以外でトラブルが発生し不具合であることが疑われる場合は[Twitter](https://twitter.com/lil_xyzw)、[GitHub](https://github.com/lilxyzw/lilToon)、[BOOTH](https://lilxyzw.booth.pm/)のいずれかにご連絡いただければ幸いです。  
+以下にテンプレートも用意させていただきましたのでバグ報告の際の参考にご活用下さい。
+```
+バグ: 
+再現方法: 
+
+# 可能であれば
+Unityバージョン: 
+シェーダー設定: 
+VRChatのワールド: 
+スクリーンショット: 
+コンソールログ: 
+```
 
 # シェーダー外のおすすめ設定
 以下の設定で顔など一部分だけ明るさが違う現象を緩和できます。また、テクスチャの透過が綺麗になります。
@@ -104,10 +125,19 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 - [MToon (Santarh)](https://github.com/Santarh/MToon) / [MIT LICENCE](https://github.com/Santarh/MToon/blob/master/LICENSE)  
 `MToon(VRM)に変換`の実装時に各種パラメータの比較を行いました。
 - [GTAvaCrypt (rygo6)](https://github.com/rygo6/GTAvaCrypt) - [MIT LICENCE](https://github.com/rygo6/GTAvaCrypt/blob/master/LICENSE)
+- [Multi-channel signed distance field generator](https://github.com/Chlumsky/msdfgen) / [MIT LICENCE](https://github.com/Chlumsky/msdfgen/blob/master/LICENSE.txt)
 - [Optimized inverse trigonometric function (seblagarde)](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # 変更履歴
+## v1.1.5
+- `困ったときは…`を追加
+- 透過処理を改善
+- UIを整理
+- マットキャップのZ軸回転キャンセル機能のオンオフを追加
+- フォルダを移動可能にしました
+- 不透明マテリアルにアルファマスクのプロパティが存在していた点を修正
+- 一部翻訳を修正
 ## v1.1.4a
 - `Setup from FBX`がUnity2017.3以前、Unity2019.3以降で動かない問題の修正
 ## v1.1.4

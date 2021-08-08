@@ -58,7 +58,8 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                     _DissolveNoiseMask,
                     _DissolveNoiseMask_ST,
                     _DissolveNoiseMask_ScrollRotate,
-                    _DissolveNoiseStrength
+                    _DissolveNoiseStrength,
+                    sampler_MainTex
                 );
             #else
                 lilCalcDissolve(
@@ -69,7 +70,8 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                     _DissolveParams,
                     _DissolvePos,
                     _DissolveMask,
-                    _DissolveMask_ST
+                    _DissolveMask_ST,
+                    sampler_MainTex
                 );
             #endif
         #endif
@@ -149,7 +151,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 float3 normalDirection = normalize(input.normalWS);
                 normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
                 float shadowmix = 1.0;
-                lilGetShading(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, 1, lightDirection);
+                lilGetShading(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, 1, lightDirection, sampler_MainTex);
             #endif
             col.rgb += albedo * vertexLightColor + albedo * additionalLightColor;
             col.rgb = min(col.rgb, albedo);
@@ -260,7 +262,8 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                     _DissolveNoiseMask,
                     _DissolveNoiseMask_ST,
                     _DissolveNoiseMask_ScrollRotate,
-                    _DissolveNoiseStrength
+                    _DissolveNoiseStrength,
+                    sampler_MainTex
                 );
             #else
                 lilCalcDissolve(
@@ -271,7 +274,8 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                     _DissolveParams,
                     _DissolvePos,
                     _DissolveMask,
-                    _DissolveMask_ST
+                    _DissolveMask_ST,
+                    sampler_MainTex
                 );
             #endif
         #endif
@@ -432,7 +436,8 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                             _Main2ndDissolveNoiseMask,
                             _Main2ndDissolveNoiseMask_ST,
                             _Main2ndDissolveNoiseMask_ScrollRotate,
-                            _Main2ndDissolveNoiseStrength
+                            _Main2ndDissolveNoiseStrength,
+                            sampler_MainTex
                         );
                     #else
                         lilCalcDissolve(
@@ -443,7 +448,8 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                             _Main2ndDissolveParams,
                             _Main2ndDissolvePos,
                             _Main2ndDissolveMask,
-                            _Main2ndDissolveMask_ST
+                            _Main2ndDissolveMask_ST,
+                            sampler_MainTex
                         );
                     #endif
                 #endif
@@ -491,7 +497,8 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                             _Main3rdDissolveNoiseMask,
                             _Main3rdDissolveNoiseMask_ST,
                             _Main3rdDissolveNoiseMask_ScrollRotate,
-                            _Main3rdDissolveNoiseStrength
+                            _Main3rdDissolveNoiseStrength,
+                            sampler_MainTex
                         );
                     #else
                         lilCalcDissolve(
@@ -502,7 +509,8 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                             _Main3rdDissolveParams,
                             _Main3rdDissolvePos,
                             _Main3rdDissolveMask,
-                            _Main3rdDissolveMask_ST
+                            _Main3rdDissolveMask_ST,
+                            sampler_MainTex
                         );
                     #endif
                 #endif
@@ -522,7 +530,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         #ifndef LIL_PASS_FORWARDADD
             float shadowmix = 1.0;
             #if defined(LIL_FEATURE_SHADOW)
-                lilGetShading(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, attenuation, lightDirection);
+                lilGetShading(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, attenuation, lightDirection, sampler_MainTex);
             #else
                 col.rgb *= lightColor;
             #endif
@@ -671,23 +679,12 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //----------------------------------------------------------------------------------------------------------------------
         // MatCap
-        float2 matUV = float2(0,0);
-        float2 mat2ndUV = float2(0,0);
-        #if defined(LIL_FEATURE_MATCAP) && defined(LIL_FEATURE_MATCAP_2ND)
-            #if !defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
-                LIL_BRANCH
-                if(_UseMatCap || _UseMatCap2nd)
-                {
-                    matUV = lilCalcMatCapUV(normalDirection);
-                    mat2ndUV = matUV;
-                }
-            #endif
-        #endif
 
         #if defined(LIL_FEATURE_MATCAP)
             LIL_BRANCH
             if(_UseMatCap)
             {
+                float2 matUV = float2(0,0);
                 #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
                     LIL_BRANCH
                     if(_MatCapCustomNormal)
@@ -697,15 +694,13 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
                         float3 matcapNormalDirection = normalize(mul(normalmap, tbnWS));
                         matcapNormalDirection = facing < (_FlipNormal-1.0) ? -matcapNormalDirection : matcapNormalDirection;
-                        matUV = lilCalcMatCapUV(matcapNormalDirection);
+                        matUV = lilCalcMatCapUV(matcapNormalDirection, _MatCapZRotCancel);
                     }
                     else
-                    {
-                        matUV = lilCalcMatCapUV(normalDirection);
-                    }
-                #elif !defined(LIL_FEATURE_MATCAP_2ND)
-                    matUV = lilCalcMatCapUV(normalDirection);
                 #endif
+                {
+                    matUV = lilCalcMatCapUV(normalDirection, _MatCapZRotCancel);
+                }
                 float4 matCapColor = _MatCapColor;
                 if(Exists_MatCapTex) matCapColor *= LIL_SAMPLE_2D(_MatCapTex, sampler_MainTex, matUV);
                 #ifndef LIL_PASS_FORWARDADD
@@ -725,6 +720,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             LIL_BRANCH
             if(_UseMatCap2nd)
             {
+                float2 mat2ndUV = float2(0,0);
                 #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
                     LIL_BRANCH
                     if(_MatCap2ndCustomNormal)
@@ -733,15 +729,13 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                         float3 normalmap = UnpackNormalScale(normalTex, _MatCap2ndBumpScale);
                         float3 matcap2ndNormalDirection = normalize(mul(normalmap, tbnWS));
                         matcap2ndNormalDirection = facing < (_FlipNormal-1.0) ? -matcap2ndNormalDirection : matcap2ndNormalDirection;
-                        mat2ndUV = lilCalcMatCapUV(matcap2ndNormalDirection);
+                        mat2ndUV = lilCalcMatCapUV(matcap2ndNormalDirection, _MatCap2ndZRotCancel);
                     }
                     else
-                    {
-                        mat2ndUV = lilCalcMatCapUV(normalDirection);
-                    }
-                #elif !defined(LIL_FEATURE_MATCAP_2ND)
-                    mat2ndUV = lilCalcMatCapUV(normalDirection);
                 #endif
+                {
+                    mat2ndUV = lilCalcMatCapUV(normalDirection, _MatCap2ndZRotCancel);
+                }
                 float4 matCap2ndColor = _MatCap2ndColor;
                 if(Exists_MatCapTex) matCap2ndColor *= LIL_SAMPLE_2D(_MatCap2ndTex, sampler_MainTex, mat2ndUV);
                 #ifndef LIL_PASS_FORWARDADD

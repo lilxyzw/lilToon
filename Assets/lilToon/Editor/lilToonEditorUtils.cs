@@ -18,7 +18,10 @@ namespace lilToon
         [MenuItem("Assets/lilToon/Refresh shaders", false, 20)]
         static void RefreshShaders()
         {
-            string[] shaderGuids = AssetDatabase.FindAssets("t:shader", lilToonInspector.shaderFolderPaths);
+            string[] shaderFolderPaths = lilToonInspector.GetShaderFolderPaths();
+            string shaderPipelinePath = lilToonInspector.GetShaderPipelinePath();
+            string shaderSettingPath = lilToonInspector.GetShaderSettingPath();
+            string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
             if(shaderGuids.Length > 33)
             {
                 // Render Pipeline
@@ -42,8 +45,8 @@ namespace lilToon
                     string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
                     lilToonInspector.RewriteShaderRP(shaderPath, lilRP);
                 }
-                lilToonInspector.RewriteShaderRP(lilToonInspector.shaderPipelinePath, lilRP);
-                lilToonSetting shaderSetting = (lilToonSetting)AssetDatabase.LoadAssetAtPath(lilToonInspector.shaderSettingPath, typeof(lilToonSetting));
+                lilToonInspector.RewriteShaderRP(shaderPipelinePath, lilRP);
+                lilToonSetting shaderSetting = (lilToonSetting)AssetDatabase.LoadAssetAtPath(shaderSettingPath, typeof(lilToonSetting));
                 if(shaderSetting != null) lilToonInspector.ApplyShaderSetting(shaderSetting);
                 lilToonInspector.ReimportPassShaders();
                 AssetDatabase.Refresh();
@@ -416,7 +419,7 @@ namespace lilToon
                     }
                 }
                 atlasTexture.Apply();
-                
+
                 // Save
                 string savePath = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path) + "_gif2png_" + loopXY + "_" + frameCount + "_" + duration + ".png";
                 File.WriteAllBytes(savePath, atlasTexture.EncodeToPNG());
@@ -467,7 +470,7 @@ namespace lilToon
                 }
             }
             outTex.Apply();
-            
+
             // Save
             string savePath = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path) + "_resized" + ".png";
             File.WriteAllBytes(savePath, outTex.EncodeToPNG());

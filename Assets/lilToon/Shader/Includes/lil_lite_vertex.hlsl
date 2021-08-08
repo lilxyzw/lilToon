@@ -51,7 +51,7 @@ v2f vert(appdata input)
         output.positionWS   = vertexInput.positionWS;
         output.positionCS   = vertexInput.positionCS;
         output.normalWS     = vertexNormalInput.normalWS;
-        output.uvMat        = lilCalcMatCapUV(vertexNormalInput.normalWS);
+        output.uvMat        = lilCalcMatCapUV(vertexNormalInput.normalWS, _MatCapZRotCancel);
     #endif
 
     //----------------------------------------------------------------------------------------------------------------------

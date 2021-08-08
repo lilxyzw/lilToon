@@ -1,7 +1,7 @@
 #ifndef LIL_COMMON_INCLUDED
 #define LIL_COMMON_INCLUDED
 
-#ifndef LIL_CUSTOM_SHADER
+#if !defined(LIL_CUSTOM_SHADER) && !defined(LIL_LITE)
 #include "../../../lilToonSetting/lil_setting.hlsl"
 #endif
 #include "Includes/lil_macro.hlsl"

@@ -77,11 +77,15 @@ float4 frag(v2f input) : SV_Target
         #endif
         float alpha = _Color.a;
         if(Exists_MainTex) alpha *= LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain).a;
-        #if LIL_RENDER == 1
-            clip(alpha - _Cutoff);
-        #else
-            clip(alpha - 0.5);
+        #if !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_ALPHAMASK)
+            if(_AlphaMaskMode)
+            {
+                float alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, uvMain).r;
+                alphaMask = saturate(alphaMask + _AlphaMaskValue);
+                alpha = _AlphaMaskMode == 1 ? alphaMask : alpha * alphaMask;
+            }
         #endif
+        clip(alpha - _Cutoff);
     #endif
 
     return float4(PackNormalOctRectEncode(TransformWorldToViewDir(input.normalWS, true)), 0.0, 0.0);

@@ -229,6 +229,7 @@ float4 _GrabTexture_TexelSize;
     lilBool _UseShadow;
     lilBool _UseMatCap;
     lilBool _MatCapMul;
+    lilBool _MatCapZRotCancel;
     lilBool _UseRim;
     lilBool _RimShadowMask;
     lilBool _UseEmission;
@@ -662,6 +663,7 @@ lilBool _Invisible;
 #if defined(LIL_FEATURE_MATCAP)
     lilBool _UseMatCap;
     lilBool _MatCapApplyTransparency;
+    lilBool _MatCapZRotCancel;
     #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
         lilBool _MatCapCustomNormal;
     #endif
@@ -669,6 +671,7 @@ lilBool _Invisible;
 #if defined(LIL_FEATURE_MATCAP_2ND)
     lilBool _UseMatCap2nd;
     lilBool _MatCap2ndApplyTransparency;
+    lilBool _MatCap2ndZRotCancel;
     #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
         lilBool _MatCap2ndCustomNormal;
     #endif

@@ -378,7 +378,7 @@ float2 lilCalcUVWithoutAnimation(float2 uv, float4 uv_st, float4 uv_sr)
     return lilRotateUV(uv * uv_st.xy + uv_st.zw, uv_sr.z);
 }
 
-float2 lilCalcMatCapUV(float3 normalWS)
+float2 lilCalcMatCapUV(float3 normalWS, bool zRotCancel = true)
 {
     #if LIL_MATCAP_MODE == 0
         // Simple
@@ -387,18 +387,21 @@ float2 lilCalcMatCapUV(float3 normalWS)
         // Fix Z-Rotation
         bool isMirror = unity_CameraProjection._m20 != 0.0 || unity_CameraProjection._m21 != 0.0;
         float2 outuv = mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5;
-        //outuv.y = isMirror ? -outuv.y : outuv.y;
+        if(zRotCancel)
+        {
+            //outuv.y = isMirror ? -outuv.y : outuv.y;
 
-        float3 tan = LIL_MATRIX_V._m00_m01_m02;
-        float3 bitan = float3(-LIL_MATRIX_V._m22, 0.0, LIL_MATRIX_V._m20);
-        float co = dot(tan,bitan) / length(bitan);
-        float si = LIL_MATRIX_V._m01;
-        co = isMirror ? -co : co;
+            float3 tan = LIL_MATRIX_V._m00_m01_m02;
+            float3 bitan = float3(-LIL_MATRIX_V._m22, 0.0, LIL_MATRIX_V._m20);
+            float co = dot(tan,bitan) / length(bitan);
+            float si = LIL_MATRIX_V._m01;
+            co = isMirror ? -co : co;
 
-        outuv = float2(
-            outuv.x * co - outuv.y * si,
-            outuv.x * si + outuv.y * co
-        );
+            outuv = float2(
+                outuv.x * co - outuv.y * si,
+                outuv.x * si + outuv.y * co
+            );
+        }
         outuv += 0.5;
         outuv.x = isMirror ? -outuv.x : outuv.x;
 
@@ -426,14 +429,15 @@ void lilCalcDissolve(
     float4 dissolveParams,
     float4 dissolvePos,
     TEXTURE2D(dissolveMask),
-    float4 dissolveMask_ST)
+    float4 dissolveMask_ST,
+    SamplerState sampstate)
 {
     if(dissolveParams.r)
     {
         float dissolveMaskVal = 1.0;
         if(dissolveParams.r == 1.0)
         {
-            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, sampler_MainTex, lilCalcUV(uv, dissolveMask_ST)).r;
+            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, sampstate, lilCalcUV(uv, dissolveMask_ST)).r;
         }
         if(dissolveParams.r == 1.0)
         {
@@ -468,7 +472,8 @@ void lilCalcDissolveWithNoise(
     TEXTURE2D(dissolveNoiseMask),
     float4 dissolveNoiseMask_ST,
     float4 dissolveNoiseMask_ScrollRotate,
-    float dissolveNoiseStrength)
+    float dissolveNoiseStrength,
+    SamplerState sampstate)
 {
     if(dissolveParams.r)
     {
@@ -476,9 +481,9 @@ void lilCalcDissolveWithNoise(
         float dissolveNoise = 0.0;
         if(dissolveParams.r == 1.0)
         {
-            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, sampler_MainTex, lilCalcUV(uv, dissolveMask_ST)).r;
+            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, sampstate, lilCalcUV(uv, dissolveMask_ST)).r;
         }
-        dissolveNoise = LIL_SAMPLE_2D(dissolveNoiseMask, sampler_MainTex, lilCalcUV(uv, dissolveNoiseMask_ST, dissolveNoiseMask_ScrollRotate.xy)).r - 0.5;
+        dissolveNoise = LIL_SAMPLE_2D(dissolveNoiseMask, sampstate, lilCalcUV(uv, dissolveNoiseMask_ST, dissolveNoiseMask_ScrollRotate.xy)).r - 0.5;
         dissolveNoise *= dissolveNoiseStrength;
         if(dissolveParams.r == 1.0)
         {
@@ -721,7 +726,7 @@ float3 lilGetLightMapColor(float2 uv)
 }
 
 #if !defined(LIL_BAKER)
-float3 lilGetVertexLights(float3 positionWS)
+float3 lilGetVertexLights(float3 positionWS, float vertexLightStrength = 1.0)
 {
     #ifdef LIL_BRP
         float4 toLightX = unity_4LightPosX0 - positionWS.x;
@@ -761,7 +766,7 @@ float3 lilGetVertexLights(float3 positionWS)
         outCol =          outCol + unity_LightColor[2].rgb * atten.z;
         outCol = saturate(outCol + unity_LightColor[3].rgb * atten.w);
 
-        return outCol * _VertexLightStrength;
+        return outCol * vertexLightStrength;
     #else
         float3 outCol = 0.0;
 
@@ -774,7 +779,7 @@ float3 lilGetVertexLights(float3 positionWS)
             }
         #endif
 
-        return outCol * _VertexLightStrength;
+        return outCol * vertexLightStrength;
     #endif
 }
 #endif
@@ -806,6 +811,7 @@ void lilGetShading(
     float3 normalDirection,
     float attenuation,
     float3 lightDirection,
+    SamplerState sampstate,
     bool cullOff = true)
 {
     LIL_BRANCH
@@ -813,7 +819,7 @@ void lilGetShading(
     {
         // Shade
         float ln = saturate(dot(lightDirection,normalDirection)*0.5+0.5);
-        if(Exists_ShadowBorderMask) ln *= LIL_SAMPLE_2D(_ShadowBorderMask, sampler_MainTex, uv).r;
+        if(Exists_ShadowBorderMask) ln *= LIL_SAMPLE_2D(_ShadowBorderMask, sampstate, uv).r;
         float ln2 = ln;
         float lnB = ln;
 
@@ -826,7 +832,7 @@ void lilGetShading(
 
         // Toon
         float shadowBlur = _ShadowBlur;
-        if(Exists_ShadowBlurMask) shadowBlur *= LIL_SAMPLE_2D(_ShadowBlurMask, sampler_MainTex, uv).r;
+        if(Exists_ShadowBlurMask) shadowBlur *= LIL_SAMPLE_2D(_ShadowBlurMask, sampstate, uv).r;
         ln = lilTooning(ln, _ShadowBorder, shadowBlur);
         ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
         lnB = lilTooning(lnB, _ShadowBorder, shadowBlur, _ShadowBorderRange);
@@ -848,16 +854,16 @@ void lilGetShading(
         #ifdef UNITY_COLORSPACE_GAMMA
             shadowStrength = SRGBToLinear(shadowStrength);
         #endif
-        if(Exists_ShadowStrengthMask) shadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, sampler_MainTex, uv).r;
+        if(Exists_ShadowStrengthMask) shadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, sampstate, uv).r;
         ln = lerp(1.0, ln, shadowStrength);
 
         // Shadow Color 1
         float4 shadowColorTex = 0.0;
-        if(Exists_ShadowColorTex) shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampler_MainTex, uv);
+        if(Exists_ShadowColorTex) shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampstate, uv);
         float3 indirectCol = lerp(albedo, shadowColorTex.rgb, shadowColorTex.a) * _ShadowColor.rgb;
         // Shadow Color 2
         float4 shadow2ndColorTex = 0.0;
-        if(Exists_Shadow2ndColorTex) shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, sampler_MainTex, uv);
+        if(Exists_Shadow2ndColorTex) shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, sampstate, uv);
         shadow2ndColorTex.rgb = lerp(albedo, shadow2ndColorTex.rgb, shadow2ndColorTex.a) * _Shadow2ndColor.rgb;
         ln2 = _Shadow2ndColor.a - ln2 * _Shadow2ndColor.a;
         indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, ln2);
@@ -895,6 +901,7 @@ void lilGetShadingLite(
     float facing,
     float3 normalDirection,
     float3 lightDirection,
+    SamplerState sampstate,
     bool cullOff = true)
 {
     LIL_BRANCH
@@ -923,10 +930,10 @@ void lilGetShadingLite(
         shadowmix = ln;
 
         // Shadow Color 1
-        float4 shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampler_MainTex, uv);
+        float4 shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampstate, uv);
         float3 indirectCol = lerp(albedo, shadowColorTex.rgb, shadowColorTex.a);
         // Shadow Color 2
-        float4 shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, sampler_MainTex, uv);
+        float4 shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, sampstate, uv);
         indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, shadow2ndColorTex.a - ln2 * shadow2ndColorTex.a);
 
         // Apply Light
