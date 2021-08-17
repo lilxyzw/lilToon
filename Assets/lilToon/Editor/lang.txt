@@ -7,6 +7,7 @@ sEditorModePreset	Preset	プリセット	프리셋	预设	預設
 sHelpSimple	In this mode, you can easily edit the appearance.	簡単に見た目を編集するモードです。	간단하게 외형을 편집하는 모드입니다.	这种模式进行简单的设置。	這種模式進行簡單的設置。
 sHelpAdvanced	In this mode, you can make detailed settings for the material.	詳細設定を行うモードです。	상세 설정을 실시하는 모드입니다.	此模式用于进行详细设置。	此模式用於進行詳細設置。
 sHelpPreset	In this mode, you can easily set up materials from presets.	プリセットから一括で設定するモードです。	프리셋에서 일괄로 설정하는 모드입니다.	在这个模式下，你可以很容易地从预设中设置材料。	在這個模式下，你可以很容易地從預設中設置材料。
+sHelpSelectOverlay	Currently lilToonOverray is selected. Change to lilToon for normal use.	現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。	현재 lilToonOverray가 선택되어있습니다.일반 용도에서는 lilToon으로 변경해주세요.	目前正在选择lilToonOverray。如果是通常的用途的话请变更为lilToon。	目前正在選擇lilToonOverray。如果是通常的用途的話請變更為lilToon。
 sColor	Color	色	색	颜色	顏色
 sGamma	Gamma	ガンマ	감마	伽玛	伽瑪
 sHue	Hue	色相	색상	色相	色相
@@ -116,6 +117,7 @@ sMainColor	Main Color	メインカラー	메인 컬러	主色	主色
 sMainColor2nd	Main Color 2nd	メインカラー2nd	메인 컬러 2nd	主色2nd	主色2nd
 sMainColor3rd	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	主色3rd	主色3rd
 sGradationMap	Gradation Map	グラデーションマップ	그라디언트 맵	渐变映射	漸變映射
+sNotAlphaIsTransparency	This texture is not marked as AlphaIsTransparency	このテクスチャはAlphaIsTransparencyとして設定されていません	이 텍스처는 Alpha Is Transparency로 설정되어 있지 않습니다	此纹理未被设置为AlphaIsTransparency	此紋理未被設置為AlphaIsTransparency
 sAlphaMask	Alpha Mask	アルファマスク	알파 마스크	Alpha蒙版	Alpha蒙版
 sAlphaMaskWarnOpaque	If you want to use Alpha Mask, you need to change the "Rendering Mode" to Cutout or Transparent.	アルファマスクを使う場合は"透過モード"をカットアウトか半透明に変更する必要があります。	알파 마스크를 사용하려면 "Rendering Mode"를 단편 또는 반투명로 변경해야합니다.	如果要使用Alpha蒙版，则需要将“Rendering Mode”更改为镂空或透明。	如果要使用Alpha蒙版，則需要將“Rendering Mode”更改為鏤空或透明。
 sAlphaMaskModeNone	None	None	None	None	None
@@ -280,6 +282,7 @@ sNo	No	いいえ	No	No	No
 sOK	OK	OK	OK	OK	OK
 sCancel	Cancel	キャンセル	Cancel	Cancel	Cancel
 sComplete	Complete!	完了しました。	Complete!	Complete!	Complete!
+sFixNow	Fix Now	自動修正	자동 수정	自动修改	自動修改
 sDialogResetUV	Reset UV Setting	UV設定の初期化	UV 설정 초기화	重置UV设置	重置UV設置
 sDialogResetUVMes	Are you sure you want to reset UV setting?	UV設定を初期化しますか?	UV 설정을 초기화 하시겠습니까?	你确定要重置UV设置吗？	你確定要重置UV設置嗎？
 sDialogCannotBake	Cannot run a bake	焼き込みを実行できません	버닝을 실행할 수 없습니다	不能运行烘烤	不能運行烘烤

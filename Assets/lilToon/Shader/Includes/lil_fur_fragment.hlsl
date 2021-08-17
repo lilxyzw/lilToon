@@ -11,9 +11,9 @@ float4 frag(g2f input) : SV_Target
     LIL_GET_VERTEXLIGHT(input, vertexLightColor);
     LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
     #if !defined(LIL_PASS_FORWARDADD)
+        lightColor = max(lightColor, _LightMinLimit);
         lightColor = lerp(lightColor, 1.0, _AsUnlit);
-        vertexLightColor = lerp(vertexLightColor, 0.0, _AsUnlit);
-        additionalLightColor = lerp(additionalLightColor, 0.0, _AsUnlit);
+        float3 addLightColor = lerp(vertexLightColor + additionalLightColor, 0.0, _AsUnlit);
     #else
         lightColor = lerp(lightColor, 0.0, _AsUnlit);
     #endif
@@ -72,9 +72,8 @@ float4 frag(g2f input) : SV_Target
         #else
             col.rgb *= lightColor;
         #endif
-        col.rgb += albedo * (vertexLightColor + additionalLightColor);
+        col.rgb += albedo * addLightColor;
         col.rgb = min(col.rgb, albedo);
-        col.rgb = max(col.rgb, albedo * _LightMinLimit);
     #else
         col.rgb *= lightColor;
     #endif

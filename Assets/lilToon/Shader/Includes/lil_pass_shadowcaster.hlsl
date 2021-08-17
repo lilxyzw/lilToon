@@ -19,7 +19,7 @@ struct v2f
 {
     LIL_V2F_SHADOW_CASTER
     #if LIL_RENDER > 0
-        float2 uv       : TEXCOORD0;
+        float2 uv       : TEXCOORD1;
     #endif
     UNITY_VERTEX_INPUT_INSTANCE_ID
     UNITY_VERTEX_OUTPUT_STEREO

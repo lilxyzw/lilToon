@@ -1,5 +1,5 @@
 # lilToon
-Version 1.1.5
+Version 1.1.6
 
 # Overview
 This shader is developed for services using avatars (VRChat, etc.) and has the following features.
@@ -130,6 +130,10 @@ Comparing parameters when implementing `Convert to MToon (VRM)`
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # Change log
+## v1.1.6
+- Changed the default value of ZTest in outline from LessEqual to Less
+- Fixed an issue where shadows were weakened when using `Lower brightness limit`
+- Added `Fix Now` button to help box
 ## v1.1.5
 - Added `When in trouble...`
 - Improved transparency processing

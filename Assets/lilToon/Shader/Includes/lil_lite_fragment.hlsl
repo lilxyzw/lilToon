@@ -11,9 +11,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
     LIL_GET_VERTEXLIGHT(input, vertexLightColor);
     LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
     #if !defined(LIL_PASS_FORWARDADD)
+        lightColor = max(lightColor, _LightMinLimit);
         lightColor = lerp(lightColor, 1.0, _AsUnlit);
-        vertexLightColor = lerp(vertexLightColor, 0.0, _AsUnlit);
-        additionalLightColor = lerp(additionalLightColor, 0.0, _AsUnlit);
+        float3 addLightColor = lerp(vertexLightColor + additionalLightColor, 0.0, _AsUnlit);
     #else
         lightColor = lerp(lightColor, 0.0, _AsUnlit);
     #endif
@@ -48,8 +48,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //----------------------------------------------------------------------------------------------------------------------
         // Lighting
-        col.rgb = lerp(col.rgb, col.rgb * saturate(lightColor + vertexLightColor + additionalLightColor), _OutlineEnableLighting);
-        col.rgb = max(col.rgb, albedo * _LightMinLimit);
+        col.rgb = lerp(col.rgb, col.rgb * saturate(lightColor + addLightColor), _OutlineEnableLighting);
     #else
         //----------------------------------------------------------------------------------------------------------------------
         // UV
@@ -98,18 +97,13 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             float shadowmix = 1.0;
             lilGetShadingLite(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, lightDirection, sampler_MainTex);
 
-            lightColor += vertexLightColor;
-            shadowmix += lilLuminance(vertexLightColor);
-            col.rgb += albedo * vertexLightColor;
-
-            lightColor += additionalLightColor;
-            shadowmix += lilLuminance(additionalLightColor);
-            col.rgb += albedo * additionalLightColor;
+            lightColor += addLightColor;
+            shadowmix += lilLuminance(addLightColor);
+            col.rgb += albedo * addLightColor;
 
             lightColor = saturate(lightColor);
             shadowmix = saturate(shadowmix);
             col.rgb = min(col.rgb, albedo);
-            col.rgb = max(col.rgb, albedo * _LightMinLimit);
         #else
             col.rgb *= lightColor;
         #endif

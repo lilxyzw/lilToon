@@ -89,8 +89,8 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
-        public const string currentVersionName = "1.1.5";
-        public const int currentVersionValue = 9;
+        public const string currentVersionName = "1.1.6";
+        public const int currentVersionValue = 10;
 
         public const string boothURL = "https://lilxyzw.booth.pm/";
         public const string githubURL = "https://github.com/lilxyzw/lilToon";
@@ -721,6 +721,11 @@ namespace lilToon
             SelectEditorMode();
             DrawHelpPages();
 
+            if(material.shader.name.Contains("Overlay") && AutoFixHelpBox(GetLoc("sHelpSelectOverlay")))
+            {
+                material.shader = lts;
+            }
+
             EditorGUILayout.Space();
 
             //------------------------------------------------------------------------------------------------------------------------------
@@ -758,16 +763,16 @@ namespace lilToon
                         EditorGUI.indentLevel--;
                     materialEditor.ShaderProperty(cull, sCullModes);
                         EditorGUI.indentLevel++;
-                        if(cull.floatValue == 1.0f)
+                        if(cull.floatValue == 1.0f && AutoFixHelpBox(GetLoc("sHelpCullMode")))
                         {
-                            EditorGUILayout.HelpBox(GetLoc("sHelpCullMode"),MessageType.Warning);
+                            cull.floatValue = 2.0f;
                         }
                         EditorGUI.indentLevel--;
                     materialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
                         EditorGUI.indentLevel++;
-                        if(zwrite.floatValue != 1.0f)
+                        if(zwrite.floatValue != 1.0f && AutoFixHelpBox(GetLoc("sHelpZWrite")))
                         {
-                            EditorGUILayout.HelpBox(GetLoc("sHelpZWrite"),MessageType.Warning);
+                            zwrite.floatValue = 1.0f;
                         }
                         EditorGUI.indentLevel--;
                 }
@@ -934,7 +939,10 @@ namespace lilToon
                             else                                            materialEditor.ShaderProperty(shadowColor, GetLoc("sShadow1stColor"));
                             if(shaderSetting.LIL_FEATURE_TEX_SHADOW_2ND)    materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sShadow2ndColor"), GetLoc("sTextureRGBA")), shadow2ndColorTex, shadow2ndColor);
                             else                                            materialEditor.ShaderProperty(shadow2ndColor, GetLoc("sShadow2ndColor"));
-                            if(shadow2ndColor.colorValue.a == 0) EditorGUILayout.HelpBox(GetLoc("sColorAlphaZeroWarn"),MessageType.Warning);
+                            if(shadow2ndColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                            {
+                                shadow2ndColor.colorValue = new Color(shadow2ndColor.colorValue.r, shadow2ndColor.colorValue.g, shadow2ndColor.colorValue.b, 1.0f);
+                            }
                             materialEditor.ShaderProperty(shadowMainStrength, GetLoc("sMainColorPower"));
                             materialEditor.ShaderProperty(shadowBorderColor, GetLoc("sShadowBorderColor"));
                             EditorGUILayout.EndVertical();
@@ -980,7 +988,10 @@ namespace lilToon
                         {
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             materialEditor.TexturePropertySingleLine(textureRGBAContent, emissionMap, emissionColor);
-                            if(emissionColor.colorValue.a == 0) EditorGUILayout.HelpBox(GetLoc("sColorAlphaZeroWarn"),MessageType.Warning);
+                            if(emissionColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                            {
+                                emissionColor.colorValue = new Color(emissionColor.colorValue.r, emissionColor.colorValue.g, emissionColor.colorValue.b, 1.0f);
+                            }
                             EditorGUILayout.EndVertical();
                         }
                         EditorGUILayout.EndVertical();
@@ -995,7 +1006,10 @@ namespace lilToon
                         {
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             materialEditor.TexturePropertySingleLine(textureRGBAContent, emission2ndMap, emission2ndColor);
-                            if(emission2ndColor.colorValue.a == 0) EditorGUILayout.HelpBox(GetLoc("sColorAlphaZeroWarn"),MessageType.Warning);
+                            if(emission2ndColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                            {
+                                emission2ndColor.colorValue = new Color(emission2ndColor.colorValue.r, emission2ndColor.colorValue.g, emission2ndColor.colorValue.b, 1.0f);
+                            }
                             EditorGUILayout.EndVertical();
                         }
                         EditorGUILayout.EndVertical();
@@ -1041,9 +1055,9 @@ namespace lilToon
                             EditorGUI.indentLevel--;
                         materialEditor.ShaderProperty(cull, sCullModes);
                             EditorGUI.indentLevel++;
-                            if(cull.floatValue == 1.0f)
+                            if(cull.floatValue == 1.0f && AutoFixHelpBox(GetLoc("sHelpCullMode")))
                             {
-                                EditorGUILayout.HelpBox(GetLoc("sHelpCullMode"),MessageType.Warning);
+                                cull.floatValue = 2.0f;
                             }
                             if(cull.floatValue <= 1.0f)
                             {
@@ -1053,9 +1067,9 @@ namespace lilToon
                             EditorGUI.indentLevel--;
                         materialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
                             EditorGUI.indentLevel++;
-                            if(zwrite.floatValue != 1.0f)
+                            if(zwrite.floatValue != 1.0f && AutoFixHelpBox(GetLoc("sHelpZWrite")))
                             {
-                                EditorGUILayout.HelpBox(GetLoc("sHelpZWrite"),MessageType.Warning);
+                                zwrite.floatValue = 1.0f;
                             }
                             EditorGUI.indentLevel--;
                         DrawLine();
@@ -1472,9 +1486,9 @@ namespace lilToon
                             EditorGUI.indentLevel--;
                         materialEditor.ShaderProperty(cull, sCullModes);
                             EditorGUI.indentLevel++;
-                            if(cull.floatValue == 1.0f)
+                            if(cull.floatValue == 1.0f && AutoFixHelpBox(GetLoc("sHelpCullMode")))
                             {
-                                EditorGUILayout.HelpBox(GetLoc("sHelpCullMode"),MessageType.Warning);
+                                cull.floatValue = 2.0f;
                             }
                             if(cull.floatValue <= 1.0f)
                             {
@@ -1484,9 +1498,9 @@ namespace lilToon
                             EditorGUI.indentLevel--;
                         materialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
                             EditorGUI.indentLevel++;
-                            if(zwrite.floatValue != 1.0f)
+                            if(zwrite.floatValue != 1.0f && AutoFixHelpBox(GetLoc("sHelpZWrite")))
                             {
-                                EditorGUILayout.HelpBox(GetLoc("sHelpZWrite"),MessageType.Warning);
+                                zwrite.floatValue = 1.0f;
                             }
                             EditorGUI.indentLevel--;
                         DrawLine();
@@ -1707,7 +1721,10 @@ namespace lilToon
                                 DrawLine();
                                 if(shaderSetting.LIL_FEATURE_TEX_SHADOW_2ND)    materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sShadow2ndColor"), GetLoc("sTextureRGBA")), shadow2ndColorTex, shadow2ndColor);
                                 else                                            materialEditor.ShaderProperty(shadow2ndColor, GetLoc("sShadow2ndColor"));
-                                if(shadow2ndColor.colorValue.a == 0)            EditorGUILayout.HelpBox(GetLoc("sColorAlphaZeroWarn"),MessageType.Warning);
+                                if(shadow2ndColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                {
+                                    shadow2ndColor.colorValue = new Color(shadow2ndColor.colorValue.r, shadow2ndColor.colorValue.g, shadow2ndColor.colorValue.b, 1.0f);
+                                }
                                 materialEditor.ShaderProperty(shadow2ndBorder, GetLoc("sBorder"));
                                 materialEditor.ShaderProperty(shadow2ndBlur, GetLoc("sBlur"));
                                 DrawLine();
@@ -1739,7 +1756,10 @@ namespace lilToon
                                 {
                                     EditorGUILayout.BeginVertical(boxInnerHalf);
                                     TextureGUI(materialEditor, ref edSet.isShowEmissionMap, colorRGBAContent, emissionMap, emissionColor, emissionMap_ScrollRotate, shaderSetting.LIL_FEATURE_EMISSION_UV, shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV);
-                                    if(emissionColor.colorValue.a == 0) EditorGUILayout.HelpBox(GetLoc("sColorAlphaZeroWarn"),MessageType.Warning);
+                                    if(emissionColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                    {
+                                        emissionColor.colorValue = new Color(emissionColor.colorValue.r, emissionColor.colorValue.g, emissionColor.colorValue.b, 1.0f);
+                                    }
                                     DrawLine();
                                     if(shaderSetting.LIL_FEATURE_TEX_EMISSION_MASK)
                                     {
@@ -1774,7 +1794,10 @@ namespace lilToon
                                 {
                                     EditorGUILayout.BeginVertical(boxInnerHalf);
                                     TextureGUI(materialEditor, ref edSet.isShowEmission2ndMap, colorRGBAContent, emission2ndMap, emission2ndColor, emission2ndMap_ScrollRotate, shaderSetting.LIL_FEATURE_EMISSION_UV, shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV);
-                                    if(emission2ndColor.colorValue.a == 0) EditorGUILayout.HelpBox(GetLoc("sColorAlphaZeroWarn"),MessageType.Warning);
+                                    if(emission2ndColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                    {
+                                        emission2ndColor.colorValue = new Color(emission2ndColor.colorValue.r, emission2ndColor.colorValue.g, emission2ndColor.colorValue.b, 1.0f);
+                                    }
                                     DrawLine();
                                     if(shaderSetting.LIL_FEATURE_TEX_EMISSION_MASK)
                                     {
@@ -1881,7 +1904,10 @@ namespace lilToon
                                         materialEditor.ShaderProperty(reflectance, GetLoc("sReflectance"));
                                         if(shaderSetting.LIL_FEATURE_TEX_REFLECTION_COLOR) materialEditor.TexturePropertySingleLine(colorRGBAContent, reflectionColorTex, reflectionColor);
                                         else                                               materialEditor.ShaderProperty(reflectionColor, GetLoc("sColor"));
-                                        if(reflectionColor.colorValue.a == 0) EditorGUILayout.HelpBox(GetLoc("sColorAlphaZeroWarn"),MessageType.Warning);
+                                        if(reflectionColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                        {
+                                            reflectionColor.colorValue = new Color(reflectionColor.colorValue.r, reflectionColor.colorValue.g, reflectionColor.colorValue.b, 1.0f);
+                                        }
                                         int specularMode = 0;
                                         if(specularToon.floatValue == 0.0f) specularMode = 1;
                                         if(specularToon.floatValue == 1.0f) specularMode = 2;
@@ -1908,14 +1934,17 @@ namespace lilToon
                                     {
                                         EditorGUILayout.BeginVertical(boxInnerHalf);
                                         materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA")), matcapTex, matcapColor);
-                                        if(matcapColor.colorValue.a == 0) EditorGUILayout.HelpBox(GetLoc("sColorAlphaZeroWarn"),MessageType.Warning);
+                                        if(matcapColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                        {
+                                            matcapColor.colorValue = new Color(matcapColor.colorValue.r, matcapColor.colorValue.g, matcapColor.colorValue.b, 1.0f);
+                                        }
                                         if(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK)   materialEditor.TexturePropertySingleLine(maskBlendContent, matcapBlendMask, matcapBlend);
                                         else                                            materialEditor.ShaderProperty(matcapBlend, GetLoc("sBlend"));
                                         materialEditor.ShaderProperty(matcapEnableLighting, GetLoc("sEnableLighting"));
                                         materialEditor.ShaderProperty(matcapBlendMode, sBlendModes);
-                                        if(matcapEnableLighting.floatValue != 0.0f && matcapBlendMode.floatValue == 3.0f)
+                                        if(matcapEnableLighting.floatValue != 0.0f && matcapBlendMode.floatValue == 3.0f && AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
                                         {
-                                            EditorGUILayout.HelpBox(GetLoc("sHelpMatCapBlending"),MessageType.Warning);
+                                            matcapEnableLighting.floatValue = 0.0f;
                                         }
                                         if(isTransparent) materialEditor.ShaderProperty(matcapApplyTransparency, GetLoc("sApplyTransparency"));
                                         materialEditor.ShaderProperty(matcapZRotCancel, GetLoc("sMatCapZRotCancel"));
@@ -1945,14 +1974,17 @@ namespace lilToon
                                     {
                                         EditorGUILayout.BeginVertical(boxInnerHalf);
                                         materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA")), matcap2ndTex, matcap2ndColor);
-                                        if(matcap2ndColor.colorValue.a == 0) EditorGUILayout.HelpBox(GetLoc("sColorAlphaZeroWarn"),MessageType.Warning);
+                                        if(matcap2ndColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                        {
+                                            matcap2ndColor.colorValue = new Color(matcap2ndColor.colorValue.r, matcap2ndColor.colorValue.g, matcap2ndColor.colorValue.b, 1.0f);
+                                        }
                                         if(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK)   materialEditor.TexturePropertySingleLine(maskBlendContent, matcap2ndBlendMask, matcap2ndBlend);
                                         else                                            materialEditor.ShaderProperty(matcap2ndBlend, GetLoc("sBlend"));
                                         materialEditor.ShaderProperty(matcap2ndEnableLighting, GetLoc("sEnableLighting"));
                                         materialEditor.ShaderProperty(matcap2ndBlendMode, sBlendModes);
-                                        if(matcap2ndEnableLighting.floatValue != 0.0f && matcap2ndBlendMode.floatValue == 3.0f)
+                                        if(matcap2ndEnableLighting.floatValue != 0.0f && matcap2ndBlendMode.floatValue == 3.0f && AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
                                         {
-                                            EditorGUILayout.HelpBox(GetLoc("sHelpMatCapBlending"),MessageType.Warning);
+                                            matcap2ndEnableLighting.floatValue = 0.0f;
                                         }
                                         if(isTransparent) materialEditor.ShaderProperty(matcap2ndApplyTransparency, GetLoc("sApplyTransparency"));
                                         materialEditor.ShaderProperty(matcap2ndZRotCancel, GetLoc("sMatCapZRotCancel"));
@@ -1983,7 +2015,10 @@ namespace lilToon
                                         EditorGUILayout.BeginVertical(boxInnerHalf);
                                         if(shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR)    materialEditor.TexturePropertySingleLine(colorRGBAContent, rimColorTex, rimColor);
                                         else                                                materialEditor.ShaderProperty(rimColor, GetLoc("sColor"));
-                                        if(rimColor.colorValue.a == 0) EditorGUILayout.HelpBox(GetLoc("sColorAlphaZeroWarn"),MessageType.Warning);
+                                        if(rimColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                        {
+                                            rimColor.colorValue = new Color(rimColor.colorValue.r, rimColor.colorValue.g, rimColor.colorValue.b, 1.0f);
+                                        }
                                         materialEditor.ShaderProperty(rimEnableLighting, GetLoc("sEnableLighting"));
                                         materialEditor.ShaderProperty(rimShadowMask, GetLoc("sShadowMask"));
                                         if(isTransparent) materialEditor.ShaderProperty(rimApplyTransparency, GetLoc("sApplyTransparency"));
@@ -3537,9 +3572,15 @@ namespace lilToon
                 StreamReader sr = new StreamReader(versionInfoTempPath);
                 string s = sr.ReadToEnd();
                 sr.Close();
-                if(!String.IsNullOrEmpty(s))
+                if(!String.IsNullOrEmpty(s) && s.Contains("latest_vertion_name") && s.Contains("latest_vertion_value"))
                 {
                     EditorJsonUtility.FromJsonOverwrite(s,latestVersion);
+                }
+                else
+                {
+                    latestVersion.latest_vertion_name = currentVersionName;
+                    latestVersion.latest_vertion_value = currentVersionValue;
+                    return;
                 }
             }
         }
@@ -4127,6 +4168,18 @@ namespace lilToon
             GUILayout.EndHorizontal();
         }
 
+        static bool AutoFixHelpBox(string message)
+        {
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            GUILayout.Label(message, EditorStyles.wordWrappedMiniLabel);
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            bool pressed = GUILayout.Button(GetLoc("sFixNow"));
+            GUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+            return pressed;
+        }
+
         //------------------------------------------------------------------------------------------------------------------------------
         // Material Setup
         public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, bool isoutl, bool islite, bool isstencil, bool istess)
@@ -4252,7 +4305,7 @@ namespace lilToon
             {
                 material.SetInt("_OutlineCull", 1);
                 material.SetInt("_OutlineZWrite", 1);
-                material.SetInt("_OutlineZTest", 4);
+                material.SetInt("_OutlineZTest", 2);
                 material.SetFloat("_OutlineOffsetFactor", 0.0f);
                 material.SetFloat("_OutlineOffsetUnits", 0.0f);
                 material.SetInt("_OutlineColorMask", 15);
@@ -5393,19 +5446,13 @@ namespace lilToon
         {
             if(tex.textureValue != null && !((Texture2D)tex.textureValue).alphaIsTransparency)
             {
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                GUILayout.Label("This texture is not marked as AlphaIsTransparency", EditorStyles.wordWrappedMiniLabel);
-                GUILayout.BeginHorizontal();
-                GUILayout.FlexibleSpace();
-                if(GUILayout.Button("Fix Now"))
+                if(AutoFixHelpBox(GetLoc("sNotAlphaIsTransparency")))
                 {
                     string path = AssetDatabase.GetAssetPath(tex.textureValue);
                     TextureImporter textureImporter = (TextureImporter)TextureImporter.GetAtPath(path);
                     textureImporter.alphaIsTransparency = true;
                     AssetDatabase.ImportAsset(path);
                 }
-                GUILayout.EndHorizontal();
-                EditorGUILayout.EndVertical();
             }
         }
 
