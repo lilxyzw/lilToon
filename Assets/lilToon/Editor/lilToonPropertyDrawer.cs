@@ -21,6 +21,8 @@ namespace lilToon
         // [lilHDR]
         public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
         {
+            float xMax = position.xMax;
+            position.width = Mathf.Min(position.width, EditorGUIUtility.labelWidth + EditorGUIUtility.fieldWidth);
             Color value = prop.colorValue;
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
@@ -35,6 +37,27 @@ namespace lilToon
             {
                 prop.colorValue = value;
             }
+
+            #if UNITY_2019_1_OR_NEWER
+                // Hex
+                EditorGUI.BeginChangeCheck();
+                EditorGUI.showMixedValue = prop.hasMixedValue;
+                float intensity = value.maxColorComponent > 1.0f ? value.maxColorComponent : 1.0f;
+                Color value2 = new Color(value.r / intensity, value.g / intensity, value.b / intensity, 1.0f);
+                string hex = ColorUtility.ToHtmlStringRGB(value2);
+                position.x += position.width + 4.0f;
+                position.width = Mathf.Max(50.0f, xMax - position.x);
+                hex = "#" + EditorGUI.TextField(position, GUIContent.none, hex);
+                if(EditorGUI.EndChangeCheck())
+                {
+                    if(!ColorUtility.TryParseHtmlString(hex, out value2)) return;
+                    value.r = value2.r * intensity;
+                    value.g = value2.g * intensity;
+                    value.b = value2.b * intensity;
+                    prop.colorValue = value;
+                }
+                EditorGUI.showMixedValue = false;
+            #endif
         }
     }
 

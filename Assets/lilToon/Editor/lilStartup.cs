@@ -17,6 +17,8 @@ namespace lilToon
             string settingFolderPath = lilToonInspector.GetSettingFolderPath();
             string shaderSettingHLSLPath = lilToonInspector.GetShaderSettingHLSLPath();
 
+            lilToonInspector.isUPM = editorPath.Contains("Packages");
+
             // Editor
             if(!File.Exists(lilToonInspector.rspPath))
             {

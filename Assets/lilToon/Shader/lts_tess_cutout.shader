@@ -183,7 +183,7 @@ Shader "Hidden/lilToonTessellationCutout"
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision
         [lilToggleLeft] _UseEmission                ("Use Emission", Int) = 0
-        [HDR]           _EmissionColor              ("Color", Color) = (1,1,1)
+        [lilHDR]        _EmissionColor              ("Color", Color) = (1,1,1)
                         _EmissionMap                ("Texture", 2D) = "white" {}
         [lilUVAnim]     _EmissionMap_ScrollRotate   ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
                         _EmissionBlend              ("Blend", Range(0,1)) = 1
@@ -218,7 +218,7 @@ Shader "Hidden/lilToonTessellationCutout"
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision2nd
         [lilToggleLeft] _UseEmission2nd             ("Use Emission 2nd", Int) = 0
-        [HDR]           _Emission2ndColor           ("Color", Color) = (1,1,1)
+        [lilHDR]        _Emission2ndColor           ("Color", Color) = (1,1,1)
                         _Emission2ndMap             ("Texture", 2D) = "white" {}
         [lilUVAnim]     _Emission2ndMap_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
                         _Emission2ndBlend           ("Blend", Range(0,1)) = 1

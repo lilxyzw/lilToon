@@ -96,11 +96,12 @@ namespace lilToon
         public const string githubURL = "https://github.com/lilxyzw/lilToon";
         public const string versionInfoURL = "https://raw.githubusercontent.com/lilxyzw/lilToon/master/version.json";
         public const string mainFolderGUID          = "05d1d116436047941ad97d1b9064ee05"; // "Assets/lilToon"
+        public const string editorFolderGUID        = "3e73d675b9c1adc4f8b6b8ef01bce51c"; // "Assets/lilToon/Editor"
+        public const string presetsFolderGUID       = "35817d21af2f3134182c4a7e4c07786b"; // "Assets/lilToon/Presets"
         public const string editorGUID              = "aefa51cbc37d602418a38a02c3b9afb9"; // "Assets/lilToon/Editor/lilInspector.cs"
         public const string editorSettingGUID       = "283173792c6bb2342afdef844a3c1d56"; // "Assets/lilToon/Editor/lilToonEditorSetting.cs"
         public const string shaderFolderGUID        = "ac0a8f602b5e72f458f4914bf08f0269"; // "Assets/lilToon/Shader"
         public const string shaderPipelineGUID      = "32299664512e2e042bbc351c1d46d383"; // "Assets/lilToon/Shader/Includes/lil_pipeline.hlsl";
-        public const string presetFolderGUID        = "35817d21af2f3134182c4a7e4c07786b"; // "Assets/lilToon/Presets"
         public const string avatarEncryptionGUID    = "f9787bf8ed5154f4b931278945ac8ca1"; // "Assets/AvaterEncryption";
         public const string editorSettingTempPath   = "Temp/lilToonEditorSetting";
         public const string versionInfoTempPath     = "Temp/lilToonVersion";
@@ -110,6 +111,14 @@ namespace lilToon
         public static string GetMainFolderPath()
         {
             return AssetDatabase.GUIDToAssetPath(mainFolderGUID);
+        }
+        public static string GetEditorFolderPath()
+        {
+            return AssetDatabase.GUIDToAssetPath(editorFolderGUID);
+        }
+        public static string GetPresetsFolderPath()
+        {
+            return AssetDatabase.GUIDToAssetPath(presetsFolderGUID);
         }
         public static string GetEditorPath()
         {
@@ -131,12 +140,9 @@ namespace lilToon
         {
             return AssetDatabase.GUIDToAssetPath(shaderPipelineGUID);
         }
-        public static string GetPresetFolder()
-        {
-            return AssetDatabase.GUIDToAssetPath(presetFolderGUID);
-        }
         public static string GetSettingFolderPath()
         {
+            if(isUPM) return "Assets/lilToonSetting";
             return GetMainFolderPath() + "Setting";
         }
         public static string GetShaderSettingPath()
@@ -210,6 +216,7 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Editor
+        public static bool isUPM = false;
         static lilToonSetting shaderSetting;
         static lilToonPreset[] presets;
         public static Dictionary<string, string> loc = new Dictionary<string, string>();
@@ -620,21 +627,21 @@ namespace lilToon
             GUIStyle customBox       = GUI.skin.box;
             GUIStyle customToggleFont = EditorStyles.label;
             GUIStyle offsetButton = new GUIStyle(GUI.skin.button);
-            string mainFolderPath = GetMainFolderPath();
+            string editorFolderPath = GetEditorFolderPath();
             if(EditorGUIUtility.isProSkin)
             {
-                boxOuter        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(mainFolderPath + "/Editor/gui_box_outer_2019.guiskin", typeof(GUISkin))).box);
-                boxInnerHalf    = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(mainFolderPath + "/Editor/gui_box_inner_half_2019.guiskin", typeof(GUISkin))).box);
-                boxInner        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(mainFolderPath + "/Editor/gui_box_inner_2019.guiskin", typeof(GUISkin))).box);
-                customBox       = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(mainFolderPath + "/Editor/gui_custom_box_2019.guiskin", typeof(GUISkin))).box);
+                boxOuter        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(editorFolderPath + "/gui_box_outer_2019.guiskin", typeof(GUISkin))).box);
+                boxInnerHalf    = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(editorFolderPath + "/gui_box_inner_half_2019.guiskin", typeof(GUISkin))).box);
+                boxInner        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(editorFolderPath + "/gui_box_inner_2019.guiskin", typeof(GUISkin))).box);
+                customBox       = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(editorFolderPath + "/gui_custom_box_2019.guiskin", typeof(GUISkin))).box);
                 customToggleFont = EditorStyles.label;
                 offsetButton.margin.left = 24;
             }
             else
             {
-                boxOuter        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(mainFolderPath + "/Editor/gui_box_outer_2018.guiskin", typeof(GUISkin))).box);
-                boxInnerHalf    = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(mainFolderPath + "/Editor/gui_box_inner_half_2018.guiskin", typeof(GUISkin))).box);
-                boxInner        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(mainFolderPath + "/Editor/gui_box_inner_2018.guiskin", typeof(GUISkin))).box);
+                boxOuter        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(editorFolderPath + "/gui_box_outer_2018.guiskin", typeof(GUISkin))).box);
+                boxInnerHalf    = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(editorFolderPath + "/gui_box_inner_half_2018.guiskin", typeof(GUISkin))).box);
+                boxInner        = new GUIStyle(((GUISkin)AssetDatabase.LoadAssetAtPath(editorFolderPath + "/gui_box_inner_2018.guiskin", typeof(GUISkin))).box);
                 customBox       = GUI.skin.box;
                 customToggleFont = new GUIStyle();
                 customToggleFont.normal.textColor = Color.white;
@@ -4805,8 +4812,7 @@ namespace lilToon
         // Presets
         static void LoadPresets()
         {
-            string mainFolderPath = GetMainFolderPath();
-            string[] presetGuid = AssetDatabase.FindAssets("t:lilToonPreset", new[] {GetPresetFolder()});
+            string[] presetGuid = AssetDatabase.FindAssets("t:lilToonPreset", new[] {GetPresetsFolderPath()});
             Array.Resize(ref presets, presetGuid.Length);
             for(int i=0; i<presetGuid.Length; i++)
             {
@@ -6715,7 +6721,7 @@ namespace lilToon
                     if(shouldSaveFurMask) lilPresetCopyTexture(preset, material, "_FurMask");
 
                     EditorUtility.SetDirty(preset);
-                    string savePath = EditorUtility.SaveFilePanel("Save Preset", GetPresetFolder(), filename, "asset");
+                    string savePath = EditorUtility.SaveFilePanel("Save Preset", GetPresetsFolderPath(), filename, "asset");
                     if(!String.IsNullOrEmpty(savePath)) 
                     {
                         AssetDatabase.CreateAsset(preset, FileUtil.GetProjectRelativePath(savePath));
