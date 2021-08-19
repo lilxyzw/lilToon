@@ -102,6 +102,7 @@ namespace lilToon
         public const string editorSettingGUID       = "283173792c6bb2342afdef844a3c1d56"; // "Assets/lilToon/Editor/lilToonEditorSetting.cs"
         public const string shaderFolderGUID        = "ac0a8f602b5e72f458f4914bf08f0269"; // "Assets/lilToon/Shader"
         public const string shaderPipelineGUID      = "32299664512e2e042bbc351c1d46d383"; // "Assets/lilToon/Shader/Includes/lil_pipeline.hlsl";
+        public const string shaderCommonGUID        = "5520e766422958546bbe885a95d5a67e"; // "Assets/lilToon/Shader/Includes/lil_common.hlsl";
         public const string avatarEncryptionGUID    = "f9787bf8ed5154f4b931278945ac8ca1"; // "Assets/AvaterEncryption";
         public const string editorSettingTempPath   = "Temp/lilToonEditorSetting";
         public const string versionInfoTempPath     = "Temp/lilToonVersion";
@@ -139,6 +140,10 @@ namespace lilToon
         public static string GetShaderPipelinePath()
         {
             return AssetDatabase.GUIDToAssetPath(shaderPipelineGUID);
+        }
+        public static string GetShaderCommonPath()
+        {
+            return AssetDatabase.GUIDToAssetPath(shaderCommonGUID);
         }
         public static string GetSettingFolderPath()
         {

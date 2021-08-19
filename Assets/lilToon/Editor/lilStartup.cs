@@ -13,11 +13,11 @@ namespace lilToon
         static void lilStartupMethod()
         {
             string editorPath = lilToonInspector.GetEditorPath();
+            lilToonInspector.isUPM = editorPath.Contains("Packages");
             string editorSettingPath = lilToonInspector.GetEditorSettingPath();
             string settingFolderPath = lilToonInspector.GetSettingFolderPath();
             string shaderSettingHLSLPath = lilToonInspector.GetShaderSettingHLSLPath();
-
-            lilToonInspector.isUPM = editorPath.Contains("Packages");
+            string shaderCommonPath = lilToonInspector.GetShaderCommonPath();
 
             // Editor
             if(!File.Exists(lilToonInspector.rspPath))
@@ -62,6 +62,30 @@ namespace lilToon
             // Setting Folder
             if(!Directory.Exists(settingFolderPath)) Directory.CreateDirectory(settingFolderPath);
 
+            if(lilToonInspector.isUPM)
+            {
+                StreamReader csr = new StreamReader(shaderCommonPath);
+                string cs = csr.ReadToEnd();
+                csr.Close();
+                cs = cs.Replace(
+                    "#include \"../../../lilToonSetting/lil_setting.hlsl\"",
+                    "#include \"Assets/lilToonSetting/lil_setting.hlsl\"");
+                StreamWriter csw = new StreamWriter(shaderCommonPath,false);
+                csw.Write(s);
+                csw.Close();
+            }
+            else
+            {
+                StreamReader csr = new StreamReader(shaderCommonPath);
+                string cs = csr.ReadToEnd();
+                csr.Close();
+                cs = cs.Replace(
+                    "#include \"Assets/lilToonSetting/lil_setting.hlsl\"",
+                    "#include \"../../../lilToonSetting/lil_setting.hlsl\"");
+                StreamWriter csw = new StreamWriter(shaderCommonPath,false);
+                csw.Write(cs);
+                csw.Close();
+            }
             if(!File.Exists(shaderSettingHLSLPath))
             {
                 StreamWriter sw = new StreamWriter(shaderSettingHLSLPath,false);
