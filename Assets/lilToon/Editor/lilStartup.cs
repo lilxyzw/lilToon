@@ -71,7 +71,7 @@ namespace lilToon
                     "#include \"../../../lilToonSetting/lil_setting.hlsl\"",
                     "#include \"Assets/lilToonSetting/lil_setting.hlsl\"");
                 StreamWriter csw = new StreamWriter(shaderCommonPath,false);
-                csw.Write(s);
+                csw.Write(cs);
                 csw.Close();
             }
             else
