@@ -11,9 +11,15 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
     LIL_GET_VERTEXLIGHT(input, vertexLightColor);
     LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
     #if !defined(LIL_PASS_FORWARDADD)
-        lightColor = max(lightColor, _LightMinLimit);
-        lightColor = lerp(lightColor, 1.0, _AsUnlit);
-        float3 addLightColor = lerp(vertexLightColor + additionalLightColor, 0.0, _AsUnlit);
+        #if defined(LIL_USE_LIGHTMAP)
+            lightColor = max(lightColor, _LightMinLimit);
+            lightColor = lerp(lightColor, 1.0, _AsUnlit);
+        #endif
+        #if defined(_ADDITIONAL_LIGHTS)
+            float3 addLightColor = vertexLightColor + lerp(additionalLightColor, 0.0, _AsUnlit);
+        #else
+            float3 addLightColor = vertexLightColor;
+        #endif
     #else
         lightColor = lerp(lightColor, 0.0, _AsUnlit);
     #endif
@@ -95,7 +101,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         // Lighting
         #ifndef LIL_PASS_FORWARDADD
             float shadowmix = 1.0;
-            lilGetShadingLite(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, lightDirection, sampler_MainTex);
+            lilGetShadingLite(col, shadowmix, albedo, lightColor, input.indLightColor, uvMain, facing, normalDirection, lightDirection, sampler_MainTex);
 
             lightColor += addLightColor;
             shadowmix += lilLuminance(addLightColor);

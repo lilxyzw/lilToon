@@ -18,6 +18,7 @@
         - [Reflection](#reflection)
         - [MatCap](#matcap)
         - [Rim Light](#rim-light)
+        - [Glitter](#glitter)
 - [Advanced](#advanced)
     - [Outline](#outline)
     - [Parallax](#parallax)
@@ -137,6 +138,9 @@ You can blend colors into the main color. This is the layer function in painting
 |Enable Lighting|Apply the color of the light to rim light.|
 |Blending Mode|How to combine layers. You can select Normal, Add, Screen, or Multiply.|
 |Bake|Merges the layers into a single texture.|
+|Start Distance|Distance to start the fade.|
+|End Distance|Distance to end the fade.|
+|Strength|Strength of fade.|
 
 <details><summary>Normal parameters</summary>
 
@@ -244,6 +248,21 @@ You can blend colors into the main color. This is the layer function in painting
 |Light direction strength|Influence of light direction.|
 |Direct light width|Range of direct light.|
 |Indirect light width|Range of indirect light (shadow).|
+
+### Glitter
+|Name|Description|
+|-|-|
+|Color|Color of glitter.|
+|Main Color Power|Multiply the Main Color.|
+|Enable Lighting|Apply the color of the light to glitter.|
+|Shadow Mask|Turn off glitter in the shadow.|
+|Tiling|Number of glitter loops.|
+|Particle Size|Size of glitter particle.|
+|Contrast|Contrast of glitter.|
+|Blink Speed|Speed of blink.|
+|Angle Limit|Limiting the angle at which glitter shines.|
+|Light direction strength|Influence of light direction.|
+|Color Randomness|Randomness of glitter color.|
 
 <br/>
 

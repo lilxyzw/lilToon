@@ -1,5 +1,5 @@
 # lilToon
-Version 1.1.6
+Version 1.1.7
 
 # Overview
 This shader is developed for services using avatars (VRChat, etc.) and has the following features.
@@ -74,6 +74,8 @@ I recommend right-clicking on the material and running `lilToon/Remove unused pr
 # Common Problems
 - Material error has occurred.  
   → Clicking `Assets/lilToon/Refresh Shaders` in the top menu bar may help.
+- Editor error has occurred.  
+  → Right-clicking the` lilToon` folder and `Reimport` may help.
 - Cannot use alpha mask  
   → Please check the following
   - Check and apply the alpha mask in [Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting) in the Advanced settings.
@@ -130,6 +132,17 @@ Comparing parameters when implementing `Convert to MToon (VRM)`
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # Change log
+## v1.1.7
+- Added color code next to HDR color picker (Unity 2019 or later)
+- Added mask to main color correction
+- Added distance fade to main color 2nd / 3rd
+- Added glitter function
+- Changed main color's color picker to HDR
+- Fixed UPM import
+- Fixed `Distance Fade` and `Dissolve` transparency
+- Fixed error in Unity 2019 URP
+- Moved some processing to the vertex shader for optimization
+- Changed transform calculation
 ## v1.1.6
 - Changed the default value of ZTest in outline from LessEqual to Less
 - Fixed an issue where shadows were weakened when using `Lower brightness limit`

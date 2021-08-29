@@ -4,7 +4,7 @@ Shader "Hidden/ltsother_baker"
     {
         //----------------------------------------------------------------------------------------------------------------------
         // Main
-                        _Color                      ("Color", Color) = (1,1,1,1)
+        [lilHDR]        _Color                      ("Color", Color) = (1,1,1,1)
                         _MainTex                    ("Texture", 2D) = "white" {}
         [lilUVAnim]     _MainTex_ScrollRotate       ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
         [lilHSVG]       _MainTexHSVG                ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)

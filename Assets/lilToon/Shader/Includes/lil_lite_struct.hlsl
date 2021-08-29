@@ -50,9 +50,12 @@
         #if defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE)
             float3 normalWS         : TEXCOORD2;
         #endif
-        LIL_VERTEXLIGHT_COORDS(3)
-        LIL_FOG_COORDS(4)
-        LIL_LIGHTMAP_COORDS(5)
+        LIL_LIGHTCOLOR_COORDS(3)
+        LIL_LIGHTDIRECTION_COORDS(4)
+        LIL_INDLIGHTCOLOR_COORDS(5)
+        LIL_VERTEXLIGHT_COORDS(6)
+        LIL_FOG_COORDS(7)
+        LIL_LIGHTMAP_COORDS(8)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
@@ -73,9 +76,12 @@
         float2 uvMat            : TEXCOORD1;
         float3 normalWS         : TEXCOORD2;
         float3 positionWS       : TEXCOORD3;
-        LIL_VERTEXLIGHT_COORDS(4)
-        LIL_FOG_COORDS(5)
-        LIL_LIGHTMAP_COORDS(6)
+        LIL_LIGHTCOLOR_COORDS(4)
+        LIL_LIGHTDIRECTION_COORDS(5)
+        LIL_INDLIGHTCOLOR_COORDS(6)
+        LIL_VERTEXLIGHT_COORDS(7)
+        LIL_FOG_COORDS(8)
+        LIL_LIGHTMAP_COORDS(9)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };

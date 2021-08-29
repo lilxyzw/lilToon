@@ -11,9 +11,15 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
     LIL_GET_VERTEXLIGHT(input, vertexLightColor);
     LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
     #if !defined(LIL_PASS_FORWARDADD)
-        lightColor = max(lightColor, _LightMinLimit);
-        lightColor = lerp(lightColor, 1.0, _AsUnlit);
-        float3 addLightColor = lerp(vertexLightColor + additionalLightColor, 0.0, _AsUnlit);
+        #if defined(LIL_USE_LIGHTMAP)
+            lightColor = max(lightColor, _LightMinLimit);
+            lightColor = lerp(lightColor, 1.0, _AsUnlit);
+        #endif
+        #if defined(_ADDITIONAL_LIGHTS)
+            float3 addLightColor = vertexLightColor + lerp(additionalLightColor, 0.0, _AsUnlit);
+        #else
+            float3 addLightColor = vertexLightColor;
+        #endif
     #else
         lightColor = lerp(lightColor, 0.0, _AsUnlit);
     #endif
@@ -40,6 +46,17 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             #endif
         }
         col *= _OutlineColor;
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Alpha Mask
+        #if defined(LIL_FEATURE_ALPHAMASK) && LIL_RENDER != 0
+            if(_AlphaMaskMode)
+            {
+                float alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, uvMain).r;
+                alphaMask = saturate(alphaMask + _AlphaMaskValue);
+                col.a = _AlphaMaskMode == 1 ? alphaMask : col.a * alphaMask;
+            }
+        #endif
 
         //----------------------------------------------------------------------------------------------------------------------
         // Dissolve
@@ -74,17 +91,6 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                     sampler_MainTex
                 );
             #endif
-        #endif
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Alpha Mask
-        #if defined(LIL_FEATURE_ALPHAMASK) && LIL_RENDER != 0
-            if(_AlphaMaskMode)
-            {
-                float alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, uvMain).r;
-                alphaMask = saturate(alphaMask + _AlphaMaskValue);
-                col.a = _AlphaMaskMode == 1 ? alphaMask : col.a * alphaMask;
-            }
         #endif
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -150,7 +156,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 float3 normalDirection = normalize(input.normalWS);
                 normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
                 float shadowmix = 1.0;
-                lilGetShading(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, 1, lightDirection, sampler_MainTex);
+                lilGetShading(col, shadowmix, albedo, lightColor, input.indLightColor, uvMain, facing, normalDirection, 1, lightDirection, sampler_MainTex);
             #else
                 col.rgb *= lightColor;
             #endif
@@ -175,6 +181,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         //--------------------------------------------------------------------------------------------------------------------------
         // View Direction
         #if defined(LIL_SHOULD_POSITION_WS)
+            float depth = length(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
             float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
         #endif
         #if defined(LIL_SHOULD_TBN)
@@ -236,14 +243,30 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         if(Exists_MainTex)
         {
             col = LIL_SAMPLE_2D_POM(_MainTex, sampler_MainTex, uvMain, ddxMain, ddyMain);
-            #if defined(LIL_FEATURE_MAIN_TONE_CORRECTION)
-                col.rgb = lilToneCorrection(col.rgb, _MainTexHSVG);
-            #endif
-            #if defined(LIL_FEATURE_MAIN_GRADATION_MAP)
-                col.rgb = lilGradationMap(col.rgb, _MainGradationTex, sampler_linear_clamp, _MainGradationStrength);
+            #if defined(LIL_FEATURE_MAIN_TONE_CORRECTION) || defined(LIL_FEATURE_MAIN_GRADATION_MAP)
+                float3 baseColor = col.rgb;
+                float colorAdjustMask = LIL_SAMPLE_2D(_MainColorAdjustMask, sampler_MainTex, uvMain).r;
+                #if defined(LIL_FEATURE_MAIN_TONE_CORRECTION)
+                    col.rgb = lilToneCorrection(col.rgb, _MainTexHSVG);
+                #endif
+                #if defined(LIL_FEATURE_MAIN_GRADATION_MAP)
+                    col.rgb = lilGradationMap(col.rgb, _MainGradationTex, sampler_linear_clamp, _MainGradationStrength);
+                #endif
+                col.rgb = lerp(baseColor, col.rgb, colorAdjustMask);
             #endif
         }
         col *= _Color;
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Alpha Mask
+        #if defined(LIL_FEATURE_ALPHAMASK) && LIL_RENDER != 0
+            if(_AlphaMaskMode)
+            {
+                float alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, uvMain).r;
+                alphaMask = saturate(alphaMask + _AlphaMaskValue);
+                col.a = _AlphaMaskMode == 1 ? alphaMask : col.a * alphaMask;
+            }
+        #endif
 
         //----------------------------------------------------------------------------------------------------------------------
         // Dissolve
@@ -278,17 +301,6 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                     sampler_MainTex
                 );
             #endif
-        #endif
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Alpha Mask
-        #if defined(LIL_FEATURE_ALPHAMASK) && LIL_RENDER != 0
-            if(_AlphaMaskMode)
-            {
-                float alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, uvMain).r;
-                alphaMask = saturate(alphaMask + _AlphaMaskValue);
-                col.a = _AlphaMaskMode == 1 ? alphaMask : col.a * alphaMask;
-            }
         #endif
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -456,6 +468,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 #if defined(LIL_FEATURE_AUDIOLINK)
                     if(_AudioLink2Main2nd) color2nd.a *= audioLinkValue;
                 #endif
+                color2nd.a = lerp(color2nd.a, color2nd.a * saturate((depth - _Main2ndDistanceFade.x) / (_Main2ndDistanceFade.y - _Main2ndDistanceFade.x)), _Main2ndDistanceFade.z);
                 col.rgb = lilBlendColor(col.rgb, color2nd.rgb, color2nd.a * _Main2ndEnableLighting, _Main2ndTexBlendMode);
             }
         #endif
@@ -517,6 +530,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 #if defined(LIL_FEATURE_AUDIOLINK)
                     if(_AudioLink2Main3rd) color3rd.a *= audioLinkValue;
                 #endif
+                color3rd.a = lerp(color3rd.a, color3rd.a * saturate((depth - _Main3rdDistanceFade.x) / (_Main3rdDistanceFade.y - _Main3rdDistanceFade.x)), _Main3rdDistanceFade.z);
                 col.rgb = lilBlendColor(col.rgb, color3rd.rgb, color3rd.a * _Main3rdEnableLighting, _Main3rdTexBlendMode);
             }
         #endif
@@ -530,7 +544,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         #ifndef LIL_PASS_FORWARDADD
             float shadowmix = 1.0;
             #if defined(LIL_FEATURE_SHADOW)
-                lilGetShading(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, attenuation, lightDirection, sampler_MainTex);
+                lilGetShading(col, shadowmix, albedo, lightColor, input.indLightColor, uvMain, facing, normalDirection, attenuation, lightDirection, sampler_MainTex);
             #else
                 col.rgb *= lightColor;
             #endif
@@ -674,7 +688,6 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //----------------------------------------------------------------------------------------------------------------------
         // MatCap
-
         #if defined(LIL_FEATURE_MATCAP)
             LIL_BRANCH
             if(_UseMatCap)
@@ -816,6 +829,29 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             }
         #endif
 
+        //----------------------------------------------------------------------------------------------------------------------
+        // Glitter
+        #if defined(LIL_FEATURE_GLITTER)
+            LIL_BRANCH
+            if(_UseGlitter)
+            {
+                float4 glitterColor = _GlitterColor;
+                if(Exists_GlitterColorTex) glitterColor *= LIL_SAMPLE_2D(_GlitterColorTex, sampler_MainTex, uvMain);
+                glitterColor.rgb *= lilGlitter(input.uv, normalDirection, viewDirection, lightDirection, _GlitterParams1, _GlitterParams2);
+                glitterColor.rgb = lerp(glitterColor.rgb, glitterColor.rgb * albedo, _GlitterMainStrength);
+                #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+                    if(_GlitterApplyTransparency) glitterColor.a *= col.a;
+                #endif
+                #ifndef LIL_PASS_FORWARDADD
+                    if(_GlitterShadowMask) glitterColor.a *= shadowmix;
+                    glitterColor.rgb = lerp(glitterColor.rgb, glitterColor.rgb * lightColor, _GlitterEnableLighting);
+                    col.rgb += glitterColor.rgb * glitterColor.a;
+                #else
+                    col.rgb += glitterColor.a * _GlitterEnableLighting * glitterColor.rgb * lightColor;
+                #endif
+            }
+        #endif
+
         #ifndef LIL_PASS_FORWARDADD
             float3 invLighting = saturate((1.0 - lightColor) * sqrt(lightColor));
             //----------------------------------------------------------------------------------------------------------------------
@@ -914,12 +950,12 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
     //--------------------------------------------------------------------------------------------------------------------------
     // Distance Fade
     #if defined(LIL_FEATURE_DISTANCE_FADE)
-        float depth = length(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
-        float distFade = saturate((depth - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x)) * _DistanceFade.z;
+        float depthFade = length(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+        float distFade = saturate((depthFade - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x)) * _DistanceFade.z;
         #if defined(LIL_PASS_FORWARDADD)
             col.rgb = lerp(col.rgb, 0.0, distFade);
         #elif LIL_RENDER == 2
-            col.rgb = lerp(col.rgb, _DistanceFadeColor.rgb, distFade);
+            col.rgb = lerp(col.rgb, _DistanceFadeColor.rgb * _DistanceFadeColor.a, distFade);
             col.a = lerp(col.a, col.a * _DistanceFadeColor.a, distFade);
         #else
             col.rgb = lerp(col.rgb, _DistanceFadeColor.rgb, distFade);

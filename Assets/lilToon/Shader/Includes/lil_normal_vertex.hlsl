@@ -97,7 +97,7 @@ v2f vert(appdata input)
         //--------------------------------------------------------------------------------------------------------------
         // Outline
         #if defined(LIL_SHOULD_POSITION_OS)
-            output.positionOS   = input.positionOS;
+            output.positionOS   = input.positionOS.xyz;
         #endif
         #if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
             output.positionWS   = vertexInput.positionWS;
@@ -129,7 +129,7 @@ v2f vert(appdata input)
         //--------------------------------------------------------------------------------------------------------------
         // Normal
         #if defined(LIL_SHOULD_POSITION_OS)
-            output.positionOS   = input.positionOS;
+            output.positionOS   = input.positionOS.xyz;
         #endif
         #if defined(LIL_SHOULD_POSITION_WS)
             output.positionWS   = vertexInput.positionWS;
@@ -163,6 +163,7 @@ v2f vert(appdata input)
 
     //----------------------------------------------------------------------------------------------------------------------
     // Fog & Lightmap & Vertex light
+    LIL_CALC_MAINLIGHT(vertexInput, output);
     LIL_TRANSFER_SHADOW(vertexInput, input.uv1, output);
     LIL_TRANSFER_FOG(vertexInput, output);
     LIL_TRANSFER_LIGHTMAPUV(input.uv1, output);

@@ -56,6 +56,7 @@ v2f vert(appdata input)
 
     //----------------------------------------------------------------------------------------------------------------------
     // Fog & Lightmap & Vertex light
+    LIL_CALC_MAINLIGHT(vertexInput, output);
     LIL_TRANSFER_FOG(vertexInput, output);
     LIL_TRANSFER_LIGHTMAPUV(input.uv1, output);
     LIL_CALC_VERTEXLIGHT(vertexInput, output);

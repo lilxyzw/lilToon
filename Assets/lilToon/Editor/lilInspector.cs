@@ -89,8 +89,8 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
-        public const string currentVersionName = "1.1.6";
-        public const int currentVersionValue = 10;
+        public const string currentVersionName = "1.1.7";
+        public const int currentVersionValue = 11;
 
         public const string boothURL = "https://lilxyzw.booth.pm/";
         public const string githubURL = "https://github.com/lilxyzw/lilToon";
@@ -345,6 +345,7 @@ namespace lilToon
             MaterialProperty mainTex_ScrollRotate;
             MaterialProperty mainGradationStrength;
             MaterialProperty mainGradationTex;
+            MaterialProperty mainColorAdjustMask;
         MaterialProperty useMain2ndTex;
             MaterialProperty mainColor2nd;
             MaterialProperty main2ndTex;
@@ -368,6 +369,7 @@ namespace lilToon
             MaterialProperty main2ndDissolveColor;
             MaterialProperty main2ndDissolveParams;
             MaterialProperty main2ndDissolvePos;
+            MaterialProperty main2ndDistanceFade;
         MaterialProperty useMain3rdTex;
             MaterialProperty mainColor3rd;
             MaterialProperty main3rdTex;
@@ -391,6 +393,7 @@ namespace lilToon
             MaterialProperty main3rdDissolveColor;
             MaterialProperty main3rdDissolveParams;
             MaterialProperty main3rdDissolvePos;
+            MaterialProperty main3rdDistanceFade;
         MaterialProperty alphaMaskMode;
             MaterialProperty alphaMask;
             MaterialProperty alphaMaskValue;
@@ -472,6 +475,15 @@ namespace lilToon
             MaterialProperty rimIndirColor;
             MaterialProperty rimIndirBorder;
             MaterialProperty rimIndirBlur;
+        MaterialProperty useGlitter;
+            MaterialProperty glitterColor;
+            MaterialProperty glitterColorTex;
+            MaterialProperty glitterMainStrength;
+            MaterialProperty glitterParams1;
+            MaterialProperty glitterParams2;
+            MaterialProperty glitterEnableLighting;
+            MaterialProperty glitterShadowMask;
+            MaterialProperty glitterApplyTransparency;
         MaterialProperty useEmission;
             MaterialProperty emissionColor;
             MaterialProperty emissionMap;
@@ -714,9 +726,12 @@ namespace lilToon
             string sBlendModes = GetLoc("sBlendMode") + "|" + GetLoc("sBlendModeNormal") + "|" + GetLoc("sBlendModeAdd") + "|" + GetLoc("sBlendModeScreen") + "|" + GetLoc("sBlendModeMul");
             string sAlphaMaskModes = GetLoc("sAlphaMask") + "|" + GetLoc("sAlphaMaskModeNone") + "|" + GetLoc("sAlphaMaskModeReplace") + "|" + GetLoc("sAlphaMaskModeMul");
             string blinkSetting = GetLoc("sBlinkStrength") + "|" + GetLoc("sBlinkType") + "|" + GetLoc("sBlinkSpeed") + "|" + GetLoc("sBlinkOffset");
+            string sDistanceFadeSetting = GetLoc("sStartDistance") + "|" + GetLoc("sEndDistance") + "|" + GetLoc("sStrength");
             string sDissolveParams = GetLoc("sDissolveMode") + "|" + GetLoc("sDissolveModeNone") + "|" + GetLoc("sDissolveModeAlpha") + "|" + GetLoc("sDissolveModeUV") + "|" + GetLoc("sDissolveModePosition") + "|" + GetLoc("sDissolveShape") + "|" + GetLoc("sDissolveShapePoint") + "|" + GetLoc("sDissolveShapeLine") + "|" + GetLoc("sBorder") + "|" + GetLoc("sBlur");
             string sDissolveParamsMode = GetLoc("sDissolve") + "|" + GetLoc("sDissolveModeNone") + "|" + GetLoc("sDissolveModeAlpha") + "|" + GetLoc("sDissolveModeUV") + "|" + GetLoc("sDissolveModePosition");
             string sDissolveParamsOther = GetLoc("sDissolveShape") + "|" + GetLoc("sDissolveShapePoint") + "|" + GetLoc("sDissolveShapeLine") + "|" + GetLoc("sBorder") + "|" + GetLoc("sBlur") + "|Dummy";
+            string sGlitterParams1 = "Tiling" + "|" + GetLoc("sParticleSize") + "|" + GetLoc("sContrast");
+            string sGlitterParams2 = GetLoc("sBlinkSpeed") + "|" + GetLoc("sAngleLimit") + "|" + GetLoc("sRimLightDirection") + "|" + GetLoc("sColorRandomness");
             string[] sRenderingModeList = {GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeRefractionBlur"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout")};
             string[] sRenderingModeListLite = {GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent")};
             GUIContent textureRGBAContent = new GUIContent(GetLoc("sTexture"), GetLoc("sTextureRGBA"));
@@ -727,6 +742,7 @@ namespace lilToon
             GUIContent normalMapContent = new GUIContent(GetLoc("sNormalMap"), GetLoc("sNormalRGB"));
             GUIContent triMaskContent = new GUIContent(GetLoc("sTriMask"), GetLoc("sTriMaskRGB"));
             GUIContent noiseMaskContent = new GUIContent(GetLoc("sNoise"), GetLoc("sNoiseR"));
+            GUIContent adjustMaskContent = new GUIContent(GetLoc("sColorAdjustMask"), GetLoc("sBlendR"));
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Editor Mode
@@ -910,7 +926,11 @@ namespace lilToon
                             }
                             DrawLine();
                         }
-                        if(shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION || shaderSetting.LIL_FEATURE_MAIN_GRADATION_MAP) TextureBakeGUI(material, 4);
+                        if(shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION || shaderSetting.LIL_FEATURE_MAIN_GRADATION_MAP)
+                        {
+                            materialEditor.TexturePropertySingleLine(adjustMaskContent, mainColorAdjustMask);
+                            TextureBakeGUI(material, 4);
+                        }
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     //}
@@ -1597,7 +1617,11 @@ namespace lilToon
                                     }
                                     DrawLine();
                                 }
-                                if(shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION || shaderSetting.LIL_FEATURE_MAIN_GRADATION_MAP) TextureBakeGUI(material, 4);
+                                if(shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION || shaderSetting.LIL_FEATURE_MAIN_GRADATION_MAP)
+                                {
+                                    materialEditor.TexturePropertySingleLine(adjustMaskContent, mainColorAdjustMask);
+                                    TextureBakeGUI(material, 4);
+                                }
                                 EditorGUILayout.EndVertical();
                             //}
                             EditorGUILayout.EndVertical();
@@ -1618,6 +1642,8 @@ namespace lilToon
                                     UV4Decal(materialEditor, main2ndTexIsDecal, main2ndTexIsLeftOnly, main2ndTexIsRightOnly, main2ndTexShouldCopy, main2ndTexShouldFlipMirror, main2ndTexShouldFlipCopy, main2ndTex, main2ndTexAngle, main2ndTexDecalAnimation, main2ndTexDecalSubParam);
                                     DrawLine();
                                     if(shaderSetting.LIL_FEATURE_TEX_LAYER_MASK) materialEditor.TexturePropertySingleLine(maskBlendContent, main2ndBlendMask);
+                                    EditorGUILayout.LabelField(GetLoc("sDistanceFade"));
+                                    materialEditor.ShaderProperty(main2ndDistanceFade, sDistanceFadeSetting);
                                     materialEditor.ShaderProperty(main2ndEnableLighting, GetLoc("sEnableLighting"));
                                     materialEditor.ShaderProperty(main2ndTexBlendMode, sBlendModes);
                                     if(shaderSetting.LIL_FEATURE_LAYER_DISSOLVE)
@@ -1658,6 +1684,8 @@ namespace lilToon
                                     UV4Decal(materialEditor, main3rdTexIsDecal, main3rdTexIsLeftOnly, main3rdTexIsRightOnly, main3rdTexShouldCopy, main3rdTexShouldFlipMirror, main3rdTexShouldFlipCopy, main3rdTex, main3rdTexAngle, main3rdTexDecalAnimation, main3rdTexDecalSubParam);
                                     DrawLine();
                                     if(shaderSetting.LIL_FEATURE_TEX_LAYER_MASK) materialEditor.TexturePropertySingleLine(maskBlendContent, main3rdBlendMask);
+                                    EditorGUILayout.LabelField(GetLoc("sDistanceFade"));
+                                    materialEditor.ShaderProperty(main3rdDistanceFade, sDistanceFadeSetting);
                                     materialEditor.ShaderProperty(main3rdEnableLighting, GetLoc("sEnableLighting"));
                                     materialEditor.ShaderProperty(main3rdTexBlendMode, sBlendModes);
                                     if(shaderSetting.LIL_FEATURE_LAYER_DISSOLVE)
@@ -1893,7 +1921,7 @@ namespace lilToon
 
                         //------------------------------------------------------------------------------------------------------------------------------
                         // Reflection
-                        if(shaderSetting.LIL_FEATURE_REFLECTION || shaderSetting.LIL_FEATURE_MATCAP || shaderSetting.LIL_FEATURE_MATCAP_2ND || shaderSetting.LIL_FEATURE_RIMLIGHT)
+                        if(shaderSetting.LIL_FEATURE_REFLECTION || shaderSetting.LIL_FEATURE_MATCAP || shaderSetting.LIL_FEATURE_MATCAP_2ND || shaderSetting.LIL_FEATURE_RIMLIGHT || shaderSetting.LIL_FEATURE_GLITTER)
                         {
                             edSet.isShowReflections = Foldout(GetLoc("sReflectionsSetting"), GetLoc("sReflectionsTips"), edSet.isShowReflections);
                             DrawHelpButton(GetLoc("sAnchorReflections"));
@@ -2070,6 +2098,33 @@ namespace lilToon
                                     }
                                     EditorGUILayout.EndVertical();
                                 }
+
+                                //------------------------------------------------------------------------------------------------------------------------------
+                                // Glitter
+                                if(shaderSetting.LIL_FEATURE_GLITTER)
+                                {
+                                    EditorGUILayout.BeginVertical(boxOuter);
+                                    materialEditor.ShaderProperty(useGlitter, GetLoc("sGlitter"));
+                                    DrawHelpButton(GetLoc("sAnchorGlitter"));
+                                    if(useGlitter.floatValue == 1)
+                                    {
+                                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                                        materialEditor.TexturePropertySingleLine(colorRGBAContent, glitterColorTex, glitterColor);
+                                        if(glitterColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                        {
+                                            glitterColor.colorValue = new Color(glitterColor.colorValue.r, glitterColor.colorValue.g, glitterColor.colorValue.b, 1.0f);
+                                        }
+                                        materialEditor.ShaderProperty(glitterMainStrength, GetLoc("sMainColorPower"));
+                                        materialEditor.ShaderProperty(glitterEnableLighting, GetLoc("sEnableLighting"));
+                                        materialEditor.ShaderProperty(glitterShadowMask, GetLoc("sShadowMask"));
+                                        if(isTransparent) materialEditor.ShaderProperty(glitterApplyTransparency, GetLoc("sApplyTransparency"));
+                                        DrawLine();
+                                        materialEditor.ShaderProperty(glitterParams1, sGlitterParams1);
+                                        materialEditor.ShaderProperty(glitterParams2, sGlitterParams2);
+                                        EditorGUILayout.EndVertical();
+                                    }
+                                    EditorGUILayout.EndVertical();
+                                }
                             }
                         }
                     }
@@ -2153,7 +2208,7 @@ namespace lilToon
                             EditorGUILayout.LabelField(GetLoc("sDistanceFade"), customToggleFont);
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             materialEditor.ShaderProperty(distanceFadeColor, GetLoc("sColor"));
-                            materialEditor.ShaderProperty(distanceFade, GetLoc("sStartDistance")+"|"+GetLoc("sEndDistance")+"|"+GetLoc("sStrength"));
+                            materialEditor.ShaderProperty(distanceFade, sDistanceFadeSetting);
                             EditorGUILayout.EndVertical();
                             EditorGUILayout.EndVertical();
                         }
@@ -2731,6 +2786,7 @@ namespace lilToon
                 mainTexHSVG = FindProperty("_MainTexHSVG", props);
                 mainGradationStrength = FindProperty("_MainGradationStrength", props);
                 mainGradationTex = FindProperty("_MainGradationTex", props);
+                mainColorAdjustMask = FindProperty("_MainColorAdjustMask", props);
             useMain2ndTex = FindProperty("_UseMain2ndTex", props);
                 mainColor2nd = FindProperty("_Color2nd", props);
                 main2ndTex = FindProperty("_Main2ndTex", props);
@@ -2754,6 +2810,7 @@ namespace lilToon
                 main2ndDissolveColor = FindProperty("_Main2ndDissolveColor", props);
                 main2ndDissolveParams = FindProperty("_Main2ndDissolveParams", props);
                 main2ndDissolvePos = FindProperty("_Main2ndDissolvePos", props);
+                main2ndDistanceFade = FindProperty("_Main2ndDistanceFade", props);
             useMain3rdTex = FindProperty("_UseMain3rdTex", props);
                 mainColor3rd = FindProperty("_Color3rd", props);
                 main3rdTex = FindProperty("_Main3rdTex", props);
@@ -2777,6 +2834,7 @@ namespace lilToon
                 main3rdDissolveColor = FindProperty("_Main3rdDissolveColor", props);
                 main3rdDissolveParams = FindProperty("_Main3rdDissolveParams", props);
                 main3rdDissolvePos = FindProperty("_Main3rdDissolvePos", props);
+                main3rdDistanceFade = FindProperty("_Main3rdDistanceFade", props);
             // Alpha Mask
             alphaMaskMode = FindProperty("_AlphaMaskMode", props);
                 alphaMask = FindProperty("_AlphaMask", props);
@@ -2897,6 +2955,15 @@ namespace lilToon
                 rimIndirColor = FindProperty("_RimIndirColor", props);
                 rimIndirBorder = FindProperty("_RimIndirBorder", props);
                 rimIndirBlur = FindProperty("_RimIndirBlur", props);
+            useGlitter = FindProperty("_UseGlitter", props);
+                glitterColor = FindProperty("_GlitterColor", props);
+                glitterColorTex = FindProperty("_GlitterColorTex", props);
+                glitterMainStrength = FindProperty("_GlitterMainStrength", props);
+                glitterEnableLighting = FindProperty("_GlitterEnableLighting", props);
+                glitterShadowMask = FindProperty("_GlitterShadowMask", props);
+                glitterApplyTransparency = FindProperty("_GlitterApplyTransparency", props);
+                glitterParams1 = FindProperty("_GlitterParams1", props);
+                glitterParams2 = FindProperty("_GlitterParams2", props);
             useEmission = FindProperty("_UseEmission", props);
                 emissionColor = FindProperty("_EmissionColor", props);
                 emissionMap = FindProperty("_EmissionMap", props);
@@ -3343,6 +3410,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_MATCAP_2ND = false;
                 shaderSetting.LIL_FEATURE_RIMLIGHT = true;
                 shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION = false;
+                shaderSetting.LIL_FEATURE_GLITTER = false;
                 shaderSetting.LIL_FEATURE_PARALLAX = false;
                 shaderSetting.LIL_FEATURE_POM = false;
                 shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = false;
@@ -3419,6 +3487,7 @@ namespace lilToon
             shaderSetting.LIL_FEATURE_MATCAP_2ND = false;
             shaderSetting.LIL_FEATURE_RIMLIGHT = false;
             shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION = false;
+            shaderSetting.LIL_FEATURE_GLITTER = false;
             shaderSetting.LIL_FEATURE_PARALLAX = false;
             shaderSetting.LIL_FEATURE_POM = false;
             shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = false;
@@ -3916,6 +3985,9 @@ namespace lilToon
             }
             DrawLine();
 
+            lilToggleGUI(GetLoc("sSettingGlitter"), ref shaderSetting.LIL_FEATURE_GLITTER);
+            DrawLine();
+
             lilToggleGUI(GetLoc("sSettingParallax"), ref shaderSetting.LIL_FEATURE_PARALLAX);
             if(shaderSetting.LIL_FEATURE_PARALLAX)
             {
@@ -4068,6 +4140,7 @@ namespace lilToon
                 if(shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR) sb.Append("#define LIL_FEATURE_TEX_RIMLIGHT_COLOR\r\n");
                 if(shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION) sb.Append("#define LIL_FEATURE_RIMLIGHT_DIRECTION\r\n");
             }
+            if(shaderSetting.LIL_FEATURE_GLITTER) sb.Append("#define LIL_FEATURE_GLITTER\r\n");
             if(shaderSetting.LIL_FEATURE_PARALLAX)
             {
                 sb.Append("#define LIL_FEATURE_PARALLAX\r\n");
@@ -4125,6 +4198,7 @@ namespace lilToon
                 RewriteReceiveShadow(shaderFolderPath + "/lts_ref.shader", shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW);
                 RewriteReceiveShadow(shaderFolderPath + "/lts_ref_blur.shader", shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW);
                 AssetDatabase.SaveAssets();
+                AssetDatabase.ImportAsset(shaderSettingHLSLPath);
                 AssetDatabase.Refresh();
             }
         }

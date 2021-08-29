@@ -115,6 +115,12 @@ float4 _GrabTexture_TexelSize;
     #define Exists_RimColorTex          false
 #endif
 
+#if defined(LIL_FEATURE_GLITTER)
+    #define Exists_GlitterColorTex      true
+#else
+    #define Exists_GlitterColorTex      false
+#endif
+
 #if defined(LIL_FEATURE_TEX_EMISSION_MASK)
     #define Exists_EmissionBlendMask    true
     #define Exists_Emission2ndBlendMask true
@@ -287,6 +293,7 @@ float4  _MainTex_ST;
 #if defined(LIL_FEATURE_MAIN2ND)
     float4  _Color2nd;
     float4  _Main2ndTex_ST;
+    float4  _Main2ndDistanceFade;
     #if defined(LIL_FEATURE_DECAL) && defined(LIL_FEATURE_ANIMATE_DECAL)
         float4  _Main2ndTexDecalAnimation;
         float4  _Main2ndTexDecalSubParam;
@@ -307,6 +314,7 @@ float4  _MainTex_ST;
 #if defined(LIL_FEATURE_MAIN3RD)
     float4  _Color3rd;
     float4  _Main3rdTex_ST;
+    float4  _Main3rdDistanceFade;
     #if defined(LIL_FEATURE_DECAL) && defined(LIL_FEATURE_ANIMATE_DECAL)
         float4  _Main3rdTexDecalAnimation;
         float4  _Main3rdTexDecalSubParam;
@@ -403,6 +411,13 @@ float4  _MainTex_ST;
     #if defined(LIL_FEATURE_RIMLIGHT_DIRECTION)
         float4 _RimIndirColor;
     #endif
+#endif
+
+// Glitter
+#if defined(LIL_FEATURE_GLITTER)
+    float4  _GlitterColor;
+    float4 _GlitterParams1;
+    float4 _GlitterParams2;
 #endif
 
 // Distance Fade
@@ -541,6 +556,10 @@ float   _LightMinLimit;
         float   _RimIndirBorder;
         float   _RimIndirBlur;
     #endif
+#endif
+#if defined(LIL_FEATURE_GLITTER)
+    float   _GlitterMainStrength;
+    float   _GlitterEnableLighting;
 #endif
 #if defined(LIL_FEATURE_EMISSION_1ST)
     float   _EmissionBlend;
@@ -681,6 +700,11 @@ lilBool _Invisible;
     lilBool _RimShadowMask;
     lilBool _RimApplyTransparency;
 #endif
+#if defined(LIL_FEATURE_GLITTER)
+    lilBool _UseGlitter;
+    lilBool _GlitterShadowMask;
+    lilBool _GlitterApplyTransparency;
+#endif
 #if defined(LIL_FEATURE_EMISSION_1ST)
     lilBool _UseEmission;
     #if defined(LIL_FEATURE_EMISSION_GRADATION)
@@ -737,6 +761,7 @@ CBUFFER_END
 // Texture
 TEXTURE2D(_MainTex);
 TEXTURE2D(_MainGradationTex);
+TEXTURE2D(_MainColorAdjustMask);
 TEXTURE2D(_Main2ndTex);
 TEXTURE2D(_Main2ndBlendMask);
 TEXTURE2D(_Main2ndDissolveMask);
@@ -764,6 +789,7 @@ TEXTURE2D(_MatCap2ndTex);
 TEXTURE2D(_MatCap2ndBlendMask);
 TEXTURE2D(_MatCap2ndBumpMap);
 TEXTURE2D(_RimColorTex);
+TEXTURE2D(_GlitterColorTex);
 TEXTURE2D(_EmissionMap);
 TEXTURE2D(_EmissionBlendMask);
 TEXTURE2D(_EmissionGradTex);

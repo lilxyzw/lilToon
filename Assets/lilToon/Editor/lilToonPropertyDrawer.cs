@@ -726,5 +726,61 @@ namespace lilToon
             }
         }
     }
+
+    public class lilGlitParam1 : MaterialPropertyDrawer
+    {
+        // [lilGlitParam1]
+        public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
+        {
+            string[] labels = label.Split('|');
+            Vector2 tiling = new Vector2(prop.vectorValue.x, prop.vectorValue.y);
+            float size = prop.vectorValue.z == 0.0f ? 0.0f : Mathf.Sqrt(prop.vectorValue.z);
+            float contrast = prop.vectorValue.w;
+            Rect position1 = EditorGUILayout.GetControlRect();
+            Rect position2 = EditorGUILayout.GetControlRect();
+            EditorGUIUtility.wideMode = true;
+
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.showMixedValue = prop.hasMixedValue;
+            tiling = EditorGUI.Vector2Field(position, labels[0], tiling);
+            size = EditorGUI.Slider(position1, labels[1], size, 0.0f, 2.0f);
+            contrast = EditorGUI.FloatField(position2, labels[2], contrast);
+            EditorGUI.showMixedValue = false;
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.vectorValue = new Vector4(tiling.x, tiling.y, size * size, contrast);
+            }
+        }
+    }
+
+    public class lilGlitParam2 : MaterialPropertyDrawer
+    {
+        // [lilGlitParam2]
+        public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
+        {
+            string[] labels = label.Split('|');
+            float speed = prop.vectorValue.x;
+            float angle = prop.vectorValue.y;
+            float light = prop.vectorValue.z;
+            float random = prop.vectorValue.w;
+            Rect position1 = EditorGUILayout.GetControlRect();
+            Rect position2 = EditorGUILayout.GetControlRect();
+            Rect position3 = EditorGUILayout.GetControlRect();
+
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.showMixedValue = prop.hasMixedValue;
+            speed = EditorGUI.FloatField(position, labels[0], speed);
+            angle = EditorGUI.FloatField(position1, labels[1], angle);
+            light = EditorGUI.FloatField(position2, labels[2], light);
+            random = EditorGUI.Slider(position3, labels[3], random, 0.0f, 1.0f);
+            EditorGUI.showMixedValue = false;
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.vectorValue = new Vector4(speed, angle, light, random);
+            }
+        }
+    }
 }
 #endif

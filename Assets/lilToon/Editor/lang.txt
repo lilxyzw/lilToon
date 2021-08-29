@@ -117,6 +117,7 @@ sMainColor	Main Color	メインカラー	메인 컬러	主色	主色
 sMainColor2nd	Main Color 2nd	メインカラー2nd	메인 컬러 2nd	主色2nd	主色2nd
 sMainColor3rd	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	主色3rd	主色3rd
 sGradationMap	Gradation Map	グラデーションマップ	그라디언트 맵	渐变映射	漸變映射
+sColorAdjustMask	Color Adjust Mask	色調補正マスク	색조 보정 마스크	色调校正蒙版	色調校正蒙版
 sNotAlphaIsTransparency	This texture is not marked as AlphaIsTransparency	このテクスチャはAlphaIsTransparencyとして設定されていません	이 텍스처는 Alpha Is Transparency로 설정되어 있지 않습니다	此纹理未被设置为AlphaIsTransparency	此紋理未被設置為AlphaIsTransparency
 sAlphaMask	Alpha Mask	アルファマスク	알파 마스크	Alpha蒙版	Alpha蒙版
 sAlphaMaskWarnOpaque	If you want to use Alpha Mask, you need to change the "Rendering Mode" to Cutout or Transparent.	アルファマスクを使う場合は"透過モード"をカットアウトか半透明に変更する必要があります。	알파 마스크를 사용하려면 "Rendering Mode"를 단편 또는 반투명로 변경해야합니다.	如果要使用Alpha蒙版，则需要将“Rendering Mode”更改为镂空或透明。	如果要使用Alpha蒙版，則需要將“Rendering Mode”更改為鏤空或透明。
@@ -244,6 +245,11 @@ sShadowMask	Shadow Mask	影部分で無効化	그림자 속에서 무효화	阴�
 sRimLightDirection	Light direction strength	ライト方向の影響度	라이트 방향의 영향도	光线方向影响	光線方向影響
 sRimDirectionRange	Direct light width	直接光の幅	직접 빛의 폭	直射光宽	直射光寬
 sRimIndirectionRange	Indirect light width	間接光の幅	간접 조명의 폭	间接光宽	間接光寬
+sGlitter	Glitter	ラメ	Glitter	Glitter	Glitter
+sParticleSize	Particle Size	パーティクルサイズ	파티클 사이즈	粒子大小	粒子大小
+sContrast	Contrast	コントラスト	콘트라스트	对比度	對比度
+sAngleLimit	Angle limit	角度制限	각도 제한	角度限制	角度限制
+sColorRandomness	Color Randomness	ランダムカラー	랜덤 컬러	随机颜色	隨機顏色
 sStencilSetting	Stencil	ステンシル設定	Stencil 설정	Stencil设置	Stencil設置
 sStencilTips	You can set the Stencil	ステンシル(眉毛を髪の上に表示するなど)の設定ができます	Stencil (눈썹을 머리 위에 표시하는 등)을 설정할 수 있습니다	你可以配置详细的Stencil设置。	你可以配置詳細的Stencil設置。
 sAdvanced	Advanced	拡張設定	확장 설정	扩展设置	擴展設置
@@ -394,6 +400,7 @@ sSettingTexMatCapNormal	Custom normal map	カスタムノーマルマップ	맞�
 sSettingRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
 sSettingTexRimLightColor	Rim Light Color Texture	リムライト色テクスチャ	림 라이트 색상 질감	Rim Light颜色纹理	Rim Light顏色紋理
 sSettingTexRimLightDirection	Light Direction Customize	ライト方向によるカスタマイズ	라이트 방향 의한 맞춤형	定制由光方向	定制由光方向
+sSettingGlitter	Glitter	ラメ	Glitter	Glitter	Glitter
 sSettingParallax	Parallax	視差マップ	시차 맵	视差	視差
 sSettingPOM	[high-load] POM	[高負荷] POM	[과부하] POM	[高负荷] POM	[高負荷] POM
 sSettingClippingCanceller	Distance Clipping Canceller	距離クリッピングキャンセラー	거리 클리핑 취소 기	距离剪裁取消器	距離剪裁取消器
@@ -430,6 +437,7 @@ sAnchorReflections	#reflections	#光沢設定	#reflections	#reflections	#reflect
 sAnchorReflection	#reflection	#反射	#reflection	#reflection	#reflection
 sAnchorMatCap	#matcap	#マットキャップ	#matcap	#matcap	#matcap
 sAnchorRimLight	#rim-light	#リムライト	#rim-light	#rim-light	#rim-light
+sAnchorGlitter	#glitter	#ラメ	#glitter	#glitter	#glitter
 sAnchorAdvanced	#advanced	#拡張設定	#advanced	#advanced	#advanced
 sAnchorOutline	#outline	#輪郭線設定	#outline	#outline	#outline
 sAnchorParallax	#parallax	#視差マップ	#parallax	#parallax	#parallax

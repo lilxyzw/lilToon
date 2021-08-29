@@ -48,6 +48,7 @@ v2g vert(appdata input)
 
     //----------------------------------------------------------------------------------------------------------------------
     // Fog & Lightmap & Vertex light
+    LIL_CALC_MAINLIGHT(vertexInput, output);
     LIL_TRANSFER_FOG(vertexInput, output);
     LIL_TRANSFER_LIGHTMAPUV(input.uv1, output);
     LIL_CALC_VERTEXLIGHT(vertexInput, output);
@@ -57,7 +58,11 @@ v2g vert(appdata input)
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Geometry shader
-[maxvertexcount(48)]
+#if (defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)) && (defined(LIL_USE_LIGHTMAP) || defined(LIL_USE_DYNAMICLIGHTMAP) || defined(LIL_LIGHTMODE_SHADOWMASK))
+    [maxvertexcount(32)]
+#else
+    [maxvertexcount(40)]
+#endif
 void geom(triangle v2g input[3], inout TriangleStream<g2f> outStream)
 {
     if(!_Invisible)
@@ -84,6 +89,15 @@ void geom(triangle v2g input[3], inout TriangleStream<g2f> outStream)
         #endif
         #if defined(LIL_USE_VERTEXLIGHT)
             float3 vlc = (input[0].vl           +input[1].vl            +input[2].vl)           *0.333333333333;
+        #endif
+
+        // Main Light
+        #if !defined(LIL_PASS_FORWARDADD)
+            output.lightColor = input[0].lightColor;
+            output.lightDirection = input[0].lightDirection;
+        #endif
+        #if defined(LIL_FEATURE_SHADOW) && !defined(LIL_PASS_FORWARDADD)
+            output.indLightColor = input[0].indLightColor;
         #endif
 
         //--------------------------------------------------------------------------------------------------------------

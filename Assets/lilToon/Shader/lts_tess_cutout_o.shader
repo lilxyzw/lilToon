@@ -14,12 +14,13 @@ Shader "Hidden/lilToonTessellationCutoutOutline"
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
-                        _Color                      ("Color", Color) = (1,1,1,1)
+        [lilHDR]        _Color                      ("Color", Color) = (1,1,1,1)
                         _MainTex                    ("Texture", 2D) = "white" {}
         [lilUVAnim]     _MainTex_ScrollRotate       ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
         [lilHSVG]       _MainTexHSVG                ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
                         _MainGradationStrength      ("Gradation Strength", Range(0, 1)) = 0
         [NoScaleOffset] _MainGradationTex           ("Gradation Map", 2D) = "white" {}
+        [NoScaleOffset] _MainColorAdjustMask        ("Adjust Mask", 2D) = "white" {}
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main2nd
@@ -46,6 +47,7 @@ Shader "Hidden/lilToonTessellationCutoutOutline"
         [lilHDR]        _Main2ndDissolveColor       ("Dissolve Color", Color) = (1,1,1,1)
         [lilDissolve]   _Main2ndDissolveParams      ("Dissolve Mode|None|Alpha|UV|Position|Dissolve Shape|Point|Line|Border|Blur", Vector) = (0,0,0.5,0.1)
         [lilDissolveP]  _Main2ndDissolvePos         ("Dissolve Position", Vector) = (0,0,0,0)
+        [lil3Param]     _Main2ndDistanceFade        ("Start|End|Strength", Vector) = (0.1,0.01,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main3rd
@@ -72,6 +74,7 @@ Shader "Hidden/lilToonTessellationCutoutOutline"
         [lilHDR]        _Main3rdDissolveColor       ("Dissolve Color", Color) = (1,1,1,1)
         [lilDissolve]   _Main3rdDissolveParams      ("Dissolve Mode|None|Alpha|UV|Position|Dissolve Shape|Point|Line|Border|Blur", Vector) = (0,0,0.5,0.1)
         [lilDissolveP]  _Main3rdDissolvePos         ("Dissolve Position", Vector) = (0,0,0,0)
+        [lil3Param]     _Main3rdDistanceFade        ("Start|End|Strength", Vector) = (0.1,0.01,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Alpha Mask
@@ -179,6 +182,18 @@ Shader "Hidden/lilToonTessellationCutoutOutline"
         [lilHDR]        _RimIndirColor              ("Indirection Color", Color) = (1,1,1,1)
                         _RimIndirBorder             ("Indirection Border", Range(0, 1)) = 0.5
                         _RimIndirBlur               ("Indirection Blur", Range(0, 1)) = 0.1
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Glitter
+        [lilToggleLeft] _UseGlitter                 ("Use Glitter", Int) = 0
+        [lilHDR]        _GlitterColor               ("Color", Color) = (1,1,1,1)
+                        _GlitterColorTex            ("Texture", 2D) = "white" {}
+                        _GlitterMainStrength        ("Main Color Strength", Range(0, 1)) = 0
+        [lilGlitParam1] _GlitterParams1             ("Tiling|Particle Size|Contrast", Vector) = (256,256,0.16,50)
+        [lilGlitParam2] _GlitterParams2             ("Blink Speed|Angle|Blend Light Direction|Color Randomness", Vector) = (0.25,0,0,0)
+                        _GlitterEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
+        [lilToggle]     _GlitterShadowMask          ("Shadow Mask", Int) = 0
+        [lilToggle]     _GlitterApplyTransparency   ("Apply Transparency", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision

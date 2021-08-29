@@ -105,7 +105,11 @@ float lilAtan2(float x, float y)
 
 float4 lilOptMul(float4x4 mat, float3 pos)
 {
-    return mat._m00_m10_m20_m30 * pos.x + (mat._m01_m11_m21_m31 * pos.y + (mat._m02_m12_m22_m32 * pos.z + mat._m03_m13_m23_m33));
+    #if LIL_OPTIMIZE_TRANSFORM == 0
+        return mul(mat, float4(pos,1.0));
+    #else
+        return mat._m00_m10_m20_m30 * pos.x + (mat._m01_m11_m21_m31 * pos.y + (mat._m02_m12_m22_m32 * pos.z + mat._m03_m13_m23_m33));
+    #endif
 }
 
 float lilIsIn0to1(float2 f)
@@ -136,6 +140,11 @@ float lilMSDF(float3 msd)
 float lilIntervalTime(float interval)
 {
     return floor(LIL_TIME / interval) * interval;
+}
+
+float lilNsqDistance(float2 a, float2 b)
+{
+    return dot(a-b,a-b);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -647,7 +656,6 @@ float3 lilGetSHToon(float3 positionWS)
     #if defined(LIL_USE_LPPV)
         if(unity_ProbeVolumeParams.x == 1.0)
         {
-            
             float3 position = (unity_ProbeVolumeParams.y == 1.0) ? lilOptMul(unity_ProbeVolumeWorldToObject, positionWS).xyz : positionWS;
             float3 texCoord = (position - unity_ProbeVolumeMin.xyz) * unity_ProbeVolumeSizeInv.xyz;
             texCoord.x = texCoord.x * 0.25;
@@ -694,6 +702,88 @@ float3 lilGetSHToonMin()
     return res;
 }
 
+float3 lilGetSHToonMin(float3 lightDirection)
+{
+    float3 N = -lightDirection * 0.666666;
+    float3 res = float3(unity_SHAr.w,unity_SHAg.w,unity_SHAb.w);
+    res.r += dot(unity_SHAr.rgb, N);
+    res.g += dot(unity_SHAg.rgb, N);
+    res.b += dot(unity_SHAb.rgb, N);
+    float4 vB = N.xyzz * N.yzzx;
+    res.r += dot(unity_SHBr, vB);
+    res.g += dot(unity_SHBg, vB);
+    res.b += dot(unity_SHBb, vB);
+    res += unity_SHC.rgb * (N.x * N.x - N.y * N.y);
+    #ifdef UNITY_COLORSPACE_GAMMA
+        res = LinearToSRGB(res);
+    #endif
+    return res;
+}
+
+void lilGetToonSHDouble(float3 lightDirection, out float3 shMax, out float3 shMin)
+{
+    float3 N = lightDirection * 0.666666;
+    float4 vB = N.xyzz * N.yzzx;
+    // L0 L2
+    float3 res = float3(unity_SHAr.w,unity_SHAg.w,unity_SHAb.w);
+    res.r += dot(unity_SHBr, vB);
+    res.g += dot(unity_SHBg, vB);
+    res.b += dot(unity_SHBb, vB);
+    res += unity_SHC.rgb * (N.x * N.x - N.y * N.y);
+    // L1
+    float3 l1;
+    l1.r = dot(unity_SHAr.rgb, N);
+    l1.g = dot(unity_SHAg.rgb, N);
+    l1.b = dot(unity_SHAb.rgb, N);
+    shMax = res + l1;
+    shMin = res - l1;
+    #ifdef UNITY_COLORSPACE_GAMMA
+        shMax = LinearToSRGB(shMax);
+        shMin = LinearToSRGB(shMin);
+    #endif
+}
+
+void lilGetToonSHDouble(float3 lightDirection, float3 positionWS, out float3 shMax, out float3 shMin)
+{
+    float4 SHAr = unity_SHAr;
+    float4 SHAg = unity_SHAg;
+    float4 SHAb = unity_SHAb;
+    #if defined(LIL_USE_LPPV)
+        if(unity_ProbeVolumeParams.x == 1.0)
+        {
+            float3 position = (unity_ProbeVolumeParams.y == 1.0) ? lilOptMul(unity_ProbeVolumeWorldToObject, positionWS).xyz : positionWS;
+            float3 texCoord = (position - unity_ProbeVolumeMin.xyz) * unity_ProbeVolumeSizeInv.xyz;
+            texCoord.x = texCoord.x * 0.25;
+            float texCoordX = clamp(texCoord.x, 0.5 * unity_ProbeVolumeParams.z, 0.25 - 0.5 * unity_ProbeVolumeParams.z);
+            texCoord.x = texCoordX;
+            SHAr = LIL_SAMPLE_3D(unity_ProbeVolumeSH, samplerunity_ProbeVolumeSH, texCoord);
+            texCoord.x = texCoordX + 0.25;
+            SHAg = LIL_SAMPLE_3D(unity_ProbeVolumeSH, samplerunity_ProbeVolumeSH, texCoord);
+            texCoord.x = texCoordX + 0.5;
+            SHAb = LIL_SAMPLE_3D(unity_ProbeVolumeSH, samplerunity_ProbeVolumeSH, texCoord);
+        }
+    #endif
+    float3 N = lightDirection * 0.666666;
+    float4 vB = N.xyzz * N.yzzx;
+    // L0 L2
+    float3 res = float3(SHAr.w,SHAg.w,SHAb.w);
+    res.r += dot(unity_SHBr, vB);
+    res.g += dot(unity_SHBg, vB);
+    res.b += dot(unity_SHBb, vB);
+    res += unity_SHC.rgb * (N.x * N.x - N.y * N.y);
+    // L1
+    float3 l1;
+    l1.r = dot(SHAr.rgb, N);
+    l1.g = dot(SHAg.rgb, N);
+    l1.b = dot(SHAb.rgb, N);
+    shMax = res + l1;
+    shMin = res - l1;
+    #ifdef UNITY_COLORSPACE_GAMMA
+        shMax = LinearToSRGB(shMax);
+        shMin = LinearToSRGB(shMin);
+    #endif
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Lighting
 float3 lilGetLightColor()
@@ -709,6 +799,19 @@ float3 lilGetLightColor(float3 positionWS)
 float3 lilGetIndirLightColor()
 {
     return saturate(lilGetSHToonMin());
+}
+
+float3 lilGetIndirLightColor(float3 lightDirection)
+{
+    return saturate(lilGetSHToonMin(lightDirection));
+}
+
+void lilGetLightColorDouble(float3 lightDirection, float shadowEnvStrength, out float3 lightColor, out float3 indLightColor)
+{
+    float3 shMax, shMin;
+    lilGetToonSHDouble(lightDirection, shMax, shMin);
+    lightColor = saturate(_MainLightColor.rgb + lilGetSHToon());
+    indLightColor = saturate(lilGetSHToonMin()) * shadowEnvStrength;
 }
 
 float3 lilGetLightMapColor(float2 uv)
@@ -806,6 +909,7 @@ void lilGetShading(
     inout float shadowmix,
     float3 albedo,
     float3 lightColor,
+    float3 indLightColor,
     float2 uv,
     float facing,
     float3 normalDirection,
@@ -875,7 +979,7 @@ void lilGetShading(
         indirectCol = indirectCol * lightColor;
 
         // Environment Light
-        indirectCol = lerp(indirectCol, albedo, lilGetIndirLightColor() * _ShadowEnvStrength);
+        indirectCol = lerp(indirectCol, albedo, indLightColor);
         // Fix
         indirectCol = min(indirectCol, directCol);
         // Gradation
@@ -897,6 +1001,7 @@ void lilGetShadingLite(
     inout float shadowmix,
     float3 albedo,
     float3 lightColor,
+    float3 indLightColor,
     float2 uv,
     float facing,
     float3 normalDirection,
@@ -941,7 +1046,7 @@ void lilGetShadingLite(
         indirectCol = indirectCol * lightColor;
 
         // Environment Light
-        indirectCol = lerp(indirectCol, albedo, lilGetIndirLightColor() * _ShadowEnvStrength);
+        indirectCol = lerp(indirectCol, albedo, indLightColor);
         // Fix
         indirectCol = min(indirectCol, directCol);
         // Gradation
@@ -1014,6 +1119,68 @@ float3 lilCalcSpecular(float nv, float nl, float nh, float lh, float roughness, 
         float specularTerm = pow(nh, smoothness);
         if(isSpecularToon) return lilTooning(specularTerm, 0.5);
         else               return specularTerm * smoothness * 0.1 * specular;
+    #endif
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Glitter
+float3 lilGlitter(float2 uv, float3 normalDirection, float3 viewDirection, float3 lightDirection, float4 glitterParams1, float4 glitterParams2)
+{
+    // glitterParams1
+    // x: Scale, y: Scale, z: Size, w: Contrast
+    // glitterParams2
+    // x: Speed, y: Angle, z: Light Direction, w: 
+
+    float2 pos = uv * glitterParams1.xy;
+
+    // Hash
+    // https://www.shadertoy.com/view/MdcfDj
+    #define M1 1597334677U
+    #define M2 3812015801U
+    #define M3 2912667907U
+    uint2 q = (uint2)pos;
+    uint4 q2 = uint4(q.x, q.y, q.x+1, q.y+1) * uint4(M1, M2, M1, M2);
+    uint3 n0 = (q2.x ^ q2.y) * uint3(M1, M2, M3);
+    uint3 n1 = (q2.z ^ q2.y) * uint3(M1, M2, M3);
+    uint3 n2 = (q2.x ^ q2.w) * uint3(M1, M2, M3);
+    uint3 n3 = (q2.z ^ q2.w) * uint3(M1, M2, M3);
+    float3 noise0 = float3(n0) * (1.0/float(0xffffffffU));
+    float3 noise1 = float3(n1) * (1.0/float(0xffffffffU));
+    float3 noise2 = float3(n2) * (1.0/float(0xffffffffU));
+    float3 noise3 = float3(n3) * (1.0/float(0xffffffffU));
+
+    // Get the nearest position
+    float4 fracpos = frac(pos).xyxy + float4(0.5,0.5,-0.5,-0.5);
+    float4 dist4 = float4(lilNsqDistance(fracpos.xy,noise0.xy), lilNsqDistance(fracpos.zy,noise1.xy), lilNsqDistance(fracpos.xw,noise2.xy), lilNsqDistance(fracpos.zw,noise3.xy));
+    float4 near0 = dist4.x < dist4.y ? float4(noise0,dist4.x) : float4(noise1,dist4.y);
+    float4 near1 = dist4.z < dist4.w ? float4(noise2,dist4.z) : float4(noise3,dist4.w);
+    float4 near = near0.w < near1.w ? near0 : near1;
+
+    #define GLITTER_DEBUG_MODE 0
+    #define GLITTER_ANTIALIAS 1
+
+    #if GLITTER_DEBUG_MODE == 1
+        // Voronoi
+        return near.x;
+    #else
+        // Glitter
+        float3 glitterNormal = abs(frac(near.xyz*14.274 + _Time.x * glitterParams2.x) * 2.0 - 1.0);
+        glitterNormal = normalize(glitterNormal * 2.0 - 1.0);
+        float glitter = dot(glitterNormal, viewDirection);
+        glitter = saturate(1.0 - (glitter * glitterParams1.w + glitterParams1.w));
+        // Circle
+        #if GLITTER_ANTIALIAS == 1
+            glitter *= saturate((glitterParams1.z-near.w) / fwidth(near.w));
+        #else
+            glitter = near.w < glitterParams1.z ? glitter : 0.0;
+        #endif
+        // Angle
+        float3 halfDirection = normalize(viewDirection + lightDirection * glitterParams2.z);
+        float nh = saturate(dot(normalDirection, halfDirection));
+        glitter = saturate(glitter * saturate(nh * glitterParams2.y + 1.0 - glitterParams2.y));
+        // Random Color
+        float3 glitterColor = glitter - glitter * frac(near.xyz*278.436) * glitterParams2.w;
+        return glitterColor;
     #endif
 }
 
