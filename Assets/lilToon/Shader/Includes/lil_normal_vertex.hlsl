@@ -128,6 +128,9 @@ v2f vert(appdata input)
     #else
         //--------------------------------------------------------------------------------------------------------------
         // Normal
+        #if defined(LIL_SHOULD_UV1)
+            output.uv1          = input.uv1;
+        #endif
         #if defined(LIL_SHOULD_POSITION_OS)
             output.positionOS   = input.positionOS.xyz;
         #endif

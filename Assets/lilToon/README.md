@@ -1,5 +1,5 @@
 # lilToon
-Version 1.1.7
+Version 1.1.8
 
 # Overview
 This shader is developed for services using avatars (VRChat, etc.) and has the following features.
@@ -23,7 +23,7 @@ Supported Rendering Pipelines
 - Built-in Render Pipeline (BRP)
 - Lightweight Render Pipeline (LWRP)
 - Universal Render Pipeline (URP)
-- Refraction shaders are supported only for BRP
+- Refraction and Gem shaders are supported only for BRP
 
 # Features
 - Main color x3 layers (Decal, Layer mask, Gif animation, Normal / Additive / Multiplicative / Screen blending)
@@ -132,6 +132,13 @@ Comparing parameters when implementing `Convert to MToon (VRM)`
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # Change log
+## v1.1.8
+- Added lilToonGem and lilToonFakeShadow
+- Added UV1 for glitter
+- Added property to adjust the strength of parallax during VR to glitter
+- Fixed emission color space
+- Fixed an issue where glitter properties were not scanned when importing
+- Fixed an issue where meshes were not decrypted on some paths when using Avater Encryption
 ## v1.1.7
 - Added color code next to HDR color picker (Unity 2019 or later)
 - Added mask to main color correction

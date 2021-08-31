@@ -117,7 +117,7 @@
             float2 uv7          : TEXCOORD7;
         #endif
         float2 uv           : TEXCOORD0;
-        LIL_VERTEX_INPUT_LIGHTMAP_UV
+        float2 uv1          : TEXCOORD1;
         LIL_VERTEX_INPUT_INSTANCE_ID
     };
 
@@ -125,32 +125,35 @@
     {
         float4 positionCS       : SV_POSITION;
         float2 uv               : TEXCOORD0;
+        #if defined(LIL_SHOULD_UV1)
+            float2 uv1          : TEXCOORD1;
+        #endif
         #if defined(LIL_SHOULD_POSITION_OS)
-            float3 positionOS       : TEXCOORD1;
+            float3 positionOS       : TEXCOORD2;
         #endif
         #if defined(LIL_SHOULD_POSITION_WS)
-            float3 positionWS       : TEXCOORD2;
+            float3 positionWS       : TEXCOORD3;
         #endif
         #if defined(LIL_SHOULD_NORMAL)
-            float3 normalWS         : TEXCOORD3;
+            float3 normalWS         : TEXCOORD4;
         #endif
         #if defined(LIL_SHOULD_TBN)
-            float3 tangentWS        : TEXCOORD4;
-            float3 bitangentWS      : TEXCOORD5;
+            float3 tangentWS        : TEXCOORD5;
+            float3 bitangentWS      : TEXCOORD6;
         #endif
         #if defined(LIL_SHOULD_TANGENT_W)
-            float  tangentW         : TEXCOORD6;
+            float  tangentW         : TEXCOORD7;
         #endif
         #ifdef LIL_REFRACTION
-            float4 positionSS      : TEXCOORD7;
+            float4 positionSS      : TEXCOORD8;
         #endif
-        LIL_LIGHTCOLOR_COORDS(8)
-        LIL_LIGHTDIRECTION_COORDS(9)
-        LIL_INDLIGHTCOLOR_COORDS(10)
-        LIL_VERTEXLIGHT_COORDS(11)
-        LIL_FOG_COORDS(12)
-        LIL_SHADOW_COORDS(13)
-        LIL_LIGHTMAP_COORDS(14)
+        LIL_LIGHTCOLOR_COORDS(9)
+        LIL_LIGHTDIRECTION_COORDS(10)
+        LIL_INDLIGHTCOLOR_COORDS(11)
+        LIL_VERTEXLIGHT_COORDS(12)
+        LIL_FOG_COORDS(13)
+        LIL_SHADOW_COORDS(14)
+        LIL_LIGHTMAP_COORDS(15)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };

@@ -19,6 +19,7 @@
         - [MatCap](#matcap)
         - [Rim Light](#rim-light)
         - [Glitter](#glitter)
+        - [Gem](#gem)
 - [Advanced](#advanced)
     - [Outline](#outline)
     - [Parallax](#parallax)
@@ -98,6 +99,40 @@
 |Refraction Blur|[High-load] In addition to refraction, you can also create a frosted glass-like blur.|
 |Fur|[High-load] Furry. In a spotlight, it becomes brighter than other materials.|
 |Fur (Cutout)|[High-load] Furry. There is no brightness problem, but the appearance is rough.|
+</details>
+
+<details><summary>FakeShadow Setting</summary>
+
+|Name|Description|
+|-|-|
+|Vector|Vector to add to light.|
+|Offset|Offset of mesh.|
+
+When using FakeShadow, change the stencil settings as follows.  
+If shadows overlap other than hair, set the material in the same way as hair.  
+**Face material**
+
+|Name|Description|
+|-|-|
+|Ref|51|
+|ReadMask|255|
+|WriteMask|255|
+|Comp|Always|
+|Pass|Replace|
+|Fail|Keep|
+|ZFail|Keep|
+
+**Hair material**
+
+|Name|Description|
+|-|-|
+|Ref|0|
+|ReadMask|255|
+|WriteMask|255|
+|Comp|Always|
+|Pass|Replace|
+|Fail|Keep|
+|ZFail|Keep|
 </details>
 
 <br/>
@@ -223,6 +258,7 @@ You can blend colors into the main color. This is the layer function in painting
 |-|-|
 |Smoothness|Smoothness of the surface.|
 |Metallic|Degree to which the material is close to metal.|
+|Reflectance|Reflectance of environment light. [Example value](https://forum.corona-renderer.com/index.php?topic=2359.0)|
 |Color|Color of reflection.|
 |Specular Type|The appearance of light reflection.|
 |Environment Reflections|Reflects environment light.|
@@ -252,6 +288,7 @@ You can blend colors into the main color. This is the layer function in painting
 ### Glitter
 |Name|Description|
 |-|-|
+|UV Mode|UV used to generate glitter. If there is no UV1, UV0 will be used automatically, but you can automatically generate UV1 by checking `Generating Lightmap UVs` in the FBX import settings.|
 |Color|Color of glitter.|
 |Main Color Power|Multiply the Main Color.|
 |Enable Lighting|Apply the color of the light to glitter.|
@@ -263,6 +300,21 @@ You can blend colors into the main color. This is the layer function in painting
 |Angle Limit|Limiting the angle at which glitter shines.|
 |Light direction strength|Influence of light direction.|
 |Color Randomness|Randomness of glitter color.|
+|VR Parallax Strength|Strength of parallax in VR.|
+
+### Gem
+|Name|Description|
+|-|-|
+|Strength|Strength to distort.|
+|Fresnel|Distortion ease as a function of angle.|
+|Chromatic Aberration|Strength of color shift due to refraction.|
+|Contrast|Strength of emvironment light contrast.|
+|Environment Color|Color to multiply emvironment light.|
+|Particle Loop|Fineness of particles.|
+|Color|Color of perticles.|
+|VR Parallax Strength|Strength of parallax in VR.|
+|Smoothness|Smoothness of the surface.|
+|Reflectance|Reflectance of environment light. [Example value](https://forum.corona-renderer.com/index.php?topic=2359.0)|
 
 <br/>
 

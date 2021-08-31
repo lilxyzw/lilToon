@@ -12,6 +12,10 @@ struct appdata
     float2 uv           : TEXCOORD0;
     float2 uv1          : TEXCOORD1;
     float2 uv2          : TEXCOORD2;
+    #if !defined(LIL_LITE) && defined(LIL_FEATURE_ENCRYPTION)
+        float2 uv6          : TEXCOORD6;
+        float2 uv7          : TEXCOORD7;
+    #endif
 };
 
 struct v2f
@@ -33,6 +37,12 @@ v2f vert (appdata input)
 
     LIL_BRANCH
     if(_Invisible) return output;
+
+    //----------------------------------------------------------------------------------------------------------------------
+    // Encryption
+    #if !defined(LIL_LITE) && defined(LIL_FEATURE_ENCRYPTION)
+        input.positionOS = vertexDecode(input.positionOS, input.normalOS, input.uv6, input.uv7);
+    #endif
 
     LIL_TRANSFER_METAPASS(input,output);
     output.uv = input.uv;

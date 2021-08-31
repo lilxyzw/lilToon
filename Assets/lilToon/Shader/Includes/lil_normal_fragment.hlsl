@@ -183,6 +183,9 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
         #if defined(LIL_SHOULD_POSITION_WS)
             float depth = length(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
             float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+            #if defined(USING_STEREO_MATRICES)
+                float3 headDirection = normalize(LIL_GET_HEADDIR_WS(input.positionWS.xyz));
+            #endif
         #endif
         #if defined(LIL_SHOULD_TBN)
             float3x3 tbnWS = float3x3(input.tangentWS, input.bitangentWS, input.normalWS);
@@ -835,9 +838,15 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
             LIL_BRANCH
             if(_UseGlitter)
             {
+                #if defined(USING_STEREO_MATRICES)
+                    float3 glitterViewDirection = lerp(headDirection, viewDirection, _GlitterVRParallaxStrength);
+                #else
+                    float3 glitterViewDirection = viewDirection;
+                #endif
                 float4 glitterColor = _GlitterColor;
                 if(Exists_GlitterColorTex) glitterColor *= LIL_SAMPLE_2D(_GlitterColorTex, sampler_MainTex, uvMain);
-                glitterColor.rgb *= lilGlitter(input.uv, normalDirection, viewDirection, lightDirection, _GlitterParams1, _GlitterParams2);
+                float2 glitterPos = _GlitterUVMode ? input.uv1 : input.uv;
+                glitterColor.rgb *= lilGlitter(glitterPos, normalDirection, glitterViewDirection, lightDirection, _GlitterParams1, _GlitterParams2);
                 glitterColor.rgb = lerp(glitterColor.rgb, glitterColor.rgb * albedo, _GlitterMainStrength);
                 #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                     if(_GlitterApplyTransparency) glitterColor.a *= col.a;

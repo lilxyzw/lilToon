@@ -58,7 +58,8 @@ namespace lilToon
             Refraction,
             RefractionBlur,
             Fur,
-            FurCutout
+            FurCutout,
+            Gem
         }
 
         public enum BlendMode
@@ -89,8 +90,8 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
-        public const string currentVersionName = "1.1.7";
-        public const int currentVersionValue = 11;
+        public const string currentVersionName = "1.1.8";
+        public const int currentVersionValue = 12;
 
         public const string boothURL = "https://lilxyzw.booth.pm/";
         public const string githubURL = "https://github.com/lilxyzw/lilToon";
@@ -209,6 +210,10 @@ namespace lilToon
         static Shader ltsfur    = Shader.Find("Hidden/lilToonFur");
         static Shader ltsfurc   = Shader.Find("Hidden/lilToonFurCutout");
 
+        static Shader ltsgem    = Shader.Find("Hidden/lilToonGem");
+
+        static Shader ltsfs     = Shader.Find("_lil/lilToonFakeShadow");
+
         static Shader ltsbaker  = Shader.Find("Hidden/ltsother_baker");
         static Shader ltspo     = Shader.Find("Hidden/ltspass_opaque");
         static Shader ltspc     = Shader.Find("Hidden/ltspass_cutout");
@@ -302,6 +307,8 @@ namespace lilToon
         static bool isFur          = false;
         static bool isStWr         = false;
         static bool isTess         = false;
+        static bool isGem          = false;
+        static bool isFakeShadow   = false;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Material properties
@@ -476,6 +483,7 @@ namespace lilToon
             MaterialProperty rimIndirBorder;
             MaterialProperty rimIndirBlur;
         MaterialProperty useGlitter;
+            MaterialProperty glitterUVMode;
             MaterialProperty glitterColor;
             MaterialProperty glitterColorTex;
             MaterialProperty glitterMainStrength;
@@ -484,6 +492,7 @@ namespace lilToon
             MaterialProperty glitterEnableLighting;
             MaterialProperty glitterShadowMask;
             MaterialProperty glitterApplyTransparency;
+            MaterialProperty glitterVRParallaxStrength;
         MaterialProperty useEmission;
             MaterialProperty emissionColor;
             MaterialProperty emissionMap;
@@ -625,6 +634,15 @@ namespace lilToon
             MaterialProperty tessStrength;
             MaterialProperty tessShrink;
             MaterialProperty tessFactorMax;
+        //MaterialProperty useGem;
+            MaterialProperty gemChromaticAberration;
+            MaterialProperty gemEnvContrast;
+            MaterialProperty gemEnvColor;
+            MaterialProperty gemParticleLoop;
+            MaterialProperty gemParticleColor;
+            MaterialProperty gemVRParallaxStrength;
+        //MaterialProperty useFakeShadow;
+            MaterialProperty fakeShadowVector;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Gradient
@@ -688,8 +706,11 @@ namespace lilToon
             isBlur         = material.shader.name.Contains("Blur");
             isFur          = material.shader.name.Contains("Fur");
             isTess         = material.shader.name.Contains("Tessellation");
+            isGem          = material.shader.name.Contains("Gem");
+            isFakeShadow   = material.shader.name.Contains("FakeShadow");
 
             isCustomShader = material.shader.name.Contains("Overlay");
+            isCustomShader = material.shader.name.Contains("FakeShadow");
 
                                 renderingModeBuf = RenderingMode.Opaque;
             if(isCutout)        renderingModeBuf = RenderingMode.Cutout;
@@ -698,11 +719,14 @@ namespace lilToon
             if(isRefr&isBlur)   renderingModeBuf = RenderingMode.RefractionBlur;
             if(isFur)           renderingModeBuf = RenderingMode.Fur;
             if(isFur&isCutout)  renderingModeBuf = RenderingMode.FurCutout;
+            if(isGem)           renderingModeBuf = RenderingMode.Gem;
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Load Properties
             if(isLite)      LoadLiteProperties(props);
             else if(isFur)  LoadFurProperties(props);
+            else if(isGem)  LoadGemProperties(props);
+            else if(isFakeShadow) LoadFakeShadowProperties(props);
             else            LoadProperties(props);
 
             LoadCustomProperties(props, material);
@@ -732,7 +756,7 @@ namespace lilToon
             string sDissolveParamsOther = GetLoc("sDissolveShape") + "|" + GetLoc("sDissolveShapePoint") + "|" + GetLoc("sDissolveShapeLine") + "|" + GetLoc("sBorder") + "|" + GetLoc("sBlur") + "|Dummy";
             string sGlitterParams1 = "Tiling" + "|" + GetLoc("sParticleSize") + "|" + GetLoc("sContrast");
             string sGlitterParams2 = GetLoc("sBlinkSpeed") + "|" + GetLoc("sAngleLimit") + "|" + GetLoc("sRimLightDirection") + "|" + GetLoc("sColorRandomness");
-            string[] sRenderingModeList = {GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeRefractionBlur"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout")};
+            string[] sRenderingModeList = {GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeRefractionBlur"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout"), GetLoc("sRenderingModeGem")};
             string[] sRenderingModeListLite = {GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent")};
             GUIContent textureRGBAContent = new GUIContent(GetLoc("sTexture"), GetLoc("sTextureRGBA"));
             GUIContent colorRGBAContent = new GUIContent(GetLoc("sColor"), GetLoc("sTextureRGBA"));
@@ -897,6 +921,76 @@ namespace lilToon
                         }
                         EditorGUILayout.EndVertical();
                     }
+                }
+
+                //------------------------------------------------------------------------------------------------------------------------------
+                // Gem
+                else if(isGem)
+                {
+                    // Main
+                    //if(useMainTex.floatValue == 1)
+                    //{
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sMainColor"), customToggleFont);
+                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                        materialEditor.TexturePropertySingleLine(textureRGBAContent, mainTex, mainColor);
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+                    //}
+
+                    // Emission
+                    if(shaderSetting.LIL_FEATURE_EMISSION_1ST)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        materialEditor.ShaderProperty(useEmission, GetLoc("sEmission"));
+                        if(useEmission.floatValue == 1)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            materialEditor.TexturePropertySingleLine(textureRGBAContent, emissionMap, emissionColor);
+                            if(emissionColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                            {
+                                emissionColor.colorValue = new Color(emissionColor.colorValue.r, emissionColor.colorValue.g, emissionColor.colorValue.b, 1.0f);
+                            }
+                            EditorGUILayout.EndVertical();
+                        }
+                        EditorGUILayout.EndVertical();
+                    }
+
+                    // Emission 2nd
+                    if(shaderSetting.LIL_FEATURE_EMISSION_2ND)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        materialEditor.ShaderProperty(useEmission2nd, GetLoc("sEmission2nd"));
+                        if(useEmission2nd.floatValue == 1)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            materialEditor.TexturePropertySingleLine(textureRGBAContent, emission2ndMap, emission2ndColor);
+                            if(emission2ndColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                            {
+                                emission2ndColor.colorValue = new Color(emission2ndColor.colorValue.r, emission2ndColor.colorValue.g, emission2ndColor.colorValue.b, 1.0f);
+                            }
+                            EditorGUILayout.EndVertical();
+                        }
+                        EditorGUILayout.EndVertical();
+                    }
+                }
+
+                //------------------------------------------------------------------------------------------------------------------------------
+                // FakeShadow
+                else if(isFakeShadow)
+                {
+                    // Main
+                    //if(useMainTex.floatValue == 1)
+                    //{
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sMainColor"), customToggleFont);
+                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                        materialEditor.TexturePropertySingleLine(textureRGBAContent, mainTex, mainColor);
+                        GUILayout.Label("FakeShadow", EditorStyles.boldLabel);
+                        materialEditor.ShaderProperty(fakeShadowVector, GetLoc("sVector") + "|" + GetLoc("sOffset"));
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+                    //}
                 }
 
                 //------------------------------------------------------------------------------------------------------------------------------
@@ -1466,6 +1560,849 @@ namespace lilToon
                             BlendSettingGUI(materialEditor, ref edSet.isShowBlendOutline, GetLoc("sForward"), outlineSrcBlend, outlineDstBlend, outlineSrcBlendAlpha, outlineDstBlendAlpha, outlineBlendOp, outlineBlendOpAlpha);
                             DrawLine();
                             BlendSettingGUI(materialEditor, ref edSet.isShowBlendAddOutline, GetLoc("sForwardAdd"), outlineSrcBlendFA, outlineDstBlendFA, outlineSrcBlendAlphaFA, outlineDstBlendAlphaFA, outlineBlendOpFA, outlineBlendOpAlphaFA);
+                            EditorGUILayout.EndVertical();
+                            EditorGUILayout.EndVertical();
+                        }
+                    }
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Optimization
+                    GUILayout.Label(" " + GetLoc("sOptimization"), EditorStyles.boldLabel);
+                    edSet.isShowOptimization = Foldout(GetLoc("sOptimization"), GetLoc("sOptimizationTips"), edSet.isShowOptimization);
+                    DrawHelpButton(GetLoc("sAnchorOptimization"));
+                    if(edSet.isShowOptimization)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sOptimization"), customToggleFont);
+                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                        if(GUILayout.Button(GetLoc("sRemoveUnused"))) RemoveUnusedTexture(material, isLite, isFur, shaderSetting);
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+                    }
+                }
+                else if(isGem)
+                {
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Base Setting
+                    GUILayout.Label(" " + GetLoc("sBaseSetting"), EditorStyles.boldLabel);
+                    DrawHelpButton(GetLoc("sAnchorBaseSetting"));
+                    EditorGUILayout.BeginVertical(customBox);
+                    {
+                        materialEditor.ShaderProperty(invisible, GetLoc("sInvisible"));
+                        if(!isCustomShader)
+                        {
+                            RenderingMode renderingMode;
+                            renderingMode = (RenderingMode)EditorGUILayout.Popup(GetLoc("sRenderingMode"), (int)renderingModeBuf, sRenderingModeList);
+                            if(renderingModeBuf != renderingMode)
+                            {
+                                SetupMaterialWithRenderingMode(material, renderingMode, isOutl, isLite, isStWr, isTess);
+                                if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.FurCutout) cutoff.floatValue = 0.5f;
+                                if(renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur) cutoff.floatValue = 0.001f;
+                            }
+                        }
+                            EditorGUI.indentLevel++;
+                            if(renderingModeBuf >= RenderingMode.Transparent && renderingModeBuf != RenderingMode.FurCutout)
+                            {
+                                EditorGUILayout.HelpBox(GetLoc("sHelpRenderingTransparent"),MessageType.Warning);
+                            }
+                            EditorGUI.indentLevel--;
+                        materialEditor.ShaderProperty(cull, sCullModes);
+                        materialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
+                        DrawLine();
+                        materialEditor.ShaderProperty(asUnlit, GetLoc("sAsUnlit"));
+                        materialEditor.ShaderProperty(vertexLightStrength, GetLoc("sVertexLightStrength"));
+                        materialEditor.ShaderProperty(lightMinLimit, GetLoc("sLightMinLimit"));
+                    }
+                    EditorGUILayout.EndVertical();
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // UV
+                    edSet.isShowMainUV = Foldout(GetLoc("sMainUV"), GetLoc("sMainUVTips"), edSet.isShowMainUV);
+                    DrawHelpButton(GetLoc("sAnchorUVSetting"));
+                    if(edSet.isShowMainUV)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sMainUV"), customToggleFont);
+                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                        if(shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV)   UVSettingGUI(materialEditor, mainTex, mainTex_ScrollRotate);
+                        else                                            materialEditor.TextureScaleOffsetProperty(mainTex);
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+                    }
+
+                    EditorGUILayout.Space();
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Colors
+                    GUILayout.Label(" " + GetLoc("sColors"), EditorStyles.boldLabel);
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Main Color
+                    edSet.isShowMain = Foldout(GetLoc("sMainColorSetting"), GetLoc("sMainColorTips"), edSet.isShowMain);
+                    DrawHelpButton(GetLoc("sAnchorMainColor"));
+                    if(edSet.isShowMain)
+                    {
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Main
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sMainColor"), customToggleFont);
+                        DrawHelpButton(GetLoc("sAnchorMainColor1"));
+                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                        materialEditor.TexturePropertySingleLine(textureRGBAContent, mainTex, mainColor);
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+                    }
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Emission
+                    if(shaderSetting.LIL_FEATURE_EMISSION_1ST || shaderSetting.LIL_FEATURE_EMISSION_2ND)
+                    {
+                        edSet.isShowEmission = Foldout(GetLoc("sEmissionSetting"), GetLoc("sEmissionTips"), edSet.isShowEmission);
+                        DrawHelpButton(GetLoc("sAnchorEmission"));
+                        if(edSet.isShowEmission)
+                        {
+                            // Emission
+                            if(shaderSetting.LIL_FEATURE_EMISSION_1ST)
+                            {
+                                EditorGUILayout.BeginVertical(boxOuter);
+                                materialEditor.ShaderProperty(useEmission, GetLoc("sEmission"));
+                                if(useEmission.floatValue == 1)
+                                {
+                                    EditorGUILayout.BeginVertical(boxInnerHalf);
+                                    TextureGUI(materialEditor, ref edSet.isShowEmissionMap, colorRGBAContent, emissionMap, emissionColor, emissionMap_ScrollRotate, shaderSetting.LIL_FEATURE_EMISSION_UV, shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV);
+                                    if(emissionColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                    {
+                                        emissionColor.colorValue = new Color(emissionColor.colorValue.r, emissionColor.colorValue.g, emissionColor.colorValue.b, 1.0f);
+                                    }
+                                    DrawLine();
+                                    if(shaderSetting.LIL_FEATURE_TEX_EMISSION_MASK)
+                                    {
+                                        TextureGUI(materialEditor, ref edSet.isShowEmissionBlendMask, maskBlendContent, emissionBlendMask, emissionBlend, emissionBlendMask_ScrollRotate, shaderSetting.LIL_FEATURE_EMISSION_MASK_UV, shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_MASK_UV);
+                                        DrawLine();
+                                    }
+                                    materialEditor.ShaderProperty(emissionBlink, blinkSetting);
+                                    DrawLine();
+                                    if(shaderSetting.LIL_FEATURE_EMISSION_GRADATION)
+                                    {
+                                        materialEditor.ShaderProperty(emissionUseGrad, GetLoc("sGradation"));
+                                        if(emissionUseGrad.floatValue == 1)
+                                        {
+                                            materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sGradTexSpeed"), GetLoc("sTextureRGBA")), emissionGradTex, emissionGradSpeed);
+                                            GradientEditor(material, "_eg", emiGrad, emissionGradSpeed);
+                                        }
+                                        DrawLine();
+                                    }
+                                    materialEditor.ShaderProperty(emissionParallaxDepth, GetLoc("sParallaxDepth"));
+                                    materialEditor.ShaderProperty(emissionFluorescence, GetLoc("sFluorescence"));
+                                    EditorGUILayout.EndVertical();
+                                }
+                                EditorGUILayout.EndVertical();
+                            }
+
+                            // Emission 2nd
+                            if(shaderSetting.LIL_FEATURE_EMISSION_2ND)
+                            {
+                                EditorGUILayout.BeginVertical(boxOuter);
+                                materialEditor.ShaderProperty(useEmission2nd, GetLoc("sEmission2nd"));
+                                if(useEmission2nd.floatValue == 1)
+                                {
+                                    EditorGUILayout.BeginVertical(boxInnerHalf);
+                                    TextureGUI(materialEditor, ref edSet.isShowEmission2ndMap, colorRGBAContent, emission2ndMap, emission2ndColor, emission2ndMap_ScrollRotate, shaderSetting.LIL_FEATURE_EMISSION_UV, shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV);
+                                    if(emission2ndColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                    {
+                                        emission2ndColor.colorValue = new Color(emission2ndColor.colorValue.r, emission2ndColor.colorValue.g, emission2ndColor.colorValue.b, 1.0f);
+                                    }
+                                    DrawLine();
+                                    if(shaderSetting.LIL_FEATURE_TEX_EMISSION_MASK)
+                                    {
+                                        TextureGUI(materialEditor, ref edSet.isShowEmission2ndBlendMask, maskBlendContent, emission2ndBlendMask, emission2ndBlend, emission2ndBlendMask_ScrollRotate, shaderSetting.LIL_FEATURE_EMISSION_MASK_UV, shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_MASK_UV);
+                                        DrawLine();
+                                    }
+                                    materialEditor.ShaderProperty(emission2ndBlink, blinkSetting);
+                                    DrawLine();
+                                    if(shaderSetting.LIL_FEATURE_EMISSION_GRADATION)
+                                    {
+                                        materialEditor.ShaderProperty(emission2ndUseGrad, GetLoc("sGradation"));
+                                        if(emission2ndUseGrad.floatValue == 1)
+                                        {
+                                            materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sGradTexSpeed"), GetLoc("sTextureRGBA")), emission2ndGradTex, emission2ndGradSpeed);
+                                            GradientEditor(material, "_e2g", emi2Grad, emission2ndGradSpeed);
+                                        }
+                                        DrawLine();
+                                    }
+                                    materialEditor.ShaderProperty(emission2ndParallaxDepth, GetLoc("sParallaxDepth"));
+                                    materialEditor.ShaderProperty(emission2ndFluorescence, GetLoc("sFluorescence"));
+                                    EditorGUILayout.EndVertical();
+                                }
+                                EditorGUILayout.EndVertical();
+                            }
+                        }
+
+                        EditorGUILayout.Space();
+                    }
+
+                    EditorGUILayout.Space();
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Normal & Reflection
+                    GUILayout.Label(" " + GetLoc("sNormalMapReflection"), EditorStyles.boldLabel);
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Normal
+                    if(shaderSetting.LIL_FEATURE_NORMAL_1ST || shaderSetting.LIL_FEATURE_NORMAL_2ND)
+                    {
+                        edSet.isShowBump = Foldout(GetLoc("sNormalMapSetting"), GetLoc("sNormalMapTips"), edSet.isShowBump);
+                        DrawHelpButton(GetLoc("sAnchorNormalMap"));
+                        if(edSet.isShowBump)
+                        {
+                            //------------------------------------------------------------------------------------------------------------------------------
+                            // 1st
+                            if(shaderSetting.LIL_FEATURE_NORMAL_1ST)
+                            {
+                                EditorGUILayout.BeginVertical(boxOuter);
+                                materialEditor.ShaderProperty(useBumpMap, GetLoc("sNormalMap"));
+                                if(useBumpMap.floatValue == 1)
+                                {
+                                    EditorGUILayout.BeginVertical(boxInnerHalf);
+                                    materialEditor.TexturePropertySingleLine(normalMapContent, bumpMap, bumpScale);
+                                    materialEditor.TextureScaleOffsetProperty(bumpMap);
+                                    EditorGUILayout.EndVertical();
+                                }
+                                EditorGUILayout.EndVertical();
+                            }
+
+                            //------------------------------------------------------------------------------------------------------------------------------
+                            // 2nd
+                            if(shaderSetting.LIL_FEATURE_NORMAL_2ND)
+                            {
+                                EditorGUILayout.BeginVertical(boxOuter);
+                                materialEditor.ShaderProperty(useBump2ndMap, GetLoc("sNormalMap2nd"));
+                                if(useBump2ndMap.floatValue == 1)
+                                {
+                                    EditorGUILayout.BeginVertical(boxInnerHalf);
+                                    materialEditor.TexturePropertySingleLine(normalMapContent, bump2ndMap, bump2ndScale);
+                                    materialEditor.TextureScaleOffsetProperty(bump2ndMap);
+                                    if(shaderSetting.LIL_FEATURE_TEX_NORMAL_MASK) materialEditor.TexturePropertySingleLine(maskStrengthContent, bump2ndScaleMask);
+                                    EditorGUILayout.EndVertical();
+                                }
+                                EditorGUILayout.EndVertical();
+                            }
+                        }
+                    }
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Reflection
+                    edSet.isShowReflections = Foldout(GetLoc("sReflectionsSetting"), GetLoc("sReflectionsTips"), edSet.isShowReflections);
+                    DrawHelpButton(GetLoc("sAnchorReflections"));
+                    if(edSet.isShowReflections)
+                    {
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // MatCap
+                        if(shaderSetting.LIL_FEATURE_MATCAP)
+                        {
+                            EditorGUILayout.BeginVertical(boxOuter);
+                            materialEditor.ShaderProperty(useMatCap, GetLoc("sMatCap"));
+                            DrawHelpButton(GetLoc("sAnchorMatCap"));
+                            if(useMatCap.floatValue == 1)
+                            {
+                                EditorGUILayout.BeginVertical(boxInnerHalf);
+                                materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA")), matcapTex, matcapColor);
+                                if(matcapColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                {
+                                    matcapColor.colorValue = new Color(matcapColor.colorValue.r, matcapColor.colorValue.g, matcapColor.colorValue.b, 1.0f);
+                                }
+                                if(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK)   materialEditor.TexturePropertySingleLine(maskBlendContent, matcapBlendMask, matcapBlend);
+                                else                                            materialEditor.ShaderProperty(matcapBlend, GetLoc("sBlend"));
+                                materialEditor.ShaderProperty(matcapEnableLighting, GetLoc("sEnableLighting"));
+                                materialEditor.ShaderProperty(matcapBlendMode, sBlendModes);
+                                if(matcapEnableLighting.floatValue != 0.0f && matcapBlendMode.floatValue == 3.0f && AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
+                                {
+                                    matcapEnableLighting.floatValue = 0.0f;
+                                }
+                                if(isTransparent) materialEditor.ShaderProperty(matcapApplyTransparency, GetLoc("sApplyTransparency"));
+                                materialEditor.ShaderProperty(matcapZRotCancel, GetLoc("sMatCapZRotCancel"));
+                                if(shaderSetting.LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+                                {
+                                    DrawLine();
+                                    materialEditor.ShaderProperty(matcapCustomNormal, GetLoc("sMatCapCustomNormal"));
+                                    if(matcapCustomNormal.floatValue == 1)
+                                    {
+                                        materialEditor.TexturePropertySingleLine(normalMapContent, matcapBumpMap, matcapBumpScale);
+                                        materialEditor.TextureScaleOffsetProperty(matcapBumpMap);
+                                    }
+                                }
+                                EditorGUILayout.EndVertical();
+                            }
+                            EditorGUILayout.EndVertical();
+                        }
+
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // MatCap 2nd
+                        if(shaderSetting.LIL_FEATURE_MATCAP_2ND)
+                        {
+                            EditorGUILayout.BeginVertical(boxOuter);
+                            materialEditor.ShaderProperty(useMatCap2nd, GetLoc("sMatCap2nd"));
+                            DrawHelpButton(GetLoc("sAnchorMatCap"));
+                            if(useMatCap2nd.floatValue == 1)
+                            {
+                                EditorGUILayout.BeginVertical(boxInnerHalf);
+                                materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA")), matcap2ndTex, matcap2ndColor);
+                                if(matcap2ndColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                {
+                                    matcap2ndColor.colorValue = new Color(matcap2ndColor.colorValue.r, matcap2ndColor.colorValue.g, matcap2ndColor.colorValue.b, 1.0f);
+                                }
+                                if(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK)   materialEditor.TexturePropertySingleLine(maskBlendContent, matcap2ndBlendMask, matcap2ndBlend);
+                                else                                            materialEditor.ShaderProperty(matcap2ndBlend, GetLoc("sBlend"));
+                                materialEditor.ShaderProperty(matcap2ndEnableLighting, GetLoc("sEnableLighting"));
+                                materialEditor.ShaderProperty(matcap2ndBlendMode, sBlendModes);
+                                if(matcap2ndEnableLighting.floatValue != 0.0f && matcap2ndBlendMode.floatValue == 3.0f && AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
+                                {
+                                    matcap2ndEnableLighting.floatValue = 0.0f;
+                                }
+                                if(isTransparent) materialEditor.ShaderProperty(matcap2ndApplyTransparency, GetLoc("sApplyTransparency"));
+                                materialEditor.ShaderProperty(matcap2ndZRotCancel, GetLoc("sMatCapZRotCancel"));
+                                if(shaderSetting.LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+                                {
+                                    DrawLine();
+                                    materialEditor.ShaderProperty(matcap2ndCustomNormal, GetLoc("sMatCapCustomNormal"));
+                                    if(matcap2ndCustomNormal.floatValue == 1)
+                                    {
+                                        materialEditor.TexturePropertySingleLine(normalMapContent, matcap2ndBumpMap, matcap2ndBumpScale);
+                                        materialEditor.TextureScaleOffsetProperty(matcap2ndBumpMap);
+                                    }
+                                }
+                                EditorGUILayout.EndVertical();
+                            }
+                            EditorGUILayout.EndVertical();
+                        }
+
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Rim
+                        if(shaderSetting.LIL_FEATURE_RIMLIGHT)
+                        {
+                            EditorGUILayout.BeginVertical(boxOuter);
+                            materialEditor.ShaderProperty(useRim, GetLoc("sRimLight"));
+                            DrawHelpButton(GetLoc("sAnchorRimLight"));
+                            if(useRim.floatValue == 1)
+                            {
+                                EditorGUILayout.BeginVertical(boxInnerHalf);
+                                if(shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR)    materialEditor.TexturePropertySingleLine(colorRGBAContent, rimColorTex, rimColor);
+                                else                                                materialEditor.ShaderProperty(rimColor, GetLoc("sColor"));
+                                if(rimColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                {
+                                    rimColor.colorValue = new Color(rimColor.colorValue.r, rimColor.colorValue.g, rimColor.colorValue.b, 1.0f);
+                                }
+                                materialEditor.ShaderProperty(rimEnableLighting, GetLoc("sEnableLighting"));
+                                materialEditor.ShaderProperty(rimShadowMask, GetLoc("sShadowMask"));
+                                if(isTransparent) materialEditor.ShaderProperty(rimApplyTransparency, GetLoc("sApplyTransparency"));
+                                DrawLine();
+                                if(shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION)
+                                {
+                                    materialEditor.ShaderProperty(rimDirStrength, GetLoc("sRimLightDirection"));
+                                    if(rimDirStrength.floatValue != 0)
+                                    {
+                                        EditorGUI.indentLevel++;
+                                        materialEditor.ShaderProperty(rimDirRange, GetLoc("sRimDirectionRange"));
+                                        rimBorder.floatValue = 1.0f - EditorGUILayout.Slider(GetLoc("sBorder"), 1.0f - rimBorder.floatValue, 0.0f, 1.0f);
+                                        materialEditor.ShaderProperty(rimBlur, GetLoc("sBlur"));
+                                        DrawLine();
+                                        materialEditor.ShaderProperty(rimIndirRange, GetLoc("sRimIndirectionRange"));
+                                        materialEditor.ShaderProperty(rimIndirColor, GetLoc("sColor"));
+                                        rimIndirBorder.floatValue = 1.0f - EditorGUILayout.Slider(GetLoc("sBorder"), 1.0f - rimIndirBorder.floatValue, 0.0f, 1.0f);
+                                        materialEditor.ShaderProperty(rimIndirBlur, GetLoc("sBlur"));
+                                        EditorGUI.indentLevel--;
+                                        DrawLine();
+                                        materialEditor.ShaderProperty(rimFresnelPower, GetLoc("sFresnelPower"));
+                                    }
+                                    else
+                                    {
+                                        rimBorder.floatValue = 1.0f - EditorGUILayout.Slider(GetLoc("sBorder"), 1.0f - rimBorder.floatValue, 0.0f, 1.0f);
+                                        materialEditor.ShaderProperty(rimBlur, GetLoc("sBlur"));
+                                        materialEditor.ShaderProperty(rimFresnelPower, GetLoc("sFresnelPower"));
+                                    }
+                                }
+                                else
+                                {
+                                    rimBorder.floatValue = 1.0f - EditorGUILayout.Slider(GetLoc("sBorder"), 1.0f - rimBorder.floatValue, 0.0f, 1.0f);
+                                    materialEditor.ShaderProperty(rimBlur, GetLoc("sBlur"));
+                                    materialEditor.ShaderProperty(rimFresnelPower, GetLoc("sFresnelPower"));
+                                }
+                                EditorGUILayout.EndVertical();
+                            }
+                            EditorGUILayout.EndVertical();
+                        }
+
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Glitter
+                        if(shaderSetting.LIL_FEATURE_GLITTER)
+                        {
+                            EditorGUILayout.BeginVertical(boxOuter);
+                            materialEditor.ShaderProperty(useGlitter, GetLoc("sGlitter"));
+                            DrawHelpButton(GetLoc("sAnchorGlitter"));
+                            if(useGlitter.floatValue == 1)
+                            {
+                                EditorGUILayout.BeginVertical(boxInnerHalf);
+                                materialEditor.ShaderProperty(glitterUVMode, "UV Mode|UV0|UV1");
+                                materialEditor.TexturePropertySingleLine(colorRGBAContent, glitterColorTex, glitterColor);
+                                if(glitterColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                {
+                                    glitterColor.colorValue = new Color(glitterColor.colorValue.r, glitterColor.colorValue.g, glitterColor.colorValue.b, 1.0f);
+                                }
+                                materialEditor.ShaderProperty(glitterMainStrength, GetLoc("sMainColorPower"));
+                                materialEditor.ShaderProperty(glitterEnableLighting, GetLoc("sEnableLighting"));
+                                materialEditor.ShaderProperty(glitterShadowMask, GetLoc("sShadowMask"));
+                                if(isTransparent) materialEditor.ShaderProperty(glitterApplyTransparency, GetLoc("sApplyTransparency"));
+                                DrawLine();
+                                materialEditor.ShaderProperty(glitterParams1, sGlitterParams1);
+                                materialEditor.ShaderProperty(glitterParams2, sGlitterParams2);
+                                materialEditor.ShaderProperty(glitterVRParallaxStrength, GetLoc("sVRParallaxStrength"));
+                                EditorGUILayout.EndVertical();
+                            }
+                            EditorGUILayout.EndVertical();
+                        }
+
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Gem
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sGem"), customToggleFont);
+                        DrawHelpButton(GetLoc("sAnchorGem"));
+                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                        GUILayout.Label(GetLoc("sRefraction"), EditorStyles.boldLabel);
+                        EditorGUI.indentLevel++;
+                        materialEditor.ShaderProperty(refractionStrength, GetLoc("sStrength"));
+                        materialEditor.ShaderProperty(refractionFresnelPower, GetLoc("sRefractionFresnel"));
+                        EditorGUI.indentLevel--;
+                        DrawLine();
+                        GUILayout.Label(GetLoc("sGem"), EditorStyles.boldLabel);
+                        EditorGUI.indentLevel++;
+                        materialEditor.ShaderProperty(gemChromaticAberration, GetLoc("sChromaticAberration"));
+                        materialEditor.ShaderProperty(gemEnvContrast, GetLoc("sContrast"));
+                        materialEditor.ShaderProperty(gemEnvColor, GetLoc("sEnvironmentColor"));
+                        DrawLine();
+                        materialEditor.ShaderProperty(gemParticleLoop, GetLoc("sParticleLoop"));
+                        materialEditor.ShaderProperty(gemParticleColor, GetLoc("sColor"));
+                        EditorGUI.indentLevel--;
+                        DrawLine();
+                        materialEditor.ShaderProperty(gemVRParallaxStrength, GetLoc("sVRParallaxStrength"));
+                        if(shaderSetting.LIL_FEATURE_TEX_REFLECTION_SMOOTHNESS) materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sSmoothness"), GetLoc("sSmoothnessR")), smoothnessTex, smoothness);
+                        else                                                    materialEditor.ShaderProperty(smoothness, GetLoc("sSmoothness"));
+                        materialEditor.ShaderProperty(reflectance, GetLoc("sReflectance"));
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+                    }
+
+                    EditorGUILayout.Space();
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Advanced
+                    GUILayout.Label(" " + GetLoc("sAdvanced"), EditorStyles.boldLabel);
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // AudioLink
+                    if(shaderSetting.LIL_FEATURE_AUDIOLINK && !isFur)
+                    {
+                        edSet.isShowAudioLink = Foldout(GetLoc("sAudioLink"), GetLoc("sAudioLinkTips"), edSet.isShowAudioLink);
+                        DrawHelpButton(GetLoc("sAnchorAudioLink"));
+                        if(edSet.isShowAudioLink)
+                        {
+                            EditorGUILayout.BeginVertical(boxOuter);
+                            materialEditor.ShaderProperty(useAudioLink, GetLoc("sAudioLink"));
+                            if(useAudioLink.floatValue == 1)
+                            {
+                                EditorGUILayout.BeginVertical(boxInnerHalf);
+                                if(shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK)
+                                {
+                                    materialEditor.ShaderProperty(audioLinkUVMode, GetLoc("sAudioLinkUVMode") + "|" + GetLoc("sAudioLinkUVModeNone") + "|" + GetLoc("sAudioLinkUVModeRim") + "|" + GetLoc("sAudioLinkUVModeUV") + "|" + GetLoc("sAudioLinkUVModeMask"));
+                                    if(audioLinkUVMode.floatValue == 3) materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sMask"), ""), audioLinkMask);
+                                }
+                                else
+                                {
+                                    materialEditor.ShaderProperty(audioLinkUVMode, GetLoc("sAudioLinkUVMode") + "|" + GetLoc("sAudioLinkUVModeNone") + "|" + GetLoc("sAudioLinkUVModeRim") + "|" + GetLoc("sAudioLinkUVModeUV"));
+                                }
+                                if(audioLinkUVMode.floatValue == 0) materialEditor.ShaderProperty(audioLinkUVParams, GetLoc("sOffset") + "|" + GetLoc("sAudioLinkBand") + "|" + GetLoc("sAudioLinkBandBass") + "|" + GetLoc("sAudioLinkBandLowMid") + "|" + GetLoc("sAudioLinkBandHighMid") + "|" + GetLoc("sAudioLinkBandTreble"));
+                                if(audioLinkUVMode.floatValue == 1) materialEditor.ShaderProperty(audioLinkUVParams, GetLoc("sScale") + "|" + GetLoc("sOffset") + "|" + GetLoc("sAudioLinkBand") + "|" + GetLoc("sAudioLinkBandBass") + "|" + GetLoc("sAudioLinkBandLowMid") + "|" + GetLoc("sAudioLinkBandHighMid") + "|" + GetLoc("sAudioLinkBandTreble"));
+                                if(audioLinkUVMode.floatValue == 2) materialEditor.ShaderProperty(audioLinkUVParams, GetLoc("sScale") + "|" + GetLoc("sOffset") + "|" + GetLoc("sAngle") + "|" + GetLoc("sAudioLinkBand") + "|" + GetLoc("sAudioLinkBandBass") + "|" + GetLoc("sAudioLinkBandLowMid") + "|" + GetLoc("sAudioLinkBandHighMid") + "|" + GetLoc("sAudioLinkBandTreble"));
+                                GUILayout.Label(GetLoc("sAudioLinkApplyTo"), EditorStyles.boldLabel);
+                                EditorGUI.indentLevel++;
+                                if(shaderSetting.LIL_FEATURE_MAIN2ND) materialEditor.ShaderProperty(audioLink2Main2nd, GetLoc("sMainColor2nd"));
+                                if(shaderSetting.LIL_FEATURE_MAIN3RD) materialEditor.ShaderProperty(audioLink2Main3rd, GetLoc("sMainColor3rd"));
+                                if(shaderSetting.LIL_FEATURE_EMISSION_1ST) materialEditor.ShaderProperty(audioLink2Emission, GetLoc("sEmission"));
+                                if(shaderSetting.LIL_FEATURE_EMISSION_2ND) materialEditor.ShaderProperty(audioLink2Emission2nd, GetLoc("sEmission2nd"));
+                                if(shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX)
+                                {
+                                    materialEditor.ShaderProperty(audioLink2Vertex, GetLoc("sVertex"));
+                                    if(audioLink2Vertex.floatValue == 1)
+                                    {
+                                        EditorGUI.indentLevel++;
+                                        if(shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK)
+                                        {
+                                            materialEditor.ShaderProperty(audioLinkVertexUVMode, GetLoc("sAudioLinkUVMode") + "|" + GetLoc("sAudioLinkUVModeNone") + "|" + GetLoc("sAudioLinkUVModePosition") + "|" + GetLoc("sAudioLinkUVModeUV") + "|" + GetLoc("sAudioLinkUVModeMask"));
+                                            if(audioLinkVertexUVMode.floatValue == 3) materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sMask"), ""), audioLinkMask);
+                                        }
+                                        else
+                                        {
+                                            materialEditor.ShaderProperty(audioLinkVertexUVMode, GetLoc("sAudioLinkUVMode") + "|" + GetLoc("sAudioLinkUVModeNone") + "|" + GetLoc("sAudioLinkUVModePosition") + "|" + GetLoc("sAudioLinkUVModeUV"));
+                                        }
+                                        if(audioLinkVertexUVMode.floatValue == 0) materialEditor.ShaderProperty(audioLinkVertexUVParams, GetLoc("sOffset") + "|" + GetLoc("sAudioLinkBand") + "|" + GetLoc("sAudioLinkBandBass") + "|" + GetLoc("sAudioLinkBandLowMid") + "|" + GetLoc("sAudioLinkBandHighMid") + "|" + GetLoc("sAudioLinkBandTreble"));
+                                        if(audioLinkVertexUVMode.floatValue == 1) materialEditor.ShaderProperty(audioLinkVertexUVParams, GetLoc("sScale") + "|" + GetLoc("sOffset") + "|" + GetLoc("sAudioLinkBand") + "|" + GetLoc("sAudioLinkBandBass") + "|" + GetLoc("sAudioLinkBandLowMid") + "|" + GetLoc("sAudioLinkBandHighMid") + "|" + GetLoc("sAudioLinkBandTreble"));
+                                        if(audioLinkVertexUVMode.floatValue == 2) materialEditor.ShaderProperty(audioLinkVertexUVParams, GetLoc("sScale") + "|" + GetLoc("sOffset") + "|" + GetLoc("sAngle") + "|" + GetLoc("sAudioLinkBand") + "|" + GetLoc("sAudioLinkBandBass") + "|" + GetLoc("sAudioLinkBandLowMid") + "|" + GetLoc("sAudioLinkBandHighMid") + "|" + GetLoc("sAudioLinkBandTreble"));
+                                        if(audioLinkVertexUVMode.floatValue == 1) materialEditor.ShaderProperty(audioLinkVertexStart, GetLoc("sAudioLinkStartPosition"));
+                                        materialEditor.ShaderProperty(audioLinkVertexStrength, GetLoc("sAudioLinkMovingVector") + "|" + GetLoc("sAudioLinkNormalStrength"));
+                                        EditorGUI.indentLevel--;
+                                    }
+                                }
+                                EditorGUI.indentLevel--;
+                                if(shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL)
+                                {
+                                    DrawLine();
+                                    materialEditor.ShaderProperty(audioLinkAsLocal, GetLoc("sAudioLinkAsLocal"));
+                                    if(audioLinkAsLocal.floatValue == 1)
+                                    {
+                                        materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sAudioLinkLocalMap"), ""), audioLinkLocalMap);
+                                        materialEditor.ShaderProperty(audioLinkLocalMapParams, GetLoc("sAudioLinkLocalMapBPM") + "|" + GetLoc("sAudioLinkLocalMapNotes") + "|" + GetLoc("sOffset"));
+                                    }
+                                }
+                                EditorGUILayout.EndVertical();
+                            }
+                            EditorGUILayout.EndVertical();
+                        }
+                    }
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Encryption
+                    if(shaderSetting.LIL_FEATURE_ENCRYPTION)
+                    {
+                        edSet.isShowEncryption = Foldout(GetLoc("sEncryption"), GetLoc("sEncryptionTips"), edSet.isShowEncryption);
+                        DrawHelpButton(GetLoc("sAnchorEncryption"));
+                        if(edSet.isShowEncryption)
+                        {
+                            EditorGUILayout.BeginVertical(boxOuter);
+                            EditorGUILayout.LabelField(GetLoc("sEncryption"), customToggleFont);
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            materialEditor.ShaderProperty(ignoreEncryption, GetLoc("sIgnoreEncryption"));
+                            materialEditor.ShaderProperty(keys, GetLoc("sKeys"));
+                            EditorGUILayout.EndVertical();
+                            EditorGUILayout.EndVertical();
+                        }
+                    }
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Stencil
+                    edSet.isShowStencil = Foldout(GetLoc("sStencilSetting"), GetLoc("sStencilTips"), edSet.isShowStencil);
+                    DrawHelpButton(GetLoc("sAnchorStencil"));
+                    if(edSet.isShowStencil)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sStencilSetting"), customToggleFont);
+                        EditorGUILayout.BeginVertical(boxInner);
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Auto Setting
+                        if(GUILayout.Button("Set Writer"))
+                        {
+                            isStWr = true;
+                            stencilRef.floatValue = 1;
+                            stencilReadMask.floatValue = 255.0f;
+                            stencilWriteMask.floatValue = 255.0f;
+                            stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Always;
+                            stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Replace;
+                            stencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, isOutl, isLite, isStWr, isTess);
+                        }
+                        if(GUILayout.Button("Set Reader"))
+                        {
+                            isStWr = false;
+                            stencilRef.floatValue = 1;
+                            stencilReadMask.floatValue = 255.0f;
+                            stencilWriteMask.floatValue = 255.0f;
+                            stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.NotEqual;
+                            stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            stencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, isOutl, isLite, isStWr, isTess);
+                        }
+                        if(GUILayout.Button("Reset"))
+                        {
+                            isStWr = false;
+                            stencilRef.floatValue = 0;
+                            stencilReadMask.floatValue = 255.0f;
+                            stencilWriteMask.floatValue = 255.0f;
+                            stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Always;
+                            stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            stencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, isOutl, isLite, isStWr, isTess);
+                        }
+
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Base
+                        {
+                            DrawLine();
+                            materialEditor.ShaderProperty(stencilRef, "Ref");
+                            materialEditor.ShaderProperty(stencilReadMask, "ReadMask");
+                            materialEditor.ShaderProperty(stencilWriteMask, "WriteMask");
+                            materialEditor.ShaderProperty(stencilComp, "Comp");
+                            materialEditor.ShaderProperty(stencilPass, "Pass");
+                            materialEditor.ShaderProperty(stencilFail, "Fail");
+                            materialEditor.ShaderProperty(stencilZFail, "ZFail");
+                        }
+
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+                    }
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Rendering
+                    edSet.isShowRendering = Foldout(GetLoc("sRenderingSetting"), GetLoc("sRenderingTips"), edSet.isShowRendering);
+                    DrawHelpButton(GetLoc("sAnchorRendering"));
+                    if(edSet.isShowRendering)
+                    {
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Reset Button
+                        if(GUILayout.Button(GetLoc("sRenderingReset"), offsetButton))
+                        {
+                            material.enableInstancing = false;
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, isOutl, isLite, isStWr, isTess);
+                        }
+
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Base
+                        {
+                            EditorGUILayout.BeginVertical(boxOuter);
+                            EditorGUILayout.LabelField(GetLoc("sRenderingSetting"), customToggleFont);
+                            EditorGUILayout.BeginVertical(boxInner);
+                            materialEditor.ShaderProperty(cull, sCullModes);
+                            materialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
+                            materialEditor.ShaderProperty(ztest, GetLoc("sZTest"));
+                            materialEditor.ShaderProperty(offsetFactor, GetLoc("sOffsetFactor"));
+                            materialEditor.ShaderProperty(offsetUnits, GetLoc("sOffsetUnits"));
+                            materialEditor.ShaderProperty(colorMask, GetLoc("sColorMask"));
+                            DrawLine();
+                            BlendSettingGUI(materialEditor, ref edSet.isShowBlend, GetLoc("sForward"), srcBlend, dstBlend, srcBlendAlpha, dstBlendAlpha, blendOp, blendOpAlpha);
+                            DrawLine();
+                            materialEditor.EnableInstancingField();
+                            materialEditor.DoubleSidedGIField();
+                            materialEditor.RenderQueueField();
+                            EditorGUILayout.EndVertical();
+                            EditorGUILayout.EndVertical();
+                        }
+                    }
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Optimization
+                    GUILayout.Label(" " + GetLoc("sOptimization"), EditorStyles.boldLabel);
+                    edSet.isShowOptimization = Foldout(GetLoc("sOptimization"), GetLoc("sOptimizationTips"), edSet.isShowOptimization);
+                    DrawHelpButton(GetLoc("sAnchorOptimization"));
+                    if(edSet.isShowOptimization)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sOptimization"), customToggleFont);
+                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                        if(GUILayout.Button(GetLoc("sRemoveUnused"))) RemoveUnusedTexture(material, isLite, isFur, shaderSetting);
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+                    }
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Shader Setting
+                    edSet.isShowShaderSetting = Foldout(GetLoc("sShaderSetting"), GetLoc("sShaderSettingTips"), edSet.isShowShaderSetting);
+                    DrawHelpButton(GetLoc("sAnchorShaderSetting"));
+                    if(edSet.isShowShaderSetting)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sShaderSetting"), customToggleFont);
+                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                        EditorGUILayout.HelpBox(GetLoc("sHelpShaderSetting"),MessageType.Info);
+                        ShaderSettingGUI();
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+                    }
+                }
+                else if(isFakeShadow)
+                {
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Base Setting
+                    GUILayout.Label(" " + GetLoc("sBaseSetting"), EditorStyles.boldLabel);
+                    DrawHelpButton(GetLoc("sAnchorBaseSetting"));
+                    EditorGUILayout.BeginVertical(customBox);
+                    {
+                        materialEditor.ShaderProperty(invisible, GetLoc("sInvisible"));
+                        materialEditor.ShaderProperty(cull, sCullModes);
+                        materialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
+                        GUILayout.Label("FakeShadow", EditorStyles.boldLabel);
+                        materialEditor.ShaderProperty(fakeShadowVector, GetLoc("sVector") + "|" + GetLoc("sOffset"));
+                    }
+                    EditorGUILayout.EndVertical();
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // UV
+                    edSet.isShowMainUV = Foldout(GetLoc("sMainUV"), GetLoc("sMainUVTips"), edSet.isShowMainUV);
+                    DrawHelpButton(GetLoc("sAnchorUVSetting"));
+                    if(edSet.isShowMainUV)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sMainUV"), customToggleFont);
+                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                        materialEditor.TextureScaleOffsetProperty(mainTex);
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+                    }
+
+                    EditorGUILayout.Space();
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Colors
+                    GUILayout.Label(" " + GetLoc("sColors"), EditorStyles.boldLabel);
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Main Color
+                    edSet.isShowMain = Foldout(GetLoc("sMainColorSetting"), GetLoc("sMainColorTips"), edSet.isShowMain);
+                    DrawHelpButton(GetLoc("sAnchorMainColor"));
+                    if(edSet.isShowMain)
+                    {
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Main
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sMainColor"), customToggleFont);
+                        DrawHelpButton(GetLoc("sAnchorMainColor1"));
+                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                        materialEditor.TexturePropertySingleLine(textureRGBAContent, mainTex, mainColor);
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+                    }
+
+                    EditorGUILayout.Space();
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Advanced
+                    GUILayout.Label(" " + GetLoc("sAdvanced"), EditorStyles.boldLabel);
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Encryption
+                    if(shaderSetting.LIL_FEATURE_ENCRYPTION)
+                    {
+                        edSet.isShowEncryption = Foldout(GetLoc("sEncryption"), GetLoc("sEncryptionTips"), edSet.isShowEncryption);
+                        DrawHelpButton(GetLoc("sAnchorEncryption"));
+                        if(edSet.isShowEncryption)
+                        {
+                            EditorGUILayout.BeginVertical(boxOuter);
+                            EditorGUILayout.LabelField(GetLoc("sEncryption"), customToggleFont);
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            materialEditor.ShaderProperty(ignoreEncryption, GetLoc("sIgnoreEncryption"));
+                            materialEditor.ShaderProperty(keys, GetLoc("sKeys"));
+                            EditorGUILayout.EndVertical();
+                            EditorGUILayout.EndVertical();
+                        }
+                    }
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Stencil
+                    edSet.isShowStencil = Foldout(GetLoc("sStencilSetting"), GetLoc("sStencilTips"), edSet.isShowStencil);
+                    DrawHelpButton(GetLoc("sAnchorStencil"));
+                    if(edSet.isShowStencil)
+                    {
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sStencilSetting"), customToggleFont);
+                        EditorGUILayout.BeginVertical(boxInner);
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Auto Setting
+                        if(GUILayout.Button("Set Writer"))
+                        {
+                            isStWr = true;
+                            stencilRef.floatValue = 51;
+                            stencilReadMask.floatValue = 255.0f;
+                            stencilWriteMask.floatValue = 255.0f;
+                            stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Equal;
+                            stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Replace;
+                            stencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            material.renderQueue = material.shader.renderQueue - 1;
+                        }
+                        if(GUILayout.Button("Set Reader"))
+                        {
+                            isStWr = false;
+                            stencilRef.floatValue = 51;
+                            stencilReadMask.floatValue = 255.0f;
+                            stencilWriteMask.floatValue = 255.0f;
+                            stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Equal;
+                            stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            stencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            material.renderQueue = -1;
+                        }
+                        if(GUILayout.Button("Reset"))
+                        {
+                            isStWr = false;
+                            stencilRef.floatValue = 51;
+                            stencilReadMask.floatValue = 255.0f;
+                            stencilWriteMask.floatValue = 255.0f;
+                            stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Equal;
+                            stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            stencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            material.renderQueue = -1;
+                        }
+
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Base
+                        {
+                            DrawLine();
+                            materialEditor.ShaderProperty(stencilRef, "Ref");
+                            materialEditor.ShaderProperty(stencilReadMask, "ReadMask");
+                            materialEditor.ShaderProperty(stencilWriteMask, "WriteMask");
+                            materialEditor.ShaderProperty(stencilComp, "Comp");
+                            materialEditor.ShaderProperty(stencilPass, "Pass");
+                            materialEditor.ShaderProperty(stencilFail, "Fail");
+                            materialEditor.ShaderProperty(stencilZFail, "ZFail");
+                        }
+
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+                    }
+
+                    //------------------------------------------------------------------------------------------------------------------------------
+                    // Rendering
+                    edSet.isShowRendering = Foldout(GetLoc("sRenderingSetting"), GetLoc("sRenderingTips"), edSet.isShowRendering);
+                    DrawHelpButton(GetLoc("sAnchorRendering"));
+                    if(edSet.isShowRendering)
+                    {
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Reset Button
+                        if(GUILayout.Button(GetLoc("sRenderingReset"), offsetButton))
+                        {
+                            material.enableInstancing = false;
+                            material.renderQueue = -1;
+                            material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.DstColor);
+                            material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                            material.SetInt("_ZWrite", 1);
+                            material.SetInt("_ZTest", 4);
+                            material.SetFloat("_OffsetFactor", 0.0f);
+                            material.SetFloat("_OffsetUnits", 0.0f);
+                            material.SetInt("_ColorMask", 15);
+                            material.SetInt("_SrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.Zero);
+                            material.SetInt("_DstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
+                            material.SetInt("_BlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
+                            material.SetInt("_BlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
+                        }
+
+                        //------------------------------------------------------------------------------------------------------------------------------
+                        // Base
+                        {
+                            EditorGUILayout.BeginVertical(boxOuter);
+                            EditorGUILayout.LabelField(GetLoc("sRenderingSetting"), customToggleFont);
+                            EditorGUILayout.BeginVertical(boxInner);
+                            materialEditor.ShaderProperty(cull, sCullModes);
+                            materialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
+                            materialEditor.ShaderProperty(ztest, GetLoc("sZTest"));
+                            materialEditor.ShaderProperty(offsetFactor, GetLoc("sOffsetFactor"));
+                            materialEditor.ShaderProperty(offsetUnits, GetLoc("sOffsetUnits"));
+                            materialEditor.ShaderProperty(colorMask, GetLoc("sColorMask"));
+                            DrawLine();
+                            BlendSettingGUI(materialEditor, ref edSet.isShowBlend, GetLoc("sForward"), srcBlend, dstBlend, srcBlendAlpha, dstBlendAlpha, blendOp, blendOpAlpha);
+                            DrawLine();
+                            materialEditor.EnableInstancingField();
+                            materialEditor.DoubleSidedGIField();
+                            materialEditor.RenderQueueField();
                             EditorGUILayout.EndVertical();
                             EditorGUILayout.EndVertical();
                         }
@@ -2109,6 +3046,7 @@ namespace lilToon
                                     if(useGlitter.floatValue == 1)
                                     {
                                         EditorGUILayout.BeginVertical(boxInnerHalf);
+                                        materialEditor.ShaderProperty(glitterUVMode, "UV Mode|UV0|UV1");
                                         materialEditor.TexturePropertySingleLine(colorRGBAContent, glitterColorTex, glitterColor);
                                         if(glitterColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
                                         {
@@ -2121,6 +3059,7 @@ namespace lilToon
                                         DrawLine();
                                         materialEditor.ShaderProperty(glitterParams1, sGlitterParams1);
                                         materialEditor.ShaderProperty(glitterParams2, sGlitterParams2);
+                                        materialEditor.ShaderProperty(glitterVRParallaxStrength, GetLoc("sVRParallaxStrength"));
                                         EditorGUILayout.EndVertical();
                                     }
                                     EditorGUILayout.EndVertical();
@@ -2956,6 +3895,7 @@ namespace lilToon
                 rimIndirBorder = FindProperty("_RimIndirBorder", props);
                 rimIndirBlur = FindProperty("_RimIndirBlur", props);
             useGlitter = FindProperty("_UseGlitter", props);
+                glitterUVMode = FindProperty("_GlitterUVMode", props);
                 glitterColor = FindProperty("_GlitterColor", props);
                 glitterColorTex = FindProperty("_GlitterColorTex", props);
                 glitterMainStrength = FindProperty("_GlitterMainStrength", props);
@@ -2964,6 +3904,7 @@ namespace lilToon
                 glitterApplyTransparency = FindProperty("_GlitterApplyTransparency", props);
                 glitterParams1 = FindProperty("_GlitterParams1", props);
                 glitterParams2 = FindProperty("_GlitterParams2", props);
+                glitterVRParallaxStrength = FindProperty("_GlitterVRParallaxStrength", props);
             useEmission = FindProperty("_UseEmission", props);
                 emissionColor = FindProperty("_EmissionColor", props);
                 emissionMap = FindProperty("_EmissionMap", props);
@@ -3141,6 +4082,181 @@ namespace lilToon
                 furOffsetFactor = FindProperty("_FurOffsetFactor", props);
                 furOffsetUnits = FindProperty("_FurOffsetUnits", props);
                 furColorMask = FindProperty("_FurColorMask", props);
+        }
+
+        void LoadGemProperties(MaterialProperty[] props)
+        {
+            invisible = FindProperty("_Invisible", props);
+            asUnlit = FindProperty("_AsUnlit", props);
+            vertexLightStrength = FindProperty("_VertexLightStrength", props);
+            lightMinLimit = FindProperty("_LightMinLimit", props);
+            mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
+                cull = FindProperty("_Cull", props);
+                srcBlend = FindProperty("_SrcBlend", props);
+                dstBlend = FindProperty("_DstBlend", props);
+                srcBlendAlpha = FindProperty("_SrcBlendAlpha", props);
+                dstBlendAlpha = FindProperty("_DstBlendAlpha", props);
+                blendOp = FindProperty("_BlendOp", props);
+                blendOpAlpha = FindProperty("_BlendOpAlpha", props);
+                zwrite = FindProperty("_ZWrite", props);
+                ztest = FindProperty("_ZTest", props);
+                stencilRef = FindProperty("_StencilRef", props);
+                stencilReadMask = FindProperty("_StencilReadMask", props);
+                stencilWriteMask = FindProperty("_StencilWriteMask", props);
+                stencilComp = FindProperty("_StencilComp", props);
+                stencilPass = FindProperty("_StencilPass", props);
+                stencilFail = FindProperty("_StencilFail", props);
+                stencilZFail = FindProperty("_StencilZFail", props);
+                offsetFactor = FindProperty("_OffsetFactor", props);
+                offsetUnits = FindProperty("_OffsetUnits", props);
+                colorMask = FindProperty("_ColorMask", props);
+            //useMainTex = FindProperty("_UseMainTex", props);
+                mainColor = FindProperty("_Color", props);
+                mainTex = FindProperty("_MainTex", props);
+            // Normal
+            useBumpMap = FindProperty("_UseBumpMap", props);
+                bumpMap = FindProperty("_BumpMap", props);
+                bumpScale = FindProperty("_BumpScale", props);
+            useBump2ndMap = FindProperty("_UseBump2ndMap", props);
+                bump2ndMap = FindProperty("_Bump2ndMap", props);
+                bump2ndScale = FindProperty("_Bump2ndScale", props);
+                bump2ndScaleMask = FindProperty("_Bump2ndScaleMask", props);
+            useMatCap = FindProperty("_UseMatCap", props);
+                matcapTex = FindProperty("_MatCapTex", props);
+                matcapColor = FindProperty("_MatCapColor", props);
+                matcapBlend = FindProperty("_MatCapBlend", props);
+                matcapBlendMask = FindProperty("_MatCapBlendMask", props);
+                matcapEnableLighting = FindProperty("_MatCapEnableLighting", props);
+                matcapBlendMode = FindProperty("_MatCapBlendMode", props);
+                matcapApplyTransparency = FindProperty("_MatCapApplyTransparency", props);
+                matcapZRotCancel = FindProperty("_MatCapZRotCancel", props);
+                matcapCustomNormal = FindProperty("_MatCapCustomNormal", props);
+                matcapBumpMap = FindProperty("_MatCapBumpMap", props);
+                matcapBumpScale = FindProperty("_MatCapBumpScale", props);
+            useMatCap2nd = FindProperty("_UseMatCap2nd", props);
+                matcap2ndTex = FindProperty("_MatCap2ndTex", props);
+                matcap2ndColor = FindProperty("_MatCap2ndColor", props);
+                matcap2ndBlend = FindProperty("_MatCap2ndBlend", props);
+                matcap2ndBlendMask = FindProperty("_MatCap2ndBlendMask", props);
+                matcap2ndEnableLighting = FindProperty("_MatCap2ndEnableLighting", props);
+                matcap2ndBlendMode = FindProperty("_MatCap2ndBlendMode", props);
+                matcap2ndApplyTransparency = FindProperty("_MatCap2ndApplyTransparency", props);
+                matcap2ndZRotCancel = FindProperty("_MatCap2ndZRotCancel", props);
+                matcap2ndCustomNormal = FindProperty("_MatCap2ndCustomNormal", props);
+                matcap2ndBumpMap = FindProperty("_MatCap2ndBumpMap", props);
+                matcap2ndBumpScale = FindProperty("_MatCap2ndBumpScale", props);
+            useRim = FindProperty("_UseRim", props);
+                rimColor = FindProperty("_RimColor", props);
+                rimColorTex = FindProperty("_RimColorTex", props);
+                rimBorder = FindProperty("_RimBorder", props);
+                rimBlur = FindProperty("_RimBlur", props);
+                rimFresnelPower = FindProperty("_RimFresnelPower", props);
+                rimEnableLighting = FindProperty("_RimEnableLighting", props);
+                rimShadowMask = FindProperty("_RimShadowMask", props);
+                rimApplyTransparency = FindProperty("_RimApplyTransparency", props);
+                rimDirStrength = FindProperty("_RimDirStrength", props);
+                rimDirRange = FindProperty("_RimDirRange", props);
+                rimIndirRange = FindProperty("_RimIndirRange", props);
+                rimIndirColor = FindProperty("_RimIndirColor", props);
+                rimIndirBorder = FindProperty("_RimIndirBorder", props);
+                rimIndirBlur = FindProperty("_RimIndirBlur", props);
+            useGlitter = FindProperty("_UseGlitter", props);
+                glitterUVMode = FindProperty("_GlitterUVMode", props);
+                glitterColor = FindProperty("_GlitterColor", props);
+                glitterColorTex = FindProperty("_GlitterColorTex", props);
+                glitterMainStrength = FindProperty("_GlitterMainStrength", props);
+                glitterEnableLighting = FindProperty("_GlitterEnableLighting", props);
+                glitterShadowMask = FindProperty("_GlitterShadowMask", props);
+                glitterApplyTransparency = FindProperty("_GlitterApplyTransparency", props);
+                glitterParams1 = FindProperty("_GlitterParams1", props);
+                glitterParams2 = FindProperty("_GlitterParams2", props);
+                glitterVRParallaxStrength = FindProperty("_GlitterVRParallaxStrength", props);
+                ignoreEncryption = FindProperty("_IgnoreEncryption", props);
+                keys = FindProperty("_Keys", props);
+                refractionStrength = FindProperty("_RefractionStrength", props);
+                refractionFresnelPower = FindProperty("_RefractionFresnelPower", props);
+            useEmission = FindProperty("_UseEmission", props);
+                emissionColor = FindProperty("_EmissionColor", props);
+                emissionMap = FindProperty("_EmissionMap", props);
+                emissionMap_ScrollRotate = FindProperty("_EmissionMap_ScrollRotate", props);
+                emissionBlend = FindProperty("_EmissionBlend", props);
+                emissionBlendMask = FindProperty("_EmissionBlendMask", props);
+                emissionBlendMask_ScrollRotate = FindProperty("_EmissionBlendMask_ScrollRotate", props);
+                emissionBlink = FindProperty("_EmissionBlink", props);
+                emissionUseGrad = FindProperty("_EmissionUseGrad", props);
+                emissionGradTex = FindProperty("_EmissionGradTex", props);
+                emissionGradSpeed = FindProperty("_EmissionGradSpeed", props);
+                emissionParallaxDepth = FindProperty("_EmissionParallaxDepth", props);
+                emissionFluorescence = FindProperty("_EmissionFluorescence", props);
+            useEmission2nd = FindProperty("_UseEmission2nd", props);
+                emission2ndColor = FindProperty("_Emission2ndColor", props);
+                emission2ndMap = FindProperty("_Emission2ndMap", props);
+                emission2ndMap_ScrollRotate = FindProperty("_Emission2ndMap_ScrollRotate", props);
+                emission2ndBlend = FindProperty("_Emission2ndBlend", props);
+                emission2ndBlendMask = FindProperty("_Emission2ndBlendMask", props);
+                emission2ndBlendMask_ScrollRotate = FindProperty("_Emission2ndBlendMask_ScrollRotate", props);
+                emission2ndBlink = FindProperty("_Emission2ndBlink", props);
+                emission2ndUseGrad = FindProperty("_Emission2ndUseGrad", props);
+                emission2ndGradTex = FindProperty("_Emission2ndGradTex", props);
+                emission2ndGradSpeed = FindProperty("_Emission2ndGradSpeed", props);
+                emission2ndParallaxDepth = FindProperty("_Emission2ndParallaxDepth", props);
+                emission2ndFluorescence = FindProperty("_Emission2ndFluorescence", props);
+            useAudioLink = FindProperty("_UseAudioLink", props);
+                audioLinkUVMode = FindProperty("_AudioLinkUVMode", props);
+                audioLinkUVParams = FindProperty("_AudioLinkUVParams", props);
+                audioLinkMask = FindProperty("_AudioLinkMask", props);
+                audioLink2Main2nd = FindProperty("_AudioLink2Main2nd", props);
+                audioLink2Main3rd = FindProperty("_AudioLink2Main3rd", props);
+                audioLink2Emission = FindProperty("_AudioLink2Emission", props);
+                audioLink2Emission2nd = FindProperty("_AudioLink2Emission2nd", props);
+                audioLink2Vertex = FindProperty("_AudioLink2Vertex", props);
+                audioLinkVertexUVMode = FindProperty("_AudioLinkVertexUVMode", props);
+                audioLinkVertexUVParams = FindProperty("_AudioLinkVertexUVParams", props);
+                audioLinkVertexStart = FindProperty("_AudioLinkVertexStart", props);
+                audioLinkVertexStrength = FindProperty("_AudioLinkVertexStrength", props);
+                audioLinkAsLocal = FindProperty("_AudioLinkAsLocal", props);
+                audioLinkLocalMap = FindProperty("_AudioLinkLocalMap", props);
+                audioLinkLocalMapParams = FindProperty("_AudioLinkLocalMapParams", props);
+            //useGem = FindProperty("_UseGem", props);
+                gemChromaticAberration = FindProperty("_GemChromaticAberration", props);
+                gemEnvContrast = FindProperty("_GemEnvContrast", props);
+                gemEnvColor = FindProperty("_GemEnvColor", props);
+                gemParticleLoop = FindProperty("_GemParticleLoop", props);
+                gemParticleColor = FindProperty("_GemParticleColor", props);
+                gemVRParallaxStrength = FindProperty("_GemVRParallaxStrength", props);
+                smoothness = FindProperty("_Smoothness", props);
+                smoothnessTex = FindProperty("_SmoothnessTex", props);
+                reflectance = FindProperty("_Reflectance", props);
+        }
+
+        void LoadFakeShadowProperties(MaterialProperty[] props)
+        {
+            invisible = FindProperty("_Invisible", props);
+                cull = FindProperty("_Cull", props);
+                srcBlend = FindProperty("_SrcBlend", props);
+                dstBlend = FindProperty("_DstBlend", props);
+                srcBlendAlpha = FindProperty("_SrcBlendAlpha", props);
+                dstBlendAlpha = FindProperty("_DstBlendAlpha", props);
+                blendOp = FindProperty("_BlendOp", props);
+                blendOpAlpha = FindProperty("_BlendOpAlpha", props);
+                zwrite = FindProperty("_ZWrite", props);
+                ztest = FindProperty("_ZTest", props);
+                stencilRef = FindProperty("_StencilRef", props);
+                stencilReadMask = FindProperty("_StencilReadMask", props);
+                stencilWriteMask = FindProperty("_StencilWriteMask", props);
+                stencilComp = FindProperty("_StencilComp", props);
+                stencilPass = FindProperty("_StencilPass", props);
+                stencilFail = FindProperty("_StencilFail", props);
+                stencilZFail = FindProperty("_StencilZFail", props);
+                offsetFactor = FindProperty("_OffsetFactor", props);
+                offsetUnits = FindProperty("_OffsetUnits", props);
+                colorMask = FindProperty("_ColorMask", props);
+            //useMainTex = FindProperty("_UseMainTex", props);
+                mainColor = FindProperty("_Color", props);
+                mainTex = FindProperty("_MainTex", props);
+                ignoreEncryption = FindProperty("_IgnoreEncryption", props);
+                keys = FindProperty("_Keys", props);
+                fakeShadowVector = FindProperty("_FakeShadowVector", props);
         }
 
         void LoadLiteProperties(MaterialProperty[] props)
@@ -3362,6 +4478,10 @@ namespace lilToon
             ltsrefb   = Shader.Find("Hidden/lilToonRefractionBlur");
             ltsfur    = Shader.Find("Hidden/lilToonFur");
             ltsfurc   = Shader.Find("Hidden/lilToonFurCutout");
+
+            ltsgem    = Shader.Find("Hidden/lilToonGem");
+
+            ltsfs     = Shader.Find("_lil/lilToonFakeShadow");
 
             ltsbaker  = Shader.Find("Hidden/ltsother_baker");
             ltspo     = Shader.Find("Hidden/ltspass_opaque");
@@ -4370,9 +5490,19 @@ namespace lilToon
                     material.SetInt("_FurDstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     material.SetInt("_FurZWrite", 1);
                     break;
+                case RenderingMode.Gem:
+                    material.shader = ltsgem;
+                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                    break;
             }
             if(isstencil) material.renderQueue = material.shader.renderQueue - 1;
             material.SetInt("_ZWrite", 1);
+            if(renderingMode == RenderingMode.Gem)
+            {
+                material.SetInt("_Cull", 0);
+                material.SetInt("_ZWrite", 0);
+            }
             material.SetInt("_ZTest", 4);
             material.SetFloat("_OffsetFactor", 0.0f);
             material.SetFloat("_OffsetUnits", 0.0f);
@@ -4554,6 +5684,7 @@ namespace lilToon
                     material.SetTexture("_MatCap2ndBlendMask", null);
                 }
                 if(material.GetFloat("_UseRim") == 0.0f) material.SetTexture("_RimColorTex", null);
+                if(material.GetFloat("_UseGlitter") == 0.0f) material.SetTexture("_GlitterColorTex", null);
                 if(material.GetFloat("_UseParallax") == 0.0f) material.SetTexture("_ParallaxMap", null);
                 if(material.GetFloat("_UseAudioLink") == 0.0f || material.GetFloat("_AudioLinkUVMode") != 3.0f) material.SetTexture("_AudioLinkMask", null);
                 if(material.GetFloat("_UseAudioLink") == 0.0f || material.GetFloat("_AudioLinkAsLocal") == 0.0f) material.SetTexture("_AudioLinkLocalMap", null);
@@ -4633,6 +5764,7 @@ namespace lilToon
                 if(material.HasProperty("_UseMatCap2nd")) shaderSetting.LIL_FEATURE_MATCAP_2ND = shaderSetting.LIL_FEATURE_MATCAP_2ND || material.GetFloat("_UseMatCap2nd") != 0.0f;
                 if(material.HasProperty("_UseRim")) shaderSetting.LIL_FEATURE_RIMLIGHT = shaderSetting.LIL_FEATURE_RIMLIGHT || material.GetFloat("_UseRim") != 0.0f;
                 if(material.HasProperty("_RimDirStrength")) shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION = shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION || material.GetFloat("_RimDirStrength") != 0.0f;
+                if(material.HasProperty("_UseGlitter")) shaderSetting.LIL_FEATURE_GLITTER = shaderSetting.LIL_FEATURE_GLITTER || material.GetFloat("_UseGlitter") != 0.0f;
                 if(material.HasProperty("_UseParalla")) shaderSetting.LIL_FEATURE_PARALLAX = shaderSetting.LIL_FEATURE_PARALLAX || material.GetFloat("_UseParallax") != 0.0f;
                 //if(material.HasProperty("")) shaderSetting.LIL_FEATURE_POM = shaderSetting.LIL_FEATURE_POM;
                 if(material.HasProperty("_UseAudioLink")) shaderSetting.LIL_FEATURE_AUDIOLINK = shaderSetting.LIL_FEATURE_AUDIOLINK || material.GetFloat("_UseAudioLink") != 0.0f;
@@ -4747,6 +5879,7 @@ namespace lilToon
                 if(!shaderSetting.LIL_FEATURE_MATCAP_2ND) material.SetFloat("_UseMatCap2nd", 0.0f);
                 if(!shaderSetting.LIL_FEATURE_RIMLIGHT) material.SetFloat("_UseRim", 0.0f);
                 if(!shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION) material.SetFloat("_RimDirStrength", 0.0f);
+                if(!shaderSetting.LIL_FEATURE_GLITTER) material.SetFloat("_UseGlitter", 0.0f);
                 if(!shaderSetting.LIL_FEATURE_PARALLAX) material.SetFloat("_UseParallax", 0.0f);
                 //if(!shaderSetting.LIL_FEATURE_POM);
                 if(!shaderSetting.LIL_FEATURE_AUDIOLINK) material.SetFloat("_UseAudioLink", 0.0f);
@@ -4849,6 +5982,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_MATCAP = shaderSetting.LIL_FEATURE_MATCAP || propname.Contains("_UseMatCap");
                 shaderSetting.LIL_FEATURE_MATCAP_2ND = shaderSetting.LIL_FEATURE_MATCAP_2ND || propname.Contains("_UseMatCap2nd");
                 shaderSetting.LIL_FEATURE_RIMLIGHT = shaderSetting.LIL_FEATURE_RIMLIGHT || propname.Contains("_UseRim");
+                shaderSetting.LIL_FEATURE_GLITTER = shaderSetting.LIL_FEATURE_GLITTER || propname.Contains("_UseGlitter");
                 shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION = shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION || propname.Contains("_RimDirStrength");
                 shaderSetting.LIL_FEATURE_PARALLAX = shaderSetting.LIL_FEATURE_PARALLAX || propname.Contains("_UseParallax");
                 //shaderSetting.LIL_FEATURE_POM = shaderSetting.LIL_FEATURE_POM;
@@ -5871,6 +7005,7 @@ namespace lilToon
                 hsvgMaterial.SetColor(mainColor.name,           Color.white);
                 hsvgMaterial.SetVector(mainTexHSVG.name,        mainTexHSVG.vectorValue);
                 hsvgMaterial.SetFloat(mainGradationStrength.name, 0.0f);
+                hsvgMaterial.SetTexture(mainColorAdjustMask.name, mainColorAdjustMask.textureValue);
 
                 if(shaderSetting.LIL_FEATURE_MAIN_GRADATION_MAP)
                 {

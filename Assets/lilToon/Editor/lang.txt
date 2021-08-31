@@ -72,6 +72,7 @@ sVertex	Vertex	頂点	꼭짓점	顶点	頂點
 sColorAlphaZeroWarn	To enable the property, increase the alpha value.	プロパティを有効にするには透明度の値を上げて下さい。	속성을 유효하게 하려면 알파 값을 올려 주십시오.	增加 Alpha 值以启用该属性。	增加 Alpha 值以啟用該屬性。
 sApplyTransparency	Apply Transparency	透明度を適用	투명도 적용	应用透明度	應用透明度
 sReset	Reset	初期化	초기화	重置	重置
+sVRParallaxStrength	VR Parallax Strength	VR時の視差の強さ	VR Parallax Strength	VR Parallax Strength	VR Parallax Strength
 sLimShadowStrength	Shadow Strength	影の強さ	그림자 강도	阴影强度	陰影強度
 sLimOutline	Outline	輪郭線の色	윤곽선의 색	轮廓	輪廓
 sLimEmission	Emission	発光色	발광색	发光	發光
@@ -88,8 +89,9 @@ sRenderingModeCutout	Cutout	カットアウト	컷아웃	镂空	鏤空
 sRenderingModeTransparent	Transparent	半透明	투명한	透明	透明
 sRenderingModeRefraction	[high-load] Refraction	[高負荷] 屈折	[과부하] 굴절	[高负荷] 折射	[高負荷] 折射
 sRenderingModeRefractionBlur	[high-load] Refraction Blur	[高負荷] 屈折ぼかし	[과부하] 굴절 흐리게	[高负荷] 折射模糊	[高負荷] 折射模糊
-sRenderingModeFur	Fur	ファー	퍼	毛皮	毛皮
-sRenderingModeFurCutout	Fur (Cutout)	ファー (カットアウト)	퍼 (컷아웃)	毛皮(镂空)	毛皮(鏤空)
+sRenderingModeFur	[high-load] Fur	[高負荷] ファー	[과부하] 퍼	[高负荷] 毛皮	[高負荷] 毛皮
+sRenderingModeFurCutout	[high-load] Fur (Cutout)	[高負荷] ファー (カットアウト)	[과부하] 퍼 (컷아웃)	[高负荷] 毛皮(镂空)	[高負荷] 毛皮(鏤空)
+sRenderingModeGem	[high-load] Gem	[高負荷] 宝石	[과부하] 보석	[高负荷] 宝石	[高負荷] 寶石
 sCutoff	Cutoff	Cutoff (完全透明にする範囲)	Cutoff	Cutoff	Cutoff
 sCullMode	Cull Mode	Cull Mode (描画面)	Cull Mode	Cull Mode	Cull Mode
 sCullModeOff	Off	Off (両面を描画)	Off	Off	Off
@@ -250,6 +252,10 @@ sParticleSize	Particle Size	パーティクルサイズ	파티클 사이즈	粒�
 sContrast	Contrast	コントラスト	콘트라스트	对比度	對比度
 sAngleLimit	Angle limit	角度制限	각도 제한	角度限制	角度限制
 sColorRandomness	Color Randomness	ランダムカラー	랜덤 컬러	随机颜色	隨機顏色
+sGem	Gem	宝石	보석	宝石	寶石
+sChromaticAberration	Chromatic Aberration	色収差	색수차	色差	色差
+sEnvironmentColor	Environment Color	環境光の色	환경광 색상	环境光色	環境光色
+sParticleLoop	Particle Loop	パーティクルループ数	파티클 루프 수	粒子循环数	粒子循環數
 sStencilSetting	Stencil	ステンシル設定	Stencil 설정	Stencil设置	Stencil設置
 sStencilTips	You can set the Stencil	ステンシル(眉毛を髪の上に表示するなど)の設定ができます	Stencil (눈썹을 머리 위에 표시하는 등)을 설정할 수 있습니다	你可以配置详细的Stencil设置。	你可以配置詳細的Stencil設置。
 sAdvanced	Advanced	拡張設定	확장 설정	扩展设置	擴展設置
@@ -438,6 +444,7 @@ sAnchorReflection	#reflection	#反射	#reflection	#reflection	#reflection
 sAnchorMatCap	#matcap	#マットキャップ	#matcap	#matcap	#matcap
 sAnchorRimLight	#rim-light	#リムライト	#rim-light	#rim-light	#rim-light
 sAnchorGlitter	#glitter	#ラメ	#glitter	#glitter	#glitter
+sAnchorGem	#gem	#宝石	#gem	#gem	#gem
 sAnchorAdvanced	#advanced	#拡張設定	#advanced	#advanced	#advanced
 sAnchorOutline	#outline	#輪郭線設定	#outline	#outline	#outline
 sAnchorParallax	#parallax	#視差マップ	#parallax	#parallax	#parallax

@@ -903,7 +903,7 @@ float3 lilGetAdditionalLights(float3 positionWS)
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Shading
-#if !defined(LIL_LITE) && !defined(LIL_BAKER) && defined(LIL_FEATURE_SHADOW)
+#if !defined(LIL_LITE) && !defined(LIL_GEM) && !defined(LIL_BAKER) && defined(LIL_FEATURE_SHADOW)
 void lilGetShading(
     inout float4 col,
     inout float shadowmix,

@@ -1,5 +1,5 @@
 # lilToon
-Version 1.1.7
+Version 1.1.8
 
 # 概要
 アバターを用いたサービス（VRChat等）向けに開発したシェーダーで以下のような特徴があります。
@@ -23,7 +23,7 @@ Unityバージョン
 - Built-in Render Pipeline (BRP)
 - Lightweight Render Pipeline (LWRP)
 - Universal Render Pipeline (URP)
-- 屈折シェーダーはBRPのみ対応
+- 屈折シェーダーと宝石シェーダーはBRPのみ対応
 
 # 主な機能
 - メインカラーx3レイヤー（デカール、レイヤーマスク、Gifアニメーション、通常・加算・乗算・スクリーン合成対応）
@@ -132,6 +132,13 @@ VRChatのワールド:
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # 変更履歴
+## v1.1.8
+- 宝石シェーダー、FakeShadowシェーダーの追加
+- ラメにUV1を参照するモードを追加
+- ラメにVR時の視差の強さを調整する機能を追加
+- 発光のカラースペースを修正
+- インポート時にラメのプロパティがスキャンされない問題を修正
+- AvaterEncryption使用時に一部パスでメッシュが復号化されない問題を修正
 ## v1.1.7
 - HDRカラーピッカーの隣にカラーコードを追加 (Unity2019以降)
 - メインカラーの色調補正にマスクを追加

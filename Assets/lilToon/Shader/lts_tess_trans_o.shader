@@ -186,6 +186,7 @@ Shader "Hidden/lilToonTessellationTransparentOutline"
         //----------------------------------------------------------------------------------------------------------------------
         // Glitter
         [lilToggleLeft] _UseGlitter                 ("Use Glitter", Int) = 0
+        [lilEnum]       _GlitterUVMode              ("UV Mode|UV0|UV1", Int) = 0
         [lilHDR]        _GlitterColor               ("Color", Color) = (1,1,1,1)
                         _GlitterColorTex            ("Texture", 2D) = "white" {}
                         _GlitterMainStrength        ("Main Color Strength", Range(0, 1)) = 0
@@ -194,11 +195,12 @@ Shader "Hidden/lilToonTessellationTransparentOutline"
                         _GlitterEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
         [lilToggle]     _GlitterShadowMask          ("Shadow Mask", Int) = 0
         [lilToggle]     _GlitterApplyTransparency   ("Apply Transparency", Int) = 1
+                        _GlitterVRParallaxStrength  ("VR Parallax Strength", Range(0, 1)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision
         [lilToggleLeft] _UseEmission                ("Use Emission", Int) = 0
-        [lilHDR]        _EmissionColor              ("Color", Color) = (1,1,1)
+        [HDR][lilHDR]   _EmissionColor              ("Color", Color) = (1,1,1)
                         _EmissionMap                ("Texture", 2D) = "white" {}
         [lilUVAnim]     _EmissionMap_ScrollRotate   ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
                         _EmissionBlend              ("Blend", Range(0,1)) = 1
@@ -233,7 +235,7 @@ Shader "Hidden/lilToonTessellationTransparentOutline"
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision2nd
         [lilToggleLeft] _UseEmission2nd             ("Use Emission 2nd", Int) = 0
-        [lilHDR]        _Emission2ndColor           ("Color", Color) = (1,1,1)
+        [HDR][lilHDR]   _Emission2ndColor           ("Color", Color) = (1,1,1)
                         _Emission2ndMap             ("Texture", 2D) = "white" {}
         [lilUVAnim]     _Emission2ndMap_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
                         _Emission2ndBlend           ("Blend", Range(0,1)) = 1

@@ -10,6 +10,7 @@ Shader "Hidden/ltsother_baker"
         [lilHSVG]       _MainTexHSVG                ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
                         _MainGradationStrength      ("Gradation Strength", Range(0, 1)) = 0
         [NoScaleOffset] _MainGradationTex           ("Gradation Map", 2D) = "white" {}
+        [NoScaleOffset] _MainColorAdjustMask        ("Adjust Mask", 2D) = "white" {}
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main2nd
@@ -110,10 +111,13 @@ Shader "Hidden/ltsother_baker"
                 #else
                     // Main
                     float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
+                    float3 baseColor = col.rgb;
+                    float colorAdjustMask = LIL_SAMPLE_2D(_MainColorAdjustMask, sampler_MainTex, input.uv).r;
                     col.rgb = lilToneCorrection(col.rgb, _MainTexHSVG);
                     #if defined(LIL_FEATURE_MAIN_GRADATION_MAP)
                         col.rgb = lilGradationMap(col.rgb, _MainGradationTex, sampler_linear_clamp, _MainGradationStrength);
                     #endif
+                    col.rgb = lerp(baseColor, col.rgb, colorAdjustMask);
                     col *= _Color;
 
                     bool isRightHand = input.tangentW > 0.0;

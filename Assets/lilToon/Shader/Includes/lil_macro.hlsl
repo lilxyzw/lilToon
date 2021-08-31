@@ -152,7 +152,7 @@
 #endif
 
 // positionWS
-#if (defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD)) && defined(LIL_FEATURE_LAYER_DISSOLVE) || defined(LIL_FEATURE_DISSOLVE)
+#if (defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD)) && defined(LIL_FEATURE_LAYER_DISSOLVE) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_DISSOLVE)
     #define LIL_SHOULD_POSITION_OS
 #endif
 
@@ -161,12 +161,22 @@
     #define LIL_SHOULD_POSITION_WS
 #endif
 
+// uv1
+#if defined(LIL_FEATURE_GLITTER)
+    #define LIL_SHOULD_UV1
+#endif
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Macro
 
 // Absorb pipeline differences
 #if defined(LIL_LWRP)
     #define LIL_GET_VIEWDIR_WS(positionWS) GetCameraPositionWS() - positionWS
+    #if defined(USING_STEREO_MATRICES)
+        #define LIL_GET_HEADDIR_WS(positionWS)          ((unity_StereoWorldSpaceCameraPos[0] + unity_StereoWorldSpaceCameraPos[1]) * 0.5 - positionWS)
+    #else
+        #define LIL_GET_HEADDIR_WS(positionWS)          UnityWorldSpaceViewDir(positionWS)
+    #endif
     float4 _ShadowBias;
     float3 ApplyShadowBias(float3 positionWS, float3 normalWS, float3 lightDirectionWS)
     {
@@ -175,6 +185,11 @@
     }
 #elif defined(LIL_URP)
     #define LIL_GET_VIEWDIR_WS(positionWS) GetCameraPositionWS() - positionWS
+    #if defined(USING_STEREO_MATRICES)
+        #define LIL_GET_HEADDIR_WS(positionWS)          ((unity_StereoWorldSpaceCameraPos[0] + unity_StereoWorldSpaceCameraPos[1]) * 0.5 - positionWS)
+    #else
+        #define LIL_GET_HEADDIR_WS(positionWS)          UnityWorldSpaceViewDir(positionWS)
+    #endif
 #endif
 
 #if defined(LIL_BRP)
@@ -222,6 +237,7 @@
     #define LIL_FOG_COORDS(idx)                     UNITY_FOG_COORDS(idx)
     #define LIL_TRANSFER_FOG(i,o)                   UNITY_TRANSFER_FOG(o,i.positionCS)
     #define LIL_APPLY_FOG(col,fogCoord)             UNITY_APPLY_FOG(fogCoord,col)
+    #define LIL_APPLY_FOG_COLOR(col,fogCoord,fogColor) UNITY_APPLY_FOG_COLOR(fogCoord,col,fogColor)
 
     // Lightmap
     #define LIL_DECODE_LIGHTMAP(lm)                 DecodeLightmap(lm)
@@ -275,6 +291,11 @@
     #define LIL_TRANSFORM_POS_OS_TO_WS(positionOS)  mul(unity_ObjectToWorld, float4(positionOS.xyz,1.0))
     #define LIL_TRANSFORM_POS_WS_TO_CS(positionWS)  UnityWorldToClipPos(positionWS)
     #define LIL_GET_VIEWDIR_WS(positionWS)          UnityWorldSpaceViewDir(positionWS)
+    #if defined(USING_STEREO_MATRICES)
+        #define LIL_GET_HEADDIR_WS(positionWS)          ((unity_StereoWorldSpaceCameraPos[0] + unity_StereoWorldSpaceCameraPos[1]) * 0.5 - positionWS)
+    #else
+        #define LIL_GET_HEADDIR_WS(positionWS)          UnityWorldSpaceViewDir(positionWS)
+    #endif
 
     // Support
     #define _MainLightColor                         _LightColor0
@@ -300,6 +321,7 @@
     #define LIL_FOG_COORDS(idx)                 float fogCoord : TEXCOORD##idx;
     #define LIL_TRANSFER_FOG(i,o)               o.fogCoord = ComputeFogFactor(i.positionCS.z)
     #define LIL_APPLY_FOG(col,fogCoord)         col.rgb = MixFog(col.rgb,fogCoord)
+    #define LIL_APPLY_FOG_COLOR(col,fogCoord,fogColor) col.rgb = MixFogColor(col.rgb,fogColor.rgb,fogCoord)
 
     // Lightmap
     #define LIL_DECODE_LIGHTMAP(lm)             DecodeLightmap(lm, float4(LIGHTMAP_HDR_MULTIPLIER,LIGHTMAP_HDR_EXPONENT,0.0,0.0))

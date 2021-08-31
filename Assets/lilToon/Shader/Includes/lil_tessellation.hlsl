@@ -89,7 +89,7 @@ v2f domain(lilTessellationFactors hsConst, const OutputPatch<appdata, 3> input, 
     LIL_TRI_INTERPOLATION(input,output,bary,normalOS);
     LIL_TRI_INTERPOLATION(input,output,bary,uv);
 
-    #if defined(LIL_USE_LIGHTMAP_UV)
+    #if defined(LIL_USE_LIGHTMAP_UV) || (!defined(LIL_OUTLINE) && defined(LIL_SHOULD_UV1))
         LIL_TRI_INTERPOLATION(input,output,bary,uv1);
     #endif
     #if !defined(LIL_STRUCT_LITE_INCLUDED) && !defined(LIL_OUTLINE) && defined(LIL_SHOULD_TANGENT)

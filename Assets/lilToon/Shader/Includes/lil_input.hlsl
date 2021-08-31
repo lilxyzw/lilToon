@@ -479,6 +479,12 @@ float4  _OutlineTex_ST;
     float4  _RefractionColor;
 #endif
 
+// Gem
+#if defined(LIL_GEM)
+    float4  _GemParticleColor;
+    float4  _GemEnvColor;
+#endif
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Float
 float   _AsUnlit;
@@ -525,10 +531,12 @@ float   _LightMinLimit;
 #if defined(LIL_FEATURE_NORMAL_2ND)
     float   _Bump2ndScale;
 #endif
-#if defined(LIL_FEATURE_REFLECTION)
+#if defined(LIL_FEATURE_REFLECTION) || defined(LIL_GEM)
     float   _Smoothness;
-    float   _Metallic;
     float   _Reflectance;
+#endif
+#if defined(LIL_FEATURE_REFLECTION)
+    float   _Metallic;
 #endif
 #if defined(LIL_FEATURE_MATCAP)
     float   _MatCapBlend;
@@ -560,6 +568,7 @@ float   _LightMinLimit;
 #if defined(LIL_FEATURE_GLITTER)
     float   _GlitterMainStrength;
     float   _GlitterEnableLighting;
+    float   _GlitterVRParallaxStrength;
 #endif
 #if defined(LIL_FEATURE_EMISSION_1ST)
     float   _EmissionBlend;
@@ -605,6 +614,14 @@ float   _OutlineEnableLighting;
     float   _TessShrink;
     float   _TessFactorMax;
 #endif
+#if defined(LIL_GEM)
+    float   _GemChromaticAberration;
+    float   _GemParticleLoop;
+    float   _RefractionStrength;
+    float   _RefractionFresnelPower;
+    float   _GemEnvContrast;
+    float   _GemVRParallaxStrength;
+#endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Int
@@ -622,6 +639,9 @@ float   _OutlineEnableLighting;
 #endif
 #if defined(LIL_FEATURE_MATCAP_2ND)
     uint    _MatCap2ndBlendMode;
+#endif
+#if defined(LIL_FEATURE_GLITTER)
+    uint    _GlitterUVMode;
 #endif
 #if defined(LIL_FEATURE_AUDIOLINK)
     uint    _AudioLinkUVMode;

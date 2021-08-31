@@ -12,7 +12,7 @@ struct appdata
     #if LIL_RENDER > 0
         float2 uv           : TEXCOORD0;
     #endif
-    #if defined(LIL_FEATURE_ENCRYPTION)
+    #if !defined(LIL_LITE) && defined(LIL_FEATURE_ENCRYPTION)
         float2 uv6          : TEXCOORD6;
         float2 uv7          : TEXCOORD7;
     #endif
@@ -45,10 +45,10 @@ v2f vert(appdata input)
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_TRANSFER_INSTANCE_ID(input, output);
     UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
-    
+
     //----------------------------------------------------------------------------------------------------------------------
     // Encryption
-    #if defined(LIL_FEATURE_ENCRYPTION)
+    #if !defined(LIL_LITE) && defined(LIL_FEATURE_ENCRYPTION)
         input.positionOS = vertexDecode(input.positionOS, input.normalOS, input.uv6, input.uv7);
     #endif
 
