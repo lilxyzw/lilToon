@@ -7756,6 +7756,11 @@ namespace lilToon
 
             void OnGUI()
             {
+                if(!(Selection.activeObject is Material)){
+                    EditorGUILayout.LabelField(GetLoc("sPresetIsMaterial"));
+                    return;
+                }
+
                 string[] sCategorys = { GetLoc("sPresetCategorySkin"),
                                         GetLoc("sPresetCategoryHair"),
                                         GetLoc("sPresetCategoryCloth"),
