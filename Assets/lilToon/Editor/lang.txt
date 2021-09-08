@@ -362,6 +362,7 @@ sPresetOutlineWidth	Outline Width	輪郭線の幅	윤곽선의 폭	轮廓宽度	
 sPresetFurNormal	Fur Normal	ファーノーマルマップ	퍼 노멀 맵	毛皮法线	毛皮法線
 sPresetFurNoise	Fur Noise	ファーノイズ	파 노이즈	毛皮噪声	毛皮噪聲
 sPresetFurMask	Fur Mask	ファーマスク	퍼 마스크	毛皮蒙版	毛皮蒙版
+sPresetIsMaterial	Currently selected is not a Material.	マテリアル以外が選択されています。	현재 선택한 재료가 아닙니다	当前选择的不是材料	當前選擇的不是材料
 sShaderSetting	Shader Setting (for all materials)	シェーダー設定 (全マテリアル共通)	쉐이더 설정 (전체 재료 공통)	着色器设置（用于所有材质）	著色器設置（用於所有材質）
 sShaderSettingTips	You can toggle unused functions.	不要な機能を無効化できます	불필요한 기능을 비활성화 할 수 있습니다	你可以切换不使用的功能。	你可以切換不使用的功能。
 sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	在这里关闭的功能将从着色器中删除。通过关闭不使用的功能，你可以减少你的头像的大小，同时也可以减少负载。	在這里關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的頭像的大小，同時也可以減少負載。​​
