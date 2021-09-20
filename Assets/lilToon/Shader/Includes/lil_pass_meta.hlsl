@@ -18,6 +18,7 @@ float unity_UseLinearSpace;
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Struct
+/*
 #define LIL_V2F_POSITION_CS
 #define LIL_V2F_TEXCOORD0
 #define LIL_V2F_VIZUV
@@ -30,6 +31,73 @@ struct v2f
     #if defined(EDITOR_VISUALIZATION) && !defined(LIL_HDRP)
         float2 vizUV        : TEXCOORD1;
         float4 lightCoord   : TEXCOORD2;
+    #endif
+    LIL_VERTEX_INPUT_INSTANCE_ID
+    LIL_VERTEX_OUTPUT_STEREO
+};
+*/
+
+// Match the main path for customization
+#define LIL_V2F_POSITION_CS
+#define LIL_V2F_TEXCOORD0
+#if defined(LIL_V2F_FORCE_TEXCOORD1)
+    #define LIL_V2F_TEXCOORD1
+#endif
+#if defined(LIL_V2F_FORCE_POSITION_OS)
+    #define LIL_V2F_POSITION_OS
+#endif
+#if defined(LIL_V2F_FORCE_POSITION_WS)
+    #define LIL_V2F_POSITION_WS
+#endif
+#if defined(LIL_V2F_FORCE_POSITION_SS)
+    #define LIL_V2F_POSITION_SS
+#endif
+#if defined(LIL_V2F_FORCE_NORMAL)
+    #define LIL_V2F_NORMAL_WS
+#endif
+#if defined(LIL_V2F_FORCE_TANGENT)
+    #define LIL_V2F_TANGENT_WS
+#endif
+#if defined(LIL_V2F_FORCE_BITANGENT)
+    #define LIL_V2F_BITANGENT_WS
+#endif
+#if defined(LIL_V2F_FORCE_TANGENT_W)
+    #define LIL_V2F_TANGENT_W
+#endif
+#define LIL_V2F_VIZUV
+#define LIL_V2F_LIGHTCOORD
+
+struct v2f
+{
+    float4 positionCS       : SV_POSITION;
+    float2 uv               : TEXCOORD0;
+    #if defined(EDITOR_VISUALIZATION) && !defined(LIL_HDRP)
+        float2 vizUV        : TEXCOORD1;
+        float4 lightCoord   : TEXCOORD2;
+    #endif
+    #if defined(LIL_V2F_TEXCOORD1)
+        float2 uv1          : TEXCOORD3;
+    #endif
+    #if defined(LIL_V2F_POSITION_OS)
+        float3 positionOS       : TEXCOORD4;
+    #endif
+    #if defined(LIL_V2F_POSITION_WS)
+        float3 positionWS       : TEXCOORD5;
+    #endif
+    #if defined(LIL_V2F_NORMAL_WS)
+        float3 normalWS         : TEXCOORD6;
+    #endif
+    #if defined(LIL_V2F_TANGENT_WS)
+        float3 tangentWS        : TEXCOORD7;
+    #endif
+    #if defined(LIL_V2F_BITANGENT_WS)
+        float3 bitangentWS      : TEXCOORD8;
+    #endif
+    #if defined(LIL_V2F_TANGENT_W)
+        float  tangentW         : TEXCOORD9;
+    #endif
+    #if defined(LIL_V2F_POSITION_SS)
+        float4 positionSS       : TEXCOORD10;
     #endif
     LIL_VERTEX_INPUT_INSTANCE_ID
     LIL_VERTEX_OUTPUT_STEREO

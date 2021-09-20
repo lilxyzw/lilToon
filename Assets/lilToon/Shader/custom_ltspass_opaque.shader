@@ -236,7 +236,30 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+
+            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
+            #define LIL_V2F_FORCE_TEXCOORD1
+            #define LIL_CUSTOM_V2F v2fCustom
+            #define LIL_CUSTOM_V2F_STRUCT \
+                struct v2fCustom \
+                { \
+                    v2f base; \
+                    float2 uv2  : TEXCOORD14; \
+                    float2 uv3  : TEXCOORD15; \
+                };
+
             #include "Includes/lil_pass_meta.hlsl"
+
+            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
+            v2fCustom vert(appdata input)
+            {
+                v2fCustom output;
+                LIL_INITIALIZE_STRUCT(v2fCustom, output);
+                output.base = vertBase(input);
+                output.uv2 = input.uv2;
+                output.uv3 = input.uv3;
+                return output;
+            }
 
             ENDHLSL
         }
@@ -443,7 +466,31 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+
+            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
+            #define LIL_V2F_FORCE_TEXCOORD1
+            #define LIL_CUSTOM_V2F v2fCustom
+            #define LIL_CUSTOM_V2F_STRUCT \
+                struct v2fCustom \
+                { \
+                    v2f base; \
+                    float2 uv2  : TEXCOORD14; \
+                    float2 uv3  : TEXCOORD15; \
+                };
+
             #include "Includes/lil_pass_meta.hlsl"
+
+            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
+            v2fCustom vert(appdata input)
+            {
+                v2fCustom output;
+                LIL_INITIALIZE_STRUCT(v2fCustom, output);
+                output.base = vertBase(input);
+                output.uv2 = input.uv2;
+                output.uv3 = input.uv3;
+                return output;
+            }
+
             ENDHLSL
         }
     }
@@ -638,7 +685,31 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+
+            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
+            #define LIL_V2F_FORCE_TEXCOORD1
+            #define LIL_CUSTOM_V2F v2fCustom
+            #define LIL_CUSTOM_V2F_STRUCT \
+                struct v2fCustom \
+                { \
+                    v2f base; \
+                    float2 uv2  : TEXCOORD14; \
+                    float2 uv3  : TEXCOORD15; \
+                };
+
             #include "Includes/lil_pass_meta.hlsl"
+
+            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
+            v2fCustom vert(appdata input)
+            {
+                v2fCustom output;
+                LIL_INITIALIZE_STRUCT(v2fCustom, output);
+                output.base = vertBase(input);
+                output.uv2 = input.uv2;
+                output.uv3 = input.uv3;
+                return output;
+            }
+
             ENDHLSL
         }
     }
@@ -908,7 +979,31 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+
+            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
+            #define LIL_V2F_FORCE_TEXCOORD1
+            #define LIL_CUSTOM_V2F v2fCustom
+            #define LIL_CUSTOM_V2F_STRUCT \
+                struct v2fCustom \
+                { \
+                    v2f base; \
+                    float2 uv2  : TEXCOORD14; \
+                    float2 uv3  : TEXCOORD15; \
+                };
+
             #include "Includes/lil_pass_meta.hlsl"
+
+            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
+            v2fCustom vert(appdata input)
+            {
+                v2fCustom output;
+                LIL_INITIALIZE_STRUCT(v2fCustom, output);
+                output.base = vertBase(input);
+                output.uv2 = input.uv2;
+                output.uv3 = input.uv3;
+                return output;
+            }
+
             ENDHLSL
         }
     }
@@ -1165,7 +1260,31 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+
+            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
+            #define LIL_V2F_FORCE_TEXCOORD1
+            #define LIL_CUSTOM_V2F v2fCustom
+            #define LIL_CUSTOM_V2F_STRUCT \
+                struct v2fCustom \
+                { \
+                    v2f base; \
+                    float2 uv2  : TEXCOORD14; \
+                    float2 uv3  : TEXCOORD15; \
+                };
+
             #include "Includes/lil_pass_meta.hlsl"
+
+            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
+            v2fCustom vert(appdata input)
+            {
+                v2fCustom output;
+                LIL_INITIALIZE_STRUCT(v2fCustom, output);
+                output.base = vertBase(input);
+                output.uv2 = input.uv2;
+                output.uv3 = input.uv3;
+                return output;
+            }
+
             ENDHLSL
         }
     }
@@ -1529,7 +1648,31 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+
+            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
+            #define LIL_V2F_FORCE_TEXCOORD1
+            #define LIL_CUSTOM_V2F v2fCustom
+            #define LIL_CUSTOM_V2F_STRUCT \
+                struct v2fCustom \
+                { \
+                    v2f base; \
+                    float2 uv2  : TEXCOORD14; \
+                    float2 uv3  : TEXCOORD15; \
+                };
+
             #include "Includes/lil_pass_meta.hlsl"
+
+            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
+            v2fCustom vert(appdata input)
+            {
+                v2fCustom output;
+                LIL_INITIALIZE_STRUCT(v2fCustom, output);
+                output.base = vertBase(input);
+                output.uv2 = input.uv2;
+                output.uv3 = input.uv3;
+                return output;
+            }
+
             ENDHLSL
         }
     }
