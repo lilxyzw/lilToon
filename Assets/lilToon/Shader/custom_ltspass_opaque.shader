@@ -27,7 +27,7 @@ Shader "Hidden/custom_ltspass_opaque"
             if(_CustomEmissionUVMode == 1) customEmissionUV = input.uv1; \
             if(_CustomEmissionUVMode == 2) customEmissionUV = inputCustom.uv2; \
             if(_CustomEmissionUVMode == 3) customEmissionUV = inputCustom.uv3; \
-            lilEmission(col, uvMain, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
+            lilEmission(col, customEmissionUV, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
     ENDHLSL
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ Shader "Hidden/custom_ltspass_opaque"
             // Pass
 
             // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_UV1
+            #define LIL_V2F_FORCE_TEXCOORD1
             #define LIL_CUSTOM_V2F v2fCustom
             #define LIL_CUSTOM_V2F_STRUCT \
                 struct v2fCustom \
