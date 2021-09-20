@@ -62,6 +62,12 @@
 // 0 : Off
 // 1 : On
 
+// [HDRP] Additional Lights Mode
+#define LIL_HDRP_ADDITIONAL_LIGHT_MODE 1
+// 0 : Off
+// 1 : In Vertex Shader
+// 2 : In Fragment Shader
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Replace Macro
 #define LIL_BRANCH                                  UNITY_BRANCH
@@ -86,7 +92,7 @@
 #endif
 
 // Vertex light
-#if (defined(UNITY_SHOULD_SAMPLE_SH) || defined(_ADDITIONAL_LIGHTS_VERTEX)) && LIL_VERTEXLIGHT_MODE
+#if ((defined(UNITY_SHOULD_SAMPLE_SH) || defined(_ADDITIONAL_LIGHTS_VERTEX)) && LIL_VERTEXLIGHT_MODE && !defined(LIL_HDRP)) || (defined(LIL_HDRP) && (LIL_HDRP_ADDITIONAL_LIGHT_MODE == 1))
     #define LIL_USE_VERTEXLIGHT
 #endif
 
@@ -113,7 +119,7 @@
 #endif
 
 // Conbine
-#if (defined(SHADOWS_SCREEN) || defined(_MAIN_LIGHT_SHADOWS) || defined(_MAIN_LIGHT_SHADOWS_CASCADE) || defined(_MAIN_LIGHT_SHADOWS_SCREEN)) && defined(LIL_FEATURE_RECEIVE_SHADOW)
+#if (defined(SHADOWS_SCREEN) || defined(_MAIN_LIGHT_SHADOWS) || defined(_MAIN_LIGHT_SHADOWS_CASCADE) || defined(_MAIN_LIGHT_SHADOWS_SCREEN) || defined(SHADOW_LOW) || defined(SHADOW_MEDIUM) || defined(SHADOW_HIGH)) && defined(LIL_FEATURE_RECEIVE_SHADOW)
     #define LIL_USE_SHADOW
 #endif
 #if defined(LIL_USE_LIGHTMAP) || defined(LIL_USE_DYNAMICLIGHTMAP) || defined(LIL_USE_DIRLIGHTMAP) || defined(LIL_LIGHTMODE_SHADOWMASK)
@@ -147,7 +153,7 @@
 #endif
 
 // normal (vertex input)
-#if defined(LIL_SHOULD_TANGENT) || defined(LIL_FEATURE_SHADOW) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_MATCAP) || defined(LIL_FEATURE_MATCAP_2ND) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_AUDIOLINK) || defined(LIL_REFRACTION) || (defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE))
+#if defined(LIL_SHOULD_TANGENT) || defined(LIL_FEATURE_SHADOW) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_MATCAP) || defined(LIL_FEATURE_MATCAP_2ND) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_AUDIOLINK) || defined(LIL_REFRACTION) || (defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE)) || defined(LIL_HDRP)
     #define LIL_SHOULD_NORMAL
 #endif
 
@@ -157,7 +163,7 @@
 #endif
 
 // positionWS
-#if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX) || defined(LIL_FEATURE_DISTANCE_FADE) || defined(LIL_REFRACTION) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
+#if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD) || defined(LIL_FEATURE_RECEIVE_SHADOW) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX) || defined(LIL_FEATURE_DISTANCE_FADE) || defined(LIL_REFRACTION) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
     #define LIL_SHOULD_POSITION_WS
 #endif
 
@@ -171,25 +177,12 @@
 
 // Absorb pipeline differences
 #if defined(LIL_LWRP)
-    #define LIL_GET_VIEWDIR_WS(positionWS) GetCameraPositionWS() - positionWS
-    #if defined(USING_STEREO_MATRICES)
-        #define LIL_GET_HEADDIR_WS(positionWS)          ((unity_StereoWorldSpaceCameraPos[0] + unity_StereoWorldSpaceCameraPos[1]) * 0.5 - positionWS)
-    #else
-        #define LIL_GET_HEADDIR_WS(positionWS)          UnityWorldSpaceViewDir(positionWS)
-    #endif
     float4 _ShadowBias;
     float3 ApplyShadowBias(float3 positionWS, float3 normalWS, float3 lightDirectionWS)
     {
         float invNdotL = 1.0 - saturate(dot(lightDirectionWS, normalWS));
         return normalWS * invNdotL * _ShadowBias.y + lightDirectionWS * _ShadowBias.xxx + positionWS;
     }
-#elif defined(LIL_URP)
-    #define LIL_GET_VIEWDIR_WS(positionWS) GetCameraPositionWS() - positionWS
-    #if defined(USING_STEREO_MATRICES)
-        #define LIL_GET_HEADDIR_WS(positionWS)          ((unity_StereoWorldSpaceCameraPos[0] + unity_StereoWorldSpaceCameraPos[1]) * 0.5 - positionWS)
-    #else
-        #define LIL_GET_HEADDIR_WS(positionWS)          UnityWorldSpaceViewDir(positionWS)
-    #endif
 #endif
 
 #if defined(LIL_BRP)
@@ -228,10 +221,14 @@
         glossIn.reflUVW   = reflect(-viewDirection,normalDirection);
         return glossIn;
     }
-    #define LIL_GET_ENVIRONMENT_REFLECTION(viewDirection,normalDirection,perceptualRoughness,positionWS,o) \
-        UnityGIInput data = lilSetupGIInput(positionWS); \
-        Unity_GlossyEnvironmentData glossIn = lilSetupGlossyEnvironmentData(viewDirection,normalDirection,perceptualRoughness); \
-        float3 o = UnityGI_IndirectSpecular(data, 1.0, glossIn)
+    float3 lilGetEnvReflection(float3 viewDirection, float3 normalDirection, float perceptualRoughness, float3 positionWS)
+    {
+        UnityGIInput data = lilSetupGIInput(positionWS);
+        Unity_GlossyEnvironmentData glossIn = lilSetupGlossyEnvironmentData(viewDirection,normalDirection,perceptualRoughness);
+        return UnityGI_IndirectSpecular(data, 1.0, glossIn);
+    }
+    #define LIL_GET_ENVIRONMENT_REFLECTION(viewDirection,normalDirection,perceptualRoughness,positionWS) \
+        lilGetEnvReflection(viewDirection,normalDirection,perceptualRoughness,positionWS)
 
     // Fog
     #define LIL_FOG_COORDS(idx)                     UNITY_FOG_COORDS(idx)
@@ -275,7 +272,7 @@
     };
 
     // Shadow caster
-    #define LIL_V2F_SHADOW_CASTER                   V2F_SHADOW_CASTER_NOPOS float4 positionCS : SV_POSITION;
+    #define LIL_V2F_SHADOW_CASTER_OUTPUT            V2F_SHADOW_CASTER_NOPOS float4 positionCS : SV_POSITION;
     #if defined(SHADOWS_CUBE) && !defined(SHADOWS_CUBE_IN_DEPTH_TEX)
         #define LIL_TRANSFER_SHADOW_CASTER(v,o) \
             o.vec = mul(unity_ObjectToWorld, v.positionOS).xyz - _LightPositionRange.xyz; \
@@ -290,12 +287,6 @@
     // Transform
     #define LIL_TRANSFORM_POS_OS_TO_WS(positionOS)  mul(unity_ObjectToWorld, float4(positionOS.xyz,1.0))
     #define LIL_TRANSFORM_POS_WS_TO_CS(positionWS)  UnityWorldToClipPos(positionWS)
-    #define LIL_GET_VIEWDIR_WS(positionWS)          UnityWorldSpaceViewDir(positionWS)
-    #if defined(USING_STEREO_MATRICES)
-        #define LIL_GET_HEADDIR_WS(positionWS)          ((unity_StereoWorldSpaceCameraPos[0] + unity_StereoWorldSpaceCameraPos[1]) * 0.5 - positionWS)
-    #else
-        #define LIL_GET_HEADDIR_WS(positionWS)          UnityWorldSpaceViewDir(positionWS)
-    #endif
 
     // Support
     #define _MainLightColor                         _LightColor0
@@ -303,7 +294,6 @@
     #define SRGBToLinear(col)                       GammaToLinearSpace(col)
     #define LinearToSRGB(col)                       LinearToGammaSpace(col)
     #define UnpackNormalScale(normal,scale)         UnpackScaleNormal(normal,scale)
-    #define SampleSH(normal)                        ShadeSH9(float4(normal,1.0))
     #define MetaInput                               UnityMetaInput
     #define MetaFragment(input)                     UnityMetaFragment(input)
     #define MetaVertexPosition(pos,uv1,uv2,l,d)     UnityMetaVertexPosition(pos,uv1,uv2,l,d)
@@ -312,10 +302,59 @@
     #define LIL_MATRIX_V                            unity_MatrixV
     #define LIL_MATRIX_VP                           unity_MatrixVP
     #define LIL_NEGATIVE_SCALE                      unity_WorldTransformParams.w
+#elif defined(LIL_HDRP)
+    // TODO: Support for Reflection
+    // Environment reflection
+    #define LIL_GET_ENVIRONMENT_REFLECTION(viewDirection,normalDirection,perceptualRoughness,positionWS) \
+        lilGetReflectionSum(viewDirection,normalDirection,perceptualRoughness,posInput,renderingLayers,featureFlags)
+
+    // Fog
+    #define LIL_FOG_COORDS(idx)
+    #define LIL_TRANSFER_FOG(i,o)
+    #define LIL_APPLY_FOG(col,fogCoord)         col = EvaluateAtmosphericScattering(posInput, viewDirection, col)
+    #define LIL_APPLY_FOG_COLOR(col,fogCoord,fogColor) col = EvaluateAtmosphericScattering(posInput, viewDirection, col)
+
+    // Lightmap
+    #define LIL_DECODE_LIGHTMAP(lm)             DecodeLightmap(lm, float4(LIGHTMAP_HDR_MULTIPLIER,LIGHTMAP_HDR_EXPONENT,0.0,0.0))
+    #define LIL_DECODE_DYNAMICLIGHTMAP(lm)      DecodeLightmap(lm, float4(LIGHTMAP_HDR_MULTIPLIER,LIGHTMAP_HDR_EXPONENT,0.0,0.0))
+
+    // Lighting
+    #define LIL_SHADOW_COORDS(idx)
+    #define LIL_TRANSFER_SHADOW(vi,uv,o)
+    #if defined(LIL_USE_SHADOW)
+        #define LIL_LIGHT_ATTENUATION(atten,i)      float atten = lilGetDirectionalShadow(posInput, i.normalWS, featureFlags)
+    #else
+        #define LIL_LIGHT_ATTENUATION(atten,i)      float atten = 1.0
+    #endif
+
+    // Shadow caster
+    #define LIL_V2F_SHADOW_CASTER_OUTPUT
+    #define LIL_TRANSFER_SHADOW_CASTER(v,o)
+    #define LIL_SHADOW_CASTER_FRAGMENT(i)
+
+    // Transform
+    #define LIL_TRANSFORM_POS_OS_TO_WS(positionOS)  TransformObjectToWorld(positionOS)
+    #define LIL_TRANSFORM_POS_WS_TO_CS(positionWS)  TransformWorldToHClip(positionWS)
+
+    // Support
+    #define _MainLightColor                         float4(0,0,0,0)
+    #define _MainLightPosition                      float4(0,1,0,0)
+    #ifndef SHADER_STAGE_RAY_TRACING
+        #define LIL_MATRIX_M                            GetObjectToWorldMatrix()
+        #define LIL_MATRIX_I_M                          GetWorldToObjectMatrix()
+        #define LIL_MATRIX_V                            GetWorldToViewMatrix()
+        #define LIL_MATRIX_VP                           GetWorldToHClipMatrix()
+    #else
+        #define LIL_MATRIX_M                            ObjectToWorld3x4()
+        #define LIL_MATRIX_I_M                          WorldToObject3x4()
+        #define LIL_MATRIX_V                            GetWorldToViewMatrix()
+        #define LIL_MATRIX_VP                           GetWorldToHClipMatrix()
+    #endif
+    #define LIL_NEGATIVE_SCALE                      GetOddNegativeScale()
 #else
     // Environment reflection
-    #define LIL_GET_ENVIRONMENT_REFLECTION(viewDirection,normalDirection,perceptualRoughness,positionWS,o) \
-        float3 o = GlossyEnvironmentReflection(reflect(-viewDirection,normalDirection), perceptualRoughness, 1.0)
+    #define LIL_GET_ENVIRONMENT_REFLECTION(viewDirection,normalDirection,perceptualRoughness,positionWS) \
+        GlossyEnvironmentReflection(reflect(-viewDirection,normalDirection), perceptualRoughness, 1.0)
 
     // Fog
     #define LIL_FOG_COORDS(idx)                 float fogCoord : TEXCOORD##idx;
@@ -368,13 +407,13 @@
 
         return positionCS;
     }
-    #define LIL_V2F_SHADOW_CASTER               float4 positionCS : SV_POSITION;
+    #define LIL_V2F_SHADOW_CASTER_OUTPUT        float4 positionCS : SV_POSITION;
     #define LIL_TRANSFER_SHADOW_CASTER(v,o)     o.positionCS = URPShadowPos(v.positionOS, v.normalOS)
     #define LIL_SHADOW_CASTER_FRAGMENT(i)       return 0
 
     // Transform
-    #define LIL_TRANSFORM_POS_OS_TO_WS(positionOS)                  TransformObjectToWorld(positionOS)
-    #define LIL_TRANSFORM_POS_WS_TO_CS(positionWS)                  TransformWorldToHClip(positionWS)
+    #define LIL_TRANSFORM_POS_OS_TO_WS(positionOS)  TransformObjectToWorld(positionOS)
+    #define LIL_TRANSFORM_POS_WS_TO_CS(positionWS)  TransformWorldToHClip(positionWS)
 
     // Support
     #ifndef SHADER_STAGE_RAY_TRACING
@@ -389,6 +428,13 @@
         #define LIL_MATRIX_VP                           GetWorldToHClipMatrix()
     #endif
     #define LIL_NEGATIVE_SCALE                      GetOddNegativeScale()
+#endif
+
+#define LIL_GET_VIEWDIR_WS(positionWS)          _WorldSpaceCameraPos - positionWS
+#if defined(USING_STEREO_MATRICES)
+    #define LIL_GET_HEADDIR_WS(positionWS)          ((unity_StereoWorldSpaceCameraPos[0] + unity_StereoWorldSpaceCameraPos[1]) * 0.5 - positionWS)
+#else
+    #define LIL_GET_HEADDIR_WS(positionWS)          LIL_GET_VIEWDIR_WS(positionWS)
 #endif
 
 // Pi
@@ -441,8 +487,10 @@
         #define TEXTURE3D(tex)                      Texture3D tex
     #endif
     #if !defined SAMPLER
-        #define SAMPLER(tex)                        SamplerState tex
+        #define SAMPLER(samp)                       SamplerState samp
     #endif
+    #define LIL_SAMP_IN_FUNC(samp)                  , SamplerState samp
+    #define LIL_SAMP_IN(samp)                       , samp
 #else
     #define LIL_SAMPLE_1D(tex,samp,uv)              tex1D(tex,uv)
     #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)      tex1Dlod(tex,float4(uv,0,0,lod))
@@ -460,8 +508,10 @@
         #define TEXTURE3D(tex)                      sampler3D tex
     #endif
     #if !defined SAMPLER
-        #define SAMPLER(tex)
+        #define SAMPLER(samp)
     #endif
+    #define LIL_SAMP_IN_FUNC(samp)
+    #define LIL_SAMP_IN(samp)
 #endif
 
 #if defined(LIL_FEATURE_PARALLAX) && defined(LIL_FEATURE_POM)
@@ -472,6 +522,7 @@
 
 // Transform
 #define LIL_VERTEX_POSITION_INPUTS(positionOS,o)                lilVertexPositionInputs o = lilGetVertexPositionInputs(positionOS)
+#define LIL_RE_VERTEX_POSITION_INPUTS(o)                        o = lilReGetVertexPositionInputs(o)
 #define LIL_VERTEX_NORMAL_INPUTS(normalOS,o)                    lilVertexNormalInputs o = lilGetVertexNormalInputs(normalOS)
 #define LIL_VERTEX_NORMAL_TANGENT_INPUTS(normalOS,tangentOS,o)  lilVertexNormalInputs o = lilGetVertexNormalInputs(normalOS,tangentOS)
 
@@ -481,8 +532,8 @@
     #define LIL_SHADOWMAP_SAMP                  samplerunity_ShadowMasks
     #define LIL_LIGHTMAP_TEX                    unity_Lightmaps
     #define LIL_LIGHTMAP_SAMP                   samplerunity_Lightmaps
-    #define LIL_DYNAMICLIGHTMAP_TEX             unity_DynamicLightmaps
-    #define LIL_DYNAMICLIGHTMAP_SAMP            samplerunity_DynamicLightmaps
+    #define LIL_DYNAMICLIGHTMAP_TEX             unity_DynamicLightmap
+    #define LIL_DYNAMICLIGHTMAP_SAMP            samplerunity_DynamicLightmap
     #define LIL_DIRLIGHTMAP_TEX                 unity_LightmapsInd
     #define LIL_SAMPLE_LIGHTMAP(tex,samp,uv)    LIL_SAMPLE_2D_ARRAY(tex,samp,uv,unity_LightmapIndex.x)
 #else
@@ -494,17 +545,6 @@
     #define LIL_DYNAMICLIGHTMAP_SAMP            samplerunity_DynamicLightmap
     #define LIL_DIRLIGHTMAP_TEX                 unity_LightmapInd
     #define LIL_SAMPLE_LIGHTMAP(tex,samp,uv)    LIL_SAMPLE_2D(tex,samp,uv)
-#endif
-
-// Lightmap uv
-#if defined(LIL_USE_LIGHTMAP_UV)
-    #define LIL_VERTEX_INPUT_LIGHTMAP_UV    float2 uv1 : TEXCOORD1;
-    #define LIL_LIGHTMAP_COORDS(idx)        float2 uvLM : TEXCOORD##idx;
-    #define LIL_TRANSFER_LIGHTMAPUV(uv1,o)  o.uvLM = uv1 * unity_LightmapST.xy + unity_LightmapST.zw
-#else
-    #define LIL_VERTEX_INPUT_LIGHTMAP_UV
-    #define LIL_LIGHTMAP_COORDS(idx)
-    #define LIL_TRANSFER_LIGHTMAPUV(uv1,o)
 #endif
 
 // Main Light Coords
@@ -522,6 +562,14 @@
     #define LIL_INDLIGHTCOLOR_COORDS(idx)
 #endif
 
+#if defined(LIL_FEATURE_SHADOW) || defined(LIL_LITE)
+    #define LIL_CALC_HDRP_INDIR(o) \
+        o.indLightColor = lilShadeSH9(float4(-o.lightDirection * 0.666666, 1.0)) * _ShadowEnvStrength; \
+        o.indLightColor = saturate(o.indLightColor / Luminance(o.lightColor));
+#else
+    #define LIL_CALC_HDRP_INDIR(o)
+#endif
+
 // Dir light & indir light
 #if defined(LIL_USE_LPPV) && (defined(LIL_FEATURE_SHADOW) || defined(LIL_LITE))
     #define LIL_CALC_TWOLIGHT(i,o) lilGetLightColorDouble(o.lightDirection, _ShadowEnvStrength, i.positionWS, o.lightColor, o.indLightColor)
@@ -534,7 +582,32 @@
 #endif
 
 // Main Light in VS (Color / Direction)
-#if defined(LIL_PASS_FORWARDADD)
+#if defined(LIL_HDRP) && defined(LIL_USE_LIGHTMAP)
+    #define LIL_CALC_MAINLIGHT(i,o) \
+        lilGetLightDirectionAndColor(o.lightDirection, o.lightColor, posInput, renderingLayers, featureFlags); \
+        o.lightColor *= _lilDirectionalLightStrength; \
+        float3 lightDirectionCopy = o.lightDirection; \
+        o.lightDirection = normalize(o.lightDirection * Luminance(o.lightColor) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + float3(0.0,0.001,0.0)); \
+        float3 shLightColor = lilShadeSH9(float4(o.lightDirection * 0.666666, 1.0)); \
+        o.lightColor += shLightColor; \
+        LIL_CALC_HDRP_INDIR(o) \
+        o.lightColor = min(o.lightColor, _BeforeExposureLimit); \
+        o.lightColor *= GetCurrentExposureMultiplier()
+#elif defined(LIL_HDRP)
+    #define LIL_CALC_MAINLIGHT(i,o) \
+        lilGetLightDirectionAndColor(o.lightDirection, o.lightColor, posInput, renderingLayers, featureFlags); \
+        o.lightColor *= _lilDirectionalLightStrength; \
+        float3 lightDirectionCopy = o.lightDirection; \
+        o.lightDirection = normalize(o.lightDirection * Luminance(o.lightColor) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + float3(0.0,0.001,0.0)); \
+        float3 shLightColor = lilShadeSH9(float4(o.lightDirection * 0.666666, 1.0)); \
+        o.lightColor += shLightColor; \
+        LIL_CALC_HDRP_INDIR(o) \
+        o.lightColor = min(o.lightColor, _BeforeExposureLimit); \
+        o.lightColor *= GetCurrentExposureMultiplier(); \
+        o.lightColor = clamp(o.lightColor, _LightMinLimit, _LightMaxLimit); \
+        o.lightColor = lerp(o.lightColor, lilMonoColor(o.lightColor), _MonochromeLighting); \
+        o.lightColor = lerp(o.lightColor, 1.0, _AsUnlit)
+#elif defined(LIL_PASS_FORWARDADD)
     #define LIL_CALC_MAINLIGHT(i,o)
 #elif defined(LIL_USE_LIGHTMAP)
     #define LIL_CALC_MAINLIGHT(i,o) \
@@ -544,12 +617,27 @@
     #define LIL_CALC_MAINLIGHT(i,o) \
         o.lightDirection = lilGetLightDirection(); \
         LIL_CALC_TWOLIGHT(i,o); \
-        o.lightColor = max(o.lightColor, _LightMinLimit); \
+        o.lightColor = clamp(o.lightColor, _LightMinLimit, _LightMaxLimit); \
+        o.lightColor = lerp(o.lightColor, lilMonoColor(o.lightColor), _MonochromeLighting); \
         o.lightColor = lerp(o.lightColor, 1.0, _AsUnlit)
 #endif
 
 // Main Light in PS (Color / Direction / Attenuation)
-#if defined(LIL_PASS_FORWARDADD)
+#if defined(LIL_HDRP) && defined(LIL_USE_LIGHTMAP)
+    // Point Light & Spot Light (ForwardAdd)
+    #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
+        LIL_LIGHT_ATTENUATION(atten,input); \
+        float3 lightColor = input.lightColor; \
+        float3 lightDirection = input.lightDirection; \
+        float3 lightmapColor = lilGetLightMapColor(input.uv1); \
+        lightColor += lightmapColor * GetCurrentExposureMultiplier();
+#elif defined(LIL_HDRP)
+    // Point Light & Spot Light (ForwardAdd)
+    #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
+        LIL_LIGHT_ATTENUATION(atten,input); \
+        float3 lightColor = input.lightColor; \
+        float3 lightDirection = input.lightDirection;
+#elif defined(LIL_PASS_FORWARDADD)
     // Point Light & Spot Light (ForwardAdd)
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
@@ -561,9 +649,9 @@
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = input.lightColor; \
         float3 lightDirection = input.lightDirection; \
-        float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
+        float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = max(lightColor, lightmapColor); \
-        atten = min(atten, LIL_SAMPLE_LIGHTMAP(LIL_SHADOWMAP_TEX,LIL_LIGHTMAP_SAMP,input.uvLM).r)
+        atten = min(atten, LIL_SAMPLE_LIGHTMAP(LIL_SHADOWMAP_TEX,LIL_LIGHTMAP_SAMP,input.uv1).r)
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE) && defined(LIL_USE_DYNAMICLIGHTMAP)
     // Mixed Lightmap (Subtractive)
     // Use Lightmap as Shadowmask
@@ -572,7 +660,7 @@
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = input.lightColor; \
         float3 lightDirection = input.lightDirection; \
-        float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
+        float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = max(lightColor, lightmapColor); \
         float3 lightmapShadowThreshold = _MainLightColor.rgb*0.5; \
         float3 lightmapS = (lightmapColor - lightmapShadowThreshold) / (_MainLightColor.rgb - lightmapShadowThreshold); \
@@ -585,9 +673,9 @@
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = input.lightColor; \
         float3 lightDirection = input.lightDirection; \
-        float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
+        float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = max(lightColor, lightmapColor); \
-        float3 lightmapS = (lightmapColor - SampleSH(input.normalWS)) / _MainLightColor.rgb; \
+        float3 lightmapS = (lightmapColor - lilShadeSH9(input.normalWS)) / _MainLightColor.rgb; \
         float lightmapAttenuation = saturate((lightmapS.r+lightmapS.g+lightmapS.b)/3.0); \
         atten = min(atten, lightmapAttenuation)
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_DIRLIGHTMAP)
@@ -596,8 +684,8 @@
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = input.lightColor; \
         float3 lightDirection = input.lightDirection; \
-        float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
-        float3 lightmapDirection = lilGetLightMapDirection(input.uvLM); \
+        float3 lightmapColor = lilGetLightMapColor(input.uv1); \
+        float3 lightmapDirection = lilGetLightMapDirection(input.uv1); \
         lightColor = saturate(lightColor + lightmapColor); \
         lightDirection = normalize(lightDirection + lightmapDirection * lilLuminance(lightmapColor))
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_SHADOW)
@@ -606,7 +694,7 @@
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = _MainLightColor.rgb; \
         float3 lightDirection = input.lightDirection; \
-        float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
+        float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = saturate(lightColor + max(lightmapColor,lilGetSHToon()))
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_DYNAMICLIGHTMAP)
     // Mixed Lightmap (Baked Indirect) or Lightmap (Non-Directional)
@@ -615,7 +703,7 @@
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = input.lightColor; \
         float3 lightDirection = input.lightDirection; \
-        float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
+        float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = saturate(lightColor + lightmapColor)
 #elif defined(LIL_USE_LIGHTMAP)
     // Mixed Lightmap (Baked Indirect) or Lightmap (Non-Directional)
@@ -623,7 +711,7 @@
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = _MainLightColor.rgb; \
         float3 lightDirection = input.lightDirection; \
-        float3 lightmapColor = lilGetLightMapColor(input.uvLM); \
+        float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = saturate(lightColor + lightmapColor)
 #else
     // Realtime
@@ -634,7 +722,15 @@
 #endif
 
 // Vertex Light
-#if defined(LIL_USE_VERTEXLIGHT) && (defined(_ADDITIONAL_LIGHTS_VERTEX) || defined(VERTEXLIGHT_ON) || defined(LIL_TESSELLATION))
+#if defined(LIL_HDRP) && (LIL_HDRP_ADDITIONAL_LIGHT_MODE == 1)
+    #define LIL_VERTEXLIGHT_COORDS(idx) float3 vl : TEXCOORD##idx;
+    #define LIL_CALC_VERTEXLIGHT(i,o) o.vl = lilGetAdditionalLights(posInput, renderingLayers, featureFlags)
+    #define LIL_GET_VERTEXLIGHT(i,o) float3 o = 0
+#elif defined(LIL_HDRP)
+    #define LIL_VERTEXLIGHT_COORDS(idx)
+    #define LIL_CALC_VERTEXLIGHT(i,o)
+    #define LIL_GET_VERTEXLIGHT(i,o) float3 o = 0
+#elif defined(LIL_USE_VERTEXLIGHT) && (defined(_ADDITIONAL_LIGHTS_VERTEX) || defined(VERTEXLIGHT_ON) || defined(LIL_TESSELLATION))
     #define LIL_VERTEXLIGHT_COORDS(idx) float3 vl : TEXCOORD##idx;
     #define LIL_CALC_VERTEXLIGHT(i,o) o.vl = lilGetVertexLights(i.positionWS,_VertexLightStrength)
     #define LIL_GET_VERTEXLIGHT(i,o) float3 o = i.vl
@@ -649,7 +745,16 @@
 #endif
 
 // Additional Light
-#if defined(_ADDITIONAL_LIGHTS)
+#if defined(LIL_HDRP) && (LIL_HDRP_ADDITIONAL_LIGHT_MODE == 0)
+    #define LIL_GET_ADDITIONALLIGHT(positionWS,o) float3 o = 0
+#elif defined(LIL_HDRP) && (LIL_HDRP_ADDITIONAL_LIGHT_MODE == 1)
+    #define LIL_GET_ADDITIONALLIGHT(positionWS,o) \
+        float3 o = input.vl
+#elif defined(LIL_HDRP) && (LIL_HDRP_ADDITIONAL_LIGHT_MODE == 2)
+    #define LIL_GET_ADDITIONALLIGHT(positionWS,o) \
+        float3 o = lilGetAdditionalLights(posInput, renderingLayers, featureFlags); \
+        o *= GetCurrentExposureMultiplier()
+#elif defined(_ADDITIONAL_LIGHTS)
     #define LIL_GET_ADDITIONALLIGHT(positionWS,o) float3 o = lilGetAdditionalLights(positionWS)
 #else
     #define LIL_GET_ADDITIONALLIGHT(positionWS,o) float3 o = 0
@@ -657,11 +762,11 @@
 
 // Main Color & Emission
 #if defined(LIL_WITHOUT_ANIMATION)
-    #define LIL_GET_SUBTEX(tex,uv)  lilGetSubTexWithoutAnimation(Exists##tex, tex, tex##_ST, tex##Angle, uv, 1, sampler##tex, tex##IsDecal, tex##IsLeftOnly, tex##IsRightOnly, tex##ShouldCopy, tex##ShouldFlipMirror, tex##ShouldFlipCopy, tex##IsMSDF, isRightHand)
+    #define LIL_GET_SUBTEX(tex,uv)  lilGetSubTexWithoutAnimation(Exists##tex, tex, tex##_ST, tex##Angle, uv, 1, tex##IsDecal, tex##IsLeftOnly, tex##IsRightOnly, tex##ShouldCopy, tex##ShouldFlipMirror, tex##ShouldFlipCopy, tex##IsMSDF, isRightHand LIL_SAMP_IN(sampler##tex))
     #define LIL_GET_EMITEX(tex,uv)  LIL_SAMPLE_2D(tex, sampler##tex, lilCalcUVWithoutAnimation(uv, tex##_ST, tex##_ScrollRotate))
     #define LIL_GET_EMIMASK(tex,uv) LIL_SAMPLE_2D(tex, sampler_MainTex, lilCalcUVWithoutAnimation(uv, tex##_ST, tex##_ScrollRotate))
 #else
-    #define LIL_GET_SUBTEX(tex,uv)  lilGetSubTex(Exists##tex, tex, tex##_ST, tex##Angle, uv, nv, sampler##tex, tex##IsDecal, tex##IsLeftOnly, tex##IsRightOnly, tex##ShouldCopy, tex##ShouldFlipMirror, tex##ShouldFlipCopy, tex##IsMSDF, isRightHand, tex##DecalAnimation, tex##DecalSubParam)
+    #define LIL_GET_SUBTEX(tex,uv)  lilGetSubTex(Exists##tex, tex, tex##_ST, tex##Angle, uv, nv, tex##IsDecal, tex##IsLeftOnly, tex##IsRightOnly, tex##ShouldCopy, tex##ShouldFlipMirror, tex##ShouldFlipCopy, tex##IsMSDF, isRightHand, tex##DecalAnimation, tex##DecalSubParam LIL_SAMP_IN(sampler##tex))
     #define LIL_GET_EMITEX(tex,uv)  LIL_SAMPLE_2D(tex, sampler##tex, lilCalcUV(uv, tex##_ST, tex##_ScrollRotate))
     #define LIL_GET_EMIMASK(tex,uv) LIL_SAMPLE_2D(tex, sampler_MainTex, lilCalcUV(uv, tex##_ST, tex##_ScrollRotate))
 #endif
@@ -669,5 +774,18 @@
 // Meta
 #define LIL_TRANSFER_METAPASS(input,output) \
     output.positionCS = MetaVertexPosition(input.positionOS, input.uv1, input.uv2, unity_LightmapST, unity_DynamicLightmapST)
+
+// HDRP Data
+#if defined(LIL_HDRP)
+    #define LIL_GET_HDRPDATA(input) \
+        uint renderingLayers = lilGetRenderingLayer(); \
+        uint featureFlags = LIGHT_FEATURE_MASK_FLAGS_OPAQUE; \
+        uint2 tileIndex = uint2(0,0); \
+        float4 positionSS = input.positionCS; \
+        PositionInputs posInput = GetPositionInput(positionSS.xy, _ScreenSize.zw, positionSS.z, positionSS.w, input.positionWS, tileIndex); \
+        input.positionWS = GetAbsolutePositionWS(input.positionWS)
+#else
+    #define LIL_GET_HDRPDATA(input)
+#endif
 
 #endif

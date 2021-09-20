@@ -175,10 +175,14 @@ float4 vertexDecode(float4 positionOS, float3 normalOS, float2 uv6, float2 uv7)
 // Transform
 float3 lilTransformNormalOStoWS(float3 normalOS)
 {
-    #ifdef UNITY_ASSUME_UNIFORM_SCALING
-        return mul((float3x3)LIL_MATRIX_M, normalOS);
+    #if defined(LIL_HDRP)
+        return TransformObjectToWorldNormal(normalOS);
     #else
-        return mul(normalOS, (float3x3)LIL_MATRIX_I_M);
+        #ifdef UNITY_ASSUME_UNIFORM_SCALING
+            return mul((float3x3)LIL_MATRIX_M, normalOS);
+        #else
+            return mul(normalOS, (float3x3)LIL_MATRIX_I_M);
+        #endif
     #endif
 }
 
@@ -193,9 +197,39 @@ struct lilVertexPositionInputs
 lilVertexPositionInputs lilGetVertexPositionInputs(float4 positionOS)
 {
     lilVertexPositionInputs output;
-    output.positionWS = lilOptMul(LIL_MATRIX_M, positionOS.xyz).xyz;
-    output.positionVS = lilOptMul(LIL_MATRIX_V, output.positionWS).xyz;
-    output.positionCS = lilOptMul(LIL_MATRIX_VP, output.positionWS);
+    #if defined(LIL_HDRP)
+        output.positionWS = TransformObjectToWorld(positionOS.xyz).xyz;
+        output.positionVS = TransformWorldToView(output.positionWS).xyz;
+        output.positionCS = TransformWorldToHClip(output.positionWS);
+    #else
+        output.positionWS = lilOptMul(LIL_MATRIX_M, positionOS.xyz).xyz;
+        output.positionVS = lilOptMul(LIL_MATRIX_V, output.positionWS).xyz;
+        output.positionCS = lilOptMul(LIL_MATRIX_VP, output.positionWS);
+    #endif
+    #if defined(LIL_BRP)
+        output.positionSS = ComputeGrabScreenPos(output.positionCS);
+    #else
+        float4 ndc = output.positionCS * 0.5f;
+        output.positionSS.xy = float2(ndc.x, ndc.y * _ProjectionParams.x) + ndc.w;
+        output.positionSS.zw = output.positionCS.zw;
+    #endif
+    return output;
+}
+
+lilVertexPositionInputs lilGetVertexPositionInputs(float3 positionOS)
+{
+    return lilGetVertexPositionInputs(float4(positionOS, 1.0));
+}
+
+lilVertexPositionInputs lilReGetVertexPositionInputs(lilVertexPositionInputs output)
+{
+    #if defined(LIL_HDRP)
+        output.positionVS = TransformWorldToView(output.positionWS).xyz;
+        output.positionCS = TransformWorldToHClip(output.positionWS);
+    #else
+        output.positionVS = lilOptMul(LIL_MATRIX_V, output.positionWS).xyz;
+        output.positionCS = lilOptMul(LIL_MATRIX_VP, output.positionWS);
+    #endif
     #if defined(LIL_BRP)
         output.positionSS = ComputeGrabScreenPos(output.positionCS);
     #else
@@ -231,6 +265,19 @@ lilVertexNormalInputs lilGetVertexNormalInputs(float3 normalOS, float4 tangentOS
     return output;
 }
 
+float lilGetOutlineWidth(float3 positionOS, float2 uv, float4 color, float outlineWidth, Texture2D outlineWidthMask, lilBool outlineVertexR2Width, lilBool outlineFixWidth LIL_SAMP_IN_FUNC(samp))
+{
+    outlineWidth *= 0.01;
+    if(Exists_OutlineWidthMask) outlineWidth *= LIL_SAMPLE_2D_LOD(outlineWidthMask, samp, uv, 0).r;
+    if(outlineVertexR2Width) outlineWidth *= color.r;
+    #if defined(LIL_HDRP)
+        if(outlineFixWidth) outlineWidth *= saturate(length(LIL_GET_VIEWDIR_WS(GetAbsolutePositionWS(TransformObjectToWorld(positionOS.xyz).xyz))));
+    #else
+        if(outlineFixWidth) outlineWidth *= saturate(length(LIL_GET_VIEWDIR_WS(lilOptMul(LIL_MATRIX_M, positionOS).xyz)));
+    #endif
+    return outlineWidth;
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Color
 float3 lilBlendColor(float3 dstCol, float3 srcCol, float srcA, uint blendMode)
@@ -254,6 +301,11 @@ float lilLuminance(float3 rgb)
     #endif
 }
 
+float lilMonoColor(float3 rgb)
+{
+    return dot(rgb, float3(0.333333, 0.333333, 0.333333));
+}
+
 float lilGray(float3 rgb)
 {
     return dot(rgb, float3(1.0/3.0, 1.0/3.0, 1.0/3.0));
@@ -275,15 +327,15 @@ float3 lilToneCorrection(float3 c, float4 hsvg)
     return hsv.z - hsv.z * hsv.y + hsv.z * hsv.y * saturate(abs(frac(hsv.x + float3(1.0, 2.0/3.0, 1.0/3.0)) * 6.0 - 3.0) - 1.0);
 }
 
-float3 lilGradationMap(float3 col, TEXTURE2D(gradationMap), SAMPLER(sampstate), float strength)
+float3 lilGradationMap(float3 col, TEXTURE2D(gradationMap), float strength)
 {
     if(strength == 0.0) return col;
     #if !defined(LIL_COLORSPACE_GAMMA)
         col = LinearToSRGB(col);
     #endif
-    float R = LIL_SAMPLE_1D(gradationMap, sampstate, col.r).r;
-    float G = LIL_SAMPLE_1D(gradationMap, sampstate, col.g).g;
-    float B = LIL_SAMPLE_1D(gradationMap, sampstate, col.b).b;
+    float R = LIL_SAMPLE_1D(gradationMap, sampler_linear_clamp, col.r).r;
+    float G = LIL_SAMPLE_1D(gradationMap, sampler_linear_clamp, col.g).g;
+    float B = LIL_SAMPLE_1D(gradationMap, sampler_linear_clamp, col.b).b;
     float3 outrgb = float3(R,G,B);
     #if !defined(LIL_COLORSPACE_GAMMA)
         col = SRGBToLinear(col);
@@ -394,7 +446,11 @@ float2 lilCalcMatCapUV(float3 normalWS, bool zRotCancel = true)
         return mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5 + 0.5;
     #elif LIL_MATCAP_MODE == 1
         // Fix Z-Rotation
-        bool isMirror = unity_CameraProjection._m20 != 0.0 || unity_CameraProjection._m21 != 0.0;
+        #if defined(LIL_HDRP)
+            bool isMirror = false;
+        #else
+            bool isMirror = unity_CameraProjection._m20 != 0.0 || unity_CameraProjection._m21 != 0.0;
+        #endif
         float2 outuv = mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5;
         if(zRotCancel)
         {
@@ -418,16 +474,63 @@ float2 lilCalcMatCapUV(float3 normalWS, bool zRotCancel = true)
     #endif
 }
 
+float2 lilGetPanoramaUV(float3 viewDirection)
+{
+    return float2(lilAtan2(viewDirection.x, viewDirection.z), lilAcos(viewDirection.y)) * LIL_INV_PI;
+}
+
+void lilParallax(inout float2 uvMain, inout float2 uv, lilBool useParallax, float2 parallaxOffset, Texture2D parallaxMap, float parallaxScale, float parallaxOffsetParam)
+{
+    LIL_BRANCH
+    if(useParallax)
+    {
+        float height = (LIL_SAMPLE_2D_LOD(parallaxMap,sampler_linear_repeat,uvMain,0).r - parallaxOffsetParam) * parallaxScale;
+        uvMain += height * parallaxOffset;
+        uv += height * parallaxOffset;
+    }
+}
+
+void lilPOM(inout float2 uvMain, inout float2 uv, lilBool useParallax, float4 uv_st, float3 parallaxViewDirection, Texture2D parallaxMap, float parallaxScale, float parallaxOffsetParam)
+{
+    #define LIL_POM_DETAIL 200
+    LIL_BRANCH
+    if(useParallax)
+    {
+        float height;
+        float height2;
+        float3 rayStep = -parallaxViewDirection;
+        float3 rayPos = float3(uvMain, 1.0) + (1.0-parallaxOffsetParam) * parallaxScale * parallaxViewDirection;
+        rayStep.xy *= uv_st.xy;
+        rayStep = rayStep / LIL_POM_DETAIL;
+        rayStep.z /= parallaxScale;
+
+        for(int i = 0; i < LIL_POM_DETAIL * 2 * parallaxScale; ++i)
+        {
+            height2 = height;
+            rayPos += rayStep;
+            height = LIL_SAMPLE_2D_LOD(parallaxMap,sampler_linear_repeat,rayPos.xy,0).r;
+            if(height >= rayPos.z) break;
+        }
+
+        float2 prevObjPoint = rayPos.xy - rayStep.xy;
+        float nextHeight = height - rayPos.z;
+        float prevHeight = height2 - rayPos.z + rayStep.z;
+
+        float weight = nextHeight / (nextHeight - prevHeight);
+        rayPos.xy = lerp(rayPos.xy, prevObjPoint, weight);
+
+        uv += rayPos.xy - uvMain;
+        uvMain = rayPos.xy;
+    }
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Effect
 float lilCalcBlink(float4 blink)
 {
     float outBlink = sin(LIL_TIME * blink.z + blink.w) * 0.5 + 0.5;
     if(blink.y > 0.5) outBlink = round(outBlink);
     return lerp(1.0, outBlink, blink.x);
-}
-
-float2 lilGetPanoramaUV(float3 viewDirection)
-{
-    return float2(lilAtan2(viewDirection.x, viewDirection.z), lilAcos(viewDirection.y)) * LIL_INV_PI;
 }
 
 void lilCalcDissolve(
@@ -438,15 +541,15 @@ void lilCalcDissolve(
     float4 dissolveParams,
     float4 dissolvePos,
     TEXTURE2D(dissolveMask),
-    float4 dissolveMask_ST,
-    SamplerState sampstate)
+    float4 dissolveMask_ST
+    LIL_SAMP_IN_FUNC(samp))
 {
     if(dissolveParams.r)
     {
         float dissolveMaskVal = 1.0;
         if(dissolveParams.r == 1.0)
         {
-            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, sampstate, lilCalcUV(uv, dissolveMask_ST)).r;
+            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, samp, lilCalcUV(uv, dissolveMask_ST)).r;
         }
         if(dissolveParams.r == 1.0)
         {
@@ -481,8 +584,8 @@ void lilCalcDissolveWithNoise(
     TEXTURE2D(dissolveNoiseMask),
     float4 dissolveNoiseMask_ST,
     float4 dissolveNoiseMask_ScrollRotate,
-    float dissolveNoiseStrength,
-    SamplerState sampstate)
+    float dissolveNoiseStrength
+    LIL_SAMP_IN_FUNC(samp))
 {
     if(dissolveParams.r)
     {
@@ -490,9 +593,9 @@ void lilCalcDissolveWithNoise(
         float dissolveNoise = 0.0;
         if(dissolveParams.r == 1.0)
         {
-            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, sampstate, lilCalcUV(uv, dissolveMask_ST)).r;
+            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, samp, lilCalcUV(uv, dissolveMask_ST)).r;
         }
-        dissolveNoise = LIL_SAMPLE_2D(dissolveNoiseMask, sampstate, lilCalcUV(uv, dissolveNoiseMask_ST, dissolveNoiseMask_ScrollRotate.xy)).r - 0.5;
+        dissolveNoise = LIL_SAMPLE_2D(dissolveNoiseMask, samp, lilCalcUV(uv, dissolveNoiseMask_ST, dissolveNoiseMask_ScrollRotate.xy)).r - 0.5;
         dissolveNoise *= dissolveNoiseStrength;
         if(dissolveParams.r == 1.0)
         {
@@ -515,6 +618,70 @@ void lilCalcDissolveWithNoise(
     }
 }
 
+void lilAudioLinkFrag(inout float audioLinkValue, float2 uvMain, float2 uv, float nv, lilBool useAudioLink, uint audioLinkUVMode, float4 audioLinkUVParams, Texture2D audioLinkMaskTex, float4 audioTexture_TexelSize, Texture2D audioTexture LIL_SAMP_IN_FUNC(samp))
+{
+    if(useAudioLink)
+    {
+        audioLinkValue = 0.0;
+        float4 audioLinkMask = 1.0;
+        float2 audioLinkUV;
+        if(audioLinkUVMode == 0) audioLinkUV.x = audioLinkUVParams.g;
+        if(audioLinkUVMode == 1) audioLinkUV.x = audioLinkUVParams.r - nv * audioLinkUVParams.r + audioLinkUVParams.g;
+        if(audioLinkUVMode == 2) audioLinkUV.x = lilRotateUV(uv, audioLinkUVParams.b).x * audioLinkUVParams.r + audioLinkUVParams.g;
+        audioLinkUV.y = audioLinkUVParams.a;
+        // Mask (R:Delay G:Band B:Strength)
+        if(audioLinkUVMode == 3 && Exists_AudioLinkMask)
+        {
+            audioLinkMask = LIL_SAMPLE_2D(audioLinkMaskTex, samp, uvMain);
+            audioLinkUV = audioLinkMask.rg;
+        }
+        // Scaling for _AudioTexture (4/64)
+        audioLinkUV.y *= 0.0625;
+        // Global
+        if(audioTexture_TexelSize.z > 16)
+        {
+            audioLinkValue = LIL_SAMPLE_2D(audioTexture, sampler_linear_clamp, audioLinkUV).r;
+            audioLinkValue = saturate(audioLinkValue);
+        }
+        audioLinkValue *= audioLinkMask.b;
+    }
+}
+
+void lilAudioLinkFrag(inout float audioLinkValue, float2 uvMain, float2 uv, float nv, lilBool useAudioLink, uint audioLinkUVMode, float4 audioLinkUVParams, Texture2D audioLinkMaskTex, float4 audioTexture_TexelSize, Texture2D audioTexture, lilBool audioLinkAsLocal, float4 audioLinkLocalMapParams, Texture2D audioLinkLocalMap LIL_SAMP_IN_FUNC(samp))
+{
+    if(useAudioLink)
+    {
+        audioLinkValue = 0.0;
+        float4 audioLinkMask = 1.0;
+        float2 audioLinkUV;
+        if(audioLinkUVMode == 0) audioLinkUV.x = audioLinkUVParams.g;
+        if(audioLinkUVMode == 1) audioLinkUV.x = audioLinkUVParams.r - nv * audioLinkUVParams.r + audioLinkUVParams.g;
+        if(audioLinkUVMode == 2) audioLinkUV.x = lilRotateUV(uv, audioLinkUVParams.b).x * audioLinkUVParams.r + audioLinkUVParams.g;
+        audioLinkUV.y = audioLinkUVParams.a;
+        // Mask (R:Delay G:Band B:Strength)
+        if(audioLinkUVMode == 3 && Exists_AudioLinkMask)
+        {
+            audioLinkMask = LIL_SAMPLE_2D(audioLinkMaskTex, samp, uvMain);
+            audioLinkUV = audioLinkMask.rg;
+        }
+        // Scaling for _AudioTexture (4/64)
+        if(!audioLinkAsLocal) audioLinkUV.y *= 0.0625;
+        // Global
+        if(audioTexture_TexelSize.z > 16)
+        {
+            audioLinkValue = LIL_SAMPLE_2D(audioTexture, sampler_linear_clamp, audioLinkUV).r;
+            audioLinkValue = saturate(audioLinkValue);
+        }
+        // Local
+        if(audioLinkAsLocal)
+        {
+            audioLinkUV.x += frac(-LIL_TIME * audioLinkLocalMapParams.r / 60 * audioLinkLocalMapParams.g) + audioLinkLocalMapParams.b;
+            audioLinkValue = LIL_SAMPLE_2D(audioLinkLocalMap, sampler_linear_repeat, audioLinkUV).r;
+        }
+        audioLinkValue *= audioLinkMask.b;
+    }
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Sub Texture
 float4 lilGetSubTex(
@@ -524,7 +691,6 @@ float4 lilGetSubTex(
     float angle,
     float2 uv,
     float nv,
-    SAMPLER(sampstate),
     bool isDecal,
     bool isLeftOnly,
     bool isRightOnly,
@@ -534,7 +700,8 @@ float4 lilGetSubTex(
     bool isMSDF,
     bool isRightHand,
     float4 decalAnimation,
-    float4 decalSubParam)
+    float4 decalSubParam
+    LIL_SAMP_IN_FUNC(samp))
 {
     #if defined(LIL_FEATURE_DECAL)
         float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
@@ -544,7 +711,7 @@ float4 lilGetSubTex(
             float2 uv2samp = uv2;
         #endif
         float4 outCol = 1.0;
-        if(existsTex) outCol = LIL_SAMPLE_2D(tex,sampstate,uv2samp);
+        if(existsTex) outCol = LIL_SAMPLE_2D(tex,samp,uv2samp);
         LIL_BRANCH
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
         LIL_BRANCH
@@ -553,7 +720,7 @@ float4 lilGetSubTex(
     #else
         float2 uv2 = lilCalcUV(uv, uv_ST, angle);
         float4 outCol = 1.0;
-        if(existsTex) outCol = LIL_SAMPLE_2D(tex,sampstate,uv2);
+        if(existsTex) outCol = LIL_SAMPLE_2D(tex,samp,uv2);
         LIL_BRANCH
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
         return outCol;
@@ -567,7 +734,6 @@ float4 lilGetSubTexWithoutAnimation(
     float angle,
     float2 uv,
     float nv,
-    SamplerState sampstate,
     bool isDecal,
     bool isLeftOnly,
     bool isRightOnly,
@@ -575,12 +741,13 @@ float4 lilGetSubTexWithoutAnimation(
     bool shouldFlipMirror,
     bool shouldFlipCopy,
     bool isMSDF,
-    bool isRightHand)
+    bool isRightHand
+    LIL_SAMP_IN_FUNC(samp))
 {
     #if defined(LIL_FEATURE_DECAL)
         float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
         float4 outCol = 1.0;
-        if(existsTex) outCol = LIL_SAMPLE_2D(tex,sampstate,uv2);
+        if(existsTex) outCol = LIL_SAMPLE_2D(tex,samp,uv2);
         LIL_BRANCH
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
         LIL_BRANCH
@@ -589,11 +756,23 @@ float4 lilGetSubTexWithoutAnimation(
     #else
         float2 uv2 = lilCalcUV(uv, uv_ST, angle);
         float4 outCol = 1.0;
-        if(existsTex) outCol = LIL_SAMPLE_2D(tex,sampstate,uv2);
+        if(existsTex) outCol = LIL_SAMPLE_2D(tex,samp,uv2);
         LIL_BRANCH
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
         return outCol;
     #endif
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Alpha Mask
+void lilAlphaMask(inout float alpha, float2 uvMain, uint alphaMaskMode, Texture2D alphaMaskTex, float alphaMaskValue LIL_SAMP_IN_FUNC(samp))
+{
+    if(alphaMaskMode)
+    {
+        float alphaMask = LIL_SAMPLE_2D(alphaMaskTex, samp, uvMain).r;
+        alphaMask = saturate(alphaMask + alphaMaskValue);
+        alpha = alphaMaskMode == 1 ? alphaMask : alpha * alphaMask;
+    }
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -630,25 +809,29 @@ float3 lilGetLightMapDirection(float2 uv)
 
 //------------------------------------------------------------------------------------------------------------------------------
 // SH Lighting
-float3 lilGetSHToon()
+float3 lilShadeSH9(float4 normalWS)
 {
-    float3 N = lilGetLightDirection() * 0.666666;
-    float3 res = float3(unity_SHAr.w,unity_SHAg.w,unity_SHAb.w);
-    res.r += dot(unity_SHAr.rgb, N);
-    res.g += dot(unity_SHAg.rgb, N);
-    res.b += dot(unity_SHAb.rgb, N);
-    float4 vB = N.xyzz * N.yzzx;
-    res.r += dot(unity_SHBr, vB);
-    res.g += dot(unity_SHBg, vB);
-    res.b += dot(unity_SHBb, vB);
-    res += unity_SHC.rgb * (N.x * N.x - N.y * N.y);
-    #ifdef UNITY_COLORSPACE_GAMMA
+    float3 res;
+    res.r = dot(unity_SHAr,normalWS);
+    res.g = dot(unity_SHAg,normalWS);
+    res.b = dot(unity_SHAb,normalWS);
+    float4 vB = normalWS.xyzz * normalWS.yzzx;
+    res.r += dot(unity_SHBr,vB);
+    res.g += dot(unity_SHBg,vB);
+    res.b += dot(unity_SHBb,vB);
+    res += unity_SHC.rgb * (normalWS.x * normalWS.x - normalWS.y * normalWS.y);
+    #ifdef LIL_COLORSPACE_GAMMA
         res = LinearToSRGB(res);
     #endif
     return res;
 }
 
-float3 lilGetSHToon(float3 positionWS)
+float3 lilShadeSH9(float3 normalWS)
+{
+    return lilShadeSH9(float4(normalWS,1.0));
+}
+
+float3 lilShadeSH9LPPV(float4 normalWS, float3 positionWS)
 {
     float4 SHAr = unity_SHAr;
     float4 SHAg = unity_SHAg;
@@ -668,56 +851,44 @@ float3 lilGetSHToon(float3 positionWS)
             SHAb = LIL_SAMPLE_3D(unity_ProbeVolumeSH, samplerunity_ProbeVolumeSH, texCoord);
         }
     #endif
-    float3 N = lilGetLightDirection() * 0.666666;
-    float3 res = float3(SHAr.w,SHAg.w,SHAb.w);
-    res.r += dot(SHAr.rgb, N);
-    res.g += dot(SHAg.rgb, N);
-    res.b += dot(SHAb.rgb, N);
-    float4 vB = N.xyzz * N.yzzx;
-    res.r += dot(unity_SHBr, vB);
-    res.g += dot(unity_SHBg, vB);
-    res.b += dot(unity_SHBb, vB);
-    res += unity_SHC.rgb * (N.x * N.x - N.y * N.y);
-    #ifdef UNITY_COLORSPACE_GAMMA
+    float3 res;
+    res.r = dot(SHAr,normalWS);
+    res.g = dot(SHAg,normalWS);
+    res.b = dot(SHAb,normalWS);
+    float4 vB = normalWS.xyzz * normalWS.yzzx;
+    res.r += dot(unity_SHBr,vB);
+    res.g += dot(unity_SHBg,vB);
+    res.b += dot(unity_SHBb,vB);
+    res += unity_SHC.rgb * (normalWS.x * normalWS.x - normalWS.y * normalWS.y);
+    #ifdef LIL_COLORSPACE_GAMMA
         res = LinearToSRGB(res);
     #endif
     return res;
+}
+
+float3 lilShadeSH9LPPV(float3 normalWS, float3 positionWS)
+{
+    return lilShadeSH9LPPV(float4(normalWS,1.0), positionWS);
+}
+
+float3 lilGetSHToon()
+{
+    return lilShadeSH9(lilGetLightDirection() * 0.666666);
+}
+
+float3 lilGetSHToon(float3 positionWS)
+{
+    return lilShadeSH9LPPV(lilGetLightDirection() * 0.666666, positionWS);
 }
 
 float3 lilGetSHToonMin()
 {
-    float3 N = -lilGetLightDirection() * 0.666666;
-    float3 res = float3(unity_SHAr.w,unity_SHAg.w,unity_SHAb.w);
-    res.r += dot(unity_SHAr.rgb, N);
-    res.g += dot(unity_SHAg.rgb, N);
-    res.b += dot(unity_SHAb.rgb, N);
-    float4 vB = N.xyzz * N.yzzx;
-    res.r += dot(unity_SHBr, vB);
-    res.g += dot(unity_SHBg, vB);
-    res.b += dot(unity_SHBb, vB);
-    res += unity_SHC.rgb * (N.x * N.x - N.y * N.y);
-    #ifdef UNITY_COLORSPACE_GAMMA
-        res = LinearToSRGB(res);
-    #endif
-    return res;
+    return lilShadeSH9(-lilGetLightDirection() * 0.666666);
 }
 
-float3 lilGetSHToonMin(float3 lightDirection)
+float3 lilGetSHToonMin(float3 positionWS)
 {
-    float3 N = -lightDirection * 0.666666;
-    float3 res = float3(unity_SHAr.w,unity_SHAg.w,unity_SHAb.w);
-    res.r += dot(unity_SHAr.rgb, N);
-    res.g += dot(unity_SHAg.rgb, N);
-    res.b += dot(unity_SHAb.rgb, N);
-    float4 vB = N.xyzz * N.yzzx;
-    res.r += dot(unity_SHBr, vB);
-    res.g += dot(unity_SHBg, vB);
-    res.b += dot(unity_SHBb, vB);
-    res += unity_SHC.rgb * (N.x * N.x - N.y * N.y);
-    #ifdef UNITY_COLORSPACE_GAMMA
-        res = LinearToSRGB(res);
-    #endif
-    return res;
+    return lilShadeSH9LPPV(-lilGetLightDirection() * 0.666666, positionWS);
 }
 
 void lilGetToonSHDouble(float3 lightDirection, out float3 shMax, out float3 shMin)
@@ -737,13 +908,13 @@ void lilGetToonSHDouble(float3 lightDirection, out float3 shMax, out float3 shMi
     l1.b = dot(unity_SHAb.rgb, N);
     shMax = res + l1;
     shMin = res - l1;
-    #ifdef UNITY_COLORSPACE_GAMMA
+    #ifdef LIL_COLORSPACE_GAMMA
         shMax = LinearToSRGB(shMax);
         shMin = LinearToSRGB(shMin);
     #endif
 }
 
-void lilGetToonSHDouble(float3 lightDirection, float3 positionWS, out float3 shMax, out float3 shMin)
+void lilGetToonSHDoubleLPPV(float3 lightDirection, float3 positionWS, out float3 shMax, out float3 shMin)
 {
     float4 SHAr = unity_SHAr;
     float4 SHAg = unity_SHAg;
@@ -778,7 +949,7 @@ void lilGetToonSHDouble(float3 lightDirection, float3 positionWS, out float3 shM
     l1.b = dot(SHAb.rgb, N);
     shMax = res + l1;
     shMin = res - l1;
-    #ifdef UNITY_COLORSPACE_GAMMA
+    #ifdef LIL_COLORSPACE_GAMMA
         shMax = LinearToSRGB(shMax);
         shMin = LinearToSRGB(shMin);
     #endif
@@ -788,12 +959,12 @@ void lilGetToonSHDouble(float3 lightDirection, float3 positionWS, out float3 shM
 // Lighting
 float3 lilGetLightColor()
 {
-    return saturate(_MainLightColor.rgb + lilGetSHToon());
+    return _MainLightColor.rgb + lilGetSHToon();
 }
 
 float3 lilGetLightColor(float3 positionWS)
 {
-    return saturate(_MainLightColor.rgb + lilGetSHToon(positionWS));
+    return _MainLightColor.rgb + lilGetSHToon(positionWS);
 }
 
 float3 lilGetIndirLightColor()
@@ -801,28 +972,28 @@ float3 lilGetIndirLightColor()
     return saturate(lilGetSHToonMin());
 }
 
-float3 lilGetIndirLightColor(float3 lightDirection)
+float3 lilGetIndirLightColor(float3 positionWS)
 {
-    return saturate(lilGetSHToonMin(lightDirection));
+    return saturate(lilGetSHToonMin(positionWS));
 }
 
 void lilGetLightColorDouble(float3 lightDirection, float shadowEnvStrength, out float3 lightColor, out float3 indLightColor)
 {
     float3 shMax, shMin;
     lilGetToonSHDouble(lightDirection, shMax, shMin);
-    lightColor = saturate(_MainLightColor.rgb + lilGetSHToon());
-    indLightColor = saturate(lilGetSHToonMin()) * shadowEnvStrength;
+    lightColor = _MainLightColor.rgb + shMax;
+    indLightColor = saturate(shMin) * shadowEnvStrength;
 }
 
 float3 lilGetLightMapColor(float2 uv)
 {
     float3 outCol = 0;
     #ifdef LIL_USE_LIGHTMAP
-        float4 lightmap = LIL_SAMPLE_LIGHTMAP(LIL_LIGHTMAP_TEX, LIL_LIGHTMAP_SAMP, uv);
+        float4 lightmap = LIL_SAMPLE_LIGHTMAP(LIL_LIGHTMAP_TEX, LIL_LIGHTMAP_SAMP, uv * unity_LightmapST.xy + unity_LightmapST.zw);
         outCol += LIL_DECODE_LIGHTMAP(lightmap);
     #endif
     #ifdef LIL_USE_DYNAMICLIGHTMAP
-        float4 dynlightmap = LIL_SAMPLE_LIGHTMAP(LIL_DYNAMICLIGHTMAP_TEX, LIL_DYNAMICLIGHTMAP_SAMP, uv);
+        float4 dynlightmap = LIL_SAMPLE_2D(LIL_DYNAMICLIGHTMAP_TEX, LIL_DYNAMICLIGHTMAP_SAMP, uv * unity_LightmapST.xy + unity_LightmapST.zw);
         outCol += LIL_DECODE_DYNAMICLIGHTMAP(dynlightmap);
     #endif
     return outCol;
@@ -915,28 +1086,29 @@ void lilGetShading(
     float3 normalDirection,
     float attenuation,
     float3 lightDirection,
-    SamplerState sampstate,
-    bool cullOff = true)
+    float3 lightDirectionCopy,
+    bool cullOff
+    LIL_SAMP_IN_FUNC(samp))
 {
     LIL_BRANCH
     if(_UseShadow)
     {
         // Shade
         float ln = saturate(dot(lightDirection,normalDirection)*0.5+0.5);
-        if(Exists_ShadowBorderMask) ln *= LIL_SAMPLE_2D(_ShadowBorderMask, sampstate, uv).r;
+        if(Exists_ShadowBorderMask) ln *= LIL_SAMPLE_2D(_ShadowBorderMask, samp, uv).r;
         float ln2 = ln;
         float lnB = ln;
 
         // Shadow
         #if defined(LIL_USE_SHADOW) || (defined(LIL_LIGHTMODE_SHADOWMASK) && defined(LIL_FEATURE_RECEIVE_SHADOW))
-            float shadowAttenuation = saturate(attenuation + distance(lightDirection, _MainLightPosition.xyz));
+            float shadowAttenuation = saturate(attenuation + distance(lightDirection, lightDirectionCopy.xyz));
             if(_ShadowReceive) ln *= shadowAttenuation;
             if(_ShadowReceive) lnB *= shadowAttenuation;
         #endif
 
         // Toon
         float shadowBlur = _ShadowBlur;
-        if(Exists_ShadowBlurMask) shadowBlur *= LIL_SAMPLE_2D(_ShadowBlurMask, sampstate, uv).r;
+        if(Exists_ShadowBlurMask) shadowBlur *= LIL_SAMPLE_2D(_ShadowBlurMask, samp, uv).r;
         ln = lilTooning(ln, _ShadowBorder, shadowBlur);
         ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
         lnB = lilTooning(lnB, _ShadowBorder, shadowBlur, _ShadowBorderRange);
@@ -955,19 +1127,19 @@ void lilGetShading(
 
         // Strength
         float shadowStrength = _ShadowStrength;
-        #ifdef UNITY_COLORSPACE_GAMMA
+        #ifdef LIL_COLORSPACE_GAMMA
             shadowStrength = SRGBToLinear(shadowStrength);
         #endif
-        if(Exists_ShadowStrengthMask) shadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, sampstate, uv).r;
+        if(Exists_ShadowStrengthMask) shadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, samp, uv).r;
         ln = lerp(1.0, ln, shadowStrength);
 
         // Shadow Color 1
         float4 shadowColorTex = 0.0;
-        if(Exists_ShadowColorTex) shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampstate, uv);
+        if(Exists_ShadowColorTex) shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, uv);
         float3 indirectCol = lerp(albedo, shadowColorTex.rgb, shadowColorTex.a) * _ShadowColor.rgb;
         // Shadow Color 2
         float4 shadow2ndColorTex = 0.0;
-        if(Exists_Shadow2ndColorTex) shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, sampstate, uv);
+        if(Exists_Shadow2ndColorTex) shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, uv);
         shadow2ndColorTex.rgb = lerp(albedo, shadow2ndColorTex.rgb, shadow2ndColorTex.a) * _Shadow2ndColor.rgb;
         ln2 = _Shadow2ndColor.a - ln2 * _Shadow2ndColor.a;
         indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, ln2);
@@ -1006,8 +1178,9 @@ void lilGetShadingLite(
     float facing,
     float3 normalDirection,
     float3 lightDirection,
-    SamplerState sampstate,
-    bool cullOff = true)
+    float3 lightDirectionCopy,
+    bool cullOff
+    LIL_SAMP_IN_FUNC(samp))
 {
     LIL_BRANCH
     if(_UseShadow)
@@ -1035,10 +1208,10 @@ void lilGetShadingLite(
         shadowmix = ln;
 
         // Shadow Color 1
-        float4 shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, sampstate, uv);
+        float4 shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, uv);
         float3 indirectCol = lerp(albedo, shadowColorTex.rgb, shadowColorTex.a);
         // Shadow Color 2
-        float4 shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, sampstate, uv);
+        float4 shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, uv);
         indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, shadow2ndColorTex.a - ln2 * shadow2ndColorTex.a);
 
         // Apply Light
@@ -1061,6 +1234,11 @@ void lilGetShadingLite(
     }
 }
 #endif
+
+#define LIL_GET_SHADING(col,shadowmix,albedo,lightColor,uv,facing,normalDirection,attenuation,lightDirection,cullOff) \
+    lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uv,facing,normalDirection,attenuation,lightDirection,_MainLightPosition.xyz,cullOff LIL_SAMP_IN(sampler_MainTex))
+#define LIL_GET_SHADING_LITE(col,shadowmix,albedo,lightColor,uv,facing,normalDirection,lightDirection,cullOff) \
+    lilGetShadingLite(col,shadowmix,albedo,lightColor,input.indLightColor,uv,facing,normalDirection,lightDirection,_MainLightPosition.xyz,cullOff LIL_SAMP_IN(sampler_MainTex))
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Specular
@@ -1096,7 +1274,7 @@ float3 lilCalcSpecular(float nv, float nl, float nh, float lh, float roughness, 
 
         //float specularTerm = SmithJointGGXVisibilityTerm(nl,nv,roughness2) * GGXTerm(nh,roughness2) * LIL_PI;
         float specularTerm = sjggx * ggx;
-        #ifdef UNITY_COLORSPACE_GAMMA
+        #ifdef LIL_COLORSPACE_GAMMA
             specularTerm = sqrt(max(1e-4h, specularTerm));
         #endif
         specularTerm *= nl * attenuation;

@@ -1,5 +1,5 @@
 # lilToon
-Version 1.1.8
+Version 1.2.0
 
 # 概要
 アバターを用いたサービス（VRChat等）向けに開発したシェーダーで以下のような特徴があります。
@@ -23,6 +23,8 @@ Unityバージョン
 - Built-in Render Pipeline (BRP)
 - Lightweight Render Pipeline (LWRP)
 - Universal Render Pipeline (URP)
+- High Definition Render Pipeline 7.1.8 - 11.0.0 (HDRP)  
+  HDRPではUnlit同様にForwardで描画しますが、ライト情報を受け取ります
 - 屈折シェーダーと宝石シェーダーはBRPのみ対応
 
 # 主な機能
@@ -48,13 +50,14 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 # 使い方 - 新規セットアップ
 1. 下記いずれかの方法でUnityにlilToonをインポート  
     i. unitypackageをUnityウィンドウにドラッグ＆ドロップでインポート  
-    ii. UPMから```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master```をインポート  
-2. Projectからマテリアルを選択
-3. Inspector上部の`Shader`から`lilToon`を選択
-4. (エディタの言語が異なる場合のみ) `Language`を`Japanese`に変更
-5. テクスチャが反映されていない場合は`メインカラー`にテクスチャを設定
-6. テクスチャを透過する場合は`Rendering Mode(透過モード)`を`カットアウト`または`半透明`に変更
-7. 機能を追加したい場合は詳細設定内の[シェーダー設定](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md#シェーダー設定)を変更
+    ii. UPMから```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master```をインポート
+2. (SRPのみ) 上部メニューバーの`Assets/lilToon/Refresh Shaders`をクリック
+3. Projectからマテリアルを選択
+4. Inspector上部の`Shader`から`lilToon`を選択
+5. (エディタの言語が異なる場合のみ) `Language`を`Japanese`に変更
+6. テクスチャが反映されていない場合は`メインカラー`にテクスチャを設定
+7. テクスチャを透過する場合は`Rendering Mode(透過モード)`を`カットアウト`または`半透明`に変更
+8. 機能を追加したい場合は詳細設定内の[シェーダー設定](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md#シェーダー設定)を変更
 
 より詳しい設定については[マニュアル](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md)を参照してください。
 
@@ -132,6 +135,13 @@ VRChatのワールド:
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # 変更履歴
+## v1.2.0
+- HDRPに追加対応
+- `ライトのモノクロ化`、`明るさの上限`プロパティの追加
+- プリセット保存画面を開いている状態でマテリアルを選択した際の警告を追加
+- マクロから任意の処理を挿入・置き換えできるようにコードを変更
+- PlayモードでParent Constraintが編集できない問題を修正
+- 屈折シェーダーが特定条件下で一部アセットに干渉する可能性がある問題の修正
 ## v1.1.8
 - 宝石シェーダー、FakeShadowシェーダーの追加
 - ラメにUV1を参照するモードを追加

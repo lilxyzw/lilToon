@@ -11,6 +11,10 @@ Shader "Hidden/lilToonLiteOutline"
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
                         _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
                         _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0
+                        _LightMaxLimit              ("Light Max Limit", Range(0,10)) = 1
+                        _BeforeExposureLimit        ("Before Exposure Limit", Float) = 10000
+                        _MonochromeLighting         ("Monochrome lighting", Range(0,1)) = 0
+                        _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
         [NoScaleOffset] _TriMask                    ("TriMask", 2D) = "white" {}
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -97,7 +101,7 @@ Shader "Hidden/lilToonLiteOutline"
 
         //----------------------------------------------------------------------------------------------------------------------
         // Outline Advanced
-        [lilCullMode]                                   _OutlineCull                ("Cull Mode|Off|Front|Back", Int) = 1
+        [lilEnum]                                       _OutlineCull                ("Cull Mode|Off|Front|Back", Int) = 1
         [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlend            ("SrcBlend", Int) = 1
         [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlend            ("DstBlend", Int) = 0
         [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlendAlpha       ("SrcBlendAlpha", Int) = 1
@@ -170,6 +174,22 @@ Shader "Hidden/lilToonLiteOutline"
     }
 */
 // URP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// HDRP Start
+/*
+    SubShader
+    {
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Geometry"}
+        UsePass "Hidden/ltspass_lite_opaque/FORWARD"
+        UsePass "Hidden/ltspass_lite_opaque/FORWARD_OUTLINE"
+        UsePass "Hidden/ltspass_lite_opaque/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_lite_opaque/DEPTHONLY_OUTLINE"
+        UsePass "Hidden/ltspass_lite_opaque/MOTIONVECTORS_OUTLINE"
+        UsePass "Hidden/ltspass_lite_opaque/META"
+    }
+*/
+// HDRP End
 
     Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"

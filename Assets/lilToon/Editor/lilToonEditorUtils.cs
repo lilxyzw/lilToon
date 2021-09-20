@@ -28,18 +28,7 @@ namespace lilToon
                 // BRP : null
                 // LWRP : LightweightPipeline.LightweightRenderPipelineAsset
                 // URP : Universal.UniversalRenderPipelineAsset
-                lilToonInspector.lilRenderPipeline lilRP = lilToonInspector.lilRenderPipeline.BRP;
-                if(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset != null)
-                {
-                    string renderPipelineName = UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.ToString();
-                    if(String.IsNullOrEmpty(renderPipelineName))        lilRP = lilToonInspector.lilRenderPipeline.BRP;
-                    else if(renderPipelineName.Contains("Lightweight")) lilRP = lilToonInspector.lilRenderPipeline.LWRP;
-                    else if(renderPipelineName.Contains("Universal"))   lilRP = lilToonInspector.lilRenderPipeline.URP;
-                }
-                else
-                {
-                    lilRP = lilToonInspector.lilRenderPipeline.BRP;
-                }
+                lilToonInspector.lilRenderPipeline lilRP = lilToonInspector.CheckRP();
                 foreach(string shaderGuid in shaderGuids)
                 {
                     string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);

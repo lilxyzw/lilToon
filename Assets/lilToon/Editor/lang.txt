@@ -99,8 +99,13 @@ sCullModeFront	Front	Front (背面のみ描画)	Front	Front	Front
 sCullModeBack	Back	Back (前面のみ描画)	Back	Back	Back
 sFlipBackfaceNormal	Flip Backface Normal	背面の法線を反転	후면의 법선을 반전	翻转背影法线	翻轉背影法線
 sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면에 그림자를 드리우다	背面的力量阴影	背面的力量陰影
+sLightingSettings	Lighting Settings	ライティング設定	Lighting Settings	Lighting Settings	Lighting Settings
 sVertexLightStrength	Vertex Light Strength	頂点ライトの強度	Vertex Light Strength	Vertex Light Strength	Vertex Light Strength
 sLightMinLimit	Lower brightness limit	明るさの下限	Lower brightness limit	Lower brightness limit	Lower brightness limit
+sLightMaxLimit	Upper brightness limit	明るさの上限	Upper brightness limit	Upper brightness limit	Upper brightness limit
+sMonochromeLighting	Monochrome Lighting	ライトのモノクロ化	Monochrome Lighting	Monochrome Lighting	Monochrome Lighting
+sDirectionalLightStrength	[HDRP] Directional Light Strength	[HDRP] Directional Lightの強さ	[HDRP] Directional Light Strength	[HDRP] Directional Light Strength	[HDRP] Directional Light Strength
+sBeforeExposureLimit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit
 sHelpRenderingTransparent	When two transparent materials overlap, one of them may become invisible.	透過マテリアル同士が重なったときに片方が見えなくなる場合があります	투명 Material끼리 겹친 때 한쪽이 보이지 않을 수 있습니다	当两个透明Material重叠时，其中一个可能会变得不可见。	當兩個透明Material重疊時，其中一個可能會變得不可見。
 sHelpCullMode	If the material does not look right, set the CullMode to Off or Back.	表示がおかしい場合はCullModeをOffもしくはBackにしてください	표시가 이상한 경우는 CullMode을 Off 또는 Back합니다	如果材质看起来不对，请将CullMode设置为Off或Back。	如果材質看起來不對，請將CullMode設置為Off或Back。
 sHelpZWrite	If the material does not look right, turn on ZWrite.	表示がおかしい場合はZWriteをオンにしてください	표시가 이상한 경우는 ZWrite을 선택하십시오	如果材质看起来不对，请打开ZWrite。	如果材質看起來不對，請打開ZWrite。
@@ -314,6 +319,7 @@ sDialogGifToAtlas	Convert Gif to Atlas	Gifをアトラス化	Gif를 아틀라스
 sDialogTexPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャ全体の解像度を2の累乗に合わせますか?	텍스처 전체 해상도를 2의 거듭 제곱에 맞게 하시겠습니까?	你想把纹理分辨率调整为2的幂吗？	你想把紋理分辨率調整為2的冪嗎？
 sPresets	Presets	プリセット	프리셋	预设	預設
 sPresetsNotAvailable	Presets are not available for this shader.	プリセットはこのシェーダーでは利用できません。	사전 설정이 쉐이더를 사용할 수 없습니다.	预设在此着色器中不可用。	預設在此著色器中不可用。
+sPresetIsMaterial	Currently selected is not a Material.	マテリアル以外が選択されています。	머티리얼 이외를 선택하고 있습니다.	选择Material以外的	選擇Material以外的
 sPresetRefresh	Refresh List	リストを更新	목록을 업데이트	刷新列表	刷新列表
 sPresetSave	Save Preset	プリセットを保存	프리셋 저장	保存预设	保存預設
 sPresetCategory	Category	カテゴリー	카테고리	类别	類別
@@ -362,7 +368,6 @@ sPresetOutlineWidth	Outline Width	輪郭線の幅	윤곽선의 폭	轮廓宽度	
 sPresetFurNormal	Fur Normal	ファーノーマルマップ	퍼 노멀 맵	毛皮法线	毛皮法線
 sPresetFurNoise	Fur Noise	ファーノイズ	파 노이즈	毛皮噪声	毛皮噪聲
 sPresetFurMask	Fur Mask	ファーマスク	퍼 마스크	毛皮蒙版	毛皮蒙版
-sPresetIsMaterial	Currently selected is not a Material.	マテリアル以外が選択されています。	현재 선택한 재료가 아닙니다	当前选择的不是材料	當前選擇的不是材料
 sShaderSetting	Shader Setting (for all materials)	シェーダー設定 (全マテリアル共通)	쉐이더 설정 (전체 재료 공통)	着色器设置（用于所有材质）	著色器設置（用於所有材質）
 sShaderSettingTips	You can toggle unused functions.	不要な機能を無効化できます	불필요한 기능을 비활성화 할 수 있습니다	你可以切换不使用的功能。	你可以切換不使用的功能。
 sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	在这里关闭的功能将从着色器中删除。通过关闭不使用的功能，你可以减少你的头像的大小，同时也可以减少负载。	在這里關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的頭像的大小，同時也可以減少負載。​​

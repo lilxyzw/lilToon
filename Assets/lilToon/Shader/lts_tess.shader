@@ -11,6 +11,10 @@ Shader "Hidden/lilToonTessellation"
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
                         _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
                         _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0
+                        _LightMaxLimit              ("Light Max Limit", Range(0,10)) = 1
+                        _BeforeExposureLimit        ("Before Exposure Limit", Float) = 10000
+                        _MonochromeLighting         ("Monochrome lighting", Range(0,1)) = 0
+                        _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
@@ -392,6 +396,21 @@ Shader "Hidden/lilToonTessellation"
     }
 */
 // URP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// HDRP Start
+/*
+    SubShader
+    {
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Geometry"}
+        UsePass "Hidden/ltspass_tess_opaque/FORWARD"
+        UsePass "Hidden/ltspass_tess_opaque/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_tess_opaque/DEPTHONLY"
+        UsePass "Hidden/ltspass_tess_opaque/MOTIONVECTORS"
+        UsePass "Hidden/ltspass_tess_opaque/META"
+    }
+*/
+// HDRP End
 
     Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"

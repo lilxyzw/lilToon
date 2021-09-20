@@ -6,7 +6,7 @@
 
 #include "Includes/lil_pipeline.hlsl"
 #include "Includes/lil_fur_struct.hlsl"
-#include "Includes/lil_fur_vertex.hlsl"
+#include "Includes/lil_common_vert_fur.hlsl"
 #include "Includes/lil_fur_fragment.hlsl"
 
 #endif

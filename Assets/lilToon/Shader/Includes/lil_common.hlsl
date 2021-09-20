@@ -7,5 +7,6 @@
 #include "Includes/lil_macro.hlsl"
 #include "Includes/lil_input.hlsl"
 #include "Includes/lil_functions.hlsl"
+#include "Includes/lil_common_appdata.hlsl"
 
 #endif

@@ -6,7 +6,7 @@
 
 #include "Includes/lil_pipeline.hlsl"
 #include "Includes/lil_lite_struct.hlsl"
-#include "Includes/lil_lite_vertex.hlsl"
+#include "Includes/lil_common_vert.hlsl"
 #include "Includes/lil_lite_fragment.hlsl"
 
 #endif

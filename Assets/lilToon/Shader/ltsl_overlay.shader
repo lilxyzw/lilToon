@@ -11,6 +11,10 @@ Shader "_lil/[Optional] lilToonLiteOverlay"
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
                         _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
                         _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0
+                        _LightMaxLimit              ("Light Max Limit", Range(0,10)) = 1
+                        _BeforeExposureLimit        ("Before Exposure Limit", Float) = 10000
+                        _MonochromeLighting         ("Monochrome lighting", Range(0,1)) = 0
+                        _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
         [NoScaleOffset] _TriMask                    ("TriMask", 2D) = "white" {}
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -118,6 +122,17 @@ Shader "_lil/[Optional] lilToonLiteOverlay"
     }
 */
 // URP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// HDRP Start
+/*
+    SubShader
+    {
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+2"}
+        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
+    }
+*/
+// HDRP End
 
     Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"

@@ -85,11 +85,11 @@ Please refer to "lil_macro.hlsl" & "lil_functions.hlsl" for more information.
 |-|-|
 |float4 _MainLightColor|Color of main light (_LightColor0)|
 |float4 _MainLightPosition|Color of main light (_WorldSpaceLightPos0)|
-|float3 SampleSH(float3 normalWS)|Calculation of environment light|
+|float3 lilShadeSH(float3 normalWS)|Calculation of environment light|
 |LIL_GET_MAINLIGHT(input, out float3 lightColor, out float3 lightDirection, out float attenuation)|Calculation of main light|
 |LIL_GET_VERTEXLIGHT(input, out float3 vertexLightColor)|Copy of vertex lighting|
 |LIL_GET_ADDITIONALLIGHT(float3 positionWS, out float3 additionalLightColor)|Additional lighting (for SRP)|
-|lilGetShading()|Calculation of shadow color|
+|LIL_GET_SHADING()|Calculation of shadow color|
 
 ## Fog
 |Name|Description|
@@ -113,19 +113,25 @@ Please refer to "lil_macro.hlsl" & "lil_functions.hlsl" for more information.
 |float lilTooning()|Convert input values to toon|
 
 # Structure
-Structure can be found in "lil_normal_struct.hlsl".
 ## Vertex Shader Inputs (struct appdata)
+You can add input to the appdata structure by defining the following keywords.
 |Name|Description|
 |-|-|
-|positionOS|Object space position|
-|normalOS|Object space normal|
-|tangentOS|Object space tangent|
-|uv|UV|
-|uv1|UV1|
-|color|Vertex color|
-|LIL_VERTEX_INPUT_INSTANCE_ID|Instance ID|
+|LIL_REQUIRE_APP_POSITION|positionOS|
+|LIL_REQUIRE_APP_TEXCOORD0|uv|
+|LIL_REQUIRE_APP_TEXCOORD1|uv1|
+|LIL_REQUIRE_APP_TEXCOORD2|uv2|
+|LIL_REQUIRE_APP_TEXCOORD3|uv3|
+|LIL_REQUIRE_APP_TEXCOORD4|uv4|
+|LIL_REQUIRE_APP_TEXCOORD5|uv5|
+|LIL_REQUIRE_APP_TEXCOORD6|uv6|
+|LIL_REQUIRE_APP_TEXCOORD7|uv7|
+|LIL_REQUIRE_APP_COLOR|color|
+|LIL_REQUIRE_APP_NORMAL|normalOS|
+|LIL_REQUIRE_APP_TANGENT|tangentOS|
 
 ## Vertex Shader Outputs (struct v2f)
+I recommend editing `lil_custom_v2f.hlsl` for customization.
 |Name|Description|
 |-|-|
 |positionCS|Clip space position|
@@ -134,12 +140,11 @@ Structure can be found in "lil_normal_struct.hlsl".
 |positionSS|Screen space coordinates|
 |uv|UV|
 |uvMat|MatCap UV|
-|normalWS|World space normal|
-|tangentWS|World space tangent|
-|bitangentWS|World space bitangent|
-|tangentW|Handedness|
-|vl|Vertex lighting|
 |furLayer|Fur Layer (in:0 out:1)|
+|LIL_LIGHTCOLOR_COORDS|Light color|
+|LIL_LIGHTDIRECTION_COORDS|Light direction|
+|LIL_INDLIGHTCOLOR_COORDS|Indirect light color|
+|LIL_VERTEXLIGHT_COORDS|Vertex lighting|
 |LIL_FOG_COORDS()|Fog|
 |LIL_SHADOW_COORDS()|Shadow|
 |LIL_LIGHTMAP_COORDS()|Lightmap|
@@ -164,8 +169,7 @@ Commonly used variables are as follows.
 |float3 lightColor|Color of light (main light & sh light)|
 |float3 lightDirection|Direction of light (main light & sh light)|
 |float attenuation|Attenuation of light|
-|float3 vertexLightColor|Color of vertex light|
-|float3 additionalLightColor|Color of additional light (for SRP)|
+|float3 addLightColor|Color of additional light|
 |float3 normalDirection|World space normal|
 |float3 viewDirection|View direction|
 |float3x3 tbnWS|float3x3(input.tangentWS, input.bitangentWS, input.normalWS)|
@@ -180,6 +184,7 @@ lilToonSetting/lil_setting.hlsl
 
 #define LIL_FEATURE_ANIMATE_MAIN_UV
 #define LIL_FEATURE_MAIN_TONE_CORRECTION
+#define LIL_FEATURE_MAIN_GRADATION_MAP
 #define LIL_FEATURE_MAIN2ND
 #define LIL_FEATURE_MAIN3RD
 #define LIL_FEATURE_DECAL
@@ -187,6 +192,7 @@ lilToonSetting/lil_setting.hlsl
 #define LIL_FEATURE_TEX_LAYER_MASK
 #define LIL_FEATURE_LAYER_DISSOLVE
 #define LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE
+#define LIL_FEATURE_ALPHAMASK
 #define LIL_FEATURE_SHADOW
 #define LIL_FEATURE_RECEIVE_SHADOW
 #define LIL_FEATURE_TEX_SHADOW_BLUR
@@ -198,10 +204,10 @@ lilToonSetting/lil_setting.hlsl
 #define LIL_FEATURE_EMISSION_2ND
 #define LIL_FEATURE_EMISSION_UV
 #define LIL_FEATURE_ANIMATE_EMISSION_UV
+#define LIL_FEATURE_TEX_EMISSION_MASK
 #define LIL_FEATURE_EMISSION_MASK_UV
 #define LIL_FEATURE_ANIMATE_EMISSION_MASK_UV
 #define LIL_FEATURE_EMISSION_GRADATION
-#define LIL_FEATURE_TEX_EMISSION_MASK
 #define LIL_FEATURE_NORMAL_1ST
 #define LIL_FEATURE_NORMAL_2ND
 #define LIL_FEATURE_TEX_NORMAL_MASK
@@ -210,9 +216,13 @@ lilToonSetting/lil_setting.hlsl
 #define LIL_FEATURE_TEX_REFLECTION_METALLIC
 #define LIL_FEATURE_TEX_REFLECTION_COLOR
 #define LIL_FEATURE_MATCAP
+#define LIL_FEATURE_MATCAP_2ND
 #define LIL_FEATURE_TEX_MATCAP_MASK
+#define LIL_FEATURE_TEX_MATCAP_NORMALMAP
 #define LIL_FEATURE_RIMLIGHT
 #define LIL_FEATURE_TEX_RIMLIGHT_COLOR
+#define LIL_FEATURE_RIMLIGHT_DIRECTION
+#define LIL_FEATURE_GLITTER
 #define LIL_FEATURE_PARALLAX
 #define LIL_FEATURE_POM
 #define LIL_FEATURE_CLIPPING_CANCELLER
@@ -229,6 +239,7 @@ lilToonSetting/lil_setting.hlsl
 #define LIL_FEATURE_TEX_OUTLINE_WIDTH
 #define LIL_FEATURE_TEX_FUR_NORMAL
 #define LIL_FEATURE_TEX_FUR_MASK
+#define LIL_FEATURE_TEX_FUR_LENGTH
 
 #endif
 ```
@@ -248,27 +259,6 @@ However, I do not recommend changing it on platforms where you can use a variety
 // 0 : Off
 // 1 : On (for BlendOp Max)
 #define LIL_PREMULTIPLY_FA 1
-
-// SH sampling mode for direct light (Default : 10)
-// 0 : Length of unity_SHA, SHB, SHC
-// 1 : Length of unity_SHA, SHB (Arktoon / ArxCharacterShaders)
-// 2 : Length of unity_SHA
-// 3 : Length of unity_SHA, SHB / ShadeSH9(unity_SHA) (Poiyomi Toon Shader)
-// 4 : unity_SHA.w (VRChat Mobile Toon Lit / MnMrShader / Reflex Shader)
-// 5 : Average value of 2 directions, top and bottom (MToon)
-// 6 : Maximum value of unity_SHA.w, SampleSH(down), 0.05 (UTS2)
-// 7 : Maximum value of 6 directions (Sunao Shader)
-// 8 : Average value of 6 directions (UnlitWF)
-// 9 : Strongest direction
-// 10 : Approximation of Standard (lilToon)
-#define LIL_SH_DIRECT_MODE 10
-
-// SH sampling mode for indirect light (Default : 3)
-// 0 : unity_SHA.w
-// 1 : Minimum value of 6 directions
-// 2 : Weakest direction
-// 3 : Approximation of Standard (lilToon)
-#define LIL_SH_INDIRECT_MODE 3
 
 // Light direction mode (Default : 1)
 // 0 : Directional light Only
@@ -307,4 +297,14 @@ However, I do not recommend changing it on platforms where you can use a variety
 // 0 : Off
 // 1 : On
 #define LIL_ANTIALIAS_MODE 1
+
+// Light Probe Proxy Volumes
+#define LIL_LPPV_MODE 0
+// 0 : Off
+// 1 : On
+
+// Transform Optimization
+#define LIL_OPTIMIZE_TRANSFORM 0
+// 0 : Off
+// 1 : On
 ```

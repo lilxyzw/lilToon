@@ -1,5 +1,5 @@
 # lilToon
-Version 1.1.8
+Version 1.2.0
 
 # Overview
 This shader is developed for services using avatars (VRChat, etc.) and has the following features.
@@ -23,6 +23,8 @@ Supported Rendering Pipelines
 - Built-in Render Pipeline (BRP)
 - Lightweight Render Pipeline (LWRP)
 - Universal Render Pipeline (URP)
+- High Definition Render Pipeline 7.1.8 - 11.0.0 (HDRP)  
+  Forward like Unlit in HDRP, but shaded
 - Refraction and Gem shaders are supported only for BRP
 
 # Features
@@ -49,11 +51,12 @@ lilToon is available under the MIT License. Please refer to the `LICENSE` includ
 1. Import lilToon into Unity using one of the following methods.  
     i. Drag and drop unitypackage to the Unity window to import it.  
     ii. Import ```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master``` from UPM.  
-2. Select a material from Project.
-3. Select `lilToon` from `Shader` at the top of Inspector.
-4. If no texture has been applied, set the texture to `Main Color`.
-5. To make the material transparent, change `Rendering Mode` to `Cutout` or `Transparent`.
-6. If you want to add more features, change the [Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting) in the Advanced settings.
+2. (SRP Only) Click `Assets/lilToon/Refresh Shaders` in the top menu bar.
+3. Select a material from Project.
+4. Select `lilToon` from `Shader` at the top of Inspector.
+5. If no texture has been applied, set the texture to `Main Color`.
+6. To make the material transparent, change `Rendering Mode` to `Cutout` or `Transparent`.
+7. If you want to add more features, change the [Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting) in the Advanced settings.
 
 Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md) for more detailed settings.
 
@@ -132,6 +135,13 @@ Comparing parameters when implementing `Convert to MToon (VRM)`
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 
 # Change log
+## v1.2.0
+- New support for HDRP
+- `Monochrome lighting` and `Upper brightness limit` properties
+- Added a warning when selecting anything other than a material while the preset save window is open
+- Changed code so that custom processing can be inserted / replaced from macro
+- Fixed an issue where Parent Constraint could not be edited in play mode
+- Fixed an issue where refraction shaders could interfere with some assets under certain conditions
 ## v1.1.8
 - Added lilToonGem and lilToonFakeShadow
 - Added UV1 for glitter

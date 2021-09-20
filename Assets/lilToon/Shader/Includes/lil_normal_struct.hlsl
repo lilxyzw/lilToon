@@ -31,31 +31,75 @@
 // LIL_VERTEX_OUTPUT_STEREO
 
 #if defined(LIL_OUTLINE)
-    struct appdata
-    {
-        float4 positionOS   : POSITION;
-        float3 normalOS     : NORMAL;
-        float2 uv           : TEXCOORD0;
-        #if defined(LIL_FEATURE_ENCRYPTION)
-            float2 uv6          : TEXCOORD6;
-            float2 uv7          : TEXCOORD7;
-        #endif
-        float4 color        : COLOR;
-        LIL_VERTEX_INPUT_LIGHTMAP_UV
-        LIL_VERTEX_INPUT_INSTANCE_ID
-    };
+    #define LIL_V2F_POSITION_CS
+    #define LIL_V2F_TEXCOORD0
+    #if defined(LIL_V2F_FORCE_TEXCOORD1) || defined(LIL_USE_LIGHTMAP_UV)
+        #define LIL_V2F_TEXCOORD1
+    #endif
+    #if defined(LIL_V2F_FORCE_POSITION_OS) || defined(LIL_SHOULD_POSITION_OS)
+        #define LIL_V2F_POSITION_OS
+    #endif
+    #if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
+        #define LIL_V2F_POSITION_WS
+    #endif
+    #if defined(LIL_V2F_FORCE_NORMAL) || defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE) || defined(LIL_HDRP)
+        #define LIL_V2F_NORMAL_WS
+    #endif
+    #define LIL_V2F_MAINLIGHT
+    #define LIL_V2F_VERTEXLIGHT
+    #define LIL_V2F_FOG
 
     struct v2f
     {
         float4 positionCS       : SV_POSITION;
         float2 uv               : TEXCOORD0;
-        #if defined(LIL_SHOULD_POSITION_OS)
-            float3 positionOS       : TEXCOORD1;
+        #if defined(LIL_V2F_TEXCOORD1)
+            float2 uv1              : TEXCOORD1;
         #endif
-        #if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
+        #if defined(LIL_V2F_POSITION_OS)
+            float3 positionOS       : TEXCOORD2;
+        #endif
+        #if defined(LIL_V2F_POSITION_WS)
+            float3 positionWS       : TEXCOORD3;
+        #endif
+        #if defined(LIL_V2F_NORMAL_WS)
+            float3 normalWS         : TEXCOORD4;
+        #endif
+        LIL_LIGHTCOLOR_COORDS(5)
+        LIL_LIGHTDIRECTION_COORDS(6)
+        LIL_INDLIGHTCOLOR_COORDS(7)
+        LIL_VERTEXLIGHT_COORDS(8)
+        LIL_FOG_COORDS(9)
+        LIL_VERTEX_INPUT_INSTANCE_ID
+        LIL_VERTEX_OUTPUT_STEREO
+    };
+#elif defined(LIL_FUR)
+    #define LIL_V2F_POSITION_CS
+    #define LIL_V2F_TEXCOORD0
+    #if defined(LIL_V2F_FORCE_TEXCOORD1) || defined(LIL_USE_LIGHTMAP_UV)
+        #define LIL_V2F_TEXCOORD1
+    #endif
+    #if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
+        #define LIL_V2F_POSITION_WS
+    #endif
+    #if defined(LIL_V2F_FORCE_NORMAL) || !defined(LIL_PASS_FORWARDADD) &&  defined(LIL_SHOULD_NORMAL)
+        #define LIL_V2F_NORMAL_WS
+    #endif
+    #define LIL_V2F_MAINLIGHT
+    #define LIL_V2F_VERTEXLIGHT
+    #define LIL_V2F_FOG
+
+    struct v2f
+    {
+        float4 positionCS       : SV_POSITION;
+        float2 uv               : TEXCOORD0;
+        #if defined(LIL_V2F_TEXCOORD1)
+            float2 uv1              : TEXCOORD1;
+        #endif
+        #if defined(LIL_V2F_POSITION_WS)
             float3 positionWS       : TEXCOORD2;
         #endif
-        #if defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE)
+        #if defined(LIL_V2F_NORMAL_WS)
             float3 normalWS         : TEXCOORD3;
         #endif
         LIL_LIGHTCOLOR_COORDS(4)
@@ -63,89 +107,68 @@
         LIL_INDLIGHTCOLOR_COORDS(6)
         LIL_VERTEXLIGHT_COORDS(7)
         LIL_FOG_COORDS(8)
-        LIL_LIGHTMAP_COORDS(9)
-        LIL_VERTEX_INPUT_INSTANCE_ID
-        LIL_VERTEX_OUTPUT_STEREO
-    };
-#elif defined(LIL_FUR)
-    struct appdata
-    {
-        float4 positionOS   : POSITION;
-        #if defined(LIL_SHOULD_NORMAL) || defined(LIL_TESSELLATION)
-            float3 normalOS     : NORMAL;
-        #endif
-        #if defined(LIL_FEATURE_ENCRYPTION)
-            float2 uv6          : TEXCOORD6;
-            float2 uv7          : TEXCOORD7;
-        #endif
-        float2 uv           : TEXCOORD0;
-        LIL_VERTEX_INPUT_LIGHTMAP_UV
-        LIL_VERTEX_INPUT_INSTANCE_ID
-    };
-
-    struct v2f
-    {
-        float4 positionCS       : SV_POSITION;
-        float2 uv               : TEXCOORD0;
-        #if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
-            float3 positionWS       : TEXCOORD1;
-        #endif
-        #if !defined(LIL_PASS_FORWARDADD) &&  defined(LIL_SHOULD_NORMAL)
-            float3 normalWS         : TEXCOORD2;
-        #endif
-        LIL_LIGHTCOLOR_COORDS(3)
-        LIL_LIGHTDIRECTION_COORDS(4)
-        LIL_INDLIGHTCOLOR_COORDS(5)
-        LIL_VERTEXLIGHT_COORDS(6)
-        LIL_FOG_COORDS(7)
-        LIL_LIGHTMAP_COORDS(8)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
 #else
-    struct appdata
-    {
-        float4 positionOS   : POSITION;
-        #if defined(LIL_SHOULD_NORMAL) || defined(LIL_TESSELLATION)
-            float3 normalOS     : NORMAL;
-        #endif
-        #if defined(LIL_SHOULD_TANGENT)
-            float4 tangentOS    : TANGENT;
-        #endif
-        #if defined(LIL_FEATURE_ENCRYPTION)
-            float2 uv6          : TEXCOORD6;
-            float2 uv7          : TEXCOORD7;
-        #endif
-        float2 uv           : TEXCOORD0;
-        float2 uv1          : TEXCOORD1;
-        LIL_VERTEX_INPUT_INSTANCE_ID
-    };
+    #define LIL_V2F_POSITION_CS
+    #define LIL_V2F_TEXCOORD0
+    #if defined(LIL_V2F_FORCE_TEXCOORD1) || defined(LIL_USE_LIGHTMAP_UV) || defined(LIL_SHOULD_UV1)
+        #define LIL_V2F_TEXCOORD1
+    #endif
+    #if defined(LIL_V2F_FORCE_POSITION_OS) || defined(LIL_SHOULD_POSITION_OS)
+        #define LIL_V2F_POSITION_OS
+    #endif
+    #if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_SHOULD_POSITION_WS)
+        #define LIL_V2F_POSITION_WS
+    #endif
+    #if defined(LIL_V2F_FORCE_POSITION_SS) || defined(LIL_REFRACTION)
+        #define LIL_V2F_POSITION_SS
+    #endif
+    #if defined(LIL_V2F_FORCE_NORMAL) || defined(LIL_SHOULD_NORMAL)
+        #define LIL_V2F_NORMAL_WS
+    #endif
+    #if defined(LIL_V2F_FORCE_TANGENT) || defined(LIL_SHOULD_TBN)
+        #define LIL_V2F_TANGENT_WS
+    #endif
+    #if defined(LIL_V2F_FORCE_BITANGENT) || defined(LIL_SHOULD_TBN)
+        #define LIL_V2F_BITANGENT_WS
+    #endif
+    #if defined(LIL_V2F_FORCE_TANGENT_W) || defined(LIL_SHOULD_TANGENT_W)
+        #define LIL_V2F_TANGENT_W
+    #endif
+    #define LIL_V2F_MAINLIGHT
+    #define LIL_V2F_VERTEXLIGHT
+    #define LIL_V2F_FOG
+    #define LIL_V2F_SHADOW
 
     struct v2f
     {
         float4 positionCS       : SV_POSITION;
         float2 uv               : TEXCOORD0;
-        #if defined(LIL_SHOULD_UV1)
+        #if defined(LIL_V2F_TEXCOORD1)
             float2 uv1          : TEXCOORD1;
         #endif
-        #if defined(LIL_SHOULD_POSITION_OS)
+        #if defined(LIL_V2F_POSITION_OS)
             float3 positionOS       : TEXCOORD2;
         #endif
-        #if defined(LIL_SHOULD_POSITION_WS)
+        #if defined(LIL_V2F_POSITION_WS)
             float3 positionWS       : TEXCOORD3;
         #endif
-        #if defined(LIL_SHOULD_NORMAL)
+        #if defined(LIL_V2F_NORMAL_WS)
             float3 normalWS         : TEXCOORD4;
         #endif
-        #if defined(LIL_SHOULD_TBN)
+        #if defined(LIL_V2F_TANGENT_WS)
             float3 tangentWS        : TEXCOORD5;
+        #endif
+        #if defined(LIL_V2F_BITANGENT_WS)
             float3 bitangentWS      : TEXCOORD6;
         #endif
-        #if defined(LIL_SHOULD_TANGENT_W)
+        #if defined(LIL_V2F_TANGENT_W)
             float  tangentW         : TEXCOORD7;
         #endif
-        #ifdef LIL_REFRACTION
-            float4 positionSS      : TEXCOORD8;
+        #if defined(LIL_V2F_POSITION_SS)
+            float4 positionSS       : TEXCOORD8;
         #endif
         LIL_LIGHTCOLOR_COORDS(9)
         LIL_LIGHTDIRECTION_COORDS(10)
@@ -153,7 +176,6 @@
         LIL_VERTEXLIGHT_COORDS(12)
         LIL_FOG_COORDS(13)
         LIL_SHADOW_COORDS(14)
-        LIL_LIGHTMAP_COORDS(15)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };

@@ -70,7 +70,7 @@ Shader "_lil/lilToonFakeShadow"
 
             HLSLPROGRAM
 
-            //------------------------------------------------------------------------------------------------------------------
+            //----------------------------------------------------------------------------------------------------------------------
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
@@ -79,7 +79,7 @@ Shader "_lil/lilToonFakeShadow"
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
 
-            //------------------------------------------------------------------------------------------------------------------
+            //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pass_fakeshadow.hlsl"
             ENDHLSL
@@ -91,11 +91,11 @@ Shader "_lil/lilToonFakeShadow"
 //----------------------------------------------------------------------------------------------------------------------
 // LWRP Start
 /*
-    //------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
     // Lightweight Render Pipeline SM4.5
     SubShader
     {
-        Tags{"ShaderModel" = "4.5"}
+        Tags{"ShaderModel" = "4.5" "Queue" = "AlphaTest+3"}
         // ForwardLit
         Pass
         {
@@ -122,7 +122,7 @@ Shader "_lil/lilToonFakeShadow"
 
             HLSLPROGRAM
 
-            //------------------------------------------------------------------------------------------------------------------
+            //----------------------------------------------------------------------------------------------------------------------
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
@@ -132,7 +132,7 @@ Shader "_lil/lilToonFakeShadow"
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
-            //------------------------------------------------------------------------------------------------------------------
+            //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pass_fakeshadow.hlsl"
 
@@ -140,10 +140,11 @@ Shader "_lil/lilToonFakeShadow"
         }
     }
 
-    //------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
     // Lightweight Render Pipeline
     SubShader
     {
+        Tags{"Queue" = "AlphaTest+3"}
         // ForwardLit
         Pass
         {
@@ -170,7 +171,7 @@ Shader "_lil/lilToonFakeShadow"
 
             HLSLPROGRAM
 
-            //------------------------------------------------------------------------------------------------------------------
+            //----------------------------------------------------------------------------------------------------------------------
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
@@ -179,7 +180,7 @@ Shader "_lil/lilToonFakeShadow"
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
 
-            //------------------------------------------------------------------------------------------------------------------
+            //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pass_fakeshadow.hlsl"
 
@@ -192,11 +193,11 @@ Shader "_lil/lilToonFakeShadow"
 //----------------------------------------------------------------------------------------------------------------------
 // URP Start
 /*
-    //------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
     // Universal Render Pipeline SM4.5
     SubShader
     {
-        Tags{"ShaderModel" = "4.5"}
+        Tags{"ShaderModel" = "4.5" "Queue" = "AlphaTest+3"}
         // ForwardLit
         Pass
         {
@@ -223,7 +224,7 @@ Shader "_lil/lilToonFakeShadow"
 
             HLSLPROGRAM
 
-            //------------------------------------------------------------------------------------------------------------------
+            //----------------------------------------------------------------------------------------------------------------------
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
@@ -233,7 +234,7 @@ Shader "_lil/lilToonFakeShadow"
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
-            //------------------------------------------------------------------------------------------------------------------
+            //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pass_fakeshadow.hlsl"
 
@@ -241,10 +242,11 @@ Shader "_lil/lilToonFakeShadow"
         }
     }
 
-    //------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
     // Universal Render Pipeline
     SubShader
     {
+        Tags{"Queue" = "AlphaTest+3"}
         // ForwardLit
         Pass
         {
@@ -271,7 +273,7 @@ Shader "_lil/lilToonFakeShadow"
 
             HLSLPROGRAM
 
-            //------------------------------------------------------------------------------------------------------------------
+            //----------------------------------------------------------------------------------------------------------------------
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
@@ -280,7 +282,7 @@ Shader "_lil/lilToonFakeShadow"
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
 
-            //------------------------------------------------------------------------------------------------------------------
+            //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pass_fakeshadow.hlsl"
 
@@ -289,6 +291,60 @@ Shader "_lil/lilToonFakeShadow"
     }
 */
 // URP End
+
+//----------------------------------------------------------------------------------------------------------------------
+// HDRP Start
+/*
+    //----------------------------------------------------------------------------------------------------------------------
+    // High Definition Render Pipeline
+    SubShader
+    {
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+3"}
+        Pass
+        {
+            Name "FORWARD"
+            Tags {"LightMode" = "ForwardOnly"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 4.5
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            #define SHADERPASS SHADERPASS_FORWARD
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_fakeshadow.hlsl"
+
+            ENDHLSL
+        }
+    }
+*/
+// HDRP End
     Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"
 }

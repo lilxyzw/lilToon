@@ -66,13 +66,6 @@ Shader "Hidden/ltsother_baker"
             #define LIL_WITHOUT_ANIMATION
             #include "Includes/lil_pipeline.hlsl"
 
-            struct appdata
-            {
-                float4 positionOS   : POSITION;
-                float2 uv           : TEXCOORD0;
-                float4 tangentOS    : TANGENT;
-            };
-
             struct v2f
             {
                 float4 positionCS   : SV_POSITION;
@@ -115,7 +108,7 @@ Shader "Hidden/ltsother_baker"
                     float colorAdjustMask = LIL_SAMPLE_2D(_MainColorAdjustMask, sampler_MainTex, input.uv).r;
                     col.rgb = lilToneCorrection(col.rgb, _MainTexHSVG);
                     #if defined(LIL_FEATURE_MAIN_GRADATION_MAP)
-                        col.rgb = lilGradationMap(col.rgb, _MainGradationTex, sampler_linear_clamp, _MainGradationStrength);
+                        col.rgb = lilGradationMap(col.rgb, _MainGradationTex, _MainGradationStrength);
                     #endif
                     col.rgb = lerp(baseColor, col.rgb, colorAdjustMask);
                     col *= _Color;

@@ -6,7 +6,7 @@
 
 #include "Includes/lil_pipeline.hlsl"
 #include "Includes/lil_normal_struct.hlsl"
-#include "Includes/lil_normal_vertex.hlsl"
+#include "Includes/lil_common_vert.hlsl"
 #include "Includes/lil_normal_fragment.hlsl"
 #if defined(LIL_TESSELLATION)
     #include "Includes/lil_tessellation.hlsl"

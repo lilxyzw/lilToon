@@ -5,149 +5,138 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Struct
-struct appdata
-{
-    float4 positionOS   : POSITION;
-    #if defined(LIL_OUTLINE)
-        float3 normalOS     : NORMAL;
-    #endif
-    #if LIL_RENDER > 0 || defined(LIL_OUTLINE)
-        float2 uv           : TEXCOORD0;
-    #endif
-    #if !defined(LIL_LITE) && defined(LIL_FEATURE_ENCRYPTION)
-        float2 uv6          : TEXCOORD6;
-        float2 uv7          : TEXCOORD7;
-    #endif
-    UNITY_VERTEX_INPUT_INSTANCE_ID
-};
+#define LIL_V2F_POSITION_CS
+#if defined(LIL_V2F_FORCE_UV0) || (LIL_RENDER > 0)
+    #define LIL_V2F_TEXCOORD0
+#endif
+#if defined(LIL_V2F_FORCE_POSITION_OS) || ((LIL_RENDER > 0) && !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_DISSOLVE))
+    #define LIL_V2F_POSITION_OS
+#endif
+#if defined(LIL_V2F_FORCE_NORMAL) || defined(WRITE_NORMAL_BUFFER)
+    #define LIL_V2F_NORMAL_WS
+#endif
+#if defined(LIL_FUR)
+    #define LIL_V2F_FURLAYER
+#endif
 
 struct v2f
 {
     float4 positionCS   : SV_POSITION;
-    #if LIL_RENDER > 0
-        float2 uv           : TEXCOORD0;
-        #if !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_DISSOLVE)
-            float3 positionOS   : TEXCOORD1;
-        #endif
+    #if defined(LIL_V2F_TEXCOORD0)
+        float2 uv       : TEXCOORD0;
+    #endif
+    #if defined(LIL_V2F_POSITION_OS)
+        float3 positionOS   : TEXCOORD1;
+    #endif
+    #if defined(LIL_V2F_NORMAL_WS)
+        float3 normalWS         : TEXCOORD2;
+    #endif
+    #if defined(LIL_FUR)
+        float furLayer          : TEXCOORD3;
     #endif
     UNITY_VERTEX_INPUT_INSTANCE_ID
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
+#if defined(LIL_FUR)
+    #define LIL_V2G_TEXCOORD0
+    #define LIL_V2G_POSITION_WS
+    #if defined(LIL_V2G_FORCE_NORMAL_WS) || defined(WRITE_NORMAL_BUFFER)
+        #define LIL_V2G_NORMAL_WS
+    #endif
+    #define LIL_V2G_FURVECTOR
+
+    struct v2g
+    {
+        float3 positionWS   : TEXCOORD0;
+        float2 uv           : TEXCOORD1;
+        float3 furVector        : TEXCOORD2;
+        #if defined(LIL_V2G_NORMAL_WS)
+            float3 normalWS         : TEXCOORD3;
+        #endif
+        UNITY_VERTEX_INPUT_INSTANCE_ID
+        UNITY_VERTEX_OUTPUT_STEREO
+    };
+#elif defined(LIL_ONEPASS_OUTLINE)
+    struct v2g
+    {
+        v2f base;
+        float4 positionCSOL : TEXCOORD3;
+    };
+#endif
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Shader
-v2f vert(appdata input)
-{
-    v2f output;
-    LIL_INITIALIZE_STRUCT(v2f, output);
+#if defined(LIL_FUR)
+    #include "Includes/lil_common_vert_fur.hlsl"
+#else
+    #include "Includes/lil_common_vert.hlsl"
+#endif
+#include "Includes/lil_common_frag.hlsl"
 
-    LIL_BRANCH
-    if(_Invisible) return output;
-
-    UNITY_SETUP_INSTANCE_ID(input);
-    UNITY_TRANSFER_INSTANCE_ID(input, output);
-    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
-
-    //----------------------------------------------------------------------------------------------------------------------
-    // Encryption
-    #if !defined(LIL_LITE) && defined(LIL_FEATURE_ENCRYPTION)
-        input.positionOS = vertexDecode(input.positionOS, input.normalOS, input.uv6, input.uv7);
-    #endif
-
-    LIL_VERTEX_POSITION_INPUTS(input.positionOS, vertexInput);
-
-    #if defined(LIL_OUTLINE)
-        LIL_VERTEX_NORMAL_INPUTS(input.normalOS, vertexNormalInput);
-        float2 uvMain = input.uv * _MainTex_ST.xy + _MainTex_ST.zw;
-        float outlineWidth = _OutlineWidth * 0.01;
-        if(Exists_OutlineWidthMask) outlineWidth *= LIL_SAMPLE_2D_LOD(_OutlineWidthMask, sampler_MainTex, uvMain, 0).r;
-        if(_OutlineVertexR2Width) outlineWidth *= input.color.r;
-        if(_OutlineFixWidth) outlineWidth *= saturate(length(LIL_GET_VIEWDIR_WS(vertexInput.positionWS)));
-        vertexInput.positionWS += vertexNormalInput.normalWS * outlineWidth;
-        output.positionCS = LIL_TRANSFORM_POS_WS_TO_CS(vertexInput.positionWS);
+#if defined(LIL_CUSTOM_V2F)
+void frag(LIL_CUSTOM_V2F inputCustom
+#else
+void frag(v2f input
+#endif
+    , float facing : VFACE
+    #if defined(SCENESELECTIONPASS) || defined(SCENEPICKINGPASS) || !defined(LIL_HDRP)
+    , out float4 outColor : SV_Target0
     #else
-        output.positionCS = vertexInput.positionCS;
-    #endif
-    #if LIL_RENDER > 0
-        output.uv = input.uv;
-        #if !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_DISSOLVE)
-            output.positionOS = input.positionOS.xyz;
+        #ifdef WRITE_MSAA_DEPTH
+        , out float4 depthColor : SV_Target0
+            #ifdef WRITE_NORMAL_BUFFER
+            , out float4 outNormalBuffer : SV_Target1
+            #endif
+        #else
+            #ifdef WRITE_NORMAL_BUFFER
+            , out float4 outNormalBuffer : SV_Target0
+            #endif
         #endif
     #endif
-
-    return output;
-}
-
-float4 frag(v2f input) : SV_Target
+)
 {
+    #if defined(LIL_CUSTOM_V2F)
+        v2f input = inputCustom.base;
+    #endif
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
-    #if LIL_RENDER > 0
-        #if defined(LIL_FEATURE_ANIMATE_MAIN_UV)
-            float2 uvMain = lilCalcUV(input.uv, _MainTex_ST, _MainTex_ScrollRotate);
-        #else
-            float2 uvMain = lilCalcUV(input.uv, _MainTex_ST);
-        #endif
+    #include "Includes/lil_frag_alpha.hlsl"
 
-        //--------------------------------------------------------------------------------------------------------------------------
-        // Main Color
-        float alpha = _Color.a;
-        if(Exists_MainTex) alpha *= LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain).a;
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Dissolve
-        #if !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_DISSOLVE)
-            float dissolveAlpha = 0.0;
-            #if defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
-                lilCalcDissolveWithNoise(
-                    alpha,
-                    dissolveAlpha,
-                    input.uv,
-                    input.positionOS,
-                    _DissolveParams,
-                    _DissolvePos,
-                    _DissolveMask,
-                    _DissolveMask_ST,
-                    _DissolveNoiseMask,
-                    _DissolveNoiseMask_ST,
-                    _DissolveNoiseMask_ScrollRotate,
-                    _DissolveNoiseStrength,
-                    sampler_MainTex
-                );
-            #else
-                lilCalcDissolve(
-                    alpha,
-                    dissolveAlpha,
-                    input.uv,
-                    input.positionOS,
-                    _DissolveParams,
-                    _DissolvePos,
-                    _DissolveMask,
-                    _DissolveMask_ST,
-                    sampler_MainTex
-                );
+    #if !defined(LIL_HDRP)
+        outColor = 0;
+    #elif defined(SCENESELECTIONPASS)
+        outColor = float4(_ObjectId, _PassValue, 1.0, 1.0);
+    #elif defined(SCENEPICKINGPASS)
+        outColor = _SelectionID;
+    #else
+        #ifdef WRITE_MSAA_DEPTH
+            depthColor = input.positionCS.z;
+            #ifdef _ALPHATOMASK_ON
+                #if LIL_RENDER > 0
+                    depthColor.a = saturate((alpha - _Cutoff) / max(fwidth(alpha), 0.0001) + 0.5);
+                #else
+                    depthColor.a = 1.0;
+                #endif
             #endif
         #endif
 
-        //----------------------------------------------------------------------------------------------------------------------
-        // Alpha Mask
-        #if !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_ALPHAMASK)
-            if(_AlphaMaskMode)
-            {
-                float alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, uvMain).r;
-                alphaMask = saturate(alphaMask + _AlphaMaskValue);
-                alpha = _AlphaMaskMode == 1 ? alphaMask : alpha * alphaMask;
-            }
-        #endif
+        #if defined(WRITE_NORMAL_BUFFER)
+            float3 normalDirection = normalize(input.normalWS);
+            normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
 
-        clip(alpha - _Cutoff);
-        #if LIL_RENDER == 2
-            half alphaRef = LIL_SAMPLE_3D(_DitherMaskLOD, sampler_DitherMaskLOD, float3(input.positionCS.xy*0.25,alpha*0.9375)).a;
-            clip(alphaRef - 0.01);
+            const float seamThreshold = 1.0 / 1024.0;
+            normalDirection.z = CopySign(max(seamThreshold, abs(normalDirection.z)), normalDirection.z);
+            float2 octNormalWS = PackNormalOctQuadEncode(normalDirection);
+            float3 packNormalWS = PackFloat2To888(saturate(octNormalWS * 0.5 + 0.5));
+            outNormalBuffer = float4(packNormalWS, 1.0);
         #endif
     #endif
-    return 0;
 }
+
+#if defined(LIL_TESSELLATION)
+    #include "Includes/lil_tessellation.hlsl"
+#endif
 
 #endif

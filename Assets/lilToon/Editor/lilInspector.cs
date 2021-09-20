@@ -20,25 +20,14 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Custom properties
         // If there are properties you have added, add them here.
-        static bool isCustomShader = false;
+        public static bool isCustomShader = false;
 
-        //MaterialProperty exampleProperty;
-
-        void LoadCustomProperties(MaterialProperty[] props, Material material)
+        public virtual void LoadCustomProperties(MaterialProperty[] props, Material material)
         {
-            //if(material.shader.name.Contains("Example"))
-            //{
-            //    isCustomShader = true;
-            //    exampleProperty = FindProperty("_ExampleProperty", props);
-            //}
         }
 
-        void DrawCustomProperties(MaterialEditor materialEditor, Material material)
+        public virtual void DrawCustomProperties(MaterialEditor materialEditor, Material material)
         {
-            //if(material.shader.name.Contains("Example"))
-            //{
-            //    materialEditor.ShaderProperty(exampleProperty, "Example Property");
-            //}
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -85,7 +74,8 @@ namespace lilToon
         {
             BRP,
             LWRP,
-            URP
+            URP,
+            HDRP
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -276,6 +266,7 @@ namespace lilToon
             public bool isShowBlendAddFur       = false;
             public bool isShowWebPages          = false;
             public bool isShowHelpPages         = false;
+            public bool isShowLightingSettings  = false;
             public bool isShowShaderSetting     = false;
             public bool isShaderSettingChanged  = false;
             public bool[] isShowCategorys = new bool[(int)lilPresetCategory.Other+1]{false,false,false,false,false,false,false};
@@ -319,6 +310,10 @@ namespace lilToon
         MaterialProperty backfaceForceShadow;
         MaterialProperty vertexLightStrength;
         MaterialProperty lightMinLimit;
+        MaterialProperty lightMaxLimit;
+        MaterialProperty beforeExposureLimit;
+        MaterialProperty monochromeLighting;
+        MaterialProperty lilDirectionalLightStrength;
         MaterialProperty triMask;
             MaterialProperty cull;
             MaterialProperty srcBlend;
@@ -1199,9 +1194,7 @@ namespace lilToon
                             }
                             EditorGUI.indentLevel--;
                         DrawLine();
-                        materialEditor.ShaderProperty(asUnlit, GetLoc("sAsUnlit"));
-                        materialEditor.ShaderProperty(vertexLightStrength, GetLoc("sVertexLightStrength"));
-                        materialEditor.ShaderProperty(lightMinLimit, GetLoc("sLightMinLimit"));
+                        DrawLightingSettings(materialEditor);
                         DrawLine();
                         materialEditor.TexturePropertySingleLine(triMaskContent, triMask);
                     }
@@ -1539,6 +1532,8 @@ namespace lilToon
                             materialEditor.EnableInstancingField();
                             materialEditor.DoubleSidedGIField();
                             materialEditor.RenderQueueField();
+                            materialEditor.ShaderProperty(beforeExposureLimit, GetLoc("sBeforeExposureLimit"));
+                            materialEditor.ShaderProperty(lilDirectionalLightStrength, GetLoc("sDirectionalLightStrength"));
                             EditorGUILayout.EndVertical();
                             EditorGUILayout.EndVertical();
                         }
@@ -1609,9 +1604,7 @@ namespace lilToon
                         materialEditor.ShaderProperty(cull, sCullModes);
                         materialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
                         DrawLine();
-                        materialEditor.ShaderProperty(asUnlit, GetLoc("sAsUnlit"));
-                        materialEditor.ShaderProperty(vertexLightStrength, GetLoc("sVertexLightStrength"));
-                        materialEditor.ShaderProperty(lightMinLimit, GetLoc("sLightMinLimit"));
+                        DrawLightingSettings(materialEditor);
                     }
                     EditorGUILayout.EndVertical();
 
@@ -2183,6 +2176,8 @@ namespace lilToon
                             materialEditor.EnableInstancingField();
                             materialEditor.DoubleSidedGIField();
                             materialEditor.RenderQueueField();
+                            materialEditor.ShaderProperty(beforeExposureLimit, GetLoc("sBeforeExposureLimit"));
+                            materialEditor.ShaderProperty(lilDirectionalLightStrength, GetLoc("sDirectionalLightStrength"));
                             EditorGUILayout.EndVertical();
                             EditorGUILayout.EndVertical();
                         }
@@ -2473,9 +2468,7 @@ namespace lilToon
                             }
                             EditorGUI.indentLevel--;
                         DrawLine();
-                        materialEditor.ShaderProperty(asUnlit, GetLoc("sAsUnlit"));
-                        materialEditor.ShaderProperty(vertexLightStrength, GetLoc("sVertexLightStrength"));
-                        materialEditor.ShaderProperty(lightMinLimit, GetLoc("sLightMinLimit"));
+                        DrawLightingSettings(materialEditor);
                     }
                     EditorGUILayout.EndVertical();
 
@@ -3540,6 +3533,8 @@ namespace lilToon
                             materialEditor.EnableInstancingField();
                             materialEditor.DoubleSidedGIField();
                             materialEditor.RenderQueueField();
+                            materialEditor.ShaderProperty(beforeExposureLimit, GetLoc("sBeforeExposureLimit"));
+                            materialEditor.ShaderProperty(lilDirectionalLightStrength, GetLoc("sDirectionalLightStrength"));
                             EditorGUILayout.EndVertical();
                             EditorGUILayout.EndVertical();
                         }
@@ -3692,6 +3687,10 @@ namespace lilToon
             backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
             lightMinLimit = FindProperty("_LightMinLimit", props);
+            lightMaxLimit = FindProperty("_LightMaxLimit", props);
+            beforeExposureLimit = FindProperty("_BeforeExposureLimit", props);
+            monochromeLighting = FindProperty("_MonochromeLighting", props);
+            lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
                 cull = FindProperty("_Cull", props);
                 srcBlend = FindProperty("_SrcBlend", props);
@@ -3991,6 +3990,10 @@ namespace lilToon
             backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
             lightMinLimit = FindProperty("_LightMinLimit", props);
+            lightMaxLimit = FindProperty("_LightMaxLimit", props);
+            beforeExposureLimit = FindProperty("_BeforeExposureLimit", props);
+            monochromeLighting = FindProperty("_MonochromeLighting", props);
+            lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
                 cull = FindProperty("_Cull", props);
                 srcBlend = FindProperty("_SrcBlend", props);
@@ -4090,6 +4093,10 @@ namespace lilToon
             asUnlit = FindProperty("_AsUnlit", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
             lightMinLimit = FindProperty("_LightMinLimit", props);
+            lightMaxLimit = FindProperty("_LightMaxLimit", props);
+            beforeExposureLimit = FindProperty("_BeforeExposureLimit", props);
+            monochromeLighting = FindProperty("_MonochromeLighting", props);
+            lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
                 cull = FindProperty("_Cull", props);
                 srcBlend = FindProperty("_SrcBlend", props);
@@ -4268,6 +4275,10 @@ namespace lilToon
             backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
             lightMinLimit = FindProperty("_LightMinLimit", props);
+            lightMaxLimit = FindProperty("_LightMaxLimit", props);
+            beforeExposureLimit = FindProperty("_BeforeExposureLimit", props);
+            monochromeLighting = FindProperty("_MonochromeLighting", props);
+            lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
             triMask = FindProperty("_TriMask", props);
                 cull = FindProperty("_Cull", props);
@@ -4375,6 +4386,7 @@ namespace lilToon
             RewriteBRP(ref s, lilRP == lilRenderPipeline.BRP);
             RewriteLWRP(ref s, lilRP == lilRenderPipeline.LWRP);
             RewriteURP(ref s, lilRP == lilRenderPipeline.URP);
+            RewriteHDRP(ref s, lilRP == lilRenderPipeline.HDRP);
             StreamWriter sw = new StreamWriter(path,false);
             sw.Write(s);
             sw.Close();
@@ -4443,6 +4455,28 @@ namespace lilToon
                 s = s.Replace(
                     "//\r\n// URP End",
                     "*/\r\n// URP End");
+            }
+        }
+
+        static void RewriteHDRP(ref string s, bool isActive)
+        {
+            if(isActive)
+            {
+                s = s.Replace(
+                    "// HDRP Start\r\n/*",
+                    "// HDRP Start\r\n//");
+                s = s.Replace(
+                    "*/\r\n// HDRP End",
+                    "//\r\n// HDRP End");
+            }
+            else
+            {
+                s = s.Replace(
+                    "// HDRP Start\r\n//",
+                    "// HDRP Start\r\n/*");
+                s = s.Replace(
+                    "//\r\n// HDRP End",
+                    "*/\r\n// HDRP End");
             }
         }
 
@@ -4678,6 +4712,29 @@ namespace lilToon
             }
         }
 
+        public static lilRenderPipeline CheckRP()
+        {
+            // Render Pipeline
+            // BRP : null
+            // LWRP : LightweightPipeline.LightweightRenderPipelineAsset
+            // URP : Universal.UniversalRenderPipelineAsset
+            // HDRP : HighDefinition.HDRenderPipelineAsset
+            lilRenderPipeline lilRP = lilRenderPipeline.BRP;
+            if(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset != null)
+            {
+                string renderPipelineName = UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.ToString();
+                if(String.IsNullOrEmpty(renderPipelineName))            lilRP = lilRenderPipeline.BRP;
+                else if(renderPipelineName.Contains("Lightweight"))     lilRP = lilRenderPipeline.LWRP;
+                else if(renderPipelineName.Contains("Universal"))       lilRP = lilRenderPipeline.URP;
+                else if(renderPipelineName.Contains("HighDefinition"))  lilRP = lilRenderPipeline.HDRP;
+            }
+            else
+            {
+                lilRP = lilRenderPipeline.BRP;
+            }
+            return lilRP;
+        }
+
         public static void InitializeSettingHLSL(ref lilToonSetting shaderSetting)
         {
             string[] shaderFolderPaths = lilToonInspector.GetShaderFolderPaths();
@@ -4700,18 +4757,8 @@ namespace lilToon
                     // BRP : null
                     // LWRP : LightweightPipeline.LightweightRenderPipelineAsset
                     // URP : Universal.UniversalRenderPipelineAsset
-                    lilRenderPipeline lilRP = lilRenderPipeline.BRP;
-                    if(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset != null)
-                    {
-                        string renderPipelineName = UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.ToString();
-                        if(String.IsNullOrEmpty(renderPipelineName))        lilRP = lilRenderPipeline.BRP;
-                        else if(renderPipelineName.Contains("Lightweight")) lilRP = lilRenderPipeline.LWRP;
-                        else if(renderPipelineName.Contains("Universal"))   lilRP = lilRenderPipeline.URP;
-                    }
-                    else
-                    {
-                        lilRP = lilRenderPipeline.BRP;
-                    }
+                    // HDRP : HighDefinition.HDRenderPipelineAsset
+                    lilRenderPipeline lilRP = CheckRP();
                     foreach(string shaderGuid in shaderGuids)
                     {
                         string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
@@ -4883,6 +4930,29 @@ namespace lilToon
             {
                 EditorGUI.indentLevel++;
                 DrawWebButton(GetLoc("sCommonProblems"), GetLoc("sReadmeURL") + GetLoc("sReadmeAnchorProblem"));
+                EditorGUI.indentLevel--;
+            }
+        }
+
+        void DrawLightingSettings(MaterialEditor materialEditor)
+        {
+            GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
+            labelStyle.fontStyle = FontStyle.Bold;
+            EditorGUI.indentLevel++;
+            Rect position = EditorGUILayout.GetControlRect();
+            EditorGUI.LabelField(position, GetLoc("sLightingSettings"), labelStyle);
+            EditorGUI.indentLevel--;
+
+            position.x += 10;
+            edSet.isShowLightingSettings = EditorGUI.Foldout(position, edSet.isShowLightingSettings, "");
+            if(edSet.isShowLightingSettings)
+            {
+                EditorGUI.indentLevel++;
+                materialEditor.ShaderProperty(asUnlit, GetLoc("sAsUnlit"));
+                materialEditor.ShaderProperty(vertexLightStrength, GetLoc("sVertexLightStrength"));
+                materialEditor.ShaderProperty(lightMinLimit, GetLoc("sLightMinLimit"));
+                materialEditor.ShaderProperty(lightMaxLimit, GetLoc("sLightMaxLimit"));
+                materialEditor.ShaderProperty(monochromeLighting, GetLoc("sMonochromeLighting"));
                 EditorGUI.indentLevel--;
             }
         }
@@ -5339,6 +5409,10 @@ namespace lilToon
                 s = s.Replace(
                     "            // Skip receiving shadow\r\n            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN\r\n            //#pragma multi_compile_fragment _ _SHADOWS_SOFT",
                     "            // Skip receiving shadow\r\n            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN\r\n            #pragma multi_compile_fragment _ _SHADOWS_SOFT");
+                // HDRP
+                s = s.Replace(
+                    "            // Skip receiving shadow\r\n            //#pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON\r\n            //#pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH",
+                    "            // Skip receiving shadow\r\n            #pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON\r\n            #pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH");
             }
             else
             {
@@ -5350,6 +5424,10 @@ namespace lilToon
                 s = s.Replace(
                     "            // Skip receiving shadow\r\n            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN\r\n            #pragma multi_compile_fragment _ _SHADOWS_SOFT",
                     "            // Skip receiving shadow\r\n            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN\r\n            //#pragma multi_compile_fragment _ _SHADOWS_SOFT");
+                // HDRP
+                s = s.Replace(
+                    "            // Skip receiving shadow\r\n            #pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON\r\n            #pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH",
+                    "            // Skip receiving shadow\r\n            //#pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON\r\n            //#pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH");
             }
             StreamWriter sw = new StreamWriter(path,false);
             sw.Write(s);

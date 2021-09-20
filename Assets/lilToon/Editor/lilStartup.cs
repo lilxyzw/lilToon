@@ -19,80 +19,84 @@ namespace lilToon
             string shaderSettingHLSLPath = lilToonInspector.GetShaderSettingHLSLPath();
             string shaderCommonPath = lilToonInspector.GetShaderCommonPath();
 
-            // Editor
-            if(!File.Exists(lilToonInspector.rspPath))
-            {
-                StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
-                sw.Write("-r:System.Drawing.dll\n-define:SYSTEM_DRAWING");
-                sw.Close();
-                AssetDatabase.Refresh();
-                AssetDatabase.ImportAsset(editorPath);
-            }
+            lilToonInspector.ApplyEditorSettingTemp();
+            lilToonInspector.edSet.languageNum = lilToonInspector.InitializeLanguage(lilToonInspector.edSet.languageNum);
 
-            StreamReader sr = new StreamReader(lilToonInspector.rspPath);
-            string s = sr.ReadToEnd();
-            sr.Close();
-
-            if(!s.Contains("r:System.Drawing.dll"))
+            // Initialize
+            if(!Directory.Exists(settingFolderPath))
             {
-                StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
-                sw.Write("\n-r:System.Drawing.dll");
-                sw.Close();
-                AssetDatabase.ImportAsset(editorPath);
-            }
-            if(!s.Contains("define:SYSTEM_DRAWING"))
-            {
-                StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
-                sw.Write("\n-define:SYSTEM_DRAWING");
-                sw.Close();
-                AssetDatabase.ImportAsset(editorPath);
-            }
+                // Setting Folder
+                Directory.CreateDirectory(settingFolderPath);
 
-            AssetDatabase.Refresh();
+                if(!File.Exists(shaderSettingHLSLPath))
+                {
+                    StreamWriter sw = new StreamWriter(shaderSettingHLSLPath,false);
+                    sw.Write("//INITIALIZE\r\n#ifndef LIL_SETTING_INCLUDED\r\n#define LIL_SETTING_INCLUDED\r\n\r\n#define LIL_FEATURE_MAIN_TONE_CORRECTION\r\n#define LIL_FEATURE_SHADOW\r\n#define LIL_FEATURE_TEX_SHADOW_STRENGTH\r\n#define LIL_FEATURE_EMISSION_1ST\r\n#define LIL_FEATURE_NORMAL_1ST\r\n#define LIL_FEATURE_MATCAP\r\n#define LIL_FEATURE_TEX_MATCAP_MASK\r\n#define LIL_FEATURE_RIMLIGHT\r\n#define LIL_FEATURE_TEX_RIMLIGHT_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_WIDTH\r\n\r\n#endif");
+                    sw.Close();
+                    AssetDatabase.ImportAsset(shaderSettingHLSLPath);
+                    Debug.Log("Generate setting hlsl file");
+                }
+                if(lilToonInspector.isUPM)
+                {
+                    StreamReader csr = new StreamReader(shaderCommonPath);
+                    string cs = csr.ReadToEnd();
+                    csr.Close();
+                    cs = cs.Replace(
+                        "#include \"../../../lilToonSetting/lil_setting.hlsl\"",
+                        "#include \"Assets/lilToonSetting/lil_setting.hlsl\"");
+                    StreamWriter csw = new StreamWriter(shaderCommonPath,false);
+                    csw.Write(cs);
+                    csw.Close();
+                }
+                else
+                {
+                    StreamReader csr = new StreamReader(shaderCommonPath);
+                    string cs = csr.ReadToEnd();
+                    csr.Close();
+                    cs = cs.Replace(
+                        "#include \"Assets/lilToonSetting/lil_setting.hlsl\"",
+                        "#include \"../../../lilToonSetting/lil_setting.hlsl\"");
+                    StreamWriter csw = new StreamWriter(shaderCommonPath,false);
+                    csw.Write(cs);
+                    csw.Close();
+                }
+
+                // Editor
+                if(!File.Exists(lilToonInspector.rspPath))
+                {
+                    StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
+                    sw.Write("-r:System.Drawing.dll\n-define:SYSTEM_DRAWING");
+                    sw.Close();
+                    AssetDatabase.Refresh();
+                    AssetDatabase.ImportAsset(editorPath);
+                }
+
+                StreamReader sr = new StreamReader(lilToonInspector.rspPath);
+                string s = sr.ReadToEnd();
+                sr.Close();
+
+                if(!s.Contains("r:System.Drawing.dll"))
+                {
+                    StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
+                    sw.Write("\n-r:System.Drawing.dll");
+                    sw.Close();
+                    AssetDatabase.Refresh();
+                    AssetDatabase.ImportAsset(editorPath);
+                }
+                if(!s.Contains("define:SYSTEM_DRAWING"))
+                {
+                    StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
+                    sw.Write("\n-define:SYSTEM_DRAWING");
+                    sw.Close();
+                    AssetDatabase.Refresh();
+                    AssetDatabase.ImportAsset(editorPath);
+                }
+            }
 
             // Version check
             if(!File.Exists(lilToonInspector.versionInfoTempPath))
             {
                 CoroutineHandler.StartStaticCoroutine(GetLatestVersionInfo());
-            }
-
-            lilToonInspector.ApplyEditorSettingTemp();
-            lilToonInspector.edSet.languageNum = lilToonInspector.InitializeLanguage(lilToonInspector.edSet.languageNum);
-
-            // Setting Folder
-            if(!Directory.Exists(settingFolderPath)) Directory.CreateDirectory(settingFolderPath);
-
-            if(lilToonInspector.isUPM)
-            {
-                StreamReader csr = new StreamReader(shaderCommonPath);
-                string cs = csr.ReadToEnd();
-                csr.Close();
-                cs = cs.Replace(
-                    "#include \"../../../lilToonSetting/lil_setting.hlsl\"",
-                    "#include \"Assets/lilToonSetting/lil_setting.hlsl\"");
-                StreamWriter csw = new StreamWriter(shaderCommonPath,false);
-                csw.Write(cs);
-                csw.Close();
-            }
-            else
-            {
-                StreamReader csr = new StreamReader(shaderCommonPath);
-                string cs = csr.ReadToEnd();
-                csr.Close();
-                cs = cs.Replace(
-                    "#include \"Assets/lilToonSetting/lil_setting.hlsl\"",
-                    "#include \"../../../lilToonSetting/lil_setting.hlsl\"");
-                StreamWriter csw = new StreamWriter(shaderCommonPath,false);
-                csw.Write(cs);
-                csw.Close();
-            }
-            if(!File.Exists(shaderSettingHLSLPath))
-            {
-                StreamWriter sw = new StreamWriter(shaderSettingHLSLPath,false);
-                sw.Write("//INITIALIZE\r\n#ifndef LIL_SETTING_INCLUDED\r\n#define LIL_SETTING_INCLUDED\r\n\r\n#define LIL_FEATURE_MAIN_TONE_CORRECTION\r\n#define LIL_FEATURE_SHADOW\r\n#define LIL_FEATURE_TEX_SHADOW_STRENGTH\r\n#define LIL_FEATURE_EMISSION_1ST\r\n#define LIL_FEATURE_NORMAL_1ST\r\n#define LIL_FEATURE_MATCAP\r\n#define LIL_FEATURE_TEX_MATCAP_MASK\r\n#define LIL_FEATURE_RIMLIGHT\r\n#define LIL_FEATURE_TEX_RIMLIGHT_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_WIDTH\r\n\r\n#endif");
-                sw.Close();
-                AssetDatabase.ImportAsset(shaderSettingHLSLPath);
-                Debug.Log("Generate setting hlsl file");
             }
 
             AssetDatabase.importPackageCompleted += OnImportPackageCompleted =>

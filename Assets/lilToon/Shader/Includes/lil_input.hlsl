@@ -9,17 +9,27 @@
 #endif
 
 TEXTURE3D(_DitherMaskLOD);
-TEXTURE2D(_BackgroundTexture);
-TEXTURE2D(_GrabTexture);
-TEXTURE2D(_CameraDepthTexture);
 SAMPLER(sampler_linear_repeat);
 SAMPLER(sampler_linear_clamp);
 SAMPLER(sampler_DitherMaskLOD);
-SAMPLER(sampler_BackgroundTexture);
-SAMPLER(sampler_GrabTexture);
-SAMPLER(sampler_CameraDepthTexture);
-float4 _BackgroundTexture_TexelSize;
-float4 _GrabTexture_TexelSize;
+
+#if defined(LIL_BRP)
+    TEXTURE2D(_lilBackgroundTexture);
+    TEXTURE2D(_GrabTexture);
+    SAMPLER(sampler_lilBackgroundTexture);
+    SAMPLER(sampler_GrabTexture);
+    float4 _lilBackgroundTexture_TexelSize;
+    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_2D(_lilBackgroundTexture, sampler_lilBackgroundTexture, uv)
+    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_2D(_GrabTexture, sampler_GrabTexture, uv)
+#elif defined(LIL_HDRP)
+    #define LIL_GET_BG_TEX(uv,lod) SampleCameraColor(uv,lod)
+    #define LIL_GET_GRAB_TEX(uv,lod) SampleCameraColor(uv,lod)
+#else
+    TEXTURE2D(_CameraOpaqueTexture);
+    SAMPLER(sampler_CameraOpaqueTexture);
+    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_2D_LOD(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv, lod)
+    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_2D_LOD(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv, lod)
+#endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Texture Exists
@@ -219,6 +229,10 @@ float4 _GrabTexture_TexelSize;
     float   _FlipNormal;
     float   _VertexLightStrength;
     float   _LightMinLimit;
+    float   _LightMaxLimit;
+    float   _BeforeExposureLimit;
+    float   _MonochromeLighting;
+    float   _lilDirectionalLightStrength;
     float   _BackfaceForceShadow;
     float   _ShadowBorder;
     float   _ShadowBlur;
@@ -231,6 +245,8 @@ float4 _GrabTexture_TexelSize;
     float   _RimFresnelPower;
     float   _OutlineWidth;
     float   _OutlineEnableLighting;
+    uint    _Cull;
+    uint    _OutlineCull;
     lilBool _Invisible;
     lilBool _UseShadow;
     lilBool _UseMatCap;
@@ -241,6 +257,9 @@ float4 _GrabTexture_TexelSize;
     lilBool _UseEmission;
     lilBool _OutlineFixWidth;
     lilBool _OutlineVertexR2Width;
+    #if defined(LIL_CUSTOM_PROPERTIES)
+        LIL_CUSTOM_PROPERTIES
+    #endif
     CBUFFER_END
 #elif defined(LIL_BAKER)
     CBUFFER_START(UnityPerMaterial)
@@ -488,12 +507,16 @@ float4  _OutlineTex_ST;
 //------------------------------------------------------------------------------------------------------------------------------
 // Float
 float   _AsUnlit;
-#if LIL_RENDER != 0
-    float   _Cutoff;
-#endif
+float   _Cutoff;
 float   _FlipNormal;
 float   _VertexLightStrength;
 float   _LightMinLimit;
+float   _LightMaxLimit;
+float   _BeforeExposureLimit;
+float   _MonochromeLighting;
+#if defined(LIL_HDRP)
+    float   _lilDirectionalLightStrength;
+#endif
 #if defined(LIL_FEATURE_MAIN_GRADATION_MAP)
     float   _MainGradationStrength;
 #endif
@@ -625,6 +648,8 @@ float   _OutlineEnableLighting;
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Int
+uint    _Cull;
+uint    _OutlineCull;
 #if defined(LIL_FEATURE_MAIN2ND)
     uint    _Main2ndTexBlendMode;
 #endif
@@ -774,6 +799,13 @@ lilBool _OutlineVertexR2Width;
 #if defined(LIL_REFRACTION)
     lilBool _RefractionColorFromMain;
 #endif
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Custom properties
+#if defined(LIL_CUSTOM_PROPERTIES)
+    LIL_CUSTOM_PROPERTIES
+#endif
+
 CBUFFER_END
 #endif
 
@@ -843,6 +875,12 @@ float4 _AudioTexture_TexelSize;
 
 #if Exists_MainTex == false
 #define sampler_MainTex sampler_linear_repeat
+#endif
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Custom properties
+#if defined(LIL_CUSTOM_TEXTURES)
+    LIL_CUSTOM_TEXTURES
 #endif
 
 #endif
