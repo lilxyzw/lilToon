@@ -109,9 +109,9 @@ Built-in RPのみに対応させる場合は`// BRP Start`と`// BRP End`で囲�
 #define LIL_CUSTOM_V2F_STRUCT \
     struct v2fCustom \
     { \
+        float2 uv2  : TEXCOORD15; \
+        float2 uv3  : TEXCOORD16; \
         v2f base; \
-        float2 uv2  : TEXCOORD14; \
-        float2 uv3  : TEXCOORD15; \
     };
 
 #include "Includes/lil_pass_〇〇.hlsl"
