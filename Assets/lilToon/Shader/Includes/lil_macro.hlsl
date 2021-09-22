@@ -291,8 +291,6 @@
     // Support
     #define _MainLightColor                         _LightColor0
     #define _MainLightPosition                      _WorldSpaceLightPos0
-    #define SRGBToLinear(col)                       GammaToLinearSpace(col)
-    #define LinearToSRGB(col)                       LinearToGammaSpace(col)
     #define UnpackNormalScale(normal,scale)         UnpackScaleNormal(normal,scale)
     #define MetaInput                               UnityMetaInput
     #define MetaFragment(input)                     UnityMetaFragment(input)
@@ -470,7 +468,32 @@
 #endif
 
 // Texture
-#if defined(SHADER_API_D3D11) || defined(SHADER_API_XBOXONE) || defined(UNITY_COMPILER_HLSLCC) || defined(SHADER_API_PSSL) || (defined(SHADER_TARGET_SURFACE_ANALYSIS) && !defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER))
+#if defined(TEXTURE2D)
+    #undef TEXTURE2D
+#endif
+#if defined(TEXTURE3D)
+    #undef TEXTURE3D
+#endif
+#if defined(SAMPLER)
+    #undef SAMPLER
+#endif
+
+#if defined(SHADER_API_GLES) || (defined(SHADER_TARGET_SURFACE_ANALYSIS) && defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER))
+    #define LIL_SAMPLE_1D(tex,samp,uv)              tex2D(tex,float2(uv,0.5))
+    #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)      tex2Dlod(tex,float4(uv,0.5,0,lod))
+    #define LIL_SAMPLE_2D(tex,samp,uv)              tex2D(tex,uv)
+    #define LIL_SAMPLE_2D_ST(tex,samp,uv)           tex2D(tex,uv*tex##_ST.xy+tex##_ST.zw)
+    #define LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)      tex2Dlod(tex,float4(uv,0,lod))
+    #define LIL_SAMPLE_2D_BIAS(tex,samp,uv,bias)    tex2Dbias(tex,float4(uv,0,bias))
+    #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)   tex2Dgrad(tex,float4(uv,dx,dy))
+    #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)  tex2DArray(tex,float3(uv,index))
+    #define LIL_SAMPLE_3D(tex,samp,uv)              tex3D(tex,uv)
+    #define TEXTURE2D(tex)                          sampler2D tex
+    #define TEXTURE3D(tex)                          sampler3D tex
+    #define SAMPLER(samp)
+    #define LIL_SAMP_IN_FUNC(samp)
+    #define LIL_SAMP_IN(samp)
+#else
     #define LIL_SAMPLE_1D(tex,samp,uv)              tex.Sample(samp,uv)
     #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)      tex.SampleLevel(sampler_linear_repeat,uv,lod)
     #define LIL_SAMPLE_2D(tex,samp,uv)              tex.Sample(samp,uv)
@@ -480,38 +503,11 @@
     #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)   tex.SampleGrad(samp,uv,dx,dy)
     #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)  tex.Sample(samp,float3(uv,index))
     #define LIL_SAMPLE_3D(tex,samp,coord)           tex.Sample(samp,coord)
-    #if !defined TEXTURE2D
-        #define TEXTURE2D(tex)                      Texture2D tex
-    #endif
-    #if !defined TEXTURE3D
-        #define TEXTURE3D(tex)                      Texture3D tex
-    #endif
-    #if !defined SAMPLER
-        #define SAMPLER(samp)                       SamplerState samp
-    #endif
+    #define TEXTURE2D(tex)                          Texture2D tex
+    #define TEXTURE3D(tex)                          Texture3D tex
+    #define SAMPLER(samp)                           SamplerState samp
     #define LIL_SAMP_IN_FUNC(samp)                  , SamplerState samp
     #define LIL_SAMP_IN(samp)                       , samp
-#else
-    #define LIL_SAMPLE_1D(tex,samp,uv)              tex1D(tex,uv)
-    #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)      tex1Dlod(tex,float4(uv,0,0,lod))
-    #define LIL_SAMPLE_2D(tex,samp,uv)              tex2D(tex,uv)
-    #define LIL_SAMPLE_2D_ST(tex,samp,uv)           tex2D(tex,uv*tex##_ST.xy+tex##_ST.zw)
-    #define LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)      tex2Dlod(tex,float4(uv,0,lod))
-    #define LIL_SAMPLE_2D_BIAS(tex,samp,uv,bias)    tex2Dbias(tex,float4(uv,0,bias))
-    #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)   tex2Dgrad(tex,float4(uv,dx,dy))
-    #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)  tex2DArray(tex,float3(uv,index))
-    #define LIL_SAMPLE_3D(tex,samp,uv)              tex3D(tex,uv)
-    #if !defined TEXTURE2D
-        #define TEXTURE2D(tex)                      sampler2D tex
-    #endif
-    #if !defined TEXTURE3D
-        #define TEXTURE3D(tex)                      sampler3D tex
-    #endif
-    #if !defined SAMPLER
-        #define SAMPLER(samp)
-    #endif
-    #define LIL_SAMP_IN_FUNC(samp)
-    #define LIL_SAMP_IN(samp)
 #endif
 
 #if defined(LIL_FEATURE_PARALLAX) && defined(LIL_FEATURE_POM)
@@ -605,7 +601,7 @@
         o.lightColor = min(o.lightColor, _BeforeExposureLimit); \
         o.lightColor *= GetCurrentExposureMultiplier(); \
         o.lightColor = clamp(o.lightColor, _LightMinLimit, _LightMaxLimit); \
-        o.lightColor = lerp(o.lightColor, lilMonoColor(o.lightColor), _MonochromeLighting); \
+        o.lightColor = lerp(o.lightColor, lilGray(o.lightColor), _MonochromeLighting); \
         o.lightColor = lerp(o.lightColor, 1.0, _AsUnlit)
 #elif defined(LIL_PASS_FORWARDADD)
     #define LIL_CALC_MAINLIGHT(i,o)
@@ -618,7 +614,7 @@
         o.lightDirection = lilGetLightDirection(); \
         LIL_CALC_TWOLIGHT(i,o); \
         o.lightColor = clamp(o.lightColor, _LightMinLimit, _LightMaxLimit); \
-        o.lightColor = lerp(o.lightColor, lilMonoColor(o.lightColor), _MonochromeLighting); \
+        o.lightColor = lerp(o.lightColor, lilGray(o.lightColor), _MonochromeLighting); \
         o.lightColor = lerp(o.lightColor, 1.0, _AsUnlit)
 #endif
 

@@ -22,7 +22,7 @@ float4 frag(v2f input) : SV_Target
     #if !defined(LIL_PASS_FORWARDADD)
         #if defined(LIL_USE_LIGHTMAP)
             lightColor = clamp(lightColor, _LightMinLimit, _LightMaxLimit);
-            lightColor = lerp(lightColor, lilMonoColor(lightColor), _MonochromeLighting);
+            lightColor = lerp(lightColor, lilGray(lightColor), _MonochromeLighting);
             lightColor = lerp(lightColor, 1.0, _AsUnlit);
         #endif
         #if defined(LIL_HDRP)
@@ -32,9 +32,9 @@ float4 frag(v2f input) : SV_Target
         #else
             float3 addLightColor = vertexLightColor;
         #endif
-        addLightColor = lerp(addLightColor, lilMonoColor(addLightColor), _MonochromeLighting);
+        addLightColor = lerp(addLightColor, lilGray(addLightColor), _MonochromeLighting);
     #else
-        lightColor = lerp(lightColor, lilMonoColor(lightColor), _MonochromeLighting);
+        lightColor = lerp(lightColor, lilGray(lightColor), _MonochromeLighting);
         lightColor = lerp(lightColor, 0.0, _AsUnlit);
     #endif
 

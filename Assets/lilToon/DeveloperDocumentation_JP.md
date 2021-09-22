@@ -12,7 +12,7 @@
 
 # シェーダーバリエーションの作成
 `lts.shader`を複製し`custom_lts.shader`に名前を変更します。  
-ファイル冒頭の`Shader "lilToon"`を`Shader "Example/lilToonCustom"`に書き換えます。  
+ファイル冒頭の`Shader "lilToon"`を`Shader "lilToonCustomExample/Opaque"`に書き換えます。  
 シェーダー内の`UsePass "Hidden/ltspass_opaque/〇〇"`の部分を先程作成した`UsePass "Hidden/custom_ltspass_opaque/〇〇"`に置き換えます。
 
 # マテリアル変数を増やす
@@ -169,4 +169,104 @@ v2fCustom vert(appdata input)
     if(_CustomEmissionUVMode == 2) customEmissionUV = inputCustom.uv2; \
     if(_CustomEmissionUVMode == 3) customEmissionUV = inputCustom.uv3; \
     lilEmission(col, customEmissionUV, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
+```
+
+# Inspector拡張
+`lilToon.lilToonInspector`を継承することで簡単にInspectorを拡張できます。
+手順は以下の通りです。
+1. `MaterialProperty`を宣言
+2. `LoadCustomProperties()`をオーバーライドして、その中で`isCustomShader`を`true`にしつつ`FindProperty`でプロパティを取得
+3. `DrawCustomProperties()`をオーバーライドしてGUIを実装
+
+lilToonのGUIStyleとして以下のものが渡されてくるのでご活用ください。
+
+|名前|説明|
+|-|-|
+|boxOuter|プロパティボックスの外側|
+|boxInnerHalf|プロパティボックスの内側（ラベル描画用に上部が角ばっています）|
+|boxInner|プロパティボックスの内側（ラベルなしの場合に綺麗になるように上部が角丸になっています）|
+|customBox|Unityデフォルトのboxに近いですが視認性を上げるために縁取りがされています|
+|customToggleFont|プロパティボックスのラベルに使われる太字のフォント|
+|offsetButton|プロパティボックスに合うようにインデントが加えられたボタン|
+
+またlilToon独自のGUI拡張として以下のような関数が使えます。
+|名前|説明|
+|-|-|
+|bool Foldout(string title, string help, bool display)|Foldoutの描画|
+|void DrawLine()|区切り線の描画|
+|void DrawWebButton(string text, string URL)|ウェブボタンの描画|
+|void LoadCustomLanguage(string langFileGUID)|カスタム言語ファイルの追加読み込み|
+
+今回はCustomInspectorExample.csを作成し以下のように拡張しました。
+```C#
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEngine;
+
+namespace lilToon
+{
+    public class CustomInspectorExample : lilToonInspector
+    {
+        // Custom properties
+        MaterialProperty customVertexWaveScale;
+        MaterialProperty customVertexWaveStrength;
+        MaterialProperty customVertexWaveSpeed;
+        MaterialProperty customVertexWaveMask;
+        MaterialProperty customEmissionUVMode;
+
+        private static bool isShowCustomProperties;
+
+        // Override this
+        protected override void LoadCustomProperties(MaterialProperty[] props, Material material)
+        {
+            isCustomShader = true;
+            //LoadCustomLanguage("");
+            customVertexWaveScale = FindProperty("_CustomVertexWaveScale", props);
+            customVertexWaveStrength = FindProperty("_CustomVertexWaveStrength", props);
+            customVertexWaveSpeed = FindProperty("_CustomVertexWaveSpeed", props);
+            customVertexWaveMask = FindProperty("_CustomVertexWaveMask", props);
+            customEmissionUVMode = FindProperty("_CustomEmissionUVMode", props);
+        }
+
+        // Override this
+        protected override void DrawCustomProperties(
+            MaterialEditor materialEditor,
+            Material material,
+            GUIStyle boxOuter,          // outer box
+            GUIStyle boxInnerHalf,      // inner box
+            GUIStyle boxInner,          // inner box without label
+            GUIStyle customBox,         // box (similar to unity default box)
+            GUIStyle customToggleFont,  // bold font
+            GUIStyle offsetButton)      // button with indent
+        {
+            isShowCustomProperties = Foldout("Vertex Wave & Emission UV", "Vertex Wave & Emission UV", isShowCustomProperties);
+            if(isShowCustomProperties)
+            {
+                // Vertex Wave
+                EditorGUILayout.BeginVertical(boxOuter);
+                EditorGUILayout.LabelField(GetLoc("Vertex Wave"), customToggleFont);
+                EditorGUILayout.BeginVertical(boxInnerHalf);
+
+                materialEditor.ShaderProperty(customVertexWaveScale, "Scale");
+                materialEditor.ShaderProperty(customVertexWaveStrength, "Strength");
+                materialEditor.ShaderProperty(customVertexWaveSpeed, "Speed");
+                materialEditor.TexturePropertySingleLine(new GUIContent("Mask", "Strength (R)"), customVertexWaveMask);
+
+                EditorGUILayout.EndVertical();
+                EditorGUILayout.EndVertical();
+
+                // Emission UV
+                EditorGUILayout.BeginVertical(boxOuter);
+                EditorGUILayout.LabelField(GetLoc("Emission UV"), customToggleFont);
+                EditorGUILayout.BeginVertical(boxInnerHalf);
+
+                materialEditor.ShaderProperty(customEmissionUVMode, "UV Mode|UV0|UV1|UV2|UV3");
+
+                EditorGUILayout.EndVertical();
+                EditorGUILayout.EndVertical();
+            }
+        }
+    }
+}
+#endif
 ```

@@ -18,28 +18,12 @@ namespace lilToon
         [MenuItem("Assets/lilToon/Refresh shaders", false, 20)]
         static void RefreshShaders()
         {
-            string[] shaderFolderPaths = lilToonInspector.GetShaderFolderPaths();
-            string shaderPipelinePath = lilToonInspector.GetShaderPipelinePath();
+            lilToonInspector.RewriteShaderRP();
             string shaderSettingPath = lilToonInspector.GetShaderSettingPath();
-            string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
-            if(shaderGuids.Length > 33)
-            {
-                // Render Pipeline
-                // BRP : null
-                // LWRP : LightweightPipeline.LightweightRenderPipelineAsset
-                // URP : Universal.UniversalRenderPipelineAsset
-                lilToonInspector.lilRenderPipeline lilRP = lilToonInspector.CheckRP();
-                foreach(string shaderGuid in shaderGuids)
-                {
-                    string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
-                    lilToonInspector.RewriteShaderRP(shaderPath, lilRP);
-                }
-                lilToonInspector.RewriteShaderRP(shaderPipelinePath, lilRP);
-                lilToonSetting shaderSetting = (lilToonSetting)AssetDatabase.LoadAssetAtPath(shaderSettingPath, typeof(lilToonSetting));
-                if(shaderSetting != null) lilToonInspector.ApplyShaderSetting(shaderSetting);
-                lilToonInspector.ReimportPassShaders();
-                AssetDatabase.Refresh();
-            }
+            lilToonSetting shaderSetting = (lilToonSetting)AssetDatabase.LoadAssetAtPath(shaderSettingPath, typeof(lilToonSetting));
+            if(shaderSetting != null) lilToonInspector.ApplyShaderSetting(shaderSetting);
+            lilToonInspector.ReimportPassShaders();
+            AssetDatabase.Refresh();
         }
     }
 

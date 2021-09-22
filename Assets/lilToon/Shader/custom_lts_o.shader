@@ -1,4 +1,4 @@
-Shader "lilToonCustomExample/Opaque"
+Shader "lilToonCustomExample/OpaqueOutline"
 {
     Properties
     {
@@ -346,6 +346,46 @@ Shader "lilToonCustomExample/Opaque"
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Outline
+        [lilHDR]        _OutlineColor               ("Outline Color", Color) = (0.8,0.85,0.9,1)
+                        _OutlineTex                 ("Texture", 2D) = "white" {}
+        [lilUVAnim]     _OutlineTex_ScrollRotate    ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
+        [lilHSVG]       _OutlineTexHSVG             ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
+        [lilOLWidth]    _OutlineWidth               ("Width", Range(0,1)) = 0.05
+        [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
+        [lilToggle]     _OutlineFixWidth            ("Fix Width", Int) = 1
+        [lilToggle]     _OutlineVertexR2Width       ("Vertex R -> Width", Int) = 0
+                        _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Outline Advanced
+        [lilEnum]                                       _OutlineCull                ("Cull Mode|Off|Front|Back", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlend            ("SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlend            ("DstBlend", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlendAlpha       ("SrcBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlendAlpha       ("DstBlendAlpha", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOp             ("BlendOp", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpAlpha        ("BlendOpAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlendFA          ("ForwardAdd SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlendFA          ("ForwardAdd DstBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlendAlphaFA     ("ForwardAdd SrcBlendAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlendAlphaFA     ("ForwardAdd DstBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpFA           ("ForwardAdd BlendOp", Int) = 4
+        [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpAlphaFA      ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _OutlineZWrite              ("ZWrite", Int) = 1
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _OutlineZTest               ("ZTest", Int) = 2
+        [IntRange]                                      _OutlineStencilRef          ("Stencil Reference Value", Range(0, 255)) = 0
+        [IntRange]                                      _OutlineStencilReadMask     ("Stencil ReadMask Value", Range(0, 255)) = 255
+        [IntRange]                                      _OutlineStencilWriteMask    ("Stencil WriteMask Value", Range(0, 255)) = 255
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _OutlineStencilComp         ("Stencil Compare Function", Float) = 8
+        [Enum(UnityEngine.Rendering.StencilOp)]         _OutlineStencilPass         ("Stencil Pass", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _OutlineStencilFail         ("Stencil Fail", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _OutlineStencilZFail        ("Stencil ZFail", Float) = 0
+                                                        _OutlineOffsetFactor        ("Offset Factor", Float) = 0
+                                                        _OutlineOffsetUnits         ("Offset Units", Float) = 0
+        [lilColorMask]                                  _OutlineColorMask           ("Color Mask", Int) = 15
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Custom
         [lilVec3]       _CustomVertexWaveScale      ("Vertex Wave Scale", Vector) = (10.0,10.0,10.0,0.0)
         [lilVec3]       _CustomVertexWaveStrength   ("Vertex Wave Strength", Vector) = (0.0,0.1,0.0,0.0)
@@ -361,6 +401,7 @@ Shader "lilToonCustomExample/Opaque"
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Geometry"}
         UsePass "Hidden/custom_ltspass_opaque/FORWARD"
+        UsePass "Hidden/custom_ltspass_opaque/FORWARD_OUTLINE"
         UsePass "Hidden/custom_ltspass_opaque/FORWARD_ADD"
         UsePass "Hidden/custom_ltspass_opaque/SHADOW_CASTER"
         UsePass "Hidden/custom_ltspass_opaque/META"
@@ -375,6 +416,7 @@ Shader "lilToonCustomExample/Opaque"
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Geometry"}
         UsePass "Hidden/custom_ltspass_opaque/FORWARD"
+        UsePass "Hidden/custom_ltspass_opaque/FORWARD_OUTLINE"
         UsePass "Hidden/custom_ltspass_opaque/SHADOW_CASTER"
         UsePass "Hidden/custom_ltspass_opaque/DEPTHONLY"
         UsePass "Hidden/custom_ltspass_opaque/META"
@@ -389,6 +431,7 @@ Shader "lilToonCustomExample/Opaque"
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Geometry"}
         UsePass "Hidden/custom_ltspass_opaque/FORWARD"
+        UsePass "Hidden/custom_ltspass_opaque/FORWARD_OUTLINE"
         UsePass "Hidden/custom_ltspass_opaque/SHADOW_CASTER"
         UsePass "Hidden/custom_ltspass_opaque/DEPTHONLY"
         UsePass "Hidden/custom_ltspass_opaque/DEPTHNORMALS"
@@ -405,9 +448,10 @@ Shader "lilToonCustomExample/Opaque"
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Geometry"}
         UsePass "Hidden/custom_ltspass_opaque/FORWARD"
+        UsePass "Hidden/custom_ltspass_opaque/FORWARD_OUTLINE"
         UsePass "Hidden/custom_ltspass_opaque/SHADOW_CASTER"
-        UsePass "Hidden/custom_ltspass_opaque/DEPTHONLY"
-        UsePass "Hidden/custom_ltspass_opaque/MOTIONVECTORS"
+        UsePass "Hidden/custom_ltspass_opaque/DEPTHONLY_OUTLINE"
+        UsePass "Hidden/custom_ltspass_opaque/MOTIONVECTORS_OUTLINE"
         UsePass "Hidden/custom_ltspass_opaque/META"
     }
 */

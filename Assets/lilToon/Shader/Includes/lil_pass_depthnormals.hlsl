@@ -47,7 +47,7 @@ float4 frag(v2f input) : SV_Target
 
     #include "Includes/lil_frag_alpha.hlsl"
 
-    return float4(PackNormalOctRectEncode(TransformWorldToViewDir(input.normalWS, true)), 0.0, 0.0);
+    return float4(PackNormalOctRectEncode(normalize(mul((float3x3)LIL_MATRIX_V, input.normalWS))), 0.0, 0.0);
 }
 
 #endif

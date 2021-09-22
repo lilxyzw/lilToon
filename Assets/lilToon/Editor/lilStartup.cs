@@ -20,7 +20,7 @@ namespace lilToon
             string shaderCommonPath = lilToonInspector.GetShaderCommonPath();
 
             lilToonInspector.ApplyEditorSettingTemp();
-            lilToonInspector.edSet.languageNum = lilToonInspector.InitializeLanguage(lilToonInspector.edSet.languageNum);
+            lilToonInspector.InitializeLanguage();
 
             // Initialize
             if(!Directory.Exists(settingFolderPath))
