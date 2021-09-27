@@ -466,24 +466,15 @@
 #if defined(TEXTURE2D)
     #undef TEXTURE2D
 #endif
+#if defined(TEXTURE2D_FLOAT)
+    #undef TEXTURE2D_FLOAT
+#endif
 #if defined(TEXTURE3D)
     #undef TEXTURE3D
 #endif
 #if defined(SAMPLER)
     #undef SAMPLER
 #endif
-
-/*
-#if defined(SHADER_API_D3D11)
-|| defined(SHADER_API_GLCORE)
-|| defined(SHADER_API_GLES3)
-|| defined(SHADER_API_METAL)
-|| defined(SHADER_API_VULKAN)
-|| defined(SHADER_API_GLES)
-|| defined(SHADER_API_XBOXONE)
-|| defined(SHADER_API_PSSL)
-|| (defined(SHADER_TARGET_SURFACE_ANALYSIS) && !defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER))
-*/
 
 #if (defined(SHADER_TARGET_SURFACE_ANALYSIS) && defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER)) || defined(SHADER_TARGET_SURFACE_ANALYSIS)
     #define LIL_SAMPLE_1D(tex,samp,uv)              tex2D(tex,float2(uv,0.5))
@@ -645,17 +636,17 @@ struct lilLightData
         float3 lightColor = saturate(_MainLightColor.rgb * atten); \
         lightDirection = lilGetLightDirection(input.positionWS)
 #elif defined(LIL_HDRP) && defined(LIL_USE_LIGHTMAP)
-    // Point Light & Spot Light (ForwardAdd)
+    // HDRP with lightmap
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten,input); \
         float3 lightColor = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor += lightmapColor * GetCurrentExposureMultiplier();
 #elif defined(LIL_HDRP)
-    // Point Light & Spot Light (ForwardAdd)
+    // HDRP
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten,input); \
-        float3 lightColor = input.lightColor; \
+        float3 lightColor = input.lightColor;
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SHADOWMASK)
     // Mixed Lightmap (Shadowmask)
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \

@@ -992,8 +992,7 @@ float3 lilGetLightMapColor(float2 uv)
         float2 lightmapUV = uv * unity_LightmapST.xy + unity_LightmapST.zw;
     #endif
     #ifdef LIL_USE_LIGHTMAP
-        //float4 lightmap = LIL_SAMPLE_LIGHTMAP(LIL_LIGHTMAP_TEX, LIL_LIGHTMAP_SAMP, lightmapUV);
-        float4 lightmap = LIL_LIGHTMAP_TEX.Sample(LIL_LIGHTMAP_SAMP, lightmapUV);
+        float4 lightmap = LIL_SAMPLE_LIGHTMAP(LIL_LIGHTMAP_TEX, LIL_LIGHTMAP_SAMP, lightmapUV);
         outCol += LIL_DECODE_LIGHTMAP(lightmap);
     #endif
     #ifdef LIL_USE_DYNAMICLIGHTMAP

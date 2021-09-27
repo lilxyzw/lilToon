@@ -1022,6 +1022,9 @@ Shader "Hidden/ltspass_cutout"
 /*
     //----------------------------------------------------------------------------------------------------------------------
     // High Definition Render Pipeline
+    HLSLINCLUDE
+        #pragma target 4.5
+    ENDHLSL
     SubShader
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
