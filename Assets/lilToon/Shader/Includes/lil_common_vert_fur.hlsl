@@ -116,7 +116,7 @@ v2g vert(appdata input)
 // Geometry shader
 #if defined(LIL_ONEPASS_FUR)
     [maxvertexcount(46)]
-#elif (defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)) && (defined(LIL_USE_LIGHTMAP) || defined(LIL_USE_DYNAMICLIGHTMAP) || defined(LIL_LIGHTMODE_SHADOWMASK))
+#elif (defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)) && (defined(LIL_USE_LIGHTMAP) || defined(LIL_USE_DYNAMICLIGHTMAP) || defined(LIL_LIGHTMODE_SHADOWMASK)) || defined(LIL_HDRP)
     [maxvertexcount(32)]
 #else
     [maxvertexcount(40)]
