@@ -142,13 +142,8 @@
     #define LIL_SHOULD_TBN
 #endif
 
-// tangentW
-#if (defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD)) && defined(LIL_FEATURE_DECAL)
-    #define LIL_SHOULD_TANGENT_W
-#endif
-
 // tangent (vertex input)
-#if defined(LIL_SHOULD_TBN) || defined(LIL_SHOULD_TANGENT_W)
+#if defined(LIL_SHOULD_TBN) || (defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD)) && defined(LIL_FEATURE_DECAL)
     #define LIL_SHOULD_TANGENT
 #endif
 
@@ -478,7 +473,19 @@
     #undef SAMPLER
 #endif
 
-#if defined(SHADER_API_GLES) || (defined(SHADER_TARGET_SURFACE_ANALYSIS) && defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER))
+/*
+#if defined(SHADER_API_D3D11)
+|| defined(SHADER_API_GLCORE)
+|| defined(SHADER_API_GLES3)
+|| defined(SHADER_API_METAL)
+|| defined(SHADER_API_VULKAN)
+|| defined(SHADER_API_GLES)
+|| defined(SHADER_API_XBOXONE)
+|| defined(SHADER_API_PSSL)
+|| (defined(SHADER_TARGET_SURFACE_ANALYSIS) && !defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER))
+*/
+
+#if (defined(SHADER_TARGET_SURFACE_ANALYSIS) && defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER)) || defined(SHADER_TARGET_SURFACE_ANALYSIS)
     #define LIL_SAMPLE_1D(tex,samp,uv)              tex2D(tex,float2(uv,0.5))
     #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)      tex2Dlod(tex,float4(uv,0.5,0,lod))
     #define LIL_SAMPLE_2D(tex,samp,uv)              tex2D(tex,uv)
@@ -489,6 +496,7 @@
     #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)  tex2DArray(tex,float3(uv,index))
     #define LIL_SAMPLE_3D(tex,samp,uv)              tex3D(tex,uv)
     #define TEXTURE2D(tex)                          sampler2D tex
+    #define TEXTURE2D_FLOAT(tex)                    sampler2D tex
     #define TEXTURE3D(tex)                          sampler3D tex
     #define SAMPLER(samp)
     #define LIL_SAMP_IN_FUNC(samp)
@@ -504,6 +512,7 @@
     #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)  tex.Sample(samp,float3(uv,index))
     #define LIL_SAMPLE_3D(tex,samp,coord)           tex.Sample(samp,coord)
     #define TEXTURE2D(tex)                          Texture2D tex
+    #define TEXTURE2D_FLOAT(tex)                    Texture2D<float4> tex
     #define TEXTURE3D(tex)                          Texture3D tex
     #define SAMPLER(samp)                           SamplerState samp
     #define LIL_SAMP_IN_FUNC(samp)                  , SamplerState samp
@@ -578,8 +587,17 @@
 #endif
 
 // Main Light in VS (Color / Direction)
-#if defined(LIL_HDRP) && defined(LIL_USE_LIGHTMAP)
+struct lilLightData
+{
+    float3 lightDirection;
+    float3 lightColor;
+    float3 indLightColor;
+};
+#if defined(LIL_PASS_FORWARDADD)
+    #define LIL_CALC_MAINLIGHT(i,o)
+#elif defined(LIL_HDRP) && defined(LIL_USE_LIGHTMAP)
     #define LIL_CALC_MAINLIGHT(i,o) \
+        lilLightData o; \
         lilGetLightDirectionAndColor(o.lightDirection, o.lightColor, posInput, renderingLayers, featureFlags); \
         o.lightColor *= _lilDirectionalLightStrength; \
         float3 lightDirectionCopy = o.lightDirection; \
@@ -591,6 +609,7 @@
         o.lightColor *= GetCurrentExposureMultiplier()
 #elif defined(LIL_HDRP)
     #define LIL_CALC_MAINLIGHT(i,o) \
+        lilLightData o; \
         lilGetLightDirectionAndColor(o.lightDirection, o.lightColor, posInput, renderingLayers, featureFlags); \
         o.lightColor *= _lilDirectionalLightStrength; \
         float3 lightDirectionCopy = o.lightDirection; \
@@ -603,14 +622,14 @@
         o.lightColor = clamp(o.lightColor, _LightMinLimit, _LightMaxLimit); \
         o.lightColor = lerp(o.lightColor, lilGray(o.lightColor), _MonochromeLighting); \
         o.lightColor = lerp(o.lightColor, 1.0, _AsUnlit)
-#elif defined(LIL_PASS_FORWARDADD)
-    #define LIL_CALC_MAINLIGHT(i,o)
 #elif defined(LIL_USE_LIGHTMAP)
     #define LIL_CALC_MAINLIGHT(i,o) \
+        lilLightData o; \
         o.lightDirection = lilGetLightDirection(); \
         LIL_CALC_TWOLIGHT(i,o)
 #else
     #define LIL_CALC_MAINLIGHT(i,o) \
+        lilLightData o; \
         o.lightDirection = lilGetLightDirection(); \
         LIL_CALC_TWOLIGHT(i,o); \
         o.lightColor = clamp(o.lightColor, _LightMinLimit, _LightMaxLimit); \
@@ -619,12 +638,17 @@
 #endif
 
 // Main Light in PS (Color / Direction / Attenuation)
-#if defined(LIL_HDRP) && defined(LIL_USE_LIGHTMAP)
+#if defined(LIL_PASS_FORWARDADD)
+    // Point Light & Spot Light (ForwardAdd)
+    #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
+        LIL_LIGHT_ATTENUATION(atten, input); \
+        float3 lightColor = saturate(_MainLightColor.rgb * atten); \
+        lightDirection = lilGetLightDirection(input.positionWS)
+#elif defined(LIL_HDRP) && defined(LIL_USE_LIGHTMAP)
     // Point Light & Spot Light (ForwardAdd)
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten,input); \
         float3 lightColor = input.lightColor; \
-        float3 lightDirection = input.lightDirection; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor += lightmapColor * GetCurrentExposureMultiplier();
 #elif defined(LIL_HDRP)
@@ -632,19 +656,11 @@
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten,input); \
         float3 lightColor = input.lightColor; \
-        float3 lightDirection = input.lightDirection;
-#elif defined(LIL_PASS_FORWARDADD)
-    // Point Light & Spot Light (ForwardAdd)
-    #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = saturate(_MainLightColor.rgb * atten); \
-        float3 lightDirection = lilGetLightDirection(input.positionWS)
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SHADOWMASK)
     // Mixed Lightmap (Shadowmask)
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = input.lightColor; \
-        float3 lightDirection = input.lightDirection; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = max(lightColor, lightmapColor); \
         atten = min(atten, LIL_SAMPLE_LIGHTMAP(LIL_SHADOWMAP_TEX,LIL_LIGHTMAP_SAMP,input.uv1).r)
@@ -655,7 +671,6 @@
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = input.lightColor; \
-        float3 lightDirection = input.lightDirection; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = max(lightColor, lightmapColor); \
         float3 lightmapShadowThreshold = _MainLightColor.rgb*0.5; \
@@ -668,7 +683,6 @@
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = input.lightColor; \
-        float3 lightDirection = input.lightDirection; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = max(lightColor, lightmapColor); \
         float3 lightmapS = (lightmapColor - lilShadeSH9(input.normalWS)) / _MainLightColor.rgb; \
@@ -679,7 +693,6 @@
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = input.lightColor; \
-        float3 lightDirection = input.lightDirection; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         float3 lightmapDirection = lilGetLightMapDirection(input.uv1); \
         lightColor = saturate(lightColor + lightmapColor); \
@@ -689,7 +702,6 @@
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = _MainLightColor.rgb; \
-        float3 lightDirection = input.lightDirection; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = saturate(lightColor + max(lightmapColor,lilGetSHToon()))
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_DYNAMICLIGHTMAP)
@@ -698,7 +710,6 @@
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = input.lightColor; \
-        float3 lightDirection = input.lightDirection; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = saturate(lightColor + lightmapColor)
 #elif defined(LIL_USE_LIGHTMAP)
@@ -706,15 +717,13 @@
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
         float3 lightColor = _MainLightColor.rgb; \
-        float3 lightDirection = input.lightDirection; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = saturate(lightColor + lightmapColor)
 #else
     // Realtime
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = input.lightColor; \
-        float3 lightDirection = input.lightDirection;
+        float3 lightColor = input.lightColor;
 #endif
 
 // Vertex Light

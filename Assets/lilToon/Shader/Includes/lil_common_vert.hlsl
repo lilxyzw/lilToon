@@ -122,43 +122,40 @@ LIL_V2F_TYPE LIL_VERTEX_SHADER_NAME (appdata input)
 
     // UV
     #if defined(LIL_V2F_TEXCOORD0)
-        LIL_V2F_OUT_BASE.uv           = input.uv;
+        LIL_V2F_OUT_BASE.uv             = input.uv;
     #endif
     #if defined(LIL_V2F_TEXCOORD1)
-        LIL_V2F_OUT_BASE.uv1          = input.uv1;
+        LIL_V2F_OUT_BASE.uv1            = input.uv1;
     #endif
     #if defined(LIL_V2F_UVMAT)
-        LIL_V2F_OUT_BASE.uvMat        = lilCalcMatCapUV(vertexNormalInput.normalWS, _MatCapZRotCancel);
+        LIL_V2F_OUT_BASE.uvMat          = lilCalcMatCapUV(vertexNormalInput.normalWS, _MatCapZRotCancel);
     #endif
 
     // Position
     #if defined(LIL_V2F_POSITION_CS)
-        LIL_V2F_OUT_BASE.positionCS   = vertexInput.positionCS;
+        LIL_V2F_OUT_BASE.positionCS     = vertexInput.positionCS;
     #endif
     #if defined(LIL_V2F_POSITION_OS)
-        LIL_V2F_OUT_BASE.positionOS   = input.positionOS.xyz;
+        LIL_V2F_OUT_BASE.positionOS     = input.positionOS.xyz;
     #endif
     #if defined(LIL_V2F_POSITION_WS)
-        LIL_V2F_OUT_BASE.positionWS   = vertexInput.positionWS;
+        LIL_V2F_OUT_BASE.positionWS     = vertexInput.positionWS;
     #endif
     #if defined(LIL_V2F_POSITION_SS)
-        LIL_V2F_OUT_BASE.positionSS   = vertexInput.positionSS;
+        LIL_V2F_OUT_BASE.positionSS     = vertexInput.positionSS;
     #endif
 
     // Normal
     #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_NORMALIZE_NORMAL_IN_VS)
-        LIL_V2F_OUT_BASE.normalWS     = NormalizeNormalPerVertex(vertexNormalInput.normalWS);
+        LIL_V2F_OUT_BASE.normalWS       = NormalizeNormalPerVertex(vertexNormalInput.normalWS);
     #elif defined(LIL_V2F_NORMAL_WS)
-        LIL_V2F_OUT_BASE.normalWS     = vertexNormalInput.normalWS;
+        LIL_V2F_OUT_BASE.normalWS       = vertexNormalInput.normalWS;
     #endif
     #if defined(LIL_V2F_TANGENT_WS)
-        LIL_V2F_OUT_BASE.tangentWS    = vertexNormalInput.tangentWS;
+        LIL_V2F_OUT_BASE.tangentWS      = float4(vertexNormalInput.tangentWS, input.tangentOS.w);
     #endif
     #if defined(LIL_V2F_BITANGENT_WS)
-        LIL_V2F_OUT_BASE.bitangentWS  = vertexNormalInput.tangentWS;
-    #endif
-    #if defined(LIL_V2F_TANGENT_W)
-        LIL_V2F_OUT_BASE.tangentW     = input.tangentOS.w;
+        LIL_V2F_OUT_BASE.bitangentWS    = vertexNormalInput.tangentWS;
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -180,8 +177,17 @@ LIL_V2F_TYPE LIL_VERTEX_SHADER_NAME (appdata input)
     //------------------------------------------------------------------------------------------------------------------------------
     // Fog & Lighting
     LIL_GET_HDRPDATA(vertexInput);
-    #if defined(LIL_V2F_MAINLIGHT)
-        LIL_CALC_MAINLIGHT(vertexInput, LIL_V2F_OUT_BASE);
+    #if defined(LIL_V2F_LIGHTCOLOR) || defined(LIL_V2F_LIGHTDIRECTION) || defined(LIL_V2F_INDLIGHTCOLOR)
+        LIL_CALC_MAINLIGHT(vertexInput, lightdataInput);
+    #endif
+    #if defined(LIL_V2F_LIGHTCOLOR)
+        LIL_V2F_OUT_BASE.lightColor     = lightdataInput.lightColor;
+    #endif
+    #if defined(LIL_V2F_LIGHTDIRECTION)
+        LIL_V2F_OUT_BASE.lightDirection = lightdataInput.lightDirection;
+    #endif
+    #if defined(LIL_V2F_INDLIGHTCOLOR)
+        LIL_V2F_OUT_BASE.indLightColor  = lightdataInput.indLightColor;
     #endif
     #if defined(LIL_V2F_SHADOW)
         LIL_TRANSFER_SHADOW(vertexInput, input.uv1, LIL_V2F_OUT_BASE);

@@ -63,10 +63,12 @@
     #if defined(LIL_V2F_FORCE_BITANGENT) || defined(LIL_SHOULD_TBN)
         #define LIL_V2F_BITANGENT_WS
     #endif
-    #define LIL_V2F_MAINLIGHT
-    #define LIL_V2F_VERTEXLIGHT
+    #if !defined(LIL_PASS_FORWARDADD)
+        #define LIL_V2F_LIGHTCOLOR
+        #define LIL_V2F_LIGHTDIRECTION
+        #define LIL_V2F_VERTEXLIGHT
+    #endif
     #define LIL_V2F_FOG
-    #define LIL_V2F_SHADOW
 
     struct v2f
     {
@@ -79,7 +81,7 @@
         float3 positionWS : TEXCOORD3;
         float4 positionSS : TEXCOORD4;
         #if defined(LIL_V2F_TANGENT_WS)
-            float3 tangentWS        : TEXCOORD5;
+            float4 tangentWS        : TEXCOORD5;
         #endif
         #if defined(LIL_V2F_BITANGENT_WS)
             float3 bitangentWS      : TEXCOORD6;
@@ -89,10 +91,8 @@
         #endif
         LIL_LIGHTCOLOR_COORDS(8)
         LIL_LIGHTDIRECTION_COORDS(9)
-        LIL_INDLIGHTCOLOR_COORDS(10)
-        LIL_VERTEXLIGHT_COORDS(11)
-        LIL_FOG_COORDS(12)
-        LIL_SHADOW_COORDS(13)
+        LIL_VERTEXLIGHT_COORDS(10)
+        LIL_FOG_COORDS(11)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
@@ -111,6 +111,11 @@
         LIL_SETUP_INSTANCE_ID(input);
         LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
         LIL_GET_HDRPDATA(input);
+        #if defined(LIL_V2F_LIGHTDIRECTION)
+            float3 lightDirection = input.lightDirection;
+        #else
+            float3 lightDirection = float3(0.0, 1.0, 0.0);
+        #endif
         LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
         LIL_GET_VERTEXLIGHT(input, vertexLightColor);
         LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
@@ -147,8 +152,8 @@
         #else
             float3 gemViewDirection = viewDirection;
         #endif
-        #if defined(LIL_SHOULD_TBN)
-            float3x3 tbnWS = float3x3(input.tangentWS, input.bitangentWS, input.normalWS);
+        #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS)
+            float3x3 tbnWS = float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
             float3 parallaxViewDirection = mul(tbnWS, viewDirection);
             float2 parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
         #endif

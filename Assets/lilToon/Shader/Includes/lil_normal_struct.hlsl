@@ -45,8 +45,10 @@
     #if defined(LIL_V2F_FORCE_NORMAL) || defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE) || defined(LIL_HDRP)
         #define LIL_V2F_NORMAL_WS
     #endif
-    #define LIL_V2F_MAINLIGHT
-    #define LIL_V2F_VERTEXLIGHT
+    #if !defined(LIL_PASS_FORWARDADD)
+        #define LIL_V2F_LIGHTCOLOR
+        #define LIL_V2F_VERTEXLIGHT
+    #endif
     #define LIL_V2F_FOG
 
     struct v2f
@@ -66,10 +68,8 @@
             float3 normalWS         : TEXCOORD4;
         #endif
         LIL_LIGHTCOLOR_COORDS(5)
-        LIL_LIGHTDIRECTION_COORDS(6)
-        LIL_INDLIGHTCOLOR_COORDS(7)
-        LIL_VERTEXLIGHT_COORDS(8)
-        LIL_FOG_COORDS(9)
+        LIL_VERTEXLIGHT_COORDS(6)
+        LIL_FOG_COORDS(7)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
@@ -85,8 +85,14 @@
     #if defined(LIL_V2F_FORCE_NORMAL) || !defined(LIL_PASS_FORWARDADD) &&  defined(LIL_SHOULD_NORMAL)
         #define LIL_V2F_NORMAL_WS
     #endif
-    #define LIL_V2F_MAINLIGHT
-    #define LIL_V2F_VERTEXLIGHT
+    #if !defined(LIL_PASS_FORWARDADD)
+        #define LIL_V2F_LIGHTCOLOR
+        #define LIL_V2F_LIGHTDIRECTION
+        #define LIL_V2F_VERTEXLIGHT
+        #if defined(LIL_FEATURE_SHADOW)
+            #define LIL_V2F_INDLIGHTCOLOR
+        #endif
+    #endif
     #define LIL_V2F_FOG
 
     struct v2f
@@ -134,13 +140,16 @@
     #if defined(LIL_V2F_FORCE_BITANGENT) || defined(LIL_SHOULD_TBN)
         #define LIL_V2F_BITANGENT_WS
     #endif
-    #if defined(LIL_V2F_FORCE_TANGENT_W) || defined(LIL_SHOULD_TANGENT_W)
-        #define LIL_V2F_TANGENT_W
+    #if !defined(LIL_PASS_FORWARDADD)
+        #define LIL_V2F_LIGHTCOLOR
+        #define LIL_V2F_LIGHTDIRECTION
+        #define LIL_V2F_VERTEXLIGHT
+        #if defined(LIL_FEATURE_SHADOW)
+            #define LIL_V2F_INDLIGHTCOLOR
+            #define LIL_V2F_SHADOW
+        #endif
     #endif
-    #define LIL_V2F_MAINLIGHT
-    #define LIL_V2F_VERTEXLIGHT
     #define LIL_V2F_FOG
-    #define LIL_V2F_SHADOW
 
     struct v2f
     {
@@ -159,23 +168,20 @@
             float3 normalWS         : TEXCOORD4;
         #endif
         #if defined(LIL_V2F_TANGENT_WS)
-            float3 tangentWS        : TEXCOORD5;
+            float4 tangentWS        : TEXCOORD5;
         #endif
         #if defined(LIL_V2F_BITANGENT_WS)
             float3 bitangentWS      : TEXCOORD6;
         #endif
-        #if defined(LIL_V2F_TANGENT_W)
-            float  tangentW         : TEXCOORD7;
-        #endif
         #if defined(LIL_V2F_POSITION_SS)
-            float4 positionSS       : TEXCOORD8;
+            float4 positionSS       : TEXCOORD7;
         #endif
-        LIL_LIGHTCOLOR_COORDS(9)
-        LIL_LIGHTDIRECTION_COORDS(10)
-        LIL_INDLIGHTCOLOR_COORDS(11)
-        LIL_VERTEXLIGHT_COORDS(12)
-        LIL_FOG_COORDS(13)
-        LIL_SHADOW_COORDS(14)
+        LIL_LIGHTCOLOR_COORDS(8)
+        LIL_LIGHTDIRECTION_COORDS(9)
+        LIL_INDLIGHTCOLOR_COORDS(10)
+        LIL_VERTEXLIGHT_COORDS(11)
+        LIL_FOG_COORDS(12)
+        LIL_SHADOW_COORDS(13)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };

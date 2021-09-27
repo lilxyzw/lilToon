@@ -4,31 +4,6 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // Structure
 
-// positionOS           : Object space position
-// normalOS             : Object space normal
-// tangentOS            : Object space tangent
-// uv                   : UV
-// uv1                  : UV1
-// color                : Vertex color
-// LIL_VERTEX_INPUT_INSTANCE_ID
-
-// positionCS           : Clip space position
-// positionWS           : World space position
-// positionSS           : Screen space coordinates
-// uv                   : UV
-// uvMat                : MatCap UV
-// normalWS             : World space normal
-// tangentWS            : World space tangent
-// bitangentWS          : World space bitangent
-// tangentW             : Handedness
-// vl                   : Vertex lighting
-// furLayer             : Fur Layer (in:0 out:1)
-// LIL_FOG_COORDS()     : Fog
-// LIL_SHADOW_COORDS()  : Shadow
-// LIL_LIGHTMAP_COORDS(): Lightmap
-// LIL_VERTEX_INPUT_INSTANCE_ID
-// LIL_VERTEX_OUTPUT_STEREO
-
 #ifdef LIL_OUTLINE
     #define LIL_V2F_POSITION_CS
     #define LIL_V2F_TEXCOORD0
@@ -41,8 +16,10 @@
     #if defined(LIL_V2F_FORCE_NORMAL) || defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE) || defined(LIL_HDRP)
         #define LIL_V2F_NORMAL_WS
     #endif
-    #define LIL_V2F_MAINLIGHT
-    #define LIL_V2F_VERTEXLIGHT
+    #if !defined(LIL_PASS_FORWARDADD)
+        #define LIL_V2F_LIGHTCOLOR
+        #define LIL_V2F_VERTEXLIGHT
+    #endif
     #define LIL_V2F_FOG
 
     struct v2f
@@ -59,10 +36,8 @@
             float3 normalWS         : TEXCOORD3;
         #endif
         LIL_LIGHTCOLOR_COORDS(4)
-        LIL_LIGHTDIRECTION_COORDS(5)
-        LIL_INDLIGHTCOLOR_COORDS(6)
-        LIL_VERTEXLIGHT_COORDS(7)
-        LIL_FOG_COORDS(8)
+        LIL_VERTEXLIGHT_COORDS(5)
+        LIL_FOG_COORDS(6)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
@@ -75,8 +50,12 @@
     #endif
     #define LIL_V2F_NORMAL_WS
     #define LIL_V2F_UVMAT
-    #define LIL_V2F_MAINLIGHT
-    #define LIL_V2F_VERTEXLIGHT
+    #if !defined(LIL_PASS_FORWARDADD)
+        #define LIL_V2F_LIGHTCOLOR
+        #define LIL_V2F_LIGHTDIRECTION
+        #define LIL_V2F_INDLIGHTCOLOR
+        #define LIL_V2F_VERTEXLIGHT
+    #endif
     #define LIL_V2F_FOG
 
     struct v2f

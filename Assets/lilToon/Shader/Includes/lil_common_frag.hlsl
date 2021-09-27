@@ -254,7 +254,12 @@
 // Alpha Mask
 #if !defined(OVERRIDE_ALPHAMASK)
     #define OVERRIDE_ALPHAMASK \
-        lilAlphaMask(col.a, uvMain, _AlphaMaskMode, _AlphaMask, _AlphaMaskValue LIL_SAMP_IN(sampler_MainTex));
+        if(_AlphaMaskMode) \
+        { \
+            float alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, uvMain).r; \
+            alphaMask = saturate(alphaMask + _AlphaMaskValue); \
+            col.a = _AlphaMaskMode == 1 ? alphaMask : col.a * alphaMask; \
+        }
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -485,13 +490,172 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Shadow
+#if defined(LIL_FEATURE_SHADOW) && !defined(LIL_LITE) && !defined(LIL_GEM)
+void lilGetShading(
+    inout float4 col,
+    inout float shadowmix,
+    float3 albedo,
+    float3 lightColor,
+    float3 indLightColor,
+    float2 uv,
+    float facing,
+    float3 normalDirection,
+    float3 lightDirection,
+    float3 lightDirectionCopy,
+    bool cullOff,
+    float attenuation
+    LIL_SAMP_IN_FUNC(samp))
+{
+    LIL_BRANCH
+    if(_UseShadow)
+    {
+        // Shade
+        float ln = saturate(dot(lightDirection,normalDirection)*0.5+0.5);
+        if(Exists_ShadowBorderMask) ln *= LIL_SAMPLE_2D(_ShadowBorderMask, samp, uv).r;
+        float ln2 = ln;
+        float lnB = ln;
+
+        // Shadow
+        #if defined(LIL_USE_SHADOW) || (defined(LIL_LIGHTMODE_SHADOWMASK) && defined(LIL_FEATURE_RECEIVE_SHADOW))
+            float shadowAttenuation = saturate(attenuation + distance(lightDirection, lightDirectionCopy.xyz));
+            if(_ShadowReceive) ln *= shadowAttenuation;
+            if(_ShadowReceive) lnB *= shadowAttenuation;
+        #endif
+
+        // Toon
+        float shadowBlur = _ShadowBlur;
+        if(Exists_ShadowBlurMask) shadowBlur *= LIL_SAMPLE_2D(_ShadowBlurMask, samp, uv).r;
+        ln = lilTooning(ln, _ShadowBorder, shadowBlur);
+        ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
+        lnB = lilTooning(lnB, _ShadowBorder, shadowBlur, _ShadowBorderRange);
+
+        if(cullOff)
+        {
+            // Force shadow on back face
+            float bfshadow = (facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
+            ln *= bfshadow;
+            ln2 *= bfshadow;
+            lnB *= bfshadow;
+        }
+
+        // Copy
+        shadowmix = ln;
+
+        // Strength
+        float shadowStrength = _ShadowStrength;
+        #ifdef LIL_COLORSPACE_GAMMA
+            shadowStrength = lilSRGBToLinear(shadowStrength);
+        #endif
+        if(Exists_ShadowStrengthMask) shadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, samp, uv).r;
+        ln = lerp(1.0, ln, shadowStrength);
+
+        // Shadow Color 1
+        float4 shadowColorTex = 0.0;
+        if(Exists_ShadowColorTex) shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, uv);
+        float3 indirectCol = lerp(albedo, shadowColorTex.rgb, shadowColorTex.a) * _ShadowColor.rgb;
+        // Shadow Color 2
+        float4 shadow2ndColorTex = 0.0;
+        if(Exists_Shadow2ndColorTex) shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, uv);
+        shadow2ndColorTex.rgb = lerp(albedo, shadow2ndColorTex.rgb, shadow2ndColorTex.a) * _Shadow2ndColor.rgb;
+        ln2 = _Shadow2ndColor.a - ln2 * _Shadow2ndColor.a;
+        indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, ln2);
+        // Multiply Main Color
+        indirectCol = lerp(indirectCol, indirectCol*albedo, _ShadowMainStrength);
+
+        // Apply Light
+        float3 directCol = albedo * lightColor;
+        indirectCol = indirectCol * lightColor;
+
+        // Environment Light
+        indirectCol = lerp(indirectCol, albedo, indLightColor);
+        // Fix
+        indirectCol = min(indirectCol, directCol);
+        // Gradation
+        indirectCol = lerp(indirectCol, directCol, lnB * _ShadowBorderColor.rgb);
+
+        // Mix
+        col.rgb = lerp(indirectCol, directCol, ln);
+    }
+    else
+    {
+        col.rgb *= lightColor;
+    }
+}
+#elif defined(LIL_LITE)
+void lilGetShading(
+    inout float4 col,
+    inout float shadowmix,
+    float3 albedo,
+    float3 lightColor,
+    float3 indLightColor,
+    float2 uv,
+    float facing,
+    float3 normalDirection,
+    float3 lightDirection,
+    float3 lightDirectionCopy,
+    bool cullOff
+    LIL_SAMP_IN_FUNC(samp))
+{
+    LIL_BRANCH
+    if(_UseShadow)
+    {
+        // Shade
+        float ln = saturate(dot(lightDirection,normalDirection)*0.5+0.5);
+        float ln2 = ln;
+        float lnB = ln;
+
+        // Toon
+        ln = lilTooning(ln, _ShadowBorder, _ShadowBlur);
+        ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
+        lnB = lilTooning(lnB, _ShadowBorder, _ShadowBlur, _ShadowBorderRange);
+
+        if(cullOff)
+        {
+            // Force shadow on back face
+            float bfshadow = (facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
+            ln *= bfshadow;
+            ln2 *= bfshadow;
+            lnB *= bfshadow;
+        }
+
+        // Copy
+        shadowmix = ln;
+
+        // Shadow Color 1
+        float4 shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, uv);
+        float3 indirectCol = lerp(albedo, shadowColorTex.rgb, shadowColorTex.a);
+        // Shadow Color 2
+        float4 shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, uv);
+        indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, shadow2ndColorTex.a - ln2 * shadow2ndColorTex.a);
+
+        // Apply Light
+        float3 directCol = albedo * lightColor;
+        indirectCol = indirectCol * lightColor;
+
+        // Environment Light
+        indirectCol = lerp(indirectCol, albedo, indLightColor);
+        // Fix
+        indirectCol = min(indirectCol, directCol);
+        // Gradation
+        indirectCol = lerp(indirectCol, directCol, lnB * _ShadowBorderColor.rgb);
+
+        // Mix
+        col.rgb = lerp(indirectCol, directCol, ln);
+    }
+    else
+    {
+        col.rgb *= lightColor;
+    }
+}
+#endif
+
 #if !defined(OVERRIDE_SHADOW)
     #if defined(LIL_LITE)
         #define OVERRIDE_SHADOW \
-            LIL_GET_SHADING_LITE(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, lightDirection, true);
+            lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uvMain,facing,normalDirection,lightDirection,_MainLightPosition.xyz,true LIL_SAMP_IN(sampler_MainTex));
     #else
         #define OVERRIDE_SHADOW \
-            LIL_GET_SHADING(col, shadowmix, albedo, lightColor, uvMain, facing, normalDirection, attenuation, lightDirection, true);
+            lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uvMain,facing,normalDirection,lightDirection,_MainLightPosition.xyz,true,attenuation LIL_SAMP_IN(sampler_MainTex));
     #endif
 #endif
 
@@ -881,7 +1045,7 @@
             float4 glitterColor = _GlitterColor;
             if(Exists_GlitterColorTex) glitterColor *= LIL_SAMPLE_2D(_GlitterColorTex, samp, uvMain);
             float2 glitterPos = _GlitterUVMode ? uv1 : uv;
-            glitterColor.rgb *= lilGlitter(glitterPos, normalDirection, glitterViewDirection, lightDirection, _GlitterParams1, _GlitterParams2);
+            glitterColor.rgb *= lilCalcGlitter(glitterPos, normalDirection, glitterViewDirection, lightDirection, _GlitterParams1, _GlitterParams2);
             glitterColor.rgb = lerp(glitterColor.rgb, glitterColor.rgb * albedo, _GlitterMainStrength);
             #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                 if(_GlitterApplyTransparency) glitterColor.a *= col.a;

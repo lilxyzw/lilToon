@@ -59,23 +59,32 @@ v2g vert(appdata input)
         LIL_RE_VERTEX_POSITION_INPUTS(vertexInput);
     #endif
     #if defined(LIL_V2G_POSITION_WS)
-        output.positionWS   = vertexInput.positionWS;
+        output.positionWS       = vertexInput.positionWS;
     #endif
     #if defined(LIL_V2G_TEXCOORD0)
-        output.uv           = input.uv;
+        output.uv               = input.uv;
     #endif
     #if defined(LIL_V2G_TEXCOORD1)
-        output.uv1          = input.uv1;
+        output.uv1              = input.uv1;
     #endif
     #if defined(LIL_V2G_NORMAL_WS)
-        output.normalWS     = vertexNormalInput.normalWS;
+        output.normalWS         = vertexNormalInput.normalWS;
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Fog & Lighting
     LIL_GET_HDRPDATA(vertexInput);
-    #if defined(LIL_V2G_MAINLIGHT)
-        LIL_CALC_MAINLIGHT(vertexInput, output);
+    #if defined(LIL_V2F_LIGHTCOLOR) || defined(LIL_V2F_LIGHTDIRECTION) || defined(LIL_V2F_INDLIGHTCOLOR)
+        LIL_CALC_MAINLIGHT(vertexInput, lightdataInput);
+    #endif
+    #if defined(LIL_V2F_LIGHTCOLOR)
+        output.lightColor       = lightdataInput.lightColor;
+    #endif
+    #if defined(LIL_V2F_LIGHTDIRECTION)
+        output.lightDirection   = lightdataInput.lightDirection;
+    #endif
+    #if defined(LIL_V2F_INDLIGHTCOLOR)
+        output.indLightColor    = lightdataInput.indLightColor;
     #endif
     #if defined(LIL_V2G_SHADOW)
         LIL_TRANSFER_SHADOW(vertexInput, input.uv1, output);
@@ -204,14 +213,14 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
     #endif
 
     // Main Light
-    #if defined(LIL_V2G_MAINLIGHT)
-        #if !defined(LIL_PASS_FORWARDADD)
-            output.lightColor = input[0].lightColor;
-            output.lightDirection = input[0].lightDirection;
-        #endif
-        #if defined(LIL_FEATURE_SHADOW) && !defined(LIL_PASS_FORWARDADD)
-            output.indLightColor = input[0].indLightColor;
-        #endif
+    #if defined(LIL_V2G_LIGHTCOLOR)
+        output.lightColor = input[0].lightColor;
+    #endif
+    #if defined(LIL_V2G_LIGHTDIRECTION)
+        output.lightDirection = input[0].lightDirection;
+    #endif
+    #if defined(LIL_V2G_INDLIGHTCOLOR)
+        output.indLightColor = input[0].indLightColor;
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------

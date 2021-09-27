@@ -71,7 +71,6 @@ sLength	Length	長さ	길이	长度	長度
 sVertex	Vertex	頂点	꼭짓점	顶点	頂點
 sColorAlphaZeroWarn	To enable the property, increase the alpha value.	プロパティを有効にするには透明度の値を上げて下さい。	속성을 유효하게 하려면 알파 값을 올려 주십시오.	增加 Alpha 值以启用该属性。	增加 Alpha 值以啟用該屬性。
 sApplyTransparency	Apply Transparency	透明度を適用	투명도 적용	应用透明度	應用透明度
-sReset	Reset	初期化	초기화	重置	重置
 sVRParallaxStrength	VR Parallax Strength	VR時の視差の強さ	VR Parallax Strength	VR Parallax Strength	VR Parallax Strength
 sLimShadowStrength	Shadow Strength	影の強さ	그림자 강도	阴影强度	陰影強度
 sLimOutline	Outline	輪郭線の色	윤곽선의 색	轮廓	輪廓
@@ -298,7 +297,12 @@ sYes	Yes	はい	Yes	Yes	Yes
 sNo	No	いいえ	No	No	No
 sOK	OK	OK	OK	OK	OK
 sCancel	Cancel	キャンセル	Cancel	Cancel	Cancel
-sComplete	Complete!	完了しました。	Complete!	Complete!	Complete!
+sComplete	Complete!	完了しました。	완료 되었습니다.	完成了。	完成了。
+sCopy	Copy	コピー	복사	复制	複製
+sPaste	Paste	貼り付け	붙여넣기	贴上	貼上
+sPasteWithTexture	Paste (with texture)	貼り付け（テクスチャを含む）	붙여넣기 (with texture)	贴上 (with texture)	貼上 (with texture)
+sReset	Reset	初期化	초기화	重置	重置
+sOpenManual	Open manual	マニュアルを表示	매뉴얼 표시	开放式手册	開放式手冊
 sFixNow	Fix Now	自動修正	자동 수정	自动修改	自動修改
 sDialogResetUV	Reset UV Setting	UV設定の初期化	UV 설정 초기화	重置UV设置	重置UV設置
 sDialogResetUVMes	Are you sure you want to reset UV setting?	UV設定を初期化しますか?	UV 설정을 초기화 하시겠습니까?	你确定要重置UV设置吗？	你確定要重置UV設置嗎？
@@ -371,6 +375,7 @@ sPresetFurMask	Fur Mask	ファーマスク	퍼 마스크	毛皮蒙版	毛皮蒙�
 sShaderSetting	Shader Setting (for all materials)	シェーダー設定 (全マテリアル共通)	쉐이더 설정 (전체 재료 공통)	着色器设置（用于所有材质）	著色器設置（用於所有材質）
 sShaderSettingTips	You can toggle unused functions.	不要な機能を無効化できます	불필요한 기능을 비활성화 할 수 있습니다	你可以切换不使用的功能。	你可以切換不使用的功能。
 sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	在这里关闭的功能将从着色器中删除。通过关闭不使用的功能，你可以减少你的头像的大小，同时也可以减少负载。	在這里關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的頭像的大小，同時也可以減少負載。​​
+sSettingApply	Apply	シェーダー設定を適用	Apply	Apply	Apply
 sSettingCancelAutoScan	Do not auto-scan on import	インポート時に自動スキャンしない	Do not auto-scan on import	Do not auto-scan on import	Do not auto-scan on import
 sSettingLock	Lock	ロック	Lock	Lock	Lock
 sSettingAnimateMainUV	UV Animation & Angle	UVアニメーション&角度	UV 애니메이션 & 각도	UV动画和角度	UV動畫和角度

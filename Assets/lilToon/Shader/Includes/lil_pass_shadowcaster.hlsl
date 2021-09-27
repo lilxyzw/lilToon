@@ -11,18 +11,15 @@
 #if defined(LIL_V2F_FORCE_POSITION_OS) || ((LIL_RENDER > 0) && !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_DISSOLVE))
     #define LIL_V2F_POSITION_OS
 #endif
-#if defined(LIL_V2F_FORCE_NORMAL) || defined(WRITE_NORMAL_BUFFER)
-    #define LIL_V2F_NORMAL_WS
-#endif
 #define LIL_V2F_SHADOW_CASTER
 
 struct v2f
 {
     LIL_V2F_SHADOW_CASTER_OUTPUT
-    #if (LIL_RENDER > 0) || defined(LIL_V2F_FORCE_UV0)
+    #if defined(LIL_V2F_TEXCOORD0)
         float2 uv       : TEXCOORD1;
     #endif
-    #if ((LIL_RENDER > 0) && !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_DISSOLVE)) || defined(LIL_V2F_FORCE_POSITION_OS)
+    #if defined(LIL_V2F_POSITION_OS)
         float3 positionOS   : TEXCOORD2;
     #endif
     UNITY_VERTEX_INPUT_INSTANCE_ID

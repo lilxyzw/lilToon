@@ -127,7 +127,8 @@ float3 lilBlendNormal(float3 dstNormal, float3 srcNormal)
     return float3(dstNormal.xy + srcNormal.xy, dstNormal.z * srcNormal.z);
 }
 
-float lilMedian(float r, float g, float b) {
+float lilMedian(float r, float g, float b)
+{
     return max(min(r, g), min(max(r, g), b));
 }
 
@@ -148,44 +149,7 @@ float lilNsqDistance(float2 a, float2 b)
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Encryption (https://github.com/rygo6/GTAvaCrypt)
-#if !defined(LIL_LITE) && !defined(LIL_BAKER) &&  defined(LIL_FEATURE_ENCRYPTION)
-float4 vertexDecode(float4 positionOS, float3 normalOS, float2 uv6, float2 uv7)
-{
-    if(_IgnoreEncryption) return positionOS;
-
-    float4 keys = floor(_Keys + 0.5);
-    keys = keys.x == 0 ? float4(0,0,0,0) : floor(keys / 3) * 3 + 1;
-
-    keys.x *= 1;
-    keys.y *= 2;
-    keys.z *= 3;
-    keys.w *= 4;
-
-    positionOS.xyz -= normalOS * uv6.x * (sin((keys.z - keys.y) * 2) * cos(keys.w - keys.x));
-    positionOS.xyz -= normalOS * uv6.y * (sin((keys.w - keys.x) * 3) * cos(keys.z - keys.y));
-    positionOS.xyz -= normalOS * uv7.x * (sin((keys.x - keys.w) * 4) * cos(keys.y - keys.z));
-    positionOS.xyz -= normalOS * uv7.y * (sin((keys.y - keys.z) * 5) * cos(keys.x - keys.w));
-
-    return positionOS;
-}
-#endif
-
-//------------------------------------------------------------------------------------------------------------------------------
-// Transform
-float3 lilTransformNormalOStoWS(float3 normalOS)
-{
-    #if defined(LIL_HDRP)
-        return TransformObjectToWorldNormal(normalOS);
-    #else
-        #ifdef UNITY_ASSUME_UNIFORM_SCALING
-            return mul((float3x3)LIL_MATRIX_M, normalOS);
-        #else
-            return mul(normalOS, (float3x3)LIL_MATRIX_I_M);
-        #endif
-    #endif
-}
-
+// Position Transform
 struct lilVertexPositionInputs
 {
     float3 positionWS; // World space
@@ -240,12 +204,27 @@ lilVertexPositionInputs lilReGetVertexPositionInputs(lilVertexPositionInputs out
     return output;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
+// Normal Transform
 struct lilVertexNormalInputs
 {
     float3 tangentWS;
     float3 bitangentWS;
     float3 normalWS;
 };
+
+float3 lilTransformNormalOStoWS(float3 normalOS)
+{
+    #if defined(LIL_HDRP)
+        return TransformObjectToWorldNormal(normalOS);
+    #else
+        #ifdef UNITY_ASSUME_UNIFORM_SCALING
+            return mul((float3x3)LIL_MATRIX_M, normalOS);
+        #else
+            return mul(normalOS, (float3x3)LIL_MATRIX_I_M);
+        #endif
+    #endif
+}
 
 lilVertexNormalInputs lilGetVertexNormalInputs(float3 normalOS)
 {
@@ -265,6 +244,8 @@ lilVertexNormalInputs lilGetVertexNormalInputs(float3 normalOS, float4 tangentOS
     return output;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
+// Outline
 float lilGetOutlineWidth(float3 positionOS, float2 uv, float4 color, float outlineWidth, TEXTURE2D(outlineWidthMask), lilBool outlineVertexR2Width, lilBool outlineFixWidth LIL_SAMP_IN_FUNC(samp))
 {
     outlineWidth *= 0.01;
@@ -277,6 +258,30 @@ float lilGetOutlineWidth(float3 positionOS, float2 uv, float4 color, float outli
     #endif
     return outlineWidth;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Encryption (https://github.com/rygo6/GTAvaCrypt)
+#if !defined(LIL_LITE) && !defined(LIL_BAKER) &&  defined(LIL_FEATURE_ENCRYPTION)
+float4 vertexDecode(float4 positionOS, float3 normalOS, float2 uv6, float2 uv7)
+{
+    if(_IgnoreEncryption) return positionOS;
+
+    float4 keys = floor(_Keys + 0.5);
+    keys = keys.x == 0 ? float4(0,0,0,0) : floor(keys / 3) * 3 + 1;
+
+    keys.x *= 1;
+    keys.y *= 2;
+    keys.z *= 3;
+    keys.w *= 4;
+
+    positionOS.xyz -= normalOS * uv6.x * (sin((keys.z - keys.y) * 2) * cos(keys.w - keys.x));
+    positionOS.xyz -= normalOS * uv6.y * (sin((keys.w - keys.x) * 3) * cos(keys.z - keys.y));
+    positionOS.xyz -= normalOS * uv7.x * (sin((keys.x - keys.w) * 4) * cos(keys.y - keys.z));
+    positionOS.xyz -= normalOS * uv7.y * (sin((keys.y - keys.z) * 5) * cos(keys.x - keys.w));
+
+    return positionOS;
+}
+#endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Color
@@ -395,6 +400,11 @@ float2 lilCalcUV(float2 uv, float4 uv_st, float4 uv_sr)
     return outuv;
 }
 
+float2 lilCalcUVWithoutAnimation(float2 uv, float4 uv_st, float4 uv_sr)
+{
+    return lilRotateUV(uv * uv_st.xy + uv_st.zw, uv_sr.z);
+}
+
 float2 lilCalcDecalUV(
     float2 uv,
     float4 uv_ST,
@@ -439,11 +449,6 @@ float2 lilCalcAtlasAnimation(float2 uv, float4 decalAnimation, float4 decalSubPa
     outuv = (outuv + float2(offsetX,offsetY)) * decalSubParam.xy / decalAnimation.xy;
     outuv.y = -outuv.y;
     return outuv;
-}
-
-float2 lilCalcUVWithoutAnimation(float2 uv, float4 uv_st, float4 uv_sr)
-{
-    return lilRotateUV(uv * uv_st.xy + uv_st.zw, uv_sr.z);
 }
 
 float2 lilCalcMatCapUV(float3 normalWS, bool zRotCancel = true)
@@ -771,18 +776,6 @@ float4 lilGetSubTexWithoutAnimation(
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Alpha Mask
-void lilAlphaMask(inout float alpha, float2 uvMain, uint alphaMaskMode, TEXTURE2D(alphaMaskTex), float alphaMaskValue LIL_SAMP_IN_FUNC(samp))
-{
-    if(alphaMaskMode)
-    {
-        float alphaMask = LIL_SAMPLE_2D(alphaMaskTex, samp, uvMain).r;
-        alphaMask = saturate(alphaMask + alphaMaskValue);
-        alpha = alphaMaskMode == 1 ? alphaMask : alpha * alphaMask;
-    }
-}
-
-//------------------------------------------------------------------------------------------------------------------------------
 // Light Direction
 float3 lilGetLightDirection()
 {
@@ -995,18 +988,21 @@ void lilGetLightColorDouble(float3 lightDirection, float shadowEnvStrength, out 
 float3 lilGetLightMapColor(float2 uv)
 {
     float3 outCol = 0;
+    #if defined(LIL_USE_LIGHTMAP) || defined(LIL_USE_DYNAMICLIGHTMAP)
+        float2 lightmapUV = uv * unity_LightmapST.xy + unity_LightmapST.zw;
+    #endif
     #ifdef LIL_USE_LIGHTMAP
-        float4 lightmap = LIL_SAMPLE_LIGHTMAP(LIL_LIGHTMAP_TEX, LIL_LIGHTMAP_SAMP, uv * unity_LightmapST.xy + unity_LightmapST.zw);
+        //float4 lightmap = LIL_SAMPLE_LIGHTMAP(LIL_LIGHTMAP_TEX, LIL_LIGHTMAP_SAMP, lightmapUV);
+        float4 lightmap = LIL_LIGHTMAP_TEX.Sample(LIL_LIGHTMAP_SAMP, lightmapUV);
         outCol += LIL_DECODE_LIGHTMAP(lightmap);
     #endif
     #ifdef LIL_USE_DYNAMICLIGHTMAP
-        float4 dynlightmap = LIL_SAMPLE_2D(LIL_DYNAMICLIGHTMAP_TEX, LIL_DYNAMICLIGHTMAP_SAMP, uv * unity_LightmapST.xy + unity_LightmapST.zw);
+        float4 dynlightmap = LIL_SAMPLE_2D(LIL_DYNAMICLIGHTMAP_TEX, LIL_DYNAMICLIGHTMAP_SAMP, lightmapUV);
         outCol += LIL_DECODE_DYNAMICLIGHTMAP(dynlightmap);
     #endif
     return outCol;
 }
 
-#if !defined(LIL_BAKER)
 float3 lilGetVertexLights(float3 positionWS, float vertexLightStrength = 1.0)
 {
     #ifdef LIL_BRP
@@ -1063,7 +1059,6 @@ float3 lilGetVertexLights(float3 positionWS, float vertexLightStrength = 1.0)
         return outCol * vertexLightStrength;
     #endif
 }
-#endif
 
 float3 lilGetAdditionalLights(float3 positionWS)
 {
@@ -1078,174 +1073,6 @@ float3 lilGetAdditionalLights(float3 positionWS)
     #endif
     return outCol;
 }
-
-//------------------------------------------------------------------------------------------------------------------------------
-// Shading
-#if !defined(LIL_LITE) && !defined(LIL_GEM) && !defined(LIL_BAKER) && defined(LIL_FEATURE_SHADOW)
-void lilGetShading(
-    inout float4 col,
-    inout float shadowmix,
-    float3 albedo,
-    float3 lightColor,
-    float3 indLightColor,
-    float2 uv,
-    float facing,
-    float3 normalDirection,
-    float attenuation,
-    float3 lightDirection,
-    float3 lightDirectionCopy,
-    bool cullOff
-    LIL_SAMP_IN_FUNC(samp))
-{
-    LIL_BRANCH
-    if(_UseShadow)
-    {
-        // Shade
-        float ln = saturate(dot(lightDirection,normalDirection)*0.5+0.5);
-        if(Exists_ShadowBorderMask) ln *= LIL_SAMPLE_2D(_ShadowBorderMask, samp, uv).r;
-        float ln2 = ln;
-        float lnB = ln;
-
-        // Shadow
-        #if defined(LIL_USE_SHADOW) || (defined(LIL_LIGHTMODE_SHADOWMASK) && defined(LIL_FEATURE_RECEIVE_SHADOW))
-            float shadowAttenuation = saturate(attenuation + distance(lightDirection, lightDirectionCopy.xyz));
-            if(_ShadowReceive) ln *= shadowAttenuation;
-            if(_ShadowReceive) lnB *= shadowAttenuation;
-        #endif
-
-        // Toon
-        float shadowBlur = _ShadowBlur;
-        if(Exists_ShadowBlurMask) shadowBlur *= LIL_SAMPLE_2D(_ShadowBlurMask, samp, uv).r;
-        ln = lilTooning(ln, _ShadowBorder, shadowBlur);
-        ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
-        lnB = lilTooning(lnB, _ShadowBorder, shadowBlur, _ShadowBorderRange);
-
-        if(cullOff)
-        {
-            // Force shadow on back face
-            float bfshadow = (facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
-            ln *= bfshadow;
-            ln2 *= bfshadow;
-            lnB *= bfshadow;
-        }
-
-        // Copy
-        shadowmix = ln;
-
-        // Strength
-        float shadowStrength = _ShadowStrength;
-        #ifdef LIL_COLORSPACE_GAMMA
-            shadowStrength = lilSRGBToLinear(shadowStrength);
-        #endif
-        if(Exists_ShadowStrengthMask) shadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, samp, uv).r;
-        ln = lerp(1.0, ln, shadowStrength);
-
-        // Shadow Color 1
-        float4 shadowColorTex = 0.0;
-        if(Exists_ShadowColorTex) shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, uv);
-        float3 indirectCol = lerp(albedo, shadowColorTex.rgb, shadowColorTex.a) * _ShadowColor.rgb;
-        // Shadow Color 2
-        float4 shadow2ndColorTex = 0.0;
-        if(Exists_Shadow2ndColorTex) shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, uv);
-        shadow2ndColorTex.rgb = lerp(albedo, shadow2ndColorTex.rgb, shadow2ndColorTex.a) * _Shadow2ndColor.rgb;
-        ln2 = _Shadow2ndColor.a - ln2 * _Shadow2ndColor.a;
-        indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, ln2);
-        // Multiply Main Color
-        indirectCol = lerp(indirectCol, indirectCol*albedo, _ShadowMainStrength);
-
-        // Apply Light
-        float3 directCol = albedo * lightColor;
-        indirectCol = indirectCol * lightColor;
-
-        // Environment Light
-        indirectCol = lerp(indirectCol, albedo, indLightColor);
-        // Fix
-        indirectCol = min(indirectCol, directCol);
-        // Gradation
-        indirectCol = lerp(indirectCol, directCol, lnB * _ShadowBorderColor.rgb);
-
-        // Mix
-        col.rgb = lerp(indirectCol, directCol, ln);
-    }
-    else
-    {
-        col.rgb *= lightColor;
-    }
-}
-#endif
-
-#if defined(LIL_LITE)
-void lilGetShadingLite(
-    inout float4 col,
-    inout float shadowmix,
-    float3 albedo,
-    float3 lightColor,
-    float3 indLightColor,
-    float2 uv,
-    float facing,
-    float3 normalDirection,
-    float3 lightDirection,
-    float3 lightDirectionCopy,
-    bool cullOff
-    LIL_SAMP_IN_FUNC(samp))
-{
-    LIL_BRANCH
-    if(_UseShadow)
-    {
-        // Shade
-        float ln = saturate(dot(lightDirection,normalDirection)*0.5+0.5);
-        float ln2 = ln;
-        float lnB = ln;
-
-        // Toon
-        ln = lilTooning(ln, _ShadowBorder, _ShadowBlur);
-        ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
-        lnB = lilTooning(lnB, _ShadowBorder, _ShadowBlur, _ShadowBorderRange);
-
-        if(cullOff)
-        {
-            // Force shadow on back face
-            float bfshadow = (facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
-            ln *= bfshadow;
-            ln2 *= bfshadow;
-            lnB *= bfshadow;
-        }
-
-        // Copy
-        shadowmix = ln;
-
-        // Shadow Color 1
-        float4 shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, uv);
-        float3 indirectCol = lerp(albedo, shadowColorTex.rgb, shadowColorTex.a);
-        // Shadow Color 2
-        float4 shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, uv);
-        indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, shadow2ndColorTex.a - ln2 * shadow2ndColorTex.a);
-
-        // Apply Light
-        float3 directCol = albedo * lightColor;
-        indirectCol = indirectCol * lightColor;
-
-        // Environment Light
-        indirectCol = lerp(indirectCol, albedo, indLightColor);
-        // Fix
-        indirectCol = min(indirectCol, directCol);
-        // Gradation
-        indirectCol = lerp(indirectCol, directCol, lnB * _ShadowBorderColor.rgb);
-
-        // Mix
-        col.rgb = lerp(indirectCol, directCol, ln);
-    }
-    else
-    {
-        col.rgb *= lightColor;
-    }
-}
-#endif
-
-#define LIL_GET_SHADING(col,shadowmix,albedo,lightColor,uv,facing,normalDirection,attenuation,lightDirection,cullOff) \
-    lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uv,facing,normalDirection,attenuation,lightDirection,_MainLightPosition.xyz,cullOff LIL_SAMP_IN(sampler_MainTex))
-#define LIL_GET_SHADING_LITE(col,shadowmix,albedo,lightColor,uv,facing,normalDirection,lightDirection,cullOff) \
-    lilGetShadingLite(col,shadowmix,albedo,lightColor,input.indLightColor,uv,facing,normalDirection,lightDirection,_MainLightPosition.xyz,cullOff LIL_SAMP_IN(sampler_MainTex))
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Specular
@@ -1309,7 +1136,7 @@ float3 lilCalcSpecular(float nv, float nl, float nh, float lh, float roughness, 
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Glitter
-float3 lilGlitter(float2 uv, float3 normalDirection, float3 viewDirection, float3 lightDirection, float4 glitterParams1, float4 glitterParams2)
+float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, float3 lightDirection, float4 glitterParams1, float4 glitterParams2)
 {
     // glitterParams1
     // x: Scale, y: Scale, z: Size, w: Contrast

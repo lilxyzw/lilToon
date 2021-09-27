@@ -74,7 +74,6 @@ Shader "_lil/lilToonFakeShadow"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
@@ -126,7 +125,6 @@ Shader "_lil/lilToonFakeShadow"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -175,7 +173,6 @@ Shader "_lil/lilToonFakeShadow"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -228,7 +225,6 @@ Shader "_lil/lilToonFakeShadow"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -277,7 +273,6 @@ Shader "_lil/lilToonFakeShadow"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -329,7 +324,6 @@ Shader "_lil/lilToonFakeShadow"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON

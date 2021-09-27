@@ -8,10 +8,13 @@
     SAMPLER(sampler_LightTextureB0);
 #endif
 
-TEXTURE3D(_DitherMaskLOD);
+#if !defined(SHADER_API_GLES)
+    TEXTURE3D(_DitherMaskLOD);
+    SAMPLER(sampler_DitherMaskLOD);
+#endif
+
 SAMPLER(sampler_linear_repeat);
 SAMPLER(sampler_linear_clamp);
-SAMPLER(sampler_DitherMaskLOD);
 
 #if defined(LIL_BRP)
     TEXTURE2D(_lilBackgroundTexture);
@@ -869,7 +872,7 @@ SAMPLER(sampler_OutlineTex);
 
 // AudioLink
 #if defined(LIL_FEATURE_AUDIOLINK)
-Texture2D<float4> _AudioTexture;
+TEXTURE2D_FLOAT(_AudioTexture);
 float4 _AudioTexture_TexelSize;
 #endif
 

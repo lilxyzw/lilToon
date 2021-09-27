@@ -16,6 +16,11 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
     LIL_GET_HDRPDATA(input);
+    #if defined(LIL_V2F_LIGHTDIRECTION)
+        float3 lightDirection = input.lightDirection;
+    #else
+        float3 lightDirection = float3(0.0, 1.0, 0.0);
+    #endif
     LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
     LIL_GET_VERTEXLIGHT(input, vertexLightColor);
     LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);

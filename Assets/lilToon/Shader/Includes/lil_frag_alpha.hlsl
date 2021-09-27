@@ -34,7 +34,7 @@
     #endif
 
     clip(col.a - _Cutoff);
-    #if LIL_RENDER == 2
+    #if LIL_RENDER == 2 && !defined(SHADER_API_GLES)
         float alphaRef = LIL_SAMPLE_3D(_DitherMaskLOD, sampler_DitherMaskLOD, float3(input.positionCS.xy*0.25,col.a*0.9375)).a;
         clip(alphaRef - 0.01);
     #endif

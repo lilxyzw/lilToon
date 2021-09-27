@@ -13,8 +13,14 @@
 #if defined(LIL_V2G_FORCE_TEXCOORD1) || defined(LIL_USE_LIGHTMAP_UV)
     #define LIL_V2G_TEXCOORD1
 #endif
-#define LIL_V2G_MAINLIGHT
-#define LIL_V2G_VERTEXLIGHT
+#if !defined(LIL_PASS_FORWARDADD)
+    #define LIL_V2G_LIGHTCOLOR
+    #define LIL_V2G_LIGHTDIRECTION
+    #define LIL_V2G_VERTEXLIGHT
+    #if defined(LIL_FEATURE_SHADOW)
+        #define LIL_V2G_INDLIGHTCOLOR
+    #endif
+#endif
 #define LIL_V2G_FOG
 #define LIL_V2G_FURVECTOR
 
@@ -33,8 +39,14 @@
 #if defined(LIL_V2F_FORCE_NORMAL_WS) || !defined(LIL_PASS_FORWARDADD) && defined(LIL_SHOULD_NORMAL)
     #define LIL_V2F_NORMAL_WS
 #endif
-#define LIL_V2F_MAINLIGHT
-#define LIL_V2F_VERTEXLIGHT
+#if !defined(LIL_PASS_FORWARDADD)
+    #define LIL_V2F_LIGHTCOLOR
+    #define LIL_V2F_LIGHTDIRECTION
+    #define LIL_V2F_VERTEXLIGHT
+    #if defined(LIL_FEATURE_SHADOW)
+        #define LIL_V2F_INDLIGHTCOLOR
+    #endif
+#endif
 #define LIL_V2F_FOG
 #define LIL_V2F_FURLAYER
 

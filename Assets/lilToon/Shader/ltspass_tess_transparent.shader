@@ -42,7 +42,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -90,7 +90,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -138,7 +138,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma multi_compile_fwdadd
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -166,7 +166,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma multi_compile_shadowcaster
             #pragma multi_compile_instancing
 
@@ -242,7 +241,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
@@ -296,7 +295,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
@@ -326,7 +325,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
@@ -352,7 +350,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -377,7 +374,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -423,7 +419,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
@@ -476,7 +472,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
@@ -505,7 +501,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
@@ -530,7 +525,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
@@ -605,7 +599,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
@@ -659,7 +653,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
@@ -689,7 +683,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
@@ -715,7 +708,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -740,7 +732,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -782,7 +773,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -804,7 +794,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -850,7 +839,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
@@ -903,7 +892,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
@@ -932,7 +921,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
@@ -957,7 +945,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
@@ -981,7 +968,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
@@ -1094,7 +1080,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1148,7 +1134,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1184,7 +1170,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1227,7 +1212,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1273,7 +1258,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma require geometry
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
@@ -1317,7 +1302,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1360,7 +1345,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #pragma fragment frag
             #pragma hull hull
             #pragma domain domain
-            #pragma target 4.6
+            #pragma require tesshw tessellation
             #pragma require geometry
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
@@ -1391,7 +1376,6 @@ Shader "Hidden/ltspass_tess_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON

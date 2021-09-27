@@ -61,9 +61,6 @@ struct v2f
 #if defined(LIL_V2F_FORCE_BITANGENT)
     #define LIL_V2F_BITANGENT_WS
 #endif
-#if defined(LIL_V2F_FORCE_TANGENT_W)
-    #define LIL_V2F_TANGENT_W
-#endif
 #define LIL_V2F_VIZUV
 #define LIL_V2F_LIGHTCOORD
 
@@ -88,16 +85,13 @@ struct v2f
         float3 normalWS         : TEXCOORD6;
     #endif
     #if defined(LIL_V2F_TANGENT_WS)
-        float3 tangentWS        : TEXCOORD7;
+        float4 tangentWS        : TEXCOORD7;
     #endif
     #if defined(LIL_V2F_BITANGENT_WS)
         float3 bitangentWS      : TEXCOORD8;
     #endif
-    #if defined(LIL_V2F_TANGENT_W)
-        float  tangentW         : TEXCOORD9;
-    #endif
     #if defined(LIL_V2F_POSITION_SS)
-        float4 positionSS       : TEXCOORD10;
+        float4 positionSS       : TEXCOORD9;
     #endif
     LIL_VERTEX_INPUT_INSTANCE_ID
     LIL_VERTEX_OUTPUT_STEREO

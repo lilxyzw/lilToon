@@ -341,7 +341,7 @@ Shader "Hidden/lilToonGem"
 
         //----------------------------------------------------------------------------------------------------------------------
         // Refraction
-                        _RefractionStrength         ("Refraction Strength", Range(0,1)) = 0.5
+                        _RefractionStrength         ("Refraction Strength", Range(-1,1)) = 0.5
         [PowerSlider(3.0)]_RefractionFresnelPower   ("Refraction Fresnel Power", Range(0.01, 10)) = 1.0
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -387,7 +387,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
@@ -428,7 +427,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -480,7 +478,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -522,7 +519,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
@@ -557,7 +553,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
@@ -583,7 +578,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -608,7 +602,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -648,7 +641,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
@@ -690,7 +682,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
@@ -724,7 +715,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
@@ -749,7 +739,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
@@ -819,7 +808,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -861,7 +849,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
@@ -896,7 +883,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
@@ -922,7 +908,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -947,7 +932,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -989,7 +973,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -1011,7 +994,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -1053,7 +1035,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
@@ -1094,7 +1075,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
@@ -1128,7 +1108,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
@@ -1153,7 +1132,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
@@ -1177,7 +1155,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
@@ -1285,7 +1262,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1329,7 +1305,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1368,7 +1343,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1409,7 +1383,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1449,7 +1422,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1478,7 +1450,6 @@ Shader "Hidden/lilToonGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON

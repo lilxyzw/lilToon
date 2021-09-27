@@ -16,6 +16,11 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
     LIL_GET_HDRPDATA(input);
+    #if defined(LIL_V2F_LIGHTDIRECTION)
+        float3 lightDirection = input.lightDirection;
+    #else
+        float3 lightDirection = float3(0.0, 1.0, 0.0);
+    #endif
     LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
     LIL_GET_VERTEXLIGHT(input, vertexLightColor);
     LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
@@ -157,14 +162,14 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //------------------------------------------------------------------------------------------------------------------------------
         // View Direction
-        #if defined(LIL_SHOULD_POSITION_WS)
+        #if defined(LIL_V2F_POSITION_WS)
             float depth = length(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
             float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
             float3 headDirection = normalize(LIL_GET_HEADDIR_WS(input.positionWS.xyz));
         #endif
-        #if defined(LIL_SHOULD_TBN)
-            float3x3 tbnWS = float3x3(input.tangentWS, input.bitangentWS, input.normalWS);
-            #if defined(LIL_SHOULD_POSITION_WS)
+        #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS)
+            float3x3 tbnWS = float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
+            #if defined(LIL_V2F_POSITION_WS)
                 float3 parallaxViewDirection = mul(tbnWS, viewDirection);
                 float2 parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
             #endif
@@ -214,7 +219,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Normal
-        #if defined(LIL_SHOULD_NORMAL)
+        #if defined(LIL_V2F_NORMAL_WS)
             #if defined(LIL_FEATURE_NORMAL_1ST) || defined(LIL_FEATURE_NORMAL_2ND)
                 float3 normalmap = float3(0.0,0.0,1.0);
 
@@ -236,7 +241,7 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
                 float3 normalDirection = normalize(input.normalWS);
                 normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
             #endif
-            #if defined(LIL_SHOULD_POSITION_WS)
+            #if defined(LIL_V2F_POSITION_WS)
                 float nv = saturate(dot(normalDirection, viewDirection));
                 float nvabs = abs(dot(normalDirection, viewDirection));
             #else
@@ -257,8 +262,8 @@ float4 frag(v2f input, float facing : VFACE) : SV_Target
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Layer Color
-        #if defined(LIL_SHOULD_TANGENT_W)
-            bool isRightHand = input.tangentW > 0.0;
+        #if defined(LIL_V2F_TANGENT_WS)
+            bool isRightHand = input.tangentWS.w > 0.0;
         #else
             bool isRightHand = true;
         #endif

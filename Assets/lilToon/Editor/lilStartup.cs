@@ -167,9 +167,9 @@ namespace lilToon
                     yield return webRequest.Send();
                 #endif
                 #if UNITY_2020_2_OR_NEWER
-                if (webRequest.result != UnityWebRequest.Result.ConnectionError)
+                    if(webRequest.result != UnityWebRequest.Result.ConnectionError)
                 #else
-                if (!webRequest.isNetworkError)
+                    if(!webRequest.isNetworkError)
                 #endif
                 {
                     StreamWriter sw = new StreamWriter(lilToonInspector.versionInfoTempPath,false);
