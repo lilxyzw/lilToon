@@ -1,6 +1,7 @@
 Shader "Hidden/ltspass_lite_transparent"
 {
     HLSLINCLUDE
+        #pragma exclude_renderers d3d11_9x
         #define LIL_RENDER 2
         #define LIL_LITE
     ENDHLSL
@@ -10,6 +11,49 @@ Shader "Hidden/ltspass_lite_transparent"
 //
     SubShader
     {
+        // Forward Back
+        Pass
+        {
+            Name "FORWARD_BACK"
+            Tags {"LightMode" = "ForwardBase"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull Front
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_fwdbase
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+            #pragma fragmentoption ARB_precision_hint_fastest
+            #pragma skip_variants SHADOWS_SCREEN
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_lite.hlsl"
+
+            ENDHLSL
+        }
+
         // Forward
         Pass
         {
@@ -198,7 +242,11 @@ Shader "Hidden/ltspass_lite_transparent"
     SubShader
     {
         Tags{"ShaderModel" = "4.5"}
-        // ForwardLit
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
+
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -366,7 +414,7 @@ Shader "Hidden/ltspass_lite_transparent"
     // Lightweight Render Pipeline
     SubShader
     {
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -536,7 +584,11 @@ Shader "Hidden/ltspass_lite_transparent"
     SubShader
     {
         Tags{"ShaderModel" = "4.5"}
-        // ForwardLit
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
+
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -766,7 +818,7 @@ Shader "Hidden/ltspass_lite_transparent"
     // Universal Render Pipeline
     SubShader
     {
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -1000,7 +1052,7 @@ Shader "Hidden/ltspass_lite_transparent"
     SubShader
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"

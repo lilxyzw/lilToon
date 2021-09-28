@@ -1,6 +1,7 @@
 Shader "Hidden/ltspass_lite_opaque"
 {
     HLSLINCLUDE
+        #pragma exclude_renderers d3d11_9x
         #define LIL_RENDER 0
         #define LIL_LITE
     ENDHLSL
@@ -198,7 +199,11 @@ Shader "Hidden/ltspass_lite_opaque"
     SubShader
     {
         Tags{"ShaderModel" = "4.5"}
-        // ForwardLit
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
+
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -366,7 +371,7 @@ Shader "Hidden/ltspass_lite_opaque"
     // Lightweight Render Pipeline
     SubShader
     {
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -536,7 +541,11 @@ Shader "Hidden/ltspass_lite_opaque"
     SubShader
     {
         Tags{"ShaderModel" = "4.5"}
-        // ForwardLit
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
+
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -766,7 +775,7 @@ Shader "Hidden/ltspass_lite_opaque"
     // Universal Render Pipeline
     SubShader
     {
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -1000,7 +1009,7 @@ Shader "Hidden/ltspass_lite_opaque"
     SubShader
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"

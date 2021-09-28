@@ -1,6 +1,7 @@
 Shader "Hidden/custom_ltspass_opaque"
 {
     HLSLINCLUDE
+        #pragma exclude_renderers d3d9 d3d11_9x
         #define LIL_RENDER 0
 
         // Custom Macro
@@ -65,7 +66,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -134,7 +134,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -180,7 +179,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma multi_compile_fwdadd
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -208,7 +206,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma multi_compile_shadowcaster
             #pragma multi_compile_instancing
 
@@ -275,7 +272,11 @@ Shader "Hidden/custom_ltspass_opaque"
     SubShader
     {
         Tags{"ShaderModel" = "4.5"}
-        // ForwardLit
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
+
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -305,7 +306,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
@@ -380,7 +380,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
@@ -410,7 +409,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
@@ -436,7 +434,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -461,7 +458,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -499,7 +495,7 @@ Shader "Hidden/custom_ltspass_opaque"
     // Lightweight Render Pipeline
     SubShader
     {
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -529,7 +525,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
@@ -603,7 +598,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
@@ -632,7 +626,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
@@ -657,7 +650,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
@@ -724,7 +716,11 @@ Shader "Hidden/custom_ltspass_opaque"
     SubShader
     {
         Tags{"ShaderModel" = "4.5"}
-        // ForwardLit
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
+
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -754,7 +750,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
@@ -829,7 +824,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
@@ -859,7 +853,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
@@ -885,7 +878,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -910,7 +902,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -952,7 +943,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -974,7 +964,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -1012,7 +1001,7 @@ Shader "Hidden/custom_ltspass_opaque"
     // Universal Render Pipeline
     SubShader
     {
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -1042,7 +1031,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
@@ -1116,7 +1104,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
@@ -1145,7 +1132,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
@@ -1170,7 +1156,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
@@ -1194,7 +1179,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
@@ -1302,7 +1286,7 @@ Shader "Hidden/custom_ltspass_opaque"
     SubShader
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -1332,7 +1316,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1407,7 +1390,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1443,7 +1425,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1484,7 +1465,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1528,7 +1508,6 @@ Shader "Hidden/custom_ltspass_opaque"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
-            #pragma target 4.5
             #pragma require geometry
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
@@ -1570,7 +1549,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1611,7 +1589,6 @@ Shader "Hidden/custom_ltspass_opaque"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
-            #pragma target 4.5
             #pragma require geometry
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
@@ -1642,7 +1619,6 @@ Shader "Hidden/custom_ltspass_opaque"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 4.5
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON

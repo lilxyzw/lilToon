@@ -6,7 +6,7 @@ Shader "_lil/[Optional] lilToonLiteOverlay"
         // Base
         [lilToggle]     _Invisible                  ("Invisible", Int) = 0
                         _AsUnlit                    ("As Unlit", Range(0, 1)) = 0
-                        _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.5
+                        _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.001
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
                         _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1

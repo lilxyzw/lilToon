@@ -1,6 +1,7 @@
 Shader "Hidden/ltspass_cutout"
 {
     HLSLINCLUDE
+        #pragma exclude_renderers d3d9 d3d11_9x
         #define LIL_RENDER 1
     ENDHLSL
 
@@ -202,7 +203,11 @@ Shader "Hidden/ltspass_cutout"
     SubShader
     {
         Tags{"ShaderModel" = "4.5"}
-        // ForwardLit
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
+
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -376,7 +381,7 @@ Shader "Hidden/ltspass_cutout"
     // Lightweight Render Pipeline
     SubShader
     {
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -552,7 +557,11 @@ Shader "Hidden/ltspass_cutout"
     SubShader
     {
         Tags{"ShaderModel" = "4.5"}
-        // ForwardLit
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
+
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -788,7 +797,7 @@ Shader "Hidden/ltspass_cutout"
     // Universal Render Pipeline
     SubShader
     {
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -1028,7 +1037,7 @@ Shader "Hidden/ltspass_cutout"
     SubShader
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"

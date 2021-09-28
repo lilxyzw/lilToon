@@ -6,7 +6,7 @@ Shader "Hidden/lilToonFur"
         // Base
         [lilToggle]     _Invisible                  ("Invisible", Int) = 0
                         _AsUnlit                    ("As Unlit", Range(0, 1)) = 0
-                        _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.5
+                        _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.001
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
                         _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
@@ -94,6 +94,7 @@ Shader "Hidden/lilToonFur"
                         _FurGravity                 ("Fur Gravity", Range(0,1)) = 0.25
                         _FurAO                      ("Fur AO", Range(0,1)) = 0
         [IntRange]      _FurLayerNum                ("Fur Layer Num", Range(1, 6)) = 4
+                        _FurRootOffset              ("Fur Root Offset", Range(-1,0)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Fur Advanced
@@ -124,6 +125,7 @@ Shader "Hidden/lilToonFur"
         [lilColorMask]                                  _FurColorMask           ("Color Mask", Int) = 15
     }
     HLSLINCLUDE
+        #pragma exclude_renderers d3d9 d3d11_9x
         #define LIL_RENDER 2
         #define LIL_FUR
     ENDHLSL
@@ -259,8 +261,11 @@ Shader "Hidden/lilToonFur"
     SubShader
     {
         Tags {"RenderType" = "Transparent" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -435,7 +440,7 @@ Shader "Hidden/lilToonFur"
     {
         Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -612,8 +617,11 @@ Shader "Hidden/lilToonFur"
     SubShader
     {
         Tags {"RenderType" = "Transparent" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -850,7 +858,7 @@ Shader "Hidden/lilToonFur"
     {
         Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -1092,7 +1100,7 @@ Shader "Hidden/lilToonFur"
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"

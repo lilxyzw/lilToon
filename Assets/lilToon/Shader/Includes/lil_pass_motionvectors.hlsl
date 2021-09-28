@@ -110,7 +110,7 @@ void frag(LIL_CUSTOM_V2F inputCustom
 #else
 void frag(v2f input
 #endif
-    , float facing : VFACE
+    LIL_VFACE(facing)
     #ifdef WRITE_MSAA_DEPTH
     , out float4 depthColor : SV_Target0
     , out float4 outMotionVector : SV_Target1
@@ -126,8 +126,9 @@ void frag(v2f input
     #if defined(LIL_CUSTOM_V2F)
         v2f input = inputCustom.base;
     #endif
-    UNITY_SETUP_INSTANCE_ID(input);
-    UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+    LIL_VFACE_FALLBACK(facing);
+    LIL_SETUP_INSTANCE_ID(input);
+    LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
     #include "Includes/lil_frag_alpha.hlsl"
 

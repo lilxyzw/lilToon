@@ -116,7 +116,7 @@ v2g vert(appdata input)
 // Geometry shader
 #if defined(LIL_ONEPASS_FUR)
     [maxvertexcount(46)]
-#elif (defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)) && (defined(LIL_USE_LIGHTMAP) || defined(LIL_USE_DYNAMICLIGHTMAP) || defined(LIL_LIGHTMODE_SHADOWMASK)) || defined(LIL_HDRP)
+#elif (defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)) && (defined(LIL_USE_LIGHTMAP) || defined(LIL_USE_DYNAMICLIGHTMAP) || defined(LIL_LIGHTMODE_SHADOWMASK)) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP)
     [maxvertexcount(32)]
 #else
     [maxvertexcount(40)]
@@ -153,7 +153,7 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                 outputBase[i].normalWS = input[i].normalWS;
             #endif
             #if defined(LIL_V2F_FURLAYER)
-                outputBase[i].furLayer = -1;
+                outputBase[i].furLayer = -2;
             #endif
         }
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input[0]);
@@ -267,7 +267,7 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                 output.previousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousPositionWS, 1.0));
             #endif
             #if defined(LIL_V2F_FURLAYER)
-                output.furLayer = 0;
+                output.furLayer = _FurRootOffset;
             #endif
             outStream.Append(output);
 

@@ -17,27 +17,27 @@
 #endif
 
 #if defined(LIL_REQUIRE_APP_TEXCOORD2) || defined(LIL_PASS_META_INCLUDED)
-    #define LIL_APP_UV2
+    #define LIL_APP_TEXCOORD2
 #endif
 
 #if defined(LIL_REQUIRE_APP_TEXCOORD3)
-    #define LIL_APP_UV3
+    #define LIL_APP_TEXCOORD3
 #endif
 
 #if defined(LIL_REQUIRE_APP_TEXCOORD4)
-    #define LIL_APP_UV4
+    #define LIL_APP_TEXCOORD4
 #endif
 
 #if defined(LIL_REQUIRE_APP_TEXCOORD5)
-    #define LIL_APP_UV5
+    #define LIL_APP_TEXCOORD5
 #endif
 
 #if defined(LIL_REQUIRE_APP_TEXCOORD6) || defined(LIL_FEATURE_ENCRYPTION) && !defined(LIL_LITE)
-    #define LIL_APP_UV6
+    #define LIL_APP_TEXCOORD6
 #endif
 
 #if defined(LIL_REQUIRE_APP_TEXCOORD7) || defined(LIL_FEATURE_ENCRYPTION) && !defined(LIL_LITE)
-    #define LIL_APP_UV7
+    #define LIL_APP_TEXCOORD7
 #endif
 
 #if defined(LIL_REQUIRE_APP_COLOR) || defined(LIL_OUTLINE) || defined(LIL_ONEPASS_OUTLINE) || (!defined(LIL_PASS_INCLUDED) && defined(LIL_FUR))
@@ -65,22 +65,22 @@ struct appdata
     float4 positionOS   : POSITION;
     float2 uv           : TEXCOORD0;
     float2 uv1          : TEXCOORD1;
-    #if defined(LIL_APP_UV2)
+    #if defined(LIL_APP_TEXCOORD2)
         float2 uv2          : TEXCOORD2;
     #endif
-    #if defined(LIL_APP_UV3)
+    #if defined(LIL_APP_TEXCOORD3)
         float2 uv3          : TEXCOORD3;
     #endif
-    #if defined(LIL_APP_UV4)
+    #if defined(LIL_APP_TEXCOORD4)
         float2 uv4          : TEXCOORD4;
     #endif
-    #if defined(LIL_APP_UV2)
+    #if defined(LIL_APP_TEXCOORD5)
         float2 uv5          : TEXCOORD5;
     #endif
-    #if defined(LIL_APP_UV6)
+    #if defined(LIL_APP_TEXCOORD6)
         float2 uv6          : TEXCOORD6;
     #endif
-    #if defined(LIL_APP_UV7)
+    #if defined(LIL_APP_TEXCOORD7)
         float2 uv7          : TEXCOORD7;
     #endif
     #if defined(LIL_APP_COLOR)

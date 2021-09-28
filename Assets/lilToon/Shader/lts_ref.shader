@@ -353,6 +353,7 @@ Shader "Hidden/lilToonRefraction"
                         _RefractionColor            ("Color", Color) = (1,1,1,1)
     }
     HLSLINCLUDE
+        #pragma exclude_renderers d3d9 d3d11_9x
         #define LIL_RENDER 2
         #define LIL_REFRACTION
     ENDHLSL
@@ -470,8 +471,11 @@ Shader "Hidden/lilToonRefraction"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -599,7 +603,7 @@ Shader "Hidden/lilToonRefraction"
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -728,8 +732,11 @@ Shader "Hidden/lilToonRefraction"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -919,7 +926,7 @@ Shader "Hidden/lilToonRefraction"
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -1113,7 +1120,7 @@ Shader "Hidden/lilToonRefraction"
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"

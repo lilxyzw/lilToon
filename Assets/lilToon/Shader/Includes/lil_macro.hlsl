@@ -361,15 +361,18 @@
 
     // Lighting
     #if defined(LIL_USE_SHADOW)
-        #define LIL_SHADOW_COORDS(idx)              float4 shadowCoord : TEXCOORD##idx;
         #if defined(SHADOWS_SCREEN) || defined(_MAIN_LIGHT_SHADOWS_SCREEN)
+            #define LIL_SHADOW_COORDS(idx)              float4 shadowCoord : TEXCOORD##idx;
             #define LIL_TRANSFER_SHADOW(vi,uv,o)        o.shadowCoord = ComputeScreenPos(vi.positionCS);
+            #define LIL_LIGHT_ATTENUATION(atten,i) \
+                float atten = MainLightRealtimeShadow(i.shadowCoord)
         #else
-            #define LIL_TRANSFER_SHADOW(vi,uv,o)        o.shadowCoord = float4(vi.positionWS, 1.0);
+            #define LIL_SHADOW_COORDS(idx)
+            #define LIL_TRANSFER_SHADOW(vi,uv,o)
+            #define LIL_LIGHT_ATTENUATION(atten,i) \
+                float4 shadowCoord = TransformWorldToShadowCoord(i.positionWS); \
+                float atten = MainLightRealtimeShadow(shadowCoord)
         #endif
-        #define LIL_LIGHT_ATTENUATION(atten,i) \
-            float4 shadowCoord = TransformWorldToShadowCoord(i.shadowCoord); \
-            float atten = MainLightRealtimeShadow(shadowCoord)
     #else
         #define LIL_SHADOW_COORDS(idx)
         #define LIL_TRANSFER_SHADOW(vi,uv,o)
@@ -462,7 +465,7 @@
     #define LIL_LIGHT_ATTENUATION(atten,i)      float atten = 1.0
 #endif
 
-// Texture
+// API
 #if defined(TEXTURE2D)
     #undef TEXTURE2D
 #endif
@@ -476,7 +479,38 @@
     #undef SAMPLER
 #endif
 
-#if (defined(SHADER_TARGET_SURFACE_ANALYSIS) && defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER)) || defined(SHADER_TARGET_SURFACE_ANALYSIS)
+#if defined(SHADER_API_VULKAN) && UNITY_VERSION < 201800 && defined(LIL_TESSELLATION)
+    #if defined(POSITION)
+        #undef POSITION
+    #endif
+    #define POSITION gl_Position
+#endif
+
+#if defined(SHADER_API_D3D11_9X) || (UNITY_VERSION < 201800 && defined(SHADER_API_GLES))
+    #define LIL_NOPERSPECTIVE
+#else
+    #define LIL_NOPERSPECTIVE noperspective
+#endif
+
+#if defined(SHADER_API_D3D9)
+    #undef LIL_ANTIALIAS_MODE
+    #define LIL_ANTIALIAS_MODE 0
+    #undef LIL_BRANCH
+    #define LIL_BRANCH
+#endif
+
+#if defined(SHADER_API_D3D11_9X)
+    #define LIL_VFACE(facing)
+    #define LIL_VFACE_FALLBACK(facing) float facing = 1.0
+    #undef LIL_USE_LIGHTMAP
+    #undef LIL_BRANCH
+    #define LIL_BRANCH
+#else
+    #define LIL_VFACE(facing) , float facing : VFACE
+    #define LIL_VFACE_FALLBACK(facing)
+#endif
+
+#if defined(SHADER_API_D3D9) || (UNITY_VERSION < 201800 && defined(SHADER_API_GLES)) || (defined(SHADER_TARGET_SURFACE_ANALYSIS) && defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER)) || defined(SHADER_TARGET_SURFACE_ANALYSIS)
     #define LIL_SAMPLE_1D(tex,samp,uv)              tex2D(tex,float2(uv,0.5))
     #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)      tex2Dlod(tex,float4(uv,0.5,0,lod))
     #define LIL_SAMPLE_2D(tex,samp,uv)              tex2D(tex,uv)
@@ -548,12 +582,12 @@
     #define LIL_LIGHTCOLOR_COORDS(idx)
     #define LIL_LIGHTDIRECTION_COORDS(idx)
 #else
-    #define LIL_LIGHTCOLOR_COORDS(idx)      noperspective float3 lightColor : TEXCOORD##idx;
-    #define LIL_LIGHTDIRECTION_COORDS(idx)  noperspective float3 lightDirection : TEXCOORD##idx;
+    #define LIL_LIGHTCOLOR_COORDS(idx)      LIL_NOPERSPECTIVE float3 lightColor : TEXCOORD##idx;
+    #define LIL_LIGHTDIRECTION_COORDS(idx)  LIL_NOPERSPECTIVE float3 lightDirection : TEXCOORD##idx;
 #endif
 
 #if !defined(LIL_PASS_FORWARDADD) && (defined(LIL_FEATURE_SHADOW) || defined(LIL_LITE))
-    #define LIL_INDLIGHTCOLOR_COORDS(idx)   noperspective float3 indLightColor : TEXCOORD##idx;
+    #define LIL_INDLIGHTCOLOR_COORDS(idx)   LIL_NOPERSPECTIVE float3 indLightColor : TEXCOORD##idx;
 #else
     #define LIL_INDLIGHTCOLOR_COORDS(idx)
 #endif

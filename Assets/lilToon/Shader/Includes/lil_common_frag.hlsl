@@ -221,16 +221,21 @@
 #if LIL_RENDER == 1
     #if defined(LIL_ONEPASS_FUR)
         #define LIL_FUR_LAYER_ALPHA \
-            furAlpha = input.furLayer < -0.5 ? 1.0 : saturate(furAlpha - input.furLayer * input.furLayer * input.furLayer * input.furLayer + 0.25);
+            furAlpha = input.furLayer < -1.5 ? 1.0 : saturate(furAlpha - input.furLayer * furLayer * furLayer * furLayer + 0.25);
     #else
         #define LIL_FUR_LAYER_ALPHA \
-            furAlpha = saturate(furAlpha - input.furLayer * input.furLayer * input.furLayer * input.furLayer + 0.25);
+            furAlpha = saturate(furAlpha - input.furLayer * furLayer * furLayer * furLayer + 0.25);
     #endif
     #define LIL_FUR_LAYER_AO \
-        col.rgb *= saturate(input.furLayer) * _FurAO * 2.0 + 1.0 - _FurAO;
+        col.rgb *= furLayer * _FurAO * 2.0 + 1.0 - _FurAO;
 #else
-    #define LIL_FUR_LAYER_ALPHA \
-        furAlpha = saturate(furAlpha - input.furLayer * input.furLayer * input.furLayer);
+    #if defined(LIL_ONEPASS_FUR)
+        #define LIL_FUR_LAYER_ALPHA \
+            furAlpha = input.furLayer < -1.5 ? 1.0 : saturate(furAlpha - input.furLayer * furLayer * furLayer);
+    #else
+        #define LIL_FUR_LAYER_ALPHA \
+            furAlpha = saturate(furAlpha - input.furLayer * furLayer * furLayer);
+    #endif
     #define LIL_FUR_LAYER_AO \
         col.rgb *= (1.0-furAlpha) * _FurAO * 1.25 + 1.0 - _FurAO;
 #endif
@@ -243,6 +248,7 @@
 #if !defined(OVERRIDE_FUR)
     #define OVERRIDE_FUR \
         float furAlpha = 1.0; \
+        float furLayer = abs(input.furLayer); \
         if(Exists_FurMask) furAlpha *= LIL_SAMPLE_2D(_FurMask, sampler_MainTex, uvMain).r; \
         if(Exists_FurNoiseMask) furAlpha = LIL_SAMPLE_2D_ST(_FurNoiseMask, sampler_MainTex, input.uv).r; \
         LIL_FUR_LAYER_ALPHA \

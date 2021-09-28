@@ -354,6 +354,7 @@ Shader "Hidden/lilToonGem"
                         _GemVRParallaxStrength      ("VR Parallax Strength", Range(0, 1)) = 1
     }
     HLSLINCLUDE
+        #pragma exclude_renderers d3d9 d3d11_9x
         #define LIL_RENDER 2
         #define LIL_GEM
     ENDHLSL
@@ -453,7 +454,11 @@ Shader "Hidden/lilToonGem"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
 
+        // Forward Pre
         Pass
         {
             Name "FORWARD_PRE"
@@ -490,6 +495,7 @@ Shader "Hidden/lilToonGem"
             ENDHLSL
         }
 
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -617,6 +623,7 @@ Shader "Hidden/lilToonGem"
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
 
+        // Forward Pre
         Pass
         {
             Name "FORWARD_PRE"
@@ -781,7 +788,11 @@ Shader "Hidden/lilToonGem"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
 
+        // Forward Pre
         Pass
         {
             Name "FORWARD_PRE"
@@ -820,6 +831,7 @@ Shader "Hidden/lilToonGem"
             ENDHLSL
         }
 
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -1009,6 +1021,7 @@ Shader "Hidden/lilToonGem"
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
 
+        // Forward Pre
         Pass
         {
             Name "FORWARD_PRE"
@@ -1046,6 +1059,7 @@ Shader "Hidden/lilToonGem"
             ENDHLSL
         }
 
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -1239,6 +1253,7 @@ Shader "Hidden/lilToonGem"
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
 
+        // Forward Pre
         Pass
         {
             Name "FORWARD_PRE"
@@ -1279,6 +1294,7 @@ Shader "Hidden/lilToonGem"
             ENDHLSL
         }
 
+        // Forward
         Pass
         {
             Name "FORWARD"

@@ -289,7 +289,7 @@ float4 vertexDecode(float4 positionOS, float3 normalOS, float2 uv6, float2 uv7)
 // http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html?m=1
 float3 lilLinearToSRGB(float3 col)
 {
-    return saturate(1.055 * pow(col, 0.416666667) - 0.055);
+    return saturate(1.055 * pow(abs(col), 0.416666667) - 0.055);
 }
 
 float3 lilSRGBToLinear(float3 col)
@@ -1142,23 +1142,35 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
     // glitterParams2
     // x: Speed, y: Angle, z: Light Direction, w: 
 
-    float2 pos = uv * glitterParams1.xy;
+    float2 pos = abs(uv * glitterParams1.xy + glitterParams1.xy);
 
-    // Hash
-    // https://www.shadertoy.com/view/MdcfDj
-    #define M1 1597334677U
-    #define M2 3812015801U
-    #define M3 2912667907U
-    uint2 q = (uint2)pos;
-    uint4 q2 = uint4(q.x, q.y, q.x+1, q.y+1) * uint4(M1, M2, M1, M2);
-    uint3 n0 = (q2.x ^ q2.y) * uint3(M1, M2, M3);
-    uint3 n1 = (q2.z ^ q2.y) * uint3(M1, M2, M3);
-    uint3 n2 = (q2.x ^ q2.w) * uint3(M1, M2, M3);
-    uint3 n3 = (q2.z ^ q2.w) * uint3(M1, M2, M3);
-    float3 noise0 = float3(n0) * (1.0/float(0xffffffffU));
-    float3 noise1 = float3(n1) * (1.0/float(0xffffffffU));
-    float3 noise2 = float3(n2) * (1.0/float(0xffffffffU));
-    float3 noise3 = float3(n3) * (1.0/float(0xffffffffU));
+    #if defined(SHADER_API_D3D9) || defined(SHADER_API_D3D11_9X)
+        #define M1 46203.4357
+        #define M2 21091.5327
+        #define M3 35771.1966
+        float2 q = trunc(pos);
+        float4 q2 = float4(q.x, q.y, q.x+1, q.y+1);
+        float3 noise0 = frac(sin(dot(q2.xy,float2(12.9898,78.233))) * float3(M1, M2, M3));
+        float3 noise1 = frac(sin(dot(q2.zy,float2(12.9898,78.233))) * float3(M1, M2, M3));
+        float3 noise2 = frac(sin(dot(q2.xw,float2(12.9898,78.233))) * float3(M1, M2, M3));
+        float3 noise3 = frac(sin(dot(q2.zw,float2(12.9898,78.233))) * float3(M1, M2, M3));
+    #else
+        // Hash
+        // https://www.shadertoy.com/view/MdcfDj
+        #define M1 1597334677U
+        #define M2 3812015801U
+        #define M3 2912667907U
+        uint2 q = (uint2)pos;
+        uint4 q2 = uint4(q.x, q.y, q.x+1, q.y+1) * uint4(M1, M2, M1, M2);
+        uint3 n0 = (q2.x ^ q2.y) * uint3(M1, M2, M3);
+        uint3 n1 = (q2.z ^ q2.y) * uint3(M1, M2, M3);
+        uint3 n2 = (q2.x ^ q2.w) * uint3(M1, M2, M3);
+        uint3 n3 = (q2.z ^ q2.w) * uint3(M1, M2, M3);
+        float3 noise0 = float3(n0) * (1.0/float(0xffffffffU));
+        float3 noise1 = float3(n1) * (1.0/float(0xffffffffU));
+        float3 noise2 = float3(n2) * (1.0/float(0xffffffffU));
+        float3 noise3 = float3(n3) * (1.0/float(0xffffffffU));
+    #endif
 
     // Get the nearest position
     float4 fracpos = frac(pos).xyxy + float4(0.5,0.5,-0.5,-0.5);

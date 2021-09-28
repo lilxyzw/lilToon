@@ -137,7 +137,11 @@ Comparing parameters when implementing `Convert to MToon (VRM)`
 # Change log
 ## v1.2.0
 - New support for HDRP
-- `Monochrome lighting` and `Upper brightness limit` properties
+- Added `Monochrome lighting` and `Upper brightness limit` properties
+- Added `Root Width` property to fur shader
+- Added menu to the property blocks (multiple properties can now be copied and pasted at once)
+- Added one pass / two pass variations to the transparent shader
+- Changed to allow negative values for refraction strength
 - Added a warning when selecting anything other than a material while the preset save window is open
 - Changed code so that custom processing can be inserted / replaced from macro
 - Fixed an issue where Parent Constraint could not be edited in play mode

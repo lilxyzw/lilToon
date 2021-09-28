@@ -94,6 +94,7 @@ Shader "Hidden/lilToonFurCutout"
                         _FurGravity                 ("Fur Gravity", Range(0,1)) = 0.25
                         _FurAO                      ("Fur AO", Range(0,1)) = 0
         [IntRange]      _FurLayerNum                ("Fur Layer Num", Range(1, 6)) = 4
+                        _FurRootOffset              ("Fur Root Offset", Range(-1,0)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Fur Advanced
@@ -124,6 +125,7 @@ Shader "Hidden/lilToonFurCutout"
         [lilColorMask]                                  _FurColorMask           ("Color Mask", Int) = 15
     }
     HLSLINCLUDE
+        #pragma exclude_renderers d3d9 d3d11_9x
         #define LIL_RENDER 1
         #define LIL_FUR
     ENDHLSL
@@ -355,8 +357,11 @@ Shader "Hidden/lilToonFurCutout"
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest" "ShaderModel" = "4.5"}
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -533,7 +538,7 @@ Shader "Hidden/lilToonFurCutout"
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -712,8 +717,11 @@ Shader "Hidden/lilToonFurCutout"
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest" "ShaderModel" = "4.5"}
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -952,7 +960,7 @@ Shader "Hidden/lilToonFurCutout"
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -1196,7 +1204,7 @@ Shader "Hidden/lilToonFurCutout"
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest"}
 
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"

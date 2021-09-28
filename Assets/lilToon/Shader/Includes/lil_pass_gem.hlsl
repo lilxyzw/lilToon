@@ -101,13 +101,14 @@
     #include "Includes/lil_common_frag.hlsl"
 
     #if defined(LIL_CUSTOM_V2F)
-    float4 frag(LIL_CUSTOM_V2F inputCustom, float facing : VFACE) : SV_Target
+    float4 frag(LIL_CUSTOM_V2F inputCustom LIL_VFACE(facing)) : SV_Target
     {
         v2f input = inputCustom.base;
     #else
-    float4 frag(v2f input, float facing : VFACE) : SV_Target
+    float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     {
     #endif
+        LIL_VFACE_FALLBACK(facing);
         LIL_SETUP_INSTANCE_ID(input);
         LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
         LIL_GET_HDRPDATA(input);

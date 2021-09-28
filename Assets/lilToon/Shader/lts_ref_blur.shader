@@ -353,6 +353,7 @@ Shader "Hidden/lilToonRefractionBlur"
                         _RefractionColor            ("Color", Color) = (1,1,1,1)
     }
     HLSLINCLUDE
+        #pragma exclude_renderers d3d9 d3d11_9x
         #define LIL_RENDER 2
         #define LIL_REFRACTION
         #define LIL_REFRACTION_BLUR2
@@ -509,6 +510,10 @@ Shader "Hidden/lilToonRefractionBlur"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
+
         // Forward
         Pass
         {
@@ -765,6 +770,10 @@ Shader "Hidden/lilToonRefractionBlur"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
+
         // Forward
         Pass
         {
@@ -1147,7 +1156,7 @@ Shader "Hidden/lilToonRefractionBlur"
     SubShader
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"

@@ -39,6 +39,10 @@ Shader "_lil/lilToonFakeShadow"
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
     }
+    HLSLINCLUDE
+        #pragma exclude_renderers d3d11_9x
+    ENDHLSL
+
 //----------------------------------------------------------------------------------------------------------------------
 // BRP Start
 //
@@ -95,7 +99,11 @@ Shader "_lil/lilToonFakeShadow"
     SubShader
     {
         Tags{"ShaderModel" = "4.5" "Queue" = "AlphaTest+3"}
-        // ForwardLit
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
+
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -143,7 +151,7 @@ Shader "_lil/lilToonFakeShadow"
     SubShader
     {
         Tags{"Queue" = "AlphaTest+3"}
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -195,7 +203,11 @@ Shader "_lil/lilToonFakeShadow"
     SubShader
     {
         Tags{"ShaderModel" = "4.5" "Queue" = "AlphaTest+3"}
-        // ForwardLit
+        HLSLINCLUDE
+            #pragma target 4.5
+        ENDHLSL
+
+        // Forward
         Pass
         {
             Name "FORWARD"
@@ -243,7 +255,7 @@ Shader "_lil/lilToonFakeShadow"
     SubShader
     {
         Tags{"Queue" = "AlphaTest+3"}
-        // ForwardLit
+        // Forward
         Pass
         {
             Name "FORWARD"

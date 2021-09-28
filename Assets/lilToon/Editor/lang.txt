@@ -82,7 +82,7 @@ sAsUnlit	As Unlit	Unlit化	Unlit 화	作为Unlit	作為Unlit
 sShaderType	Shader Tyoe	シェーダーの種類	셰이더 유형	Shader Tyoe	Shader Tyoe
 sShaderTypeNormal	Normal	Normal (通常版)	Normal	Normal	Normal
 sShaderTypeLite	Lite	Lite (軽量版)	Lite	Lite	Lite
-sRenderingMode	Rendering Mode	透過モード	투명 모드	Rendering Mode	Rendering Mode
+sRenderingMode	Rendering Mode	描画モード	렌더링 모드	Rendering Mode	Rendering Mode
 sRenderingModeOpaque	Opaque	不透明	불투명	不透明	不透明
 sRenderingModeCutout	Cutout	カットアウト	컷아웃	镂空	鏤空
 sRenderingModeTransparent	Transparent	半透明	투명한	透明	透明
@@ -91,6 +91,10 @@ sRenderingModeRefractionBlur	[high-load] Refraction Blur	[高負荷] 屈折ぼ�
 sRenderingModeFur	[high-load] Fur	[高負荷] ファー	[과부하] 퍼	[高负荷] 毛皮	[高負荷] 毛皮
 sRenderingModeFurCutout	[high-load] Fur (Cutout)	[高負荷] ファー (カットアウト)	[과부하] 퍼 (컷아웃)	[高负荷] 毛皮(镂空)	[高負荷] 毛皮(鏤空)
 sRenderingModeGem	[high-load] Gem	[高負荷] 宝石	[과부하] 보석	[高负荷] 宝石	[高負荷] 寶石
+sTransparentMode	Transparent Mode	透過モード	투명 모드	Transparent Mode	Transparent Mode
+sTransparentModeNormal	Normal	通常	Normal	Normal	Normal
+sTransparentModeOnePass	One Pass	1パス	One Pass	One Pass	One Pass
+sTransparentModeTwoPass	Two Pass	2パス	Two Pass	Two Pass	Two Pass
 sCutoff	Cutoff	Cutoff (完全透明にする範囲)	Cutoff	Cutoff	Cutoff
 sCullMode	Cull Mode	Cull Mode (描画面)	Cull Mode	Cull Mode	Cull Mode
 sCullModeOff	Off	Off (両面を描画)	Off	Off	Off
@@ -106,6 +110,7 @@ sMonochromeLighting	Monochrome Lighting	ライトのモノクロ化	Monochrome L
 sDirectionalLightStrength	[HDRP] Directional Light Strength	[HDRP] Directional Lightの強さ	[HDRP] Directional Light Strength	[HDRP] Directional Light Strength	[HDRP] Directional Light Strength
 sBeforeExposureLimit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit
 sHelpRenderingTransparent	When two transparent materials overlap, one of them may become invisible.	透過マテリアル同士が重なったときに片方が見えなくなる場合があります	투명 Material끼리 겹친 때 한쪽이 보이지 않을 수 있습니다	当两个透明Material重叠时，其中一个可能会变得不可见。	當兩個透明Material重疊時，其中一個可能會變得不可見。
+sHelpOnePassVertexLight	When using One Pass / Two Pass Transparent, it is recommended to set Vertex Light Strength to 1.0.	1パス・2パス使用時は頂点ライトの強度を1.0にしておくことをオススメします。	One Pass / Two Pass Transparent 사용 시에는 Vertex Light Strength를 1.0으로 설정할 것을 권장합니다.	使用One Pass/Two Pass Transparent时推荐将Vertex Light Strength设定为1.0。	使用One Pass/Two Pass Transparent時推薦將Vertex Light Strength設定為1.0。
 sHelpCullMode	If the material does not look right, set the CullMode to Off or Back.	表示がおかしい場合はCullModeをOffもしくはBackにしてください	표시가 이상한 경우는 CullMode을 Off 또는 Back합니다	如果材质看起来不对，请将CullMode设置为Off或Back。	如果材質看起來不對，請將CullMode設置為Off或Back。
 sHelpZWrite	If the material does not look right, turn on ZWrite.	表示がおかしい場合はZWriteをオンにしてください	표시가 이상한 경우는 ZWrite을 선택하십시오	如果材质看起来不对，请打开ZWrite。	如果材質看起來不對，請打開ZWrite。
 sMaskTiling	Mask UV Tiling	Mask UV Tiling	Mask UV Tiling	蒙版UV Tiling	蒙版UV Tiling
@@ -159,6 +164,7 @@ sGravity	Gravity	重力	중력	重力	重力
 sAO	AO	陰影	AO	AO	AO
 sVertexColor2Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> Vector
 sLayerNum	Layer Counts	レイヤー数	레이어 수	层数	層數
+sRootWidth	Root Width	根本の太さ	근본 굵기	根厚度	根厚度
 sTessellation	Tessellation	テッセレーション	텟세레이션	Tessellation	Tessellation
 sTessellationTips	You can set the tessellation.	テッセレーションのかかり方を設定できます	텟세레이션을 설정할 수 있습니다.	你可以设置Tessellation。	你可以設置Tessellation。
 sTessellationEdge	Threshold length	閾値	길이의 한계	阈值长度	閾值長度

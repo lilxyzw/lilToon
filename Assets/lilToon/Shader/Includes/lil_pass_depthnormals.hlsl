@@ -42,8 +42,8 @@ float4 frag(LIL_CUSTOM_V2F inputCustom) : SV_Target
 float4 frag(v2f input) : SV_Target
 {
 #endif
-    UNITY_SETUP_INSTANCE_ID(input);
-    UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+    LIL_SETUP_INSTANCE_ID(input);
+    LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
     #include "Includes/lil_frag_alpha.hlsl"
 

@@ -629,6 +629,7 @@ float   _OutlineEnableLighting;
     float   _FurVectorScale;
     float   _FurGravity;
     float   _FurAO;
+    float   _FurRootOffset;
 #endif
 #if defined(LIL_REFRACTION)
     float   _RefractionStrength;

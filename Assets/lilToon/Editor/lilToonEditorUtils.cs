@@ -280,19 +280,19 @@ namespace lilToon
 
             if(materialLowerName.Contains("cutout") || mainTexLowerName.Contains("cutout"))
             {
-                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Cutout, isOutl, false, false, false);
+                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Cutout, lilToonInspector.TransparentMode.Normal, isOutl, false, false, false);
             }
             else if(materialLowerName.Contains("alpha") || mainTexLowerName.Contains("alpha"))
             {
-                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Transparent, isOutl, false, false, false);
+                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Transparent, lilToonInspector.TransparentMode.Normal, isOutl, false, false, false);
             }
             else if(materialLowerName.Contains("fade") || mainTexLowerName.Contains("fade"))
             {
-                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Transparent, isOutl, false, false, false);
+                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Transparent, lilToonInspector.TransparentMode.Normal, isOutl, false, false, false);
             }
             else if(materialLowerName.Contains("transparent") || mainTexLowerName.Contains("transparent"))
             {
-                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Transparent, isOutl, false, false, false);
+                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Transparent, lilToonInspector.TransparentMode.Normal, isOutl, false, false, false);
             }
 
             EditorUtility.SetDirty(material);
