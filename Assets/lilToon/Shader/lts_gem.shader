@@ -204,7 +204,7 @@ Shader "Hidden/lilToonGem"
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision
         [lilToggleLeft] _UseEmission                ("Use Emission", Int) = 0
-        [HDR][lilHDR]   _EmissionColor              ("Color", Color) = (1,1,1)
+        [HDR][lilHDR]   _EmissionColor              ("Color", Color) = (1,1,1,1)
                         _EmissionMap                ("Texture", 2D) = "white" {}
         [lilUVAnim]     _EmissionMap_ScrollRotate   ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
                         _EmissionBlend              ("Blend", Range(0,1)) = 1
@@ -239,7 +239,7 @@ Shader "Hidden/lilToonGem"
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision2nd
         [lilToggleLeft] _UseEmission2nd             ("Use Emission 2nd", Int) = 0
-        [HDR][lilHDR]   _Emission2ndColor           ("Color", Color) = (1,1,1)
+        [HDR][lilHDR]   _Emission2ndColor           ("Color", Color) = (1,1,1,1)
                         _Emission2ndMap             ("Texture", 2D) = "white" {}
         [lilUVAnim]     _Emission2ndMap_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
                         _Emission2ndBlend           ("Blend", Range(0,1)) = 1
@@ -338,6 +338,7 @@ Shader "Hidden/lilToonGem"
                                                         _OffsetFactor       ("Offset Factor", Float) = 0
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
+        [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Refraction
@@ -354,7 +355,6 @@ Shader "Hidden/lilToonGem"
                         _GemVRParallaxStrength      ("VR Parallax Strength", Range(0, 1)) = 1
     }
     HLSLINCLUDE
-        #pragma exclude_renderers d3d9 d3d11_9x
         #define LIL_RENDER 2
         #define LIL_GEM
     ENDHLSL
@@ -365,6 +365,10 @@ Shader "Hidden/lilToonGem"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
+        HLSLINCLUDE
+            #pragma target 3.5
+        ENDHLSL
+
         GrabPass {"_lilBackgroundTexture"}
         Pass
         {
@@ -382,6 +386,7 @@ Shader "Hidden/lilToonGem"
             Cull [_Cull]
             ZWrite [_ZWrite]
             Blend One Zero, Zero One
+            AlphaToMask [_AlphaToMask]
             HLSLPROGRAM
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -395,7 +400,7 @@ Shader "Hidden/lilToonGem"
             //------------------------------------------------------------------------------------------------------------------------------
             // Shader
             #define LIL_GEM_PRE
-            #include "Includes/lil_pass_gem.hlsl"
+            #include "Includes/lil_pass_forward_gem.hlsl"
             ENDHLSL
         }
 
@@ -421,6 +426,7 @@ Shader "Hidden/lilToonGem"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -436,7 +442,7 @@ Shader "Hidden/lilToonGem"
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Shader
-            #include "Includes/lil_pass_gem.hlsl"
+            #include "Includes/lil_pass_forward_gem.hlsl"
             ENDHLSL
         }
 
@@ -476,6 +482,7 @@ Shader "Hidden/lilToonGem"
             Blend One Zero
             ZWrite [_ZWrite]
             ZTest [_ZTest]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -490,7 +497,7 @@ Shader "Hidden/lilToonGem"
             //------------------------------------------------------------------------------------------------------------------------------
             // Shader
             #define LIL_GEM_PRE
-            #include "Includes/lil_pass_gem.hlsl"
+            #include "Includes/lil_pass_forward_gem.hlsl"
 
             ENDHLSL
         }
@@ -518,6 +525,7 @@ Shader "Hidden/lilToonGem"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -541,7 +549,7 @@ Shader "Hidden/lilToonGem"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_gem.hlsl"
+            #include "Includes/lil_pass_forward_gem.hlsl"
 
             ENDHLSL
         }
@@ -622,6 +630,9 @@ Shader "Hidden/lilToonGem"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
+        HLSLINCLUDE
+            #pragma target 3.5
+        ENDHLSL
 
         // Forward Pre
         Pass
@@ -641,6 +652,7 @@ Shader "Hidden/lilToonGem"
             Blend One Zero
             ZWrite [_ZWrite]
             ZTest [_ZTest]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -654,7 +666,7 @@ Shader "Hidden/lilToonGem"
             //------------------------------------------------------------------------------------------------------------------------------
             // Shader
             #define LIL_GEM_PRE
-            #include "Includes/lil_pass_gem.hlsl"
+            #include "Includes/lil_pass_forward_gem.hlsl"
 
             ENDHLSL
         }
@@ -682,6 +694,7 @@ Shader "Hidden/lilToonGem"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -704,7 +717,7 @@ Shader "Hidden/lilToonGem"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_gem.hlsl"
+            #include "Includes/lil_pass_forward_gem.hlsl"
 
             ENDHLSL
         }
@@ -812,6 +825,7 @@ Shader "Hidden/lilToonGem"
             Blend One Zero
             ZWrite [_ZWrite]
             ZTest [_ZTest]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -826,7 +840,7 @@ Shader "Hidden/lilToonGem"
             //------------------------------------------------------------------------------------------------------------------------------
             // Shader
             #define LIL_GEM_PRE
-            #include "Includes/lil_pass_gem.hlsl"
+            #include "Includes/lil_pass_forward_gem.hlsl"
 
             ENDHLSL
         }
@@ -854,6 +868,7 @@ Shader "Hidden/lilToonGem"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -877,7 +892,7 @@ Shader "Hidden/lilToonGem"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_gem.hlsl"
+            #include "Includes/lil_pass_forward_gem.hlsl"
 
             ENDHLSL
         }
@@ -1020,6 +1035,9 @@ Shader "Hidden/lilToonGem"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
+        HLSLINCLUDE
+            #pragma target 3.5
+        ENDHLSL
 
         // Forward Pre
         Pass
@@ -1041,6 +1059,7 @@ Shader "Hidden/lilToonGem"
             Blend One Zero
             ZWrite [_ZWrite]
             ZTest [_ZTest]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1054,7 +1073,7 @@ Shader "Hidden/lilToonGem"
             //------------------------------------------------------------------------------------------------------------------------------
             // Shader
             #define LIL_GEM_PRE
-            #include "Includes/lil_pass_gem.hlsl"
+            #include "Includes/lil_pass_forward_gem.hlsl"
 
             ENDHLSL
         }
@@ -1082,6 +1101,7 @@ Shader "Hidden/lilToonGem"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1104,7 +1124,7 @@ Shader "Hidden/lilToonGem"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_gem.hlsl"
+            #include "Includes/lil_pass_forward_gem.hlsl"
 
             ENDHLSL
         }
@@ -1273,6 +1293,7 @@ Shader "Hidden/lilToonGem"
             Blend One Zero
             ZWrite [_ZWrite]
             ZTest [_ZTest]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1289,7 +1310,7 @@ Shader "Hidden/lilToonGem"
             //------------------------------------------------------------------------------------------------------------------------------
             // Shader
             #define LIL_GEM_PRE
-            #include "Includes/lil_pass_gem.hlsl"
+            #include "Includes/lil_pass_forward_gem.hlsl"
 
             ENDHLSL
         }
@@ -1317,6 +1338,7 @@ Shader "Hidden/lilToonGem"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1340,7 +1362,7 @@ Shader "Hidden/lilToonGem"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_gem.hlsl"
+            #include "Includes/lil_pass_forward_gem.hlsl"
 
             ENDHLSL
         }
@@ -1395,6 +1417,7 @@ Shader "Hidden/lilToonGem"
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1434,6 +1457,7 @@ Shader "Hidden/lilToonGem"
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 

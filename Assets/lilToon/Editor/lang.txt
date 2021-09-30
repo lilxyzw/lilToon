@@ -131,7 +131,7 @@ sGradationMap	Gradation Map	グラデーションマップ	그라디언트 맵	�
 sColorAdjustMask	Color Adjust Mask	色調補正マスク	색조 보정 마스크	色调校正蒙版	色調校正蒙版
 sNotAlphaIsTransparency	This texture is not marked as AlphaIsTransparency	このテクスチャはAlphaIsTransparencyとして設定されていません	이 텍스처는 Alpha Is Transparency로 설정되어 있지 않습니다	此纹理未被设置为AlphaIsTransparency	此紋理未被設置為AlphaIsTransparency
 sAlphaMask	Alpha Mask	アルファマスク	알파 마스크	Alpha蒙版	Alpha蒙版
-sAlphaMaskWarnOpaque	If you want to use Alpha Mask, you need to change the "Rendering Mode" to Cutout or Transparent.	アルファマスクを使う場合は"透過モード"をカットアウトか半透明に変更する必要があります。	알파 마스크를 사용하려면 "Rendering Mode"를 단편 또는 반투명로 변경해야합니다.	如果要使用Alpha蒙版，则需要将“Rendering Mode”更改为镂空或透明。	如果要使用Alpha蒙版，則需要將“Rendering Mode”更改為鏤空或透明。
+sAlphaMaskWarnOpaque	If you want to use Alpha Mask, you need to change the "Rendering Mode" to Cutout or Transparent.	アルファマスクを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。	알파 마스크를 사용하려면 "렌더링 모드"를 단편 또는 반투명로 변경해야합니다.	如果要使用Alpha蒙版，则需要将“Rendering Mode”更改为镂空或透明。	如果要使用Alpha蒙版，則需要將“Rendering Mode”更改為鏤空或透明。
 sAlphaMaskModeNone	None	None	None	None	None
 sAlphaMaskModeReplace	Replace	置き換え	Replace	Replace	Replace
 sAlphaMaskModeMul	Multiply	乗算	Multiply	Multiply	Multiply
@@ -214,7 +214,7 @@ sAudioLinkLocalMapBPM	BPM	BPM	BPM	BPM	BPM
 sAudioLinkLocalMapNotes	Notes	拍数	Notes	Notes	Notes
 sDissolve	Dissolve	Dissolve	Dissolve	Dissolve	Dissolve
 sDissolveTips	Settings for dissolving a material	マテリアルが溶けるような表現ができます	머티리얼이 녹는듯한 표현을 할 수 있습니다	用于溶解材料的设置	用於溶解材料的設置
-sDissolveWarnOpaque	If you want to use Dissolve, you need to change the "Rendering Mode" to Cutout or Transparent.	Dissolveを使う場合は"透過モード"をカットアウトか半透明に変更する必要があります。	Dissolve를 사용하는 경우 "투과모드"를 컷아웃이나 투명한으로 변경해야 합니다	如果要使用Dissolve，则需要将“Rendering Mode”更改为镂空或透明。	如果要使用Dissolve，則需要將“Rendering Mode”更改為鏤空或透明。
+sDissolveWarnOpaque	If you want to use Dissolve, you need to change the "Rendering Mode" to Cutout or Transparent.	Dissolveを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。	Dissolve를 사용하는 경우 "렌더링 모드"를 컷아웃이나 투명한으로 변경해야 합니다	如果要使用Dissolve，则需要将“Rendering Mode”更改为镂空或透明。	如果要使用Dissolve，則需要將“Rendering Mode”更改為鏤空或透明。
 sDissolveMode	Dissolve Mode	Dissolve Mode	Dissolve Mode	Dissolve Mode	Dissolve Mode
 sDissolveModeNone	None	None	None	None	None
 sDissolveModeAlpha	Alpha	透明度	Alpha	Alpha	Alpha
@@ -276,6 +276,7 @@ sZTest	ZTest	ZTest	ZTest	ZTest	ZTest
 sOffsetFactor	Offset Factor	Offset Factor	Offset Factor	Offset Factor	Offset Factor
 sOffsetUnits	Offset Units	Offset Units	Offset Units	Offset Units	Offset Units
 sColorMask	Color Mask	Color Mask	Color Mask	Color Mask	Color Mask
+sAlphaToMask	AlphaToMask	AlphaToMask	AlphaToMask	AlphaToMask	AlphaToMask
 sForward	Forward	Forward	Forward	Forward	Forward
 sForwardAdd	ForwardAdd	ForwardAdd	ForwardAdd	ForwardAdd	ForwardAdd
 sSrcBlendRGB	SrcBlend RGB	SrcBlend RGB	SrcBlend RGB	SrcBlend RGB	SrcBlend RGB
@@ -298,6 +299,7 @@ sBakeAlphamask	Bake Alphamask	アルファマスクを焼き込み	알파 마스
 sSelectAlphamask	Select Alphamask	アルファマスクを選択してください	알파 마스크를 선택하십시오	选择Alphamask	選擇Alphamask
 sRemoveUnused	Remove unused textures	未使用のテクスチャを外す	미사용 텍스처 해제	移除未使用的纹理	移除未使用的紋理
 sConvertLite	Convert to lilToonLite	lilToonLiteに変換	lilToonLite로 변환	转换为lilToonLite	轉換為lilToonLite
+sConvertMulti	Convert to lilToonMulti	lilToonMultiに変換	lilToonMulti로 변환	转换为lilToonMulti	轉換為lilToonMulti
 sConvertMToon	Convert to MToon (VRM)	MToon(VRM)に変換	MToon (VRM)로 변환	转换为MToon (VRM)	轉換為MToon (VRM)
 sYes	Yes	はい	Yes	Yes	Yes
 sNo	No	いいえ	No	No	No

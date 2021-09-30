@@ -55,7 +55,7 @@ Shader "_lil/[Optional] lilToonLiteOverlay"
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision
         [lilToggleLeft] _UseEmission                ("Use Emission", Int) = 0
-        [HDR][lilHDR]   _EmissionColor              ("Color", Color) = (1,1,1)
+        [HDR][lilHDR]   _EmissionColor              ("Color", Color) = (1,1,1,1)
                         _EmissionMap                ("Texture", 2D) = "white" {}
         [lilUVAnim]     _EmissionMap_ScrollRotate   ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
         [lilBlink]      _EmissionBlink              ("Blink Strength|Blink Type|Blink Speed|Blink Offset", Vector) = (0,0,3.141593,0)
@@ -87,6 +87,7 @@ Shader "_lil/[Optional] lilToonLiteOverlay"
                                                         _OffsetFactor       ("Offset Factor", Float) = 0
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
+        [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -94,7 +95,7 @@ Shader "_lil/[Optional] lilToonLiteOverlay"
 //
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+2"}
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+51"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
         UsePass "Hidden/ltspass_lite_transparent/FORWARD_ADD"
     }
@@ -106,7 +107,7 @@ Shader "_lil/[Optional] lilToonLiteOverlay"
 /*
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+2"}
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+51"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
     }
 */
@@ -117,7 +118,7 @@ Shader "_lil/[Optional] lilToonLiteOverlay"
 /*
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+2"}
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+51"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
     }
 */
@@ -128,7 +129,7 @@ Shader "_lil/[Optional] lilToonLiteOverlay"
 /*
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+2"}
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+51"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
     }
 */

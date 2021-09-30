@@ -4,7 +4,7 @@
 #include "Includes/lil_pipeline.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Struct
+// Structure
 #define LIL_V2F_POSITION_CS
 #define LIL_V2F_NORMAL_WS
 #if defined(LIL_V2F_FORCE_UV0) || (LIL_RENDER > 0)
@@ -45,7 +45,7 @@ float4 frag(v2f input) : SV_Target
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
-    #include "Includes/lil_frag_alpha.hlsl"
+    #include "Includes/lil_common_frag_alpha.hlsl"
 
     return float4(PackNormalOctRectEncode(normalize(mul((float3x3)LIL_MATRIX_V, input.normalWS))), 0.0, 0.0);
 }

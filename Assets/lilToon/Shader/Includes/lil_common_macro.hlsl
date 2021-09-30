@@ -20,23 +20,18 @@
 #define LIL_LIGHT_DIRECTION_MODE 1
 
 // Vertex light mode (Default : 3)
-// 0 : Off (VRChat Mobile Toon Lit / MnMrShader / Reflex Shader / MToon / UTS2)
+// 0 : Off
 // 1 : Simple
 // 2 : Accurate
 // 3 : Approximate value of _LightTextureB0
 // 4 : Lookup _LightTextureB0
 #define LIL_VERTEXLIGHT_MODE 3
 
-// ForwardAdd
-// 0 : Off (VRChat Mobile Toon Lit / UnlitWF)
-// 1 : On (All others)
-// In UnlitWF, ForwardAdd passes are handled by the vertex shader instead.
-
 // Refraction blur
 #define LIL_REFRACTION_SAMPNUM 8
 #define LIL_REFRACTION_GAUSDIST(i) exp(-(float)i*(float)i/(LIL_REFRACTION_SAMPNUM*LIL_REFRACTION_SAMPNUM/2.0))
 
-// Vertex light mode (Default : 0)
+// Specular mode (Default : 0)
 // 0 : BRP Specular
 // 1 : URP Specular
 // 2 : Fast Specular
@@ -458,7 +453,7 @@
 #endif
 
 // Do not apply shadow
-#if (defined(LIL_PASS_LITE_INCLUDED) || defined(LIL_OUTLINE) || defined(LIL_FUR) || defined(LIL_PASS_FUR_INCLUDED)) && !defined(LIL_PASS_FORWARDADD)
+#if (defined(LIL_PASS_FORWARD_LITE_INCLUDED) || defined(LIL_OUTLINE) || defined(LIL_FUR) || defined(LIL_PASS_FORWARD_FUR_INCLUDED)) && !defined(LIL_PASS_FORWARDADD)
     #undef LIL_TRANSFER_SHADOW
     #undef LIL_LIGHT_ATTENUATION
     #define LIL_TRANSFER_SHADOW(vi,uv,o)

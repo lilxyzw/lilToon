@@ -4,7 +4,7 @@
 #include "Includes/lil_pipeline.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Struct
+// Structure
 #if defined(LIL_V2F_FORCE_UV0) || (LIL_RENDER > 0)
     #define LIL_V2F_TEXCOORD0
 #endif
@@ -42,7 +42,7 @@ float4 frag(v2f input) : SV_Target
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
-    #include "Includes/lil_frag_alpha.hlsl"
+    #include "Includes/lil_common_frag_alpha.hlsl"
 
     LIL_SHADOW_CASTER_FRAGMENT(input);
 }

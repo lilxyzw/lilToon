@@ -1,4 +1,4 @@
-Shader "_lil/lilToonFakeShadow"
+Shader "_lil/[Optional] lilToonFakeShadow"
 {
     Properties
     {
@@ -38,9 +38,9 @@ Shader "_lil/lilToonFakeShadow"
                                                         _OffsetFactor       ("Offset Factor", Float) = 0
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
+        [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
     }
     HLSLINCLUDE
-        #pragma exclude_renderers d3d11_9x
     ENDHLSL
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -48,7 +48,11 @@ Shader "_lil/lilToonFakeShadow"
 //
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+3"}
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+55"}
+        HLSLINCLUDE
+            #pragma target 3.5
+        ENDHLSL
+
         Pass
         {
             Name "FORWARD"
@@ -71,6 +75,7 @@ Shader "_lil/lilToonFakeShadow"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -84,7 +89,7 @@ Shader "_lil/lilToonFakeShadow"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_fakeshadow.hlsl"
+            #include "Includes/lil_pass_forward_fakeshadow.hlsl"
             ENDHLSL
         }
     }
@@ -98,7 +103,7 @@ Shader "_lil/lilToonFakeShadow"
     // Lightweight Render Pipeline SM4.5
     SubShader
     {
-        Tags{"ShaderModel" = "4.5" "Queue" = "AlphaTest+3"}
+        Tags{"ShaderModel" = "4.5" "Queue" = "AlphaTest+55"}
         HLSLINCLUDE
             #pragma target 4.5
         ENDHLSL
@@ -126,6 +131,7 @@ Shader "_lil/lilToonFakeShadow"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -140,7 +146,7 @@ Shader "_lil/lilToonFakeShadow"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_fakeshadow.hlsl"
+            #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
             ENDHLSL
         }
@@ -150,7 +156,11 @@ Shader "_lil/lilToonFakeShadow"
     // Lightweight Render Pipeline
     SubShader
     {
-        Tags{"Queue" = "AlphaTest+3"}
+        Tags{"Queue" = "AlphaTest+55"}
+        HLSLINCLUDE
+            #pragma target 3.5
+        ENDHLSL
+
         // Forward
         Pass
         {
@@ -174,6 +184,7 @@ Shader "_lil/lilToonFakeShadow"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -187,7 +198,7 @@ Shader "_lil/lilToonFakeShadow"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_fakeshadow.hlsl"
+            #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
             ENDHLSL
         }
@@ -202,7 +213,7 @@ Shader "_lil/lilToonFakeShadow"
     // Universal Render Pipeline SM4.5
     SubShader
     {
-        Tags{"ShaderModel" = "4.5" "Queue" = "AlphaTest+3"}
+        Tags{"ShaderModel" = "4.5" "Queue" = "AlphaTest+55"}
         HLSLINCLUDE
             #pragma target 4.5
         ENDHLSL
@@ -230,6 +241,7 @@ Shader "_lil/lilToonFakeShadow"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -244,7 +256,7 @@ Shader "_lil/lilToonFakeShadow"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_fakeshadow.hlsl"
+            #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
             ENDHLSL
         }
@@ -254,7 +266,11 @@ Shader "_lil/lilToonFakeShadow"
     // Universal Render Pipeline
     SubShader
     {
-        Tags{"Queue" = "AlphaTest+3"}
+        Tags{"Queue" = "AlphaTest+55"}
+        HLSLINCLUDE
+            #pragma target 3.5
+        ENDHLSL
+
         // Forward
         Pass
         {
@@ -278,6 +294,7 @@ Shader "_lil/lilToonFakeShadow"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -291,7 +308,7 @@ Shader "_lil/lilToonFakeShadow"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_fakeshadow.hlsl"
+            #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
             ENDHLSL
         }
@@ -309,7 +326,7 @@ Shader "_lil/lilToonFakeShadow"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+3"}
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+55"}
         Pass
         {
             Name "FORWARD"
@@ -332,6 +349,7 @@ Shader "_lil/lilToonFakeShadow"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -347,7 +365,7 @@ Shader "_lil/lilToonFakeShadow"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_fakeshadow.hlsl"
+            #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
             ENDHLSL
         }

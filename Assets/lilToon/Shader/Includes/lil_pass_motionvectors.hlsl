@@ -4,7 +4,27 @@
 #include "Includes/lil_pipeline.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Struct
+// Motion Vector
+float2 lilCalculateMotionVector(float4 positionCS, float4 previousPositionCS)
+{
+    positionCS.xy = positionCS.xy / positionCS.w;
+    previousPositionCS.xy = previousPositionCS.xy / previousPositionCS.w;
+    float2 motionVec = (positionCS.xy - previousPositionCS.xy);
+
+    float2 microThreshold = 0.01f * _ScreenSize.zw;
+    motionVec.x = abs(motionVec.x) < microThreshold.x ? 0 : motionVec.x;
+    motionVec.y = abs(motionVec.y) < microThreshold.y ? 0 : motionVec.y;
+
+    motionVec = clamp(motionVec, -1.0f + microThreshold, 1.0f - microThreshold);
+
+    #if UNITY_UV_STARTS_AT_TOP
+        motionVec.y = -motionVec.y;
+    #endif
+    return motionVec;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Structure
 #define LIL_V2F_POSITION_CS
 #define LIL_V2F_PREV_POSITION_CS
 #if defined(LIL_V2F_FORCE_UV0) || (LIL_RENDER > 0)
@@ -71,26 +91,6 @@ struct v2f
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Motion Vector
-float2 lilCalculateMotionVector(float4 positionCS, float4 previousPositionCS)
-{
-    positionCS.xy = positionCS.xy / positionCS.w;
-    previousPositionCS.xy = previousPositionCS.xy / previousPositionCS.w;
-    float2 motionVec = (positionCS.xy - previousPositionCS.xy);
-
-    float2 microThreshold = 0.01f * _ScreenSize.zw;
-    motionVec.x = abs(motionVec.x) < microThreshold.x ? 0 : motionVec.x;
-    motionVec.y = abs(motionVec.y) < microThreshold.y ? 0 : motionVec.y;
-
-    motionVec = clamp(motionVec, -1.0f + microThreshold, 1.0f - microThreshold);
-
-    #if UNITY_UV_STARTS_AT_TOP
-        motionVec.y = -motionVec.y;
-    #endif
-    return motionVec;
-}
-
-//------------------------------------------------------------------------------------------------------------------------------
 // Shader
 #if defined(LIL_FUR)
     #include "Includes/lil_common_vert_fur.hlsl"
@@ -130,7 +130,7 @@ void frag(v2f input
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
-    #include "Includes/lil_frag_alpha.hlsl"
+    #include "Includes/lil_common_frag_alpha.hlsl"
 
     float2 motionVector = lilCalculateMotionVector(input.positionCS, input.previousPositionCS);
     EncodeMotionVector(motionVector * 0.5, outMotionVector);

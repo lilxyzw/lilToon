@@ -155,7 +155,7 @@ LIL_V2F_TYPE LIL_VERTEX_SHADER_NAME (appdata input)
         LIL_V2F_OUT_BASE.tangentWS      = float4(vertexNormalInput.tangentWS, input.tangentOS.w);
     #endif
     #if defined(LIL_V2F_BITANGENT_WS)
-        LIL_V2F_OUT_BASE.bitangentWS    = vertexNormalInput.tangentWS;
+        LIL_V2F_OUT_BASE.bitangentWS    = vertexNormalInput.bitangentWS;
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -222,7 +222,7 @@ LIL_V2F_TYPE LIL_VERTEX_SHADER_NAME (appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // One Pass Outline
-    #if defined(LIL_ONEPASS_OUTLINE)
+    #if defined(LIL_ONEPASS_OUTLINE) && (!defined(LIL_MULTI) || defined(LIL_MULTI) && defined(LIL_MULTI_OUTLINE))
         #include "Includes/lil_vert_outline.hlsl"
         vertexInput = lilGetVertexPositionInputs(input.positionOS);
         #if defined(LIL_CUSTOM_VERTEX_WS_OL)
@@ -307,33 +307,35 @@ LIL_V2F_TYPE LIL_VERTEX_SHADER_NAME (appdata input)
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Outline
-        for(uint j = 0; j < 3; j++)
-        {
-            output[j].positionCS = input[j].positionCSOL;
-            #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
-                output[j].previousPositionCS = input[j].previousPositionCSOL;
-            #endif
-        }
+        #if !defined(LIL_MULTI) || defined(LIL_MULTI) && defined(LIL_MULTI_OUTLINE)
+            for(uint j = 0; j < 3; j++)
+            {
+                output[j].positionCS = input[j].positionCSOL;
+                #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
+                    output[j].previousPositionCS = input[j].previousPositionCSOL;
+                #endif
+            }
 
-        // Front
-        UNITY_BRANCH
-        if(_OutlineCull != 1)
-        {
-            outStream.Append(output[0]);
-            outStream.Append(output[1]);
-            outStream.Append(output[2]);
-            outStream.RestartStrip();
-        }
+            // Front
+            UNITY_BRANCH
+            if(_OutlineCull != 1)
+            {
+                outStream.Append(output[0]);
+                outStream.Append(output[1]);
+                outStream.Append(output[2]);
+                outStream.RestartStrip();
+            }
 
-        // Back
-        UNITY_BRANCH
-        if(_OutlineCull != 2)
-        {
-            outStream.Append(output[2]);
-            outStream.Append(output[1]);
-            outStream.Append(output[0]);
-            outStream.RestartStrip();
-        }
+            // Back
+            UNITY_BRANCH
+            if(_OutlineCull != 2)
+            {
+                outStream.Append(output[2]);
+                outStream.Append(output[1]);
+                outStream.Append(output[0]);
+                outStream.RestartStrip();
+            }
+        #endif
     }
 #endif
 

@@ -81,6 +81,7 @@ Shader "Hidden/lilToonFurCutout"
                                                         _OffsetFactor       ("Offset Factor", Float) = 0
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
+        [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Fur
@@ -123,9 +124,10 @@ Shader "Hidden/lilToonFurCutout"
                                                         _FurOffsetFactor        ("Offset Factor", Float) = 0
                                                         _FurOffsetUnits         ("Offset Units", Float) = 0
         [lilColorMask]                                  _FurColorMask           ("Color Mask", Int) = 15
+        [lilToggle]                                     _FurAlphaToMask         ("AlphaToMask", Int) = 1
     }
     HLSLINCLUDE
-        #pragma exclude_renderers d3d9 d3d11_9x
+        #pragma require geometry
         #define LIL_RENDER 1
         #define LIL_FUR
     ENDHLSL
@@ -160,7 +162,7 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -168,7 +170,6 @@ Shader "Hidden/lilToonFurCutout"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma require geometry
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -177,7 +178,7 @@ Shader "Hidden/lilToonFurCutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -205,7 +206,7 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_FurOffsetFactor], [_FurOffsetUnits]
             BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
             Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_FurAlphaToMask]
 
             HLSLPROGRAM
 
@@ -214,8 +215,6 @@ Shader "Hidden/lilToonFurCutout"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
-            #pragma require geometry
-            #pragma require geometry
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -224,7 +223,7 @@ Shader "Hidden/lilToonFurCutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_fur.hlsl"
+            #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
         }
@@ -252,8 +251,8 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             Blend [_SrcBlendFA] [_DstBlendFA], Zero One
             BlendOp [_BlendOpFA], [_BlendOpAlphaFA]
+            AlphaToMask [_AlphaToMask]
             Fog { Color(0,0,0,0) }
-            AlphaToMask On
 
             HLSLPROGRAM
 
@@ -261,7 +260,6 @@ Shader "Hidden/lilToonFurCutout"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma require geometry
             #pragma multi_compile_fwdadd
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -270,7 +268,7 @@ Shader "Hidden/lilToonFurCutout"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_PASS_FORWARDADD
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -299,7 +297,7 @@ Shader "Hidden/lilToonFurCutout"
             Blend [_FurSrcBlendFA] [_FurDstBlendFA], Zero One
             BlendOp [_FurBlendOpFA], [_FurBlendOpAlphaFA]
             Fog { Color(0,0,0,0) }
-            AlphaToMask On
+            AlphaToMask [_FurAlphaToMask]
 
             HLSLPROGRAM
 
@@ -308,8 +306,6 @@ Shader "Hidden/lilToonFurCutout"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
-            #pragma require geometry
-            #pragma require geometry
             #pragma multi_compile_fwdadd
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
@@ -318,7 +314,7 @@ Shader "Hidden/lilToonFurCutout"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_PASS_FORWARDADD
-            #include "Includes/lil_pass_fur.hlsl"
+            #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
         }
@@ -384,7 +380,7 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -405,7 +401,7 @@ Shader "Hidden/lilToonFurCutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -433,7 +429,7 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_FurOffsetFactor], [_FurOffsetUnits]
             BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
             Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_FurAlphaToMask]
 
             HLSLPROGRAM
 
@@ -442,7 +438,6 @@ Shader "Hidden/lilToonFurCutout"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
-            #pragma require geometry
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
@@ -456,7 +451,7 @@ Shader "Hidden/lilToonFurCutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_fur.hlsl"
+            #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
         }
@@ -561,7 +556,7 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -569,7 +564,6 @@ Shader "Hidden/lilToonFurCutout"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma require geometry
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
@@ -582,7 +576,7 @@ Shader "Hidden/lilToonFurCutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -610,7 +604,7 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_FurOffsetFactor], [_FurOffsetUnits]
             BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
             Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_FurAlphaToMask]
 
             HLSLPROGRAM
 
@@ -619,8 +613,6 @@ Shader "Hidden/lilToonFurCutout"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
-            #pragma require geometry
-            #pragma require geometry
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
@@ -633,7 +625,7 @@ Shader "Hidden/lilToonFurCutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_fur.hlsl"
+            #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
         }
@@ -744,7 +736,7 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -765,7 +757,7 @@ Shader "Hidden/lilToonFurCutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -793,7 +785,7 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_FurOffsetFactor], [_FurOffsetUnits]
             BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
             Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_FurAlphaToMask]
 
             HLSLPROGRAM
 
@@ -802,7 +794,6 @@ Shader "Hidden/lilToonFurCutout"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
-            #pragma require geometry
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
@@ -816,7 +807,7 @@ Shader "Hidden/lilToonFurCutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_fur.hlsl"
+            #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
         }
@@ -983,7 +974,7 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -991,7 +982,6 @@ Shader "Hidden/lilToonFurCutout"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma require geometry
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
@@ -1004,7 +994,7 @@ Shader "Hidden/lilToonFurCutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -1032,7 +1022,7 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_FurOffsetFactor], [_FurOffsetUnits]
             BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
             Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_FurAlphaToMask]
 
             HLSLPROGRAM
 
@@ -1041,8 +1031,6 @@ Shader "Hidden/lilToonFurCutout"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
-            #pragma require geometry
-            #pragma require geometry
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
@@ -1055,7 +1043,7 @@ Shader "Hidden/lilToonFurCutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_fur.hlsl"
+            #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
         }
@@ -1227,7 +1215,7 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1247,7 +1235,7 @@ Shader "Hidden/lilToonFurCutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -1275,7 +1263,7 @@ Shader "Hidden/lilToonFurCutout"
             Offset [_FurOffsetFactor], [_FurOffsetUnits]
             BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
             Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_FurAlphaToMask]
 
             HLSLPROGRAM
 
@@ -1284,7 +1272,6 @@ Shader "Hidden/lilToonFurCutout"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
-            #pragma require geometry
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1297,7 +1284,7 @@ Shader "Hidden/lilToonFurCutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_fur.hlsl"
+            #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
         }
@@ -1321,7 +1308,6 @@ Shader "Hidden/lilToonFurCutout"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
-            #pragma require geometry
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1356,7 +1342,7 @@ Shader "Hidden/lilToonFurCutout"
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1365,7 +1351,6 @@ Shader "Hidden/lilToonFurCutout"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
-            #pragma require geometry
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1399,7 +1384,7 @@ Shader "Hidden/lilToonFurCutout"
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1408,7 +1393,6 @@ Shader "Hidden/lilToonFurCutout"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
-            #pragma require geometry
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON

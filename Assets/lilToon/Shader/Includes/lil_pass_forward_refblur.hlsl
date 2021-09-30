@@ -1,11 +1,11 @@
 
-#ifndef LIL_PASS_REFLACTION_BLUR_INCLUDED
-#define LIL_PASS_REFLACTION_BLUR_INCLUDED
+#ifndef LIL_PASS_FORWARD_REFLACTION_BLUR_INCLUDED
+#define LIL_PASS_FORWARD_REFLACTION_BLUR_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Struct
+// Structure
 #define LIL_V2F_POSITION_CS
 #define LIL_V2F_TEXCOORD0
 #define LIL_V2F_POSITION_SS

@@ -1,7 +1,7 @@
 Shader "Hidden/ltspass_tess_cutout"
 {
     HLSLINCLUDE
-        #pragma exclude_renderers d3d9 d3d11_9x
+        #pragma target 5.0
         #define LIL_RENDER 1
         #define LIL_TESSELLATION
     ENDHLSL
@@ -34,7 +34,7 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -55,7 +55,7 @@ Shader "Hidden/ltspass_tess_cutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -83,7 +83,7 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
             BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
             Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_OutlineAlphaToMask]
 
             HLSLPROGRAM
 
@@ -103,7 +103,7 @@ Shader "Hidden/ltspass_tess_cutout"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -131,8 +131,8 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             Blend [_SrcBlendFA] [_DstBlendFA], Zero One
             BlendOp [_BlendOpFA], [_BlendOpAlphaFA]
+            AlphaToMask [_AlphaToMask]
             Fog { Color(0,0,0,0) }
-            AlphaToMask On
 
             HLSLPROGRAM
 
@@ -151,7 +151,7 @@ Shader "Hidden/ltspass_tess_cutout"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_PASS_FORWARDADD
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -213,9 +213,6 @@ Shader "Hidden/ltspass_tess_cutout"
     SubShader
     {
         Tags{"ShaderModel" = "4.5"}
-        HLSLINCLUDE
-            #pragma target 4.5
-        ENDHLSL
 
         // Forward
         Pass
@@ -240,7 +237,7 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -267,7 +264,7 @@ Shader "Hidden/ltspass_tess_cutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -295,7 +292,7 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
             BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
             Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_OutlineAlphaToMask]
 
             HLSLPROGRAM
 
@@ -317,7 +314,7 @@ Shader "Hidden/ltspass_tess_cutout"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -420,7 +417,7 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -446,7 +443,7 @@ Shader "Hidden/ltspass_tess_cutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -474,7 +471,7 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
             BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
             Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_OutlineAlphaToMask]
 
             HLSLPROGRAM
 
@@ -495,7 +492,7 @@ Shader "Hidden/ltspass_tess_cutout"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -579,9 +576,6 @@ Shader "Hidden/ltspass_tess_cutout"
     SubShader
     {
         Tags{"ShaderModel" = "4.5"}
-        HLSLINCLUDE
-            #pragma target 4.5
-        ENDHLSL
 
         // Forward
         Pass
@@ -606,7 +600,7 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -633,7 +627,7 @@ Shader "Hidden/ltspass_tess_cutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -661,7 +655,7 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
             BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
             Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_OutlineAlphaToMask]
 
             HLSLPROGRAM
 
@@ -683,7 +677,7 @@ Shader "Hidden/ltspass_tess_cutout"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -848,7 +842,7 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -874,7 +868,7 @@ Shader "Hidden/ltspass_tess_cutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -902,7 +896,7 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
             BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
             Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_OutlineAlphaToMask]
 
             HLSLPROGRAM
 
@@ -923,7 +917,7 @@ Shader "Hidden/ltspass_tess_cutout"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -1065,9 +1059,6 @@ Shader "Hidden/ltspass_tess_cutout"
 /*
     //----------------------------------------------------------------------------------------------------------------------
     // High Definition Render Pipeline
-    HLSLINCLUDE
-        #pragma target 4.5
-    ENDHLSL
     SubShader
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
@@ -1094,7 +1085,7 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1121,7 +1112,7 @@ Shader "Hidden/ltspass_tess_cutout"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -1149,7 +1140,7 @@ Shader "Hidden/ltspass_tess_cutout"
             Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
             BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
             Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
-            AlphaToMask On
+            AlphaToMask [_OutlineAlphaToMask]
 
             HLSLPROGRAM
 
@@ -1173,7 +1164,7 @@ Shader "Hidden/ltspass_tess_cutout"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -1228,7 +1219,7 @@ Shader "Hidden/ltspass_tess_cutout"
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1274,7 +1265,7 @@ Shader "Hidden/ltspass_tess_cutout"
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1320,7 +1311,7 @@ Shader "Hidden/ltspass_tess_cutout"
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1363,7 +1354,7 @@ Shader "Hidden/ltspass_tess_cutout"
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
-            AlphaToMask On
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 

@@ -150,7 +150,7 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Main Texture
-#if defined(LIL_FRAGMENT_INCLUDED) && !defined(LIL_FUR)
+#if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && !defined(LIL_FUR)
     #define LIL_GET_MAIN_TEX \
         col = LIL_SAMPLE_2D_POM(_MainTex, sampler_MainTex, uvMain, ddxMain, ddyMain);
 
@@ -195,14 +195,14 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Outline Color
-#if defined(LIL_FRAGMENT_INCLUDED) && defined(LIL_FEATURE_TEX_OUTLINE_COLOR) || !defined(LIL_FRAGMENT_INCLUDED)
+#if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FEATURE_TEX_OUTLINE_COLOR) || !defined(LIL_PASS_FORWARD_NORMAL_INCLUDED)
     #define LIL_GET_OUTLINE_TEX \
         col = LIL_SAMPLE_2D(_OutlineTex, sampler_OutlineTex, uvMain);
 #else
     #define LIL_GET_OUTLINE_TEX
 #endif
 
-#if defined(LIL_FRAGMENT_INCLUDED) && defined(LIL_FEATURE_OUTLINE_TONE_CORRECTION)
+#if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FEATURE_OUTLINE_TONE_CORRECTION)
     #define LIL_APPLY_OUTLINE_TONECORRECTION \
         col.rgb = lilToneCorrection(col.rgb, _OutlineTexHSVG);
 #else
@@ -342,7 +342,7 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Main 2nd
-#if defined(LIL_FEATURE_MAIN2ND) && defined(LIL_FRAGMENT_INCLUDED) && !defined(LIL_LITE) && !defined(LIL_FUR)
+#if defined(LIL_FEATURE_MAIN2ND) && defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && !defined(LIL_LITE) && !defined(LIL_FUR)
     #if defined(LIL_V2F_POSITION_OS)
         void lilGetMain2nd(inout float4 col, inout float4 color2nd, inout float main2ndDissolveAlpha, float2 uvMain, float2 uv, float nv, float3 positionOS, float audioLinkValue, float depth, bool isRightHand LIL_SAMP_IN_FUNC(samp))
     #else
@@ -419,7 +419,7 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Main 3rd
-#if defined(LIL_FEATURE_MAIN3RD) && defined(LIL_FRAGMENT_INCLUDED) && !defined(LIL_LITE) && !defined(LIL_FUR)
+#if defined(LIL_FEATURE_MAIN3RD) && defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && !defined(LIL_LITE) && !defined(LIL_FUR)
     #if defined(LIL_V2F_POSITION_OS)
         void lilGetMain3rd(inout float4 col, inout float4 color3rd, inout float main3rdDissolveAlpha, float2 uvMain, float2 uv, float nv, float3 positionOS, float audioLinkValue, float depth, bool isRightHand LIL_SAMP_IN_FUNC(samp))
     #else
@@ -721,7 +721,7 @@ void lilGetShading(
     #define LIL_HDRP_VAL_INPUT
     #define LIL_HDRP_VAL_INPUT_FUNC
 #endif
-#if defined(LIL_FEATURE_REFLECTION) && defined(LIL_FRAGMENT_INCLUDED) && !defined(LIL_LITE) && !defined(LIL_FUR)
+#if defined(LIL_FEATURE_REFLECTION) && defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && !defined(LIL_LITE) && !defined(LIL_FUR)
     #if !defined(LIL_REFRACTION_BLUR2) || defined(LIL_PASS_FORWARDADD)
         void lilReflection(inout float4 col, float2 uvMain, float3 albedo, float3 positionWS, float3 normalDirection, float3 viewDirection, float nv, float attenuation, float nvabs LIL_SAMP_IN_FUNC(samp) LIL_HDRP_VAL_INPUT_FUNC)
     #else

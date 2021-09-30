@@ -1,11 +1,10 @@
-#ifndef LIL_PASS_GEM_INCLUDED
-#define LIL_PASS_GEM_INCLUDED
-
-//------------------------------------------------------------------------------------------------------------------
-// Pass for gem shader (Pre ForwardBase)
+#ifndef LIL_PASS_FORWARD_GEM_INCLUDED
+#define LIL_PASS_FORWARD_GEM_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
 
+//------------------------------------------------------------------------------------------------------------------------------
+// Structure
 #if defined(LIL_GEM_PRE)
     #define LIL_V2F_POSITION_CS
     #if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_HDRP)
@@ -23,28 +22,6 @@
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
-
-    #include "Includes/lil_common_vert.hlsl"
-    #include "lil_common_frag.hlsl"
-
-    #if defined(LIL_CUSTOM_V2F)
-    float4 frag(LIL_CUSTOM_V2F inputCustom) : SV_Target
-    {
-        v2f input = inputCustom.base;
-    #else
-    float4 frag(v2f input) : SV_Target
-    {
-    #endif
-        LIL_SETUP_INSTANCE_ID(input);
-        LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-        LIL_GET_HDRPDATA(input);
-        #if defined(LIL_HDRP)
-            float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
-        #endif
-        float4 col = 0;
-        OVERRIDE_FOG
-        return col;
-    }
 #else
     #define LIL_V2F_POSITION_CS
     #define LIL_V2F_TEXCOORD0
@@ -96,10 +73,33 @@
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
+#endif
 
-    #include "Includes/lil_common_vert.hlsl"
-    #include "Includes/lil_common_frag.hlsl"
+#include "Includes/lil_common_vert.hlsl"
+#include "Includes/lil_common_frag.hlsl"
 
+//------------------------------------------------------------------------------------------------------------------------------
+// Shader
+#if defined(LIL_GEM_PRE)
+    #if defined(LIL_CUSTOM_V2F)
+    float4 frag(LIL_CUSTOM_V2F inputCustom) : SV_Target
+    {
+        v2f input = inputCustom.base;
+    #else
+    float4 frag(v2f input) : SV_Target
+    {
+    #endif
+        LIL_SETUP_INSTANCE_ID(input);
+        LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+        LIL_GET_HDRPDATA(input);
+        #if defined(LIL_HDRP)
+            float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+        #endif
+        float4 col = 0;
+        OVERRIDE_FOG
+        return col;
+    }
+#else
     #if defined(LIL_CUSTOM_V2F)
     float4 frag(LIL_CUSTOM_V2F inputCustom LIL_VFACE(facing)) : SV_Target
     {

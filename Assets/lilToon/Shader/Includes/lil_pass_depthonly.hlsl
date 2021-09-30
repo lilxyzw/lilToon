@@ -4,7 +4,7 @@
 #include "Includes/lil_pipeline.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Struct
+// Structure
 #define LIL_V2F_POSITION_CS
 #if defined(LIL_V2F_FORCE_UV0) || (LIL_RENDER > 0)
     #define LIL_V2F_TEXCOORD0
@@ -103,7 +103,7 @@ void frag(v2f input
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
-    #include "Includes/lil_frag_alpha.hlsl"
+    #include "Includes/lil_common_frag_alpha.hlsl"
 
     #if !defined(LIL_HDRP)
         outColor = 0;

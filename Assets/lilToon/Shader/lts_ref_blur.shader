@@ -204,7 +204,7 @@ Shader "Hidden/lilToonRefractionBlur"
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision
         [lilToggleLeft] _UseEmission                ("Use Emission", Int) = 0
-        [HDR][lilHDR]   _EmissionColor              ("Color", Color) = (1,1,1)
+        [HDR][lilHDR]   _EmissionColor              ("Color", Color) = (1,1,1,1)
                         _EmissionMap                ("Texture", 2D) = "white" {}
         [lilUVAnim]     _EmissionMap_ScrollRotate   ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
                         _EmissionBlend              ("Blend", Range(0,1)) = 1
@@ -239,7 +239,7 @@ Shader "Hidden/lilToonRefractionBlur"
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision2nd
         [lilToggleLeft] _UseEmission2nd             ("Use Emission 2nd", Int) = 0
-        [HDR][lilHDR]   _Emission2ndColor           ("Color", Color) = (1,1,1)
+        [HDR][lilHDR]   _Emission2ndColor           ("Color", Color) = (1,1,1,1)
                         _Emission2ndMap             ("Texture", 2D) = "white" {}
         [lilUVAnim]     _Emission2ndMap_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
                         _Emission2ndBlend           ("Blend", Range(0,1)) = 1
@@ -344,6 +344,7 @@ Shader "Hidden/lilToonRefractionBlur"
                                                         _OffsetFactor       ("Offset Factor", Float) = 0
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
+        [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Refraction
@@ -353,7 +354,6 @@ Shader "Hidden/lilToonRefractionBlur"
                         _RefractionColor            ("Color", Color) = (1,1,1,1)
     }
     HLSLINCLUDE
-        #pragma exclude_renderers d3d9 d3d11_9x
         #define LIL_RENDER 2
         #define LIL_REFRACTION
         #define LIL_REFRACTION_BLUR2
@@ -365,6 +365,9 @@ Shader "Hidden/lilToonRefractionBlur"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
+        HLSLINCLUDE
+            #pragma target 3.5
+        ENDHLSL
 
         // GrabPass
         GrabPass {"_lilBackgroundTexture"}
@@ -387,6 +390,7 @@ Shader "Hidden/lilToonRefractionBlur"
             Blend One Zero
             ZWrite [_ZWrite]
             ZTest [_ZTest]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -399,7 +403,7 @@ Shader "Hidden/lilToonRefractionBlur"
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Shader
-            #include "Includes/lil_pass_refblur.hlsl"
+            #include "Includes/lil_pass_forward_refblur.hlsl"
 
             ENDHLSL
         }
@@ -430,6 +434,7 @@ Shader "Hidden/lilToonRefractionBlur"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -447,7 +452,7 @@ Shader "Hidden/lilToonRefractionBlur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -475,6 +480,7 @@ Shader "Hidden/lilToonRefractionBlur"
             Offset [_OffsetFactor], [_OffsetUnits]
             Blend [_SrcBlendFA] [_DstBlendFA], Zero One
             BlendOp [_BlendOpFA], [_BlendOpAlphaFA]
+            AlphaToMask [_AlphaToMask]
             Fog { Color(0,0,0,0) }
 
             HLSLPROGRAM
@@ -491,7 +497,7 @@ Shader "Hidden/lilToonRefractionBlur"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_PASS_FORWARDADD
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -537,6 +543,7 @@ Shader "Hidden/lilToonRefractionBlur"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -560,7 +567,7 @@ Shader "Hidden/lilToonRefractionBlur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -641,6 +648,10 @@ Shader "Hidden/lilToonRefractionBlur"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
+        HLSLINCLUDE
+            #pragma target 3.5
+        ENDHLSL
+
         // Forward
         Pass
         {
@@ -664,6 +675,7 @@ Shader "Hidden/lilToonRefractionBlur"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -686,7 +698,7 @@ Shader "Hidden/lilToonRefractionBlur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -797,6 +809,7 @@ Shader "Hidden/lilToonRefractionBlur"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -820,7 +833,7 @@ Shader "Hidden/lilToonRefractionBlur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -963,6 +976,10 @@ Shader "Hidden/lilToonRefractionBlur"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
+        HLSLINCLUDE
+            #pragma target 3.5
+        ENDHLSL
+
         // Forward
         Pass
         {
@@ -986,6 +1003,7 @@ Shader "Hidden/lilToonRefractionBlur"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1008,7 +1026,7 @@ Shader "Hidden/lilToonRefractionBlur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -1179,6 +1197,7 @@ Shader "Hidden/lilToonRefractionBlur"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1202,7 +1221,7 @@ Shader "Hidden/lilToonRefractionBlur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_normal.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -1257,6 +1276,7 @@ Shader "Hidden/lilToonRefractionBlur"
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -1296,6 +1316,7 @@ Shader "Hidden/lilToonRefractionBlur"
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 

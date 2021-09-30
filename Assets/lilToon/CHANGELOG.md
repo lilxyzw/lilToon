@@ -1,0 +1,133 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.2.0] - 2021-09-31
+### Added
+- New support for HDRP
+- `Monochrome lighting` and `Upper brightness limit` properties
+- `Root Width` property to fur shader
+- Menu to the property blocks (multiple properties can now be copied and pasted at once)
+- One pass / two pass variations to the transparent shader
+- Shader variation that use shader keywords
+- Warning when selecting anything other than a material while the preset save window is open
+- Macros for creating custom shaders
+
+### Changed
+- Changed RenderQueue of transparent shader to 2501 (avoid drawing failure of Skybox through transparent material)
+- Changed to allow negative values for refraction strength
+- Renamed `Main Color Power` to` Contrast` in Shadow Setting
+- Supports switching of `AlphaToMask`
+- Move change log to `CHANGELOG.md` and `CHANGELOG_JP.md`
+
+### Fixed
+- Fixed an issue where Parent Constraint could not be edited in play mode
+- Fixed an issue where refraction shaders could interfere with some assets under certain conditions
+
+### Removed
+- Some hlsl files
+
+## [1.1.8] - 2021-08-31
+### Added
+- lilToonGem and lilToonFakeShadow
+- UV1 for glitter
+- Property to adjust the strength of parallax during VR to glitter
+
+### Fixed
+- Fixed emission color space
+- Fixed an issue where glitter properties were not scanned when importing
+- Fixed an issue where meshes were not decrypted on some paths when using Avater Encryption
+
+## [1.1.7] - 2021-08-29
+### Added
+- Color code next to HDR color picker (Unity 2019 or later)
+- Mask to main color correction
+- Distance fade to main color 2nd / 3rd
+- Glitter function
+
+### Changed
+- Changed main color's color picker to HDR
+- Changed transform calculation
+- Moved some processing to the vertex shader for optimization
+
+### Fixed
+- Fixed UPM import
+- Fixed `Distance Fade` and `Dissolve` transparency
+- Fixed error in Unity 2019 URP
+
+## [1.1.6] - 2021-08-17
+### Added
+- `Fix Now` button to help box
+
+### Changed
+- Changed the default value of ZTest in outline from LessEqual to Less
+
+### Fixed
+- Fixed an issue where shadows were weakened when using `Lower brightness limit`
+
+## [1.1.5] - 2021-08-08
+### Added
+- Added `When in trouble...`
+- Added on / off of Z-axis rotation cancellation of MatCap
+
+### Changed
+- Improved transparency processing
+- Organize the UI
+
+### Fixed
+- Fixed shader folder to be movable
+- Fixed an issue where opaque materials would show alpha mask properties
+- Fixed some translations
+
+## [1.1.4] - 2021-07-31
+### Added
+- Auto-scan materials and animations when importing unitypackage
+- `Auto shader setting`, which scans all materials and animations in the project and automatically optimizes Shader Setting
+- `Remove unused properties`, optimizes materials so that turning on additional shader settings does not affect their appearance
+- `Setup from FBX`, automatically generate materials from FBX files, apply presets, outline mask, and shadow mask
+- Length mask to fur shader
+- Lock for `Shader Setting`
+
+### Changed
+- Changed the display name of some properties (`Environment Strength` → `Environment strength on shadow color`, `Fix Width` → `Fix width by distance`)
+- Inspector will be preserved in play mode
+- Changed the `As Unlit` parameter of the fur shader to a slider
+
+## [1.1.3] - 2021-07-24
+### Fixed
+- Fixed problem with Inspector not showing up when version check fails
+- Fixed `[lilToon] Fix Lighting` breaking when an object has a Cloth component or no bones
+
+## [1.1.2] - 2021-07-20
+### Added
+- Custom normal map for MatCap
+- Customization of Rim Light by light direction
+- One-click lighting settings for meshes and materials
+
+### Changed
+- Outline width can now be set to any value
+- Alpha masks can now be applied to outline
+
+## [1.1.1] - 2021-07-16
+### Added
+- Shader Refresh in menu
+- Show warning when property alpha is 0
+
+### Fixed
+- Support for changing editor theme
+
+## [1.1] - 2021-07-15
+### Added
+- Alpha Mask
+- MatCap 2nd
+- Properties to adjust Lower brightness limit and vertex light strength
+- Warnings for high-load functions (refraction / POM)
+
+### Fixed
+- Fixed a bug where CascadeShadow was not working properly in URP
+- Fixed a bug in MatCap where "Apply Lighting" was not working properly
+- Added references
+
+## [1.0] - 2021-07-12 [YANKED]

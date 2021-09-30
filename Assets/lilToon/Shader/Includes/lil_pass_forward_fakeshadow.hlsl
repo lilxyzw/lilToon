@@ -1,12 +1,10 @@
-#ifndef LIL_PASS_FAKESHADOW_INCLUDED
-#define LIL_PASS_FAKESHADOW_INCLUDED
+#ifndef LIL_PASS_FORWARD_FAKESHADOW_INCLUDED
+#define LIL_PASS_FORWARD_FAKESHADOW_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
 
-float4 _FakeShadowVector;
-
 //------------------------------------------------------------------------------------------------------------------------------
-// Struct
+// Structure
 struct v2f
 {
     float4 positionCS : SV_POSITION;
@@ -21,6 +19,8 @@ struct v2f
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Shader
+float4 _FakeShadowVector;
+
 v2f vert(appdata input)
 {
     v2f output;

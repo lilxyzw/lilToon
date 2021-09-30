@@ -40,15 +40,15 @@
     #define LIL_APP_TEXCOORD7
 #endif
 
-#if defined(LIL_REQUIRE_APP_COLOR) || defined(LIL_OUTLINE) || defined(LIL_ONEPASS_OUTLINE) || (!defined(LIL_PASS_INCLUDED) && defined(LIL_FUR))
+#if defined(LIL_REQUIRE_APP_COLOR) || defined(LIL_OUTLINE) || defined(LIL_ONEPASS_OUTLINE) || (!defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FUR))
     #define LIL_APP_COLOR
 #endif
 
-#if defined(LIL_REQUIRE_APP_NORMAL) || defined(LIL_SHOULD_NORMAL) || defined(LIL_OUTLINE) || defined(LIL_LITE) || defined(LIL_GEM) || defined(LIL_PASS_FUR_INCLUDED) || defined(LIL_TESSELLATION) || defined(LIL_PASS_DEPTHNORMAL_INCLUDED) || defined(WRITE_NORMAL_BUFFER) || defined(LIL_PASS_SHADOWCASTER_INCLUDED)
+#if defined(LIL_REQUIRE_APP_NORMAL) || defined(LIL_SHOULD_NORMAL) || defined(LIL_OUTLINE) || defined(LIL_LITE) || defined(LIL_GEM) || defined(LIL_PASS_FORWARD_FUR_INCLUDED) || defined(LIL_TESSELLATION) || defined(LIL_PASS_DEPTHNORMAL_INCLUDED) || defined(WRITE_NORMAL_BUFFER) || defined(LIL_PASS_SHADOWCASTER_INCLUDED)
     #define LIL_APP_NORMAL
 #endif
 
-#if defined(LIL_REQUIRE_APP_TANGENT) || ((defined(LIL_PASS_INCLUDED) || defined(LIL_GEM)) && defined(LIL_SHOULD_TANGENT) && !defined(LIL_OUTLINE) && !defined(LIL_FUR)) || defined(LIL_PASS_FUR_INCLUDED) || (!defined(LIL_PASS_INCLUDED) && defined(LIL_FUR)) || defined(LIL_BAKER)
+#if defined(LIL_REQUIRE_APP_TANGENT) || ((defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) || defined(LIL_GEM)) && defined(LIL_SHOULD_TANGENT) && !defined(LIL_OUTLINE) && !defined(LIL_FUR)) || defined(LIL_PASS_FORWARD_FUR_INCLUDED) || (!defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FUR)) || defined(LIL_BAKER)
     #define LIL_APP_TANGENT
 #endif
 

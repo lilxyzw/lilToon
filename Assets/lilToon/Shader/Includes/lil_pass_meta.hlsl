@@ -5,19 +5,19 @@
 #include "Includes/lil_pipeline.hlsl"
 
 #if defined(LIL_HDRP)
-CBUFFER_START(UnityMetaPass)
-    bool4 unity_MetaVertexControl;
-    bool4 unity_MetaFragmentControl;
-    int unity_VisualizationMode;
-CBUFFER_END
+    CBUFFER_START(UnityMetaPass)
+        bool4 unity_MetaVertexControl;
+        bool4 unity_MetaFragmentControl;
+        int unity_VisualizationMode;
+    CBUFFER_END
 
-float unity_OneOverOutputBoost;
-float unity_MaxOutputValue;
-float unity_UseLinearSpace;
+    float unity_OneOverOutputBoost;
+    float unity_MaxOutputValue;
+    float unity_UseLinearSpace;
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Struct
+// Structure
 /*
 #define LIL_V2F_POSITION_CS
 #define LIL_V2F_TEXCOORD0

@@ -14,7 +14,6 @@ namespace lilToon
         {
             string editorPath = lilToonInspector.GetEditorPath();
             lilToonInspector.isUPM = editorPath.Contains("Packages");
-            string editorSettingPath = lilToonInspector.GetEditorSettingPath();
             string settingFolderPath = lilToonInspector.GetSettingFolderPath();
             string shaderSettingHLSLPath = lilToonInspector.GetShaderSettingHLSLPath();
             string shaderCommonPath = lilToonInspector.GetShaderCommonPath();
@@ -139,17 +138,6 @@ namespace lilToon
                         Debug.Log("Finish scanning assets");
                     }
                     File.Delete(lilToonInspector.packageListTempPath);
-                }
-
-                // Delete old file
-                if(File.Exists(editorSettingPath))
-                {
-                    string[] GUIDs = AssetDatabase.FindAssets("t:lilToonEditorSetting");
-                    foreach(string GUID in GUIDs)
-                    {
-                        AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(GUID));
-                    }
-                    AssetDatabase.DeleteAsset(editorSettingPath);
                 }
 
                 AssetDatabase.SaveAssets();

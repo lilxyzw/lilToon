@@ -2,56 +2,7 @@ fileFormatVersion: 2
 guid: dce3f3e248acc7b4daeda00daf616b4d
 ShaderImporter:
   externalObjects: {}
-  defaultTextures:
-  - _AtanTex: {fileID: 2800000, guid: 3eebc10197e2e934b946f36696a8dc51, type: 3}
-  - _MainTex: {instanceID: 0}
-  - _Main2ndTex: {instanceID: 0}
-  - _Main2ndBlendMask: {instanceID: 0}
-  - _Main3rdTex: {instanceID: 0}
-  - _Main3rdBlendMask: {instanceID: 0}
-  - _Main4thTex: {instanceID: 0}
-  - _Main4thBlendMask: {instanceID: 0}
-  - _AlphaMask: {instanceID: 0}
-  - _AlphaMask2nd: {instanceID: 0}
-  - _BumpMap: {instanceID: 0}
-  - _BumpScaleMask: {instanceID: 0}
-  - _Bump2ndMap: {instanceID: 0}
-  - _Bump2ndScaleMask: {instanceID: 0}
-  - _Bump3rdMap: {instanceID: 0}
-  - _Bump3rdScaleMask: {instanceID: 0}
-  - _Bump4thMap: {instanceID: 0}
-  - _Bump4thScaleMask: {instanceID: 0}
-  - _ShadowBorderMask: {instanceID: 0}
-  - _ShadowBlurMask: {instanceID: 0}
-  - _ShadowStrengthMask: {instanceID: 0}
-  - _ShadowColorTex: {instanceID: 0}
-  - _DefaultShadingBlendMask: {instanceID: 0}
-  - _OutlineColorTex: {instanceID: 0}
-  - _OutlineWidthMask: {instanceID: 0}
-  - _OutlineAlphaMask: {instanceID: 0}
-  - _MetallicGlossMap: {instanceID: 0}
-  - _ReflectionSmoothnessTex: {instanceID: 0}
-  - _ReflectionCubemap: {instanceID: 0}
-  - _SpecularSmoothnessTex: {instanceID: 0}
-  - _SpecularBlendMask: {instanceID: 0}
-  - _MatcapTex: {instanceID: 0}
-  - _MatcapBlendMask: {instanceID: 0}
-  - _Matcap2ndTex: {instanceID: 0}
-  - _Matcap2ndBlendMask: {instanceID: 0}
-  - _Matcap3rdTex: {instanceID: 0}
-  - _Matcap3rdBlendMask: {instanceID: 0}
-  - _Matcap4thTex: {instanceID: 0}
-  - _Matcap4thBlendMask: {instanceID: 0}
-  - _RimColorTex: {instanceID: 0}
-  - _RimBlendMask: {instanceID: 0}
-  - _RimBorderMask: {instanceID: 0}
-  - _RimBlurMask: {instanceID: 0}
-  - _Rim2ndColorTex: {instanceID: 0}
-  - _Rim2ndBlendMask: {instanceID: 0}
-  - _Rim2ndBorderMask: {instanceID: 0}
-  - _Rim2ndBlurMask: {instanceID: 0}
-  - _EmissionMap: {instanceID: 0}
-  - _EmissionBlendMask: {instanceID: 0}
+  defaultTextures: []
   nonModifiableTextures: []
   userData: 
   assetBundleName: 
