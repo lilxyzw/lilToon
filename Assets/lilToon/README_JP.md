@@ -45,7 +45,8 @@ Unityバージョン
 - メッシュの暗号化 (別途[AvatarEncryption](https://github.com/lilxyzw/AvaterEncryption)の導入が必要です)
 
 # ライセンス
-MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください。
+MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください。  
+サードパーティーのライセンスについては[Third Party Notices.md](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/Third%20Party%20Notices.md)をご確認ください。
 
 # 使い方 - 新規セットアップ
 1. 下記いずれかの方法でUnityにlilToonをインポート  
@@ -120,10 +121,16 @@ VRChatのワールド:
 - Cutoutマテリアルに使われるテクスチャは`Mip Maps Preserve Coverage`にチェックを入れる
 
 # Liteバージョンについて
-通常版の見た目をある程度維持しつつ大幅に軽量化したものです。こちらはシェーダー設定がなく機能が統一されているためアバター展示にオススメです。Lite版から直接マテリアルを設定せず、通常版で作成したものを変換するとより直感的にマテリアル設定が可能です。
+通常版の見た目をある程度維持しつつ大幅に軽量化したものです。  
+こちらはシェーダー設定がなく機能が統一されているためアバター展示にオススメです。  
+Lite版から直接マテリアルを設定せず、通常版で作成したものを変換するとより直感的にマテリアル設定が可能です。
 
-# カスタムシェーダーの作成、シェーダーの書き換えについて
-[DeveloperDocumentation_JP.md](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/DeveloperDocumentation_JP.md)を参照してください。
+# Multiバージョンについて
+シェーダーキーワードを利用し、シェーダー設定に関係なく機能をフル活用できるバージョンです。  
+通常版からワンクリックで変換できるようになっています。  
+こちらもシェーダー設定の影響を受けないためアバター展示とも相性が良いです。  
+デフォルトの状態ではUnity 2018以前では使用不可ですが、シェーダー内の`shader_feature_local`を`shader_feature`に書き換えることで使用可能になります。  
+AvatarEncryptionを利用する場合は`ltsmulti.shader`内の`//#define LIL_FEATURE_ENCRYPTION`を`#define LIL_FEATURE_ENCRYPTION`に書き換えてください。
 
-# 参考文献
-[Third Party Notices.md](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/Third-Party-Notices.md)を参照してください。
+# その他
+[開発者向けドキュメント](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/DeveloperDocumentation_JP.md)

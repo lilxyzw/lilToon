@@ -45,7 +45,8 @@ Supported Rendering Pipelines
 - Mesh Encryption ([AvatarEncryption](https://github.com/lilxyzw/AvaterEncryption) is required)
 
 # License
-lilToon is available under the MIT License. Please refer to the `LICENSE` included in the package.
+lilToon is available under the MIT License. Please refer to the `LICENSE` included in the package.  
+For more information about third party licenses, please see [Third Party Notices.md](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/Third%20Party%20Notices.md).
 
 # Usage - Material Setup
 1. Import lilToon into Unity using one of the following methods.  
@@ -120,10 +121,16 @@ The following settings improve the problem of different brightness in one part o
 - Check the `Mip Maps Preserve Coverage` checkbox for textures used in Cutout materials.
 
 # About Lite version
-Lite version is a greatly optimized version that maintains the appearance of the normal version to some extent. This version is recommended for avatar displays because it has no shader settings and its features are unified. It is recommended to convert materials created with Normal version to the Lite version instead of setting materials directly from Lite version for more intuitive material setting.
+Lite version is a greatly optimized version that maintains the appearance of the normal version to some extent.  
+This version is recommended for avatar displays because it has no shader settings and its features are unified.  
+It is recommended to convert materials created with Normal version to the Lite version instead of setting materials directly from Lite version for more intuitive material setting.
 
-# About creating custom shaders and rewriting shaders
-See [DeveloperDocumentation.md](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/DeveloperDocumentation.md).
+# About Multi version
+This is the version that uses the shader keyword and allows you to use all the features regardless of the shader settings.  
+You can convert from the normal version to the Mutli version with one click.  
+This also works well with the avatar display as it is not affected by shader settings.  
+It is not available in Unity 2018 and earlier, but you can use it by rewriting `shader_feature_local` to `shader_feature` in the shader.  
+If you use AvatarEncryption, replace `//#define LIL_FEATURE_ENCRYPTION` in `ltsmulti.shader` with `#define LIL_FEATURE_ENCRYPTION`.
 
-# References
-See [Third Party Notices.md](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/Third-Party-Notices.md).
+# Other
+[Developer Documentation](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/DeveloperDocumentation_JP.md)

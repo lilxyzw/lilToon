@@ -75,6 +75,45 @@
     - lil_setting.hlsl : Shader macros automatically generated from shader settings
     - ShaderSetting.asset : Asset for saving shader settings
 
+# Shader structure
+## About shader variations
+Basically, `ltspass_xx.shader` is the shader itself, and each shader variation uses UsePass to call the pass.  
+However, the following shaders have their own pass.
+- lts_fakeshadow.shader
+- lts_fur.shader
+- lts_fur_cutout.shader
+- lts_gem.shader
+- lts_ref.shader
+- lts_ref_blur.shader
+- ltsmulti.shader
+
+## About passes
+There are so many variations, but I declare a macro for each shader variation in `HLSLINCLUDE` at the beginning of the shader, and call `#include "Includes/lil_pass_xx.hlsl"` in each pass to branch according to the macro. The code is made as common as possible.  
+Also, although the shaders for Built-in RP / LWRP / URP / HDRP are in a common file, the editor script can switch the pipeline by rewriting each shader and `lil_pipeline.hlsl`.
+
+## About include
+In each path, `#include "Includes/lil_pass_xx.hlsl"` is called, and the hlsl file for each path is basically unified with the following structure.
+- lil_pass_xx.hlsl
+    - lil_pipeline.hlsl
+        - Unity library
+        - lil_common.hlsl
+            - lil_setting.hlsl
+            - lil_common_macro.hlsl
+            - lil_common_input.hlsl
+            - lil_common_functions.hlsl
+            - lil_common_appdata.hlsl
+    - Declare a v2f structure for each path
+    - lil_common_vert.hlsl
+    - lil_common_frag.hlsl
+    - Pixel shader
+
+## About shader keywords
+The following shader keywords are used in `lilToonMulti`.  
+These match the built-in shader keywords, so the shader keyword limit is avoided and no warning is displayed by the VRCSDK.
+```
+ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _COLORADDSUBDIFF_ON _COLORCOLOR_ON _SUNDISK_NONE GEOM_TYPE_FROND _COLOROVERLAY_ON _REQUIRE_UV2 _EMISSION GEOM_TYPE_BRANCH _SUNDISK_SIMPLE _NORMALMAP EFFECT_BUMP _GLOSSYREFLECTIONS_OFF _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A _SPECULARHIGHLIGHTS_OFF GEOM_TYPE_MESH _METALLICGLOSSMAP GEOM_TYPE_LEAF _SPECGLOSSMAP _PARALLAXMAP PIXELSNAP_ON BILLBOARD_FACE_CAMERA_POS _FADING_ON _MAPPING_6_FRAMES_LAYOUT _SUNDISK_HIGH_QUALITY GEOM_TYPE_BRANCH_DETAIL _DETAIL_MULX2
+```
+
 # How to make a custom shader
 
 ## Basic process
