@@ -1,0 +1,37 @@
+fileFormatVersion: 2
+guid: 1e50f1bc4d1b0e34cbf16b82589f6407
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _MainTex: {instanceID: 0}
+  - _Main2ndTex: {instanceID: 0}
+  - _Main3rdTex: {instanceID: 0}
+  - _Main4thTex: {instanceID: 0}
+  - _AlphaMask: {instanceID: 0}
+  - _BumpMap: {instanceID: 0}
+  - _Bump2ndMap: {instanceID: 0}
+  - _ShadowBorderMask: {instanceID: 0}
+  - _ShadowBlurMask: {instanceID: 0}
+  - _ShadowStrengthMask: {instanceID: 0}
+  - _ShadowColorTex: {instanceID: 0}
+  - _OutlineWidthMask: {instanceID: 0}
+  - _OutlineAlphaMask: {instanceID: 0}
+  - _FurNoiseMask: {fileID: 2800000, guid: 3d421fc7bc8924f4985df741bf8d70ed, type: 3}
+  - _FurMask: {instanceID: 0}
+  - _FurVectorTex: {instanceID: 0}
+  - _SmoothnessTex: {instanceID: 0}
+  - _MetallicGlossMap: {instanceID: 0}
+  - _ReflectionBlendMask: {instanceID: 0}
+  - _MatcapTex: {instanceID: 0}
+  - _MatcapBlendMask: {instanceID: 0}
+  - _RimBlendMask: {instanceID: 0}
+  - _EmissionMap: {instanceID: 0}
+  - _EmissionBlendMask: {instanceID: 0}
+  - _EmissionGradTex: {instanceID: 0}
+  - _Emission2ndMap: {instanceID: 0}
+  - _Emission2ndBlendMask: {instanceID: 0}
+  - _Emission2ndGradTex: {instanceID: 0}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

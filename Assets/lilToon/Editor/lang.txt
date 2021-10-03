@@ -95,6 +95,7 @@ sTransparentMode	Transparent Mode	透過モード	투명 모드	Transparent Mode
 sTransparentModeNormal	Normal	通常	Normal	Normal	Normal
 sTransparentModeOnePass	One Pass	1パス	One Pass	One Pass	One Pass
 sTransparentModeTwoPass	Two Pass	2パス	Two Pass	Two Pass	Two Pass
+sAsOverlay	As Overlay	Overlayマテリアル	As Overlay	As Overlay	As Overlay
 sCutoff	Cutoff	Cutoff (完全透明にする範囲)	Cutoff	Cutoff	Cutoff
 sCullMode	Cull Mode	Cull Mode (描画面)	Cull Mode	Cull Mode	Cull Mode
 sCullModeOff	Off	Off (両面を描画)	Off	Off	Off

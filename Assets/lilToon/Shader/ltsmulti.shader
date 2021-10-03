@@ -395,14 +395,33 @@ Shader "_lil/lilToonMulti"
         //----------------------------------------------------------------------------------------------------------------------
         // For Multi
         [lilToggleLeft] _UseOutline                 ("Use Outline", Int) = 0
-        [lilEnum]       _TransparentMode            ("Rendering Mode|Opaque|Cutout|Transparent", Int) = 0
+        [lilEnum]       _TransparentMode            ("Rendering Mode|Opaque|Cutout|Transparent|Refraction|Fur|FurCutout|Gem", Int) = 0
         [lilToggle]     _UsePOM                     ("Use POM", Int) = 0
         [lilToggle]     _UseClippingCanceller       ("Use Clipping Canceller", Int) = 0
+        [lilToggle]     _AsOverlay                  ("As Overlay", Int) = 0
     }
 
     HLSLINCLUDE
         #define LIL_MULTI
-        //#define LIL_FEATURE_ENCRYPTION
+        #define LIL_MULTI_INPUTS_MAIN_TONECORRECTION
+        #define LIL_MULTI_INPUTS_MAIN2ND
+        #define LIL_MULTI_INPUTS_MAIN3RD
+        #define LIL_MULTI_INPUTS_ALPHAMASK
+        #define LIL_MULTI_INPUTS_SHADOW
+        #define LIL_MULTI_INPUTS_EMISSION
+        #define LIL_MULTI_INPUTS_EMISSION_2ND
+        #define LIL_MULTI_INPUTS_NORMAL
+        #define LIL_MULTI_INPUTS_NORMAL_2ND
+        #define LIL_MULTI_INPUTS_REFLECTION
+        #define LIL_MULTI_INPUTS_MATCAP
+        #define LIL_MULTI_INPUTS_MATCAP_2ND
+        #define LIL_MULTI_INPUTS_RIM
+        #define LIL_MULTI_INPUTS_GLITTER
+        #define LIL_MULTI_INPUTS_PARALLAX
+        #define LIL_MULTI_INPUTS_DISTANCE_FADE
+        #define LIL_MULTI_INPUTS_AUDIOLINK
+        #define LIL_MULTI_INPUTS_DISSOLVE
+        #define LIL_MULTI_INPUTS_OUTLINE
     ENDHLSL
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -612,10 +631,6 @@ Shader "_lil/lilToonMulti"
             #pragma shader_feature_local _COLORCOLOR_ON
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
-            #pragma shader_feature_local _REQUIRE_UV2
-            #pragma shader_feature_local _EMISSION
-            #pragma shader_feature_local GEOM_TYPE_BRANCH
-            #pragma shader_feature_local _SUNDISK_SIMPLE
             #pragma shader_feature_local _NORMALMAP
             #pragma shader_feature_local EFFECT_BUMP
             #pragma shader_feature_local _GLOSSYREFLECTIONS_OFF

@@ -68,6 +68,11 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
     ii. UPMから```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master```をインポート  
 2. 上部メニューバーの`Assets/lilToon/Refresh Shaders`をクリック
 
+# シェーダーバリエーション
+- lilToon : 通常のシェーダーです。シェーダーキーワードの代わりに独自のシェーダー設定を用いることで最適化を行います。
+- lilToonLite : 機能が固定・制限された軽量版です。シェーダー設定の影響を受けません。[詳細](#liteバージョンについて)
+- lilToonMulti : ローカルシェーダーキーワードを使用するバージョンです。シェーダー設定の影響を受けません。[詳細](#multiバージョンについて)
+
 # lilToonを用いた制作物の配布手順について
 シェーダー設定を変更された場合に見た目が変化しないように、マテリアルを右クリックし`Assets/lilToon/Remove unused properties`を実行しておくことをオススメします。また以前はlilToonSettingの同梱が必要でしたが、現在は不要になりました。アセットのインポート時にマテリアルとアニメーションをスキャンし自動で設定されます。  
 1. 制作物のフォルダを選択
@@ -130,7 +135,7 @@ Lite版から直接マテリアルを設定せず、通常版で作成したも�
 通常版からワンクリックで変換できるようになっています。  
 こちらもシェーダー設定の影響を受けないためアバター展示とも相性が良いです。  
 デフォルトの状態ではUnity 2018以前では使用不可ですが、シェーダー内の`shader_feature_local`を`shader_feature`に書き換えることで使用可能になります。  
-AvatarEncryptionを利用する場合は`ltsmulti.shader`内の`//#define LIL_FEATURE_ENCRYPTION`を`#define LIL_FEATURE_ENCRYPTION`に書き換えてください。
+AvatarEncryptionを利用する場合は`lil_replace_keywords.hlsl`内の`//#define LIL_FEATURE_ENCRYPTION`を`#define LIL_FEATURE_ENCRYPTION`に書き換えてください。
 
 # その他
 [開発者向けドキュメント](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/DeveloperDocumentation_JP.md)

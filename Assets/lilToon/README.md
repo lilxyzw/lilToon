@@ -67,6 +67,11 @@ Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Asse
     ii. Import ```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master``` from UPM.  
 2. Click `Assets/lilToon/Refresh Shaders` in the top menu bar.
 
+# Shader variations
+- lilToon : This is the normal version. Optimizes shaders by using the shader settings instead of the shader keywords.
+- lilToonLite : This is a lightweight version with fixed and limited features. It is not affected by shader settings. [Details](#about-lite-version)
+- lilToonMulti : This is the version that uses the local shader keyword. It is not affected by shader settings. [Details](#about-multi-version)
+
 # How to distribute your works that use lilToon
 I recommend right-clicking on the material and running `lilToon/Remove unused properties` so that the appearance does not change when shader settings are changed. It used to be necessary to include lilToonSetting, but now it is not necessary. `Shader Setting` is automatically optimized by scanning materials and animations when importing assets.  
 1. Select the folder of your works.
@@ -130,7 +135,7 @@ This is the version that uses the shader keyword and allows you to use all the f
 You can convert from the normal version to the Mutli version with one click.  
 This also works well with the avatar display as it is not affected by shader settings.  
 It is not available in Unity 2018 and earlier, but you can use it by rewriting `shader_feature_local` to `shader_feature` in the shader.  
-If you use AvatarEncryption, replace `//#define LIL_FEATURE_ENCRYPTION` in `ltsmulti.shader` with `#define LIL_FEATURE_ENCRYPTION`.
+If you use AvatarEncryption, replace `//#define LIL_FEATURE_ENCRYPTION` in `lil_replace_keywords.hlsl` with `#define LIL_FEATURE_ENCRYPTION`.
 
 # Other
 [Developer Documentation](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/DeveloperDocumentation_JP.md)

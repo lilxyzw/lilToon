@@ -302,79 +302,121 @@ SAMPLER(sampler_linear_clamp);
     float4  _Color;
     float4  _MainTex_ST;
     float4  _MainTex_ScrollRotate;
-    float4  _MainTexHSVG;
-    float4  _Color2nd;
-    float4  _Main2ndTex_ST;
-    float4  _Main2ndDistanceFade;
-    float4  _Main2ndTexDecalAnimation;
-    float4  _Main2ndTexDecalSubParam;
-    float4  _Main2ndDissolveMask_ST;
-    float4  _Main2ndDissolveColor;
-    float4  _Main2ndDissolveParams;
-    float4  _Main2ndDissolvePos;
-    float4  _Main2ndDissolveNoiseMask_ST;
-    float4  _Main2ndDissolveNoiseMask_ScrollRotate;
-    float4  _Color3rd;
-    float4  _Main3rdTex_ST;
-    float4  _Main3rdDistanceFade;
-    float4  _Main3rdTexDecalAnimation;
-    float4  _Main3rdTexDecalSubParam;
-    float4  _Main3rdDissolveMask_ST;
-    float4  _Main3rdDissolveColor;
-    float4  _Main3rdDissolveParams;
-    float4  _Main3rdDissolvePos;
-    float4  _Main3rdDissolveNoiseMask_ST;
-    float4  _Main3rdDissolveNoiseMask_ScrollRotate;
-    float4  _ShadowColor;
-    float4  _Shadow2ndColor;
-    float4  _ShadowBorderColor;
-    float4  _EmissionColor;
-    float4  _EmissionBlink;
-    float4  _EmissionMap_ST;
-    float4  _EmissionMap_ScrollRotate;
-    float4  _EmissionBlendMask_ST;
-    float4  _EmissionBlendMask_ScrollRotate;
-    float4  _Emission2ndColor;
-    float4  _Emission2ndBlink;
-    float4  _Emission2ndMap_ST;
-    float4  _Emission2ndMap_ScrollRotate;
-    float4  _Emission2ndBlendMask_ST;
-    float4  _Emission2ndBlendMask_ScrollRotate;
-    float4  _BumpMap_ST;
-    float4  _Bump2ndMap_ST;
-    float4  _ReflectionColor;
-    float4  _MatCapColor;
-    float4  _MatCapBumpMap_ST;
-    float4  _MatCap2ndColor;
-    float4  _MatCap2ndBumpMap_ST;
-    float4  _RimColor;
-    float4 _RimIndirColor;
-    float4  _GlitterColor;
-    float4 _GlitterParams1;
-    float4 _GlitterParams2;
-    float4 _DistanceFade;
-    float4 _DistanceFadeColor;
-    float4  _AudioLinkUVParams;
-    float4  _AudioLinkVertexUVParams;
-    float4  _AudioLinkVertexStart;
-    float4  _AudioLinkVertexStrength;
-    float4  _AudioLinkLocalMapParams;
-    float4  _DissolveMask_ST;
-    float4  _DissolveColor;
-    float4  _DissolveParams;
-    float4  _DissolvePos;
-    float4  _DissolveNoiseMask_ST;
-    float4  _DissolveNoiseMask_ScrollRotate;
-    float4  _Keys;
-    float4  _OutlineColor;
-    float4  _OutlineTex_ST;
-    float4  _OutlineTex_ScrollRotate;
-    float4  _OutlineTexHSVG;
-    float4  _FurNoiseMask_ST;
-    float4  _FurVector;
-    float4  _RefractionColor;
-    float4  _GemParticleColor;
-    float4  _GemEnvColor;
+    #if defined(LIL_MULTI_INPUTS_MAIN_TONECORRECTION)
+        float4  _MainTexHSVG;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MAIN2ND)
+        float4  _Color2nd;
+        float4  _Main2ndTex_ST;
+        float4  _Main2ndDistanceFade;
+        float4  _Main2ndTexDecalAnimation;
+        float4  _Main2ndTexDecalSubParam;
+        float4  _Main2ndDissolveMask_ST;
+        float4  _Main2ndDissolveColor;
+        float4  _Main2ndDissolveParams;
+        float4  _Main2ndDissolvePos;
+        float4  _Main2ndDissolveNoiseMask_ST;
+        float4  _Main2ndDissolveNoiseMask_ScrollRotate;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MAIN3RD)
+        float4  _Color3rd;
+        float4  _Main3rdTex_ST;
+        float4  _Main3rdDistanceFade;
+        float4  _Main3rdTexDecalAnimation;
+        float4  _Main3rdTexDecalSubParam;
+        float4  _Main3rdDissolveMask_ST;
+        float4  _Main3rdDissolveColor;
+        float4  _Main3rdDissolveParams;
+        float4  _Main3rdDissolvePos;
+        float4  _Main3rdDissolveNoiseMask_ST;
+        float4  _Main3rdDissolveNoiseMask_ScrollRotate;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_SHADOW)
+        float4  _ShadowColor;
+        float4  _Shadow2ndColor;
+        float4  _ShadowBorderColor;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_EMISSION)
+        float4  _EmissionColor;
+        float4  _EmissionBlink;
+        float4  _EmissionMap_ST;
+        float4  _EmissionMap_ScrollRotate;
+        float4  _EmissionBlendMask_ST;
+        float4  _EmissionBlendMask_ScrollRotate;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_EMISSION_2ND)
+        float4  _Emission2ndColor;
+        float4  _Emission2ndBlink;
+        float4  _Emission2ndMap_ST;
+        float4  _Emission2ndMap_ScrollRotate;
+        float4  _Emission2ndBlendMask_ST;
+        float4  _Emission2ndBlendMask_ScrollRotate;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_NORMAL)
+        float4  _BumpMap_ST;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_NORMAL_2ND)
+        float4  _Bump2ndMap_ST;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_REFLECTION)
+        float4  _ReflectionColor;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MATCAP)
+        float4  _MatCapColor;
+        float4  _MatCapBumpMap_ST;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MATCAP_2ND)
+        float4  _MatCap2ndColor;
+        float4  _MatCap2ndBumpMap_ST;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_RIM)
+        float4  _RimColor;
+        float4  _RimIndirColor;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_GLITTER)
+        float4  _GlitterColor;
+        float4  _GlitterParams1;
+        float4  _GlitterParams2;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_DISTANCE_FADE)
+        float4  _DistanceFade;
+        float4  _DistanceFadeColor;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_AUDIOLINK)
+        float4  _AudioLinkUVParams;
+        float4  _AudioLinkVertexUVParams;
+        float4  _AudioLinkVertexStart;
+        float4  _AudioLinkVertexStrength;
+        float4  _AudioLinkLocalMapParams;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_DISSOLVE)
+        float4  _DissolveMask_ST;
+        float4  _DissolveColor;
+        float4  _DissolveParams;
+        float4  _DissolvePos;
+        float4  _DissolveNoiseMask_ST;
+        float4  _DissolveNoiseMask_ScrollRotate;
+    #endif
+    #if defined(LIL_FEATURE_ENCRYPTION)
+        float4  _Keys;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_OUTLINE)
+        float4  _OutlineColor;
+        float4  _OutlineTex_ST;
+        float4  _OutlineTex_ScrollRotate;
+        float4  _OutlineTexHSVG;
+    #endif
+    #if defined(LIL_FUR)
+        float4  _FurNoiseMask_ST;
+        float4  _FurVector;
+    #endif
+    #if defined(LIL_REFRACTION) || defined(LIL_GEM)
+        float4  _RefractionColor;
+    #endif
+    #if defined(LIL_GEM)
+        float4  _GemParticleColor;
+        float4  _GemEnvColor;
+    #endif
     float   _AsUnlit;
     float   _Cutoff;
     float   _FlipNormal;
@@ -384,140 +426,239 @@ SAMPLER(sampler_linear_clamp);
     float   _BeforeExposureLimit;
     float   _MonochromeLighting;
     float   _lilDirectionalLightStrength;
-    float   _MainGradationStrength;
-    float   _Main2ndTexAngle;
-    float   _Main2ndEnableLighting;
-    float   _Main2ndDissolveNoiseStrength;
-    float   _Main3rdTexAngle;
-    float   _Main3rdEnableLighting;
-    float   _Main3rdDissolveNoiseStrength;
-    float   _AlphaMaskValue;
+    #if defined(LIL_MULTI_INPUTS_MAIN_TONECORRECTION)
+        float   _MainGradationStrength;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MAIN2ND)
+        float   _Main2ndTexAngle;
+        float   _Main2ndEnableLighting;
+        float   _Main2ndDissolveNoiseStrength;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MAIN3RD)
+        float   _Main3rdTexAngle;
+        float   _Main3rdEnableLighting;
+        float   _Main3rdDissolveNoiseStrength;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_ALPHAMASK)
+        float   _AlphaMaskValue;
+    #endif
     float   _BackfaceForceShadow;
-    float   _ShadowStrength;
-    float   _ShadowBorder;
-    float   _ShadowBlur;
-    float   _Shadow2ndBorder;
-    float   _Shadow2ndBlur;
-    float   _ShadowMainStrength;
-    float   _ShadowEnvStrength;
-    float   _ShadowBorderRange;
-    float   _BumpScale;
-    float   _Bump2ndScale;
-    float   _Smoothness;
-    float   _Reflectance;
-    float   _Metallic;
-    float   _MatCapBlend;
-    float   _MatCapEnableLighting;
-    float   _MatCapBumpScale;
-    float   _MatCap2ndBlend;
-    float   _MatCap2ndEnableLighting;
-    float   _MatCap2ndBumpScale;
-    float   _RimBorder;
-    float   _RimBlur;
-    float   _RimFresnelPower;
-    float   _RimEnableLighting;
-    float   _RimDirStrength;
-    float   _RimDirRange;
-    float   _RimIndirRange;
-    float   _RimIndirBorder;
-    float   _RimIndirBlur;
-    float   _GlitterMainStrength;
-    float   _GlitterEnableLighting;
-    float   _GlitterVRParallaxStrength;
-    float   _EmissionBlend;
-    float   _EmissionParallaxDepth;
-    float   _EmissionFluorescence;
-    float   _EmissionGradSpeed;
-    float   _Emission2ndBlend;
-    float   _Emission2ndParallaxDepth;
-    float   _Emission2ndFluorescence;
-    float   _Emission2ndGradSpeed;
-    float   _Parallax;
-    float   _ParallaxOffset;
-    float   _DissolveNoiseStrength;
-    float   _OutlineWidth;
-    float   _OutlineEnableLighting;
-    float   _FurGravity;
-    float   _FurAO;
-    float   _FurRootOffset;
-    float   _RefractionStrength;
-    float   _RefractionFresnelPower;
-    float   _TessEdge;
-    float   _TessStrength;
-    float   _TessShrink;
-    float   _TessFactorMax;
-    float   _GemChromaticAberration;
-    float   _GemParticleLoop;
-    float   _GemEnvContrast;
-    float   _GemVRParallaxStrength;
+    #if defined(LIL_MULTI_INPUTS_SHADOW)
+        float   _ShadowStrength;
+        float   _ShadowBorder;
+        float   _ShadowBlur;
+        float   _Shadow2ndBorder;
+        float   _Shadow2ndBlur;
+        float   _ShadowMainStrength;
+        float   _ShadowEnvStrength;
+        float   _ShadowBorderRange;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_NORMAL)
+        float   _BumpScale;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_NORMAL_2ND)
+        float   _Bump2ndScale;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_REFLECTION) || defined(LIL_GEM)
+        float   _Smoothness;
+        float   _Reflectance;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_REFLECTION)
+        float   _Metallic;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MATCAP)
+        float   _MatCapBlend;
+        float   _MatCapEnableLighting;
+        float   _MatCapBumpScale;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MATCAP_2ND)
+        float   _MatCap2ndBlend;
+        float   _MatCap2ndEnableLighting;
+        float   _MatCap2ndBumpScale;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_RIM)
+        float   _RimBorder;
+        float   _RimBlur;
+        float   _RimFresnelPower;
+        float   _RimEnableLighting;
+        float   _RimDirStrength;
+        float   _RimDirRange;
+        float   _RimIndirRange;
+        float   _RimIndirBorder;
+        float   _RimIndirBlur;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_GLITTER)
+        float   _GlitterMainStrength;
+        float   _GlitterEnableLighting;
+        float   _GlitterVRParallaxStrength;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_EMISSION)
+        float   _EmissionBlend;
+        float   _EmissionParallaxDepth;
+        float   _EmissionFluorescence;
+        float   _EmissionGradSpeed;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_EMISSION_2ND)
+        float   _Emission2ndBlend;
+        float   _Emission2ndParallaxDepth;
+        float   _Emission2ndFluorescence;
+        float   _Emission2ndGradSpeed;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_PARALLAX)
+        float   _Parallax;
+        float   _ParallaxOffset;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_DISSOLVE)
+        float   _DissolveNoiseStrength;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_OUTLINE)
+        float   _OutlineWidth;
+        float   _OutlineEnableLighting;
+    #endif
+    #if defined(LIL_FUR)
+        float   _FurVectorScale;
+        float   _FurGravity;
+        float   _FurAO;
+        float   _FurRootOffset;
+    #endif
+    #if defined(LIL_REFRACTION) || defined(LIL_GEM)
+        float   _RefractionStrength;
+        float   _RefractionFresnelPower;
+    #endif
+    #if defined(LIL_TESSELLATION)
+        float   _TessEdge;
+        float   _TessStrength;
+        float   _TessShrink;
+        float   _TessFactorMax;
+    #endif
+    #if defined(LIL_GEM)
+        float   _GemChromaticAberration;
+        float   _GemParticleLoop;
+        float   _GemEnvContrast;
+        float   _GemVRParallaxStrength;
+    #endif
     uint    _Cull;
-    uint    _OutlineCull;
-    uint    _Main2ndTexBlendMode;
-    uint    _Main3rdTexBlendMode;
-    uint    _AlphaMaskMode;
-    uint    _MatCapBlendMode;
-    uint    _MatCap2ndBlendMode;
-    uint    _GlitterUVMode;
-    uint    _AudioLinkUVMode;
-    uint    _AudioLinkVertexUVMode;
-    uint    _FurLayerNum;
+    #if defined(LIL_MULTI_INPUTS_OUTLINE)
+        uint    _OutlineCull;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MAIN2ND)
+        uint    _Main2ndTexBlendMode;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MAIN3RD)
+        uint    _Main3rdTexBlendMode;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_ALPHAMASK)
+        uint    _AlphaMaskMode;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MATCAP)
+        uint    _MatCapBlendMode;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MATCAP_2ND)
+        uint    _MatCap2ndBlendMode;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_GLITTER)
+        uint    _GlitterUVMode;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_AUDIOLINK)
+        uint    _AudioLinkUVMode;
+        uint    _AudioLinkVertexUVMode;
+    #endif
+    #if defined(LIL_FUR)
+        uint    _FurLayerNum;
+    #endif
     lilBool _Invisible;
-    lilBool _UseMain2ndTex;
-    lilBool _Main2ndTexIsMSDF;
-    lilBool _Main2ndTexIsDecal;
-    lilBool _Main2ndTexIsLeftOnly;
-    lilBool _Main2ndTexIsRightOnly;
-    lilBool _Main2ndTexShouldCopy;
-    lilBool _Main2ndTexShouldFlipMirror;
-    lilBool _Main2ndTexShouldFlipCopy;
-    lilBool _UseMain3rdTex;
-    lilBool _Main3rdTexIsMSDF;
-    lilBool _Main3rdTexIsDecal;
-    lilBool _Main3rdTexIsLeftOnly;
-    lilBool _Main3rdTexIsRightOnly;
-    lilBool _Main3rdTexShouldCopy;
-    lilBool _Main3rdTexShouldFlipMirror;
-    lilBool _Main3rdTexShouldFlipCopy;
-    lilBool _UseShadow;
-    lilBool _ShadowReceive;
-    lilBool _UseBumpMap;
-    lilBool _UseBump2ndMap;
-    lilBool _UseReflection;
-    lilBool _ApplySpecular;
-    lilBool _ApplyReflection;
-    lilBool _SpecularToon;
-    lilBool _ReflectionApplyTransparency;
-    lilBool _UseMatCap;
-    lilBool _MatCapApplyTransparency;
-    lilBool _MatCapZRotCancel;
-    lilBool _MatCapCustomNormal;
-    lilBool _UseMatCap2nd;
-    lilBool _MatCap2ndApplyTransparency;
-    lilBool _MatCap2ndZRotCancel;
-    lilBool _MatCap2ndCustomNormal;
-    lilBool _UseRim;
-    lilBool _RimShadowMask;
-    lilBool _RimApplyTransparency;
-    lilBool _UseGlitter;
-    lilBool _GlitterShadowMask;
-    lilBool _GlitterApplyTransparency;
-    lilBool _UseEmission;
-    lilBool _EmissionUseGrad;
-    lilBool _UseEmission2nd;
-    lilBool _Emission2ndUseGrad;
-    lilBool _UseParallax;
-    lilBool _UseAudioLink;
-    lilBool _AudioLink2Main2nd;
-    lilBool _AudioLink2Main3rd;
-    lilBool _AudioLink2Emission;
-    lilBool _AudioLink2Emission2nd;
-    lilBool _AudioLink2Vertex;
-    lilBool _AudioLinkAsLocal;
-    lilBool _IgnoreEncryption;
-    lilBool _OutlineFixWidth;
-    lilBool _OutlineVertexR2Width;
-    lilBool _VertexColor2FurVector;
-    lilBool _RefractionColorFromMain;
+    #if defined(LIL_MULTI_INPUTS_MAIN2ND)
+        lilBool _UseMain2ndTex;
+        lilBool _Main2ndTexIsMSDF;
+        lilBool _Main2ndTexIsDecal;
+        lilBool _Main2ndTexIsLeftOnly;
+        lilBool _Main2ndTexIsRightOnly;
+        lilBool _Main2ndTexShouldCopy;
+        lilBool _Main2ndTexShouldFlipMirror;
+        lilBool _Main2ndTexShouldFlipCopy;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MAIN3RD)
+        lilBool _UseMain3rdTex;
+        lilBool _Main3rdTexIsMSDF;
+        lilBool _Main3rdTexIsDecal;
+        lilBool _Main3rdTexIsLeftOnly;
+        lilBool _Main3rdTexIsRightOnly;
+        lilBool _Main3rdTexShouldCopy;
+        lilBool _Main3rdTexShouldFlipMirror;
+        lilBool _Main3rdTexShouldFlipCopy;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_SHADOW)
+        lilBool _UseShadow;
+        lilBool _ShadowReceive;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_NORMAL)
+        lilBool _UseBumpMap;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_NORMAL_2ND)
+        lilBool _UseBump2ndMap;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_REFLECTION)
+        lilBool _UseReflection;
+        lilBool _ApplySpecular;
+        lilBool _ApplyReflection;
+        lilBool _SpecularToon;
+        lilBool _ReflectionApplyTransparency;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MATCAP)
+        lilBool _UseMatCap;
+        lilBool _MatCapApplyTransparency;
+        lilBool _MatCapZRotCancel;
+        lilBool _MatCapCustomNormal;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_MATCAP_2ND)
+        lilBool _UseMatCap2nd;
+        lilBool _MatCap2ndApplyTransparency;
+        lilBool _MatCap2ndZRotCancel;
+        lilBool _MatCap2ndCustomNormal;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_RIM)
+        lilBool _UseRim;
+        lilBool _RimShadowMask;
+        lilBool _RimApplyTransparency;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_GLITTER)
+        lilBool _UseGlitter;
+        lilBool _GlitterShadowMask;
+        lilBool _GlitterApplyTransparency;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_EMISSION)
+        lilBool _UseEmission;
+        lilBool _EmissionUseGrad;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_EMISSION_2ND)
+        lilBool _UseEmission2nd;
+        lilBool _Emission2ndUseGrad;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_PARALLAX)
+        lilBool _UseParallax;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_AUDIOLINK)
+        lilBool _UseAudioLink;
+        lilBool _AudioLink2Main2nd;
+        lilBool _AudioLink2Main3rd;
+        lilBool _AudioLink2Emission;
+        lilBool _AudioLink2Emission2nd;
+        lilBool _AudioLink2Vertex;
+        lilBool _AudioLinkAsLocal;
+    #endif
+    #if defined(LIL_FEATURE_ENCRYPTION)
+        lilBool _IgnoreEncryption;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_OUTLINE)
+        lilBool _OutlineFixWidth;
+        lilBool _OutlineVertexR2Width;
+    #endif
+    #if defined(LIL_FUR)
+        lilBool _VertexColor2FurVector;
+    #endif
+    #if defined(LIL_REFRACTION)
+        lilBool _RefractionColorFromMain;
+    #endif
 
     #if defined(LIL_CUSTOM_PROPERTIES)
         LIL_CUSTOM_PROPERTIES

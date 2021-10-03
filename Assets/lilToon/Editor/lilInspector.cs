@@ -273,6 +273,9 @@ namespace lilToon
         private static Shader ltsptesst     = Shader.Find("Hidden/ltspass_tess_transparent");
 
         private static Shader ltsm          = Shader.Find("_lil/lilToonMulti");
+        private static Shader ltsmref       = Shader.Find("Hidden/lilToonMultiRefraction");
+        private static Shader ltsmfur       = Shader.Find("Hidden/lilToonMultiFur");
+        private static Shader ltsmgem       = Shader.Find("Hidden/lilToonMultiGem");
 
         private static Shader mtoon         = Shader.Find("VRM/MToon");
 
@@ -376,6 +379,7 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Material properties
         MaterialProperty transparentModeMat;
+        MaterialProperty asOverlay;
         MaterialProperty invisible;
         MaterialProperty asUnlit;
         MaterialProperty cutoff;
@@ -765,6 +769,7 @@ namespace lilToon
             ApplyEditorSettingTemp();
             InitializeShaders();
             InitializeShaderSetting(ref shaderSetting);
+            ResetProperties();
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Load Material
@@ -803,17 +808,50 @@ namespace lilToon
             if(isTwoPass)       transparentModeBuf = TransparentMode.TwoPass;
 
             //------------------------------------------------------------------------------------------------------------------------------
+            // Multi shader
+            if(isMulti)
+            {
+                LoadMultiProperties(props);
+
+                isOutl = !material.shader.name.Contains("Refraction") && !material.shader.name.Contains("Fur") && !material.shader.name.Contains("Gem");
+                if(transparentModeMat.floatValue == 1.0f)
+                {
+                    isCutout = true;
+                }
+                if(transparentModeMat.floatValue == 2.0f)
+                {
+                    isTransparent = true;
+                }
+                if(transparentModeMat.floatValue == 3.0f)
+                {
+                    isRefr = true;
+                }
+                if(transparentModeMat.floatValue == 4.0f)
+                {
+                    isFur = true;
+                }
+                if(transparentModeMat.floatValue == 5.0f)
+                {
+                    isCutout = true;
+                    isFur = true;
+                }
+                if(transparentModeMat.floatValue == 6.0f)
+                {
+                    isGem = true;
+                }
+            }
+
+            //------------------------------------------------------------------------------------------------------------------------------
             // Load Properties
-            ResetProperties();
             if(isLite)      LoadLiteProperties(props);
             else if(isFur)  LoadFurProperties(props);
             else if(isGem)  LoadGemProperties(props);
             else if(isFakeShadow) LoadFakeShadowProperties(props);
             else            LoadProperties(props);
 
-            if(isMulti)     LoadMultiProperties(props);
-
             LoadCustomProperties(props, material);
+
+            if(isMulti)         isOutl = false;
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Stencil
@@ -840,7 +878,7 @@ namespace lilToon
             string sDissolveParamsOther = GetLoc("sDissolveShape") + "|" + GetLoc("sDissolveShapePoint") + "|" + GetLoc("sDissolveShapeLine") + "|" + GetLoc("sBorder") + "|" + GetLoc("sBlur") + "|Dummy";
             string sGlitterParams1 = "Tiling" + "|" + GetLoc("sParticleSize") + "|" + GetLoc("sContrast");
             string sGlitterParams2 = GetLoc("sBlinkSpeed") + "|" + GetLoc("sAngleLimit") + "|" + GetLoc("sRimLightDirection") + "|" + GetLoc("sColorRandomness");
-            string sTransparentMode = GetLoc("sRenderingMode") + "|" + GetLoc("sRenderingModeOpaque") + "|" + GetLoc("sRenderingModeCutout") + "|" + GetLoc("sRenderingModeTransparent");
+            string sTransparentMode = GetLoc("sRenderingMode") + "|" + GetLoc("sRenderingModeOpaque") + "|" + GetLoc("sRenderingModeCutout") + "|" + GetLoc("sRenderingModeTransparent") + "|" + GetLoc("sRenderingModeRefraction") + "|" + GetLoc("sRenderingModeFur") + "|" + GetLoc("sRenderingModeFurCutout") + "|" + GetLoc("sRenderingModeGem");
             string[] sRenderingModeList = {GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeRefractionBlur"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout"), GetLoc("sRenderingModeGem")};
             string[] sRenderingModeListLite = {GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent")};
             string[] sTransparentModeList = {GetLoc("sTransparentModeNormal"), GetLoc("sTransparentModeOnePass"), GetLoc("sTransparentModeTwoPass")};
@@ -1943,6 +1981,7 @@ namespace lilToon
                         {
                             float transparentModeMatBuf = transparentModeMat.floatValue;
                             materialEditor.ShaderProperty(transparentModeMat, sTransparentMode);
+                            materialEditor.ShaderProperty(asOverlay, GetLoc("sAsOverlay"));
                             if(transparentModeMatBuf != transparentModeMat.floatValue)
                             {
                                 SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
@@ -1955,7 +1994,7 @@ namespace lilToon
                             {
                                 EditorGUILayout.HelpBox(GetLoc("sHelpRenderingTransparent"),MessageType.Warning);
                             }
-                            if(renderingModeBuf == RenderingMode.Cutout || renderingModeBuf == RenderingMode.Transparent || renderingModeBuf == RenderingMode.Fur || renderingModeBuf == RenderingMode.FurCutout || isMulti && transparentModeMat.floatValue != 0.0f)
+                            if(renderingModeBuf == RenderingMode.Cutout || renderingModeBuf == RenderingMode.Transparent || renderingModeBuf == RenderingMode.Fur || renderingModeBuf == RenderingMode.FurCutout || isMulti && transparentModeMat.floatValue != 0.0f && transparentModeMat.floatValue != 3.0f && transparentModeMat.floatValue != 6.0f)
                             {
                                 materialEditor.ShaderProperty(cutoff, GetLoc("sCutoff"));
                             }
@@ -3727,7 +3766,7 @@ namespace lilToon
                 shadowBorderRange = FindProperty("_ShadowBorderRange", props);
                 shadowReceive = FindProperty("_ShadowReceive", props);
             // Outline
-            if(isOutl || isMulti)
+            if(isOutl)
             {
                 outlineColor = FindProperty("_OutlineColor", props);
                 outlineTex = FindProperty("_OutlineTex", props);
@@ -4025,6 +4064,7 @@ namespace lilToon
         {
             invisible = FindProperty("_Invisible", props);
             asUnlit = FindProperty("_AsUnlit", props);
+            cutoff = FindProperty("_Cutoff", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
             lightMinLimit = FindProperty("_LightMinLimit", props);
             lightMaxLimit = FindProperty("_LightMaxLimit", props);
@@ -4327,6 +4367,7 @@ namespace lilToon
             useOutline = FindProperty("_UseOutline", props);
             usePOM = FindProperty("_UsePOM", props);
             useClippingCanceller = FindProperty("_UseClippingCanceller", props);
+            asOverlay = FindProperty("_AsOverlay", props);
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -5155,6 +5196,9 @@ namespace lilToon
             ltsptesst = Shader.Find("Hidden/ltspass_tess_transparent");
 
             ltsm      = Shader.Find("_lil/lilToonMulti");
+            ltsmref   = Shader.Find("Hidden/lilToonMultiRefraction");
+            ltsmfur   = Shader.Find("Hidden/lilToonMultiFur");
+            ltsmgem   = Shader.Find("Hidden/lilToonMultiGem");
 
             mtoon     = Shader.Find("VRM/MToon");
         }
@@ -7331,8 +7375,10 @@ namespace lilToon
         {
             if(isMulti)
             {
-                if(material.GetFloat("_TransparentMode") == 1.0f)
+                float tpmode = material.GetFloat("_TransparentMode");
+                if(tpmode == 1.0f)
                 {
+                    material.shader = ltsm;
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     material.SetInt("_OutlineSrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
@@ -7342,8 +7388,9 @@ namespace lilToon
                     material.SetOverrideTag("RenderType", "TransparentCutout");
                     material.renderQueue = 2450;
                 }
-                else if(material.GetFloat("_TransparentMode") == 2.0f)
+                else if(tpmode == 2.0f)
                 {
+                    material.shader = ltsm;
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                     material.SetInt("_OutlineSrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
@@ -7353,8 +7400,54 @@ namespace lilToon
                     material.SetOverrideTag("RenderType", "Transparent");
                     material.renderQueue = 2501;
                 }
+                else if(tpmode == 3.0f)
+                {
+                    material.shader = ltsmref;
+                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                    material.SetInt("_AlphaToMask", 0);
+                    material.SetOverrideTag("RenderType", "");
+                    material.renderQueue = 3000;
+                }
+                else if(tpmode == 4.0f)
+                {
+                    material.shader = ltsmfur;
+                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    material.SetInt("_AlphaToMask", 0);
+                    material.SetInt("_FurSrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                    material.SetInt("_FurDstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    material.SetInt("_FurZWrite", 0);
+                    material.SetInt("_FurAlphaToMask", 0);
+                    material.SetOverrideTag("RenderType", "Transparent");
+                    material.renderQueue = 3000;
+                }
+                else if(tpmode == 5.0f)
+                {
+                    material.shader = ltsmfur;
+                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                    material.SetInt("_AlphaToMask", 1);
+                    material.SetInt("_FurSrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_FurDstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                    material.SetInt("_FurZWrite", 1);
+                    material.SetInt("_FurAlphaToMask", 1);
+                    material.SetOverrideTag("RenderType", "TransparentCutout");
+                    material.renderQueue = 3000;
+                }
+                else if(tpmode == 6.0f)
+                {
+                    material.shader = ltsmgem;
+                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_AlphaToMask", 0);
+                    material.SetInt("_Cull", 0);
+                    material.SetOverrideTag("RenderType", "");
+                    material.renderQueue = 3000;
+                }
                 else
                 {
+                    material.shader = ltsm;
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     material.SetInt("_OutlineSrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
@@ -7365,7 +7458,8 @@ namespace lilToon
                     material.renderQueue = -1;
                 }
                 if(isstencil) material.renderQueue = material.shader.renderQueue - 1;
-                material.SetInt("_ZWrite", 1);
+                if(tpmode == 4.0f || tpmode == 6.0f)    material.SetInt("_ZWrite", 0);
+                else                                    material.SetInt("_ZWrite", 1);
                 material.SetInt("_ZTest", 4);
                 material.SetFloat("_OffsetFactor", 0.0f);
                 material.SetFloat("_OffsetUnits", 0.0f);
@@ -7380,22 +7474,42 @@ namespace lilToon
                 material.SetInt("_DstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
                 material.SetInt("_BlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
                 material.SetInt("_BlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
-                material.SetInt("_OutlineCull", 1);
-                material.SetInt("_OutlineZWrite", 1);
-                material.SetInt("_OutlineZTest", 2);
-                material.SetFloat("_OutlineOffsetFactor", 0.0f);
-                material.SetFloat("_OutlineOffsetUnits", 0.0f);
-                material.SetInt("_OutlineColorMask", 15);
-                material.SetInt("_OutlineSrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_OutlineDstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                material.SetInt("_OutlineBlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
-                material.SetInt("_OutlineBlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
-                material.SetInt("_OutlineSrcBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_OutlineDstBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_OutlineSrcBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.Zero);
-                material.SetInt("_OutlineDstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_OutlineBlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
-                material.SetInt("_OutlineBlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
+                if(tpmode <= 2.0f)
+                {
+                    material.SetInt("_OutlineCull", 1);
+                    material.SetInt("_OutlineZWrite", 1);
+                    material.SetInt("_OutlineZTest", 2);
+                    material.SetFloat("_OutlineOffsetFactor", 0.0f);
+                    material.SetFloat("_OutlineOffsetUnits", 0.0f);
+                    material.SetInt("_OutlineColorMask", 15);
+                    material.SetInt("_OutlineSrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_OutlineDstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    material.SetInt("_OutlineBlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
+                    material.SetInt("_OutlineBlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
+                    material.SetInt("_OutlineSrcBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_OutlineDstBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_OutlineSrcBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.Zero);
+                    material.SetInt("_OutlineDstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_OutlineBlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
+                    material.SetInt("_OutlineBlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
+                }
+                if(renderingMode == RenderingMode.Fur || renderingMode == RenderingMode.FurCutout)
+                {
+                    material.SetInt("_FurZTest", 4);
+                    material.SetFloat("_FurOffsetFactor", 0.0f);
+                    material.SetFloat("_FurOffsetUnits", 0.0f);
+                    material.SetInt("_FurColorMask", 15);
+                    material.SetInt("_FurSrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_FurDstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    material.SetInt("_FurBlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
+                    material.SetInt("_FurBlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
+                    material.SetInt("_FurSrcBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_FurDstBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_FurSrcBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.Zero);
+                    material.SetInt("_FurDstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
+                    material.SetInt("_FurBlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
+                    material.SetInt("_FurBlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
+                }
                 return;
             }
             switch (renderingMode)
@@ -7942,37 +8056,97 @@ namespace lilToon
 
         internal void SetupMultiMaterial(Material material)
         {
-            material.SetShaderPassEnabled("SRPDEFAULTUNLIT",                    material.GetFloat("_UseOutline") != 0.0f);
             SetShaderKeywords(material, "ETC1_EXTERNAL_ALPHA",                  material.GetFloat("_UseOutline") != 0.0f);
             SetShaderKeywords(material, "UNITY_UI_ALPHACLIP",                   material.GetFloat("_TransparentMode") == 1.0f);
-            SetShaderKeywords(material, "UNITY_UI_CLIP_RECT",                   material.GetFloat("_TransparentMode") == 2.0f);
-            SetShaderKeywords(material, "EFFECT_HUE_VARIATION",                 mainTexHSVG.vectorValue != defaultHSVG || mainGradationStrength.floatValue != 0.0f);
-            SetShaderKeywords(material, "_COLORADDSUBDIFF_ON",                  useMain2ndTex.floatValue != 0.0f);
-            SetShaderKeywords(material, "_COLORCOLOR_ON",                       useMain3rdTex.floatValue != 0.0f);
-            SetShaderKeywords(material, "_SUNDISK_NONE",                        useMain2ndTex.floatValue != 0.0f && main2ndTexDecalAnimation.vectorValue != defaultDecalAnim || useMain3rdTex.floatValue != 0.0f && main3rdTexDecalAnimation.vectorValue != defaultDecalAnim);
-            SetShaderKeywords(material, "GEOM_TYPE_FROND",                      useMain2ndTex.floatValue != 0.0f && main2ndDissolveParams.vectorValue.x != 0.0f || useMain3rdTex.floatValue != 0.0f && main3rdDissolveParams.vectorValue.x != 0.0f);
-            SetShaderKeywords(material, "_COLOROVERLAY_ON",                     material.GetFloat("_TransparentMode") != 0.0f && alphaMaskMode.floatValue != 0.0f);
-            SetShaderKeywords(material, "_REQUIRE_UV2",                         useShadow.floatValue != 0.0f);
-            SetShaderKeywords(material, "_EMISSION",                            useEmission.floatValue != 0.0f);
-            SetShaderKeywords(material, "GEOM_TYPE_BRANCH",                     useEmission2nd.floatValue != 0.0f);
-            SetShaderKeywords(material, "_SUNDISK_SIMPLE",                      useEmission.floatValue != 0.0f && emissionBlendMask.textureValue != null || useEmission2nd.floatValue != 0.0f && emission2ndBlendMask.textureValue != null);
-            SetShaderKeywords(material, "_NORMALMAP",                           useBumpMap.floatValue != 0.0f);
-            SetShaderKeywords(material, "EFFECT_BUMP",                          useBump2ndMap.floatValue != 0.0f);
-            SetShaderKeywords(material, "_GLOSSYREFLECTIONS_OFF",               useReflection.floatValue != 0.0f);
-            SetShaderKeywords(material, "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A", useMatCap.floatValue != 0.0f);
-            SetShaderKeywords(material, "_SPECULARHIGHLIGHTS_OFF",              useMatCap2nd.floatValue != 0.0f);
-            SetShaderKeywords(material, "GEOM_TYPE_MESH",                       useMatCap.floatValue != 0.0f && matcapCustomNormal.floatValue != 0.0f || useMatCap2nd.floatValue != 0.0f && matcap2ndCustomNormal.floatValue != 0.0f);
-            SetShaderKeywords(material, "_METALLICGLOSSMAP",                    useRim.floatValue != 0.0f);
-            SetShaderKeywords(material, "GEOM_TYPE_LEAF",                       rimDirStrength.floatValue != 0.0f);
-            SetShaderKeywords(material, "_SPECGLOSSMAP",                        useGlitter.floatValue != 0.0f);
-            SetShaderKeywords(material, "_PARALLAXMAP",                         useParallax.floatValue != 0.0f);
-            SetShaderKeywords(material, "PIXELSNAP_ON",                         material.GetFloat("_UsePOM") != 0.0f);
+            SetShaderKeywords(material, "UNITY_UI_CLIP_RECT",                   material.GetFloat("_TransparentMode") == 2.0f || material.GetFloat("_TransparentMode") == 4.0f);
             SetShaderKeywords(material, "BILLBOARD_FACE_CAMERA_POS",            material.GetFloat("_UseClippingCanceller") != 0.0f);
-            SetShaderKeywords(material, "_FADING_ON",                           distanceFade.vectorValue.z != 0.0f);
-            SetShaderKeywords(material, "_MAPPING_6_FRAMES_LAYOUT",             useAudioLink.floatValue != 0.0f);
-            SetShaderKeywords(material, "_SUNDISK_HIGH_QUALITY",                audioLinkAsLocal.floatValue != 0.0f);
-            SetShaderKeywords(material, "GEOM_TYPE_BRANCH_DETAIL",              dissolveParams.vectorValue.x != 0.0f);
-            SetShaderKeywords(material, "_DETAIL_MULX2",                        material.GetFloat("_UseOutline") != 0.0f && material.GetVector("_OutlineTexHSVG") != defaultHSVG);
+            material.SetShaderPassEnabled("ShadowCaster",                       material.GetFloat("_AsOverlay") == 0.0f);
+            material.SetShaderPassEnabled("DepthOnly",                          material.GetFloat("_AsOverlay") == 0.0f);
+            material.SetShaderPassEnabled("DepthNormals",                       material.GetFloat("_AsOverlay") == 0.0f);
+            material.SetShaderPassEnabled("DepthForwardOnly",                   material.GetFloat("_AsOverlay") == 0.0f);
+            material.SetShaderPassEnabled("MotionVectors",                      material.GetFloat("_AsOverlay") == 0.0f);
+
+            if(isGem)
+            {
+                SetShaderKeywords(material, "_REQUIRE_UV2",                         false);
+                SetShaderKeywords(material, "_FADING_ON",                           false);
+            }
+            else
+            {
+                SetShaderKeywords(material, "_REQUIRE_UV2",                         useShadow.floatValue != 0.0f);
+                SetShaderKeywords(material, "_FADING_ON",                           distanceFade.vectorValue.z != 0.0f);
+            }
+
+            if(isFur)
+            {
+                SetShaderKeywords(material, "_EMISSION",                            false);
+                SetShaderKeywords(material, "GEOM_TYPE_BRANCH",                     false);
+                SetShaderKeywords(material, "_SUNDISK_SIMPLE",                      false);
+                SetShaderKeywords(material, "_NORMALMAP",                           false);
+                SetShaderKeywords(material, "EFFECT_BUMP",                          false);
+                SetShaderKeywords(material, "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A", false);
+                SetShaderKeywords(material, "_SPECULARHIGHLIGHTS_OFF",              false);
+                SetShaderKeywords(material, "GEOM_TYPE_MESH",                       false);
+                SetShaderKeywords(material, "_METALLICGLOSSMAP",                    false);
+                SetShaderKeywords(material, "GEOM_TYPE_LEAF",                       false);
+                SetShaderKeywords(material, "_SPECGLOSSMAP",                        false);
+                SetShaderKeywords(material, "_MAPPING_6_FRAMES_LAYOUT",             false);
+                SetShaderKeywords(material, "_SUNDISK_HIGH_QUALITY",                false);
+                SetShaderKeywords(material, "GEOM_TYPE_BRANCH_DETAIL",              false);
+            }
+            else
+            {
+                SetShaderKeywords(material, "_EMISSION",                            useEmission.floatValue != 0.0f);
+                SetShaderKeywords(material, "GEOM_TYPE_BRANCH",                     useEmission2nd.floatValue != 0.0f);
+                SetShaderKeywords(material, "_SUNDISK_SIMPLE",                      useEmission.floatValue != 0.0f && emissionBlendMask.textureValue != null || useEmission2nd.floatValue != 0.0f && emission2ndBlendMask.textureValue != null);
+                SetShaderKeywords(material, "_NORMALMAP",                           useBumpMap.floatValue != 0.0f);
+                SetShaderKeywords(material, "EFFECT_BUMP",                          useBump2ndMap.floatValue != 0.0f);
+                SetShaderKeywords(material, "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A", useMatCap.floatValue != 0.0f);
+                SetShaderKeywords(material, "_SPECULARHIGHLIGHTS_OFF",              useMatCap2nd.floatValue != 0.0f);
+                SetShaderKeywords(material, "GEOM_TYPE_MESH",                       useMatCap.floatValue != 0.0f && matcapCustomNormal.floatValue != 0.0f || useMatCap2nd.floatValue != 0.0f && matcap2ndCustomNormal.floatValue != 0.0f);
+                SetShaderKeywords(material, "_METALLICGLOSSMAP",                    useRim.floatValue != 0.0f);
+                SetShaderKeywords(material, "GEOM_TYPE_LEAF",                       rimDirStrength.floatValue != 0.0f);
+                SetShaderKeywords(material, "_SPECGLOSSMAP",                        useGlitter.floatValue != 0.0f);
+                SetShaderKeywords(material, "_MAPPING_6_FRAMES_LAYOUT",             useAudioLink.floatValue != 0.0f);
+                SetShaderKeywords(material, "_SUNDISK_HIGH_QUALITY",                audioLinkAsLocal.floatValue != 0.0f);
+                SetShaderKeywords(material, "GEOM_TYPE_BRANCH_DETAIL",              dissolveParams.vectorValue.x != 0.0f);
+            }
+
+            if(isFur || isGem)
+            {
+                SetShaderKeywords(material, "EFFECT_HUE_VARIATION",                 false);
+                SetShaderKeywords(material, "_COLORADDSUBDIFF_ON",                  false);
+                SetShaderKeywords(material, "_COLORCOLOR_ON",                       false);
+                SetShaderKeywords(material, "_SUNDISK_NONE",                        false);
+                SetShaderKeywords(material, "GEOM_TYPE_FROND",                      false);
+                SetShaderKeywords(material, "_COLOROVERLAY_ON",                     false);
+                SetShaderKeywords(material, "_PARALLAXMAP",                         false);
+                SetShaderKeywords(material, "PIXELSNAP_ON",                         false);
+                SetShaderKeywords(material, "_GLOSSYREFLECTIONS_OFF",               false);
+            }
+            else
+            {
+                SetShaderKeywords(material, "EFFECT_HUE_VARIATION",                 mainTexHSVG.vectorValue != defaultHSVG || mainGradationStrength.floatValue != 0.0f);
+                SetShaderKeywords(material, "_COLORADDSUBDIFF_ON",                  useMain2ndTex.floatValue != 0.0f);
+                SetShaderKeywords(material, "_COLORCOLOR_ON",                       useMain3rdTex.floatValue != 0.0f);
+                SetShaderKeywords(material, "_SUNDISK_NONE",                        useMain2ndTex.floatValue != 0.0f && main2ndTexDecalAnimation.vectorValue != defaultDecalAnim || useMain3rdTex.floatValue != 0.0f && main3rdTexDecalAnimation.vectorValue != defaultDecalAnim);
+                SetShaderKeywords(material, "GEOM_TYPE_FROND",                      useMain2ndTex.floatValue != 0.0f && main2ndDissolveParams.vectorValue.x != 0.0f || useMain3rdTex.floatValue != 0.0f && main3rdDissolveParams.vectorValue.x != 0.0f);
+                SetShaderKeywords(material, "_COLOROVERLAY_ON",                     material.GetFloat("_TransparentMode") != 0.0f && alphaMaskMode.floatValue != 0.0f);
+                SetShaderKeywords(material, "_PARALLAXMAP",                         useParallax.floatValue != 0.0f);
+                SetShaderKeywords(material, "PIXELSNAP_ON",                         material.GetFloat("_UsePOM") != 0.0f);
+                SetShaderKeywords(material, "_GLOSSYREFLECTIONS_OFF",               useReflection.floatValue != 0.0f);
+            }
+
+            if(isRefr || isFur || isGem)
+            {
+                material.SetShaderPassEnabled("SRPDEFAULTUNLIT",                    true);
+                SetShaderKeywords(material, "_DETAIL_MULX2",                        false);
+            }
+            else
+            {
+                material.SetShaderPassEnabled("SRPDEFAULTUNLIT",                    material.GetFloat("_UseOutline") != 0.0f);
+                SetShaderKeywords(material, "_DETAIL_MULX2",                        material.GetFloat("_UseOutline") != 0.0f && material.GetVector("_OutlineTexHSVG") != defaultHSVG);
+            }
         }
 
         private static void RemoveUnusedTexture(Material material, bool islite, bool isfur, lilToonSetting shaderSetting)

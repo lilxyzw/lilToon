@@ -1,12 +1,17 @@
-Shader "Hidden/lilToonGem"
+Shader "Hidden/lilToonMultiRefraction"
 {
+    // Memo
+    // If you are using Unity 2018 or earlier, you need to replace `shader_feature_local` with` shader_feature`.
+    // Also, if you need to include all variations in mod development etc., you may need to replace "shader_feature_local" with "multi_compile_local".
+    // If there are too many variants, you should also replace them with #define.
+
     Properties
     {
         //----------------------------------------------------------------------------------------------------------------------
         // Base
         [lilToggle]     _Invisible                  ("Invisible", Int) = 0
                         _AsUnlit                    ("As Unlit", Range(0, 1)) = 0
-                        _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.5
+                        _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.001
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
                         _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
@@ -319,14 +324,20 @@ Shader "Hidden/lilToonGem"
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced
-        [lilEnum]                                       _Cull               ("Cull Mode|Off|Front|Back", Int) = 0
+        [lilEnum]                                       _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 0
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlpha      ("SrcBlendAlpha", Int) = 1
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlpha      ("DstBlendAlpha", Int) = 10
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOp            ("BlendOp", Int) = 0
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlpha       ("BlendOpAlpha", Int) = 0
-        [lilToggle]                                     _ZWrite             ("ZWrite", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendFA         ("ForwardAdd SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendFA         ("ForwardAdd DstBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlphaFA    ("ForwardAdd SrcBlendAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlphaFA    ("ForwardAdd DstBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpFA          ("ForwardAdd BlendOp", Int) = 4
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlphaFA     ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _ZWrite             ("ZWrite", Int) = 1
         [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest              ("ZTest", Int) = 4
         [IntRange]                                      _StencilRef         ("Stencil Reference Value", Range(0, 255)) = 0
         [IntRange]                                      _StencilReadMask    ("Stencil ReadMask Value", Range(0, 255)) = 255
@@ -342,21 +353,41 @@ Shader "Hidden/lilToonGem"
 
         //----------------------------------------------------------------------------------------------------------------------
         // Refraction
-                        _RefractionStrength         ("Refraction Strength", Range(-1,1)) = 0.5
-        [PowerSlider(3.0)]_RefractionFresnelPower   ("Refraction Fresnel Power", Range(0.01, 10)) = 1.0
+                        _RefractionStrength         ("Strength", Range(-1,1)) = 0.1
+        [PowerSlider(3.0)]_RefractionFresnelPower   ("Fresnel Power", Range(0.01, 10)) = 0.5
+        [lilToggle]     _RefractionColorFromMain    ("RefractionColorFromMain", Int) = 0
+                        _RefractionColor            ("Color", Color) = (1,1,1,1)
 
         //----------------------------------------------------------------------------------------------------------------------
-        //Gem
-                        _GemChromaticAberration     ("Chromatic Aberration", Range(0, 1)) = 0.02
-                        _GemEnvContrast             ("Environment Contrast", Float) = 2.0
-        [lilHDR]        _GemEnvColor                ("Environment Color", Color) = (1,1,1,1)
-                        _GemParticleLoop            ("Particle Loop", Float) = 8
-        [lilHDR]        _GemParticleColor           ("Particle Color", Color) = (4,4,4,1)
-                        _GemVRParallaxStrength      ("VR Parallax Strength", Range(0, 1)) = 1
+        // For Multi
+        [lilToggleLeft] _UseOutline                 ("Use Outline", Int) = 0
+        [lilEnum]       _TransparentMode            ("Rendering Mode|Opaque|Cutout|Transparent|Refraction|Fur|FurCutout|Gem", Int) = 0
+        [lilToggle]     _UsePOM                     ("Use POM", Int) = 0
+        [lilToggle]     _UseClippingCanceller       ("Use Clipping Canceller", Int) = 0
+        [lilToggle]     _AsOverlay                  ("As Overlay", Int) = 0
     }
+
     HLSLINCLUDE
-        #define LIL_RENDER 2
-        #define LIL_GEM
+        #define LIL_REFRACTION
+        #define LIL_MULTI
+        #define LIL_MULTI_INPUTS_MAIN_TONECORRECTION
+        #define LIL_MULTI_INPUTS_MAIN2ND
+        #define LIL_MULTI_INPUTS_MAIN3RD
+        #define LIL_MULTI_INPUTS_ALPHAMASK
+        #define LIL_MULTI_INPUTS_SHADOW
+        #define LIL_MULTI_INPUTS_EMISSION
+        #define LIL_MULTI_INPUTS_EMISSION_2ND
+        #define LIL_MULTI_INPUTS_NORMAL
+        #define LIL_MULTI_INPUTS_NORMAL_2ND
+        #define LIL_MULTI_INPUTS_REFLECTION
+        #define LIL_MULTI_INPUTS_MATCAP
+        #define LIL_MULTI_INPUTS_MATCAP_2ND
+        #define LIL_MULTI_INPUTS_RIM
+        #define LIL_MULTI_INPUTS_GLITTER
+        #define LIL_MULTI_INPUTS_PARALLAX
+        #define LIL_MULTI_INPUTS_DISTANCE_FADE
+        #define LIL_MULTI_INPUTS_AUDIOLINK
+        #define LIL_MULTI_INPUTS_DISSOLVE
     ENDHLSL
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -369,42 +400,8 @@ Shader "Hidden/lilToonGem"
             #pragma target 3.5
         ENDHLSL
 
+        // GrabPass
         GrabPass {"_lilBackgroundTexture"}
-
-        // Forward Pre
-        Pass
-        {
-            Name "FORWARD_PRE"
-            Stencil
-            {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-            Cull [_Cull]
-            ZWrite [_ZWrite]
-            Blend One Zero, Zero One
-            AlphaToMask [_AlphaToMask]
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma multi_compile_fog
-            #pragma multi_compile_instancing
-            #pragma fragmentoption ARB_precision_hint_fastest
-
-            //------------------------------------------------------------------------------------------------------------------------------
-            // Shader
-            #define LIL_GEM_PRE
-            #include "Includes/lil_pass_forward_gem.hlsl"
-            ENDHLSL
-        }
 
         // Forward
         Pass
@@ -441,16 +438,186 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
-            #pragma skip_variants SHADOWS_SCREEN
 
-            //------------------------------------------------------------------------------------------------------------------------------
-            // Shader
-            #include "Includes/lil_pass_forward_gem.hlsl"
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Main
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _COLORADDSUBDIFF_ON
+            #pragma shader_feature_local _COLORCOLOR_ON
+            #pragma shader_feature_local _SUNDISK_NONE
+            #pragma shader_feature_local GEOM_TYPE_FROND
+            #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local _GLOSSYREFLECTIONS_OFF
+            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local GEOM_TYPE_MESH
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local GEOM_TYPE_LEAF
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature_local PIXELSNAP_ON
+            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
+            #pragma shader_feature_local _FADING_ON
+            #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
+            #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_forward.hlsl"
+
             ENDHLSL
         }
 
-        UsePass "Hidden/ltspass_transparent/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_transparent/META"
+        // ForwardAdd
+        Pass
+        {
+            Name "FORWARD_ADD"
+            Tags {"LightMode" = "ForwardAdd"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+		    Cull [_Cull]
+			ZWrite Off
+            ZTest LEqual
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            Blend [_SrcBlendFA] [_DstBlendFA], Zero One
+            BlendOp [_BlendOpFA], [_BlendOpAlphaFA]
+            AlphaToMask [_AlphaToMask]
+            Fog { Color(0,0,0,0) }
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_fwdadd
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+            #pragma fragmentoption ARB_precision_hint_fastest
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Main
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _COLORADDSUBDIFF_ON
+            #pragma shader_feature_local _COLORCOLOR_ON
+            #pragma shader_feature_local _SUNDISK_NONE
+            #pragma shader_feature_local GEOM_TYPE_FROND
+            #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local _GLOSSYREFLECTIONS_OFF
+            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local GEOM_TYPE_MESH
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local GEOM_TYPE_LEAF
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature_local PIXELSNAP_ON
+            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
+            #pragma shader_feature_local _FADING_ON
+            #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
+            #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_PASS_FORWARDADD
+            #include "Includes/lil_pass_forward.hlsl"
+
+            ENDHLSL
+        }
+
+        // ShadowCaster
+        Pass
+        {
+            Name "SHADOW_CASTER"
+            Tags {"LightMode" = "ShadowCaster"}
+            Offset 1, 1
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_shadowcaster
+            #pragma multi_compile_instancing
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_shadowcaster.hlsl"
+
+            ENDHLSL
+        }
+
+        // Meta
+        Pass
+        {
+            Name "META"
+            Tags {"LightMode" = "Meta"}
+            Cull Off
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma shader_feature EDITOR_VISUALIZATION
+
+            // Tone correction and emission
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_meta.hlsl"
+
+            ENDHLSL
+        }
     }
 //
 // BRP End
@@ -462,48 +629,10 @@ Shader "Hidden/lilToonGem"
     // Lightweight Render Pipeline SM4.5
     SubShader
     {
-        Tags {"RenderType" = "Opaque" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        Tags{"ShaderModel" = "4.5" "RenderType" = "Opaque" "Queue" = "Transparent"}
         HLSLINCLUDE
             #pragma target 4.5
         ENDHLSL
-
-        // Forward Pre
-        Pass
-        {
-            Name "FORWARD_PRE"
-            Tags {"LightMode" = "SRPDefaultUnlit"}
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-		    Cull [_Cull]
-            Blend One Zero
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-            AlphaToMask [_AlphaToMask]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //------------------------------------------------------------------------------------------------------------------------------
-            // Shader
-            #define LIL_GEM_PRE
-            #include "Includes/lil_pass_forward_gem.hlsl"
-
-            ENDHLSL
-        }
 
         // Forward
         Pass
@@ -546,13 +675,45 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
-            // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Main
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _COLORADDSUBDIFF_ON
+            #pragma shader_feature_local _COLORCOLOR_ON
+            #pragma shader_feature_local _SUNDISK_NONE
+            #pragma shader_feature_local GEOM_TYPE_FROND
+            #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local _GLOSSYREFLECTIONS_OFF
+            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local GEOM_TYPE_MESH
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local GEOM_TYPE_LEAF
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature_local PIXELSNAP_ON
+            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
+            #pragma shader_feature_local _FADING_ON
+            #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
+            #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_forward_gem.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -574,6 +735,13 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -599,6 +767,13 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pass_depthonly.hlsl"
@@ -620,6 +795,15 @@ Shader "Hidden/lilToonGem"
             #pragma vertex vert
             #pragma fragment frag
             #pragma exclude_renderers gles gles3 glcore
+
+            // Tone correction and emission
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -637,43 +821,6 @@ Shader "Hidden/lilToonGem"
             #pragma target 3.5
         ENDHLSL
 
-        // Forward Pre
-        Pass
-        {
-            Name "FORWARD_PRE"
-            Tags {"LightMode" = "SRPDefaultUnlit"}
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-		    Cull [_Cull]
-            Blend One Zero
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-            AlphaToMask [_AlphaToMask]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
-            #pragma multi_compile_instancing
-
-            //------------------------------------------------------------------------------------------------------------------------------
-            // Shader
-            #define LIL_GEM_PRE
-            #include "Includes/lil_pass_forward_gem.hlsl"
-
-            ENDHLSL
-        }
-
         // Forward
         Pass
         {
@@ -714,13 +861,45 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
 
-            // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Main
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _COLORADDSUBDIFF_ON
+            #pragma shader_feature_local _COLORCOLOR_ON
+            #pragma shader_feature_local _SUNDISK_NONE
+            #pragma shader_feature_local GEOM_TYPE_FROND
+            #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local _GLOSSYREFLECTIONS_OFF
+            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local GEOM_TYPE_MESH
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local GEOM_TYPE_LEAF
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature_local PIXELSNAP_ON
+            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
+            #pragma shader_feature_local _FADING_ON
+            #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
+            #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_forward_gem.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -741,6 +920,13 @@ Shader "Hidden/lilToonGem"
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -765,6 +951,13 @@ Shader "Hidden/lilToonGem"
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pass_depthonly.hlsl"
@@ -786,6 +979,15 @@ Shader "Hidden/lilToonGem"
             #pragma vertex vert
             #pragma fragment frag
             #pragma only_renderers gles gles3 glcore d3d11
+
+            // Tone correction and emission
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -803,50 +1005,10 @@ Shader "Hidden/lilToonGem"
     // Universal Render Pipeline SM4.5
     SubShader
     {
-        Tags {"RenderType" = "Opaque" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        Tags{"ShaderModel" = "4.5" "RenderType" = "Opaque" "Queue" = "Transparent"}
         HLSLINCLUDE
             #pragma target 4.5
         ENDHLSL
-
-        // Forward Pre
-        Pass
-        {
-            Name "FORWARD_PRE"
-            Tags {"LightMode" = "SRPDefaultUnlit"}
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-		    Cull [_Cull]
-            Blend One Zero
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-            AlphaToMask [_AlphaToMask]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //------------------------------------------------------------------------------------------------------------------------------
-            // Shader
-            #define LIL_GEM_PRE
-            #include "Includes/lil_pass_forward_gem.hlsl"
-
-            ENDHLSL
-        }
 
         // Forward
         Pass
@@ -889,13 +1051,45 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
-            // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Main
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _COLORADDSUBDIFF_ON
+            #pragma shader_feature_local _COLORCOLOR_ON
+            #pragma shader_feature_local _SUNDISK_NONE
+            #pragma shader_feature_local GEOM_TYPE_FROND
+            #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local _GLOSSYREFLECTIONS_OFF
+            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local GEOM_TYPE_MESH
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local GEOM_TYPE_LEAF
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature_local PIXELSNAP_ON
+            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
+            #pragma shader_feature_local _FADING_ON
+            #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
+            #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_forward_gem.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -917,6 +1111,13 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -942,6 +1143,13 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pass_depthonly.hlsl"
@@ -965,6 +1173,13 @@ Shader "Hidden/lilToonGem"
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1025,6 +1240,15 @@ Shader "Hidden/lilToonGem"
             #pragma vertex vert
             #pragma fragment frag
             #pragma exclude_renderers gles gles3 glcore
+
+            // Tone correction and emission
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1042,45 +1266,6 @@ Shader "Hidden/lilToonGem"
             #pragma target 3.5
         ENDHLSL
 
-        // Forward Pre
-        Pass
-        {
-            Name "FORWARD_PRE"
-            Tags {"LightMode" = "SRPDefaultUnlit"}
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-		    Cull [_Cull]
-            Blend One Zero
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-            AlphaToMask [_AlphaToMask]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
-            #pragma multi_compile_instancing
-
-            //------------------------------------------------------------------------------------------------------------------------------
-            // Shader
-            #define LIL_GEM_PRE
-            #include "Includes/lil_pass_forward_gem.hlsl"
-
-            ENDHLSL
-        }
-
         // Forward
         Pass
         {
@@ -1121,13 +1306,45 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
 
-            // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Main
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _COLORADDSUBDIFF_ON
+            #pragma shader_feature_local _COLORCOLOR_ON
+            #pragma shader_feature_local _SUNDISK_NONE
+            #pragma shader_feature_local GEOM_TYPE_FROND
+            #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local _GLOSSYREFLECTIONS_OFF
+            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local GEOM_TYPE_MESH
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local GEOM_TYPE_LEAF
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature_local PIXELSNAP_ON
+            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
+            #pragma shader_feature_local _FADING_ON
+            #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
+            #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_forward_gem.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -1148,6 +1365,13 @@ Shader "Hidden/lilToonGem"
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1172,6 +1396,13 @@ Shader "Hidden/lilToonGem"
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pass_depthonly.hlsl"
@@ -1194,6 +1425,13 @@ Shader "Hidden/lilToonGem"
             #pragma fragment frag
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1254,6 +1492,15 @@ Shader "Hidden/lilToonGem"
             #pragma vertex vert
             #pragma fragment frag
             #pragma only_renderers gles gles3 glcore d3d11
+
+            // Tone correction and emission
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1276,53 +1523,11 @@ Shader "Hidden/lilToonGem"
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
 
-        // Forward Pre
-        Pass
-        {
-            Name "FORWARD_PRE"
-            Tags {"LightMode" = "ForwardOnly"}
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-		    Cull [_Cull]
-            Blend One Zero
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-            AlphaToMask [_AlphaToMask]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma multi_compile_instancing
-            #pragma instancing_options renderinglayer
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            #define SHADERPASS SHADERPASS_FORWARD
-
-            //------------------------------------------------------------------------------------------------------------------------------
-            // Shader
-            #define LIL_GEM_PRE
-            #include "Includes/lil_pass_forward_gem.hlsl"
-
-            ENDHLSL
-        }
-
         // Forward
         Pass
         {
             Name "FORWARD"
-            Tags {"LightMode" = "SRPDefaultUnlit"}
+            Tags {"LightMode" = "ForwardOnly"}
 
             Stencil
             {
@@ -1357,15 +1562,47 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile _ DYNAMICLIGHTMAP_ON
             #pragma multi_compile _ SHADOWS_SHADOWMASK
 
-            // Skip receiving shadow
-            //#pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
-            //#pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
+            #pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
+            #pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
 
             #define SHADERPASS SHADERPASS_FORWARD
 
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Main
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _COLORADDSUBDIFF_ON
+            #pragma shader_feature_local _COLORCOLOR_ON
+            #pragma shader_feature_local _SUNDISK_NONE
+            #pragma shader_feature_local GEOM_TYPE_FROND
+            #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local _GLOSSYREFLECTIONS_OFF
+            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
+            #pragma shader_feature_local GEOM_TYPE_MESH
+            #pragma shader_feature_local _METALLICGLOSSMAP
+            #pragma shader_feature_local GEOM_TYPE_LEAF
+            #pragma shader_feature_local _SPECGLOSSMAP
+            #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature_local PIXELSNAP_ON
+            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
+            #pragma shader_feature_local _FADING_ON
+            #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
+            #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_forward_gem.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -1393,6 +1630,13 @@ Shader "Hidden/lilToonGem"
 
             #define SHADERPASS SHADERPASS_SHADOWS
 
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pass_depthonly.hlsl"
@@ -1416,7 +1660,7 @@ Shader "Hidden/lilToonGem"
                 Fail [_StencilFail]
                 ZFail [_StencilZFail]
             }
-            Cull [_Cull]
+            Cull Back
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -1435,6 +1679,16 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile _ WRITE_MSAA_DEPTH
 
             #define SHADERPASS SHADERPASS_DEPTH_ONLY
+
+            // Outline
+            #pragma shader_feature_local ETC1_EXTERNAL_ALPHA
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1456,7 +1710,7 @@ Shader "Hidden/lilToonGem"
                 Comp Always
                 Pass Replace
             }
-            Cull [_Cull]
+            Cull Back
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -1475,6 +1729,16 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile _ WRITE_MSAA_DEPTH
 
             #define SHADERPASS SHADERPASS_MOTION_VECTORS
+
+            // Outline
+            #pragma shader_feature_local ETC1_EXTERNAL_ALPHA
+
+            // AlphaMask and Dissolve
+            #pragma shader_feature_local _COLOROVERLAY_ON
+            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1501,6 +1765,15 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
             #define SHADERPASS SHADERPASS_LIGHT_TRANSPORT
+
+            // Tone correction and emission
+            #pragma shader_feature_local EFFECT_HUE_VARIATION
+            #pragma shader_feature_local _EMISSION
+            #pragma shader_feature_local GEOM_TYPE_BRANCH
+            #pragma shader_feature_local _SUNDISK_SIMPLE
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
