@@ -111,7 +111,7 @@
 lilToonMultiでは以下のシェーダーキーワードを使用しています。  
 Built-inのシェーダーに合わせているのでシェーダーキーワードの枯渇を回避しつつVRCSDKでも警告が出ないようになっています。
 ```
-ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _COLORADDSUBDIFF_ON _COLORCOLOR_ON _SUNDISK_NONE GEOM_TYPE_FROND _COLOROVERLAY_ON _REQUIRE_UV2 _EMISSION GEOM_TYPE_BRANCH _SUNDISK_SIMPLE _NORMALMAP EFFECT_BUMP _GLOSSYREFLECTIONS_OFF _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A _SPECULARHIGHLIGHTS_OFF GEOM_TYPE_MESH _METALLICGLOSSMAP GEOM_TYPE_LEAF _SPECGLOSSMAP _PARALLAXMAP PIXELSNAP_ON BILLBOARD_FACE_CAMERA_POS _FADING_ON _MAPPING_6_FRAMES_LAYOUT _SUNDISK_HIGH_QUALITY GEOM_TYPE_BRANCH_DETAIL _DETAIL_MULX2
+ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _COLORADDSUBDIFF_ON _COLORCOLOR_ON _SUNDISK_NONE GEOM_TYPE_FROND _COLOROVERLAY_ON _REQUIRE_UV2 ANTI_FLICKER _EMISSION GEOM_TYPE_BRANCH _SUNDISK_SIMPLE _NORMALMAP EFFECT_BUMP _GLOSSYREFLECTIONS_OFF _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A _SPECULARHIGHLIGHTS_OFF GEOM_TYPE_MESH _METALLICGLOSSMAP GEOM_TYPE_LEAF _SPECGLOSSMAP _PARALLAXMAP PIXELSNAP_ON BILLBOARD_FACE_CAMERA_POS _FADING_ON _MAPPING_6_FRAMES_LAYOUT _SUNDISK_HIGH_QUALITY GEOM_TYPE_BRANCH_DETAIL _DETAIL_MULX2
 ```
 
 # カスタムシェーダーの作り方
@@ -129,7 +129,7 @@ ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _
 ## シェーダーバリエーションの作成
 `lts.shader`を複製し`custom_lts.shader`に名前を変更します。  
 ファイル冒頭の`Shader "lilToon"`を`Shader "lilToonCustomExample/Opaque"`に書き換えます。  
-シェーダー内の`UsePass "Hidden/ltspass_opaque/〇〇"`の部分を先程作成した`UsePass "Hidden/custom_ltspass_opaque/〇〇"`に置き換えます。
+シェーダー内の`UsePass "Hidden/ltspass_opaque/xx"`の部分を先程作成した`UsePass "Hidden/custom_ltspass_opaque/xx"`に置き換えます。
 
 ## マテリアル変数の追加
 まず`custom_lts.shader`内の`Properties`ブロックに任意のプロパティを追加しましょう。  
@@ -160,6 +160,11 @@ ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _
 #define LIL_CUSTOM_TEXTURES \
     TEXTURE2D(_CustomVertexWaveMask);
 ```
+
+## 関数やincludeの追加
+もしUnityの変数や関数などに依存する関数やincludeを追加したい場合は以下のように書き換えます。
+1. 各パスに存在する`#include "Includes/lil_pass_xx.hlsl"`の直前に`#include "Includes/lil_pipeline.hlsl"`を追加
+2. この２つのincludeの間に任意の関数やincludeを挿入
 
 ## 頂点シェーダーの入力の追加（appdata構造体）
 以下のキーワードを`#define`することで対応した入力が追加されます。
@@ -219,7 +224,7 @@ ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _
 Built-in RPのみに対応させる場合は`// BRP Start`と`// BRP End`で囲まれた部分のパスのみ編集すればよいです。  
 今回の例では以下のようにします。
 ```HLSL
-// #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
+// #include "Includes/lil_pass_xx.hlsl"の前に挿入
 #define LIL_V2F_FORCE_TEXCOORD1
 #define LIL_CUSTOM_V2F v2fCustom
 #define LIL_CUSTOM_V2F_STRUCT \
@@ -230,9 +235,9 @@ Built-in RPのみに対応させる場合は`// BRP Start`と`// BRP End`で囲�
         v2f base; \
     };
 
-#include "Includes/lil_pass_〇〇.hlsl"
+#include "Includes/lil_pass_xx.hlsl"
 
-// #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
+// #include "Includes/lil_pass_xx.hlsl"の後に挿入
 v2fCustom vert(appdata input)
 {
     v2fCustom output;

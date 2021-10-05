@@ -116,6 +116,7 @@ namespace lilToon
             MatCap2nd,
             RimLight,
             Glitter,
+            Backlight,
             Gem,
             Outline,
             Parallax,
@@ -391,6 +392,7 @@ namespace lilToon
         MaterialProperty beforeExposureLimit;
         MaterialProperty monochromeLighting;
         MaterialProperty lilDirectionalLightStrength;
+        MaterialProperty lightDirectionOverride;
         MaterialProperty triMask;
             MaterialProperty cull;
             MaterialProperty srcBlend;
@@ -495,6 +497,14 @@ namespace lilToon
             MaterialProperty shadowBorderColor;
             MaterialProperty shadowBorderRange;
             MaterialProperty shadowReceive;
+        MaterialProperty useBacklight;
+            MaterialProperty backlightColor;
+            MaterialProperty backlightColorTex;
+            MaterialProperty backlightBorder;
+            MaterialProperty backlightBlur;
+            MaterialProperty backlightDirectivity;
+            MaterialProperty backlightViewStrength;
+            MaterialProperty backlightReceiveShadow;
         MaterialProperty useBumpMap;
             MaterialProperty bumpMap;
             MaterialProperty bumpScale;
@@ -2429,7 +2439,7 @@ namespace lilToon
 
                         //------------------------------------------------------------------------------------------------------------------------------
                         // Reflection
-                        if(CheckFeature(shaderSetting.LIL_FEATURE_REFLECTION) || CheckFeature(shaderSetting.LIL_FEATURE_MATCAP) || CheckFeature(shaderSetting.LIL_FEATURE_MATCAP_2ND) || CheckFeature(shaderSetting.LIL_FEATURE_RIMLIGHT) || CheckFeature(shaderSetting.LIL_FEATURE_GLITTER))
+                        if(CheckFeature(shaderSetting.LIL_FEATURE_REFLECTION) || CheckFeature(shaderSetting.LIL_FEATURE_MATCAP) || CheckFeature(shaderSetting.LIL_FEATURE_MATCAP_2ND) || CheckFeature(shaderSetting.LIL_FEATURE_RIMLIGHT) || CheckFeature(shaderSetting.LIL_FEATURE_GLITTER) || CheckFeature(shaderSetting.LIL_FEATURE_BACKLIGHT))
                         {
                             edSet.isShowReflections = Foldout(GetLoc("sReflectionsSetting"), GetLoc("sReflectionsTips"), edSet.isShowReflections);
                             DrawMenuButton(GetLoc("sAnchorReflections"), lilPropertyBlock.Reflections);
@@ -2631,6 +2641,31 @@ namespace lilToon
                                         materialEditor.ShaderProperty(glitterParams1, sGlitterParams1);
                                         materialEditor.ShaderProperty(glitterParams2, sGlitterParams2);
                                         materialEditor.ShaderProperty(glitterVRParallaxStrength, GetLoc("sVRParallaxStrength"));
+                                        EditorGUILayout.EndVertical();
+                                    }
+                                    EditorGUILayout.EndVertical();
+                                }
+
+                                //------------------------------------------------------------------------------------------------------------------------------
+                                // Backlight
+                                if(!isGem && CheckFeature(shaderSetting.LIL_FEATURE_BACKLIGHT))
+                                {
+                                    EditorGUILayout.BeginVertical(boxOuter);
+                                    materialEditor.ShaderProperty(useBacklight, GetLoc("sBacklight"));
+                                    DrawMenuButton(GetLoc("sAnchorBacklight"), lilPropertyBlock.Backlight);
+                                    if(useBacklight.floatValue == 1)
+                                    {
+                                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                                        materialEditor.TexturePropertySingleLine(colorRGBAContent, backlightColorTex, backlightColor);
+                                        if(backlightColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                                        {
+                                            backlightColor.colorValue = new Color(backlightColor.colorValue.r, backlightColor.colorValue.g, backlightColor.colorValue.b, 1.0f);
+                                        }
+                                        backlightBorder.floatValue = 1.0f - EditorGUILayout.Slider(GetLoc("sBorder"), 1.0f - backlightBorder.floatValue, 0.0f, 1.0f);
+                                        materialEditor.ShaderProperty(backlightBlur, GetLoc("sBlur"));
+                                        materialEditor.ShaderProperty(backlightDirectivity, GetLoc("sDirectivity"));
+                                        materialEditor.ShaderProperty(backlightViewStrength, GetLoc("sViewDirectionStrength"));
+                                        if(CheckFeature(shaderSetting.LIL_FEATURE_RECEIVE_SHADOW)) materialEditor.ShaderProperty(backlightReceiveShadow, GetLoc("sReceiveShadow"));
                                         EditorGUILayout.EndVertical();
                                     }
                                     EditorGUILayout.EndVertical();
@@ -3245,6 +3280,7 @@ namespace lilToon
                     DrawHelpButton(GetLoc("sAnchorOptimization"));
                     if(edSet.isShowOptimization)
                     {
+                        // Optimization
                         EditorGUILayout.BeginVertical(boxOuter);
                         EditorGUILayout.LabelField(GetLoc("sOptimization"), customToggleFont);
                         EditorGUILayout.BeginVertical(boxInnerHalf);
@@ -3259,6 +3295,21 @@ namespace lilToon
                         if(GUILayout.Button(GetLoc("sConvertLite"))) CreateLiteMaterial(material);
                         if(mtoon != null && GUILayout.Button(GetLoc("sConvertMToon"))) CreateMToonMaterial(material);
                         if(!isMulti && !isFur && !isRefr && !isGem && GUILayout.Button(GetLoc("sConvertMulti"))) CreateMultiMaterial(material);
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndVertical();
+
+                        // Bake Textures
+                        EditorGUILayout.BeginVertical(boxOuter);
+                        EditorGUILayout.LabelField(GetLoc("sBakeTextures"), customToggleFont);
+                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                        string materialName = material.name;
+                        if(!isGem && CheckFeature(shaderSetting.LIL_FEATURE_SHADOW)                         && GUILayout.Button(GetLoc("sShadow1stColor")))         AutoBakeColoredMask(material, shadowColorTex,       shadowColor,        "Shadow1stColor");
+                        if(!isGem && CheckFeature(shaderSetting.LIL_FEATURE_SHADOW)                         && GUILayout.Button(GetLoc("sShadow2ndColor")))         AutoBakeColoredMask(material, shadow2ndColorTex,    shadow2ndColor,     "Shadow2ndColor");
+                        if(!isFur && !isGem && CheckFeature(shaderSetting.LIL_FEATURE_REFLECTION)           && GUILayout.Button(GetLoc("sReflection")))             AutoBakeColoredMask(material, reflectionColorTex,   reflectionColor,    "ReflectionColor");
+                        if(!isFur && CheckFeature(shaderSetting.LIL_FEATURE_MATCAP)                         && GUILayout.Button(GetLoc("sMatCap")))                 AutoBakeColoredMask(material, matcapBlendMask,      matcapColor,        "MatCapColor");
+                        if(!isFur && CheckFeature(shaderSetting.LIL_FEATURE_MATCAP_2ND)                     && GUILayout.Button(GetLoc("sMatCap2nd")))              AutoBakeColoredMask(material, matcap2ndBlendMask,   matcap2ndColor,     "MatCap2ndColor");
+                        if(!isFur && CheckFeature(shaderSetting.LIL_FEATURE_RIMLIGHT)                       && GUILayout.Button(GetLoc("sRimLight")))               AutoBakeColoredMask(material, rimColorTex,          rimColor,           "RimColor");
+                        if(((!isRefr && !isFur && !isGem && !isCustomShader) || (isCustomShader && isOutl)) && GUILayout.Button(GetLoc("sSettingTexOutlineColor"))) AutoBakeColoredMask(material, outlineColorMask,     outlineColor,       "OutlineColor");
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
@@ -3659,6 +3710,7 @@ namespace lilToon
             beforeExposureLimit = FindProperty("_BeforeExposureLimit", props);
             monochromeLighting = FindProperty("_MonochromeLighting", props);
             lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props);
+            lightDirectionOverride = FindProperty("_LightDirectionOverride", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
                 cull = FindProperty("_Cull", props);
                 srcBlend = FindProperty("_SrcBlend", props);
@@ -3765,6 +3817,14 @@ namespace lilToon
                 shadowBorderColor = FindProperty("_ShadowBorderColor", props);
                 shadowBorderRange = FindProperty("_ShadowBorderRange", props);
                 shadowReceive = FindProperty("_ShadowReceive", props);
+            useBacklight = FindProperty("_UseBacklight", props);
+                backlightColor = FindProperty("_BacklightColor", props);
+                backlightColorTex = FindProperty("_BacklightColorTex", props);
+                backlightBorder = FindProperty("_BacklightBorder", props);
+                backlightBlur = FindProperty("_BacklightBlur", props);
+                backlightDirectivity = FindProperty("_BacklightDirectivity", props);
+                backlightViewStrength = FindProperty("_BacklightViewStrength", props);
+                backlightReceiveShadow = FindProperty("_BacklightReceiveShadow", props);
             // Outline
             if(isOutl)
             {
@@ -3964,6 +4024,7 @@ namespace lilToon
             beforeExposureLimit = FindProperty("_BeforeExposureLimit", props);
             monochromeLighting = FindProperty("_MonochromeLighting", props);
             lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props);
+            lightDirectionOverride = FindProperty("_LightDirectionOverride", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
                 cull = FindProperty("_Cull", props);
                 srcBlend = FindProperty("_SrcBlend", props);
@@ -4071,6 +4132,7 @@ namespace lilToon
             beforeExposureLimit = FindProperty("_BeforeExposureLimit", props);
             monochromeLighting = FindProperty("_MonochromeLighting", props);
             lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props);
+            lightDirectionOverride = FindProperty("_LightDirectionOverride", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
                 cull = FindProperty("_Cull", props);
                 srcBlend = FindProperty("_SrcBlend", props);
@@ -4263,6 +4325,7 @@ namespace lilToon
             beforeExposureLimit = FindProperty("_BeforeExposureLimit", props);
             monochromeLighting = FindProperty("_MonochromeLighting", props);
             lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props);
+            lightDirectionOverride = FindProperty("_LightDirectionOverride", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
             triMask = FindProperty("_TriMask", props);
                 cull = FindProperty("_Cull", props);
@@ -4656,6 +4719,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_RIMLIGHT = true;
                 shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION = false;
                 shaderSetting.LIL_FEATURE_GLITTER = false;
+                shaderSetting.LIL_FEATURE_BACKLIGHT = false;
                 shaderSetting.LIL_FEATURE_PARALLAX = false;
                 shaderSetting.LIL_FEATURE_POM = false;
                 shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = false;
@@ -4727,6 +4791,7 @@ namespace lilToon
             shaderSetting.LIL_FEATURE_RIMLIGHT = false;
             shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION = false;
             shaderSetting.LIL_FEATURE_GLITTER = false;
+            shaderSetting.LIL_FEATURE_BACKLIGHT = false;
             shaderSetting.LIL_FEATURE_PARALLAX = false;
             shaderSetting.LIL_FEATURE_POM = false;
             shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = false;
@@ -4889,6 +4954,7 @@ namespace lilToon
                 if(shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION) sb.Append("#define LIL_FEATURE_RIMLIGHT_DIRECTION\r\n");
             }
             if(shaderSetting.LIL_FEATURE_GLITTER) sb.Append("#define LIL_FEATURE_GLITTER\r\n");
+            if(shaderSetting.LIL_FEATURE_BACKLIGHT) sb.Append("#define LIL_FEATURE_BACKLIGHT\r\n");
             if(shaderSetting.LIL_FEATURE_PARALLAX)
             {
                 sb.Append("#define LIL_FEATURE_PARALLAX\r\n");
@@ -5075,6 +5141,9 @@ namespace lilToon
             DrawLine();
 
             lilToggleGUI(GetLoc("sSettingGlitter"), ref shaderSetting.LIL_FEATURE_GLITTER);
+            DrawLine();
+
+            lilToggleGUI(GetLoc("sSettingBacklight"), ref shaderSetting.LIL_FEATURE_BACKLIGHT);
             DrawLine();
 
             lilToggleGUI(GetLoc("sSettingParallax"), ref shaderSetting.LIL_FEATURE_PARALLAX);
@@ -5730,6 +5799,16 @@ namespace lilToon
                         CopyProperty(shadowColorTex);
                         CopyProperty(shadow2ndColorTex);
                     break;
+                case lilPropertyBlock.Backlight:
+                        CopyProperty(useBacklight);
+                        CopyProperty(backlightColor);
+                        CopyProperty(backlightBorder);
+                        CopyProperty(backlightBlur);
+                        CopyProperty(backlightDirectivity);
+                        CopyProperty(backlightViewStrength);
+                        CopyProperty(backlightReceiveShadow);
+                        CopyProperty(backlightColorTex);
+                    break;
                 case lilPropertyBlock.Emission:
                         CopyProperty(useEmission);
                         CopyProperty(emissionColor);
@@ -6330,6 +6409,19 @@ namespace lilToon
                             PasteProperty(ref shadowStrengthMask);
                             PasteProperty(ref shadowColorTex);
                             PasteProperty(ref shadow2ndColorTex);
+                        }
+                    break;
+                case lilPropertyBlock.Backlight:
+                        PasteProperty(ref useBacklight);
+                        PasteProperty(ref backlightColor);
+                        PasteProperty(ref backlightBorder);
+                        PasteProperty(ref backlightBlur);
+                        PasteProperty(ref backlightDirectivity);
+                        PasteProperty(ref backlightViewStrength);
+                        PasteProperty(ref backlightReceiveShadow);
+                        if(shouldCopyTex)
+                        {
+                            PasteProperty(ref backlightColorTex);
                         }
                     break;
                 case lilPropertyBlock.Emission:
@@ -6966,6 +7058,16 @@ namespace lilToon
                         ResetProperty(ref shadowStrengthMask);
                         ResetProperty(ref shadowColorTex);
                         ResetProperty(ref shadow2ndColorTex);
+                    break;
+                case lilPropertyBlock.Backlight:
+                        ResetProperty(ref useBacklight);
+                        ResetProperty(ref backlightColor);
+                        ResetProperty(ref backlightBorder);
+                        ResetProperty(ref backlightBlur);
+                        ResetProperty(ref backlightDirectivity);
+                        ResetProperty(ref backlightViewStrength);
+                        ResetProperty(ref backlightReceiveShadow);
+                        ResetProperty(ref backlightColorTex);
                     break;
                 case lilPropertyBlock.Emission:
                         ResetProperty(ref useEmission);
@@ -7784,6 +7886,7 @@ namespace lilToon
                 if(material.HasProperty("_UseRim")) shaderSetting.LIL_FEATURE_RIMLIGHT = shaderSetting.LIL_FEATURE_RIMLIGHT || material.GetFloat("_UseRim") != 0.0f;
                 if(material.HasProperty("_RimDirStrength")) shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION = shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION || material.GetFloat("_RimDirStrength") != 0.0f;
                 if(material.HasProperty("_UseGlitter")) shaderSetting.LIL_FEATURE_GLITTER = shaderSetting.LIL_FEATURE_GLITTER || material.GetFloat("_UseGlitter") != 0.0f;
+                if(material.HasProperty("_UseBacklight")) shaderSetting.LIL_FEATURE_BACKLIGHT = shaderSetting.LIL_FEATURE_BACKLIGHT || material.GetFloat("_UseBacklight") != 0.0f;
                 if(material.HasProperty("_UseParalla")) shaderSetting.LIL_FEATURE_PARALLAX = shaderSetting.LIL_FEATURE_PARALLAX || material.GetFloat("_UseParallax") != 0.0f;
                 //if(material.HasProperty("")) shaderSetting.LIL_FEATURE_POM = shaderSetting.LIL_FEATURE_POM;
                 if(material.HasProperty("_UseAudioLink")) shaderSetting.LIL_FEATURE_AUDIOLINK = shaderSetting.LIL_FEATURE_AUDIOLINK || material.GetFloat("_UseAudioLink") != 0.0f;
@@ -7820,8 +7923,6 @@ namespace lilToon
 
             // Tessellation
             shaderSetting.LIL_FEATURE_TEX_TESSELLATION = shaderSetting.LIL_FEATURE_TEX_TESSELLATION || material.shader.name.Contains("Tessellation");
-
-            Debug.Log("lilToon auto-scan: " + material.name);
         }
 
         internal static void SetupMaterialFromShaderSetting(Material material, lilToonSetting shaderSetting)
@@ -7899,6 +8000,7 @@ namespace lilToon
                 if(!shaderSetting.LIL_FEATURE_RIMLIGHT) material.SetFloat("_UseRim", 0.0f);
                 if(!shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION) material.SetFloat("_RimDirStrength", 0.0f);
                 if(!shaderSetting.LIL_FEATURE_GLITTER) material.SetFloat("_UseGlitter", 0.0f);
+                if(!shaderSetting.LIL_FEATURE_BACKLIGHT) material.SetFloat("_UseBacklight", 0.0f);
                 if(!shaderSetting.LIL_FEATURE_PARALLAX) material.SetFloat("_UseParallax", 0.0f);
                 //if(!shaderSetting.LIL_FEATURE_POM);
                 if(!shaderSetting.LIL_FEATURE_AUDIOLINK) material.SetFloat("_UseAudioLink", 0.0f);
@@ -8002,6 +8104,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_MATCAP_2ND = shaderSetting.LIL_FEATURE_MATCAP_2ND || propname.Contains("_UseMatCap2nd");
                 shaderSetting.LIL_FEATURE_RIMLIGHT = shaderSetting.LIL_FEATURE_RIMLIGHT || propname.Contains("_UseRim");
                 shaderSetting.LIL_FEATURE_GLITTER = shaderSetting.LIL_FEATURE_GLITTER || propname.Contains("_UseGlitter");
+                shaderSetting.LIL_FEATURE_BACKLIGHT = shaderSetting.LIL_FEATURE_BACKLIGHT || propname.Contains("_UseBacklight");
                 shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION = shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION || propname.Contains("_RimDirStrength");
                 shaderSetting.LIL_FEATURE_PARALLAX = shaderSetting.LIL_FEATURE_PARALLAX || propname.Contains("_UseParallax");
                 //shaderSetting.LIL_FEATURE_POM = shaderSetting.LIL_FEATURE_POM;
@@ -8027,8 +8130,6 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR = shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR || propname.Contains("_OutlineTex");
                 shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH = shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH || propname.Contains("_OutlineWidthMask");
             }
-
-            Debug.Log("lilToon auto-scan: " + clip.name);
         }
 
         internal static bool CheckMainTextureName(string name)
@@ -8120,6 +8221,7 @@ namespace lilToon
                 SetShaderKeywords(material, "_SUNDISK_NONE",                        false);
                 SetShaderKeywords(material, "GEOM_TYPE_FROND",                      false);
                 SetShaderKeywords(material, "_COLOROVERLAY_ON",                     false);
+                SetShaderKeywords(material, "ANTI_FLICKER",                         false);
                 SetShaderKeywords(material, "_PARALLAXMAP",                         false);
                 SetShaderKeywords(material, "PIXELSNAP_ON",                         false);
                 SetShaderKeywords(material, "_GLOSSYREFLECTIONS_OFF",               false);
@@ -8132,6 +8234,7 @@ namespace lilToon
                 SetShaderKeywords(material, "_SUNDISK_NONE",                        useMain2ndTex.floatValue != 0.0f && main2ndTexDecalAnimation.vectorValue != defaultDecalAnim || useMain3rdTex.floatValue != 0.0f && main3rdTexDecalAnimation.vectorValue != defaultDecalAnim);
                 SetShaderKeywords(material, "GEOM_TYPE_FROND",                      useMain2ndTex.floatValue != 0.0f && main2ndDissolveParams.vectorValue.x != 0.0f || useMain3rdTex.floatValue != 0.0f && main3rdDissolveParams.vectorValue.x != 0.0f);
                 SetShaderKeywords(material, "_COLOROVERLAY_ON",                     material.GetFloat("_TransparentMode") != 0.0f && alphaMaskMode.floatValue != 0.0f);
+                SetShaderKeywords(material, "ANTI_FLICKER",                         useBacklight.floatValue != 0.0f);
                 SetShaderKeywords(material, "_PARALLAXMAP",                         useParallax.floatValue != 0.0f);
                 SetShaderKeywords(material, "PIXELSNAP_ON",                         material.GetFloat("_UsePOM") != 0.0f);
                 SetShaderKeywords(material, "_GLOSSYREFLECTIONS_OFF",               useReflection.floatValue != 0.0f);
@@ -8759,6 +8862,7 @@ namespace lilToon
                 materialEditor.ShaderProperty(lightMinLimit, GetLoc("sLightMinLimit"));
                 materialEditor.ShaderProperty(lightMaxLimit, GetLoc("sLightMaxLimit"));
                 materialEditor.ShaderProperty(monochromeLighting, GetLoc("sMonochromeLighting"));
+                materialEditor.ShaderProperty(lightDirectionOverride, GetLoc("sLightDirectionOverride"));
                 if(shadowEnvStrength != null) materialEditor.ShaderProperty(shadowEnvStrength, GetLoc("sShadowEnvStrength"));
                 EditorGUI.indentLevel--;
             }
@@ -9876,12 +9980,66 @@ namespace lilToon
             }
         }
 
+        private void AutoBakeColoredMask(Material material, MaterialProperty masktex, MaterialProperty maskcolor, string propName)
+        {
+            if(propName.Contains("Shadow"))
+            {
+                AutoBakeShadowTexture(material, (Texture2D)mainTex.textureValue, propName.Contains("2nd") ? 2 : 1);
+                return;
+            }
+
+            Material hsvgMaterial = new Material(ltsbaker);
+            hsvgMaterial.SetColor(mainColor.name, maskcolor.colorValue);
+
+            Texture2D bufMainTexture = Texture2D.whiteTexture;
+            if(masktex != null && masktex.textureValue != null) bufMainTexture = (Texture2D)masktex.textureValue;
+            string path = "";
+            byte[] bytes;
+
+            Texture2D srcTexture = new Texture2D(2, 2);
+
+            if(masktex != null) path = AssetDatabase.GetAssetPath(bufMainTexture);
+            if(!String.IsNullOrEmpty(path))
+            {
+                bytes = File.ReadAllBytes(Path.GetFullPath(path));
+                srcTexture.LoadImage(bytes);
+                srcTexture.filterMode = FilterMode.Bilinear;
+                hsvgMaterial.SetTexture(mainTex.name, srcTexture);
+            }
+            else
+            {
+                hsvgMaterial.SetTexture(mainTex.name, Texture2D.whiteTexture);
+            }
+
+            RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32);
+
+            Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
+
+            Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height);
+            outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
+            outTexture.Apply();
+
+            if(!String.IsNullOrEmpty(path)) path = Path.GetDirectoryName(path) + "/Baked_" + material.name + "_" + propName;
+            else                            path = "Assets/Baked_" + material.name + "_" + propName;
+            outTexture = SaveTextureToPng(outTexture, path);
+            if(outTexture != bufMainTexture)
+            {
+                CopyTextureSetting(bufMainTexture, outTexture);
+            }
+
+            UnityEngine.Object.DestroyImmediate(hsvgMaterial);
+            UnityEngine.Object.DestroyImmediate(srcTexture);
+            UnityEngine.Object.DestroyImmediate(dstTexture);
+        }
+
         private void CopyTextureSetting(Texture2D fromTexture, Texture2D toTexture)
         {
+            if(fromTexture == null || toTexture == null) return;
             string fromPath = AssetDatabase.GetAssetPath(fromTexture);
             string toPath = AssetDatabase.GetAssetPath(toTexture);
             TextureImporter fromTextureImporter = (TextureImporter)TextureImporter.GetAtPath(fromPath);
             TextureImporter toTextureImporter = (TextureImporter)TextureImporter.GetAtPath(toPath);
+            if(fromTextureImporter == null || toTextureImporter == null) return;
 
             TextureImporterSettings fromTextureImporterSettings = new TextureImporterSettings();
             fromTextureImporter.ReadTextureSettings(fromTextureImporterSettings);
@@ -10053,6 +10211,24 @@ namespace lilToon
             else
             {
                 return origTex;
+            }
+        }
+
+        private Texture2D SaveTextureToPng(Texture2D tex, string path, string customName = "")
+        {
+            string filename = customName + Path.GetFileNameWithoutExtension(path);
+            if(!String.IsNullOrEmpty(path)) path = EditorUtility.SaveFilePanel("Save Texture", Path.GetDirectoryName(path), filename, "png");
+            else                            path = EditorUtility.SaveFilePanel("Save Texture", "Assets", filename, "png");
+            if(!String.IsNullOrEmpty(path))
+            {
+                File.WriteAllBytes(path, tex.EncodeToPNG());
+                UnityEngine.Object.DestroyImmediate(tex);
+                AssetDatabase.Refresh();
+                return (Texture2D)AssetDatabase.LoadAssetAtPath(path.Substring(path.IndexOf("Assets")), typeof(Texture2D));
+            }
+            else
+            {
+                return tex;
             }
         }
 

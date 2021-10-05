@@ -20,6 +20,7 @@ Shader "Hidden/lilToonMultiRefraction"
                         _BeforeExposureLimit        ("Before Exposure Limit", Float) = 10000
                         _MonochromeLighting         ("Monochrome lighting", Range(0,1)) = 0
                         _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
+        [lilVec3]       _LightDirectionOverride     ("Light Direction Override", Vector) = (0,0.001,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
@@ -103,6 +104,17 @@ Shader "Hidden/lilToonMultiRefraction"
         [Normal]        _Bump2ndMap                 ("Normal Map", 2D) = "bump" {}
                         _Bump2ndScale               ("Scale", Range(-10,10)) = 1
         [NoScaleOffset] _Bump2ndScaleMask           ("Mask", 2D) = "white" {}
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Backlight
+        [lilToggleLeft] _UseBacklight               ("Use Backlight", Int) = 0
+        [lilHDR]        _BacklightColor             ("Color", Color) = (0.85,0.8,0.7,1.0)
+        [NoScaleOffset] _BacklightColorTex          ("Texture", 2D) = "white" {}
+                        _BacklightBorder            ("Border", Range(0, 1)) = 0.35
+                        _BacklightBlur              ("Blur", Range(0, 1)) = 0.05
+                        _BacklightDirectivity       ("Directivity", Float) = 5.0
+                        _BacklightViewStrength      ("View direction strength", Range(0, 1)) = 1
+        [lilToggle]     _BacklightReceiveShadow     ("Receive Shadow", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Shadow
@@ -375,6 +387,7 @@ Shader "Hidden/lilToonMultiRefraction"
         #define LIL_MULTI_INPUTS_MAIN3RD
         #define LIL_MULTI_INPUTS_ALPHAMASK
         #define LIL_MULTI_INPUTS_SHADOW
+        #define LIL_MULTI_INPUTS_BACKLIGHT
         #define LIL_MULTI_INPUTS_EMISSION
         #define LIL_MULTI_INPUTS_EMISSION_2ND
         #define LIL_MULTI_INPUTS_NORMAL
@@ -450,6 +463,7 @@ Shader "Hidden/lilToonMultiRefraction"
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
             #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local ANTI_FLICKER
             #pragma shader_feature_local _EMISSION
             #pragma shader_feature_local GEOM_TYPE_BRANCH
             #pragma shader_feature_local _SUNDISK_SIMPLE
@@ -527,6 +541,7 @@ Shader "Hidden/lilToonMultiRefraction"
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
             #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local ANTI_FLICKER
             #pragma shader_feature_local _EMISSION
             #pragma shader_feature_local GEOM_TYPE_BRANCH
             #pragma shader_feature_local _SUNDISK_SIMPLE
@@ -689,6 +704,7 @@ Shader "Hidden/lilToonMultiRefraction"
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
             #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local ANTI_FLICKER
             #pragma shader_feature_local _EMISSION
             #pragma shader_feature_local GEOM_TYPE_BRANCH
             #pragma shader_feature_local _SUNDISK_SIMPLE
@@ -875,6 +891,7 @@ Shader "Hidden/lilToonMultiRefraction"
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
             #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local ANTI_FLICKER
             #pragma shader_feature_local _EMISSION
             #pragma shader_feature_local GEOM_TYPE_BRANCH
             #pragma shader_feature_local _SUNDISK_SIMPLE
@@ -1065,6 +1082,7 @@ Shader "Hidden/lilToonMultiRefraction"
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
             #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local ANTI_FLICKER
             #pragma shader_feature_local _EMISSION
             #pragma shader_feature_local GEOM_TYPE_BRANCH
             #pragma shader_feature_local _SUNDISK_SIMPLE
@@ -1320,6 +1338,7 @@ Shader "Hidden/lilToonMultiRefraction"
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
             #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local ANTI_FLICKER
             #pragma shader_feature_local _EMISSION
             #pragma shader_feature_local GEOM_TYPE_BRANCH
             #pragma shader_feature_local _SUNDISK_SIMPLE
@@ -1578,6 +1597,7 @@ Shader "Hidden/lilToonMultiRefraction"
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
             #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local ANTI_FLICKER
             #pragma shader_feature_local _EMISSION
             #pragma shader_feature_local GEOM_TYPE_BRANCH
             #pragma shader_feature_local _SUNDISK_SIMPLE

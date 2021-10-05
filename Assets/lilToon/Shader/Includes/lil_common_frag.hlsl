@@ -58,6 +58,10 @@
     #define BEFORE_SHADOW
 #endif
 
+#if !defined(BEFORE_BACKLIGHT)
+    #define BEFORE_BACKLIGHT
+#endif
+
 #if !defined(BEFORE_REFRACTION)
     #define BEFORE_REFRACTION
 #endif
@@ -505,7 +509,7 @@ void lilGetShading(
     float3 indLightColor,
     float2 uv,
     float facing,
-    float3 normalDirection,
+    float ln,
     float3 lightDirection,
     float3 lightDirectionCopy,
     bool cullOff,
@@ -516,22 +520,22 @@ void lilGetShading(
     if(_UseShadow)
     {
         // Shade
-        float ln = saturate(dot(lightDirection,normalDirection)*0.5+0.5);
-        if(Exists_ShadowBorderMask) ln *= LIL_SAMPLE_2D(_ShadowBorderMask, samp, uv).r;
-        float ln2 = ln;
-        float lnB = ln;
+        float ln1 = saturate(ln*0.5+0.5);
+        if(Exists_ShadowBorderMask) ln1 *= LIL_SAMPLE_2D(_ShadowBorderMask, samp, uv).r;
+        float ln2 = ln1;
+        float lnB = ln1;
 
         // Shadow
         #if defined(LIL_USE_SHADOW) || (defined(LIL_LIGHTMODE_SHADOWMASK) && defined(LIL_FEATURE_RECEIVE_SHADOW))
             float shadowAttenuation = saturate(attenuation + distance(lightDirection, lightDirectionCopy.xyz));
-            if(_ShadowReceive) ln *= shadowAttenuation;
+            if(_ShadowReceive) ln1 *= shadowAttenuation;
             if(_ShadowReceive) lnB *= shadowAttenuation;
         #endif
 
         // Toon
         float shadowBlur = _ShadowBlur;
         if(Exists_ShadowBlurMask) shadowBlur *= LIL_SAMPLE_2D(_ShadowBlurMask, samp, uv).r;
-        ln = lilTooning(ln, _ShadowBorder, shadowBlur);
+        ln1 = lilTooning(ln1, _ShadowBorder, shadowBlur);
         ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
         lnB = lilTooning(lnB, _ShadowBorder, shadowBlur, _ShadowBorderRange);
 
@@ -539,13 +543,13 @@ void lilGetShading(
         {
             // Force shadow on back face
             float bfshadow = (facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
-            ln *= bfshadow;
+            ln1 *= bfshadow;
             ln2 *= bfshadow;
             lnB *= bfshadow;
         }
 
         // Copy
-        shadowmix = ln;
+        shadowmix = ln1;
 
         // Strength
         float shadowStrength = _ShadowStrength;
@@ -553,7 +557,7 @@ void lilGetShading(
             shadowStrength = lilSRGBToLinear(shadowStrength);
         #endif
         if(Exists_ShadowStrengthMask) shadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, samp, uv).r;
-        ln = lerp(1.0, ln, shadowStrength);
+        ln1 = lerp(1.0, ln1, shadowStrength);
 
         // Shadow Color 1
         float4 shadowColorTex = 0.0;
@@ -580,7 +584,7 @@ void lilGetShading(
         indirectCol = lerp(indirectCol, directCol, lnB * _ShadowBorderColor.rgb);
 
         // Mix
-        col.rgb = lerp(indirectCol, directCol, ln);
+        col.rgb = lerp(indirectCol, directCol, ln1);
     }
     else
     {
@@ -596,7 +600,7 @@ void lilGetShading(
     float3 indLightColor,
     float2 uv,
     float facing,
-    float3 normalDirection,
+    float ln,
     float3 lightDirection,
     float3 lightDirectionCopy,
     bool cullOff
@@ -606,12 +610,12 @@ void lilGetShading(
     if(_UseShadow)
     {
         // Shade
-        float ln = saturate(dot(lightDirection,normalDirection)*0.5+0.5);
-        float ln2 = ln;
-        float lnB = ln;
+        float ln1 = saturate(ln*0.5+0.5);
+        float ln2 = ln1;
+        float lnB = ln1;
 
         // Toon
-        ln = lilTooning(ln, _ShadowBorder, _ShadowBlur);
+        ln1 = lilTooning(ln1, _ShadowBorder, _ShadowBlur);
         ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
         lnB = lilTooning(lnB, _ShadowBorder, _ShadowBlur, _ShadowBorderRange);
 
@@ -619,13 +623,13 @@ void lilGetShading(
         {
             // Force shadow on back face
             float bfshadow = (facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
-            ln *= bfshadow;
+            ln1 *= bfshadow;
             ln2 *= bfshadow;
             lnB *= bfshadow;
         }
 
         // Copy
-        shadowmix = ln;
+        shadowmix = ln1;
 
         // Shadow Color 1
         float4 shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, uv);
@@ -646,7 +650,7 @@ void lilGetShading(
         indirectCol = lerp(indirectCol, directCol, lnB * _ShadowBorderColor.rgb);
 
         // Mix
-        col.rgb = lerp(indirectCol, directCol, ln);
+        col.rgb = lerp(indirectCol, directCol, ln1);
     }
     else
     {
@@ -658,11 +662,34 @@ void lilGetShading(
 #if !defined(OVERRIDE_SHADOW)
     #if defined(LIL_LITE)
         #define OVERRIDE_SHADOW \
-            lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uvMain,facing,normalDirection,lightDirection,_MainLightPosition.xyz,true LIL_SAMP_IN(sampler_MainTex));
+            lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uvMain,facing,ln,lightDirection,_MainLightPosition.xyz,true LIL_SAMP_IN(sampler_MainTex));
     #else
         #define OVERRIDE_SHADOW \
-            lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uvMain,facing,normalDirection,lightDirection,_MainLightPosition.xyz,true,attenuation LIL_SAMP_IN(sampler_MainTex));
+            lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uvMain,facing,ln,lightDirection,_MainLightPosition.xyz,true,attenuation LIL_SAMP_IN(sampler_MainTex));
     #endif
+#endif
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Backlight
+#if defined(LIL_FEATURE_BACKLIGHT) && !defined(LIL_LITE) && !defined(LIL_FUR) && !defined(LIL_GEM)
+    void lilBacklight(inout float4 col, float2 uvMain, float vl, float3 lightColor, float3 lightDirection, float attenuation, float3 headDirection, float3 normalDirection LIL_SAMP_IN_FUNC(samp))
+    {
+        if(_UseBacklight)
+        {
+            float3 backlightColor = LIL_SAMPLE_2D(_BacklightColorTex, samp, uvMain).rgb * _BacklightColor.rgb;
+            float backlightFactor = pow(saturate(-vl * 0.5 + 0.5), _BacklightDirectivity);
+            float backlightLN = lilTooning(dot(normalize(-headDirection * _BacklightViewStrength + lightDirection), normalDirection) * 0.5 + 0.5, _BacklightBorder, _BacklightBlur);
+            float backlight = backlightFactor * backlightLN;
+            #if defined(LIL_USE_SHADOW) || (defined(LIL_LIGHTMODE_SHADOWMASK) && defined(LIL_FEATURE_RECEIVE_SHADOW))
+                if(_BacklightReceiveShadow) backlight *= attenuation;
+            #endif
+            col.rgb += backlight * backlightColor * lightColor;
+        }
+    }
+#endif
+
+#if !defined(OVERRIDE_BACKLIGHT)
+    #define OVERRIDE_BACKLIGHT lilBacklight(col, uvMain, vl, lightColor, lightDirection, attenuation, headDirection, normalDirection LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -715,17 +742,17 @@ void lilGetShading(
 //------------------------------------------------------------------------------------------------------------------------------
 // Reflection
 #if defined(LIL_HDRP)
-    #define LIL_HDRP_VAL_INPUT          , lightColor, lightDirection, posInput, renderingLayers, featureFlags
-    #define LIL_HDRP_VAL_INPUT_FUNC     , float3 lightColor, float3 lightDirection, PositionInputs posInput, uint renderingLayers, uint featureFlags
+    #define LIL_HDRP_VAL_INPUT          , posInput, renderingLayers, featureFlags
+    #define LIL_HDRP_VAL_INPUT_FUNC     , PositionInputs posInput, uint renderingLayers, uint featureFlags
 #else
     #define LIL_HDRP_VAL_INPUT
     #define LIL_HDRP_VAL_INPUT_FUNC
 #endif
 #if defined(LIL_FEATURE_REFLECTION) && defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && !defined(LIL_LITE) && !defined(LIL_FUR)
     #if !defined(LIL_REFRACTION_BLUR2) || defined(LIL_PASS_FORWARDADD)
-        void lilReflection(inout float4 col, float2 uvMain, float3 albedo, float3 positionWS, float3 normalDirection, float3 viewDirection, float nv, float attenuation, float nvabs LIL_SAMP_IN_FUNC(samp) LIL_HDRP_VAL_INPUT_FUNC)
+        void lilReflection(inout float4 col, float2 uvMain, float3 albedo, float3 positionWS, float3 normalDirection, float3 viewDirection, float nv, float3 lightColor, float3 lightDirection, float shadowmix, float attenuation, float nvabs LIL_SAMP_IN_FUNC(samp) LIL_HDRP_VAL_INPUT_FUNC)
     #else
-        void lilReflection(inout float4 col, float2 uvMain, float3 albedo, float3 positionWS, float3 normalDirection, float3 viewDirection, float nv, float attenuation, float nvabs, float smoothness, float perceptualRoughness, float roughness LIL_SAMP_IN_FUNC(samp) LIL_HDRP_VAL_INPUT_FUNC)
+        void lilReflection(inout float4 col, float2 uvMain, float3 albedo, float3 positionWS, float3 normalDirection, float3 viewDirection, float nv, float3 lightColor, float3 lightDirection, float shadowmix, float attenuation, float nvabs, float smoothness, float perceptualRoughness, float roughness LIL_SAMP_IN_FUNC(samp) LIL_HDRP_VAL_INPUT_FUNC)
     #endif
     {
         #ifndef LIL_PASS_FORWARDADD
@@ -755,7 +782,7 @@ void lilGetShading(
                 if(_ApplySpecular)
             #endif
             {
-                #if defined(LIL_HDRP)
+                #if 1
                     float3 lightDirectionSpc = lightDirection;
                     float3 lightColorSpc = lightColor;
                 #else
@@ -766,8 +793,10 @@ void lilGetShading(
                 float nl = saturate(dot(normalDirection, lightDirectionSpc));
                 float nh = saturate(dot(normalDirection, halfDirection));
                 float lh = saturate(dot(lightDirectionSpc, halfDirection));
-                #if defined(SHADOWS_SCREEN) || defined(LIL_PASS_FORWARDADD)
+                #if defined(LIL_PASS_FORWARDADD)
                     reflectCol = lilCalcSpecular(nv, nl, nh, lh, roughness, specular, _SpecularToon, attenuation) * lightColorSpc;
+                #elif defined(SHADOWS_SCREEN)
+                    reflectCol = lilCalcSpecular(nv, nl, nh, lh, roughness, specular, _SpecularToon, shadowmix) * lightColorSpc;
                 #else
                     reflectCol = lilCalcSpecular(nv, nl, nh, lh, roughness, specular, _SpecularToon) * lightColorSpc;
                 #endif
@@ -810,10 +839,10 @@ void lilGetShading(
 #if !defined(OVERRIDE_REFLECTION)
     #if !defined(LIL_REFRACTION_BLUR2) || defined(LIL_PASS_FORWARDADD)
         #define OVERRIDE_REFLECTION \
-            lilReflection(col, uvMain, albedo, input.positionWS, normalDirection, viewDirection, nv, attenuation, nvabs LIL_SAMP_IN(sampler_MainTex) LIL_HDRP_VAL_INPUT);
+            lilReflection(col, uvMain, albedo, input.positionWS, normalDirection, viewDirection, nv, lightColor, lightDirection, shadowmix, attenuation, nvabs LIL_SAMP_IN(sampler_MainTex) LIL_HDRP_VAL_INPUT);
     #else
         #define OVERRIDE_REFLECTION \
-            lilReflection(col, uvMain, albedo, input.positionWS, normalDirection, viewDirection, nv, attenuation, nvabs, smoothness, perceptualRoughness, roughness LIL_SAMP_IN(sampler_MainTex) LIL_HDRP_VAL_INPUT);
+            lilReflection(col, uvMain, albedo, input.positionWS, normalDirection, viewDirection, nv, lightColor, lightDirection, shadowmix, attenuation, nvabs, smoothness, perceptualRoughness, roughness LIL_SAMP_IN(sampler_MainTex) LIL_HDRP_VAL_INPUT);
     #endif
 #endif
 
@@ -1071,6 +1100,7 @@ void lilGetShading(
     #define OVERRIDE_GLITTER \
         lilGlitter(col, albedo, uvMain, input.uv, input.uv1, viewDirection, headDirection, lightColor, normalDirection, lightDirection, shadowmix LIL_SAMP_IN(sampler_MainTex));
 #endif
+
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Emission

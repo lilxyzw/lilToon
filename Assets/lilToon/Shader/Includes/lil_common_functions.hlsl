@@ -777,14 +777,14 @@ float4 lilGetSubTexWithoutAnimation(
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Light Direction
-float3 lilGetLightDirection()
+float3 lilGetLightDirection(float4 lightDirectionOverride = float4(0.0,0.001,0.0,0.0))
 {
     #if LIL_LIGHT_DIRECTION_MODE == 0
-        return normalize(_MainLightPosition.xyz + float3(0.0,0.001,0.0));
+        return normalize(_MainLightPosition.xyz + lightDirectionOverride.xyz);
     #else
         return normalize(_MainLightPosition.xyz * lilLuminance(_MainLightColor.rgb) + 
                         unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + 
-                        float3(0.0,0.001,0.0));
+                        lightDirectionOverride.xyz);
     #endif
 }
 
@@ -871,24 +871,24 @@ float3 lilShadeSH9LPPV(float3 normalWS, float3 positionWS)
     return lilShadeSH9LPPV(float4(normalWS,1.0), positionWS);
 }
 
-float3 lilGetSHToon()
+float3 lilGetSHToon(float4 lightDirectionOverride = float4(0.0,0.001,0.0,0.0))
 {
-    return lilShadeSH9(lilGetLightDirection() * 0.666666);
+    return lilShadeSH9(lilGetLightDirection(lightDirectionOverride) * 0.666666);
 }
 
-float3 lilGetSHToon(float3 positionWS)
+float3 lilGetSHToon(float3 positionWS, float4 lightDirectionOverride = float4(0.0,0.001,0.0,0.0))
 {
-    return lilShadeSH9LPPV(lilGetLightDirection() * 0.666666, positionWS);
+    return lilShadeSH9LPPV(lilGetLightDirection(lightDirectionOverride) * 0.666666, positionWS);
 }
 
-float3 lilGetSHToonMin()
+float3 lilGetSHToonMin(float4 lightDirectionOverride = float4(0.0,0.001,0.0,0.0))
 {
-    return lilShadeSH9(-lilGetLightDirection() * 0.666666);
+    return lilShadeSH9(-lilGetLightDirection(lightDirectionOverride) * 0.666666);
 }
 
-float3 lilGetSHToonMin(float3 positionWS)
+float3 lilGetSHToonMin(float3 positionWS, float4 lightDirectionOverride = float4(0.0,0.001,0.0,0.0))
 {
-    return lilShadeSH9LPPV(-lilGetLightDirection() * 0.666666, positionWS);
+    return lilShadeSH9LPPV(-lilGetLightDirection(lightDirectionOverride) * 0.666666, positionWS);
 }
 
 void lilGetToonSHDouble(float3 lightDirection, out float3 shMax, out float3 shMin)

@@ -15,6 +15,7 @@ Shader "Hidden/lilToonLiteTransparent"
                         _BeforeExposureLimit        ("Before Exposure Limit", Float) = 10000
                         _MonochromeLighting         ("Monochrome lighting", Range(0,1)) = 0
                         _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
+        [lilVec3]       _LightDirectionOverride     ("Light Direction Override", Vector) = (0,0.001,0,0)
         [NoScaleOffset] _TriMask                    ("TriMask", 2D) = "white" {}
 
         //----------------------------------------------------------------------------------------------------------------------

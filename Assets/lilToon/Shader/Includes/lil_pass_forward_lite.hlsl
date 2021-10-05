@@ -190,6 +190,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         // Normal
         float3 normalDirection = normalize(input.normalWS);
         normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
+        float ln = dot(lightDirection, normalDirection);
 
         //------------------------------------------------------------------------------------------------------------------------------
         // MatCap

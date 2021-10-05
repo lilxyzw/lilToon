@@ -175,6 +175,7 @@ float4 frag(v2f input) : SV_Target
         // Lighting
         #if defined(LIL_FEATURE_SHADOW)
             float3 normalDirection = normalize(input.normalWS);
+            float ln = dot(lightDirection, normalDirection);
             float shadowmix = 1.0;
             OVERRIDE_SHADOW
             col.rgb += albedo * addLightColor;

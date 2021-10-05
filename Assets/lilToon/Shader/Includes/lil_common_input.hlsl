@@ -215,6 +215,7 @@ SAMPLER(sampler_linear_clamp);
 
 #if defined(LIL_LITE)
     CBUFFER_START(UnityPerMaterial)
+    float4  _LightDirectionOverride;
     float4  _Color;
     float4  _MainTex_ST;
     float4  _MainTex_ScrollRotate;
@@ -299,6 +300,7 @@ SAMPLER(sampler_linear_clamp);
     CBUFFER_END
 #elif defined(LIL_MULTI)
     CBUFFER_START(UnityPerMaterial)
+    float4  _LightDirectionOverride;
     float4  _Color;
     float4  _MainTex_ST;
     float4  _MainTex_ScrollRotate;
@@ -335,6 +337,9 @@ SAMPLER(sampler_linear_clamp);
         float4  _ShadowColor;
         float4  _Shadow2ndColor;
         float4  _ShadowBorderColor;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
+        float4  _BacklightColor;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION)
         float4  _EmissionColor;
@@ -452,6 +457,12 @@ SAMPLER(sampler_linear_clamp);
         float   _ShadowMainStrength;
         float   _ShadowEnvStrength;
         float   _ShadowBorderRange;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
+        float   _BacklightBorder;
+        float   _BacklightBlur;
+        float   _BacklightDirectivity;
+        float   _BacklightViewStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_NORMAL)
         float   _BumpScale;
@@ -591,6 +602,10 @@ SAMPLER(sampler_linear_clamp);
         lilBool _UseShadow;
         lilBool _ShadowReceive;
     #endif
+    #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
+        lilBool _UseBacklight;
+        lilBool _BacklightReceiveShadow;
+    #endif
     #if defined(LIL_MULTI_INPUTS_NORMAL)
         lilBool _UseBumpMap;
     #endif
@@ -669,6 +684,7 @@ SAMPLER(sampler_linear_clamp);
     CBUFFER_START(UnityPerMaterial)
     //------------------------------------------------------------------------------------------------------------------------------
     // Vector
+    float4  _LightDirectionOverride;
     // Main
     float4  _Color;
     float4  _MainTex_ST;
@@ -726,6 +742,11 @@ SAMPLER(sampler_linear_clamp);
         float4  _ShadowColor;
         float4  _Shadow2ndColor;
         float4  _ShadowBorderColor;
+    #endif
+
+    // Backlight
+    #if defined(LIL_FEATURE_BACKLIGHT)
+        float4  _BacklightColor;
     #endif
 
     // Emission
@@ -919,6 +940,12 @@ SAMPLER(sampler_linear_clamp);
         float   _ShadowEnvStrength;
         float   _ShadowBorderRange;
     #endif
+    #if defined(LIL_FEATURE_BACKLIGHT)
+        float   _BacklightBorder;
+        float   _BacklightBlur;
+        float   _BacklightDirectivity;
+        float   _BacklightViewStrength;
+    #endif
     #if defined(LIL_FEATURE_NORMAL_1ST)
         float   _BumpScale;
     #endif
@@ -1083,6 +1110,10 @@ SAMPLER(sampler_linear_clamp);
             lilBool _ShadowReceive;
         #endif
     #endif
+    #if defined(LIL_FEATURE_BACKLIGHT)
+        lilBool _UseBacklight;
+        lilBool _BacklightReceiveShadow;
+    #endif
     #if defined(LIL_FEATURE_NORMAL_1ST)
         lilBool _UseBumpMap;
     #endif
@@ -1203,6 +1234,7 @@ TEXTURE2D(_ShadowBlurMask);
 TEXTURE2D(_ShadowStrengthMask);
 TEXTURE2D(_ShadowColorTex);
 TEXTURE2D(_Shadow2ndColorTex);
+TEXTURE2D(_BacklightColorTex);
 TEXTURE2D(_SmoothnessTex);
 TEXTURE2D(_MetallicGlossMap);
 TEXTURE2D(_ReflectionColorTex);

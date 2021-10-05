@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.0] - 2021-09-31
 ### Added
 - New support for HDRP
-- `Monochrome lighting` and `Upper brightness limit` properties
+- `Upper brightness limit` and `Monochrome lighting` and `Light Direction Override` properties
+- Backlight function
 - `Root Width` property to fur shader
 - Menu to the property blocks (multiple properties can now be copied and pasted at once)
 - One pass / two pass variations to the transparent shader

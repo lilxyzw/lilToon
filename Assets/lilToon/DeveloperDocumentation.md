@@ -111,7 +111,7 @@ In each path, `#include "Includes/lil_pass_xx.hlsl"` is called, and the hlsl fil
 The following shader keywords are used in `lilToonMulti`.  
 These match the built-in shader keywords, so the shader keyword limit is avoided and no warning is displayed by the VRCSDK.
 ```
-ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _COLORADDSUBDIFF_ON _COLORCOLOR_ON _SUNDISK_NONE GEOM_TYPE_FROND _COLOROVERLAY_ON _REQUIRE_UV2 _EMISSION GEOM_TYPE_BRANCH _SUNDISK_SIMPLE _NORMALMAP EFFECT_BUMP _GLOSSYREFLECTIONS_OFF _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A _SPECULARHIGHLIGHTS_OFF GEOM_TYPE_MESH _METALLICGLOSSMAP GEOM_TYPE_LEAF _SPECGLOSSMAP _PARALLAXMAP PIXELSNAP_ON BILLBOARD_FACE_CAMERA_POS _FADING_ON _MAPPING_6_FRAMES_LAYOUT _SUNDISK_HIGH_QUALITY GEOM_TYPE_BRANCH_DETAIL _DETAIL_MULX2
+ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _COLORADDSUBDIFF_ON _COLORCOLOR_ON _SUNDISK_NONE GEOM_TYPE_FROND _COLOROVERLAY_ON _REQUIRE_UV2 ANTI_FLICKER _EMISSION GEOM_TYPE_BRANCH _SUNDISK_SIMPLE _NORMALMAP EFFECT_BUMP _GLOSSYREFLECTIONS_OFF _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A _SPECULARHIGHLIGHTS_OFF GEOM_TYPE_MESH _METALLICGLOSSMAP GEOM_TYPE_LEAF _SPECGLOSSMAP _PARALLAXMAP PIXELSNAP_ON BILLBOARD_FACE_CAMERA_POS _FADING_ON _MAPPING_6_FRAMES_LAYOUT _SUNDISK_HIGH_QUALITY GEOM_TYPE_BRANCH_DETAIL _DETAIL_MULX2
 ```
 
 # How to make a custom shader
@@ -160,6 +160,11 @@ Write the macro as follows.
 #define LIL_CUSTOM_TEXTURES \
     TEXTURE2D(_CustomVertexWaveMask);
 ```
+
+## Add functions and include
+If you want to add a function or include that depends on Unity variables or functions, you can rewrite it as follows
+1. Add `#include "Includes/lil_pipeline.hlsl"` just before `#include "Includes/lil_pass_xx.hlsl"` in each path
+2. Insert any function or include between these two includes
 
 ## Add vertex shader input (appdata structure)
 The following keywords can be `#define` to add the corresponding input.

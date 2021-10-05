@@ -299,6 +299,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             #if defined(LIL_FEATURE_SHADOW)
                 float3 normalDirection = normalize(input.normalWS);
                 normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
+                float ln = dot(lightDirection, normalDirection);
                 float shadowmix = 1.0;
                 OVERRIDE_SHADOW
             #else
@@ -329,6 +330,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             float depth = length(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
             float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
             float3 headDirection = normalize(LIL_GET_HEADDIR_WS(input.positionWS.xyz));
+            float vl = dot(viewDirection, lightDirection);
         #endif
         #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS)
             float3x3 tbnWS = float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
@@ -404,6 +406,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
                 float3 normalDirection = normalize(input.normalWS);
                 normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
             #endif
+            float ln = dot(lightDirection, normalDirection);
             #if defined(LIL_V2F_POSITION_WS)
                 float nv = saturate(dot(normalDirection, viewDirection));
                 float nvabs = abs(dot(normalDirection, viewDirection));
@@ -482,6 +485,15 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             #endif
             #if defined(LIL_FEATURE_MAIN3RD)
                 if(_UseMain3rdTex) col.rgb = lerp(col.rgb, 0, color3rd.a - color3rd.a * _Main3rdEnableLighting);
+            #endif
+        #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Backlight
+        BEFORE_BACKLIGHT
+        #if !defined(LIL_PASS_FORWARDADD)
+            #if defined(LIL_FEATURE_BACKLIGHT)
+                OVERRIDE_BACKLIGHT
             #endif
         #endif
 

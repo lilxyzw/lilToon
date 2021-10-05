@@ -196,6 +196,8 @@
         float nv2 = abs(dot(normalDirection, gemViewDirection.yzx));
         float nv3 = abs(dot(normalDirection, gemViewDirection.zxy));
         float invnv = 1-nv1;
+        float3 vl = dot(viewDirection, lightDirection);
+        float ln = dot(lightDirection, normalDirection);
 
         //------------------------------------------------------------------------------------------------------------------------------
         // AudioLink (https://github.com/llealloo/vrc-udon-audio-link)
@@ -208,7 +210,7 @@
         //------------------------------------------------------------------------------------------------------------------------------
         // Lighting
         #ifndef LIL_PASS_FORWARDADD
-            float shadowmix = saturate(dot(lightDirection, normalDirection));
+            float shadowmix = saturate(ln);
             lightColor = saturate(lightColor + addLightColor);
             shadowmix = saturate(shadowmix + lilLuminance(addLightColor));
         #endif

@@ -143,7 +143,7 @@
 #endif
 
 // normal (vertex input)
-#if defined(LIL_SHOULD_TANGENT) || defined(LIL_FEATURE_SHADOW) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_MATCAP) || defined(LIL_FEATURE_MATCAP_2ND) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_AUDIOLINK) || defined(LIL_REFRACTION) || (defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE)) || defined(LIL_HDRP)
+#if defined(LIL_SHOULD_TANGENT) || defined(LIL_FEATURE_SHADOW) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_MATCAP) || defined(LIL_FEATURE_MATCAP_2ND) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_BACKLIGHT) || defined(LIL_FEATURE_AUDIOLINK) || defined(LIL_REFRACTION) || (defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE)) || defined(LIL_HDRP)
     #define LIL_SHOULD_NORMAL
 #endif
 
@@ -153,7 +153,7 @@
 #endif
 
 // positionWS
-#if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD) || defined(LIL_FEATURE_RECEIVE_SHADOW) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX) || defined(LIL_FEATURE_DISTANCE_FADE) || defined(LIL_REFRACTION) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
+#if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD) || defined(LIL_FEATURE_RECEIVE_SHADOW) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_BACKLIGHT) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX) || defined(LIL_FEATURE_DISTANCE_FADE) || defined(LIL_REFRACTION) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
     #define LIL_SHOULD_POSITION_WS
 #endif
 
@@ -621,7 +621,7 @@ struct lilLightData
         lilGetLightDirectionAndColor(o.lightDirection, o.lightColor, posInput, renderingLayers, featureFlags); \
         o.lightColor *= _lilDirectionalLightStrength; \
         float3 lightDirectionCopy = o.lightDirection; \
-        o.lightDirection = normalize(o.lightDirection * Luminance(o.lightColor) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + float3(0.0,0.001,0.0)); \
+        o.lightDirection = normalize(o.lightDirection * Luminance(o.lightColor) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + _LightDirectionOverride.xyz); \
         float3 shLightColor = lilShadeSH9(float4(o.lightDirection * 0.666666, 1.0)); \
         o.lightColor += shLightColor; \
         LIL_CALC_HDRP_INDIR(o) \
@@ -633,7 +633,7 @@ struct lilLightData
         lilGetLightDirectionAndColor(o.lightDirection, o.lightColor, posInput, renderingLayers, featureFlags); \
         o.lightColor *= _lilDirectionalLightStrength; \
         float3 lightDirectionCopy = o.lightDirection; \
-        o.lightDirection = normalize(o.lightDirection * Luminance(o.lightColor) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + float3(0.0,0.001,0.0)); \
+        o.lightDirection = normalize(o.lightDirection * Luminance(o.lightColor) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + _LightDirectionOverride.xyz); \
         float3 shLightColor = lilShadeSH9(float4(o.lightDirection * 0.666666, 1.0)); \
         o.lightColor += shLightColor; \
         LIL_CALC_HDRP_INDIR(o) \
@@ -645,12 +645,12 @@ struct lilLightData
 #elif defined(LIL_USE_LIGHTMAP)
     #define LIL_CALC_MAINLIGHT(i,o) \
         lilLightData o; \
-        o.lightDirection = lilGetLightDirection(); \
+        o.lightDirection = lilGetLightDirection(_LightDirectionOverride); \
         LIL_CALC_TWOLIGHT(i,o)
 #else
     #define LIL_CALC_MAINLIGHT(i,o) \
         lilLightData o; \
-        o.lightDirection = lilGetLightDirection(); \
+        o.lightDirection = lilGetLightDirection(_LightDirectionOverride); \
         LIL_CALC_TWOLIGHT(i,o); \
         o.lightColor = clamp(o.lightColor, _LightMinLimit, _LightMaxLimit); \
         o.lightColor = lerp(o.lightColor, lilGray(o.lightColor), _MonochromeLighting); \

@@ -70,6 +70,11 @@
     #undef _REQUIRE_UV2
 #endif
 
+#if defined(ANTI_FLICKER)
+    #define LIL_FEATURE_BACKLIGHT
+    #undef ANTI_FLICKER
+#endif
+
 #if defined(_EMISSION)
     #define LIL_FEATURE_EMISSION_1ST
     #undef _EMISSION

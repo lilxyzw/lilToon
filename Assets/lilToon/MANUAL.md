@@ -19,6 +19,7 @@
         - [MatCap](#matcap)
         - [Rim Light](#rim-light)
         - [Glitter](#glitter)
+        - [Backlight](#backlight)
         - [Gem](#gem)
 - [Advanced](#advanced)
     - [Outline](#outline)
@@ -301,6 +302,16 @@ You can blend colors into the main color. This is the layer function in painting
 |Light direction strength|Influence of light direction.|
 |Color Randomness|Randomness of glitter color.|
 |VR Parallax Strength|Strength of parallax in VR.|
+
+### Backlight
+|Name|Description|
+|-|-|
+|Color|Color of backlight.|
+|Border|Range of backlight.|
+|Blur|Amount of backlight blur.|
+|Directivity|Degree to which the brightness changes according to the light direction.|
+|View direction strength|The degree to which the range of light changes depending on the view direction.|
+|Receive Shadow|Receive shadows from other objects.|
 
 ### Gem
 |Name|Description|

@@ -62,12 +62,12 @@ LIL_V2F_TYPE LIL_VERTEX_SHADER_NAME (appdata input)
     //------------------------------------------------------------------------------------------------------------------------------
     // Vertex Modification
     #include "Includes/lil_vert_encryption.hlsl"
+    #if defined(LIL_CUSTOM_VERTEX_OS)
+        LIL_CUSTOM_VERTEX_OS
+    #endif
     #include "Includes/lil_vert_audiolink.hlsl"
     #if !defined(LIL_ONEPASS_OUTLINE)
         #include "Includes/lil_vert_outline.hlsl"
-    #endif
-    #if defined(LIL_CUSTOM_VERTEX_OS)
-        LIL_CUSTOM_VERTEX_OS
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------

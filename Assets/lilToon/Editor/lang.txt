@@ -108,6 +108,7 @@ sVertexLightStrength	Vertex Light Strength	頂点ライトの強度	Vertex Light
 sLightMinLimit	Lower brightness limit	明るさの下限	Lower brightness limit	Lower brightness limit	Lower brightness limit
 sLightMaxLimit	Upper brightness limit	明るさの上限	Upper brightness limit	Upper brightness limit	Upper brightness limit
 sMonochromeLighting	Monochrome Lighting	ライトのモノクロ化	Monochrome Lighting	Monochrome Lighting	Monochrome Lighting
+sLightDirectionOverride	Light Direction Override	ライト方向のオーバーライド	Light Direction Override	Light Direction Override	Light Direction Override
 sDirectionalLightStrength	[HDRP] Directional Light Strength	[HDRP] Directional Lightの強さ	[HDRP] Directional Light Strength	[HDRP] Directional Light Strength	[HDRP] Directional Light Strength
 sBeforeExposureLimit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit
 sHelpRenderingTransparent	When two transparent materials overlap, one of them may become invisible.	透過マテリアル同士が重なったときに片方が見えなくなる場合があります	투명 Material끼리 겹친 때 한쪽이 보이지 않을 수 있습니다	当两个透明Material重叠时，其中一个可能会变得不可见。	當兩個透明Material重疊時，其中一個可能會變得不可見。
@@ -146,6 +147,10 @@ sShadow2ndColor	2nd Color	影色2	그림자 색 2	颜色2	顏色2
 sShadowEnvStrength	Environment strength on shadow color	影色への環境光影響度	그림자 색에 환경 광의 영향	阴影颜色的环境强度	陰影顏色的環境強度
 sShadowBorderColor	Border Color	境界の色	경계의 색	边界颜色	邊界顏色
 sShadowBorderRange	Border Range	境界の幅	경계의 폭	边界范围	邊界範圍
+sBacklight	Backlight	バックライト	Backlight	Backlight	Backlight
+sBacklightTips	Add a backlight when the light is behind the model.	逆光時に光を乗せる表現ができます	라이트가 모델 뒤에 있을 때 백라이트를 추가하다	当照明在模型后面时添加背光灯	當照明在模型後面時添加背光燈
+sDirectivity	Directivity	指向性	지향성	指向性	指向性
+sViewDirectionStrength	View direction strength	視線方向の影響度	뷰 방향의 영향도	视线方向影响	視線方向影響
 sOutlineSetting	Outline	輪郭線設定	윤곽선 설정	轮廓设置	輪廓設置
 sOutlineTips	You can set the color and thickness of the outline.	輪郭線の色や太さの設定ができます	윤곽선의 색과 굵기를 설정할 수 있습니다	你可以设置轮廓的颜色和厚度。	你可以設置輪廓的顏色和厚度。
 sOutline	Outline	輪郭線	윤곽선	轮廓	輪廓
@@ -427,6 +432,7 @@ sSettingRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
 sSettingTexRimLightColor	Rim Light Color Texture	リムライト色テクスチャ	림 라이트 색상 질감	Rim Light颜色纹理	Rim Light顏色紋理
 sSettingTexRimLightDirection	Light Direction Customize	ライト方向によるカスタマイズ	라이트 방향 의한 맞춤형	定制由光方向	定制由光方向
 sSettingGlitter	Glitter	ラメ	Glitter	Glitter	Glitter
+sSettingBacklight	Backlight	バックライト	Backlight	Backlight	Backlight
 sSettingParallax	Parallax	視差マップ	시차 맵	视差	視差
 sSettingPOM	[high-load] POM	[高負荷] POM	[과부하] POM	[高负荷] POM	[高負荷] POM
 sSettingClippingCanceller	Distance Clipping Canceller	距離クリッピングキャンセラー	거리 클리핑 취소 기	距离剪裁取消器	距離剪裁取消器
@@ -464,6 +470,7 @@ sAnchorReflection	#reflection	#反射	#reflection	#reflection	#reflection
 sAnchorMatCap	#matcap	#マットキャップ	#matcap	#matcap	#matcap
 sAnchorRimLight	#rim-light	#リムライト	#rim-light	#rim-light	#rim-light
 sAnchorGlitter	#glitter	#ラメ	#glitter	#glitter	#glitter
+sAnchorBacklight	#backlight	#バックライト	#backlight	#backlight	#backlight
 sAnchorGem	#gem	#宝石	#gem	#gem	#gem
 sAnchorAdvanced	#advanced	#拡張設定	#advanced	#advanced	#advanced
 sAnchorOutline	#outline	#輪郭線設定	#outline	#outline	#outline
