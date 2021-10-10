@@ -2,9 +2,16 @@
 #define LIL_PASS_UNIVERSAL2D_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
+#include "Includes/lil_common_input.hlsl"
+#include "Includes/lil_common_functions.hlsl"
+#include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Structure
+#if !defined(LIL_CUSTOM_V2F_MEMBER)
+    #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7)
+#endif
+
 #define LIL_V2F_POSITION_CS
 #define LIL_V2F_TEXCOORD0
 
@@ -12,6 +19,7 @@ struct v2f
 {
     float4 positionCS   : SV_POSITION;
     float2 uv           : TEXCOORD0;
+    LIL_CUSTOM_V2F_MEMBER(1,2,3,4,5,6,7,8)
 };
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -19,14 +27,8 @@ struct v2f
 #include "Includes/lil_common_vert.hlsl"
 #include "Includes/lil_common_frag.hlsl"
 
-#if defined(LIL_CUSTOM_V2F)
-float4 frag(LIL_CUSTOM_V2F inputCustom) : SV_Target
-{
-    v2f input = inputCustom.base;
-#else
 float4 frag(v2f input) : SV_Target
 {
-#endif
     BEFORE_ANIMATE_MAIN_UV
     OVERRIDE_ANIMATE_MAIN_UV
 

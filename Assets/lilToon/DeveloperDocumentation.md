@@ -122,9 +122,9 @@ If an error occurs in a specific path, it is recommended to `#undef` in that pat
 
 ## Creating a shader file
 The shader path is described in `ltspass_xx.shader` etc. and is referenced using `UsePass` from each shader variation.  
-First, duplicate `ltspass_xx.shader` and rename it.  
-Here, as an example, duplicate `ltspass_opaque.shader` and rename it to `custom_ltspass_opaque.shader`.  
-Also, rewrite `Shader "Hidden/ltspass_opaque"` at the beginning of the file to `Shader "Hidden/custom_ltspass_opaque"`.
+Create a new shader and copy the code from `ScriptTemplates/99-lilToon__Custom Pass Shader-custom_ltspass_opaque.shader.txt`.  
+Create `custom_ltspass_opaque.shader` as an example.  
+Rewrite `Shader "Hidden/#NAME#"` at the beginning of the file to `Shader "Hidden/custom_ltspass_opaque"`.
 
 ## Creating shader variations
 Duplicate `lts.shader` and rename it to `custom_lts.shader`.  
@@ -162,9 +162,8 @@ Write the macro as follows.
 ```
 
 ## Add functions and include
-If you want to add a function or include that depends on Unity variables or functions, you can rewrite it as follows
-1. Add `#include "Includes/lil_pipeline.hlsl"` just before `#include "Includes/lil_pass_xx.hlsl"` in each path
-2. Insert any function or include between these two includes
+Some libraries depend on Unity's functions and variables.  
+In this case, insert the function or include just before `#include "Includes/lil_pass_xx.hlsl"` that exists in each path.
 
 ## Add vertex shader input (appdata structure)
 The following keywords can be `#define` to add the corresponding input.
@@ -191,6 +190,37 @@ In this case, we will add the following macro since we want to be able to select
 #define LIL_REQUIRE_APP_TEXCOORD3
 ```
 
+## Add vertex shader output (v2f structure)
+Members of the structure can be added from `#define LIL_CUSTOM_V2F_MEMBER`.  
+Those originally included in the structure can be forced to become members with `#define LIL_V2F_FORCE_(keyword)`.  
+In this example, do as follows.
+```HLSL
+#define LIL_V2F_FORCE_TEXCOORD1
+#define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
+    float2 uv2 : TEXCOORD##id0; \
+    float2 uv3 : TEXCOORD##id1;
+
+#define LIL_CUSTOM_VERT_COPY \
+    LIL_V2F_OUT_BASE.uv2 = input.uv2; \
+    LIL_V2F_OUT_BASE.uv3 = input.uv3;
+```
+
+META path gives an error, so make the following changes to the META path.
+```HLSL
+//----------------------------------------------------------------------------------------------------------------------
+// Pass
+#undef LIL_CUSTOM_V2F_MEMBER
+#define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
+    float2 uv1 : TEXCOORD##id1; \
+    float2 uv2 : TEXCOORD##id2; \
+    float2 uv3 : TEXCOORD##id3;
+
+#include "Includes/lil_pipeline.hlsl"
+// Insert functions and includes that depend on Unity here
+
+#include "Includes/lil_pass_meta.hlsl"
+```
+
 ## Inserting a process into the vertex shader
 You can use the following macro to insert the process.
 
@@ -198,16 +228,12 @@ You can use the following macro to insert the process.
 |-|-|
 |LIL_CUSTOM_VERTEX_OS|Processing in object space|
 |LIL_CUSTOM_VERTEX_WS|Processing in world space|
-|LIL_CUSTOM_VERTEX_WS_OL|(For HDRP) Outline processing in world space|
-|LIL_CUSTOM_PREV_VERTEX_OS|(For HDRP) Processing in object space of the previous frame|
-|LIL_CUSTOM_PREV_VERTEX_WS|(For HDRP) Processing in world space of the previous frame|
-|LIL_CUSTOM_PREV_VERTEX_WS_OL|(For HDRP) Outline processing in world space of the previous frame|
 
 In this example, we will add a wave animation and copy UV2 / UV3.
 ```HLSL
 #define LIL_CUSTOM_VERTEX_OS \
     float3 customWaveStrength = LIL_SAMPLE_2D_LOD(_CustomVertexWaveMask, sampler_linear_repeat, input.uv, 0).r * _CustomVertexWaveStrength.xyz; \
-    input.positionOS.xyz += sin(LIL_TIME * _CustomVertexWaveSpeed + dot(input.positionOS.xyz, _CustomVertexWaveScale.xyz)) * customWaveStrength;
+    positionOS.xyz += sin(LIL_TIME * _CustomVertexWaveSpeed + dot(positionOS.xyz, _CustomVertexWaveScale.xyz)) * customWaveStrength;
 ```
 
 Coordinates and normals of the world space are stored in `vertexInput` and `vertexNormalInput`, although we did not use them this time.
@@ -216,40 +242,7 @@ Coordinates and normals of the world space are stored in `vertexInput` and `vert
     vertexInput.positionWS = CustomSomething(vertexInput.positionWS);
 ```
 
-## Add vertex shader output (v2f structure)
-This editing needs to be done for each pass.  
-If you want to add vertex shader outputs, you need to declare a new structure.  
-If you declare a structure, add `#define LIL_CUSTOM_V2F`. (The pixel shader input will be overwritten, and the vertex shader will be renamed to vertBase)  
-Those originally included in the structure can be forced to become members with `#define LIL_V2F_FORCE_(keyword)`.  
-If you want to support only built-in RP, you don't need to edit any paths other than the ones enclosed by `// BRP Start` and `// BRP End`.  
-In this example, do as follows.
-```HLSL
-// #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-#define LIL_V2F_FORCE_TEXCOORD1
-#define LIL_CUSTOM_V2F v2fCustom
-#define LIL_CUSTOM_V2F_STRUCT \
-    struct v2fCustom \
-    { \
-        float2 uv2  : TEXCOORD15; \
-        float2 uv3  : TEXCOORD16; \
-        v2f base; \
-    };
-
-#include "Includes/lil_pass_〇〇.hlsl"
-
-// #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-v2fCustom vert(appdata input)
-{
-    v2fCustom output;
-    LIL_INITIALIZE_STRUCT(v2fCustom, output);
-    output.base = vertBase(input);
-    output.uv2 = input.uv2;
-    output.uv3 = input.uv3;
-    return output;
-}
-```
-
-## Insert processing into pixel shader
+## Inserting a process into pixel shader
 You can insert or overwrite processes with `BEFORE_(keyword)` or `OVERRIDE_(keyword)`.  
 The following keywords are currently supported (more may be added upon request)
 
@@ -278,6 +271,7 @@ The following keywords are currently supported (more may be added upon request)
 |EMISSION_1ST|Emission|
 |EMISSION_2ND|Emission 2nd|
 |DISSOLVE_ADD|Dissolve border emission|
+|BLEND_EMISSION|Emission blending|
 |DISTANCE_FADE|Distance fade|
 |FOG|Fog|
 |OUTPUT|Output|
@@ -287,14 +281,15 @@ This time, edit as follows.
 #define OVERRIDE_EMISSION_1ST \
     float2 customEmissionUV = input.uv; \
     if(_CustomEmissionUVMode == 1) customEmissionUV = input.uv1; \
-    if(_CustomEmissionUVMode == 2) customEmissionUV = inputCustom.uv2; \
-    if(_CustomEmissionUVMode == 3) customEmissionUV = inputCustom.uv3; \
-    lilEmission(col, customEmissionUV, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
+    if(_CustomEmissionUVMode == 2) customEmissionUV = input.uv2; \
+    if(_CustomEmissionUVMode == 3) customEmissionUV = input.uv3; \
+    lilEmission(emissionColor, customEmissionUV, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
 ```
 
 ## Custom Inspector
-You can easily customize the Inspector by inheriting `lilToon.lilToonInspector`.
-The procedure is as follows:
+The template for the extended Inspector can be found in `ScriptTemplates/99-lilToon__Custom Inspector-NewCustomInspector.cs.txt`.  
+You can easily customize the Inspector by inheriting `lilToon.lilToonInspector`.  
+The editing procedure is as follows:
 1. Declare `MaterialProperty`
 2. Override `LoadCustomProperties()` and get the properties with `FindProperty` while setting `isCustomShader` to `true`.
 3. Override `DrawCustomProperties()` to implement GUI.
@@ -320,6 +315,8 @@ You can also use functions such as the following.
 
 In this case, I created CustomInspectorExample.cs and edited it as shown below.
 ```C#
+// This script should be placed in the lilToon/Editor folder
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
@@ -337,7 +334,6 @@ namespace lilToon
 
         private static bool isShowCustomProperties;
 
-        // Override this
         protected override void LoadCustomProperties(MaterialProperty[] props, Material material)
         {
             isCustomShader = true;
@@ -349,7 +345,6 @@ namespace lilToon
             customEmissionUVMode = FindProperty("_CustomEmissionUVMode", props);
         }
 
-        // Override this
         protected override void DrawCustomProperties(
             MaterialEditor materialEditor,
             Material material,

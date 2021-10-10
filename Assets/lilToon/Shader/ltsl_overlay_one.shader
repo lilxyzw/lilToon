@@ -96,7 +96,7 @@ Shader "_lil/[Optional] lilToonLiteOverlayOnePass"
 //
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+51"}
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+100"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
     }
 //
@@ -107,7 +107,7 @@ Shader "_lil/[Optional] lilToonLiteOverlayOnePass"
 /*
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+51"}
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+100"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
     }
 */
@@ -118,7 +118,7 @@ Shader "_lil/[Optional] lilToonLiteOverlayOnePass"
 /*
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+51"}
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+100"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
     }
 */
@@ -129,7 +129,7 @@ Shader "_lil/[Optional] lilToonLiteOverlayOnePass"
 /*
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+51"}
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+100"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
     }
 */

@@ -2665,7 +2665,7 @@ namespace lilToon
                                         materialEditor.ShaderProperty(backlightBlur, GetLoc("sBlur"));
                                         materialEditor.ShaderProperty(backlightDirectivity, GetLoc("sDirectivity"));
                                         materialEditor.ShaderProperty(backlightViewStrength, GetLoc("sViewDirectionStrength"));
-                                        if(CheckFeature(shaderSetting.LIL_FEATURE_RECEIVE_SHADOW)) materialEditor.ShaderProperty(backlightReceiveShadow, GetLoc("sReceiveShadow"));
+                                        materialEditor.ShaderProperty(backlightReceiveShadow, GetLoc("sReceiveShadow"));
                                         EditorGUILayout.EndVertical();
                                     }
                                     EditorGUILayout.EndVertical();
@@ -5002,15 +5002,14 @@ namespace lilToon
                 StreamWriter sw = new StreamWriter(shaderSettingHLSLPath,false);
                 sw.Write(shaderSettingString);
                 sw.Close();
-                string shaderFolderPath = GetShaderFolderPath();
-                RewriteReceiveShadow(shaderFolderPath + "/ltspass_opaque.shader", shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW);
-                RewriteReceiveShadow(shaderFolderPath + "/ltspass_cutout.shader", shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW);
-                RewriteReceiveShadow(shaderFolderPath + "/ltspass_transparent.shader", shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW);
-                RewriteReceiveShadow(shaderFolderPath + "/ltspass_tess_opaque.shader", shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW);
-                RewriteReceiveShadow(shaderFolderPath + "/ltspass_tess_cutout.shader", shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW);
-                RewriteReceiveShadow(shaderFolderPath + "/ltspass_tess_transparent.shader", shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW);
-                RewriteReceiveShadow(shaderFolderPath + "/lts_ref.shader", shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW);
-                RewriteReceiveShadow(shaderFolderPath + "/lts_ref_blur.shader", shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW);
+                string[] shaderFolderPaths = GetShaderFolderPaths();
+                bool isShadowReceive = shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW || shaderSetting.LIL_FEATURE_BACKLIGHT;
+                string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
+                foreach(string shaderGuid in shaderGuids)
+                {
+                    string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
+                    RewriteReceiveShadow(shaderPath, isShadowReceive);
+                }
                 AssetDatabase.SaveAssets();
                 AssetDatabase.ImportAsset(shaderSettingHLSLPath);
                 AssetDatabase.Refresh();
@@ -7499,7 +7498,7 @@ namespace lilToon
                     material.SetInt("_OutlineDstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                     material.SetInt("_AlphaToMask", 0);
                     material.SetInt("_OutlineAlphaToMask", 0);
-                    material.SetOverrideTag("RenderType", "Transparent");
+                    material.SetOverrideTag("RenderType", "TransparentCutout");
                     material.renderQueue = 2501;
                 }
                 else if(tpmode == 3.0f)
@@ -7521,7 +7520,7 @@ namespace lilToon
                     material.SetInt("_FurDstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                     material.SetInt("_FurZWrite", 0);
                     material.SetInt("_FurAlphaToMask", 0);
-                    material.SetOverrideTag("RenderType", "Transparent");
+                    material.SetOverrideTag("RenderType", "TransparentCutout");
                     material.renderQueue = 3000;
                 }
                 else if(tpmode == 5.0f)
@@ -8650,7 +8649,7 @@ namespace lilToon
             else if(isTransparent && zwrite.floatValue == 0.0f)
             {
                 mtoonMaterial.SetFloat("_BlendMode", 2.0f);
-                mtoonMaterial.SetOverrideTag("RenderType", "Transparent");
+                mtoonMaterial.SetOverrideTag("RenderType", "TransparentCutout");
                 mtoonMaterial.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
                 mtoonMaterial.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                 mtoonMaterial.SetFloat("_ZWrite", 0.0f);
@@ -8661,7 +8660,7 @@ namespace lilToon
             else if(isTransparent && zwrite.floatValue != 0.0f)
             {
                 mtoonMaterial.SetFloat("_BlendMode", 3.0f);
-                mtoonMaterial.SetOverrideTag("RenderType", "Transparent");
+                mtoonMaterial.SetOverrideTag("RenderType", "TransparentCutout");
                 mtoonMaterial.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
                 mtoonMaterial.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                 mtoonMaterial.SetFloat("_ZWrite", 1.0f);

@@ -95,22 +95,31 @@ v2f domain(lilTessellationFactors hsConst, const OutputPatch<appdata, 3> input, 
     LIL_INITIALIZE_STRUCT(appdata, output);
     LIL_TRANSFER_INSTANCE_ID(input[0], output);
 
-    #if defined(LIL_APP_POS)
+    #if defined(LIL_APP_POSITION)
         LIL_TRI_INTERPOLATION(input,output,bary,positionOS);
     #endif
-    #if defined(LIL_APP_UV0)
+    #if defined(LIL_APP_TEXCOORD0)
         LIL_TRI_INTERPOLATION(input,output,bary,uv);
     #endif
-    #if defined(LIL_APP_UV1)
+    #if defined(LIL_APP_TEXCOORD1)
         LIL_TRI_INTERPOLATION(input,output,bary,uv1);
     #endif
-    #if defined(LIL_APP_UV2)
+    #if defined(LIL_APP_TEXCOORD2)
         LIL_TRI_INTERPOLATION(input,output,bary,uv2);
     #endif
-    #if defined(LIL_APP_UV6)
+    #if defined(LIL_APP_TEXCOORD3)
+        LIL_TRI_INTERPOLATION(input,output,bary,uv3);
+    #endif
+    #if defined(LIL_APP_TEXCOORD4)
+        LIL_TRI_INTERPOLATION(input,output,bary,uv4);
+    #endif
+    #if defined(LIL_APP_TEXCOORD5)
+        LIL_TRI_INTERPOLATION(input,output,bary,uv5);
+    #endif
+    #if defined(LIL_APP_TEXCOORD6)
         LIL_TRI_INTERPOLATION(input,output,bary,uv6);
     #endif
-    #if defined(LIL_APP_UV7)
+    #if defined(LIL_APP_TEXCOORD7)
         LIL_TRI_INTERPOLATION(input,output,bary,uv7);
     #endif
     #if defined(LIL_APP_COLOR)
@@ -124,6 +133,9 @@ v2f domain(lilTessellationFactors hsConst, const OutputPatch<appdata, 3> input, 
     #endif
     #if defined(LIL_APP_PREVPOS)
         LIL_TRI_INTERPOLATION(input,output,bary,previousPositionOS);
+    #endif
+    #if defined(LIL_APP_PREVEL)
+        LIL_TRI_INTERPOLATION(input,output,bary,precomputedVelocity);
     #endif
 
     output.normalOS = normalize(output.normalOS);

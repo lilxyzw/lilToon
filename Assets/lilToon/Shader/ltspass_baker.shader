@@ -65,6 +65,9 @@ Shader "Hidden/ltsother_baker"
             #define LIL_BAKER
             #define LIL_WITHOUT_ANIMATION
             #include "Includes/lil_pipeline.hlsl"
+            #include "Includes/lil_common_input.hlsl"
+            #include "Includes/lil_common_functions.hlsl"
+            #include "Includes/lil_common_appdata.hlsl"
 
             struct v2f
             {

@@ -3,9 +3,9 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Appdata
-#define LIL_APP_POS
-#define LIL_APP_UV0
-#define LIL_APP_UV1
+#define LIL_APP_POSITION
+#define LIL_APP_TEXCOORD0
+#define LIL_APP_TEXCOORD1
 
 #if defined(LIL_REQUIRE_APP_POSITION)
 #endif
@@ -62,9 +62,15 @@
 
 struct appdata
 {
-    float4 positionOS   : POSITION;
-    float2 uv           : TEXCOORD0;
-    float2 uv1          : TEXCOORD1;
+    #if defined(LIL_APP_POSITION)
+        float4 positionOS   : POSITION;
+    #endif
+    #if defined(LIL_APP_TEXCOORD0)
+        float2 uv           : TEXCOORD0;
+    #endif
+    #if defined(LIL_APP_TEXCOORD1)
+        float2 uv1          : TEXCOORD1;
+    #endif
     #if defined(LIL_APP_TEXCOORD2)
         float2 uv2          : TEXCOORD2;
     #endif

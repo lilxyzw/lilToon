@@ -7,7 +7,7 @@
 #endif
 
 #if defined(LIL_OUTLINE) || defined(LIL_ONEPASS_OUTLINE)
-    LIL_MODIFY_TARGET.xyz += input.normalOS.xyz * lilGetOutlineWidth(LIL_MODIFY_TARGET.xyz, uvMain, input.color, _OutlineWidth, _OutlineWidthMask, _OutlineVertexR2Width, _OutlineFixWidth LIL_SAMP_IN(sampler_MainTex));
+    LIL_MODIFY_TARGET.xyz += input.normalOS.xyz * lilGetOutlineWidth(LIL_MODIFY_TARGET.xyz, uvMain, input.color, _OutlineWidth, _OutlineWidthMask, _OutlineVertexR2Width, _OutlineFixWidth LIL_SAMP_IN(sampler_OutlineTex));
 #endif
 
 #undef LIL_MODIFY_TARGET

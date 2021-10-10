@@ -3,6 +3,9 @@
 
 #define LIL_WITHOUT_ANIMATION
 #include "Includes/lil_pipeline.hlsl"
+#include "Includes/lil_common_input.hlsl"
+#include "Includes/lil_common_functions.hlsl"
+#include "Includes/lil_common_appdata.hlsl"
 
 #if defined(LIL_HDRP)
     CBUFFER_START(UnityMetaPass)
@@ -18,7 +21,10 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Structure
-/*
+#if !defined(LIL_CUSTOM_V2F_MEMBER)
+    #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7)
+#endif
+
 #define LIL_V2F_POSITION_CS
 #define LIL_V2F_TEXCOORD0
 #define LIL_V2F_VIZUV
@@ -32,67 +38,7 @@ struct v2f
         float2 vizUV        : TEXCOORD1;
         float4 lightCoord   : TEXCOORD2;
     #endif
-    LIL_VERTEX_INPUT_INSTANCE_ID
-    LIL_VERTEX_OUTPUT_STEREO
-};
-*/
-
-// Match the main path for customization
-#define LIL_V2F_POSITION_CS
-#define LIL_V2F_TEXCOORD0
-#if defined(LIL_V2F_FORCE_TEXCOORD1)
-    #define LIL_V2F_TEXCOORD1
-#endif
-#if defined(LIL_V2F_FORCE_POSITION_OS)
-    #define LIL_V2F_POSITION_OS
-#endif
-#if defined(LIL_V2F_FORCE_POSITION_WS)
-    #define LIL_V2F_POSITION_WS
-#endif
-#if defined(LIL_V2F_FORCE_POSITION_SS)
-    #define LIL_V2F_POSITION_SS
-#endif
-#if defined(LIL_V2F_FORCE_NORMAL)
-    #define LIL_V2F_NORMAL_WS
-#endif
-#if defined(LIL_V2F_FORCE_TANGENT)
-    #define LIL_V2F_TANGENT_WS
-#endif
-#if defined(LIL_V2F_FORCE_BITANGENT)
-    #define LIL_V2F_BITANGENT_WS
-#endif
-#define LIL_V2F_VIZUV
-#define LIL_V2F_LIGHTCOORD
-
-struct v2f
-{
-    float4 positionCS       : SV_POSITION;
-    float2 uv               : TEXCOORD0;
-    #if defined(EDITOR_VISUALIZATION) && !defined(LIL_HDRP)
-        float2 vizUV        : TEXCOORD1;
-        float4 lightCoord   : TEXCOORD2;
-    #endif
-    #if defined(LIL_V2F_TEXCOORD1)
-        float2 uv1          : TEXCOORD3;
-    #endif
-    #if defined(LIL_V2F_POSITION_OS)
-        float3 positionOS       : TEXCOORD4;
-    #endif
-    #if defined(LIL_V2F_POSITION_WS)
-        float3 positionWS       : TEXCOORD5;
-    #endif
-    #if defined(LIL_V2F_NORMAL_WS)
-        float3 normalWS         : TEXCOORD6;
-    #endif
-    #if defined(LIL_V2F_TANGENT_WS)
-        float4 tangentWS        : TEXCOORD7;
-    #endif
-    #if defined(LIL_V2F_BITANGENT_WS)
-        float3 bitangentWS      : TEXCOORD8;
-    #endif
-    #if defined(LIL_V2F_POSITION_SS)
-        float4 positionSS       : TEXCOORD9;
-    #endif
+    LIL_CUSTOM_V2F_MEMBER(3,4,5,6,7,8,9,10)
     LIL_VERTEX_INPUT_INSTANCE_ID
     LIL_VERTEX_OUTPUT_STEREO
 };
@@ -102,24 +48,45 @@ struct v2f
 #include "Includes/lil_common_vert.hlsl"
 #include "Includes/lil_common_frag.hlsl"
 
-#if defined(LIL_CUSTOM_V2F)
-float4 frag(LIL_CUSTOM_V2F inputCustom) : SV_Target
-{
-    v2f input = inputCustom.base;
-#else
 float4 frag(v2f input) : SV_Target
 {
-#endif
+    //------------------------------------------------------------------------------------------------------------------------------
+    // Initialize
+    float3 lightDirection = float3(0.0, 1.0, 0.0);
+    float3 lightColor = 1.0;
+    float3 addLightColor = 0.0;
+    float attenuation = 1.0;
+
+    float4 col = 1.0;
+    float3 albedo = 1.0;
+    float3 emissionColor = 0.0;
+
+    float3 normalDirection = 0.0;
+    float3 viewDirection = 0.0;
+    float3 headDirection = 0.0;
+    float3x3 tbnWS = 0.0;
+    float depth = 0.0;
+    float3 parallaxViewDirection = 0.0;
+    float2 parallaxOffset = 0.0;
+
+    float vl = 0.0;
+    float hl = 0.0;
+    float ln = 0.0;
+    float nv = 0.0;
+    float nvabs = 0.0;
+
+    bool isRightHand = true;
+    float shadowmix = 1.0;
+    float audioLinkValue = 1.0;
+    float3 invLighting = 0.0;
+
     BEFORE_ANIMATE_MAIN_UV
     OVERRIDE_ANIMATE_MAIN_UV
 
-    float4 col = 1.0;
     BEFORE_MAIN
     OVERRIDE_MAIN
-    float3 albedo = col.rgb;
-    float3 invLighting = 1.0;
-    float2 parallaxOffset = 0.0;
-    float audioLinkValue = 1.0;
+    albedo = col.rgb;
+    col.rgb = 0.0;
     #if defined(LIL_LITE)
         float4 triMask = 1.0;
         triMask = LIL_SAMPLE_2D(_TriMask, sampler_MainTex, uvMain);
@@ -136,6 +103,8 @@ float4 frag(v2f input) : SV_Target
                 OVERRIDE_EMISSION_2ND
             #endif
         #endif
+        BEFORE_BLEND_EMISSION
+        OVERRIDE_BLEND_EMISSION
     #endif
 
     #if defined(LIL_HDRP)

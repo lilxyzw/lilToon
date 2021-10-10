@@ -1,24 +1,14 @@
 #ifndef LIL_VERTEX_INCLUDED
 #define LIL_VERTEX_INCLUDED
 
-#if defined(LIL_VERTEX_SHADER_NAME)
-    #undef LIL_VERTEX_SHADER_NAME
-#endif
 #if defined(LIL_V2F_OUT_BASE)
     #undef LIL_V2F_OUT_BASE
 #endif
 #if defined(LIL_V2F_OUT)
     #undef LIL_V2F_OUT
 #endif
-
-#if defined(LIL_CUSTOM_V2F)
-    #define LIL_VERTEX_SHADER_NAME vertBase
-#else
-    #define LIL_VERTEX_SHADER_NAME vert
-#endif
-
-#if defined(LIL_CUSTOM_V2F_STRUCT)
-    LIL_CUSTOM_V2F_STRUCT
+#if defined(LIL_V2F_TYPE)
+    #undef LIL_V2F_TYPE
 #endif
 
 #if defined(LIL_ONEPASS_OUTLINE)
@@ -31,9 +21,27 @@
     #define LIL_V2F_TYPE v2f
 #endif
 
+#if !defined(LIL_CUSTOM_VERT_COPY)
+    #define LIL_CUSTOM_VERT_COPY
+#endif
+
+void lilCustomVertexOS(inout appdata input, inout float2 uvMain, inout float4 positionOS)
+{
+    #if defined(LIL_CUSTOM_VERTEX_OS)
+        LIL_CUSTOM_VERTEX_OS
+    #endif
+}
+
+void lilCustomVertexWS(inout appdata input, inout float2 uvMain, inout lilVertexPositionInputs vertexInput, inout lilVertexNormalInputs vertexNormalInput)
+{
+    #if defined(LIL_CUSTOM_VERTEX_WS)
+        LIL_CUSTOM_VERTEX_WS
+    #endif
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Vertex shader
-LIL_V2F_TYPE LIL_VERTEX_SHADER_NAME (appdata input)
+LIL_V2F_TYPE vert(appdata input)
 {
     LIL_V2F_TYPE LIL_V2F_OUT;
     LIL_INITIALIZE_STRUCT(v2f, LIL_V2F_OUT_BASE);
@@ -62,9 +70,7 @@ LIL_V2F_TYPE LIL_VERTEX_SHADER_NAME (appdata input)
     //------------------------------------------------------------------------------------------------------------------------------
     // Vertex Modification
     #include "Includes/lil_vert_encryption.hlsl"
-    #if defined(LIL_CUSTOM_VERTEX_OS)
-        LIL_CUSTOM_VERTEX_OS
-    #endif
+    lilCustomVertexOS(input, uvMain, input.positionOS);
     #include "Includes/lil_vert_audiolink.hlsl"
     #if !defined(LIL_ONEPASS_OUTLINE)
         #include "Includes/lil_vert_outline.hlsl"
@@ -77,43 +83,54 @@ LIL_V2F_TYPE LIL_VERTEX_SHADER_NAME (appdata input)
         #if defined(_ADD_PRECOMPUTED_VELOCITY)
             input.previousPositionOS -= input.precomputedVelocity;
         #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Vertex Modification
         #define LIL_MODIFY_PREVPOS
         #include "Includes/lil_vert_encryption.hlsl"
+        lilCustomVertexOS(input, uvMain, input.previousPositionOS);
         #include "Includes/lil_vert_audiolink.hlsl"
         #undef LIL_MODIFY_PREVPOS
-        #if defined(LIL_CUSTOM_PREV_VERTEX_OS)
-            LIL_CUSTOM_PREV_VERTEX_OS
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Transform
+        LIL_VERTEX_POSITION_INPUTS(input.previousPositionOS, previousVertexInput);
+        #if defined(LIL_APP_NORMAL) && defined(LIL_APP_TANGENT)
+            LIL_VERTEX_NORMAL_TANGENT_INPUTS(input.normalOS, input.tangentOS, previousVertexNormalInput);
+        #elif defined(LIL_APP_NORMAL)
+            LIL_VERTEX_NORMAL_INPUTS(input.normalOS, previousVertexNormalInput);
+        #else
+            lilVertexNormalInputs previousVertexNormalInput = lilGetVertexNormalInputs();
         #endif
-        float3 previousPositionWS = TransformPreviousObjectToWorld(input.previousPositionOS);
-        #if defined(LIL_CUSTOM_PREV_VERTEX_WS)
-            LIL_CUSTOM_PREV_VERTEX_WS
-        #endif
-        LIL_V2F_OUT_BASE.previousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousPositionWS, 1.0));
+        previousVertexInput.positionWS = TransformPreviousObjectToWorld(input.previousPositionOS);
+        lilCustomVertexWS(input, uvMain, previousVertexInput, previousVertexNormalInput);
+        LIL_V2F_OUT_BASE.previousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousVertexInput.positionWS, 1.0));
 
         #if defined(LIL_ONEPASS_OUTLINE)
             #define LIL_MODIFY_PREVPOS
             #include "Includes/lil_vert_outline.hlsl"
             #undef LIL_MODIFY_PREVPOS
-            float3 previousPositionWSOL = TransformPreviousObjectToWorld(input.previousPositionOS);
-            #if defined(LIL_CUSTOM_PREV_VERTEX_WS_OL)
-                LIL_CUSTOM_PREV_VERTEX_WS_OL
-            #endif
-            LIL_V2F_OUT.previousPositionCSOL = mul(UNITY_MATRIX_PREV_VP, float4(previousPositionWSOL, 1.0));
+            LIL_VERTEX_POSITION_INPUTS(input.previousPositionOS, previousOLVertexInput);
+            previousOLVertexInput.positionWS = TransformPreviousObjectToWorld(input.previousPositionOS);
+            lilCustomVertexWS(input, uvMain, previousOLVertexInput, previousVertexNormalInput);
+            LIL_V2F_OUT.previousPositionCSOL = mul(UNITY_MATRIX_PREV_VP, float4(previousOLVertexInput.positionWS, 1.0));
         #endif
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Transform
-    #if defined(LIL_APP_POS)
+    #if defined(LIL_APP_POSITION)
         LIL_VERTEX_POSITION_INPUTS(input.positionOS, vertexInput);
     #endif
     #if defined(LIL_APP_NORMAL) && defined(LIL_APP_TANGENT)
         LIL_VERTEX_NORMAL_TANGENT_INPUTS(input.normalOS, input.tangentOS, vertexNormalInput);
     #elif defined(LIL_APP_NORMAL)
         LIL_VERTEX_NORMAL_INPUTS(input.normalOS, vertexNormalInput);
+    #else
+        lilVertexNormalInputs vertexNormalInput = lilGetVertexNormalInputs();
     #endif
+    lilCustomVertexWS(input, uvMain, vertexInput, vertexNormalInput);
     #if defined(LIL_CUSTOM_VERTEX_WS)
-        LIL_CUSTOM_VERTEX_WS
         LIL_RE_VERTEX_POSITION_INPUTS(vertexInput);
     #endif
 
@@ -157,6 +174,8 @@ LIL_V2F_TYPE LIL_VERTEX_SHADER_NAME (appdata input)
     #if defined(LIL_V2F_BITANGENT_WS)
         LIL_V2F_OUT_BASE.bitangentWS    = vertexNormalInput.bitangentWS;
     #endif
+
+    LIL_CUSTOM_VERT_COPY
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Meta
@@ -225,8 +244,8 @@ LIL_V2F_TYPE LIL_VERTEX_SHADER_NAME (appdata input)
     #if defined(LIL_ONEPASS_OUTLINE) && (!defined(LIL_MULTI) || defined(LIL_MULTI) && defined(LIL_MULTI_OUTLINE))
         #include "Includes/lil_vert_outline.hlsl"
         vertexInput = lilGetVertexPositionInputs(input.positionOS);
-        #if defined(LIL_CUSTOM_VERTEX_WS_OL)
-            LIL_CUSTOM_VERTEX_WS
+        lilCustomVertexWS(input, uvMain, vertexInput, vertexNormalInput)
+        #if defined(LIL_CUSTOM_VERTEX_WS)
             LIL_RE_VERTEX_POSITION_INPUTS(vertexInput);
         #endif
         LIL_V2F_OUT.positionCSOL = vertexInput.positionCS;

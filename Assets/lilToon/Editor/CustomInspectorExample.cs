@@ -1,3 +1,5 @@
+// This script should be placed in the lilToon/Editor folder
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
@@ -15,7 +17,6 @@ namespace lilToon
 
         private static bool isShowCustomProperties;
 
-        // Override this
         protected override void LoadCustomProperties(MaterialProperty[] props, Material material)
         {
             isCustomShader = true;
@@ -27,7 +28,6 @@ namespace lilToon
             customEmissionUVMode = FindProperty("_CustomEmissionUVMode", props);
         }
 
-        // Override this
         protected override void DrawCustomProperties(
             MaterialEditor materialEditor,
             Material material,

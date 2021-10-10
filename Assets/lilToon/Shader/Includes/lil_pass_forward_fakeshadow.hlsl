@@ -2,9 +2,16 @@
 #define LIL_PASS_FORWARD_FAKESHADOW_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
+#include "Includes/lil_common_input.hlsl"
+#include "Includes/lil_common_functions.hlsl"
+#include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Structure
+#if !defined(LIL_CUSTOM_V2F_MEMBER)
+    #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7)
+#endif
+
 struct v2f
 {
     float4 positionCS : SV_POSITION;
@@ -13,6 +20,7 @@ struct v2f
     #if defined(LIL_HDRP) || defined(LIL_V2F_FORCE_POSITION_WS)
         float3 positionWS : TEXCOORD2;
     #endif
+    LIL_CUSTOM_V2F_MEMBER(3,4,5,6,7,8,9,10)
     LIL_VERTEX_INPUT_INSTANCE_ID
     LIL_VERTEX_OUTPUT_STEREO
 };

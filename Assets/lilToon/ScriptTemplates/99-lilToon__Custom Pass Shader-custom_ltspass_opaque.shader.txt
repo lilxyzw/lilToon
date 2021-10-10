@@ -1,136 +1,147 @@
-Shader "Hidden/lilToonFur"
+// This shader should be placed in the lilToon/Shader folder
+
+Shader "Hidden/#NAME#"
 {
-    Properties
-    {
-        //----------------------------------------------------------------------------------------------------------------------
-        // Base
-        [lilToggle]     _Invisible                  ("Invisible", Int) = 0
-                        _AsUnlit                    ("As Unlit", Range(0, 1)) = 0
-                        _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.001
-        [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
-                        _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
-                        _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
-                        _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0
-                        _LightMaxLimit              ("Light Max Limit", Range(0,10)) = 1
-                        _BeforeExposureLimit        ("Before Exposure Limit", Float) = 10000
-                        _MonochromeLighting         ("Monochrome lighting", Range(0,1)) = 0
-                        _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
-        [lilVec3]       _LightDirectionOverride     ("Light Direction Override", Vector) = (0,0.001,0,0)
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Main
-        [lilHDR]        _Color                      ("Color", Color) = (1,1,1,1)
-                        _MainTex                    ("Texture", 2D) = "white" {}
-        [lilUVAnim]     _MainTex_ScrollRotate       ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
-        [lilHSVG]       _MainTexHSVG                ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Shadow
-        [lilToggleLeft] _UseShadow                  ("Use Shadow", Int) = 0
-        [lilToggle]     _ShadowReceive              ("Receive Shadow", Int) = 0
-                        _ShadowBorder               ("Border", Range(0, 1)) = 0.5
-        [NoScaleOffset] _ShadowBorderMask           ("Border", 2D) = "white" {}
-                        _ShadowBlur                 ("Blur", Range(0, 1)) = 0.1
-        [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
-                        _ShadowStrength             ("Strength", Range(0, 1)) = 1
-        [NoScaleOffset] _ShadowStrengthMask         ("Strength", 2D) = "white" {}
-                        _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
-        [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
-                        _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
-                        _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
-                        _Shadow2ndColor             ("Shadow 2nd Color", Color) = (0,0,0,0)
-        [NoScaleOffset] _Shadow2ndColorTex          ("Shadow 2nd Color", 2D) = "black" {}
-                        _ShadowMainStrength         ("Main Color Strength", Range(0, 1)) = 1
-                        _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 1
-                        _ShadowBorderColor          ("Border Color", Color) = (1,0,0,1)
-                        _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Distance Fade
-        [lilHDR]        _DistanceFadeColor          ("Color", Color) = (0,0,0,1)
-        [lil3Param]     _DistanceFade               ("Start|End|Strength", Vector) = (0.1,0.01,0,0)
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Encryption
-        [lilToggle]     _IgnoreEncryption           ("Ignore Encryption", Int) = 0
-                        _Keys                       ("Keys", Vector) = (0,0,0,0)
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Advanced
-        [lilEnum]                                       _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 10
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlpha      ("SrcBlendAlpha", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlpha      ("DstBlendAlpha", Int) = 10
-        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOp            ("BlendOp", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlpha       ("BlendOpAlpha", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendFA         ("ForwardAdd SrcBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendFA         ("ForwardAdd DstBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlphaFA    ("ForwardAdd SrcBlendAlpha", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlphaFA    ("ForwardAdd DstBlendAlpha", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpFA          ("ForwardAdd BlendOp", Int) = 4
-        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlphaFA     ("ForwardAdd BlendOpAlpha", Int) = 4
-        [lilToggle]                                     _ZWrite             ("ZWrite", Int) = 1
-        [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest              ("ZTest", Int) = 4
-        [IntRange]                                      _StencilRef         ("Stencil Reference Value", Range(0, 255)) = 0
-        [IntRange]                                      _StencilReadMask    ("Stencil ReadMask Value", Range(0, 255)) = 255
-        [IntRange]                                      _StencilWriteMask   ("Stencil WriteMask Value", Range(0, 255)) = 255
-        [Enum(UnityEngine.Rendering.CompareFunction)]   _StencilComp        ("Stencil Compare Function", Float) = 8
-        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilPass        ("Stencil Pass", Float) = 0
-        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilFail        ("Stencil Fail", Float) = 0
-        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilZFail       ("Stencil ZFail", Float) = 0
-                                                        _OffsetFactor       ("Offset Factor", Float) = 0
-                                                        _OffsetUnits        ("Offset Units", Float) = 0
-        [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
-        [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Fur
-                        _FurNoiseMask               ("Fur Noise", 2D) = "white" {}
-        [NoScaleOffset] _FurMask                    ("Fur Mask", 2D) = "white" {}
-        [NoScaleOffset] _FurLengthMask              ("Fur Length Mask", 2D) = "white" {}
-        [NoScaleOffset][Normal] _FurVectorTex       ("Fur Vector", 2D) = "bump" {}
-                        _FurVectorScale             ("Fur Vector scale", Range(-10,10)) = 1
-        [lilVec3Float]  _FurVector                  ("Fur Vector|Fur Length", Vector) = (0.0,0.0,1.0,0.2)
-        [lilToggle]     _VertexColor2FurVector      ("VertexColor->Vector", Int) = 0
-                        _FurGravity                 ("Fur Gravity", Range(0,1)) = 0.25
-                        _FurAO                      ("Fur AO", Range(0,1)) = 0
-        [IntRange]      _FurLayerNum                ("Fur Layer Num", Range(1, 6)) = 4
-                        _FurRootOffset              ("Fur Root Offset", Range(-1,0)) = 0
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Fur Advanced
-        [lilCullMode]                                   _FurCull                ("Cull Mode|Off|Front|Back", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlend            ("SrcBlend", Int) = 5
-        [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlend            ("DstBlend", Int) = 10
-        [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlendAlpha       ("SrcBlendAlpha", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlendAlpha       ("DstBlendAlpha", Int) = 10
-        [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOp             ("BlendOp", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOpAlpha        ("BlendOpAlpha", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlendFA          ("ForwardAdd SrcBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlendFA          ("ForwardAdd DstBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlendAlphaFA     ("ForwardAdd SrcBlendAlpha", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlendAlphaFA     ("ForwardAdd DstBlendAlpha", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOpFA           ("ForwardAdd BlendOp", Int) = 4
-        [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOpAlphaFA      ("ForwardAdd BlendOpAlpha", Int) = 4
-        [lilToggle]                                     _FurZWrite              ("ZWrite", Int) = 0
-        [Enum(UnityEngine.Rendering.CompareFunction)]   _FurZTest               ("ZTest", Int) = 4
-        [IntRange]                                      _FurStencilRef          ("Stencil Reference Value", Range(0, 255)) = 0
-        [IntRange]                                      _FurStencilReadMask     ("Stencil ReadMask Value", Range(0, 255)) = 255
-        [IntRange]                                      _FurStencilWriteMask    ("Stencil WriteMask Value", Range(0, 255)) = 255
-        [Enum(UnityEngine.Rendering.CompareFunction)]   _FurStencilComp         ("Stencil Compare Function", Float) = 8
-        [Enum(UnityEngine.Rendering.StencilOp)]         _FurStencilPass         ("Stencil Pass", Float) = 0
-        [Enum(UnityEngine.Rendering.StencilOp)]         _FurStencilFail         ("Stencil Fail", Float) = 0
-        [Enum(UnityEngine.Rendering.StencilOp)]         _FurStencilZFail        ("Stencil ZFail", Float) = 0
-                                                        _FurOffsetFactor        ("Offset Factor", Float) = 0
-                                                        _FurOffsetUnits         ("Offset Units", Float) = 0
-        [lilColorMask]                                  _FurColorMask           ("Color Mask", Int) = 15
-        [lilToggle]                                     _FurAlphaToMask         ("AlphaToMask", Int) = 0
-    }
     HLSLINCLUDE
-        #pragma require geometry
-        #define LIL_RENDER 2
-        #define LIL_FUR
+        //----------------------------------------------------------------------------------------------------------------------
+        // Macro
+
+        // Rendering mode
+        // 0 : Opaque
+        // 1 : Cutout
+        // 2 : Transparent
+        #define LIL_RENDER 0
+
+        // Custom variables
+        #define LIL_CUSTOM_PROPERTIES
+
+        // Custom textures
+        #define LIL_CUSTOM_TEXTURES
+
+        // Add vertex shader input
+        //#define LIL_REQUIRE_APP_POSITION
+        //#define LIL_REQUIRE_APP_TEXCOORD0
+        //#define LIL_REQUIRE_APP_TEXCOORD1
+        //#define LIL_REQUIRE_APP_TEXCOORD2
+        //#define LIL_REQUIRE_APP_TEXCOORD3
+        //#define LIL_REQUIRE_APP_TEXCOORD4
+        //#define LIL_REQUIRE_APP_TEXCOORD5
+        //#define LIL_REQUIRE_APP_TEXCOORD6
+        //#define LIL_REQUIRE_APP_TEXCOORD7
+        //#define LIL_REQUIRE_APP_COLOR
+        //#define LIL_REQUIRE_APP_NORMAL
+        //#define LIL_REQUIRE_APP_TANGENT
+
+        // Add vertex shader output
+        //#define LIL_V2F_FORCE_TEXCOORD0
+        //#define LIL_V2F_FORCE_TEXCOORD1
+        //#define LIL_V2F_FORCE_POSITION_OS
+        //#define LIL_V2F_FORCE_POSITION_WS
+        //#define LIL_V2F_FORCE_POSITION_SS
+        //#define LIL_V2F_FORCE_NORMAL
+        //#define LIL_V2F_FORCE_TANGENT
+        //#define LIL_V2F_FORCE_BITANGENT
+        //#define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7)
+
+        // Add vertex copy
+        #define LIL_CUSTOM_VERT_COPY
+
+        // Inserting a process into the vertex shader
+        //#define LIL_CUSTOM_VERTEX_OS
+        //#define LIL_CUSTOM_VERTEX_WS
+
+        // Inserting a process into pixel shader
+        //#define BEFORE_xx
+        //#define OVERRIDE_xx
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Information about variables
+        //----------------------------------------------------------------------------------------------------------------------
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Vertex shader inputs (appdata structure)
+        //
+        // Type     Name                    Description
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float4   input.positionOS        POSITION
+        // float2   input.uv                TEXCOORD0
+        // float2   input.uv1               TEXCOORD1
+        // float2   input.uv2               TEXCOORD2
+        // float2   input.uv3               TEXCOORD3
+        // float2   input.uv4               TEXCOORD4
+        // float2   input.uv5               TEXCOORD5
+        // float2   input.uv6               TEXCOORD6
+        // float2   input.uv7               TEXCOORD7
+        // float4   input.color             COLOR
+        // float3   input.normalOS          NORMAL
+        // float4   input.tangentOS         TANGENT
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Vertex shader outputs or pixel shader inputs (v2f structure)
+        //
+        // The structure depends on the pass.
+        // Please check lil_pass_xx.hlsl for details.
+        //
+        // Type     Name                    Description
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float4   output.positionCS       SV_POSITION
+        // float2   output.uv               TEXCOORD0
+        // float2   output.uv1              TEXCOORD1
+        // float3   output.positionOS       object space position
+        // float3   output.positionWS       world space position
+        // float4   output.positionSS       screen space position
+        // float3   output.normalWS         world space normal
+        // float4   output.tangentWS        world space tangent
+        // float3   output.bitangentWS      world space bitangent
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Variables commonly used in the forward pass
+        //
+        // Type     Name                    Description
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float3   lightDirection          direction of light
+        // float3   lightColor              color of light
+        // float3   addLightColor           color of additional light
+        // float    attenuation             attenuation of light
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float4   col                     lit color
+        // float3   albedo                  unlit color
+        // float3   reflectionColor         color of reflection
+        // float3   emissionColor           color of emission
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float3   normalDirection         world space normal
+        // float3   viewDirection           normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+        // float3   headDirection           normalize(LIL_GET_HEADDIR_WS(input.positionWS.xyz));
+        // float3x3 tbnWS                   float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
+        // float    depth                   length(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+        // float3   parallaxViewDirection   mul(tbnWS, viewDirection);
+        // float2   parallaxOffset          parallaxViewDirection.xy / (parallaxViewDirection.z+0.5);
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float    vl                      dot(viewDirection, lightDirection);
+        // float    hl                      dot(headDirection, lightDirection);
+        // float    ln                      dot(lightDirection, normalDirection);
+        // float    nv                      saturate(dot(normalDirection, viewDirection));
+        // float    nvabs                   abs(dot(normalDirection, viewDirection));
+        // -------- ----------------------- --------------------------------------------------------------------
+        // bool     isRightHand             input.tangentWS.w > 0.0;
+        // float    shadowmix               this variable is 0 in the shadow area
+        // float    audioLinkValue          volume acquired by AudioLink
+        // float3   invLighting             saturate((1.0 - lightColor) * sqrt(lightColor));
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Variables commonly used in the meta pass
+        //
+        // Type     Name                    Description
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float4   col                     color
+        // float3   emissionColor           color of emission
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Variables commonly used in other passes
+        //
+        // Type     Name                    Description
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float4   col                     color (use only col.a)
     ENDHLSL
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -138,7 +149,9 @@ Shader "Hidden/lilToonFur"
 //
     SubShader
     {
-        Tags {"RenderType" = "TransparentCutout" "Queue" = "Transparent"}
+        HLSLINCLUDE
+            #pragma target 3.5
+        ENDHLSL
 
         // Forward
         Pass
@@ -175,46 +188,50 @@ Shader "Hidden/lilToonFur"
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
+
+            // Skip receiving shadow
             #pragma skip_variants SHADOWS_SCREEN
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
 
-        // Forward Fur
+        // Forward Outline
         Pass
         {
-            Name "FORWARD_FUR"
+            Name "FORWARD_OUTLINE"
             Tags {"LightMode" = "ForwardBase"}
 
             Stencil
             {
-                Ref [_FurStencilRef]
-                ReadMask [_FurStencilReadMask]
-                WriteMask [_FurStencilWriteMask]
-                Comp [_FurStencilComp]
-                Pass [_FurStencilPass]
-                Fail [_FurStencilFail]
-                ZFail [_FurStencilZFail]
+                Ref [_OutlineStencilRef]
+                ReadMask [_OutlineStencilReadMask]
+                WriteMask [_OutlineStencilWriteMask]
+                Comp [_OutlineStencilComp]
+                Pass [_OutlineStencilPass]
+                Fail [_OutlineStencilFail]
+                ZFail [_OutlineStencilZFail]
             }
-            Cull [_FurCull]
-            ZWrite [_FurZWrite]
-            ZTest [_FurZTest]
-            ColorMask [_FurColorMask]
-            Offset [_FurOffsetFactor], [_FurOffsetUnits]
-            BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
-            Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
-            AlphaToMask [_FurAlphaToMask]
+            Cull [_OutlineCull]
+            ZWrite [_OutlineZWrite]
+            ZTest [_OutlineZTest]
+            ColorMask [_OutlineColorMask]
+            Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
+            BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
+            Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
+            AlphaToMask [_OutlineAlphaToMask]
 
             HLSLPROGRAM
 
             //----------------------------------------------------------------------------------------------------------------------
             // Build Option
             #pragma vertex vert
-            #pragma geometry geom
             #pragma fragment frag
             #pragma multi_compile_fwdbase
             #pragma multi_compile_fog
@@ -224,12 +241,89 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_forward_fur.hlsl"
+            #define LIL_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
 
-        UsePass "Hidden/ltspass_transparent/SHADOW_CASTER"
+        // ForwardAdd
+        Pass
+        {
+            Name "FORWARD_ADD"
+            Tags {"LightMode" = "ForwardAdd"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+		    Cull [_Cull]
+			ZWrite Off
+            ZTest LEqual
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            Blend [_SrcBlendFA] [_DstBlendFA], Zero One
+            BlendOp [_BlendOpFA], [_BlendOpAlphaFA]
+            AlphaToMask [_AlphaToMask]
+            Fog { Color(0,0,0,0) }
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_fwdadd
+            #pragma multi_compile_fog
+            #pragma multi_compile_instancing
+            #pragma fragmentoption ARB_precision_hint_fastest
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_PASS_FORWARDADD
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
+            #include "Includes/lil_pass_forward.hlsl"
+
+            ENDHLSL
+        }
+
+        // ShadowCaster
+        Pass
+        {
+            Name "SHADOW_CASTER"
+            Tags {"LightMode" = "ShadowCaster"}
+            Offset 1, 1
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_shadowcaster
+            #pragma multi_compile_instancing
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
+            #include "Includes/lil_pass_shadowcaster.hlsl"
+
+            ENDHLSL
+        }
 
         // Meta
         Pass
@@ -248,7 +342,11 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_meta.hlsl"
+
             ENDHLSL
         }
     }
@@ -262,7 +360,7 @@ Shader "Hidden/lilToonFur"
     // Lightweight Render Pipeline SM4.5
     SubShader
     {
-        Tags {"RenderType" = "TransparentCutout" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        Tags{"ShaderModel" = "4.5"}
         HLSLINCLUDE
             #pragma target 4.5
         ENDHLSL
@@ -271,7 +369,7 @@ Shader "Hidden/lilToonFur"
         Pass
         {
             Name "FORWARD"
-            Tags {"LightMode" = "SRPDefaultUnlit"}
+            Tags {"LightMode" = "LightweightForward"}
 
             Stencil
             {
@@ -308,49 +406,53 @@ Shader "Hidden/lilToonFur"
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
+            // Skip receiving shadow
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
 
-        // Fur
+        // Forward Outline
         Pass
         {
-            Name "FORWARD_FUR"
-            Tags {"LightMode" = "LightweightForward"}
+            Name "FORWARD_OUTLINE"
+            Tags {"LightMode" = "SRPDefaultUnlit"}
 
             Stencil
             {
-                Ref [_FurStencilRef]
-                ReadMask [_FurStencilReadMask]
-                WriteMask [_FurStencilWriteMask]
-                Comp [_FurStencilComp]
-                Pass [_FurStencilPass]
-                Fail [_FurStencilFail]
-                ZFail [_FurStencilZFail]
+                Ref [_OutlineStencilRef]
+                ReadMask [_OutlineStencilReadMask]
+                WriteMask [_OutlineStencilWriteMask]
+                Comp [_OutlineStencilComp]
+                Pass [_OutlineStencilPass]
+                Fail [_OutlineStencilFail]
+                ZFail [_OutlineStencilZFail]
             }
-            Cull [_FurCull]
-            ZWrite [_FurZWrite]
-            ZTest [_FurZTest]
-            ColorMask [_FurColorMask]
-            Offset [_FurOffsetFactor], [_FurOffsetUnits]
-            BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
-            Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
-            AlphaToMask [_FurAlphaToMask]
+            Cull [_OutlineCull]
+            ZWrite [_OutlineZWrite]
+            ZTest [_OutlineZTest]
+            ColorMask [_OutlineColorMask]
+            Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
+            BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
+            Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
+            AlphaToMask [_OutlineAlphaToMask]
 
             HLSLPROGRAM
 
             //----------------------------------------------------------------------------------------------------------------------
             // Build Option
             #pragma vertex vert
-            #pragma geometry geom
             #pragma fragment frag
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
             #pragma multi_compile _ LIGHTMAP_ON
             #pragma multi_compile_fog
@@ -359,7 +461,11 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_forward_fur.hlsl"
+            #define LIL_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -384,6 +490,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -408,6 +517,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -430,6 +542,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }
@@ -439,13 +554,15 @@ Shader "Hidden/lilToonFur"
     // Lightweight Render Pipeline
     SubShader
     {
-        Tags {"RenderType" = "TransparentCutout" "Queue" = "Transparent"}
+        HLSLINCLUDE
+            #pragma target 3.5
+        ENDHLSL
 
         // Forward
         Pass
         {
             Name "FORWARD"
-            Tags {"LightMode" = "SRPDefaultUnlit"}
+            Tags {"LightMode" = "LightweightForward"}
 
             Stencil
             {
@@ -464,6 +581,7 @@ Shader "Hidden/lilToonFur"
             Offset [_OffsetFactor], [_OffsetUnits]
             BlendOp [_BlendOp], [_BlendOpAlpha]
             Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
 
             HLSLPROGRAM
 
@@ -480,48 +598,53 @@ Shader "Hidden/lilToonFur"
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
 
+            // Skip receiving shadow
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
 
-        // Fur
+        // Forward Outline
         Pass
         {
-            Name "FORWARD_FUR"
-            Tags {"LightMode" = "LightweightForward"}
+            Name "FORWARD_OUTLINE"
+            Tags {"LightMode" = "SRPDefaultUnlit"}
 
             Stencil
             {
-                Ref [_FurStencilRef]
-                ReadMask [_FurStencilReadMask]
-                WriteMask [_FurStencilWriteMask]
-                Comp [_FurStencilComp]
-                Pass [_FurStencilPass]
-                Fail [_FurStencilFail]
-                ZFail [_FurStencilZFail]
+                Ref [_OutlineStencilRef]
+                ReadMask [_OutlineStencilReadMask]
+                WriteMask [_OutlineStencilWriteMask]
+                Comp [_OutlineStencilComp]
+                Pass [_OutlineStencilPass]
+                Fail [_OutlineStencilFail]
+                ZFail [_OutlineStencilZFail]
             }
-            Cull [_FurCull]
-            ZWrite [_FurZWrite]
-            ZTest [_FurZTest]
-            ColorMask [_FurColorMask]
-            Offset [_FurOffsetFactor], [_FurOffsetUnits]
-            BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
-            Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
+            Cull [_OutlineCull]
+            ZWrite [_OutlineZWrite]
+            ZTest [_OutlineZTest]
+            ColorMask [_OutlineColorMask]
+            Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
+            BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
+            Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
+            AlphaToMask [_OutlineAlphaToMask]
 
             HLSLPROGRAM
 
             //----------------------------------------------------------------------------------------------------------------------
             // Build Option
             #pragma vertex vert
-            #pragma geometry geom
             #pragma fragment frag
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
             #pragma multi_compile _ LIGHTMAP_ON
             #pragma multi_compile_fog
@@ -529,7 +652,11 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_forward_fur.hlsl"
+            #define LIL_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -553,6 +680,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -576,6 +706,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -598,6 +731,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }
@@ -612,7 +748,7 @@ Shader "Hidden/lilToonFur"
     // Universal Render Pipeline SM4.5
     SubShader
     {
-        Tags {"RenderType" = "TransparentCutout" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        Tags{"ShaderModel" = "4.5"}
         HLSLINCLUDE
             #pragma target 4.5
         ENDHLSL
@@ -621,7 +757,7 @@ Shader "Hidden/lilToonFur"
         Pass
         {
             Name "FORWARD"
-            Tags {"LightMode" = "SRPDefaultUnlit"}
+            Tags {"LightMode" = "UniversalForward"}
 
             Stencil
             {
@@ -658,49 +794,53 @@ Shader "Hidden/lilToonFur"
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
+            // Skip receiving shadow
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
 
-        // Fur
+        // Forward Outline
         Pass
         {
-            Name "FORWARD_FUR"
-            Tags {"LightMode" = "UniversalForward"}
+            Name "FORWARD_OUTLINE"
+            Tags {"LightMode" = "SRPDefaultUnlit"}
 
             Stencil
             {
-                Ref [_FurStencilRef]
-                ReadMask [_FurStencilReadMask]
-                WriteMask [_FurStencilWriteMask]
-                Comp [_FurStencilComp]
-                Pass [_FurStencilPass]
-                Fail [_FurStencilFail]
-                ZFail [_FurStencilZFail]
+                Ref [_OutlineStencilRef]
+                ReadMask [_OutlineStencilReadMask]
+                WriteMask [_OutlineStencilWriteMask]
+                Comp [_OutlineStencilComp]
+                Pass [_OutlineStencilPass]
+                Fail [_OutlineStencilFail]
+                ZFail [_OutlineStencilZFail]
             }
-            Cull [_FurCull]
-            ZWrite [_FurZWrite]
-            ZTest [_FurZTest]
-            ColorMask [_FurColorMask]
-            Offset [_FurOffsetFactor], [_FurOffsetUnits]
-            BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
-            Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
-            AlphaToMask [_FurAlphaToMask]
+            Cull [_OutlineCull]
+            ZWrite [_OutlineZWrite]
+            ZTest [_OutlineZTest]
+            ColorMask [_OutlineColorMask]
+            Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
+            BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
+            Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
+            AlphaToMask [_OutlineAlphaToMask]
 
             HLSLPROGRAM
 
             //----------------------------------------------------------------------------------------------------------------------
             // Build Option
             #pragma vertex vert
-            #pragma geometry geom
             #pragma fragment frag
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
             #pragma multi_compile _ LIGHTMAP_ON
             #pragma multi_compile_fog
@@ -709,7 +849,11 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_forward_fur.hlsl"
+            #define LIL_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -734,6 +878,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -758,6 +905,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -782,6 +932,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthnormals.hlsl"
 
             ENDHLSL
@@ -821,6 +974,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_universal2d.hlsl"
             ENDHLSL
         }
@@ -842,6 +998,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }
@@ -851,13 +1010,15 @@ Shader "Hidden/lilToonFur"
     // Universal Render Pipeline
     SubShader
     {
-        Tags {"RenderType" = "TransparentCutout" "Queue" = "Transparent"}
+        HLSLINCLUDE
+            #pragma target 3.5
+        ENDHLSL
 
         // Forward
         Pass
         {
             Name "FORWARD"
-            Tags {"LightMode" = "SRPDefaultUnlit"}
+            Tags {"LightMode" = "UniversalForward"}
 
             Stencil
             {
@@ -893,49 +1054,53 @@ Shader "Hidden/lilToonFur"
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
 
+            // Skip receiving shadow
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
 
-        // Fur
+        // Forward Outline
         Pass
         {
-            Name "FORWARD_FUR"
-            Tags {"LightMode" = "UniversalForward"}
+            Name "FORWARD_OUTLINE"
+            Tags {"LightMode" = "SRPDefaultUnlit"}
 
             Stencil
             {
-                Ref [_FurStencilRef]
-                ReadMask [_FurStencilReadMask]
-                WriteMask [_FurStencilWriteMask]
-                Comp [_FurStencilComp]
-                Pass [_FurStencilPass]
-                Fail [_FurStencilFail]
-                ZFail [_FurStencilZFail]
+                Ref [_OutlineStencilRef]
+                ReadMask [_OutlineStencilReadMask]
+                WriteMask [_OutlineStencilWriteMask]
+                Comp [_OutlineStencilComp]
+                Pass [_OutlineStencilPass]
+                Fail [_OutlineStencilFail]
+                ZFail [_OutlineStencilZFail]
             }
-            Cull [_FurCull]
-            ZWrite [_FurZWrite]
-            ZTest [_FurZTest]
-            ColorMask [_FurColorMask]
-            Offset [_FurOffsetFactor], [_FurOffsetUnits]
-            BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
-            Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
-            AlphaToMask [_FurAlphaToMask]
+            Cull [_OutlineCull]
+            ZWrite [_OutlineZWrite]
+            ZTest [_OutlineZTest]
+            ColorMask [_OutlineColorMask]
+            Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
+            BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
+            Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
+            AlphaToMask [_OutlineAlphaToMask]
 
             HLSLPROGRAM
 
             //----------------------------------------------------------------------------------------------------------------------
             // Build Option
             #pragma vertex vert
-            #pragma geometry geom
             #pragma fragment frag
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
             #pragma multi_compile _ LIGHTMAP_ON
             #pragma multi_compile_fog
@@ -943,7 +1108,11 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_forward_fur.hlsl"
+            #define LIL_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -967,6 +1136,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -990,6 +1162,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -1013,6 +1188,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthnormals.hlsl"
 
             ENDHLSL
@@ -1052,6 +1230,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_universal2d.hlsl"
             ENDHLSL
         }
@@ -1073,6 +1254,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }
@@ -1090,8 +1274,7 @@ Shader "Hidden/lilToonFur"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
-
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
         // Forward
         Pass
         {
@@ -1131,46 +1314,52 @@ Shader "Hidden/lilToonFur"
             #pragma multi_compile _ DYNAMICLIGHTMAP_ON
             #pragma multi_compile _ SHADOWS_SHADOWMASK
 
+            // Skip receiving shadow
+            //#pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
+            //#pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
+
             #define SHADERPASS SHADERPASS_FORWARD
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
 
-        // Fur
+        // Forward Outline
         Pass
         {
-            Name "FORWARD_FUR"
+            Name "FORWARD_OUTLINE"
             Tags {"LightMode" = "SRPDefaultUnlit"}
 
             Stencil
             {
-                Ref [_FurStencilRef]
-                ReadMask [_FurStencilReadMask]
-                WriteMask [_FurStencilWriteMask]
-                Comp [_FurStencilComp]
-                Pass [_FurStencilPass]
-                Fail [_FurStencilFail]
-                ZFail [_FurStencilZFail]
+                Ref [_OutlineStencilRef]
+                ReadMask [_OutlineStencilReadMask]
+                WriteMask [_OutlineStencilWriteMask]
+                Comp [_OutlineStencilComp]
+                Pass [_OutlineStencilPass]
+                Fail [_OutlineStencilFail]
+                ZFail [_OutlineStencilZFail]
             }
-            Cull [_FurCull]
-            ZWrite [_FurZWrite]
-            ZTest [_FurZTest]
-            ColorMask [_FurColorMask]
-            Offset [_FurOffsetFactor], [_FurOffsetUnits]
-            BlendOp [_FurBlendOp], [_FurBlendOpAlpha]
-            Blend [_FurSrcBlend] [_FurDstBlend], [_FurSrcBlendAlpha] [_FurDstBlendAlpha]
-            AlphaToMask [_FurAlphaToMask]
+            Cull [_OutlineCull]
+            ZWrite [_OutlineZWrite]
+            ZTest [_OutlineZTest]
+            ColorMask [_OutlineColorMask]
+            Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
+            BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
+            Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
+            AlphaToMask [_OutlineAlphaToMask]
 
             HLSLPROGRAM
 
             //----------------------------------------------------------------------------------------------------------------------
             // Build Option
             #pragma vertex vert
-            #pragma geometry geom
             #pragma fragment frag
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
@@ -1184,7 +1373,11 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pass_forward_fur.hlsl"
+            #define LIL_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
+            #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
         }
@@ -1205,7 +1398,6 @@ Shader "Hidden/lilToonFur"
             //----------------------------------------------------------------------------------------------------------------------
             // Build Option
             #pragma vertex vert
-            #pragma geometry geom
             #pragma fragment frag
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
@@ -1215,7 +1407,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_ONEPASS_FUR
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -1225,6 +1419,52 @@ Shader "Hidden/lilToonFur"
         Pass
         {
             Name "DEPTHONLY"
+            Tags {"LightMode" = "DepthForwardOnly"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            AlphaToMask [_AlphaToMask]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+            #pragma multi_compile _ WRITE_NORMAL_BUFFER
+            #pragma multi_compile _ WRITE_MSAA_DEPTH
+
+            #define SHADERPASS SHADERPASS_DEPTH_ONLY
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
+            #include "Includes/lil_pass_depthonly.hlsl"
+
+            ENDHLSL
+        }
+
+        // DepthOnly Outline
+        Pass
+        {
+            Name "DEPTHONLY_OUTLINE"
             Tags {"LightMode" = "DepthForwardOnly"}
 
             Stencil
@@ -1250,6 +1490,7 @@ Shader "Hidden/lilToonFur"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
+            #pragma require geometry
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1260,7 +1501,10 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_ONEPASS_FUR
+            #define LIL_ONEPASS_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -1270,6 +1514,49 @@ Shader "Hidden/lilToonFur"
         Pass
         {
             Name "MOTIONVECTORS"
+            Tags {"LightMode" = "MotionVectors"}
+
+            Stencil
+            {
+                WriteMask [_StencilWriteMaskMV]
+                Ref [_StencilRefMV]
+                Comp Always
+                Pass Replace
+            }
+            Cull [_Cull]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            AlphaToMask [_AlphaToMask]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+            #pragma multi_compile _ WRITE_NORMAL_BUFFER
+            #pragma multi_compile _ WRITE_MSAA_DEPTH
+
+            #define SHADERPASS SHADERPASS_MOTION_VECTORS
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
+            #include "Includes/lil_pass_motionvectors.hlsl"
+
+            ENDHLSL
+        }
+
+        // MotionVectors Outline
+        Pass
+        {
+            Name "MOTIONVECTORS_OUTLINE"
             Tags {"LightMode" = "MotionVectors"}
 
             Stencil
@@ -1292,6 +1579,7 @@ Shader "Hidden/lilToonFur"
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
+            #pragma require geometry
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1302,7 +1590,10 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #define LIL_ONEPASS_FUR
+            #define LIL_ONEPASS_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_motionvectors.hlsl"
 
             ENDHLSL
@@ -1329,6 +1620,9 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }
@@ -1336,6 +1630,4 @@ Shader "Hidden/lilToonFur"
 */
 // HDRP End
 
-    Fallback "Unlit/Texture"
-    CustomEditor "lilToon.lilToonInspector"
 }

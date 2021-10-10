@@ -114,7 +114,7 @@
 #endif
 
 // Conbine
-#if (defined(SHADOWS_SCREEN) || defined(_MAIN_LIGHT_SHADOWS) || defined(_MAIN_LIGHT_SHADOWS_CASCADE) || defined(_MAIN_LIGHT_SHADOWS_SCREEN) || defined(SHADOW_LOW) || defined(SHADOW_MEDIUM) || defined(SHADOW_HIGH)) && defined(LIL_FEATURE_RECEIVE_SHADOW)
+#if defined(SHADOWS_SCREEN) || defined(_MAIN_LIGHT_SHADOWS) || defined(_MAIN_LIGHT_SHADOWS_CASCADE) || defined(_MAIN_LIGHT_SHADOWS_SCREEN) || defined(SHADOW_LOW) || defined(SHADOW_MEDIUM) || defined(SHADOW_HIGH)
     #define LIL_USE_SHADOW
 #endif
 #if defined(LIL_USE_LIGHTMAP) || defined(LIL_USE_DYNAMICLIGHTMAP) || defined(LIL_USE_DIRLIGHTMAP) || defined(LIL_LIGHTMODE_SHADOWMASK)
@@ -242,18 +242,20 @@
             BRPShadowCoords brpShadowCoords; \
             brpShadowCoords.pos = i.positionCS; \
             brpShadowCoords._ShadowCoord = i._ShadowCoord; \
-            UNITY_LIGHT_ATTENUATION(atten, brpShadowCoords, i.positionWS)
+            UNITY_LIGHT_ATTENUATION(attenuationOrig, brpShadowCoords, i.positionWS); \
+            atten = attenuationOrig
     #elif !defined(LIL_PASS_FORWARDADD)
         #define LIL_SHADOW_COORDS(idx)
         #define LIL_TRANSFER_SHADOW(vi,uv,o)
-        #define LIL_LIGHT_ATTENUATION(atten,i)      float atten = 1.0
+        #define LIL_LIGHT_ATTENUATION(atten,i)
     #else
         #define LIL_SHADOW_COORDS(idx)
         #define LIL_TRANSFER_SHADOW(vi,uv,o)
         #define LIL_LIGHT_ATTENUATION(atten,i) \
             BRPShadowCoords brpShadowCoords; \
             brpShadowCoords.pos = i.positionCS; \
-            UNITY_LIGHT_ATTENUATION(atten, brpShadowCoords, i.positionWS)
+            UNITY_LIGHT_ATTENUATION(attenuationOrig, brpShadowCoords, i.positionWS); \
+            atten = attenuationOrig
     #endif
     struct BRPShadowCoords
     {
@@ -310,9 +312,9 @@
     #define LIL_SHADOW_COORDS(idx)
     #define LIL_TRANSFER_SHADOW(vi,uv,o)
     #if defined(LIL_USE_SHADOW)
-        #define LIL_LIGHT_ATTENUATION(atten,i)      float atten = lilGetDirectionalShadow(posInput, i.normalWS, featureFlags)
+        #define LIL_LIGHT_ATTENUATION(atten,i)      atten = lilGetDirectionalShadow(posInput, i.normalWS, featureFlags)
     #else
-        #define LIL_LIGHT_ATTENUATION(atten,i)      float atten = 1.0
+        #define LIL_LIGHT_ATTENUATION(atten,i)
     #endif
 
     // Shadow caster
@@ -360,18 +362,18 @@
             #define LIL_SHADOW_COORDS(idx)              float4 shadowCoord : TEXCOORD##idx;
             #define LIL_TRANSFER_SHADOW(vi,uv,o)        o.shadowCoord = ComputeScreenPos(vi.positionCS);
             #define LIL_LIGHT_ATTENUATION(atten,i) \
-                float atten = MainLightRealtimeShadow(i.shadowCoord)
+                atten = MainLightRealtimeShadow(i.shadowCoord)
         #else
             #define LIL_SHADOW_COORDS(idx)
             #define LIL_TRANSFER_SHADOW(vi,uv,o)
             #define LIL_LIGHT_ATTENUATION(atten,i) \
                 float4 shadowCoord = TransformWorldToShadowCoord(i.positionWS); \
-                float atten = MainLightRealtimeShadow(shadowCoord)
+                atten = MainLightRealtimeShadow(shadowCoord)
         #endif
     #else
         #define LIL_SHADOW_COORDS(idx)
         #define LIL_TRANSFER_SHADOW(vi,uv,o)
-        #define LIL_LIGHT_ATTENUATION(atten,i)      float atten = 1.0
+        #define LIL_LIGHT_ATTENUATION(atten,i)
     #endif
 
     // Shadow caster
@@ -453,11 +455,11 @@
 #endif
 
 // Do not apply shadow
-#if (defined(LIL_PASS_FORWARD_LITE_INCLUDED) || defined(LIL_OUTLINE) || defined(LIL_FUR) || defined(LIL_PASS_FORWARD_FUR_INCLUDED)) && !defined(LIL_PASS_FORWARDADD)
+#if (defined(LIL_LITE) || defined(LIL_OUTLINE) || defined(LIL_FUR)) && !defined(LIL_PASS_FORWARDADD)
     #undef LIL_TRANSFER_SHADOW
     #undef LIL_LIGHT_ATTENUATION
     #define LIL_TRANSFER_SHADOW(vi,uv,o)
-    #define LIL_LIGHT_ATTENUATION(atten,i)      float atten = 1.0
+    #define LIL_LIGHT_ATTENUATION(atten,i)
 #endif
 
 // API
@@ -662,25 +664,25 @@ struct lilLightData
     // Point Light & Spot Light (ForwardAdd)
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = saturate(_MainLightColor.rgb * atten); \
+        lightColor = saturate(_MainLightColor.rgb * atten); \
         lightDirection = lilGetLightDirection(input.positionWS)
 #elif defined(LIL_HDRP) && defined(LIL_USE_LIGHTMAP)
     // HDRP with lightmap
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
-        LIL_LIGHT_ATTENUATION(atten,input); \
-        float3 lightColor = input.lightColor; \
+        LIL_LIGHT_ATTENUATION(atten, input); \
+        lightColor = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor += lightmapColor * GetCurrentExposureMultiplier();
 #elif defined(LIL_HDRP)
     // HDRP
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten,input); \
-        float3 lightColor = input.lightColor;
+        lightColor = input.lightColor;
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SHADOWMASK)
     // Mixed Lightmap (Shadowmask)
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = input.lightColor; \
+        lightColor = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = max(lightColor, lightmapColor); \
         atten = min(atten, LIL_SAMPLE_LIGHTMAP(LIL_SHADOWMAP_TEX,LIL_LIGHTMAP_SAMP,input.uv1).r)
@@ -690,7 +692,7 @@ struct lilLightData
     #undef LIL_USE_DYNAMICLIGHTMAP
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = input.lightColor; \
+        lightColor = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = max(lightColor, lightmapColor); \
         float3 lightmapShadowThreshold = _MainLightColor.rgb*0.5; \
@@ -702,7 +704,7 @@ struct lilLightData
     // Use Lightmap as Shadowmask
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = input.lightColor; \
+        lightColor = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = max(lightColor, lightmapColor); \
         float3 lightmapS = (lightmapColor - lilShadeSH9(input.normalWS)) / _MainLightColor.rgb; \
@@ -712,7 +714,7 @@ struct lilLightData
     // Lightmap (Directional)
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = input.lightColor; \
+        lightColor = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         float3 lightmapDirection = lilGetLightMapDirection(input.uv1); \
         lightColor = saturate(lightColor + lightmapColor); \
@@ -721,7 +723,7 @@ struct lilLightData
     // Mixed Lightmap (Baked Indirect) with shadow
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = _MainLightColor.rgb; \
+        lightColor = _MainLightColor.rgb; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = saturate(lightColor + max(lightmapColor,lilGetSHToon()))
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_DYNAMICLIGHTMAP)
@@ -729,21 +731,21 @@ struct lilLightData
     #undef LIL_USE_DYNAMICLIGHTMAP
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = input.lightColor; \
+        lightColor = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = saturate(lightColor + lightmapColor)
 #elif defined(LIL_USE_LIGHTMAP)
     // Mixed Lightmap (Baked Indirect) or Lightmap (Non-Directional)
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = _MainLightColor.rgb; \
+        lightColor = _MainLightColor.rgb; \
         float3 lightmapColor = lilGetLightMapColor(input.uv1); \
         lightColor = saturate(lightColor + lightmapColor)
 #else
     // Realtime
     #define LIL_GET_MAINLIGHT(input,lightColor,lightDirection,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        float3 lightColor = input.lightColor;
+        lightColor = input.lightColor;
 #endif
 
 // Vertex Light
@@ -771,18 +773,28 @@ struct lilLightData
 
 // Additional Light
 #if defined(LIL_HDRP) && (LIL_HDRP_ADDITIONAL_LIGHT_MODE == 0)
-    #define LIL_GET_ADDITIONALLIGHT(positionWS,o) float3 o = 0
+    #define LIL_GET_ADDITIONALLIGHT(i,o) \
+        o = 0;
 #elif defined(LIL_HDRP) && (LIL_HDRP_ADDITIONAL_LIGHT_MODE == 1)
-    #define LIL_GET_ADDITIONALLIGHT(positionWS,o) \
-        float3 o = input.vl
+    #define LIL_GET_ADDITIONALLIGHT(i,o) \
+        o = input.vl; \
+        o = lerp(o, lilGray(o), _MonochromeLighting)
 #elif defined(LIL_HDRP) && (LIL_HDRP_ADDITIONAL_LIGHT_MODE == 2)
-    #define LIL_GET_ADDITIONALLIGHT(positionWS,o) \
-        float3 o = lilGetAdditionalLights(posInput, renderingLayers, featureFlags); \
-        o *= GetCurrentExposureMultiplier()
+    #define LIL_GET_ADDITIONALLIGHT(i,o) \
+        o = lilGetAdditionalLights(posInput, renderingLayers, featureFlags); \
+        o *= GetCurrentExposureMultiplier(); \
+        o = lerp(o, lilGray(o), _MonochromeLighting)
 #elif defined(_ADDITIONAL_LIGHTS)
-    #define LIL_GET_ADDITIONALLIGHT(positionWS,o) float3 o = lilGetAdditionalLights(positionWS)
+    #define LIL_GET_ADDITIONALLIGHT(i,o) \
+        LIL_GET_VERTEXLIGHT(i,vertexLightColor); \
+        o = vertexLightColor; \
+        o += lilGetAdditionalLights(i.positionWS); \
+        o = lerp(o, lilGray(o), _MonochromeLighting)
 #else
-    #define LIL_GET_ADDITIONALLIGHT(positionWS,o) float3 o = 0
+    #define LIL_GET_ADDITIONALLIGHT(i,o) \
+        LIL_GET_VERTEXLIGHT(i,vertexLightColor); \
+        o = vertexLightColor; \
+        o = lerp(o, lilGray(o), _MonochromeLighting)
 #endif
 
 // Main Color & Emission

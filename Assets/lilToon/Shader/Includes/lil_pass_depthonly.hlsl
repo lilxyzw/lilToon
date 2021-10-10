@@ -2,11 +2,18 @@
 #define LIL_PASS_DEPTHONLY_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
+#include "Includes/lil_common_input.hlsl"
+#include "Includes/lil_common_functions.hlsl"
+#include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Structure
+#if !defined(LIL_CUSTOM_V2F_MEMBER)
+    #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7)
+#endif
+
 #define LIL_V2F_POSITION_CS
-#if defined(LIL_V2F_FORCE_UV0) || (LIL_RENDER > 0)
+#if defined(LIL_V2F_FORCE_TEXCOORD0) || (LIL_RENDER > 0)
     #define LIL_V2F_TEXCOORD0
 #endif
 #if defined(LIL_V2F_FORCE_POSITION_OS) || ((LIL_RENDER > 0) && !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_DISSOLVE))
@@ -34,8 +41,9 @@ struct v2f
     #if defined(LIL_FUR)
         float furLayer          : TEXCOORD3;
     #endif
-    UNITY_VERTEX_INPUT_INSTANCE_ID
-    UNITY_VERTEX_OUTPUT_STEREO
+    LIL_CUSTOM_V2F_MEMBER(4,5,6,7,8,9,10,11)
+    LIL_VERTEX_INPUT_INSTANCE_ID
+    LIL_VERTEX_OUTPUT_STEREO
 };
 
 #if defined(LIL_FUR)
@@ -54,8 +62,8 @@ struct v2f
         #if defined(LIL_V2G_NORMAL_WS)
             float3 normalWS         : TEXCOORD3;
         #endif
-        UNITY_VERTEX_INPUT_INSTANCE_ID
-        UNITY_VERTEX_OUTPUT_STEREO
+        LIL_VERTEX_INPUT_INSTANCE_ID
+        LIL_VERTEX_OUTPUT_STEREO
     };
 #elif defined(LIL_ONEPASS_OUTLINE)
     struct v2g
@@ -74,11 +82,7 @@ struct v2f
 #endif
 #include "Includes/lil_common_frag.hlsl"
 
-#if defined(LIL_CUSTOM_V2F)
-void frag(LIL_CUSTOM_V2F inputCustom
-#else
 void frag(v2f input
-#endif
     LIL_VFACE(facing)
     #if defined(SCENESELECTIONPASS) || defined(SCENEPICKINGPASS) || !defined(LIL_HDRP)
     , out float4 outColor : SV_Target0
@@ -96,9 +100,6 @@ void frag(v2f input
     #endif
 )
 {
-    #if defined(LIL_CUSTOM_V2F)
-        v2f input = inputCustom.base;
-    #endif
     LIL_VFACE_FALLBACK(facing);
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);

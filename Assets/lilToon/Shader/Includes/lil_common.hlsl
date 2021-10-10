@@ -5,12 +5,12 @@
 #include "../../../lilToonSetting/lil_setting.hlsl"
 #endif
 #include "Includes/lil_common_macro.hlsl"
-#include "Includes/lil_common_input.hlsl"
 
 #if defined(LIL_MULTI)
     #define _UseMain2ndTex true
     #define _UseMain3rdTex true
     #define _UseShadow true
+    #define _UseBacklight true
     #define _UseBumpMap true
     #define _UseBump2ndMap true
     #define _UseReflection true
@@ -26,8 +26,5 @@
     #undef LIL_BRANCH
     #define LIL_BRANCH
 #endif
-
-#include "Includes/lil_common_functions.hlsl"
-#include "Includes/lil_common_appdata.hlsl"
 
 #endif

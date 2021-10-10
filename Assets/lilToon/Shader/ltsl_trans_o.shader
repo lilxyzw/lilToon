@@ -136,7 +136,7 @@ Shader "Hidden/lilToonLiteTransparentOutline"
 //
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+51"}
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+100"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
         UsePass "Hidden/ltspass_lite_transparent/FORWARD_ADD"
         UsePass "Hidden/ltspass_lite_transparent/FORWARD_OUTLINE"
@@ -151,7 +151,7 @@ Shader "Hidden/lilToonLiteTransparentOutline"
 /*
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+51"}
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+100"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
         UsePass "Hidden/ltspass_lite_transparent/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
@@ -166,7 +166,7 @@ Shader "Hidden/lilToonLiteTransparentOutline"
 /*
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+51"}
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+100"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
         UsePass "Hidden/ltspass_lite_transparent/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
@@ -183,7 +183,7 @@ Shader "Hidden/lilToonLiteTransparentOutline"
 /*
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+51"}
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+100"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
         UsePass "Hidden/ltspass_lite_transparent/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"

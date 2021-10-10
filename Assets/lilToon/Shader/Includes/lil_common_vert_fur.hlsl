@@ -1,6 +1,24 @@
 #ifndef LIL_VERTEX_FUR_INCLUDED
 #define LIL_VERTEX_FUR_INCLUDED
 
+#if !defined(LIL_CUSTOM_VERT_COPY)
+    #define LIL_CUSTOM_VERT_COPY
+#endif
+
+void lilCustomVertexOS(inout appdata input, inout float2 uvMain, inout float4 positionOS)
+{
+    #if defined(LIL_CUSTOM_VERTEX_OS)
+        LIL_CUSTOM_VERTEX_OS
+    #endif
+}
+
+void lilCustomVertexWS(inout appdata input, inout float2 uvMain, inout lilVertexPositionInputs vertexInput, inout lilVertexNormalInputs vertexNormalInput)
+{
+    #if defined(LIL_CUSTOM_VERTEX_WS)
+        LIL_CUSTOM_VERTEX_WS
+    #endif
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Vertex shader
 v2g vert(appdata input)
@@ -26,9 +44,7 @@ v2g vert(appdata input)
     //------------------------------------------------------------------------------------------------------------------------------
     // Vertex Modification
     #include "Includes/lil_vert_encryption.hlsl"
-    #if defined(LIL_CUSTOM_VERTEX_OS)
-        LIL_CUSTOM_VERTEX_OS
-    #endif
+    lilCustomVertexOS(input, uvMain, input.positionOS);
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Previous Position
@@ -39,25 +55,35 @@ v2g vert(appdata input)
         #endif
         #define LIL_MODIFY_PREVPOS
         #include "Includes/lil_vert_encryption.hlsl"
+        lilCustomVertexOS(input, uvMain, input.previousPositionOS);
         #undef LIL_MODIFY_PREVPOS
-        #if defined(LIL_CUSTOM_PREV_VERTEX_OS)
-            LIL_CUSTOM_PREV_VERTEX_OS
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Transform
+        LIL_VERTEX_POSITION_INPUTS(input.previousPositionOS, previousVertexInput);
+        #if defined(LIL_APP_NORMAL) && defined(LIL_APP_TANGENT)
+            LIL_VERTEX_NORMAL_TANGENT_INPUTS(input.normalOS, input.tangentOS, previousVertexNormalInput);
+        #elif defined(LIL_APP_NORMAL)
+            LIL_VERTEX_NORMAL_INPUTS(input.normalOS, previousVertexNormalInput);
+        #else
+            lilVertexNormalInputs previousVertexNormalInput = lilGetVertexNormalInputs();
         #endif
-        float3 previousPositionWS = TransformPreviousObjectToWorld(input.previousPositionOS);
-        #if defined(LIL_CUSTOM_PREV_VERTEX_WS)
-            LIL_CUSTOM_PREV_VERTEX_WS
-        #endif
-        output.previousPositionWS = previousPositionWS;
+        previousVertexInput.positionWS = TransformPreviousObjectToWorld(input.previousPositionOS);
+        lilCustomVertexWS(input, uvMain, previousVertexInput, previousVertexNormalInput);
+        output.previousPositionWS = previousVertexInput.positionWS;
+    #endif
+
+    //------------------------------------------------------------------------------------------------------------------------------
+    // Transform
+    LIL_VERTEX_POSITION_INPUTS(input.positionOS, vertexInput);
+    LIL_VERTEX_NORMAL_INPUTS(input.normalOS, vertexNormalInput);
+    lilCustomVertexWS(input, uvMain, vertexInput, vertexNormalInput);
+    #if defined(LIL_CUSTOM_VERTEX_WS)
+        LIL_RE_VERTEX_POSITION_INPUTS(vertexInput);
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Copy
-    LIL_VERTEX_POSITION_INPUTS(input.positionOS, vertexInput);
-    LIL_VERTEX_NORMAL_INPUTS(input.normalOS, vertexNormalInput);
-    #if defined(LIL_CUSTOM_VERTEX_WS)
-        LIL_CUSTOM_VERTEX_WS
-        LIL_RE_VERTEX_POSITION_INPUTS(vertexInput);
-    #endif
     #if defined(LIL_V2G_POSITION_WS)
         output.positionWS       = vertexInput.positionWS;
     #endif
@@ -70,6 +96,8 @@ v2g vert(appdata input)
     #if defined(LIL_V2G_NORMAL_WS)
         output.normalWS         = vertexNormalInput.normalWS;
     #endif
+
+    LIL_CUSTOM_VERT_COPY
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Fog & Lighting

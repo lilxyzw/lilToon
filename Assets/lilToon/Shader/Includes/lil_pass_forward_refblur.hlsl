@@ -3,9 +3,16 @@
 #define LIL_PASS_FORWARD_REFLACTION_BLUR_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
+#include "Includes/lil_common_input.hlsl"
+#include "Includes/lil_common_functions.hlsl"
+#include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Structure
+#if !defined(LIL_CUSTOM_V2F_MEMBER)
+    #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7)
+#endif
+
 #define LIL_V2F_POSITION_CS
 #define LIL_V2F_TEXCOORD0
 #define LIL_V2F_POSITION_SS
@@ -15,8 +22,9 @@ struct v2f
     float4 positionCS       : SV_POSITION;
     float2 uv               : TEXCOORD0;
     float4 positionSS       : TEXCOORD1;
-    UNITY_VERTEX_INPUT_INSTANCE_ID
-    UNITY_VERTEX_OUTPUT_STEREO
+    LIL_CUSTOM_V2F_MEMBER(2,3,4,5,6,7,8,9)
+    LIL_VERTEX_INPUT_INSTANCE_ID
+    LIL_VERTEX_OUTPUT_STEREO
 };
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -24,14 +32,8 @@ struct v2f
 #include "Includes/lil_common_vert.hlsl"
 #include "Includes/lil_common_frag.hlsl"
 
-#if defined(LIL_CUSTOM_V2F)
-float4 frag(LIL_CUSTOM_V2F inputCustom) : SV_Target
-{
-    v2f input = inputCustom.base;
-#else
 float4 frag(v2f input) : SV_Target
 {
-#endif
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 

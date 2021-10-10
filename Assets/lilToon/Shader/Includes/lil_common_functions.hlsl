@@ -226,6 +226,15 @@ float3 lilTransformNormalOStoWS(float3 normalOS)
     #endif
 }
 
+lilVertexNormalInputs lilGetVertexNormalInputs()
+{
+    lilVertexNormalInputs output;
+    output.normalWS     = float3(1.0, 0.0, 0.0);
+    output.tangentWS    = float3(1.0, 0.0, 0.0);
+    output.bitangentWS  = float3(0.0, 1.0, 0.0);
+    return output;
+}
+
 lilVertexNormalInputs lilGetVertexNormalInputs(float3 normalOS)
 {
     lilVertexNormalInputs output;
@@ -252,9 +261,9 @@ float lilGetOutlineWidth(float3 positionOS, float2 uv, float4 color, float outli
     if(Exists_OutlineWidthMask) outlineWidth *= LIL_SAMPLE_2D_LOD(outlineWidthMask, samp, uv, 0).r;
     if(outlineVertexR2Width) outlineWidth *= color.r;
     #if defined(LIL_HDRP)
-        if(outlineFixWidth) outlineWidth *= saturate(length(LIL_GET_VIEWDIR_WS(GetAbsolutePositionWS(TransformObjectToWorld(positionOS.xyz).xyz))));
+        if(outlineFixWidth) outlineWidth *= saturate(length(LIL_GET_HEADDIR_WS(GetAbsolutePositionWS(TransformObjectToWorld(positionOS.xyz).xyz))));
     #else
-        if(outlineFixWidth) outlineWidth *= saturate(length(LIL_GET_VIEWDIR_WS(lilOptMul(LIL_MATRIX_M, positionOS).xyz)));
+        if(outlineFixWidth) outlineWidth *= saturate(length(LIL_GET_HEADDIR_WS(lilOptMul(LIL_MATRIX_M, positionOS).xyz)));
     #endif
     return outlineWidth;
 }

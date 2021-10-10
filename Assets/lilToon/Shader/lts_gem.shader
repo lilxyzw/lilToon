@@ -547,10 +547,6 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
-            // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
-
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pass_forward_gem.hlsl"
@@ -714,10 +710,6 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile _ LIGHTMAP_ON
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
-
-            // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -889,10 +881,6 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1121,10 +1109,6 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile _ LIGHTMAP_ON
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
-
-            // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1357,10 +1341,6 @@ Shader "Hidden/lilToonGem"
             #pragma multi_compile _ DIRLIGHTMAP_COMBINED
             #pragma multi_compile _ DYNAMICLIGHTMAP_ON
             #pragma multi_compile _ SHADOWS_SHADOWMASK
-
-            // Skip receiving shadow
-            //#pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
-            //#pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
 
             #define SHADERPASS SHADERPASS_FORWARD
 

@@ -15,17 +15,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Shader variation that use shader keywords
 - Warning when selecting anything other than a material while the preset save window is open
 - Macros for creating custom shaders
+- Template of custom shader
 
 ### Changed
-- Changed RenderQueue of transparent shader to 2501 (avoid drawing failure of Skybox through transparent material)
+- Changed RenderQueue of transparent shader to 2550 (avoid drawing failure of Skybox through transparent materials, and added space for stencil)
+- Changed RenderQueue of refraction shader to 2650 (avoid hiding through transparent materials)
 - Changed to allow negative values for refraction strength
 - Renamed `Main Color Power` to` Contrast` in Shadow Setting
 - Supports switching of `AlphaToMask`
+- Changed `RenderType` of transparent shader to` Transparent Cutout`
 - Move change log to `CHANGELOG.md` and `CHANGELOG_JP.md`
 
 ### Fixed
 - Fixed an issue where Parent Constraint could not be edited in play mode
 - Fixed an issue where refraction shaders could interfere with some assets under certain conditions
+- Fixed an issue where the SamplerState of the main texture was not being retrieved properly
 
 ### Removed
 - Some hlsl files

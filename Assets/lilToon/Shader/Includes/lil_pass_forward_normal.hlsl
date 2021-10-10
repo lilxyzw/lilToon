@@ -2,9 +2,16 @@
 #define LIL_PASS_FORWARD_NORMAL_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
+#include "Includes/lil_common_input.hlsl"
+#include "Includes/lil_common_functions.hlsl"
+#include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Structure
+#if !defined(LIL_CUSTOM_V2F_MEMBER)
+    #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7)
+#endif
+
 #if defined(LIL_OUTLINE)
     #define LIL_V2F_POSITION_CS
     #define LIL_V2F_TEXCOORD0
@@ -45,6 +52,7 @@
         LIL_LIGHTCOLOR_COORDS(5)
         LIL_VERTEXLIGHT_COORDS(6)
         LIL_FOG_COORDS(7)
+        LIL_CUSTOM_V2F_MEMBER(8,9,10,11,12,13,14,15)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
@@ -88,6 +96,7 @@
         LIL_INDLIGHTCOLOR_COORDS(6)
         LIL_VERTEXLIGHT_COORDS(7)
         LIL_FOG_COORDS(8)
+        LIL_CUSTOM_V2F_MEMBER(9,10,11,12,13,14,15,16)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
@@ -121,6 +130,8 @@
         #define LIL_V2F_VERTEXLIGHT
         #if defined(LIL_FEATURE_SHADOW)
             #define LIL_V2F_INDLIGHTCOLOR
+        #endif
+        #if defined(LIL_FEATURE_SHADOW) || defined(LIL_FEATURE_BACKLIGHT)
             #define LIL_V2F_SHADOW
         #endif
     #endif
@@ -157,6 +168,7 @@
         LIL_VERTEXLIGHT_COORDS(11)
         LIL_FOG_COORDS(12)
         LIL_SHADOW_COORDS(13)
+        LIL_CUSTOM_V2F_MEMBER(14,15,16,17,18,19,20,21)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
@@ -167,44 +179,61 @@
 #include "Includes/lil_common_vert.hlsl"
 #include "Includes/lil_common_frag.hlsl"
 
-#if defined(LIL_CUSTOM_V2F)
-float4 frag(LIL_CUSTOM_V2F inputCustom LIL_VFACE(facing)) : SV_Target
-{
-    v2f input = inputCustom.base;
-#else
 float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 {
-#endif
+    //------------------------------------------------------------------------------------------------------------------------------
+    // Initialize
+    float3 lightDirection = float3(0.0, 1.0, 0.0);
+    float3 lightColor = 1.0;
+    float3 addLightColor = 0.0;
+    float attenuation = 1.0;
+
+    float4 col = 1.0;
+    float3 albedo = 1.0;
+    float3 emissionColor = 0.0;
+
+    float3 normalDirection = 0.0;
+    float3 viewDirection = 0.0;
+    float3 headDirection = 0.0;
+    float3x3 tbnWS = 0.0;
+    float depth = 0.0;
+    float3 parallaxViewDirection = 0.0;
+    float2 parallaxOffset = 0.0;
+
+    float vl = 0.0;
+    float hl = 0.0;
+    float ln = 0.0;
+    float nv = 0.0;
+    float nvabs = 0.0;
+
+    bool isRightHand = true;
+    float shadowmix = 1.0;
+    float audioLinkValue = 1.0;
+    float3 invLighting = 0.0;
+
     LIL_VFACE_FALLBACK(facing);
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
     LIL_GET_HDRPDATA(input);
     #if defined(LIL_V2F_LIGHTDIRECTION)
-        float3 lightDirection = input.lightDirection;
-    #else
-        float3 lightDirection = float3(0.0, 1.0, 0.0);
+        lightDirection = input.lightDirection;
     #endif
     LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
-    LIL_GET_VERTEXLIGHT(input, vertexLightColor);
-    LIL_GET_ADDITIONALLIGHT(input.positionWS, additionalLightColor);
+    LIL_GET_ADDITIONALLIGHT(input, addLightColor);
     #if !defined(LIL_PASS_FORWARDADD)
         #if defined(LIL_USE_LIGHTMAP)
             lightColor = clamp(lightColor, _LightMinLimit, _LightMaxLimit);
             lightColor = lerp(lightColor, lilGray(lightColor), _MonochromeLighting);
             lightColor = lerp(lightColor, 1.0, _AsUnlit);
         #endif
-        #if defined(LIL_HDRP)
-            float3 addLightColor = lerp(additionalLightColor, 0.0, _AsUnlit);
-        #elif defined(_ADDITIONAL_LIGHTS)
-            float3 addLightColor = vertexLightColor + lerp(additionalLightColor, 0.0, _AsUnlit);
-        #else
-            float3 addLightColor = vertexLightColor;
+        #if defined(LIL_HDRP) || defined(_ADDITIONAL_LIGHTS)
+            addLightColor = lerp(additionalLightColor, 0.0, _AsUnlit);
         #endif
-        addLightColor = lerp(addLightColor, lilGray(addLightColor), _MonochromeLighting);
     #else
         lightColor = lerp(lightColor, lilGray(lightColor), _MonochromeLighting);
         lightColor = lerp(lightColor, 0.0, _AsUnlit);
     #endif
+    invLighting = saturate((1.0 - lightColor) * sqrt(lightColor));
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Apply Matelial & Lighting
@@ -216,7 +245,6 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Main Color
-        float4 col = 1.0;
         BEFORE_OUTLINE_COLOR
         OVERRIDE_OUTLINE_COLOR
 
@@ -249,14 +277,14 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Copy
-        float3 albedo = col.rgb;
+        albedo = col.rgb;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Lighting
         col.rgb = lerp(col.rgb, col.rgb * min(lightColor + addLightColor, _LightMaxLimit), _OutlineEnableLighting);
 
         #if defined(LIL_HDRP)
-            float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+            viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
         #endif
     #elif defined(LIL_FUR)
         //------------------------------------------------------------------------------------------------------------------------------
@@ -266,7 +294,6 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Main Color
-        float4 col = 1.0;
         BEFORE_MAIN
         OVERRIDE_MAIN
 
@@ -290,17 +317,16 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Copy
-        float3 albedo = col.rgb;
+        albedo = col.rgb;
 
         BEFORE_SHADOW
         #ifndef LIL_PASS_FORWARDADD
             //------------------------------------------------------------------------------------------------------------------------------
             // Lighting
             #if defined(LIL_FEATURE_SHADOW)
-                float3 normalDirection = normalize(input.normalWS);
+                normalDirection = normalize(input.normalWS);
                 normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
-                float ln = dot(lightDirection, normalDirection);
-                float shadowmix = 1.0;
+                ln = dot(lightDirection, normalDirection);
                 OVERRIDE_SHADOW
             #else
                 col.rgb *= lightColor;
@@ -316,7 +342,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         #endif
 
         #if defined(LIL_HDRP)
-            float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+            viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
         #endif
     #else
         //------------------------------------------------------------------------------------------------------------------------------
@@ -327,16 +353,17 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         //------------------------------------------------------------------------------------------------------------------------------
         // View Direction
         #if defined(LIL_V2F_POSITION_WS)
-            float depth = length(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
-            float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
-            float3 headDirection = normalize(LIL_GET_HEADDIR_WS(input.positionWS.xyz));
-            float vl = dot(viewDirection, lightDirection);
+            depth = length(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+            viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+            headDirection = normalize(LIL_GET_HEADDIR_WS(input.positionWS.xyz));
+            vl = dot(viewDirection, lightDirection);
+            hl = dot(headDirection, lightDirection);
         #endif
         #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS)
-            float3x3 tbnWS = float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
+            tbnWS = float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
             #if defined(LIL_V2F_POSITION_WS)
-                float3 parallaxViewDirection = mul(tbnWS, viewDirection);
-                float2 parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
+                parallaxViewDirection = mul(tbnWS, viewDirection);
+                parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
             #endif
         #endif
 
@@ -351,7 +378,6 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Main Color
-        float4 col = 1.0;
         BEFORE_MAIN
         OVERRIDE_MAIN
 
@@ -400,27 +426,21 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
                     OVERRIDE_NORMAL_2ND
                 #endif
 
-                float3 normalDirection = normalize(mul(normalmap, tbnWS));
+                normalDirection = normalize(mul(normalmap, tbnWS));
                 normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
             #else
-                float3 normalDirection = normalize(input.normalWS);
+                normalDirection = normalize(input.normalWS);
                 normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
             #endif
-            float ln = dot(lightDirection, normalDirection);
+            ln = dot(lightDirection, normalDirection);
             #if defined(LIL_V2F_POSITION_WS)
-                float nv = saturate(dot(normalDirection, viewDirection));
-                float nvabs = abs(dot(normalDirection, viewDirection));
-            #else
-                float nv = 1.0;
-                float nvabs = 1.0;
+                nv = saturate(dot(normalDirection, viewDirection));
+                nvabs = abs(dot(normalDirection, viewDirection));
             #endif
-        #else
-            float nv = 1.0;
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
         // AudioLink (https://github.com/llealloo/vrc-udon-audio-link)
-        float audioLinkValue = 1.0;
         BEFORE_AUDIOLINK
         #if defined(LIL_FEATURE_AUDIOLINK)
             OVERRIDE_AUDIOLINK
@@ -429,9 +449,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         //------------------------------------------------------------------------------------------------------------------------------
         // Layer Color
         #if defined(LIL_V2F_TANGENT_WS)
-            bool isRightHand = input.tangentWS.w > 0.0;
-        #else
-            bool isRightHand = true;
+            isRightHand = input.tangentWS.w > 0.0;
         #endif
         // 2nd
         BEFORE_MAIN2ND
@@ -451,11 +469,10 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Copy
-        float3 albedo = col.rgb;
+        albedo = col.rgb;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Lighting
-        float shadowmix = 1.0;
         BEFORE_SHADOW
         #ifndef LIL_PASS_FORWARDADD
             #if defined(LIL_FEATURE_SHADOW)
@@ -552,7 +569,6 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         #ifndef LIL_PASS_FORWARDADD
             //------------------------------------------------------------------------------------------------------------------------------
             // Emission
-            float3 invLighting = saturate((1.0 - lightColor) * sqrt(lightColor));
             BEFORE_EMISSION_1ST
             #if defined(LIL_FEATURE_EMISSION_1ST)
                 OVERRIDE_EMISSION_1ST
@@ -572,13 +588,16 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 
             #if defined(LIL_FEATURE_LAYER_DISSOLVE)
                 #if defined(LIL_FEATURE_MAIN2ND)
-                    col.rgb += _Main2ndDissolveColor.rgb * main2ndDissolveAlpha;
+                    emissionColor += _Main2ndDissolveColor.rgb * main2ndDissolveAlpha;
                 #endif
                 #if defined(LIL_FEATURE_MAIN3RD)
-                    col.rgb += _Main3rdDissolveColor.rgb * main3rdDissolveAlpha;
+                    emissionColor += _Main3rdDissolveColor.rgb * main3rdDissolveAlpha;
                 #endif
             #endif
         #endif
+
+        BEFORE_BLEND_EMISSION
+        OVERRIDE_BLEND_EMISSION
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------

@@ -114,7 +114,7 @@ Shader "_lil/lilToonMulti"
                         _BacklightBlur              ("Blur", Range(0, 1)) = 0.05
                         _BacklightDirectivity       ("Directivity", Float) = 5.0
                         _BacklightViewStrength      ("View direction strength", Range(0, 1)) = 1
-        [lilToggle]     _BacklightReceiveShadow     ("Receive Shadow", Int) = 0
+        [lilToggle]     _BacklightReceiveShadow     ("Receive Shadow", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Shadow

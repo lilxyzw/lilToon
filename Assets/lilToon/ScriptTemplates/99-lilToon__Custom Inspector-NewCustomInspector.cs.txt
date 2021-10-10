@@ -1,0 +1,48 @@
+// This script should be placed in the lilToon/Editor folder
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEngine;
+
+namespace lilToon
+{
+    public class #SCRIPTNAME# : lilToonInspector
+    {
+        // Custom properties
+        //MaterialProperty customVariable;
+
+        private static bool isShowCustomProperties;
+
+        protected override void LoadCustomProperties(MaterialProperty[] props, Material material)
+        {
+            isCustomShader = true;
+            //LoadCustomLanguage("");
+            //customVariable = FindProperty("_CustomVariable", props);
+        }
+
+        protected override void DrawCustomProperties(
+            MaterialEditor materialEditor,
+            Material material,
+            GUIStyle boxOuter,          // outer box
+            GUIStyle boxInnerHalf,      // inner box
+            GUIStyle boxInner,          // inner box without label
+            GUIStyle customBox,         // box (similar to unity default box)
+            GUIStyle customToggleFont,  // bold font
+            GUIStyle offsetButton)      // button with indent
+        {
+            isShowCustomProperties = Foldout("Custom Properties", "Custom Properties", isShowCustomProperties);
+            if(isShowCustomProperties)
+            {
+                EditorGUILayout.BeginVertical(boxOuter);
+                EditorGUILayout.LabelField(GetLoc("Custom Properties"), customToggleFont);
+                EditorGUILayout.BeginVertical(boxInnerHalf);
+
+                //materialEditor.ShaderProperty(customVariable, "Custom Variable");
+
+                EditorGUILayout.EndVertical();
+                EditorGUILayout.EndVertical();
+            }
+        }
+    }
+}
+#endif

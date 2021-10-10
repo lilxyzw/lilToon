@@ -579,7 +579,6 @@ SAMPLER(sampler_linear_clamp);
     #endif
     lilBool _Invisible;
     #if defined(LIL_MULTI_INPUTS_MAIN2ND)
-        lilBool _UseMain2ndTex;
         lilBool _Main2ndTexIsMSDF;
         lilBool _Main2ndTexIsDecal;
         lilBool _Main2ndTexIsLeftOnly;
@@ -589,7 +588,6 @@ SAMPLER(sampler_linear_clamp);
         lilBool _Main2ndTexShouldFlipCopy;
     #endif
     #if defined(LIL_MULTI_INPUTS_MAIN3RD)
-        lilBool _UseMain3rdTex;
         lilBool _Main3rdTexIsMSDF;
         lilBool _Main3rdTexIsDecal;
         lilBool _Main3rdTexIsLeftOnly;
@@ -599,67 +597,47 @@ SAMPLER(sampler_linear_clamp);
         lilBool _Main3rdTexShouldFlipCopy;
     #endif
     #if defined(LIL_MULTI_INPUTS_SHADOW)
-        lilBool _UseShadow;
         lilBool _ShadowReceive;
     #endif
     #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
-        lilBool _UseBacklight;
         lilBool _BacklightReceiveShadow;
     #endif
-    #if defined(LIL_MULTI_INPUTS_NORMAL)
-        lilBool _UseBumpMap;
-    #endif
-    #if defined(LIL_MULTI_INPUTS_NORMAL_2ND)
-        lilBool _UseBump2ndMap;
-    #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION)
-        lilBool _UseReflection;
         lilBool _ApplySpecular;
         lilBool _ApplyReflection;
         lilBool _SpecularToon;
         lilBool _ReflectionApplyTransparency;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP)
-        lilBool _UseMatCap;
         lilBool _MatCapApplyTransparency;
         lilBool _MatCapZRotCancel;
         lilBool _MatCapCustomNormal;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP_2ND)
-        lilBool _UseMatCap2nd;
         lilBool _MatCap2ndApplyTransparency;
         lilBool _MatCap2ndZRotCancel;
         lilBool _MatCap2ndCustomNormal;
     #endif
     #if defined(LIL_MULTI_INPUTS_RIM)
-        lilBool _UseRim;
         lilBool _RimShadowMask;
         lilBool _RimApplyTransparency;
     #endif
     #if defined(LIL_MULTI_INPUTS_GLITTER)
-        lilBool _UseGlitter;
         lilBool _GlitterShadowMask;
         lilBool _GlitterApplyTransparency;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION)
-        lilBool _UseEmission;
         lilBool _EmissionUseGrad;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION_2ND)
-        lilBool _UseEmission2nd;
         lilBool _Emission2ndUseGrad;
     #endif
-    #if defined(LIL_MULTI_INPUTS_PARALLAX)
-        lilBool _UseParallax;
-    #endif
     #if defined(LIL_MULTI_INPUTS_AUDIOLINK)
-        lilBool _UseAudioLink;
         lilBool _AudioLink2Main2nd;
         lilBool _AudioLink2Main3rd;
         lilBool _AudioLink2Emission;
         lilBool _AudioLink2Emission2nd;
         lilBool _AudioLink2Vertex;
-        lilBool _AudioLinkAsLocal;
     #endif
     #if defined(LIL_FEATURE_ENCRYPTION)
         lilBool _IgnoreEncryption;
@@ -1277,8 +1255,11 @@ TEXTURE2D_FLOAT(_AudioTexture);
 float4 _AudioTexture_TexelSize;
 #endif
 
-#if Exists_MainTex == false
-#define sampler_MainTex sampler_linear_repeat
+#if defined(LIL_OUTLINE)
+    #define sampler_MainTex sampler_OutlineTex
+#endif
+#if !defined(LIL_FEATURE_TEX_OUTLINE_COLOR)
+    #define sampler_OutlineTex sampler_linear_repeat
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------

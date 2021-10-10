@@ -98,6 +98,10 @@
     #define BEFORE_DISSOLVE_ADD
 #endif
 
+#if !defined(BEFORE_BLEND_EMISSION)
+    #define BEFORE_BLEND_EMISSION
+#endif
+
 #if !defined(BEFORE_DISTANCE_FADE)
     #define BEFORE_DISTANCE_FADE
 #endif
@@ -526,8 +530,8 @@ void lilGetShading(
         float lnB = ln1;
 
         // Shadow
-        #if defined(LIL_USE_SHADOW) || (defined(LIL_LIGHTMODE_SHADOWMASK) && defined(LIL_FEATURE_RECEIVE_SHADOW))
-            float shadowAttenuation = saturate(attenuation + distance(lightDirection, lightDirectionCopy.xyz));
+        #if (defined(LIL_USE_SHADOW) || defined(LIL_LIGHTMODE_SHADOWMASK)) && defined(LIL_FEATURE_RECEIVE_SHADOW)
+            float shadowAttenuation = saturate(attenuation + distance(lightDirection, lightDirectionCopy));
             if(_ShadowReceive) ln1 *= shadowAttenuation;
             if(_ShadowReceive) lnB *= shadowAttenuation;
         #endif
@@ -672,24 +676,25 @@ void lilGetShading(
 //------------------------------------------------------------------------------------------------------------------------------
 // Backlight
 #if defined(LIL_FEATURE_BACKLIGHT) && !defined(LIL_LITE) && !defined(LIL_FUR) && !defined(LIL_GEM)
-    void lilBacklight(inout float4 col, float2 uvMain, float vl, float3 lightColor, float3 lightDirection, float attenuation, float3 headDirection, float3 normalDirection LIL_SAMP_IN_FUNC(samp))
+    void lilBacklight(inout float4 col, float2 uvMain, float hl, float3 lightColor, float3 lightDirection, float3 lightDirectionCopy, float attenuation, float3 headDirection, float3 normalDirection LIL_SAMP_IN_FUNC(samp))
     {
         if(_UseBacklight)
         {
             float3 backlightColor = LIL_SAMPLE_2D(_BacklightColorTex, samp, uvMain).rgb * _BacklightColor.rgb;
-            float backlightFactor = pow(saturate(-vl * 0.5 + 0.5), _BacklightDirectivity);
-            float backlightLN = lilTooning(dot(normalize(-headDirection * _BacklightViewStrength + lightDirection), normalDirection) * 0.5 + 0.5, _BacklightBorder, _BacklightBlur);
-            float backlight = backlightFactor * backlightLN;
-            #if defined(LIL_USE_SHADOW) || (defined(LIL_LIGHTMODE_SHADOWMASK) && defined(LIL_FEATURE_RECEIVE_SHADOW))
-                if(_BacklightReceiveShadow) backlight *= attenuation;
+            float backlightFactor = pow(saturate(-hl * 0.5 + 0.5), _BacklightDirectivity);
+            float backlightLN = dot(normalize(-headDirection * _BacklightViewStrength + lightDirection), normalDirection) * 0.5 + 0.5;
+            #if defined(LIL_USE_SHADOW) || defined(LIL_LIGHTMODE_SHADOWMASK)
+                if(_BacklightReceiveShadow) backlightLN *= saturate(attenuation + distance(lightDirection, lightDirectionCopy));
             #endif
+            backlightLN = lilTooning(backlightLN, _BacklightBorder, _BacklightBlur);
+            float backlight = backlightFactor * backlightLN;
             col.rgb += backlight * backlightColor * lightColor;
         }
     }
 #endif
 
 #if !defined(OVERRIDE_BACKLIGHT)
-    #define OVERRIDE_BACKLIGHT lilBacklight(col, uvMain, vl, lightColor, lightDirection, attenuation, headDirection, normalDirection LIL_SAMP_IN(sampler_MainTex));
+    #define OVERRIDE_BACKLIGHT lilBacklight(col, uvMain, hl, lightColor, lightDirection, _MainLightPosition.xyz, attenuation, headDirection, normalDirection LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -1105,7 +1110,7 @@ void lilGetShading(
 //------------------------------------------------------------------------------------------------------------------------------
 // Emission
 #if defined(LIL_FEATURE_EMISSION_1ST) && !defined(LIL_LITE) && !defined(LIL_FUR)
-    void lilEmission(inout float4 col, float2 uvMain, float2 uv, float3 invLighting, float2 parallaxOffset, float audioLinkValue LIL_SAMP_IN_FUNC(samp))
+    void lilEmission(inout float3 col, float2 uvMain, float2 uv, float3 invLighting, float2 parallaxOffset, float audioLinkValue LIL_SAMP_IN_FUNC(samp))
     {
         LIL_BRANCH
         if(_UseEmission)
@@ -1132,25 +1137,22 @@ void lilGetShading(
             #if defined(LIL_FEATURE_EMISSION_GRADATION)
                 if(Exists_EmissionGradTex && _EmissionUseGrad) emissionColor *= LIL_SAMPLE_1D(_EmissionGradTex, sampler_linear_repeat, _EmissionGradSpeed*LIL_TIME);
             #endif
-            #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
-                emissionColor.a *= col.a;
-            #endif
             #if defined(LIL_FEATURE_AUDIOLINK)
                 if(_AudioLink2Emission) emissionColor.a *= audioLinkValue;
             #endif
             emissionColor.rgb = lerp(emissionColor.rgb, emissionColor.rgb * invLighting, _EmissionFluorescence);
-            col.rgb += _EmissionBlend * lilCalcBlink(_EmissionBlink) * emissionColor.a * emissionColor.rgb;
+            col += _EmissionBlend * lilCalcBlink(_EmissionBlink) * emissionColor.a * emissionColor.rgb;
         }
     }
 #elif defined(LIL_LITE)
-    void lilEmission(inout float4 col, float2 uv, float4 triMask)
+    void lilEmission(inout float3 col, float2 uv, float4 triMask)
     {
         if(_UseEmission)
         {
             float emissionBlinkSeq = lilCalcBlink(_EmissionBlink);
             float4 emissionColor = _EmissionColor;
             emissionColor *= LIL_GET_EMITEX(_EmissionMap,uv);
-            col.rgb += emissionBlinkSeq * triMask.b * emissionColor.rgb;
+            col += emissionBlinkSeq * triMask.b * emissionColor.rgb;
         }
     }
 #endif
@@ -1158,17 +1160,17 @@ void lilGetShading(
 #if !defined(OVERRIDE_EMISSION_1ST)
     #if defined(LIL_LITE)
         #define OVERRIDE_EMISSION_1ST \
-            lilEmission(col, input.uv, triMask);
+            lilEmission(emissionColor, input.uv, triMask);
     #else
         #define OVERRIDE_EMISSION_1ST \
-            lilEmission(col, uvMain, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
+            lilEmission(emissionColor, uvMain, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
     #endif
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Emission 2nd
 #if defined(LIL_FEATURE_EMISSION_2ND) && !defined(LIL_LITE) && !defined(LIL_FUR)
-    void lilEmission2nd(inout float4 col, float2 uvMain, float2 uv, float3 invLighting, float2 parallaxOffset, float audioLinkValue LIL_SAMP_IN_FUNC(samp))
+    void lilEmission2nd(inout float3 col, float2 uvMain, float2 uv, float3 invLighting, float2 parallaxOffset, float audioLinkValue LIL_SAMP_IN_FUNC(samp))
     {
         LIL_BRANCH
         if(_UseEmission2nd)
@@ -1195,28 +1197,37 @@ void lilGetShading(
             #if defined(LIL_FEATURE_EMISSION_GRADATION)
                 if(Exists_Emission2ndGradTex && _Emission2ndUseGrad) emission2ndColor *= LIL_SAMPLE_1D(_Emission2ndGradTex, sampler_linear_repeat, _Emission2ndGradSpeed*LIL_TIME);
             #endif
-            #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
-                emission2ndColor.a *= col.a;
-            #endif
             #if defined(LIL_FEATURE_AUDIOLINK)
                 if(_AudioLink2Emission2nd) emission2ndColor.a *= audioLinkValue;
             #endif
             emission2ndColor.rgb = lerp(emission2ndColor.rgb, emission2ndColor.rgb * invLighting, _Emission2ndFluorescence);
-            col.rgb += _Emission2ndBlend * lilCalcBlink(_Emission2ndBlink) * emission2ndColor.a * emission2ndColor.rgb;
+            col += _Emission2ndBlend * lilCalcBlink(_Emission2ndBlink) * emission2ndColor.a * emission2ndColor.rgb;
         }
     }
 #endif
 
 #if !defined(OVERRIDE_EMISSION_2ND)
     #define OVERRIDE_EMISSION_2ND \
-        lilEmission2nd(col, uvMain, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
+        lilEmission2nd(emissionColor, uvMain, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Dissolve Add
 #if !defined(OVERRIDE_DISSOLVE_ADD)
     #define OVERRIDE_DISSOLVE_ADD \
-        col.rgb += _DissolveColor.rgb * dissolveAlpha;
+        emissionColor += _DissolveColor.rgb * dissolveAlpha;
+#endif
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Blend Emission
+#if !defined(OVERRIDE_BLEND_EMISSION)
+    #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+        #define OVERRIDE_BLEND_EMISSION \
+            col.rgb += emissionColor * col.a;
+    #else
+        #define OVERRIDE_BLEND_EMISSION \
+            col.rgb += emissionColor;
+    #endif
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------

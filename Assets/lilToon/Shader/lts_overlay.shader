@@ -109,7 +109,7 @@ Shader "_lil/[Optional] lilToonOverlay"
                         _BacklightBlur              ("Blur", Range(0, 1)) = 0.05
                         _BacklightDirectivity       ("Directivity", Float) = 5.0
                         _BacklightViewStrength      ("View direction strength", Range(0, 1)) = 1
-        [lilToggle]     _BacklightReceiveShadow     ("Receive Shadow", Int) = 0
+        [lilToggle]     _BacklightReceiveShadow     ("Receive Shadow", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Shadow
@@ -364,7 +364,7 @@ Shader "_lil/[Optional] lilToonOverlay"
 //
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+51"}
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+100"}
         UsePass "Hidden/ltspass_transparent/FORWARD"
         UsePass "Hidden/ltspass_transparent/FORWARD_ADD"
     }
@@ -376,7 +376,7 @@ Shader "_lil/[Optional] lilToonOverlay"
 /*
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+51"}
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+100"}
         UsePass "Hidden/ltspass_transparent/FORWARD"
     }
 */
@@ -387,7 +387,7 @@ Shader "_lil/[Optional] lilToonOverlay"
 /*
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+51"}
+        Tags {"RenderType" = "Transparent" "Queue" = "AlphaTest+100"}
         UsePass "Hidden/ltspass_transparent/FORWARD"
     }
 */
@@ -398,7 +398,7 @@ Shader "_lil/[Optional] lilToonOverlay"
 /*
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+51"}
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+100"}
         UsePass "Hidden/ltspass_transparent/FORWARD"
     }
 */

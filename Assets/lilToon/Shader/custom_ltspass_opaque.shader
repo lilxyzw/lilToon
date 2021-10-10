@@ -1,33 +1,164 @@
+// This shader should be placed in the lilToon/Shader folder
+
 Shader "Hidden/custom_ltspass_opaque"
 {
     HLSLINCLUDE
+        //----------------------------------------------------------------------------------------------------------------------
+        // Macro
+
+        // Rendering mode
+        // 0 : Opaque
+        // 1 : Cutout
+        // 2 : Transparent
         #define LIL_RENDER 0
 
-        // Custom Macro
+        // Custom variables
         #define LIL_CUSTOM_PROPERTIES \
             float4  _CustomVertexWaveScale; \
             float4  _CustomVertexWaveStrength; \
             float   _CustomVertexWaveSpeed; \
             uint    _CustomEmissionUVMode;
 
+        // Custom textures
         #define LIL_CUSTOM_TEXTURES \
             TEXTURE2D(_CustomVertexWaveMask);
 
+        // Add vertex shader input
+        //#define LIL_REQUIRE_APP_POSITION
         #define LIL_REQUIRE_APP_TEXCOORD0
         #define LIL_REQUIRE_APP_TEXCOORD1
         #define LIL_REQUIRE_APP_TEXCOORD2
         #define LIL_REQUIRE_APP_TEXCOORD3
+        //#define LIL_REQUIRE_APP_TEXCOORD4
+        //#define LIL_REQUIRE_APP_TEXCOORD5
+        //#define LIL_REQUIRE_APP_TEXCOORD6
+        //#define LIL_REQUIRE_APP_TEXCOORD7
+        //#define LIL_REQUIRE_APP_COLOR
+        //#define LIL_REQUIRE_APP_NORMAL
+        //#define LIL_REQUIRE_APP_TANGENT
 
+        // Add vertex shader output
+        //#define LIL_V2F_FORCE_TEXCOORD0
+        #define LIL_V2F_FORCE_TEXCOORD1
+        //#define LIL_V2F_FORCE_POSITION_OS
+        //#define LIL_V2F_FORCE_POSITION_WS
+        //#define LIL_V2F_FORCE_POSITION_SS
+        //#define LIL_V2F_FORCE_NORMAL
+        //#define LIL_V2F_FORCE_TANGENT
+        //#define LIL_V2F_FORCE_BITANGENT
+        #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
+            float2 uv2 : TEXCOORD##id0; \
+            float2 uv3 : TEXCOORD##id1;
+
+        // Add vertex copy
+        #define LIL_CUSTOM_VERT_COPY \
+            LIL_V2F_OUT_BASE.uv2 = input.uv2; \
+            LIL_V2F_OUT_BASE.uv3 = input.uv3;
+
+        // Inserting a process into the vertex shader
         #define LIL_CUSTOM_VERTEX_OS \
             float3 customWaveStrength = LIL_SAMPLE_2D_LOD(_CustomVertexWaveMask, sampler_linear_repeat, input.uv, 0).r * _CustomVertexWaveStrength.xyz; \
-            input.positionOS.xyz += sin(LIL_TIME * _CustomVertexWaveSpeed + dot(input.positionOS.xyz, _CustomVertexWaveScale.xyz)) * customWaveStrength;
+            positionOS.xyz += sin(LIL_TIME * _CustomVertexWaveSpeed + dot(positionOS.xyz, _CustomVertexWaveScale.xyz)) * customWaveStrength;
+        //#define LIL_CUSTOM_VERTEX_WS
 
+        // Inserting a process into pixel shader
+        //#define BEFORE_xx
+        //#define OVERRIDE_xx
         #define OVERRIDE_EMISSION_1ST \
             float2 customEmissionUV = input.uv; \
             if(_CustomEmissionUVMode == 1) customEmissionUV = input.uv1; \
-            if(_CustomEmissionUVMode == 2) customEmissionUV = inputCustom.uv2; \
-            if(_CustomEmissionUVMode == 3) customEmissionUV = inputCustom.uv3; \
-            lilEmission(col, customEmissionUV, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
+            if(_CustomEmissionUVMode == 2) customEmissionUV = input.uv2; \
+            if(_CustomEmissionUVMode == 3) customEmissionUV = input.uv3; \
+            lilEmission(emissionColor, customEmissionUV, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Information about variables
+        //----------------------------------------------------------------------------------------------------------------------
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Vertex shader inputs (appdata structure)
+        //
+        // Type     Name                    Description
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float4   input.positionOS        POSITION
+        // float2   input.uv                TEXCOORD0
+        // float2   input.uv1               TEXCOORD1
+        // float2   input.uv2               TEXCOORD2
+        // float2   input.uv3               TEXCOORD3
+        // float2   input.uv4               TEXCOORD4
+        // float2   input.uv5               TEXCOORD5
+        // float2   input.uv6               TEXCOORD6
+        // float2   input.uv7               TEXCOORD7
+        // float4   input.color             COLOR
+        // float3   input.normalOS          NORMAL
+        // float4   input.tangentOS         TANGENT
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Vertex shader outputs or pixel shader inputs (v2f structure)
+        //
+        // The structure depends on the pass.
+        // Please check lil_pass_xx.hlsl for details.
+        //
+        // Type     Name                    Description
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float4   output.positionCS       SV_POSITION
+        // float2   output.uv               TEXCOORD0
+        // float2   output.uv1              TEXCOORD1
+        // float3   output.positionOS       object space position
+        // float3   output.positionWS       world space position
+        // float4   output.positionSS       screen space position
+        // float3   output.normalWS         world space normal
+        // float4   output.tangentWS        world space tangent
+        // float3   output.bitangentWS      world space bitangent
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Variables commonly used in the forward pass
+        //
+        // Type     Name                    Description
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float3   lightDirection          direction of light
+        // float3   lightColor              color of light
+        // float3   addLightColor           color of additional light
+        // float    attenuation             attenuation of light
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float4   col                     lit color
+        // float3   albedo                  unlit color
+        // float3   reflectionColor         color of reflection
+        // float3   emissionColor           color of emission
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float3   normalDirection         world space normal
+        // float3   viewDirection           normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+        // float3   headDirection           normalize(LIL_GET_HEADDIR_WS(input.positionWS.xyz));
+        // float3x3 tbnWS                   float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
+        // float    depth                   length(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+        // float3   parallaxViewDirection   mul(tbnWS, viewDirection);
+        // float2   parallaxOffset          parallaxViewDirection.xy / (parallaxViewDirection.z+0.5);
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float    vl                      dot(viewDirection, lightDirection);
+        // float    hl                      dot(headDirection, lightDirection);
+        // float    ln                      dot(lightDirection, normalDirection);
+        // float    nv                      saturate(dot(normalDirection, viewDirection));
+        // float    nvabs                   abs(dot(normalDirection, viewDirection));
+        // -------- ----------------------- --------------------------------------------------------------------
+        // bool     isRightHand             input.tangentWS.w > 0.0;
+        // float    shadowmix               this variable is 0 in the shadow area
+        // float    audioLinkValue          volume acquired by AudioLink
+        // float3   invLighting             saturate((1.0 - lightColor) * sqrt(lightColor));
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Variables commonly used in the meta pass
+        //
+        // Type     Name                    Description
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float4   col                     color
+        // float3   emissionColor           color of emission
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Variables commonly used in other passes
+        //
+        // Type     Name                    Description
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float4   col                     color (use only col.a)
     ENDHLSL
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -80,30 +211,10 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_TEXCOORD1
-            #define LIL_CUSTOM_V2F v2fCustom
-            #define LIL_CUSTOM_V2F_STRUCT \
-                struct v2fCustom \
-                { \
-                    float2 uv2  : TEXCOORD15; \
-                    float2 uv3  : TEXCOORD16; \
-                    v2f base; \
-                };
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
 
             #include "Includes/lil_pass_forward.hlsl"
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-            v2fCustom vert(appdata input)
-            {
-                v2fCustom output;
-                LIL_INITIALIZE_STRUCT(v2fCustom, output);
-                output.base = vertBase(input);
-                output.uv2 = input.uv2;
-                output.uv3 = input.uv3;
-                return output;
-            }
 
             ENDHLSL
         }
@@ -148,6 +259,9 @@ Shader "Hidden/custom_ltspass_opaque"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -193,6 +307,9 @@ Shader "Hidden/custom_ltspass_opaque"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_PASS_FORWARDADD
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -217,6 +334,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -239,30 +359,16 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #undef LIL_CUSTOM_V2F_MEMBER
+            #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
+                float2 uv1 : TEXCOORD##id1; \
+                float2 uv2 : TEXCOORD##id2; \
+                float2 uv3 : TEXCOORD##id3;
 
-            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_TEXCOORD1
-            #define LIL_CUSTOM_V2F v2fCustom
-            #define LIL_CUSTOM_V2F_STRUCT \
-                struct v2fCustom \
-                { \
-                    float2 uv2  : TEXCOORD15; \
-                    float2 uv3  : TEXCOORD16; \
-                    v2f base; \
-                };
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
 
             #include "Includes/lil_pass_meta.hlsl"
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-            v2fCustom vert(appdata input)
-            {
-                v2fCustom output;
-                LIL_INITIALIZE_STRUCT(v2fCustom, output);
-                output.base = vertBase(input);
-                output.uv2 = input.uv2;
-                output.uv3 = input.uv3;
-                return output;
-            }
 
             ENDHLSL
         }
@@ -329,30 +435,10 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_TEXCOORD1
-            #define LIL_CUSTOM_V2F v2fCustom
-            #define LIL_CUSTOM_V2F_STRUCT \
-                struct v2fCustom \
-                { \
-                    float2 uv2  : TEXCOORD15; \
-                    float2 uv3  : TEXCOORD16; \
-                    v2f base; \
-                };
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
 
             #include "Includes/lil_pass_forward.hlsl"
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-            v2fCustom vert(appdata input)
-            {
-                v2fCustom output;
-                LIL_INITIALIZE_STRUCT(v2fCustom, output);
-                output.base = vertBase(input);
-                output.uv2 = input.uv2;
-                output.uv3 = input.uv3;
-                return output;
-            }
 
             ENDHLSL
         }
@@ -399,6 +485,9 @@ Shader "Hidden/custom_ltspass_opaque"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -424,6 +513,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -448,6 +540,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -470,31 +565,16 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #undef LIL_CUSTOM_V2F_MEMBER
+            #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
+                float2 uv1 : TEXCOORD##id1; \
+                float2 uv2 : TEXCOORD##id2; \
+                float2 uv3 : TEXCOORD##id3;
 
-            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_TEXCOORD1
-            #define LIL_CUSTOM_V2F v2fCustom
-            #define LIL_CUSTOM_V2F_STRUCT \
-                struct v2fCustom \
-                { \
-                    float2 uv2  : TEXCOORD15; \
-                    float2 uv3  : TEXCOORD16; \
-                    v2f base; \
-                };
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
 
             #include "Includes/lil_pass_meta.hlsl"
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-            v2fCustom vert(appdata input)
-            {
-                v2fCustom output;
-                LIL_INITIALIZE_STRUCT(v2fCustom, output);
-                output.base = vertBase(input);
-                output.uv2 = input.uv2;
-                output.uv3 = input.uv3;
-                return output;
-            }
-
             ENDHLSL
         }
     }
@@ -553,30 +633,10 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_TEXCOORD1
-            #define LIL_CUSTOM_V2F v2fCustom
-            #define LIL_CUSTOM_V2F_STRUCT \
-                struct v2fCustom \
-                { \
-                    float2 uv2  : TEXCOORD15; \
-                    float2 uv3  : TEXCOORD16; \
-                    v2f base; \
-                };
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
 
             #include "Includes/lil_pass_forward.hlsl"
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-            v2fCustom vert(appdata input)
-            {
-                v2fCustom output;
-                LIL_INITIALIZE_STRUCT(v2fCustom, output);
-                output.base = vertBase(input);
-                output.uv2 = input.uv2;
-                output.uv3 = input.uv3;
-                return output;
-            }
 
             ENDHLSL
         }
@@ -622,6 +682,9 @@ Shader "Hidden/custom_ltspass_opaque"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -646,6 +709,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -669,6 +735,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -691,31 +760,16 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #undef LIL_CUSTOM_V2F_MEMBER
+            #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
+                float2 uv1 : TEXCOORD##id1; \
+                float2 uv2 : TEXCOORD##id2; \
+                float2 uv3 : TEXCOORD##id3;
 
-            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_TEXCOORD1
-            #define LIL_CUSTOM_V2F v2fCustom
-            #define LIL_CUSTOM_V2F_STRUCT \
-                struct v2fCustom \
-                { \
-                    float2 uv2  : TEXCOORD15; \
-                    float2 uv3  : TEXCOORD16; \
-                    v2f base; \
-                };
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
 
             #include "Includes/lil_pass_meta.hlsl"
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-            v2fCustom vert(appdata input)
-            {
-                v2fCustom output;
-                LIL_INITIALIZE_STRUCT(v2fCustom, output);
-                output.base = vertBase(input);
-                output.uv2 = input.uv2;
-                output.uv3 = input.uv3;
-                return output;
-            }
-
             ENDHLSL
         }
     }
@@ -781,30 +835,10 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_TEXCOORD1
-            #define LIL_CUSTOM_V2F v2fCustom
-            #define LIL_CUSTOM_V2F_STRUCT \
-                struct v2fCustom \
-                { \
-                    float2 uv2  : TEXCOORD15; \
-                    float2 uv3  : TEXCOORD16; \
-                    v2f base; \
-                };
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
 
             #include "Includes/lil_pass_forward.hlsl"
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-            v2fCustom vert(appdata input)
-            {
-                v2fCustom output;
-                LIL_INITIALIZE_STRUCT(v2fCustom, output);
-                output.base = vertBase(input);
-                output.uv2 = input.uv2;
-                output.uv3 = input.uv3;
-                return output;
-            }
 
             ENDHLSL
         }
@@ -851,6 +885,9 @@ Shader "Hidden/custom_ltspass_opaque"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -876,6 +913,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -900,6 +940,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -924,6 +967,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthnormals.hlsl"
 
             ENDHLSL
@@ -963,6 +1009,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_universal2d.hlsl"
             ENDHLSL
         }
@@ -984,31 +1033,16 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #undef LIL_CUSTOM_V2F_MEMBER
+            #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
+                float2 uv1 : TEXCOORD##id1; \
+                float2 uv2 : TEXCOORD##id2; \
+                float2 uv3 : TEXCOORD##id3;
 
-            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_TEXCOORD1
-            #define LIL_CUSTOM_V2F v2fCustom
-            #define LIL_CUSTOM_V2F_STRUCT \
-                struct v2fCustom \
-                { \
-                    float2 uv2  : TEXCOORD15; \
-                    float2 uv3  : TEXCOORD16; \
-                    v2f base; \
-                };
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
 
             #include "Includes/lil_pass_meta.hlsl"
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-            v2fCustom vert(appdata input)
-            {
-                v2fCustom output;
-                LIL_INITIALIZE_STRUCT(v2fCustom, output);
-                output.base = vertBase(input);
-                output.uv2 = input.uv2;
-                output.uv3 = input.uv3;
-                return output;
-            }
-
             ENDHLSL
         }
     }
@@ -1067,30 +1101,10 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_TEXCOORD1
-            #define LIL_CUSTOM_V2F v2fCustom
-            #define LIL_CUSTOM_V2F_STRUCT \
-                struct v2fCustom \
-                { \
-                    float2 uv2  : TEXCOORD15; \
-                    float2 uv3  : TEXCOORD16; \
-                    v2f base; \
-                };
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
 
             #include "Includes/lil_pass_forward.hlsl"
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-            v2fCustom vert(appdata input)
-            {
-                v2fCustom output;
-                LIL_INITIALIZE_STRUCT(v2fCustom, output);
-                output.base = vertBase(input);
-                output.uv2 = input.uv2;
-                output.uv3 = input.uv3;
-                return output;
-            }
 
             ENDHLSL
         }
@@ -1136,6 +1150,9 @@ Shader "Hidden/custom_ltspass_opaque"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -1160,6 +1177,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -1183,6 +1203,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -1206,6 +1229,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthnormals.hlsl"
 
             ENDHLSL
@@ -1245,6 +1271,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_universal2d.hlsl"
             ENDHLSL
         }
@@ -1266,31 +1295,16 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #undef LIL_CUSTOM_V2F_MEMBER
+            #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
+                float2 uv1 : TEXCOORD##id1; \
+                float2 uv2 : TEXCOORD##id2; \
+                float2 uv3 : TEXCOORD##id3;
 
-            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_TEXCOORD1
-            #define LIL_CUSTOM_V2F v2fCustom
-            #define LIL_CUSTOM_V2F_STRUCT \
-                struct v2fCustom \
-                { \
-                    float2 uv2  : TEXCOORD15; \
-                    float2 uv3  : TEXCOORD16; \
-                    v2f base; \
-                };
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
 
             #include "Includes/lil_pass_meta.hlsl"
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-            v2fCustom vert(appdata input)
-            {
-                v2fCustom output;
-                LIL_INITIALIZE_STRUCT(v2fCustom, output);
-                output.base = vertBase(input);
-                output.uv2 = input.uv2;
-                output.uv3 = input.uv3;
-                return output;
-            }
-
             ENDHLSL
         }
     }
@@ -1355,30 +1369,10 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_TEXCOORD1
-            #define LIL_CUSTOM_V2F v2fCustom
-            #define LIL_CUSTOM_V2F_STRUCT \
-                struct v2fCustom \
-                { \
-                    float2 uv2  : TEXCOORD15; \
-                    float2 uv3  : TEXCOORD16; \
-                    v2f base; \
-                };
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
 
             #include "Includes/lil_pass_forward.hlsl"
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-            v2fCustom vert(appdata input)
-            {
-                v2fCustom output;
-                LIL_INITIALIZE_STRUCT(v2fCustom, output);
-                output.base = vertBase(input);
-                output.uv2 = input.uv2;
-                output.uv3 = input.uv3;
-                return output;
-            }
 
             ENDHLSL
         }
@@ -1427,6 +1421,9 @@ Shader "Hidden/custom_ltspass_opaque"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -1457,6 +1454,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -1500,6 +1500,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -1546,6 +1549,9 @@ Shader "Hidden/custom_ltspass_opaque"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_ONEPASS_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -1586,6 +1592,9 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_motionvectors.hlsl"
 
             ENDHLSL
@@ -1629,6 +1638,9 @@ Shader "Hidden/custom_ltspass_opaque"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_ONEPASS_OUTLINE
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+
             #include "Includes/lil_pass_motionvectors.hlsl"
 
             ENDHLSL
@@ -1655,31 +1667,16 @@ Shader "Hidden/custom_ltspass_opaque"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #undef LIL_CUSTOM_V2F_MEMBER
+            #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
+                float2 uv1 : TEXCOORD##id1; \
+                float2 uv2 : TEXCOORD##id2; \
+                float2 uv3 : TEXCOORD##id3;
 
-            // #include "Includes/lil_pass_〇〇.hlsl"の前に挿入
-            #define LIL_V2F_FORCE_TEXCOORD1
-            #define LIL_CUSTOM_V2F v2fCustom
-            #define LIL_CUSTOM_V2F_STRUCT \
-                struct v2fCustom \
-                { \
-                    float2 uv2  : TEXCOORD15; \
-                    float2 uv3  : TEXCOORD16; \
-                    v2f base; \
-                };
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
 
             #include "Includes/lil_pass_meta.hlsl"
-
-            // #include "Includes/lil_pass_〇〇.hlsl"の後に挿入
-            v2fCustom vert(appdata input)
-            {
-                v2fCustom output;
-                LIL_INITIALIZE_STRUCT(v2fCustom, output);
-                output.base = vertBase(input);
-                output.uv2 = input.uv2;
-                output.uv3 = input.uv3;
-                return output;
-            }
-
             ENDHLSL
         }
     }

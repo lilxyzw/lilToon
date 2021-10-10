@@ -122,9 +122,9 @@ ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _
 
 ## シェーダーファイルの作成
 `ltspass_○○.shader`等にパスが記述されており各シェーダーバリエーションから`UsePass`を用いて参照しています。  
-まず、`ltspass_○○.shader`を複製して名前を変更してください。  
-ここでは例として`ltspass_opaque.shader`を複製し`custom_ltspass_opaque.shader`と名前を変更します。  
-また、ファイル冒頭の`Shader "Hidden/ltspass_opaque"`も`Shader "Hidden/custom_ltspass_opaque"`に書き換えます。
+新規にShaderを作成しコードを`ScriptTemplates/99-lilToon__Custom Pass Shader-custom_ltspass_opaque.shader.txt`からコピーします。  
+ここでは例として`custom_ltspass_opaque.shader`を作成します。  
+また、ファイル冒頭の`Shader "Hidden/#NAME#"`を`Shader "Hidden/custom_ltspass_opaque"`に書き換えます。
 
 ## シェーダーバリエーションの作成
 `lts.shader`を複製し`custom_lts.shader`に名前を変更します。  
@@ -162,9 +162,8 @@ ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _
 ```
 
 ## 関数やincludeの追加
-もしUnityの変数や関数などに依存する関数やincludeを追加したい場合は以下のように書き換えます。
-1. 各パスに存在する`#include "Includes/lil_pass_xx.hlsl"`の直前に`#include "Includes/lil_pipeline.hlsl"`を追加
-2. この２つのincludeの間に任意の関数やincludeを挿入
+一部ライブラリはUnityの関数や変数に依存します。  
+その場合は各パスに存在する`#include "Includes/lil_pass_xx.hlsl"`の直前に関数やincludeを挿入してください。
 
 ## 頂点シェーダーの入力の追加（appdata構造体）
 以下のキーワードを`#define`することで対応した入力が追加されます。
@@ -191,6 +190,37 @@ ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _
 #define LIL_REQUIRE_APP_TEXCOORD3
 ```
 
+## 頂点シェーダーの出力の追加（v2f構造体）
+構造体のメンバーは`#define LIL_CUSTOM_V2F_MEMBER`から追加できます。  
+もともと構造体に含まれるものは`#define LIL_V2F_FORCE_(キーワード)`で強制的にメンバーにさせることができます。  
+今回の例では以下のようにします。
+```HLSL
+#define LIL_V2F_FORCE_TEXCOORD1
+#define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
+    float2 uv2 : TEXCOORD##id0; \
+    float2 uv3 : TEXCOORD##id1;
+
+#define LIL_CUSTOM_VERT_COPY \
+    LIL_V2F_OUT_BASE.uv2 = input.uv2; \
+    LIL_V2F_OUT_BASE.uv3 = input.uv3;
+```
+
+METAパスではエラーになるのでMETAパスに以下の変更を加えます。
+```HLSL
+//----------------------------------------------------------------------------------------------------------------------
+// Pass
+#undef LIL_CUSTOM_V2F_MEMBER
+#define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
+    float2 uv1 : TEXCOORD##id1; \
+    float2 uv2 : TEXCOORD##id2; \
+    float2 uv3 : TEXCOORD##id3;
+
+#include "Includes/lil_pipeline.hlsl"
+// Insert functions and includes that depend on Unity here
+
+#include "Includes/lil_pass_meta.hlsl"
+```
+
 ## 頂点シェーダーに処理を挿入する
 以下のマクロで処理を挿入できます。
 
@@ -198,55 +228,18 @@ ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _
 |-|-|
 |LIL_CUSTOM_VERTEX_OS|オブジェクト空間での処理|
 |LIL_CUSTOM_VERTEX_WS|ワールド空間での処理|
-|LIL_CUSTOM_VERTEX_WS_OL|(HDRP用) 輪郭線の頂点のワールド空間での処理|
-|LIL_CUSTOM_PREV_VERTEX_OS|(HDRP用) 前フレームの頂点のオブジェクト空間での処理|
-|LIL_CUSTOM_PREV_VERTEX_WS|(HDRP用) 前フレームの頂点のワールド空間での処理|
-|LIL_CUSTOM_PREV_VERTEX_WS_OL|(HDRP用) 前フレームの輪郭線の頂点のワールド空間での処理|
 
 今回の例では以下のように波のアニメーションを追加しつつUV2、UV3の書き出しも行います。
 ```HLSL
 #define LIL_CUSTOM_VERTEX_OS \
     float3 customWaveStrength = LIL_SAMPLE_2D_LOD(_CustomVertexWaveMask, sampler_linear_repeat, input.uv, 0).r * _CustomVertexWaveStrength.xyz; \
-    input.positionOS.xyz += sin(LIL_TIME * _CustomVertexWaveSpeed + dot(input.positionOS.xyz, _CustomVertexWaveScale.xyz)) * customWaveStrength;
+    positionOS.xyz += sin(LIL_TIME * _CustomVertexWaveSpeed + dot(positionOS.xyz, _CustomVertexWaveScale.xyz)) * customWaveStrength;
 ```
 
 今回は使いませんでしたがワールド空間の座標や法線は`vertexInput`や`vertexNormalInput`に格納されています。
 ```HLSL
 #define LIL_CUSTOM_VERTEX_WS \
     vertexInput.positionWS = CustomSomething(vertexInput.positionWS);
-```
-
-## 頂点シェーダーの出力を増やす（v2f構造体）
-ここだけは各パスごとの編集になります。  
-頂点シェーダーのアウトプットを追加する場合は新たな構造体を宣言する必要があります。  
-構造体を宣言した場合は`#define LIL_CUSTOM_V2F`を追加してください。（ピクセルシェーダーの入力が上書きされたり、頂点シェーダーの名前がvertBaseに変更されたりします）  
-もともと構造体に含まれるものは`#define LIL_V2F_FORCE_(キーワード)`で強制的にメンバーにさせることができます。  
-Built-in RPのみに対応させる場合は`// BRP Start`と`// BRP End`で囲まれた部分のパスのみ編集すればよいです。  
-今回の例では以下のようにします。
-```HLSL
-// #include "Includes/lil_pass_xx.hlsl"の前に挿入
-#define LIL_V2F_FORCE_TEXCOORD1
-#define LIL_CUSTOM_V2F v2fCustom
-#define LIL_CUSTOM_V2F_STRUCT \
-    struct v2fCustom \
-    { \
-        float2 uv2  : TEXCOORD15; \
-        float2 uv3  : TEXCOORD16; \
-        v2f base; \
-    };
-
-#include "Includes/lil_pass_xx.hlsl"
-
-// #include "Includes/lil_pass_xx.hlsl"の後に挿入
-v2fCustom vert(appdata input)
-{
-    v2fCustom output;
-    LIL_INITIALIZE_STRUCT(v2fCustom, output);
-    output.base = vertBase(input);
-    output.uv2 = input.uv2;
-    output.uv3 = input.uv3;
-    return output;
-}
 ```
 
 ## ピクセルシェーダーに処理を挿入する
@@ -278,6 +271,7 @@ v2fCustom vert(appdata input)
 |EMISSION_1ST|発光の処理|
 |EMISSION_2ND|発光2ndの処理|
 |DISSOLVE_ADD|Dissolveの境界の発光処理|
+|BLEND_EMISSION|発光の合成|
 |DISTANCE_FADE|距離フェードの処理|
 |FOG|フォグの処理|
 |OUTPUT|最終書き出し|
@@ -287,14 +281,14 @@ v2fCustom vert(appdata input)
 #define OVERRIDE_EMISSION_1ST \
     float2 customEmissionUV = input.uv; \
     if(_CustomEmissionUVMode == 1) customEmissionUV = input.uv1; \
-    if(_CustomEmissionUVMode == 2) customEmissionUV = inputCustom.uv2; \
-    if(_CustomEmissionUVMode == 3) customEmissionUV = inputCustom.uv3; \
-    lilEmission(col, customEmissionUV, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
+    if(_CustomEmissionUVMode == 2) customEmissionUV = input.uv2; \
+    if(_CustomEmissionUVMode == 3) customEmissionUV = input.uv3; \
+    lilEmission(emissionColor, customEmissionUV, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
 ```
 
-## Inspector拡張
-`lilToon.lilToonInspector`を継承することで簡単にInspectorを拡張できます。
-手順は以下の通りです。
+## 拡張Inspector
+拡張Inspectorのテンプレートは`ScriptTemplates/99-lilToon__Custom Inspector-NewCustomInspector.cs.txt`にあります。  
+編集手順は以下の通りです。
 1. `MaterialProperty`を宣言
 2. `LoadCustomProperties()`をオーバーライドして、その中で`isCustomShader`を`true`にしつつ`FindProperty`でプロパティを取得
 3. `DrawCustomProperties()`をオーバーライドしてGUIを実装
@@ -320,6 +314,8 @@ lilToonのGUIStyleとして以下のものが渡されてくるのでご活用�
 
 今回はCustomInspectorExample.csを作成し以下のように拡張しました。
 ```C#
+// This script should be placed in the lilToon/Editor folder
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
@@ -337,7 +333,6 @@ namespace lilToon
 
         private static bool isShowCustomProperties;
 
-        // Override this
         protected override void LoadCustomProperties(MaterialProperty[] props, Material material)
         {
             isCustomShader = true;
@@ -349,7 +344,6 @@ namespace lilToon
             customEmissionUVMode = FindProperty("_CustomEmissionUVMode", props);
         }
 
-        // Override this
         protected override void DrawCustomProperties(
             MaterialEditor materialEditor,
             Material material,

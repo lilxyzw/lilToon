@@ -109,7 +109,7 @@ Shader "Hidden/lilToonRefraction"
                         _BacklightBlur              ("Blur", Range(0, 1)) = 0.05
                         _BacklightDirectivity       ("Directivity", Float) = 5.0
                         _BacklightViewStrength      ("View direction strength", Range(0, 1)) = 1
-        [lilToggle]     _BacklightReceiveShadow     ("Receive Shadow", Int) = 0
+        [lilToggle]     _BacklightReceiveShadow     ("Receive Shadow", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Shadow
@@ -375,7 +375,7 @@ Shader "Hidden/lilToonRefraction"
 //
     SubShader
     {
-        Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
+        Tags {"RenderType" = "Opaque" "Queue" = "AlphaTest+200"}
         HLSLINCLUDE
             #pragma target 3.5
         ENDHLSL
@@ -487,7 +487,7 @@ Shader "Hidden/lilToonRefraction"
     // Lightweight Render Pipeline SM4.5
     SubShader
     {
-        Tags {"RenderType" = "Opaque" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        Tags {"RenderType" = "Opaque" "Queue" = "AlphaTest+200" "ShaderModel" = "4.5"}
         HLSLINCLUDE
             #pragma target 4.5
         ENDHLSL
@@ -619,7 +619,7 @@ Shader "Hidden/lilToonRefraction"
     // Lightweight Render Pipeline
     SubShader
     {
-        Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
+        Tags {"RenderType" = "Opaque" "Queue" = "AlphaTest+200"}
         HLSLINCLUDE
             #pragma target 3.5
         ENDHLSL
@@ -753,7 +753,7 @@ Shader "Hidden/lilToonRefraction"
     // Universal Render Pipeline SM4.5
     SubShader
     {
-        Tags {"RenderType" = "Opaque" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        Tags {"RenderType" = "Opaque" "Queue" = "AlphaTest+200" "ShaderModel" = "4.5"}
         HLSLINCLUDE
             #pragma target 4.5
         ENDHLSL
@@ -947,7 +947,7 @@ Shader "Hidden/lilToonRefraction"
     // Universal Render Pipeline
     SubShader
     {
-        Tags {"RenderType" = "Opaque" "Queue" = "Transparent"}
+        Tags {"RenderType" = "Opaque" "Queue" = "AlphaTest+200"}
         HLSLINCLUDE
             #pragma target 3.5
         ENDHLSL
@@ -1145,7 +1145,7 @@ Shader "Hidden/lilToonRefraction"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+200"}
 
         // Forward
         Pass

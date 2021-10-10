@@ -2,10 +2,17 @@
 #define LIL_PASS_SHADOWCASTER_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
+#include "Includes/lil_common_input.hlsl"
+#include "Includes/lil_common_functions.hlsl"
+#include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Structure
-#if defined(LIL_V2F_FORCE_UV0) || (LIL_RENDER > 0)
+#if !defined(LIL_CUSTOM_V2F_MEMBER)
+    #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7)
+#endif
+
+#if defined(LIL_V2F_FORCE_TEXCOORD0) || (LIL_RENDER > 0)
     #define LIL_V2F_TEXCOORD0
 #endif
 #if defined(LIL_V2F_FORCE_POSITION_OS) || ((LIL_RENDER > 0) && !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_DISSOLVE))
@@ -22,8 +29,9 @@ struct v2f
     #if defined(LIL_V2F_POSITION_OS)
         float3 positionOS   : TEXCOORD2;
     #endif
-    UNITY_VERTEX_INPUT_INSTANCE_ID
-    UNITY_VERTEX_OUTPUT_STEREO
+    LIL_CUSTOM_V2F_MEMBER(3,4,5,6,7,8,9,10)
+    LIL_VERTEX_INPUT_INSTANCE_ID
+    LIL_VERTEX_OUTPUT_STEREO
 };
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -31,14 +39,8 @@ struct v2f
 #include "Includes/lil_common_vert.hlsl"
 #include "Includes/lil_common_frag.hlsl"
 
-#if defined(LIL_CUSTOM_V2F)
-float4 frag(LIL_CUSTOM_V2F inputCustom) : SV_Target
-{
-    v2f input = inputCustom.base;
-#else
 float4 frag(v2f input) : SV_Target
 {
-#endif
     UNITY_SETUP_INSTANCE_ID(input);
     UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 

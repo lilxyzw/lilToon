@@ -15,18 +15,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - シェーダーキーワードを利用するバリエーションの追加 (_lil/lilToonMulti)
 - プリセット保存画面を開いている状態でマテリアルを選択した際の警告を追加
 - カスタムシェーダー作成用のマクロを追加
+- カスタムシェーダーのテンプレートを追加
 
 ### 変更
-- 透過シェーダーのRenderQueueを2501に変更 (透過マテリアル越しのSkyboxの描画不全を回避)
+- 透過シェーダーのRenderQueueを2550に変更 (透過マテリアル越しのSkyboxの描画不全を回避、ステンシル用に余裕を持たせた)
+- 屈折シェーダーのRenderQueueを2650に変更 (透過マテリアル越しの透けを回避)
 - 屈折の強度に負の値を設定可能に変更
 - `透過モード`を`描画モード`に改名
 - 影設定の`メインカラーの強度`を`コントラスト`に改名
 - `AlphaToMask`の切り替えに対応
+- 透過シェーダーの`RenderType`を`TransparentCutout`に変更
 - 変更ログを`CHANGELOG.md`と`CHANGELOG_JP.md`に移動
 
 ### 修正
 - PlayモードでParent Constraintが編集できない問題を修正
 - 屈折シェーダーが特定条件下で一部アセットに干渉する可能性がある問題の修正
+- メインテクスチャのSamplerStateをうまく取得できていなかった問題の修正
 
 ### 削除
 - いくつかのhlslファイル
