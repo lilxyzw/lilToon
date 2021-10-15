@@ -207,7 +207,7 @@ MonoBehaviour:
   - name: _ShadowMainStrength
     value: 0
   - name: _ShadowEnvStrength
-    value: 1
+    value: 0
   - name: _ShadowBorderRange
     value: 0
   - name: _UseReflection

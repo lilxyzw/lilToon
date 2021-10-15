@@ -5,6 +5,7 @@
 #include "../../../lilToonSetting/lil_setting.hlsl"
 #endif
 #include "Includes/lil_common_macro.hlsl"
+#include "Includes/lil_common_input.hlsl"
 
 #if defined(LIL_MULTI)
     #define _UseMain2ndTex true
@@ -26,5 +27,7 @@
     #undef LIL_BRANCH
     #define LIL_BRANCH
 #endif
+
+#include "Includes/lil_common_functions.hlsl"
 
 #endif

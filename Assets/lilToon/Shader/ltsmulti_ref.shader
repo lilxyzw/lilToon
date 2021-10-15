@@ -13,6 +13,7 @@ Shader "Hidden/lilToonMultiRefraction"
                         _AsUnlit                    ("As Unlit", Range(0, 1)) = 0
                         _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.001
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
+        [lilToggle]     _ShiftBackfaceUV            ("Shift Backface UV", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
                         _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
                         _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0
@@ -133,7 +134,7 @@ Shader "Hidden/lilToonMultiRefraction"
                         _Shadow2ndColor             ("Shadow 2nd Color", Color) = (0,0,0,0)
         [NoScaleOffset] _Shadow2ndColorTex          ("Shadow 2nd Color", 2D) = "black" {}
                         _ShadowMainStrength         ("Main Color Strength", Range(0, 1)) = 1
-                        _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 1
+                        _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 0
                         _ShadowBorderColor          ("Border Color", Color) = (1,0,0,1)
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
 
@@ -164,6 +165,8 @@ Shader "Hidden/lilToonMultiRefraction"
                         _MatCapBlend                ("Blend", Range(0, 1)) = 1
         [NoScaleOffset] _MatCapBlendMask            ("Mask", 2D) = "white" {}
                         _MatCapEnableLighting       ("Enable Lighting", Range(0, 1)) = 1
+                        _MatCapShadowMask           ("Shadow Mask", Range(0, 1)) = 0
+                        _MatCapVRParallaxStrength   ("VR Parallax Strength", Range(0, 1)) = 1
         [lilEnum]       _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCapApplyTransparency    ("Apply Transparency", Int) = 1
         [lilToggle]     _MatCapZRotCancel           ("Z-axis rotation cancellation", Int) = 1
@@ -179,6 +182,8 @@ Shader "Hidden/lilToonMultiRefraction"
                         _MatCap2ndBlend             ("Blend", Range(0, 1)) = 1
         [NoScaleOffset] _MatCap2ndBlendMask         ("Mask", 2D) = "white" {}
                         _MatCap2ndEnableLighting    ("Enable Lighting", Range(0, 1)) = 1
+                        _MatCap2ndShadowMask        ("Shadow Mask", Range(0, 1)) = 0
+                        _MatCap2ndVRParallaxStrength ("VR Parallax Strength", Range(0, 1)) = 1
         [lilEnum]       _MatCap2ndBlendMode         ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCap2ndApplyTransparency ("Apply Transparency", Int) = 1
         [lilToggle]     _MatCap2ndZRotCancel        ("Z-axis rotation cancellation", Int) = 1
@@ -195,7 +200,7 @@ Shader "Hidden/lilToonMultiRefraction"
                         _RimBlur                    ("Blur", Range(0, 1)) = 0.1
         [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
                         _RimEnableLighting          ("Enable Lighting", Range(0, 1)) = 1
-        [lilToggle]     _RimShadowMask              ("Shadow Mask", Int) = 0
+                        _RimShadowMask              ("Shadow Mask", Range(0, 1)) = 0
         [lilToggle]     _RimApplyTransparency       ("Apply Transparency", Int) = 1
                         _RimDirStrength             ("Light direction strength", Range(0, 1)) = 0
                         _RimDirRange                ("Direction range", Range(-1, 1)) = 0
@@ -214,7 +219,7 @@ Shader "Hidden/lilToonMultiRefraction"
         [lilGlitParam1] _GlitterParams1             ("Tiling|Particle Size|Contrast", Vector) = (256,256,0.16,50)
         [lilGlitParam2] _GlitterParams2             ("Blink Speed|Angle|Blend Light Direction|Color Randomness", Vector) = (0.25,0,0,0)
                         _GlitterEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
-        [lilToggle]     _GlitterShadowMask          ("Shadow Mask", Int) = 0
+                        _GlitterShadowMask          ("Shadow Mask", Range(0, 1)) = 0
         [lilToggle]     _GlitterApplyTransparency   ("Apply Transparency", Int) = 1
                         _GlitterVRParallaxStrength  ("VR Parallax Strength", Range(0, 1)) = 1
 
@@ -408,7 +413,7 @@ Shader "Hidden/lilToonMultiRefraction"
 //
     SubShader
     {
-        Tags {"RenderType" = "Opaque" "Queue" = "AlphaTest+200"}
+        Tags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
         HLSLINCLUDE
             #pragma target 3.5
         ENDHLSL
@@ -644,7 +649,7 @@ Shader "Hidden/lilToonMultiRefraction"
     // Lightweight Render Pipeline SM4.5
     SubShader
     {
-        Tags{"ShaderModel" = "4.5" "RenderType" = "Opaque" "Queue" = "AlphaTest+200"}
+        Tags{"ShaderModel" = "4.5" "RenderType" = "Opaque" "Queue" = "Transparent-100"}
         HLSLINCLUDE
             #pragma target 4.5
         ENDHLSL
@@ -832,7 +837,7 @@ Shader "Hidden/lilToonMultiRefraction"
     // Lightweight Render Pipeline
     SubShader
     {
-        Tags {"RenderType" = "Opaque" "Queue" = "AlphaTest+200"}
+        Tags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
         HLSLINCLUDE
             #pragma target 3.5
         ENDHLSL
@@ -1022,7 +1027,7 @@ Shader "Hidden/lilToonMultiRefraction"
     // Universal Render Pipeline SM4.5
     SubShader
     {
-        Tags{"ShaderModel" = "4.5" "RenderType" = "Opaque" "Queue" = "AlphaTest+200"}
+        Tags{"ShaderModel" = "4.5" "RenderType" = "Opaque" "Queue" = "Transparent-100"}
         HLSLINCLUDE
             #pragma target 4.5
         ENDHLSL
@@ -1279,7 +1284,7 @@ Shader "Hidden/lilToonMultiRefraction"
     // Universal Render Pipeline
     SubShader
     {
-        Tags {"RenderType" = "Opaque" "Queue" = "AlphaTest+200"}
+        Tags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
         HLSLINCLUDE
             #pragma target 3.5
         ENDHLSL
@@ -1540,7 +1545,7 @@ Shader "Hidden/lilToonMultiRefraction"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+200"}
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent-100"}
 
         // Forward
         Pass

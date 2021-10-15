@@ -3,8 +3,6 @@
 
 #define LIL_WITHOUT_ANIMATION
 #include "Includes/lil_pipeline.hlsl"
-#include "Includes/lil_common_input.hlsl"
-#include "Includes/lil_common_functions.hlsl"
 #include "Includes/lil_common_appdata.hlsl"
 
 #if defined(LIL_HDRP)
@@ -50,6 +48,7 @@ struct v2f
 
 float4 frag(v2f input) : SV_Target
 {
+    float facing = 1.0;
     //------------------------------------------------------------------------------------------------------------------------------
     // Initialize
     float3 lightDirection = float3(0.0, 1.0, 0.0);

@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-#if !UNITY_2018_1_OR_NEWER
+#if !UNITY_2018_3_OR_NEWER
     using System.Reflection;
 #endif
 
@@ -385,6 +385,7 @@ namespace lilToon
         MaterialProperty asUnlit;
         MaterialProperty cutoff;
         MaterialProperty flipNormal;
+        MaterialProperty shiftBackfaceUV;
         MaterialProperty backfaceForceShadow;
         MaterialProperty vertexLightStrength;
         MaterialProperty lightMinLimit;
@@ -530,6 +531,8 @@ namespace lilToon
             MaterialProperty matcapBlend;
             MaterialProperty matcapBlendMask;
             MaterialProperty matcapEnableLighting;
+            MaterialProperty matcapShadowMask;
+            MaterialProperty matcapVRParallaxStrength;
             MaterialProperty matcapBlendMode;
             MaterialProperty matcapMul;
             MaterialProperty matcapApplyTransparency;
@@ -543,6 +546,8 @@ namespace lilToon
             MaterialProperty matcap2ndBlend;
             MaterialProperty matcap2ndBlendMask;
             MaterialProperty matcap2ndEnableLighting;
+            MaterialProperty matcap2ndShadowMask;
+            MaterialProperty matcap2ndVRParallaxStrength;
             MaterialProperty matcap2ndBlendMode;
             MaterialProperty matcap2ndMul;
             MaterialProperty matcap2ndApplyTransparency;
@@ -979,6 +984,8 @@ namespace lilToon
                             zwrite.floatValue = 1.0f;
                         }
                         EditorGUI.indentLevel--;
+                    DrawLine();
+                    if(!isFakeShadow) DrawLightingSettings(materialEditor);
                 }
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndVertical();
@@ -1387,6 +1394,7 @@ namespace lilToon
                         DrawMenuButton(GetLoc("sAnchorUVSetting"), lilPropertyBlock.UV);
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         UVSettingGUI(materialEditor, mainTex, mainTex_ScrollRotate);
+                        materialEditor.ShaderProperty(shiftBackfaceUV, GetLoc("sShiftBackfaceUV"));
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
@@ -1491,6 +1499,7 @@ namespace lilToon
                             materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA")), matcapTex);
                             materialEditor.ShaderProperty(matcapMul, GetLoc("sBlendModeMul"));
                             materialEditor.ShaderProperty(matcapZRotCancel, GetLoc("sMatCapZRotCancel"));
+                            materialEditor.ShaderProperty(matcapVRParallaxStrength, GetLoc("sVRParallaxStrength"));
                             EditorGUILayout.EndVertical();
                         }
                         EditorGUILayout.EndVertical();
@@ -2065,6 +2074,7 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         if(CheckFeature(shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV)) UVSettingGUI(materialEditor, mainTex, mainTex_ScrollRotate);
                         else                                                        materialEditor.TextureScaleOffsetProperty(mainTex);
+                        materialEditor.ShaderProperty(shiftBackfaceUV, GetLoc("sShiftBackfaceUV"));
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
@@ -2499,6 +2509,7 @@ namespace lilToon
                                         if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK)) materialEditor.TexturePropertySingleLine(maskBlendContent, matcapBlendMask, matcapBlend);
                                         else                                                        materialEditor.ShaderProperty(matcapBlend, GetLoc("sBlend"));
                                         materialEditor.ShaderProperty(matcapEnableLighting, GetLoc("sEnableLighting"));
+                                        materialEditor.ShaderProperty(matcapShadowMask, GetLoc("sShadowMask"));
                                         materialEditor.ShaderProperty(matcapBlendMode, sBlendModes);
                                         if(matcapEnableLighting.floatValue != 0.0f && matcapBlendMode.floatValue == 3.0f && AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
                                         {
@@ -2506,6 +2517,7 @@ namespace lilToon
                                         }
                                         if(isTransparent) materialEditor.ShaderProperty(matcapApplyTransparency, GetLoc("sApplyTransparency"));
                                         materialEditor.ShaderProperty(matcapZRotCancel, GetLoc("sMatCapZRotCancel"));
+                                        materialEditor.ShaderProperty(matcapVRParallaxStrength, GetLoc("sVRParallaxStrength"));
                                         if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_MATCAP_NORMALMAP))
                                         {
                                             DrawLine();
@@ -2539,6 +2551,7 @@ namespace lilToon
                                         if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK)) materialEditor.TexturePropertySingleLine(maskBlendContent, matcap2ndBlendMask, matcap2ndBlend);
                                         else                                                        materialEditor.ShaderProperty(matcap2ndBlend, GetLoc("sBlend"));
                                         materialEditor.ShaderProperty(matcap2ndEnableLighting, GetLoc("sEnableLighting"));
+                                        materialEditor.ShaderProperty(matcap2ndShadowMask, GetLoc("sShadowMask"));
                                         materialEditor.ShaderProperty(matcap2ndBlendMode, sBlendModes);
                                         if(matcap2ndEnableLighting.floatValue != 0.0f && matcap2ndBlendMode.floatValue == 3.0f && AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
                                         {
@@ -2546,6 +2559,7 @@ namespace lilToon
                                         }
                                         if(isTransparent) materialEditor.ShaderProperty(matcap2ndApplyTransparency, GetLoc("sApplyTransparency"));
                                         materialEditor.ShaderProperty(matcap2ndZRotCancel, GetLoc("sMatCapZRotCancel"));
+                                        materialEditor.ShaderProperty(matcap2ndVRParallaxStrength, GetLoc("sVRParallaxStrength"));
                                         if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_MATCAP_NORMALMAP))
                                         {
                                             DrawLine();
@@ -3703,6 +3717,7 @@ namespace lilToon
             asUnlit = FindProperty("_AsUnlit", props);
             cutoff = FindProperty("_Cutoff", props);
             flipNormal = FindProperty("_FlipNormal", props);
+            shiftBackfaceUV = FindProperty("_ShiftBackfaceUV", props);
             backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
             lightMinLimit = FindProperty("_LightMinLimit", props);
@@ -3890,6 +3905,8 @@ namespace lilToon
                 matcapBlend = FindProperty("_MatCapBlend", props);
                 matcapBlendMask = FindProperty("_MatCapBlendMask", props);
                 matcapEnableLighting = FindProperty("_MatCapEnableLighting", props);
+                matcapShadowMask = FindProperty("_MatCapShadowMask", props);
+                matcapVRParallaxStrength = FindProperty("_MatCapVRParallaxStrength", props);
                 matcapBlendMode = FindProperty("_MatCapBlendMode", props);
                 matcapApplyTransparency = FindProperty("_MatCapApplyTransparency", props);
                 matcapZRotCancel = FindProperty("_MatCapZRotCancel", props);
@@ -3902,6 +3919,8 @@ namespace lilToon
                 matcap2ndBlend = FindProperty("_MatCap2ndBlend", props);
                 matcap2ndBlendMask = FindProperty("_MatCap2ndBlendMask", props);
                 matcap2ndEnableLighting = FindProperty("_MatCap2ndEnableLighting", props);
+                matcap2ndShadowMask = FindProperty("_MatCap2ndShadowMask", props);
+                matcap2ndVRParallaxStrength = FindProperty("_MatCap2ndVRParallaxStrength", props);
                 matcap2ndBlendMode = FindProperty("_MatCap2ndBlendMode", props);
                 matcap2ndApplyTransparency = FindProperty("_MatCap2ndApplyTransparency", props);
                 matcap2ndZRotCancel = FindProperty("_MatCap2ndZRotCancel", props);
@@ -4017,6 +4036,7 @@ namespace lilToon
             asUnlit = FindProperty("_AsUnlit", props);
             cutoff = FindProperty("_Cutoff", props);
             flipNormal = FindProperty("_FlipNormal", props);
+            shiftBackfaceUV = FindProperty("_ShiftBackfaceUV", props);
             backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
             lightMinLimit = FindProperty("_LightMinLimit", props);
@@ -4126,6 +4146,7 @@ namespace lilToon
             invisible = FindProperty("_Invisible", props);
             asUnlit = FindProperty("_AsUnlit", props);
             cutoff = FindProperty("_Cutoff", props);
+            shiftBackfaceUV = FindProperty("_ShiftBackfaceUV", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
             lightMinLimit = FindProperty("_LightMinLimit", props);
             lightMaxLimit = FindProperty("_LightMaxLimit", props);
@@ -4171,6 +4192,8 @@ namespace lilToon
                 matcapBlend = FindProperty("_MatCapBlend", props);
                 matcapBlendMask = FindProperty("_MatCapBlendMask", props);
                 matcapEnableLighting = FindProperty("_MatCapEnableLighting", props);
+                matcapShadowMask = FindProperty("_MatCapShadowMask", props);
+                matcapVRParallaxStrength = FindProperty("_MatCapVRParallaxStrength", props);
                 matcapBlendMode = FindProperty("_MatCapBlendMode", props);
                 matcapApplyTransparency = FindProperty("_MatCapApplyTransparency", props);
                 matcapZRotCancel = FindProperty("_MatCapZRotCancel", props);
@@ -4183,6 +4206,8 @@ namespace lilToon
                 matcap2ndBlend = FindProperty("_MatCap2ndBlend", props);
                 matcap2ndBlendMask = FindProperty("_MatCap2ndBlendMask", props);
                 matcap2ndEnableLighting = FindProperty("_MatCap2ndEnableLighting", props);
+                matcap2ndShadowMask = FindProperty("_MatCap2ndShadowMask", props);
+                matcap2ndVRParallaxStrength = FindProperty("_MatCap2ndVRParallaxStrength", props);
                 matcap2ndBlendMode = FindProperty("_MatCap2ndBlendMode", props);
                 matcap2ndApplyTransparency = FindProperty("_MatCap2ndApplyTransparency", props);
                 matcap2ndZRotCancel = FindProperty("_MatCap2ndZRotCancel", props);
@@ -4318,6 +4343,7 @@ namespace lilToon
             asUnlit = FindProperty("_AsUnlit", props);
             cutoff = FindProperty("_Cutoff", props);
             flipNormal = FindProperty("_FlipNormal", props);
+            shiftBackfaceUV = FindProperty("_ShiftBackfaceUV", props);
             backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
             lightMinLimit = FindProperty("_LightMinLimit", props);
@@ -4409,6 +4435,7 @@ namespace lilToon
             }
             useMatCap = FindProperty("_UseMatCap", props);
                 matcapTex = FindProperty("_MatCapTex", props);
+                matcapVRParallaxStrength = FindProperty("_MatCapVRParallaxStrength", props);
                 matcapMul = FindProperty("_MatCapMul", props);
                 matcapZRotCancel = FindProperty("_MatCapZRotCancel", props);
             useRim = FindProperty("_UseRim", props);
@@ -4671,7 +4698,7 @@ namespace lilToon
                 if(String.IsNullOrEmpty(renderPipelineName))            lilRP = lilRenderPipeline.BRP;
                 else if(renderPipelineName.Contains("Lightweight"))     lilRP = lilRenderPipeline.LWRP;
                 else if(renderPipelineName.Contains("Universal"))       lilRP = lilRenderPipeline.URP;
-                else if(renderPipelineName.Contains("HighDefinition"))  lilRP = lilRenderPipeline.HDRP;
+                else if(renderPipelineName.Contains("HDRenderPipeline"))  lilRP = lilRenderPipeline.HDRP;
             }
             else
             {
@@ -5649,6 +5676,7 @@ namespace lilToon
                     break;
                 case lilPropertyBlock.UV:
                         CopyProperty(mainTex_ScrollRotate);
+                        CopyProperty(shiftBackfaceUV);
                     break;
                 case lilPropertyBlock.MainColor:
                         CopyProperty(mainColor);
@@ -5979,6 +6007,8 @@ namespace lilToon
                         CopyProperty(matcapColor);
                         CopyProperty(matcapBlend);
                         CopyProperty(matcapEnableLighting);
+                        CopyProperty(matcapShadowMask);
+                        CopyProperty(matcapVRParallaxStrength);
                         CopyProperty(matcapBlendMode);
                         CopyProperty(matcapMul);
                         CopyProperty(matcapApplyTransparency);
@@ -5994,6 +6024,8 @@ namespace lilToon
                         CopyProperty(matcap2ndColor);
                         CopyProperty(matcap2ndBlend);
                         CopyProperty(matcap2ndEnableLighting);
+                        CopyProperty(matcap2ndShadowMask);
+                        CopyProperty(matcap2ndVRParallaxStrength);
                         CopyProperty(matcap2ndBlendMode);
                         CopyProperty(matcap2ndMul);
                         CopyProperty(matcap2ndApplyTransparency);
@@ -6243,6 +6275,7 @@ namespace lilToon
                     break;
                 case lilPropertyBlock.UV:
                         PasteProperty(ref mainTex_ScrollRotate);
+                        PasteProperty(ref shiftBackfaceUV);
                     break;
                 case lilPropertyBlock.MainColor:
                         PasteProperty(ref mainColor);
@@ -6618,6 +6651,8 @@ namespace lilToon
                         PasteProperty(ref matcapColor);
                         PasteProperty(ref matcapBlend);
                         PasteProperty(ref matcapEnableLighting);
+                        PasteProperty(ref matcapShadowMask);
+                        PasteProperty(ref matcapVRParallaxStrength);
                         PasteProperty(ref matcapBlendMode);
                         PasteProperty(ref matcapMul);
                         PasteProperty(ref matcapApplyTransparency);
@@ -6636,6 +6671,8 @@ namespace lilToon
                         PasteProperty(ref matcap2ndColor);
                         PasteProperty(ref matcap2ndBlend);
                         PasteProperty(ref matcap2ndEnableLighting);
+                        PasteProperty(ref matcap2ndShadowMask);
+                        PasteProperty(ref matcap2ndVRParallaxStrength);
                         PasteProperty(ref matcap2ndBlendMode);
                         PasteProperty(ref matcap2ndMul);
                         PasteProperty(ref matcap2ndApplyTransparency);
@@ -6909,6 +6946,7 @@ namespace lilToon
                     break;
                 case lilPropertyBlock.UV:
                         ResetProperty(ref mainTex_ScrollRotate);
+                        ResetProperty(ref shiftBackfaceUV);
                     break;
                 case lilPropertyBlock.MainColor:
                         ResetProperty(ref mainColor);
@@ -7239,6 +7277,8 @@ namespace lilToon
                         ResetProperty(ref matcapColor);
                         ResetProperty(ref matcapBlend);
                         ResetProperty(ref matcapEnableLighting);
+                        ResetProperty(ref matcapShadowMask);
+                        ResetProperty(ref matcapVRParallaxStrength);
                         ResetProperty(ref matcapBlendMode);
                         ResetProperty(ref matcapMul);
                         ResetProperty(ref matcapApplyTransparency);
@@ -7254,6 +7294,8 @@ namespace lilToon
                         ResetProperty(ref matcap2ndColor);
                         ResetProperty(ref matcap2ndBlend);
                         ResetProperty(ref matcap2ndEnableLighting);
+                        ResetProperty(ref matcap2ndShadowMask);
+                        ResetProperty(ref matcap2ndVRParallaxStrength);
                         ResetProperty(ref matcap2ndBlendMode);
                         ResetProperty(ref matcap2ndMul);
                         ResetProperty(ref matcap2ndApplyTransparency);
@@ -7499,7 +7541,7 @@ namespace lilToon
                     material.SetInt("_AlphaToMask", 0);
                     material.SetInt("_OutlineAlphaToMask", 0);
                     material.SetOverrideTag("RenderType", "TransparentCutout");
-                    material.renderQueue = 2501;
+                    material.renderQueue = 2550;
                 }
                 else if(tpmode == 3.0f)
                 {
@@ -7508,7 +7550,7 @@ namespace lilToon
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     material.SetInt("_AlphaToMask", 0);
                     material.SetOverrideTag("RenderType", "");
-                    material.renderQueue = 3000;
+                    material.renderQueue = -1;
                 }
                 else if(tpmode == 4.0f)
                 {
@@ -7534,7 +7576,7 @@ namespace lilToon
                     material.SetInt("_FurZWrite", 1);
                     material.SetInt("_FurAlphaToMask", 1);
                     material.SetOverrideTag("RenderType", "TransparentCutout");
-                    material.renderQueue = 3000;
+                    material.renderQueue = 2450;
                 }
                 else if(tpmode == 6.0f)
                 {
@@ -7544,7 +7586,7 @@ namespace lilToon
                     material.SetInt("_AlphaToMask", 0);
                     material.SetInt("_Cull", 0);
                     material.SetOverrideTag("RenderType", "");
-                    material.renderQueue = 3000;
+                    material.renderQueue = -1;
                 }
                 else
                 {
@@ -8774,6 +8816,7 @@ namespace lilToon
             {
                 liteMaterial.SetTexture("_MatCapTex",               bakedMatCap);
                 liteMaterial.SetFloat("_UseMatCap",                 useMatCap.floatValue);
+                liteMaterial.SetFloat("_MatCapVRParallaxStrength",  matcapVRParallaxStrength.floatValue);
                 if(matcapBlendMode.floatValue == 3) liteMaterial.SetFloat("_MatCapMul", useMatCap.floatValue);
                 else                                liteMaterial.SetFloat("_MatCapMul", useMatCap.floatValue);
             }
@@ -10062,7 +10105,7 @@ namespace lilToon
 
         private void GradientEditor(Material material, Gradient ingrad, MaterialProperty texprop, bool setLinear = false)
         {
-            #if UNITY_2018_1_OR_NEWER
+            #if UNITY_2018_3_OR_NEWER
                 ingrad = EditorGUILayout.GradientField(GetLoc("sGradColor"), ingrad);
             #else
                 MethodInfo setMethod = typeof(EditorGUILayout).GetMethod(
@@ -10093,7 +10136,7 @@ namespace lilToon
         private void GradientEditor(Material material, string emissionName, Gradient ingrad, MaterialProperty texprop, bool setLinear = false)
         {
             ingrad = MaterialToGradient(material, emissionName);
-            #if UNITY_2018_1_OR_NEWER
+            #if UNITY_2018_3_OR_NEWER
                 ingrad = EditorGUILayout.GradientField(GetLoc("sGradColor"), ingrad);
             #else
                 MethodInfo setMethod = typeof(EditorGUILayout).GetMethod(

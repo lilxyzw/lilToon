@@ -13,6 +13,14 @@ Version 1.2.0
 Unityバージョン
 - Unity 2017 - Unity 2021.2
 
+動作確認環境
+- Unity 2017.1.0f3
+- Unity 2018.4.20f1 (Built-in RP / LWRP 4.0.0 / HDRP 4.0.0)
+- Unity 2019.3.0f6  (Built-in RP / URP 7.1.8 / HDRP 7.1.8)
+- Unity 2019.4.31f1 (Built-in RP / URP 7.7.1 / HDRP 7.7.1)
+- Unity 2020.3.20f1 (Built-in RP / URP 10.6.0 / HDRP 10.6.0)
+- Unity 2021.1.24f1 (Built-in RP / URP 11.0.0 / HDRP 11.0.0)
+
 シェーダーモデル
 - 通常版: SM4.0・ES3.0以降
 - 軽量版: SM3.0・ES2.0以降
@@ -20,12 +28,10 @@ Unityバージョン
 - テッセレーション: SM5.0・ES3.1+AEP・ES3.2以降
 
 レンダリングパイプライン
-- Built-in Render Pipeline (BRP)
-- Lightweight Render Pipeline (LWRP)
-- Universal Render Pipeline (URP)
-- High Definition Render Pipeline 7.1.8 - 11.0.0 (HDRP)  
-  HDRPではUnlit同様にForwardで描画しますが、ライト情報を受け取ります
-- 屈折シェーダーと宝石シェーダーはBRPのみ対応
+- Built-in Render Pipeline
+- Lightweight Render Pipeline 4.0.0 - 6.9.1
+- Universal Render Pipeline 7.0.0 - 11.0.0
+- High Definition Render Pipeline 4.0.0 - 11.0.0
 
 # 主な機能
 - メインカラーx3レイヤー（デカール、レイヤーマスク、Gifアニメーション、通常・加算・乗算・スクリーン合成対応）

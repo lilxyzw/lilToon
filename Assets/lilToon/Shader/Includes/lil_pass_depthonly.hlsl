@@ -2,8 +2,6 @@
 #define LIL_PASS_DEPTHONLY_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
-#include "Includes/lil_common_input.hlsl"
-#include "Includes/lil_common_functions.hlsl"
 #include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -46,7 +44,7 @@ struct v2f
     LIL_VERTEX_OUTPUT_STEREO
 };
 
-#if defined(LIL_FUR)
+#if defined(LIL_FUR) && defined(LIL_HDRP)
     #define LIL_V2G_TEXCOORD0
     #define LIL_V2G_POSITION_WS
     #if defined(LIL_V2G_FORCE_NORMAL_WS) || defined(WRITE_NORMAL_BUFFER)
@@ -75,7 +73,7 @@ struct v2f
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Shader
-#if defined(LIL_FUR)
+#if defined(LIL_FUR) && defined(LIL_HDRP)
     #include "Includes/lil_common_vert_fur.hlsl"
 #else
     #include "Includes/lil_common_vert.hlsl"

@@ -6,7 +6,7 @@ This shader is developed for services using avatars (VRChat, etc.) and has the f
 - Easy to use (One-click settings from presets, Saving your own presets, Color correction and exporting textures)
 - Beautiful (Prevent overexposure, Anti-aliased shading)
 - Lightweight (Automatically rewrites shaders and turns features on / off)
-- Available in various versions (Unity 2017-2021, BRP/LWRP/URP)
+- Available in various versions (Unity 2017-2021, BRP/LWRP/URP/HDRP)
 - Compatible with all lighting and similar in brightness to StandardShader
 
 # Support
@@ -20,11 +20,10 @@ Supported Shader Models
 - Tessellation: SM5.0 / ES3.1+AEP / ES3.2 or later
 
 Supported Rendering Pipelines
-- Built-in Render Pipeline (BRP)
-- Lightweight Render Pipeline (LWRP)
-- Universal Render Pipeline (URP)
-- High Definition Render Pipeline 7.1.8 - 11.0.0 (HDRP)  
-  Forward like Unlit in HDRP, but shaded
+- Built-in Render Pipeline
+- Lightweight Render Pipeline 4.0.0 - 6.9.1
+- Universal Render Pipeline 7.0.0 - 11.0.0
+- High Definition Render Pipeline 4.0.0 - 11.0.0
 - Refraction and Gem shaders are supported only for BRP
 
 # Features

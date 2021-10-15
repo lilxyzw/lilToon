@@ -10,7 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Upper brightness limit` and `Monochrome lighting` and `Light Direction Override` properties
 - Backlight function
 - `Root Width` property to fur shader
+- `Shadow Mask` and `VR Parallax Strength` property to MatCap
 - Menu to the property blocks (multiple properties can now be copied and pasted at once)
+- Function for shifting the backface UV
 - One pass / two pass variations to the transparent shader
 - Shader variation that use shader keywords
 - Warning when selecting anything other than a material while the preset save window is open
@@ -19,11 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Changed RenderQueue of transparent shader to 2550 (avoid drawing failure of Skybox through transparent materials, and added space for stencil)
-- Changed RenderQueue of refraction shader to 2650 (avoid hiding through transparent materials)
+- Changed RenderQueue of refraction shader to 2900 (avoid hiding through transparent materials)
 - Changed to allow negative values for refraction strength
+- Changed MatCap UVs to face the front even at the edge of the screen
 - Renamed `Main Color Power` to` Contrast` in Shadow Setting
 - Supports switching of `AlphaToMask`
 - Changed `RenderType` of transparent shader to` Transparent Cutout`
+- Changed the default value of `Environment strength on shadow color` to 0
 - Move change log to `CHANGELOG.md` and `CHANGELOG_JP.md`
 
 ### Fixed

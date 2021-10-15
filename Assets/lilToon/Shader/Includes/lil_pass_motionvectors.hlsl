@@ -2,8 +2,6 @@
 #define LIL_PASS_MOTIONVECTOR_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
-#include "Includes/lil_common_input.hlsl"
-#include "Includes/lil_common_functions.hlsl"
 #include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -63,7 +61,7 @@ struct v2f
     #if defined(LIL_FUR)
         float furLayer          : TEXCOORD3;
     #endif
-    LIL_CUSTOM_V2F_MEMBER(4,5,6,7,8,9,10,11)
+    LIL_CUSTOM_V2F_MEMBER(7,8,9,10,11,12,13,14)
     LIL_VERTEX_INPUT_INSTANCE_ID
     LIL_VERTEX_OUTPUT_STEREO
 };
@@ -134,7 +132,7 @@ void frag(v2f input
     #include "Includes/lil_common_frag_alpha.hlsl"
 
     float2 motionVector = lilCalculateMotionVector(input.positionCS, input.previousPositionCS);
-    EncodeMotionVector(motionVector * 0.5, outMotionVector);
+    outMotionVector = float4(motionVector * 0.5, 0.0, 0.0);
 
     bool forceNoMotion = unity_MotionVectorsParams.y == 0.0;
     if(forceNoMotion) outMotionVector = float4(2.0, 0.0, 0.0, 0.0);

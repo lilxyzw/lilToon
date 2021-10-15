@@ -2,8 +2,6 @@
 #define LIL_PASS_FORWARD_GEM_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
-#include "Includes/lil_common_input.hlsl"
-#include "Includes/lil_common_functions.hlsl"
 #include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -96,7 +94,7 @@
         LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
         LIL_GET_HDRPDATA(input);
         #if defined(LIL_HDRP)
-            float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+            float3 viewDirection = normalize(lilViewDirection(input.positionWS));
         #endif
         float4 col = 0;
         OVERRIDE_FOG
@@ -144,20 +142,24 @@
         #endif
         LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
         LIL_GET_ADDITIONALLIGHT(input, addLightColor);
-        #if !defined(LIL_PASS_FORWARDADD)
-            #if defined(LIL_USE_LIGHTMAP)
-                lightColor = clamp(lightColor, _LightMinLimit, _LightMaxLimit);
-                lightColor = lerp(lightColor, lilGray(lightColor), _MonochromeLighting);
-                lightColor = lerp(lightColor, 1.0, _AsUnlit);
-            #endif
-            #if defined(LIL_HDRP) || defined(_ADDITIONAL_LIGHTS)
-                addLightColor = lerp(additionalLightColor, 0.0, _AsUnlit);
-            #endif
-        #else
-            lightColor = lerp(lightColor, lilGray(lightColor), _MonochromeLighting);
-            lightColor = lerp(lightColor, 0.0, _AsUnlit);
-        #endif
         invLighting = saturate((1.0 - lightColor) * sqrt(lightColor));
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // View Direction
+        #if defined(LIL_V2F_POSITION_WS)
+            depth = length(lilViewDirection(input.positionWS));
+            viewDirection = normalize(lilViewDirection(input.positionWS));
+            headDirection = normalize(lilHeadDirection(input.positionWS));
+            vl = dot(viewDirection, lightDirection);
+            hl = dot(headDirection, lightDirection);
+        #endif
+        #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS)
+            tbnWS = float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
+            #if defined(LIL_V2F_POSITION_WS)
+                parallaxViewDirection = mul(tbnWS, viewDirection);
+                parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
+            #endif
+        #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
         // UV
@@ -165,18 +167,11 @@
         OVERRIDE_ANIMATE_MAIN_UV
 
         //------------------------------------------------------------------------------------------------------------------------------
-        // View Direction
-        viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
-        headDirection = normalize(LIL_GET_HEADDIR_WS(input.positionWS.xyz));
+        // Gem View Direction
         #if defined(USING_STEREO_MATRICES)
             float3 gemViewDirection = lerp(headDirection, viewDirection, _GemVRParallaxStrength);
         #else
             float3 gemViewDirection = viewDirection;
-        #endif
-        #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS)
-            tbnWS = float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
-            parallaxViewDirection = mul(tbnWS, viewDirection);
-            parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -215,7 +210,6 @@
         float nv2 = abs(dot(normalDirection, gemViewDirection.yzx));
         float nv3 = abs(dot(normalDirection, gemViewDirection.zxy));
         float invnv = 1-nv1;
-        vl = dot(viewDirection, lightDirection);
         ln = dot(lightDirection, normalDirection);
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -241,7 +235,7 @@
         //------------------------------------------------------------------------------------------------------------------------------
         // Refraction
         float2 scnUV = input.positionSS.xy/input.positionSS.w;
-        float2 ref = mul((float3x3)UNITY_MATRIX_V, normalDirection).xy;
+        float2 ref = mul((float3x3)LIL_MATRIX_V, normalDirection).xy;
         float nvRef = pow(saturate(1.0 - nv), _RefractionFresnelPower);
         float3 refractColor;
         refractColor.r = LIL_GET_BG_TEX(scnUV + (nvRef * _RefractionStrength) * ref, 0).r;

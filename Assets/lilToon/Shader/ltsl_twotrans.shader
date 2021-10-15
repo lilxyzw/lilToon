@@ -8,6 +8,7 @@ Shader "Hidden/lilToonLiteTwoPassTransparent"
                         _AsUnlit                    ("As Unlit", Range(0, 1)) = 0
                         _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.001
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
+        [lilToggle]     _ShiftBackfaceUV            ("Shift Backface UV", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
                         _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
                         _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0
@@ -33,7 +34,7 @@ Shader "Hidden/lilToonLiteTwoPassTransparent"
                         _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
                         _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
         [NoScaleOffset] _Shadow2ndColorTex          ("Shadow 2nd Color", 2D) = "black" {}
-                        _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 1
+                        _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 0
                         _ShadowBorderColor          ("Border Color", Color) = (1,0,0,1)
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
 
@@ -41,6 +42,7 @@ Shader "Hidden/lilToonLiteTwoPassTransparent"
         // MatCap
         [lilToggleLeft] _UseMatCap                  ("Use MatCap", Int) = 0
         [NoScaleOffset] _MatCapTex                  ("Texture", 2D) = "white" {}
+                        _MatCapVRParallaxStrength   ("VR Parallax Strength", Range(0, 1)) = 1
         [lilToggle]     _MatCapMul                  ("Multiply", Int) = 0
         [lilToggle]     _MatCapZRotCancel           ("Z-axis rotation cancellation", Int) = 1
 
@@ -51,7 +53,7 @@ Shader "Hidden/lilToonLiteTwoPassTransparent"
                         _RimBorder                  ("Border", Range(0, 1)) = 0.5
                         _RimBlur                    ("Blur", Range(0, 1)) = 0.1
         [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
-        [lilToggle]     _RimShadowMask              ("Shadow Mask", Int) = 0
+                        _RimShadowMask              ("Shadow Mask", Range(0, 1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision

@@ -2,8 +2,6 @@
 #define LIL_PASS_FORWARD_NORMAL_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
-#include "Includes/lil_common_input.hlsl"
-#include "Includes/lil_common_functions.hlsl"
 #include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -220,20 +218,24 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     #endif
     LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
     LIL_GET_ADDITIONALLIGHT(input, addLightColor);
-    #if !defined(LIL_PASS_FORWARDADD)
-        #if defined(LIL_USE_LIGHTMAP)
-            lightColor = clamp(lightColor, _LightMinLimit, _LightMaxLimit);
-            lightColor = lerp(lightColor, lilGray(lightColor), _MonochromeLighting);
-            lightColor = lerp(lightColor, 1.0, _AsUnlit);
-        #endif
-        #if defined(LIL_HDRP) || defined(_ADDITIONAL_LIGHTS)
-            addLightColor = lerp(additionalLightColor, 0.0, _AsUnlit);
-        #endif
-    #else
-        lightColor = lerp(lightColor, lilGray(lightColor), _MonochromeLighting);
-        lightColor = lerp(lightColor, 0.0, _AsUnlit);
-    #endif
     invLighting = saturate((1.0 - lightColor) * sqrt(lightColor));
+
+    //------------------------------------------------------------------------------------------------------------------------------
+    // View Direction
+    #if defined(LIL_V2F_POSITION_WS)
+        depth = length(lilViewDirection(input.positionWS));
+        viewDirection = normalize(lilViewDirection(input.positionWS));
+        headDirection = normalize(lilHeadDirection(input.positionWS));
+        vl = dot(viewDirection, lightDirection);
+        hl = dot(headDirection, lightDirection);
+    #endif
+    #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS)
+        tbnWS = float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
+        #if defined(LIL_V2F_POSITION_WS)
+            parallaxViewDirection = mul(tbnWS, viewDirection);
+            parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
+        #endif
+    #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Apply Matelial & Lighting
@@ -282,10 +284,6 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         //------------------------------------------------------------------------------------------------------------------------------
         // Lighting
         col.rgb = lerp(col.rgb, col.rgb * min(lightColor + addLightColor, _LightMaxLimit), _OutlineEnableLighting);
-
-        #if defined(LIL_HDRP)
-            viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
-        #endif
     #elif defined(LIL_FUR)
         //------------------------------------------------------------------------------------------------------------------------------
         // UV
@@ -340,32 +338,11 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
                 col.rgb *= col.a;
             #endif
         #endif
-
-        #if defined(LIL_HDRP)
-            viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
-        #endif
     #else
         //------------------------------------------------------------------------------------------------------------------------------
         // UV
         BEFORE_ANIMATE_MAIN_UV
         OVERRIDE_ANIMATE_MAIN_UV
-
-        //------------------------------------------------------------------------------------------------------------------------------
-        // View Direction
-        #if defined(LIL_V2F_POSITION_WS)
-            depth = length(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
-            viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
-            headDirection = normalize(LIL_GET_HEADDIR_WS(input.positionWS.xyz));
-            vl = dot(viewDirection, lightDirection);
-            hl = dot(headDirection, lightDirection);
-        #endif
-        #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS)
-            tbnWS = float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
-            #if defined(LIL_V2F_POSITION_WS)
-                parallaxViewDirection = mul(tbnWS, viewDirection);
-                parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
-            #endif
-        #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Parallax
@@ -594,10 +571,10 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
                     emissionColor += _Main3rdDissolveColor.rgb * main3rdDissolveAlpha;
                 #endif
             #endif
-        #endif
 
-        BEFORE_BLEND_EMISSION
-        OVERRIDE_BLEND_EMISSION
+            BEFORE_BLEND_EMISSION
+            OVERRIDE_BLEND_EMISSION
+        #endif
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------

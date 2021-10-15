@@ -105,11 +105,7 @@ float lilAtan2(float x, float y)
 
 float4 lilOptMul(float4x4 mat, float3 pos)
 {
-    #if LIL_OPTIMIZE_TRANSFORM == 0
-        return mul(mat, float4(pos,1.0));
-    #else
-        return mat._m00_m10_m20_m30 * pos.x + (mat._m01_m11_m21_m31 * pos.y + (mat._m02_m12_m22_m32 * pos.z + mat._m03_m13_m23_m33));
-    #endif
+    return mat._m00_m10_m20_m30 * pos.x + (mat._m01_m11_m21_m31 * pos.y + (mat._m02_m12_m22_m32 * pos.z + mat._m03_m13_m23_m33));
 }
 
 float lilIsIn0to1(float2 f)
@@ -161,22 +157,10 @@ struct lilVertexPositionInputs
 lilVertexPositionInputs lilGetVertexPositionInputs(float4 positionOS)
 {
     lilVertexPositionInputs output;
-    #if defined(LIL_HDRP)
-        output.positionWS = TransformObjectToWorld(positionOS.xyz).xyz;
-        output.positionVS = TransformWorldToView(output.positionWS).xyz;
-        output.positionCS = TransformWorldToHClip(output.positionWS);
-    #else
-        output.positionWS = lilOptMul(LIL_MATRIX_M, positionOS.xyz).xyz;
-        output.positionVS = lilOptMul(LIL_MATRIX_V, output.positionWS).xyz;
-        output.positionCS = lilOptMul(LIL_MATRIX_VP, output.positionWS);
-    #endif
-    #if defined(LIL_BRP)
-        output.positionSS = ComputeGrabScreenPos(output.positionCS);
-    #else
-        float4 ndc = output.positionCS * 0.5f;
-        output.positionSS.xy = float2(ndc.x, ndc.y * _ProjectionParams.x) + ndc.w;
-        output.positionSS.zw = output.positionCS.zw;
-    #endif
+    output.positionWS = lilTransformOStoWS(positionOS);
+    output.positionVS = lilTransformWStoVS(output.positionWS);
+    output.positionCS = lilTransformWStoCS(output.positionWS);
+    output.positionSS = lilTransformCStoSS(output.positionCS);
     return output;
 }
 
@@ -187,20 +171,9 @@ lilVertexPositionInputs lilGetVertexPositionInputs(float3 positionOS)
 
 lilVertexPositionInputs lilReGetVertexPositionInputs(lilVertexPositionInputs output)
 {
-    #if defined(LIL_HDRP)
-        output.positionVS = TransformWorldToView(output.positionWS).xyz;
-        output.positionCS = TransformWorldToHClip(output.positionWS);
-    #else
-        output.positionVS = lilOptMul(LIL_MATRIX_V, output.positionWS).xyz;
-        output.positionCS = lilOptMul(LIL_MATRIX_VP, output.positionWS);
-    #endif
-    #if defined(LIL_BRP)
-        output.positionSS = ComputeGrabScreenPos(output.positionCS);
-    #else
-        float4 ndc = output.positionCS * 0.5f;
-        output.positionSS.xy = float2(ndc.x, ndc.y * _ProjectionParams.x) + ndc.w;
-        output.positionSS.zw = output.positionCS.zw;
-    #endif
+    output.positionVS = lilTransformWStoVS(output.positionWS);
+    output.positionCS = lilTransformWStoCS(output.positionWS);
+    output.positionSS = lilTransformCStoSS(output.positionCS);
     return output;
 }
 
@@ -212,19 +185,6 @@ struct lilVertexNormalInputs
     float3 bitangentWS;
     float3 normalWS;
 };
-
-float3 lilTransformNormalOStoWS(float3 normalOS)
-{
-    #if defined(LIL_HDRP)
-        return TransformObjectToWorldNormal(normalOS);
-    #else
-        #ifdef UNITY_ASSUME_UNIFORM_SCALING
-            return mul((float3x3)LIL_MATRIX_M, normalOS);
-        #else
-            return mul(normalOS, (float3x3)LIL_MATRIX_I_M);
-        #endif
-    #endif
-}
 
 lilVertexNormalInputs lilGetVertexNormalInputs()
 {
@@ -238,7 +198,7 @@ lilVertexNormalInputs lilGetVertexNormalInputs()
 lilVertexNormalInputs lilGetVertexNormalInputs(float3 normalOS)
 {
     lilVertexNormalInputs output;
-    output.normalWS     = lilTransformNormalOStoWS(normalOS);
+    output.normalWS     = lilTransformNormalOStoWS(normalOS, true);
     output.tangentWS    = float3(1.0, 0.0, 0.0);
     output.bitangentWS  = float3(0.0, 1.0, 0.0);
     return output;
@@ -247,8 +207,8 @@ lilVertexNormalInputs lilGetVertexNormalInputs(float3 normalOS)
 lilVertexNormalInputs lilGetVertexNormalInputs(float3 normalOS, float4 tangentOS)
 {
     lilVertexNormalInputs output;
-    output.normalWS     = lilTransformNormalOStoWS(normalOS);
-    output.tangentWS    = mul((float3x3)LIL_MATRIX_M, tangentOS.xyz);
+    output.normalWS     = lilTransformNormalOStoWS(normalOS, true);
+    output.tangentWS    = lilTransformDirOStoWS(tangentOS.xyz, true);
     output.bitangentWS  = cross(output.normalWS, output.tangentWS) * (tangentOS.w * LIL_NEGATIVE_SCALE);
     return output;
 }
@@ -260,11 +220,7 @@ float lilGetOutlineWidth(float3 positionOS, float2 uv, float4 color, float outli
     outlineWidth *= 0.01;
     if(Exists_OutlineWidthMask) outlineWidth *= LIL_SAMPLE_2D_LOD(outlineWidthMask, samp, uv, 0).r;
     if(outlineVertexR2Width) outlineWidth *= color.r;
-    #if defined(LIL_HDRP)
-        if(outlineFixWidth) outlineWidth *= saturate(length(LIL_GET_HEADDIR_WS(GetAbsolutePositionWS(TransformObjectToWorld(positionOS.xyz).xyz))));
-    #else
-        if(outlineFixWidth) outlineWidth *= saturate(length(LIL_GET_HEADDIR_WS(lilOptMul(LIL_MATRIX_M, positionOS).xyz)));
-    #endif
+    if(outlineFixWidth) outlineWidth *= saturate(length(lilHeadDirection(lilToAbsolutePositionWS(lilOptMul(LIL_MATRIX_M, positionOS).xyz))));
     return outlineWidth;
 }
 
@@ -460,44 +416,33 @@ float2 lilCalcAtlasAnimation(float2 uv, float4 decalAnimation, float4 decalSubPa
     return outuv;
 }
 
-float2 lilCalcMatCapUV(float3 normalWS, bool zRotCancel = true)
+float2 lilCalcMatCapUV(float3 normalWS, float3 viewDirection, float3 headDirection, float matcapVRParallaxStrength, bool zRotCancel = true)
 {
     #if LIL_MATCAP_MODE == 0
         // Simple
         return mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5 + 0.5;
     #elif LIL_MATCAP_MODE == 1
-        // Fix Z-Rotation
-        #if defined(LIL_HDRP)
-            bool isMirror = false;
+        #if defined(USING_STEREO_MATRICES)
+            float3 normalVD = lerp(headDirection, viewDirection, matcapVRParallaxStrength);
         #else
-            bool isMirror = unity_CameraProjection._m20 != 0.0 || unity_CameraProjection._m21 != 0.0;
+            float3 normalVD = viewDirection;
         #endif
-        float2 outuv = mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5;
-        if(zRotCancel)
-        {
-            //outuv.y = isMirror ? -outuv.y : outuv.y;
-
-            float3 tan = LIL_MATRIX_V._m00_m01_m02;
-            float3 bitan = float3(-LIL_MATRIX_V._m22, 0.0, LIL_MATRIX_V._m20);
-            float co = dot(tan,bitan) / length(bitan);
-            float si = LIL_MATRIX_V._m01;
-            co = isMirror ? -co : co;
-
-            outuv = float2(
-                outuv.x * co - outuv.y * si,
-                outuv.x * si + outuv.y * co
-            );
-        }
-        outuv += 0.5;
-        outuv.x = isMirror ? -outuv.x : outuv.x;
-
-        return outuv;
+        float3 bitangentVD = zRotCancel ? float3(0,1,0) : LIL_MATRIX_V._m10_m11_m12;
+        bitangentVD = normalize(bitangentVD - normalVD * dot(normalVD, bitangentVD));
+        float3 tangentVD = cross(normalVD, bitangentVD);
+        float3x3 tbnVD = float3x3(tangentVD, bitangentVD, normalVD);
+        return mul(tbnVD, normalWS).xy * 0.5 + 0.5;
     #endif
 }
 
 float2 lilGetPanoramaUV(float3 viewDirection)
 {
     return float2(lilAtan2(viewDirection.x, viewDirection.z), lilAcos(viewDirection.y)) * LIL_INV_PI;
+}
+
+float2 lilCalcDoubleSideUV(float2 uv, float facing, float shiftBackfaceUV)
+{
+    return facing < (shiftBackfaceUV-1.0) ? uv + float2(1.0,0.0) : uv;
 }
 
 void lilParallax(inout float2 uvMain, inout float2 uv, lilBool useParallax, float2 parallaxOffset, TEXTURE2D(parallaxMap), float parallaxScale, float parallaxOffsetParam)
@@ -789,9 +734,9 @@ float4 lilGetSubTexWithoutAnimation(
 float3 lilGetLightDirection(float4 lightDirectionOverride = float4(0.0,0.001,0.0,0.0))
 {
     #if LIL_LIGHT_DIRECTION_MODE == 0
-        return normalize(_MainLightPosition.xyz + lightDirectionOverride.xyz);
+        return normalize(LIL_MAINLIGHT_DIRECTION + lightDirectionOverride.xyz);
     #else
-        return normalize(_MainLightPosition.xyz * lilLuminance(_MainLightColor.rgb) + 
+        return normalize(LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR) + 
                         unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + 
                         lightDirectionOverride.xyz);
     #endif
@@ -800,9 +745,9 @@ float3 lilGetLightDirection(float4 lightDirectionOverride = float4(0.0,0.001,0.0
 float3 lilGetLightDirection(float3 positionWS)
 {
     #if defined(POINT) || defined(SPOT) || defined(POINT_COOKIE)
-        return normalize(_MainLightPosition.xyz - positionWS);
+        return normalize(LIL_MAINLIGHT_DIRECTION - positionWS);
     #else
-        return _MainLightPosition.xyz;
+        return LIL_MAINLIGHT_DIRECTION;
     #endif
 }
 
@@ -968,12 +913,12 @@ void lilGetToonSHDoubleLPPV(float3 lightDirection, float3 positionWS, out float3
 // Lighting
 float3 lilGetLightColor()
 {
-    return _MainLightColor.rgb + lilGetSHToon();
+    return LIL_MAINLIGHT_COLOR + lilGetSHToon();
 }
 
 float3 lilGetLightColor(float3 positionWS)
 {
-    return _MainLightColor.rgb + lilGetSHToon(positionWS);
+    return LIL_MAINLIGHT_COLOR + lilGetSHToon(positionWS);
 }
 
 float3 lilGetIndirLightColor()
@@ -986,12 +931,12 @@ float3 lilGetIndirLightColor(float3 positionWS)
     return saturate(lilGetSHToonMin(positionWS));
 }
 
-void lilGetLightColorDouble(float3 lightDirection, float shadowEnvStrength, out float3 lightColor, out float3 indLightColor)
+void lilGetLightColorDouble(float3 lightDirection, out float3 lightColor, out float3 indLightColor)
 {
     float3 shMax, shMin;
     lilGetToonSHDouble(lightDirection, shMax, shMin);
-    lightColor = _MainLightColor.rgb + shMax;
-    indLightColor = saturate(shMin) * shadowEnvStrength;
+    lightColor = LIL_MAINLIGHT_COLOR + shMax;
+    indLightColor = saturate(shMin);
 }
 
 float3 lilGetLightMapColor(float2 uv)
@@ -1007,77 +952,6 @@ float3 lilGetLightMapColor(float2 uv)
     #ifdef LIL_USE_DYNAMICLIGHTMAP
         float4 dynlightmap = LIL_SAMPLE_2D(LIL_DYNAMICLIGHTMAP_TEX, LIL_DYNAMICLIGHTMAP_SAMP, lightmapUV);
         outCol += LIL_DECODE_DYNAMICLIGHTMAP(dynlightmap);
-    #endif
-    return outCol;
-}
-
-float3 lilGetVertexLights(float3 positionWS, float vertexLightStrength = 1.0)
-{
-    #ifdef LIL_BRP
-        float4 toLightX = unity_4LightPosX0 - positionWS.x;
-        float4 toLightY = unity_4LightPosY0 - positionWS.y;
-        float4 toLightZ = unity_4LightPosZ0 - positionWS.z;
-
-        float4 lengthSq = toLightX * toLightX + 0.000001;
-        lengthSq += toLightY * toLightY;
-        lengthSq += toLightZ * toLightZ;
-
-        #if LIL_VERTEXLIGHT_MODE == 0
-            // Off
-            float4 atten = 0.0;
-        #elif LIL_VERTEXLIGHT_MODE == 1
-            // Simple
-            float4 atten = 1.0 / (1.0 + lengthSq * unity_4LightAtten0);
-        #elif LIL_VERTEXLIGHT_MODE == 2
-            // Accurate
-            float4 fade = saturate(1.0 - lengthSq * unity_4LightAtten0 / 25.0);
-            float4 atten = saturate(fade * fade / (1.0 + lengthSq * unity_4LightAtten0));
-        #elif LIL_VERTEXLIGHT_MODE == 3
-            // Approximate _LightTextureB0
-            float4 atten = saturate(saturate((25.0 - lengthSq * unity_4LightAtten0) * 0.111375) / (0.987725 + lengthSq * unity_4LightAtten0));
-        #elif LIL_VERTEXLIGHT_MODE == 4
-            // Lookup _LightTextureB0
-            float4 normalizedDist = lengthSq * unity_4LightAtten0 / 25.0;
-            float4 atten;
-            atten.x = LIL_SAMPLE_2D_LOD(_LightTextureB0, sampler_LightTextureB0, normalizedDist.xx, 0).UNITY_ATTEN_CHANNEL;
-            atten.y = LIL_SAMPLE_2D_LOD(_LightTextureB0, sampler_LightTextureB0, normalizedDist.yy, 0).UNITY_ATTEN_CHANNEL;
-            atten.z = LIL_SAMPLE_2D_LOD(_LightTextureB0, sampler_LightTextureB0, normalizedDist.zz, 0).UNITY_ATTEN_CHANNEL;
-            atten.w = LIL_SAMPLE_2D_LOD(_LightTextureB0, sampler_LightTextureB0, normalizedDist.ww, 0).UNITY_ATTEN_CHANNEL;
-        #endif
-
-        float3 outCol;
-        outCol =                   unity_LightColor[0].rgb * atten.x;
-        outCol =          outCol + unity_LightColor[1].rgb * atten.y;
-        outCol =          outCol + unity_LightColor[2].rgb * atten.z;
-        outCol = saturate(outCol + unity_LightColor[3].rgb * atten.w);
-
-        return outCol * vertexLightStrength;
-    #else
-        float3 outCol = 0.0;
-
-        #ifdef _ADDITIONAL_LIGHTS_VERTEX
-            uint lightsCount = GetAdditionalLightsCount();
-            for (uint lightIndex = 0; lightIndex < lightsCount; lightIndex++)
-            {
-                Light light = GetAdditionalLight(lightIndex, positionWS);
-                outCol += light.color * light.distanceAttenuation;
-            }
-        #endif
-
-        return outCol * vertexLightStrength;
-    #endif
-}
-
-float3 lilGetAdditionalLights(float3 positionWS)
-{
-    float3 outCol = 0.0;
-    #ifdef _ADDITIONAL_LIGHTS
-        uint lightsCount = GetAdditionalLightsCount();
-        for (uint lightIndex = 0; lightIndex < lightsCount; lightIndex++)
-        {
-            Light light = GetAdditionalLight(lightIndex, positionWS);
-            outCol += light.distanceAttenuation * light.shadowAttenuation * light.color;
-        }
     #endif
     return outCol;
 }

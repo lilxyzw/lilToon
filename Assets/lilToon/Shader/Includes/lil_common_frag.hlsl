@@ -122,10 +122,16 @@
 #if !defined(OVERRIDE_ANIMATE_MAIN_UV)
     #if defined(LIL_PASS_META_INCLUDED) && (defined(LIL_FEATURE_ANIMATE_MAIN_UV) || defined(LIL_LITE))
         #define OVERRIDE_ANIMATE_MAIN_UV \
-            float2 uvMain = lilCalcUVWithoutAnimation(input.uv, _MainTex_ST, _MainTex_ScrollRotate);
+            float2 uvMain = lilCalcDoubleSideUV(input.uv, facing, _ShiftBackfaceUV); \
+            uvMain = lilCalcUVWithoutAnimation(uvMain, _MainTex_ST, _MainTex_ScrollRotate);
     #elif defined(LIL_FEATURE_ANIMATE_MAIN_UV) || defined(LIL_LITE)
         #define OVERRIDE_ANIMATE_MAIN_UV \
-            float2 uvMain = lilCalcUV(input.uv, _MainTex_ST, _MainTex_ScrollRotate);
+            float2 uvMain = lilCalcDoubleSideUV(input.uv, facing, _ShiftBackfaceUV); \
+            uvMain = lilCalcUV(uvMain, _MainTex_ST, _MainTex_ScrollRotate);
+    #elif !defined(LIL_PASS_FORWARD_FUR_INCLUDED)
+        #define OVERRIDE_ANIMATE_MAIN_UV \
+            float2 uvMain = lilCalcDoubleSideUV(input.uv, facing, _ShiftBackfaceUV); \
+            uvMain = lilCalcUV(uvMain, _MainTex_ST);
     #else
         #define OVERRIDE_ANIMATE_MAIN_UV \
             float2 uvMain = lilCalcUV(input.uv, _MainTex_ST);
@@ -666,10 +672,10 @@ void lilGetShading(
 #if !defined(OVERRIDE_SHADOW)
     #if defined(LIL_LITE)
         #define OVERRIDE_SHADOW \
-            lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uvMain,facing,ln,lightDirection,_MainLightPosition.xyz,true LIL_SAMP_IN(sampler_MainTex));
+            lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uvMain,facing,ln,lightDirection,LIL_LIGHTDIRECTION_ORIG,true LIL_SAMP_IN(sampler_MainTex));
     #else
         #define OVERRIDE_SHADOW \
-            lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uvMain,facing,ln,lightDirection,_MainLightPosition.xyz,true,attenuation LIL_SAMP_IN(sampler_MainTex));
+            lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uvMain,facing,ln,lightDirection,LIL_LIGHTDIRECTION_ORIG,true,attenuation LIL_SAMP_IN(sampler_MainTex));
     #endif
 #endif
 
@@ -694,7 +700,7 @@ void lilGetShading(
 #endif
 
 #if !defined(OVERRIDE_BACKLIGHT)
-    #define OVERRIDE_BACKLIGHT lilBacklight(col, uvMain, hl, lightColor, lightDirection, _MainLightPosition.xyz, attenuation, headDirection, normalDirection LIL_SAMP_IN(sampler_MainTex));
+    #define OVERRIDE_BACKLIGHT lilBacklight(col, uvMain, hl, lightColor, lightDirection, LIL_LIGHTDIRECTION_ORIG, attenuation, headDirection, normalDirection LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -707,7 +713,7 @@ void lilGetShading(
     #endif
     {
         float2 scnUV = positionSS.xy/positionSS.w;
-        float2 refractUV = scnUV + (pow(1.0 - nv, _RefractionFresnelPower) * _RefractionStrength) * mul(LIL_MATRIX_V, float4(normalDirection,0)).xy;
+        float2 refractUV = scnUV + (pow(1.0 - nv, _RefractionFresnelPower) * _RefractionStrength) * mul((float3x3)LIL_MATRIX_V, normalDirection).xy;
         #if defined(LIL_REFRACTION_BLUR2) && defined(LIL_FEATURE_REFLECTION)
             #if defined(LIL_BRP)
                 float3 refractCol = 0;
@@ -792,7 +798,7 @@ void lilGetShading(
                     float3 lightColorSpc = lightColor;
                 #else
                     float3 lightDirectionSpc = lilGetLightDirection(positionWS);
-                    float3 lightColorSpc = _MainLightColor.rgb;
+                    float3 lightColorSpc = LIL_MAINLIGHT_COLOR;
                 #endif
                 float3 halfDirection = normalize(viewDirection + lightDirectionSpc);
                 float nl = saturate(dot(normalDirection, lightDirectionSpc));
@@ -855,34 +861,33 @@ void lilGetShading(
 // MatCap
 #if defined(LIL_FEATURE_MATCAP) && !defined(LIL_LITE) && !defined(LIL_FUR)
     #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
-        void lilGetMatCap(inout float4 col, float2 uvMain, float3 lightColor, float3 normalDirection, float3x3 tbnWS, float facing LIL_SAMP_IN_FUNC(samp))
+        void lilGetMatCap(inout float4 col, float2 uvMain, float shadowmix, float3 lightColor, float3 normalDirection, float3 viewDirection, float3 headDirection, float3x3 tbnWS, float facing LIL_SAMP_IN_FUNC(samp))
     #else
-        void lilGetMatCap(inout float4 col, float2 uvMain, float3 lightColor, float3 normalDirection LIL_SAMP_IN_FUNC(samp))
+        void lilGetMatCap(inout float4 col, float2 uvMain, float shadowmix, float3 lightColor, float3 normalDirection, float3 viewDirection, float3 headDirection LIL_SAMP_IN_FUNC(samp))
     #endif
     {
         LIL_BRANCH
         if(_UseMatCap)
         {
             float2 matUV = float2(0,0);
+            float3 matcapNormalDirection = normalDirection;
             #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
                 LIL_BRANCH
                 if(_MatCapCustomNormal)
                 {
                     float4 normalTex = LIL_SAMPLE_2D_ST(_MatCapBumpMap, samp, uvMain);
                     float3 normalmap = UnpackNormalScale(normalTex, _MatCapBumpScale);
-                    float3 matcapNormalDirection = normalize(mul(normalmap, tbnWS));
+                    matcapNormalDirection = normalize(mul(normalmap, tbnWS));
                     matcapNormalDirection = facing < (_FlipNormal-1.0) ? -matcapNormalDirection : matcapNormalDirection;
-                    matUV = lilCalcMatCapUV(matcapNormalDirection, _MatCapZRotCancel);
                 }
                 else
             #endif
-            {
-                matUV = lilCalcMatCapUV(normalDirection, _MatCapZRotCancel);
-            }
+            matUV = lilCalcMatCapUV(matcapNormalDirection, viewDirection, headDirection, _MatCapVRParallaxStrength, _MatCapZRotCancel);
             float4 matCapColor = _MatCapColor;
             if(Exists_MatCapTex) matCapColor *= LIL_SAMPLE_2D(_MatCapTex, samp, matUV);
             #ifndef LIL_PASS_FORWARDADD
                 matCapColor.rgb = lerp(matCapColor.rgb, matCapColor.rgb * lightColor, _MatCapEnableLighting);
+                matCapColor.a = lerp(matCapColor.a, matCapColor.a * shadowmix, _MatCapShadowMask);
             #else
                 if(_MatCapBlendMode < 3) matCapColor.rgb *= lightColor * _MatCapEnableLighting;
             #endif
@@ -911,10 +916,10 @@ void lilGetShading(
             lilGetMatCap(col, uvMain, lightColor, input.uvMat, triMask LIL_SAMP_IN(sampler_MainTex));
     #elif defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
         #define OVERRIDE_MATCAP \
-            lilGetMatCap(col, uvMain, lightColor, normalDirection, tbnWS, facing LIL_SAMP_IN(sampler_MainTex));
+            lilGetMatCap(col, uvMain, shadowmix, lightColor, normalDirection, viewDirection, headDirection, tbnWS, facing LIL_SAMP_IN(sampler_MainTex));
     #else
         #define OVERRIDE_MATCAP \
-            lilGetMatCap(col, uvMain, lightColor, normalDirection LIL_SAMP_IN(sampler_MainTex));
+            lilGetMatCap(col, uvMain, shadowmix, lightColor, normalDirection, viewDirection, headDirection LIL_SAMP_IN(sampler_MainTex));
     #endif
 #endif
 
@@ -922,34 +927,33 @@ void lilGetShading(
 // MatCap 2nd
 #if defined(LIL_FEATURE_MATCAP_2ND) && !defined(LIL_LITE) && !defined(LIL_FUR)
     #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
-        void lilGetMatCap2nd(inout float4 col, float2 uvMain, float3 lightColor, float3 normalDirection, float3x3 tbnWS, float facing LIL_SAMP_IN_FUNC(samp))
+        void lilGetMatCap2nd(inout float4 col, float2 uvMain, float shadowmix, float3 lightColor, float3 normalDirection, float3 viewDirection, float3 headDirection, float3x3 tbnWS, float facing LIL_SAMP_IN_FUNC(samp))
     #else
-        void lilGetMatCap2nd(inout float4 col, float2 uvMain, float3 lightColor, float3 normalDirection LIL_SAMP_IN_FUNC(samp))
+        void lilGetMatCap2nd(inout float4 col, float2 uvMain, float shadowmix, float3 lightColor, float3 normalDirection, float3 viewDirection, float3 headDirection LIL_SAMP_IN_FUNC(samp))
     #endif
     {
         LIL_BRANCH
         if(_UseMatCap2nd)
         {
             float2 mat2ndUV = float2(0,0);
+            float3 matcap2ndNormalDirection = normalDirection;
             #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
                 LIL_BRANCH
                 if(_MatCap2ndCustomNormal)
                 {
                     float4 normalTex = LIL_SAMPLE_2D_ST(_MatCap2ndBumpMap, samp, uvMain);
                     float3 normalmap = UnpackNormalScale(normalTex, _MatCap2ndBumpScale);
-                    float3 matcap2ndNormalDirection = normalize(mul(normalmap, tbnWS));
+                    matcap2ndNormalDirection = normalize(mul(normalmap, tbnWS));
                     matcap2ndNormalDirection = facing < (_FlipNormal-1.0) ? -matcap2ndNormalDirection : matcap2ndNormalDirection;
-                    mat2ndUV = lilCalcMatCapUV(matcap2ndNormalDirection, _MatCap2ndZRotCancel);
                 }
                 else
             #endif
-            {
-                mat2ndUV = lilCalcMatCapUV(normalDirection, _MatCap2ndZRotCancel);
-            }
+            mat2ndUV = lilCalcMatCapUV(matcap2ndNormalDirection, viewDirection, headDirection, _MatCap2ndVRParallaxStrength, _MatCap2ndZRotCancel);
             float4 matCap2ndColor = _MatCap2ndColor;
             if(Exists_MatCapTex) matCap2ndColor *= LIL_SAMPLE_2D(_MatCap2ndTex, samp, mat2ndUV);
             #ifndef LIL_PASS_FORWARDADD
                 matCap2ndColor.rgb = lerp(matCap2ndColor.rgb, matCap2ndColor.rgb * lightColor, _MatCap2ndEnableLighting);
+                matCap2ndColor.a = lerp(matCap2ndColor.a, matCap2ndColor.a * shadowmix, _MatCap2ndShadowMask);
             #else
                 if(_MatCap2ndBlendMode < 3) matCap2ndColor.rgb *= lightColor * _MatCap2ndEnableLighting;
             #endif
@@ -965,10 +969,10 @@ void lilGetShading(
 #if !defined(OVERRIDE_MATCAP_2ND)
     #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
         #define OVERRIDE_MATCAP_2ND \
-            lilGetMatCap2nd(col, uvMain, lightColor, normalDirection, tbnWS, facing LIL_SAMP_IN(sampler_MainTex));
+            lilGetMatCap2nd(col, uvMain, shadowmix, lightColor, normalDirection, viewDirection, headDirection, tbnWS, facing LIL_SAMP_IN(sampler_MainTex));
     #else
         #define OVERRIDE_MATCAP_2ND \
-            lilGetMatCap2nd(col, uvMain, lightColor, normalDirection LIL_SAMP_IN(sampler_MainTex));
+            lilGetMatCap2nd(col, uvMain, shadowmix, lightColor, normalDirection, viewDirection, headDirection LIL_SAMP_IN(sampler_MainTex));
     #endif
 #endif
 
@@ -1005,11 +1009,8 @@ void lilGetShading(
                 rimIndir = lilTooning(rimIndir, _RimIndirBorder, _RimIndirBlur);
 
                 #ifndef LIL_PASS_FORWARDADD
-                    if(_RimShadowMask)
-                    {
-                        rimDir *= shadowmix;
-                        rimIndir *= shadowmix;
-                    }
+                    rimDir = lerp(rimDir, rimDir * shadowmix, _RimShadowMask);
+                    rimIndir = lerp(rimIndir, rimIndir * shadowmix, _RimShadowMask);
                 #endif
                 #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                     if(_RimApplyTransparency)
@@ -1034,7 +1035,7 @@ void lilGetShading(
                     if(_RimApplyTransparency) rim *= col.a;
                 #endif
                 #ifndef LIL_PASS_FORWARDADD
-                    if(_RimShadowMask) rim *= shadowmix;
+                    rim = lerp(rim, rim * shadowmix, _RimShadowMask);
                     rimColor.rgb = lerp(rimColor.rgb, rimColor.rgb * lightColor, _RimEnableLighting);
                     col.rgb += rim * rimColor.a * rimColor.rgb;
                 #else
@@ -1052,7 +1053,7 @@ void lilGetShading(
             float rim = pow(saturate(1.0 - nvabs), _RimFresnelPower);
             rim = lilTooning(rim, _RimBorder, _RimBlur);
             #ifndef LIL_PASS_FORWARDADD
-                if(_RimShadowMask) rim *= shadowmix;
+                rim = lerp(rim, rim * shadowmix, _RimShadowMask);
             #endif
             col.rgb += rim * triMask.g * _RimColor.rgb * lightColor;
         }
@@ -1091,7 +1092,7 @@ void lilGetShading(
                 if(_GlitterApplyTransparency) glitterColor.a *= col.a;
             #endif
             #ifndef LIL_PASS_FORWARDADD
-                if(_GlitterShadowMask) glitterColor.a *= shadowmix;
+                glitterColor.a = lerp(glitterColor.a, glitterColor.a * shadowmix, _GlitterShadowMask);
                 glitterColor.rgb = lerp(glitterColor.rgb, glitterColor.rgb * lightColor, _GlitterEnableLighting);
                 col.rgb += glitterColor.rgb * glitterColor.a;
             #else
@@ -1235,7 +1236,7 @@ void lilGetShading(
 #if defined(LIL_FEATURE_DISTANCE_FADE) && !defined(LIL_LITE)
     void lilDistanceFade(inout float4 col, float3 positionWS)
     {
-        float depthFade = length(LIL_GET_VIEWDIR_WS(positionWS));
+        float depthFade = length(lilViewDirection(positionWS));
         float distFade = saturate((depthFade - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x)) * _DistanceFade.z;
         #if defined(LIL_PASS_FORWARDADD)
             col.rgb = lerp(col.rgb, 0.0, distFade);

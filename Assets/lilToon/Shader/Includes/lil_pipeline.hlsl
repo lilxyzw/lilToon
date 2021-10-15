@@ -21,7 +21,6 @@
 #include "Packages/com.unity.render-pipelines.lightweight/ShaderLibrary/Lighting.hlsl"
 #include "Includes/lil_common.hlsl"
 #include "Packages/com.unity.render-pipelines.lightweight/ShaderLibrary/MetaInput.hlsl"
-float4 MetaVertexPosition(float4 positionOS, float2 uv1, float2 uv2, float4 lmst, float4 dlst) { return MetaVertexPosition(positionOS, uv1, uv2, lmst); }
 */
 // LWRP End
 
@@ -40,7 +39,31 @@ float4 MetaVertexPosition(float4 positionOS, float2 uv1, float2 uv2, float4 lmst
 // HDRP Start
 /*
 #define LIL_HDRP
-#include "Includes/lil_hdrp.hlsl"
+
+#define LIGHTLOOP_DISABLE_TILE_AND_CLUSTER
+#if !defined(SHADOW_LOW) && !defined(SHADOW_MEDIUM) && !defined(SHADOW_HIGH)
+    #define SHADOW_LOW
+#endif
+#if defined(SHADOW_LOW)
+    #define PUNCTUAL_SHADOW_LOW
+    #define DIRECTIONAL_SHADOW_LOW
+#elif defined(SHADOW_MEDIUM)
+    #define PUNCTUAL_SHADOW_MEDIUM
+    #define DIRECTIONAL_SHADOW_MEDIUM
+#elif defined(SHADOW_HIGH)
+    #define PUNCTUAL_SHADOW_HIGH
+    #define DIRECTIONAL_SHADOW_HIGH
+#endif
+
+#include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+#include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
+#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/Material.hlsl"
+#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/Lighting.hlsl"
+#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/LightLoop/LightLoopDef.hlsl"
+#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/LightEvaluation.hlsl"
+#include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialEvaluation.hlsl"
+
 #include "Includes/lil_common.hlsl"
 */
 // HDRP End

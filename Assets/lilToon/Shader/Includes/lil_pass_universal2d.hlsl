@@ -2,8 +2,6 @@
 #define LIL_PASS_UNIVERSAL2D_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
-#include "Includes/lil_common_input.hlsl"
-#include "Includes/lil_common_functions.hlsl"
 #include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -29,6 +27,7 @@ struct v2f
 
 float4 frag(v2f input) : SV_Target
 {
+    float facing = 1.0;
     BEFORE_ANIMATE_MAIN_UV
     OVERRIDE_ANIMATE_MAIN_UV
 

@@ -32,6 +32,13 @@ void lilCustomVertexOS(inout appdata input, inout float2 uvMain, inout float4 po
     #endif
 }
 
+void lilCustomVertexOS(inout appdata input, inout float2 uvMain, inout float3 positionOS)
+{
+    float4 positionOS4 = float4(positionOS, 1.0);
+    lilCustomVertexOS(input, uvMain, positionOS4);
+    positionOS = positionOS4.xyz;
+}
+
 void lilCustomVertexWS(inout appdata input, inout float2 uvMain, inout lilVertexPositionInputs vertexInput, inout lilVertexNormalInputs vertexNormalInput)
 {
     #if defined(LIL_CUSTOM_VERTEX_WS)
@@ -133,6 +140,8 @@ LIL_V2F_TYPE vert(appdata input)
     #if defined(LIL_CUSTOM_VERTEX_WS)
         LIL_RE_VERTEX_POSITION_INPUTS(vertexInput);
     #endif
+    float3 viewDirection = normalize(lilViewDirection(vertexInput.positionWS));
+    float3 headDirection = normalize(lilHeadDirection(vertexInput.positionWS));
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Copy
@@ -145,7 +154,7 @@ LIL_V2F_TYPE vert(appdata input)
         LIL_V2F_OUT_BASE.uv1            = input.uv1;
     #endif
     #if defined(LIL_V2F_UVMAT)
-        LIL_V2F_OUT_BASE.uvMat          = lilCalcMatCapUV(vertexNormalInput.normalWS, _MatCapZRotCancel);
+        LIL_V2F_OUT_BASE.uvMat          = lilCalcMatCapUV(vertexNormalInput.normalWS, viewDirection, headDirection, _MatCapVRParallaxStrength, _MatCapZRotCancel);
     #endif
 
     // Position
@@ -163,8 +172,8 @@ LIL_V2F_TYPE vert(appdata input)
     #endif
 
     // Normal
-    #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_NORMALIZE_NORMAL_IN_VS)
-        LIL_V2F_OUT_BASE.normalWS       = NormalizeNormalPerVertex(vertexNormalInput.normalWS);
+    #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_NORMALIZE_NORMAL_IN_VS) && !defined(SHADER_QUALITY_LOW)
+        LIL_V2F_OUT_BASE.normalWS       = normalize(vertexNormalInput.normalWS);
     #elif defined(LIL_V2F_NORMAL_WS)
         LIL_V2F_OUT_BASE.normalWS       = vertexNormalInput.normalWS;
     #endif
@@ -206,7 +215,7 @@ LIL_V2F_TYPE vert(appdata input)
         LIL_V2F_OUT_BASE.lightDirection = lightdataInput.lightDirection;
     #endif
     #if defined(LIL_V2F_INDLIGHTCOLOR)
-        LIL_V2F_OUT_BASE.indLightColor  = lightdataInput.indLightColor;
+        LIL_V2F_OUT_BASE.indLightColor  = lightdataInput.indLightColor * _ShadowEnvStrength;
     #endif
     #if defined(LIL_V2F_SHADOW)
         LIL_TRANSFER_SHADOW(vertexInput, input.uv1, LIL_V2F_OUT_BASE);
@@ -244,7 +253,7 @@ LIL_V2F_TYPE vert(appdata input)
     #if defined(LIL_ONEPASS_OUTLINE) && (!defined(LIL_MULTI) || defined(LIL_MULTI) && defined(LIL_MULTI_OUTLINE))
         #include "Includes/lil_vert_outline.hlsl"
         vertexInput = lilGetVertexPositionInputs(input.positionOS);
-        lilCustomVertexWS(input, uvMain, vertexInput, vertexNormalInput)
+        lilCustomVertexWS(input, uvMain, vertexInput, vertexNormalInput);
         #if defined(LIL_CUSTOM_VERTEX_WS)
             LIL_RE_VERTEX_POSITION_INPUTS(vertexInput);
         #endif
@@ -288,7 +297,7 @@ LIL_V2F_TYPE vert(appdata input)
     {
         //------------------------------------------------------------------------------------------------------------------------------
         // Invisible
-        UNITY_BRANCH
+        LIL_BRANCH
         if(_Invisible) return;
 
         v2f output[3];
@@ -302,10 +311,10 @@ LIL_V2F_TYPE vert(appdata input)
         {
             output[i] = input[i].base;
         }
-        UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input[0].base);
+        LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input[0].base);
 
         // Front
-        UNITY_BRANCH
+        LIL_BRANCH
         if(_Cull != 1)
         {
             outStream.Append(output[0]);
@@ -315,7 +324,7 @@ LIL_V2F_TYPE vert(appdata input)
         }
 
         // Back
-        UNITY_BRANCH
+        LIL_BRANCH
         if(_Cull != 2)
         {
             outStream.Append(output[2]);
@@ -336,7 +345,7 @@ LIL_V2F_TYPE vert(appdata input)
             }
 
             // Front
-            UNITY_BRANCH
+            LIL_BRANCH
             if(_OutlineCull != 1)
             {
                 outStream.Append(output[0]);
@@ -346,7 +355,7 @@ LIL_V2F_TYPE vert(appdata input)
             }
 
             // Back
-            UNITY_BRANCH
+            LIL_BRANCH
             if(_OutlineCull != 2)
             {
                 outStream.Append(output[2]);

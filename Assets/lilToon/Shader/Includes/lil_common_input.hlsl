@@ -231,6 +231,7 @@ SAMPLER(sampler_linear_clamp);
     float   _AsUnlit;
     float   _Cutoff;
     float   _FlipNormal;
+    float   _ShiftBackfaceUV;
     float   _VertexLightStrength;
     float   _LightMinLimit;
     float   _LightMaxLimit;
@@ -244,9 +245,11 @@ SAMPLER(sampler_linear_clamp);
     float   _Shadow2ndBlur;
     float   _ShadowEnvStrength;
     float   _ShadowBorderRange;
+    float   _MatCapVRParallaxStrength;
     float   _RimBorder;
     float   _RimBlur;
     float   _RimFresnelPower;
+    float   _RimShadowMask;
     float   _OutlineWidth;
     float   _OutlineEnableLighting;
     uint    _Cull;
@@ -257,7 +260,6 @@ SAMPLER(sampler_linear_clamp);
     lilBool _MatCapMul;
     lilBool _MatCapZRotCancel;
     lilBool _UseRim;
-    lilBool _RimShadowMask;
     lilBool _UseEmission;
     lilBool _OutlineFixWidth;
     lilBool _OutlineVertexR2Width;
@@ -425,6 +427,7 @@ SAMPLER(sampler_linear_clamp);
     float   _AsUnlit;
     float   _Cutoff;
     float   _FlipNormal;
+    float   _ShiftBackfaceUV;
     float   _VertexLightStrength;
     float   _LightMinLimit;
     float   _LightMaxLimit;
@@ -480,11 +483,15 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_MULTI_INPUTS_MATCAP)
         float   _MatCapBlend;
         float   _MatCapEnableLighting;
+        float   _MatCapShadowMask;
+        float   _MatCapVRParallaxStrength;
         float   _MatCapBumpScale;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP_2ND)
         float   _MatCap2ndBlend;
         float   _MatCap2ndEnableLighting;
+        float   _MatCap2ndShadowMask;
+        float   _MatCap2ndVRParallaxStrength;
         float   _MatCap2ndBumpScale;
     #endif
     #if defined(LIL_MULTI_INPUTS_RIM)
@@ -492,6 +499,7 @@ SAMPLER(sampler_linear_clamp);
         float   _RimBlur;
         float   _RimFresnelPower;
         float   _RimEnableLighting;
+        float   _RimShadowMask;
         float   _RimDirStrength;
         float   _RimDirRange;
         float   _RimIndirRange;
@@ -501,6 +509,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         float   _GlitterMainStrength;
         float   _GlitterEnableLighting;
+        float   _GlitterShadowMask;
         float   _GlitterVRParallaxStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION)
@@ -619,11 +628,9 @@ SAMPLER(sampler_linear_clamp);
         lilBool _MatCap2ndCustomNormal;
     #endif
     #if defined(LIL_MULTI_INPUTS_RIM)
-        lilBool _RimShadowMask;
         lilBool _RimApplyTransparency;
     #endif
     #if defined(LIL_MULTI_INPUTS_GLITTER)
-        lilBool _GlitterShadowMask;
         lilBool _GlitterApplyTransparency;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION)
@@ -879,6 +886,7 @@ SAMPLER(sampler_linear_clamp);
     float   _AsUnlit;
     float   _Cutoff;
     float   _FlipNormal;
+    float   _ShiftBackfaceUV;
     float   _VertexLightStrength;
     float   _LightMinLimit;
     float   _LightMaxLimit;
@@ -940,6 +948,8 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_MATCAP)
         float   _MatCapBlend;
         float   _MatCapEnableLighting;
+        float   _MatCapShadowMask;
+        float   _MatCapVRParallaxStrength;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             float   _MatCapBumpScale;
         #endif
@@ -947,6 +957,8 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_MATCAP_2ND)
         float   _MatCap2ndBlend;
         float   _MatCap2ndEnableLighting;
+        float   _MatCap2ndShadowMask;
+        float   _MatCap2ndVRParallaxStrength;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             float   _MatCap2ndBumpScale;
         #endif
@@ -956,6 +968,7 @@ SAMPLER(sampler_linear_clamp);
         float   _RimBlur;
         float   _RimFresnelPower;
         float   _RimEnableLighting;
+        float   _RimShadowMask;
         #if defined(LIL_FEATURE_RIMLIGHT_DIRECTION)
             float   _RimDirStrength;
             float   _RimDirRange;
@@ -967,6 +980,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_GLITTER)
         float   _GlitterMainStrength;
         float   _GlitterEnableLighting;
+        float   _GlitterShadowMask;
         float   _GlitterVRParallaxStrength;
     #endif
     #if defined(LIL_FEATURE_EMISSION_1ST)
@@ -1123,12 +1137,10 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FEATURE_RIMLIGHT)
         lilBool _UseRim;
-        lilBool _RimShadowMask;
         lilBool _RimApplyTransparency;
     #endif
     #if defined(LIL_FEATURE_GLITTER)
         lilBool _UseGlitter;
-        lilBool _GlitterShadowMask;
         lilBool _GlitterApplyTransparency;
     #endif
     #if defined(LIL_FEATURE_EMISSION_1ST)

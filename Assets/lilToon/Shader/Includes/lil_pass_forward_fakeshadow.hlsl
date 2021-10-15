@@ -2,8 +2,6 @@
 #define LIL_PASS_FORWARD_FAKESHADOW_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
-#include "Includes/lil_common_input.hlsl"
-#include "Includes/lil_common_functions.hlsl"
 #include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -53,7 +51,7 @@ v2f vert(appdata input)
         LIL_GET_HDRPDATA(vertexInput);
         float3 lightColor;
         float3 lightDirection;
-        lilGetLightDirectionAndColor(lightDirection, lightColor, posInput, renderingLayers, featureFlags);
+        lilGetLightDirectionAndColor(lightDirection, lightColor, posInput);
         lightDirection = normalize(lightDirection * Luminance(lightColor) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + float3(0.0,0.001,0.0));
         output.positionWS = vertexInput.positionWS;
     #else
@@ -74,7 +72,7 @@ float4 frag(v2f input) : SV_Target
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
     LIL_GET_HDRPDATA(input);
     #if defined(LIL_HDRP)
-        float3 viewDirection = normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
+        float3 viewDirection = normalize(lilViewDirection(input.positionWS));
     #endif
     float4 col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, input.uv);
     col *= _Color;

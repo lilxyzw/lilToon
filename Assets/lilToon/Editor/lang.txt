@@ -102,6 +102,7 @@ sCullModeOff	Off	Off (両面を描画)	Off	Off	Off
 sCullModeFront	Front	Front (背面のみ描画)	Front	Front	Front
 sCullModeBack	Back	Back (前面のみ描画)	Back	Back	Back
 sFlipBackfaceNormal	Flip Backface Normal	背面の法線を反転	후면의 법선을 반전	翻转背影法线	翻轉背影法線
+sShiftBackfaceUV	Shift Backface UV	背面のUVをずらす	후면의 UV를 드티다	移动背面的UV	移動背面的UV
 sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면에 그림자를 드리우다	背面的力量阴影	背面的力量陰影
 sLightingSettings	Lighting Settings	ライティング設定	Lighting Settings	Lighting Settings	Lighting Settings
 sVertexLightStrength	Vertex Light Strength	頂点ライトの強度	Vertex Light Strength	Vertex Light Strength	Vertex Light Strength

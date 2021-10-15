@@ -52,13 +52,13 @@ lilTessellationFactors hullConst(InputPatch<appdata, 3> input)
 
     // Rim
     #if defined(LIL_HDRP)
-        float3 nv = float3(abs(dot(vertexNormalInput_0.normalWS, LIL_GET_VIEWDIR_WS(GetAbsolutePositionWS(vertexInput_0.positionWS)))),
-                        abs(dot(vertexNormalInput_1.normalWS, LIL_GET_VIEWDIR_WS(GetAbsolutePositionWS(vertexInput_1.positionWS)))),
-                        abs(dot(vertexNormalInput_2.normalWS, LIL_GET_VIEWDIR_WS(GetAbsolutePositionWS(vertexInput_2.positionWS)))));
+        float3 nv = float3(abs(dot(vertexNormalInput_0.normalWS, lilViewDirection(GetAbsolutePositionWS(vertexInput_0.positionWS)))),
+                        abs(dot(vertexNormalInput_1.normalWS, lilViewDirection(GetAbsolutePositionWS(vertexInput_1.positionWS)))),
+                        abs(dot(vertexNormalInput_2.normalWS, lilViewDirection(GetAbsolutePositionWS(vertexInput_2.positionWS)))));
     #else
-        float3 nv = float3(abs(dot(vertexNormalInput_0.normalWS, LIL_GET_VIEWDIR_WS(vertexInput_0.positionWS))),
-                        abs(dot(vertexNormalInput_1.normalWS, LIL_GET_VIEWDIR_WS(vertexInput_1.positionWS))),
-                        abs(dot(vertexNormalInput_2.normalWS, LIL_GET_VIEWDIR_WS(vertexInput_2.positionWS))));
+        float3 nv = float3(abs(dot(vertexNormalInput_0.normalWS, lilViewDirection(vertexInput_0.positionWS))),
+                        abs(dot(vertexNormalInput_1.normalWS, lilViewDirection(vertexInput_1.positionWS))),
+                        abs(dot(vertexNormalInput_2.normalWS, lilViewDirection(vertexInput_2.positionWS))));
     #endif
     nv = 1.0 - float3(nv.y + nv.z, nv.z + nv.x, nv.x + nv.y) * 0.5;
     tessFactor.xyz = max(tessFactor.xyz * nv * nv, 1.0);

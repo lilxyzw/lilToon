@@ -12,6 +12,13 @@ void lilCustomVertexOS(inout appdata input, inout float2 uvMain, inout float4 po
     #endif
 }
 
+void lilCustomVertexOS(inout appdata input, inout float2 uvMain, inout float3 positionOS)
+{
+    float4 positionOS4 = float4(positionOS, 1.0);
+    lilCustomVertexOS(input, uvMain, positionOS4);
+    positionOS = positionOS4.xyz;
+}
+
 void lilCustomVertexWS(inout appdata input, inout float2 uvMain, inout lilVertexPositionInputs vertexInput, inout lilVertexNormalInputs vertexNormalInput)
 {
     #if defined(LIL_CUSTOM_VERTEX_WS)
@@ -131,9 +138,9 @@ v2g vert(appdata input)
         float3x3 tbnOS = float3x3(input.tangentOS.xyz, bitangentOS, input.normalOS);
         output.furVector = _FurVector.xyz;
         if(_VertexColor2FurVector) output.furVector = lilBlendNormal(output.furVector, input.color.xyz);
-        if(Exists_FurVectorTex) output.furVector = lilBlendNormal(output.furVector, UnpackNormalScale(LIL_SAMPLE_2D_LOD(_FurVectorTex, sampler_MainTex, uvMain, 0), _FurVectorScale));
+        if(Exists_FurVectorTex) output.furVector = lilBlendNormal(output.furVector, UnpackNormalScale(LIL_SAMPLE_2D_LOD(_FurVectorTex, sampler_linear_repeat, uvMain, 0), _FurVectorScale));
         output.furVector = mul(normalize(output.furVector), tbnOS) * _FurVector.w;
-        output.furVector = mul((float3x3)LIL_MATRIX_M, output.furVector);
+        output.furVector = lilTransformDirOStoWS(output.furVector, true);
         output.furVector.y -= _FurGravity * length(output.furVector);
     #endif
 
@@ -153,7 +160,7 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
 {
     //------------------------------------------------------------------------------------------------------------------------------
     // Invisible
-    UNITY_BRANCH
+    LIL_BRANCH
     if(_Invisible) return;
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -166,10 +173,10 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
 
         for(uint i = 0; i < 3; i++)
         {
-            UNITY_TRANSFER_INSTANCE_ID(input[i], outputBase[i]);
-            UNITY_TRANSFER_VERTEX_OUTPUT_STEREO(input[i], outputBase[i]);
+            LIL_TRANSFER_INSTANCE_ID(input[i], outputBase[i]);
+            LIL_TRANSFER_VERTEX_OUTPUT_STEREO(input[i], outputBase[i]);
             #if defined(LIL_V2F_POSITION_CS)
-                outputBase[i].positionCS = LIL_TRANSFORM_POS_WS_TO_CS(input[i].positionWS);
+                outputBase[i].positionCS = lilTransformWStoCS(input[i].positionWS);
             #endif
             #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
                 outputBase[i].previousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(input[i].previousPositionWS, 1.0));
@@ -184,10 +191,10 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                 outputBase[i].furLayer = -2;
             #endif
         }
-        UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input[0]);
+        LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input[0]);
 
         // Front
-        UNITY_BRANCH
+        LIL_BRANCH
         if(_Cull != 1)
         {
             outStream.Append(outputBase[0]);
@@ -197,7 +204,7 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
         }
 
         // Back
-        UNITY_BRANCH
+        LIL_BRANCH
         if(_Cull != 2)
         {
             outStream.Append(outputBase[2]);
@@ -280,7 +287,7 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
             #endif
 
             float3 fvmix = lerp(input[ii2].furVector,fvc,lpmix);
-            if(Exists_FurLengthMask) fvmix *= LIL_SAMPLE_2D_LOD(_FurLengthMask, sampler_MainTex, outUV * _MainTex_ST.xy + _MainTex_ST.zw, 0).r;
+            if(Exists_FurLengthMask) fvmix *= LIL_SAMPLE_2D_LOD(_FurLengthMask, sampler_linear_repeat, outUV * _MainTex_ST.xy + _MainTex_ST.zw, 0).r;
 
             // In
             float3 positionWS = lerp(input[ii2].positionWS,wpc,lpmix);
@@ -288,7 +295,7 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                 output.positionWS = positionWS;
             #endif
             #if defined(LIL_V2F_POSITION_CS)
-                output.positionCS = LIL_TRANSFORM_POS_WS_TO_CS(positionWS);
+                output.positionCS = lilTransformWStoCS(positionWS);
             #endif
             #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
                 float3 previousPositionWS = lerp(input[ii2].previousPositionWS,pwpc,lpmix);
@@ -305,7 +312,7 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                 output.positionWS = positionWS;
             #endif
             #if defined(LIL_V2F_POSITION_CS)
-                output.positionCS = LIL_TRANSFORM_POS_WS_TO_CS(positionWS);
+                output.positionCS = lilTransformWStoCS(positionWS);
             #endif
             #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
                 previousPositionWS.xyz += fvmix;

@@ -2,8 +2,6 @@
 #define LIL_PASS_DEPTHNORMAL_INCLUDED
 
 #include "Includes/lil_pipeline.hlsl"
-#include "Includes/lil_common_input.hlsl"
-#include "Includes/lil_common_functions.hlsl"
 #include "Includes/lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -42,14 +40,19 @@ struct v2f
 #include "Includes/lil_common_vert.hlsl"
 #include "Includes/lil_common_frag.hlsl"
 
-float4 frag(v2f input) : SV_Target
+float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 {
+    LIL_VFACE_FALLBACK(facing);
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
     #include "Includes/lil_common_frag_alpha.hlsl"
 
-    return float4(PackNormalOctRectEncode(normalize(mul((float3x3)LIL_MATRIX_V, input.normalWS))), 0.0, 0.0);
+    #if VERSION_GREATER_EQUAL(10, 1)
+        return float4(PackNormalOctRectEncode(normalize(mul((float3x3)LIL_MATRIX_V, input.normalWS))), 0.0, 0.0);
+    #else
+        return 0;
+    #endif
 }
 
 #endif
