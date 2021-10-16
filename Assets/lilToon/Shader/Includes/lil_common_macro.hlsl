@@ -301,7 +301,7 @@
 
     float3 lilTransformWStoVS(float3 positionWS)
     {
-        return UnityWorldToViewPos(positionWS);
+        return UnityWorldToViewPos(positionWS).xyz;
     }
 
     float4 lilTransformWStoCS(float3 positionWS)
@@ -338,7 +338,7 @@
 
     float3 lilTransformOStoWS(float4 positionOS)
     {
-        return TransformObjectToWorld(positionOS);
+        return TransformObjectToWorld(positionOS).xyz;
     }
 
     float3 lilTransformOStoWS(float3 positionOS)
@@ -348,12 +348,12 @@
 
     float3 lilTransformWStoOS(float3 positionWS)
     {
-        return TransformWorldToObject(positionWS);
+        return TransformWorldToObject(positionWS).xyz;
     }
 
     float3 lilTransformWStoVS(float3 positionWS)
     {
-        return TransformWorldToView(positionWS);
+        return TransformWorldToView(positionWS).xyz;
     }
 
     float4 lilTransformWStoCS(float3 positionWS)
