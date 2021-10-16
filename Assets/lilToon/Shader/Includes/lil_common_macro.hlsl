@@ -10,10 +10,10 @@
 // #define SHADER_LIBRARY_VERSION_MAJOR 4
 // #define SHADER_LIBRARY_VERSION_MINOR 8
 
-// Dither shadow (Default : 1)
-// 0 : Off
-// 1 : On
-#define LIL_SHADOW_DITHER 1
+// Transparent mode on subpass (Default : 0)
+// 0 : Cutout
+// 1 : Dither
+#define LIL_SUBPASS_TRANSPARENT_MODE 0
 
 // Premultiply on ForwardAdd (Default : 1)
 // 0 : Off
@@ -318,11 +318,6 @@
     {
         return ComputeGrabScreenPos(positionCS);
     }
-
-    float3 lilToAbsolutePositionWS(float3 positionRWS)
-    {
-        return positionRWS;
-    }
 #else
     #if defined(SHADER_STAGE_RAY_TRACING)
         #define LIL_MATRIX_M        ObjectToWorld3x4()
@@ -338,7 +333,7 @@
 
     float3 lilTransformOStoWS(float4 positionOS)
     {
-        return TransformObjectToWorld(positionOS).xyz;
+        return TransformObjectToWorld(positionOS.xyz).xyz;
     }
 
     float3 lilTransformOStoWS(float3 positionOS)
@@ -373,12 +368,16 @@
         positionSS.zw = positionCS.zw;
         return positionSS;
     }
-
-    float3 lilToAbsolutePositionWS(float3 positionRWS)
-    {
-        return GetAbsolutePositionWS(positionRWS);
-    }
 #endif
+
+float3 lilToAbsolutePositionWS(float3 positionRWS)
+{
+    #if defined(LIL_HDRP)
+        return GetAbsolutePositionWS(positionRWS);
+    #else
+        return positionRWS;
+    #endif
+}
 
 float3 lilTransformDirOStoWS(float3 directionOS, bool doNormalize)
 {
@@ -1181,7 +1180,11 @@ float3 lilHeadDirection(float3 positionWS)
             float3 lightDirectionWS = _LightDirection;
         #endif
 
-        float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, lightDirectionWS));
+        #if VERSION_GREATER_EQUAL(5, 1)
+            float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, lightDirectionWS));
+        #else
+            float4 positionCS = TransformWorldToHClip(positionWS);
+        #endif
 
         #if UNITY_REVERSED_Z
             positionCS.z = min(positionCS.z, UNITY_NEAR_CLIP_VALUE);

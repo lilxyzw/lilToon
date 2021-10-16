@@ -262,6 +262,7 @@ The following keywords are currently supported (more may be added upon request)
 |MAIN2ND|Main color 2nd|
 |MAIN3RD|Main color 3rd|
 |SHADOW|Shadow|
+|BACKLIGHT|Backlight|
 |REFRACTION|Refraction|
 |REFLECTION|Reflection|
 |MATCAP|MatCap|

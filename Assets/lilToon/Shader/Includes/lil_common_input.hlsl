@@ -230,6 +230,7 @@ SAMPLER(sampler_linear_clamp);
     float4  _OutlineTex_ScrollRotate;
     float   _AsUnlit;
     float   _Cutoff;
+    float   _SubpassCutoff;
     float   _FlipNormal;
     float   _ShiftBackfaceUV;
     float   _VertexLightStrength;
@@ -426,6 +427,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     float   _AsUnlit;
     float   _Cutoff;
+    float   _SubpassCutoff;
     float   _FlipNormal;
     float   _ShiftBackfaceUV;
     float   _VertexLightStrength;
@@ -885,6 +887,7 @@ SAMPLER(sampler_linear_clamp);
     // Float
     float   _AsUnlit;
     float   _Cutoff;
+    float   _SubpassCutoff;
     float   _FlipNormal;
     float   _ShiftBackfaceUV;
     float   _VertexLightStrength;

@@ -384,6 +384,7 @@ namespace lilToon
         MaterialProperty invisible;
         MaterialProperty asUnlit;
         MaterialProperty cutoff;
+        MaterialProperty subpassCutoff;
         MaterialProperty flipNormal;
         MaterialProperty shiftBackfaceUV;
         MaterialProperty backfaceForceShadow;
@@ -1704,6 +1705,10 @@ namespace lilToon
 
                             //------------------------------------------------------------------------------------------------------------------------------
                             // Rendering
+                            if(renderingModeBuf == RenderingMode.Transparent || renderingModeBuf == RenderingMode.Fur)
+                            {
+                                materialEditor.ShaderProperty(subpassCutoff, GetLoc("sSubpassCutoff"));
+                            }
                             materialEditor.ShaderProperty(cull, sCullModes);
                             materialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
                             materialEditor.ShaderProperty(ztest, GetLoc("sZTest"));
@@ -3190,6 +3195,10 @@ namespace lilToon
 
                             //------------------------------------------------------------------------------------------------------------------------------
                             // Rendering
+                            if(renderingModeBuf == RenderingMode.Transparent || renderingModeBuf == RenderingMode.Fur || isMulti && (transparentModeMat.floatValue == 2.0f || transparentModeMat.floatValue == 4.0f))
+                            {
+                                materialEditor.ShaderProperty(subpassCutoff, GetLoc("sSubpassCutoff"));
+                            }
                             materialEditor.ShaderProperty(cull, sCullModes);
                             materialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
                             materialEditor.ShaderProperty(ztest, GetLoc("sZTest"));
@@ -3381,6 +3390,7 @@ namespace lilToon
             invisible = null;
             asUnlit = null;
             cutoff = null;
+            subpassCutoff = null;
             flipNormal = null;
             backfaceForceShadow = null;
             vertexLightStrength = null;
@@ -3416,6 +3426,7 @@ namespace lilToon
             offsetUnits = null;
             colorMask = null;
             alphaToMask = null;
+            shiftBackfaceUV = null;
             mainColor = null;
             mainTex = null;
             mainTexHSVG = null;
@@ -3517,6 +3528,8 @@ namespace lilToon
             matcapBlend = null;
             matcapBlendMask = null;
             matcapEnableLighting = null;
+            matcapShadowMask = null;
+            matcapVRParallaxStrength = null;
             matcapBlendMode = null;
             matcapMul = null;
             matcapApplyTransparency = null;
@@ -3530,6 +3543,8 @@ namespace lilToon
             matcap2ndBlend = null;
             matcap2ndBlendMask = null;
             matcap2ndEnableLighting = null;
+            matcap2ndShadowMask = null;
+            matcap2ndVRParallaxStrength = null;
             matcap2ndBlendMode = null;
             matcap2ndMul = null;
             matcap2ndApplyTransparency = null;
@@ -3716,6 +3731,7 @@ namespace lilToon
             invisible = FindProperty("_Invisible", props);
             asUnlit = FindProperty("_AsUnlit", props);
             cutoff = FindProperty("_Cutoff", props);
+            subpassCutoff = FindProperty("_SubpassCutoff", props);
             flipNormal = FindProperty("_FlipNormal", props);
             shiftBackfaceUV = FindProperty("_ShiftBackfaceUV", props);
             backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
@@ -4035,6 +4051,7 @@ namespace lilToon
             invisible = FindProperty("_Invisible", props);
             asUnlit = FindProperty("_AsUnlit", props);
             cutoff = FindProperty("_Cutoff", props);
+            subpassCutoff = FindProperty("_SubpassCutoff", props);
             flipNormal = FindProperty("_FlipNormal", props);
             shiftBackfaceUV = FindProperty("_ShiftBackfaceUV", props);
             backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
@@ -4146,6 +4163,7 @@ namespace lilToon
             invisible = FindProperty("_Invisible", props);
             asUnlit = FindProperty("_AsUnlit", props);
             cutoff = FindProperty("_Cutoff", props);
+            subpassCutoff = FindProperty("_SubpassCutoff", props);
             shiftBackfaceUV = FindProperty("_ShiftBackfaceUV", props);
             vertexLightStrength = FindProperty("_VertexLightStrength", props);
             lightMinLimit = FindProperty("_LightMinLimit", props);
@@ -4342,6 +4360,7 @@ namespace lilToon
             invisible = FindProperty("_Invisible", props);
             asUnlit = FindProperty("_AsUnlit", props);
             cutoff = FindProperty("_Cutoff", props);
+            subpassCutoff = FindProperty("_SubpassCutoff", props);
             flipNormal = FindProperty("_FlipNormal", props);
             shiftBackfaceUV = FindProperty("_ShiftBackfaceUV", props);
             backfaceForceShadow = FindProperty("_BackfaceForceShadow", props);
@@ -5653,6 +5672,7 @@ namespace lilToon
                 case lilPropertyBlock.Base:
                         CopyProperty(invisible);
                         CopyProperty(cutoff);
+                        CopyProperty(subpassCutoff);
                         CopyProperty(cull);
                         CopyProperty(flipNormal);
                         CopyProperty(backfaceForceShadow);
@@ -6249,6 +6269,7 @@ namespace lilToon
                 case lilPropertyBlock.Base:
                         PasteProperty(ref invisible);
                         PasteProperty(ref cutoff);
+                        PasteProperty(ref subpassCutoff);
                         PasteProperty(ref cull);
                         PasteProperty(ref flipNormal);
                         PasteProperty(ref backfaceForceShadow);
@@ -6923,6 +6944,7 @@ namespace lilToon
                 case lilPropertyBlock.Base:
                         ResetProperty(ref invisible);
                         ResetProperty(ref cutoff);
+                        ResetProperty(ref subpassCutoff);
                         ResetProperty(ref cull);
                         ResetProperty(ref flipNormal);
                         ResetProperty(ref backfaceForceShadow);
@@ -7541,7 +7563,7 @@ namespace lilToon
                     material.SetInt("_AlphaToMask", 0);
                     material.SetInt("_OutlineAlphaToMask", 0);
                     material.SetOverrideTag("RenderType", "TransparentCutout");
-                    material.renderQueue = 2550;
+                    material.renderQueue = 2460;
                 }
                 else if(tpmode == 3.0f)
                 {
@@ -8748,7 +8770,8 @@ namespace lilToon
 
             liteMaterial.SetFloat("_Invisible",                 invisible.floatValue);
             liteMaterial.SetFloat("_Cutoff",                    cutoff.floatValue);
-            liteMaterial.SetFloat("_Cull",                  cull.floatValue);
+            liteMaterial.SetFloat("_SubpassCutoff",             subpassCutoff.floatValue);
+            liteMaterial.SetFloat("_Cull",                      cull.floatValue);
             liteMaterial.SetFloat("_FlipNormal",                flipNormal.floatValue);
             liteMaterial.SetFloat("_BackfaceForceShadow",       backfaceForceShadow.floatValue);
 

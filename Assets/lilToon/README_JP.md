@@ -58,13 +58,12 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 1. 下記いずれかの方法でUnityにlilToonをインポート  
     i. unitypackageをUnityウィンドウにドラッグ＆ドロップでインポート  
     ii. UPMから```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master```をインポート
-2. (SRPのみ) 上部メニューバーの`Assets/lilToon/Refresh Shaders`をクリック
-3. Projectからマテリアルを選択
-4. Inspector上部の`Shader`から`lilToon`を選択
-5. (エディタの言語が異なる場合のみ) `Language`を`Japanese`に変更
-6. テクスチャが反映されていない場合は`メインカラー`にテクスチャを設定
-7. テクスチャを透過する場合は`Rendering Mode(透過モード)`を`カットアウト`または`半透明`に変更
-8. 機能を追加したい場合は詳細設定内の[シェーダー設定](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md#シェーダー設定)を変更
+2. Projectからマテリアルを選択
+3. Inspector上部の`Shader`から`lilToon`を選択
+4. (エディタの言語が異なる場合のみ) `Language`を`Japanese`に変更
+5. テクスチャが反映されていない場合は`メインカラー`にテクスチャを設定
+6. テクスチャを透過する場合は`Rendering Mode(透過モード)`を`カットアウト`または`半透明`に変更
+7. 機能を追加したい場合は詳細設定内の[シェーダー設定](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md#シェーダー設定)を変更
 
 より詳しい設定については[マニュアル](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md)を参照してください。
 

@@ -262,6 +262,7 @@ METAパスではエラーになるのでMETAパスに以下の変更を加えま
 |MAIN2ND|メインカラー2ndの処理|
 |MAIN3RD|メインカラー3rdの処理|
 |SHADOW|影の処理|
+|BACKLIGHT|逆光ライトの処理|
 |REFRACTION|屈折の処理|
 |REFLECTION|反射の処理|
 |MATCAP|マットキャップの処理|

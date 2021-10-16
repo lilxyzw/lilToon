@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Template of custom shader
 
 ### Changed
-- Changed RenderQueue of transparent shader to 2550 (avoid drawing failure of Skybox through transparent materials, and added space for stencil)
+- Changed RenderQueue of transparent shader to 2460 (added space for stencil)
 - Changed RenderQueue of refraction shader to 2900 (avoid hiding through transparent materials)
 - Changed to allow negative values for refraction strength
 - Changed MatCap UVs to face the front even at the edge of the screen

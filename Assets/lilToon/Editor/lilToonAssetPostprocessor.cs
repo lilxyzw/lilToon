@@ -25,7 +25,7 @@ namespace lilToon
                 if(str.EndsWith(".mat") && AssetDatabase.GetMainAssetTypeAtPath(str) == typeof(Material))
                 {
                     Material material = (Material)AssetDatabase.LoadAssetAtPath(str, typeof(Material));
-                    if(material.shader.name.Contains("lilToon") && !material.shader.name.Contains("Lite"))
+                    if(material.shader.name.Contains("lilToon") && !material.shader.name.Contains("Lite") && !material.shader.name.Contains("Multi"))
                     {
                         existsTarget = true;
                         break;

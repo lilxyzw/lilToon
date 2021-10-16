@@ -263,8 +263,8 @@
     #define OVERRIDE_FUR \
         float furAlpha = 1.0; \
         float furLayer = abs(input.furLayer); \
-        if(Exists_FurMask) furAlpha *= LIL_SAMPLE_2D(_FurMask, sampler_MainTex, uvMain).r; \
         if(Exists_FurNoiseMask) furAlpha = LIL_SAMPLE_2D_ST(_FurNoiseMask, sampler_MainTex, input.uv).r; \
+        if(Exists_FurMask) furAlpha *= LIL_SAMPLE_2D(_FurMask, sampler_MainTex, uvMain).r; \
         LIL_FUR_LAYER_ALPHA \
         col.a *= furAlpha; \
         LIL_FUR_LAYER_AO

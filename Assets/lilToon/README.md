@@ -50,13 +50,12 @@ For more information about third party licenses, please see [Third Party Notices
 # Usage - Material Setup
 1. Import lilToon into Unity using one of the following methods.  
     i. Drag and drop unitypackage to the Unity window to import it.  
-    ii. Import ```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master``` from UPM.  
-2. (SRP Only) Click `Assets/lilToon/Refresh Shaders` in the top menu bar.
-3. Select a material from Project.
-4. Select `lilToon` from `Shader` at the top of Inspector.
-5. If no texture has been applied, set the texture to `Main Color`.
-6. To make the material transparent, change `Rendering Mode` to `Cutout` or `Transparent`.
-7. If you want to add more features, change the [Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting) in the Advanced settings.
+    ii. Import ```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master``` from UPM.
+2. Select a material from Project.
+3. Select `lilToon` from `Shader` at the top of Inspector.
+4. If no texture has been applied, set the texture to `Main Color`.
+5. To make the material transparent, change `Rendering Mode` to `Cutout` or `Transparent`.
+6. If you want to add more features, change the [Shader Setting](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md#shader-setting) in the Advanced settings.
 
 Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md) for more detailed settings.
 

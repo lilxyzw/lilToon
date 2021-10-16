@@ -97,6 +97,7 @@ sTransparentModeOnePass	One Pass	1パス	One Pass	One Pass	One Pass
 sTransparentModeTwoPass	Two Pass	2パス	Two Pass	Two Pass	Two Pass
 sAsOverlay	As Overlay	Overlayマテリアル	As Overlay	As Overlay	As Overlay
 sCutoff	Cutoff	Cutoff (完全透明にする範囲)	Cutoff	Cutoff	Cutoff
+sSubpassCutoff	Subpass Cutoff	Subpass Cutoff (完全透明にする範囲)	Subpass Cutoff	Subpass Cutoff	Subpass Cutoff
 sCullMode	Cull Mode	Cull Mode (描画面)	Cull Mode	Cull Mode	Cull Mode
 sCullModeOff	Off	Off (両面を描画)	Off	Off	Off
 sCullModeFront	Front	Front (背面のみ描画)	Front	Front	Front
@@ -148,7 +149,7 @@ sShadow2ndColor	2nd Color	影色2	그림자 색 2	颜色2	顏色2
 sShadowEnvStrength	Environment strength on shadow color	影色への環境光影響度	그림자 색에 환경 광의 영향	阴影颜色的环境强度	陰影顏色的環境強度
 sShadowBorderColor	Border Color	境界の色	경계의 색	边界颜色	邊界顏色
 sShadowBorderRange	Border Range	境界の幅	경계의 폭	边界范围	邊界範圍
-sBacklight	Backlight	バックライト	Backlight	Backlight	Backlight
+sBacklight	Backlight	逆光ライト	Backlight	Backlight	Backlight
 sBacklightTips	Add a backlight when the light is behind the model.	逆光時に光を乗せる表現ができます	라이트가 모델 뒤에 있을 때 백라이트를 추가하다	当照明在模型后面时添加背光灯	當照明在模型後面時添加背光燈
 sDirectivity	Directivity	指向性	지향성	指向性	指向性
 sViewDirectionStrength	View direction strength	視線方向の影響度	뷰 방향의 영향도	视线方向影响	視線方向影響
@@ -433,7 +434,7 @@ sSettingRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
 sSettingTexRimLightColor	Rim Light Color Texture	リムライト色テクスチャ	림 라이트 색상 질감	Rim Light颜色纹理	Rim Light顏色紋理
 sSettingTexRimLightDirection	Light Direction Customize	ライト方向によるカスタマイズ	라이트 방향 의한 맞춤형	定制由光方向	定制由光方向
 sSettingGlitter	Glitter	ラメ	Glitter	Glitter	Glitter
-sSettingBacklight	Backlight	バックライト	Backlight	Backlight	Backlight
+sSettingBacklight	Backlight	逆光ライト	Backlight	Backlight	Backlight
 sSettingParallax	Parallax	視差マップ	시차 맵	视差	視差
 sSettingPOM	[high-load] POM	[高負荷] POM	[과부하] POM	[高负荷] POM	[高負荷] POM
 sSettingClippingCanceller	Distance Clipping Canceller	距離クリッピングキャンセラー	거리 클리핑 취소 기	距离剪裁取消器	距離剪裁取消器
@@ -471,7 +472,7 @@ sAnchorReflection	#reflection	#反射	#reflection	#reflection	#reflection
 sAnchorMatCap	#matcap	#マットキャップ	#matcap	#matcap	#matcap
 sAnchorRimLight	#rim-light	#リムライト	#rim-light	#rim-light	#rim-light
 sAnchorGlitter	#glitter	#ラメ	#glitter	#glitter	#glitter
-sAnchorBacklight	#backlight	#バックライト	#backlight	#backlight	#backlight
+sAnchorBacklight	#backlight	#逆光ライト	#backlight	#backlight	#backlight
 sAnchorGem	#gem	#宝石	#gem	#gem	#gem
 sAnchorAdvanced	#advanced	#拡張設定	#advanced	#advanced	#advanced
 sAnchorOutline	#outline	#輪郭線設定	#outline	#outline	#outline
