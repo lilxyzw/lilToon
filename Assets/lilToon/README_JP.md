@@ -69,6 +69,7 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
 より詳しい設定については[マニュアル](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md)を参照してください。
 
 # 使い方 - アップデート
+0. 1.1.8以前から1.2.0以降にアップデートする場合はインポート前にlilToonフォルダを削除
 1. 下記いずれかの方法でUnityにlilToonをインポート  
     i. unitypackageをUnityウィンドウにドラッグ＆ドロップでインポート  
     ii. UPMから```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master```をインポート  
@@ -111,6 +112,14 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
   → `マスクと太さ`にマスクテクスチャを指定することで部分的に輪郭線を消したり太さを調整したりすることができます。
 - シェーダー設定でどれをオンにすべきかわからない  
   → 上部メニューバーから`Assets/lilToon/Auto shader setting`を実行することで自動でシェーダー設定が行えます。
+- SRPの特定のバージョンでエラーが発生する  
+  → SRP 7.0.0以前ではバージョン番号が拾えないため大まかなバージョン判定しかできません。  
+  エラーが発生する場合は`lilToon/Shader/Includes/lil_common_macro.hlsl`内で詳細なバージョンを指定するか最新版にアップデートする必要があります。  
+  例: HDRP 4.8.0
+  ```HLSL
+  #define SHADER_LIBRARY_VERSION_MAJOR 4
+  #define SHADER_LIBRARY_VERSION_MINOR 8
+  ```
 
 これ以外でトラブルが発生し不具合であることが疑われる場合は[Twitter](https://twitter.com/lil_xyzw)、[GitHub](https://github.com/lilxyzw/lilToon)、[BOOTH](https://lilxyzw.booth.pm/)のいずれかにご連絡いただければ幸いです。  
 以下にテンプレートも用意させていただきましたのでバグ報告の際の参考にご活用下さい。

@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 
 public class lilToonSetting : ScriptableObject
@@ -66,3 +67,4 @@ public class lilToonSetting : ScriptableObject
     public bool isLocked;
     public bool shouldNotScan;
 }
+#endif

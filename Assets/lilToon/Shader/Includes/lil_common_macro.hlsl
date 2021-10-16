@@ -265,7 +265,9 @@
     #else
         #define SHADER_LIBRARY_VERSION_MAJOR 0
     #endif
-    #define SHADER_LIBRARY_VERSION_MINOR 0
+#endif
+#if !defined(SHADER_LIBRARY_VERSION_MINOR)
+    #define SHADER_LIBRARY_VERSION_MINOR 99
 #endif
 #if !defined(VERSION_GREATER_EQUAL)
     #define VERSION_GREATER_EQUAL(major, minor) ((SHADER_LIBRARY_VERSION_MAJOR > major) || ((SHADER_LIBRARY_VERSION_MAJOR == major) && (SHADER_LIBRARY_VERSION_MINOR >= minor)))

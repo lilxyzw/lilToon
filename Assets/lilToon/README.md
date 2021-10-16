@@ -61,6 +61,7 @@ For more information about third party licenses, please see [Third Party Notices
 Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md) for more detailed settings.
 
 # Usage - Update
+0. If you are updating from 1.1.8 or earlier to 1.2.0 or later, delete the lilToon folder before importing
 1. Import lilToon into Unity using one of the following methods.  
     i. Drag and drop unitypackage to the Unity window to import it.  
     ii. Import ```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master``` from UPM.  
@@ -103,6 +104,14 @@ I recommend right-clicking on the material and running `lilToon/Remove unused pr
   → `Environment Strength` value affects the strength of shadows in bright places.
 - I don't know which ones to turn on in shader settings.  
   → The shader settings are automatically set by running `Assets/lilToon/Auto shader setting` from the top menu bar.
+- Errors occur in a specific version of SRP  
+  → SRP 7.0.0 or earlier cannot pick up the version number, so the shader cannot perform detailed version determination.  
+  If the error occurs, you need to specify the detailed version in `lilToon/Shader/Includes/lil_common_macro.hlsl` or update to the latest version.  
+  Example: HDRP 4.8.0
+  ```HLSL
+  #define SHADER_LIBRARY_VERSION_MAJOR 4
+  #define SHADER_LIBRARY_VERSION_MINOR 8
+  ```
 
 If you have any other problems and suspect a bug, please contact me on [Twitter](https://twitter.com/lil_xyzw), [GitHub](https://github.com/lilxyzw/lilToon), or [BOOTH](https://lilxyzw.booth.pm/).  
 Please refer to the following template when reporting a bug.
