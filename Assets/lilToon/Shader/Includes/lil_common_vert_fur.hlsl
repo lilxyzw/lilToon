@@ -140,7 +140,7 @@ v2g vert(appdata input)
         if(_VertexColor2FurVector) output.furVector = lilBlendNormal(output.furVector, input.color.xyz);
         if(Exists_FurVectorTex) output.furVector = lilBlendNormal(output.furVector, UnpackNormalScale(LIL_SAMPLE_2D_LOD(_FurVectorTex, sampler_linear_repeat, uvMain, 0), _FurVectorScale));
         output.furVector = mul(normalize(output.furVector), tbnOS) * _FurVector.w;
-        output.furVector = lilTransformDirOStoWS(output.furVector, true);
+        output.furVector = lilTransformDirOStoWS(output.furVector, false);
         output.furVector.y -= _FurGravity * length(output.furVector);
     #endif
 
