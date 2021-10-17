@@ -77,15 +77,20 @@
 |Name|Description|
 |-|-|
 |Invisible|When this is turned on, the material will be hidden.|
-|As Unlit|Disable lighting.|
 |Rendering Mode|Allows you to change the transparency setting.|
 |Cutoff|If the transparency drops below this value, the mesh will be clipped.|
 |Cull Mode|Hide the specified surface.|
 |Frip Backface Normal|Reverse backface lighting and other processes.|
 |Backface Force Shadow|Intensity to force the back face to dark.|
 |ZWrite|Whether to write depth. Basically, set it to on.|
+|-|-|
+|As Unlit|Disable lighting.|
 |Vertex Light Strength|If you have multiple meshes, you can mitigate the difference in brightness between them by setting this property to 0.|
 |Lower brightness limit|Limiting the darkness of a material by lighting|
+|Upper brightness limit|Limiting the lightness of a material by lighting|
+|Monochrome Lighting|Saturation of the light.|
+|Light Direction Override|Vector to add to the light direction.|
+|Environment strength on shadow color|The intensity with which environment light affects the color of the shadow.|
 
 <br/>
 
@@ -146,6 +151,7 @@ If shadows overlap other than hair, set the material in the same way as hair.
 |Angle|The angle of UV.|
 |Scroll|The speed of UV movement.|
 |Rotate|The speed of UV rotation.|
+|Shift Backface UV|Shift the UV on the backface by 1.0 in the X-axis direction.|
 
 <br/>
 
@@ -222,7 +228,7 @@ You can blend colors into the main color. This is the layer function in painting
 |Mask & Strength|Strength of shadow. Shadows do not appear in the areas painted black by the mask.|
 |1st/2nd Color|Color of shadow. You can specify a texture to override the color.|
 |Main Color Power|Multiply the Main Color to emphasize the shadows.|
-|Environment Strength|The intensity with which environment light affects the color of the shadow.|
+|Environment strength on shadow color|The intensity with which environment light affects the color of the shadow.|
 |Border Color|Color of shadow border.|
 |Border Range|Range of Border Color.|
 |Receive Shadow|Receive shadows from other objects. It can look unnatural under a roof and is often better to turn it off.|
