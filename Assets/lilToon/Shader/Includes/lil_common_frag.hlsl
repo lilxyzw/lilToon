@@ -880,7 +880,6 @@ void lilGetShading(
                     matcapNormalDirection = normalize(mul(normalmap, tbnWS));
                     matcapNormalDirection = facing < (_FlipNormal-1.0) ? -matcapNormalDirection : matcapNormalDirection;
                 }
-                else
             #endif
             matUV = lilCalcMatCapUV(matcapNormalDirection, viewDirection, headDirection, _MatCapVRParallaxStrength, _MatCapZRotCancel);
             float4 matCapColor = _MatCapColor;
@@ -946,7 +945,6 @@ void lilGetShading(
                     matcap2ndNormalDirection = normalize(mul(normalmap, tbnWS));
                     matcap2ndNormalDirection = facing < (_FlipNormal-1.0) ? -matcap2ndNormalDirection : matcap2ndNormalDirection;
                 }
-                else
             #endif
             mat2ndUV = lilCalcMatCapUV(matcap2ndNormalDirection, viewDirection, headDirection, _MatCap2ndVRParallaxStrength, _MatCap2ndZRotCancel);
             float4 matCap2ndColor = _MatCap2ndColor;

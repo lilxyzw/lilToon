@@ -60,7 +60,7 @@ lilTessellationFactors hullConst(InputPatch<appdata, 3> input)
                         abs(dot(vertexNormalInput_1.normalWS, lilViewDirection(vertexInput_1.positionWS))),
                         abs(dot(vertexNormalInput_2.normalWS, lilViewDirection(vertexInput_2.positionWS))));
     #endif
-    nv = 1.0 - float3(nv.y + nv.z, nv.z + nv.x, nv.x + nv.y) * 0.5;
+    nv = saturate(1.0 - float3(nv.y + nv.z, nv.z + nv.x, nv.x + nv.y) * 0.5);
     tessFactor.xyz = max(tessFactor.xyz * nv * nv, 1.0);
     tessFactor.w = (tessFactor.x+tessFactor.y+tessFactor.z) / 3.0;
 

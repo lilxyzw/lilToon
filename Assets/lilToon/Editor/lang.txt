@@ -113,6 +113,9 @@ sMonochromeLighting	Monochrome Lighting	ライトのモノクロ化	Monochrome L
 sLightDirectionOverride	Light Direction Override	ライト方向のオーバーライド	Light Direction Override	Light Direction Override	Light Direction Override
 sDirectionalLightStrength	[HDRP] Directional Light Strength	[HDRP] Directional Lightの強さ	[HDRP] Directional Light Strength	[HDRP] Directional Light Strength	[HDRP] Directional Light Strength
 sBeforeExposureLimit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit
+sLightingPreset	Apply Preset	プリセットを適用	프리셋 적용	应用预设	應用預設
+sLightingPresetDefault	Default	通常	디폴트	通常	通常
+sLightingPresetStable	Stable	安定	안정	稳定	穩定
 sHelpRenderingTransparent	When two transparent materials overlap, one of them may become invisible.	透過マテリアル同士が重なったときに片方が見えなくなる場合があります	투명 Material끼리 겹친 때 한쪽이 보이지 않을 수 있습니다	当两个透明Material重叠时，其中一个可能会变得不可见。	當兩個透明Material重疊時，其中一個可能會變得不可見。
 sHelpOnePassVertexLight	When using One Pass / Two Pass Transparent, it is recommended to set Vertex Light Strength to 1.0.	1パス・2パス使用時は頂点ライトの強度を1.0にしておくことをオススメします。	One Pass / Two Pass Transparent 사용 시에는 Vertex Light Strength를 1.0으로 설정할 것을 권장합니다.	使用One Pass/Two Pass Transparent时推荐将Vertex Light Strength设定为1.0。	使用One Pass/Two Pass Transparent時推薦將Vertex Light Strength設定為1.0。
 sHelpCullMode	If the material does not look right, set the CullMode to Off or Back.	表示がおかしい場合はCullModeをOffもしくはBackにしてください	표시가 이상한 경우는 CullMode을 Off 또는 Back합니다	如果材质看起来不对，请将CullMode设置为Off或Back。	如果材質看起來不對，請將CullMode設置為Off或Back。

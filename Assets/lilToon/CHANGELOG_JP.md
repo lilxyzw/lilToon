@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2021-10-18
+### 追加
+- ライティングの設定をワンクリックで切り替える機能の追加
+
+### 修正
+- マットキャップのカスタムノーマルマップが機能していなかった問題の修正
+- 遠距離でテッセレーションの分割が入る問題の修正
+- シェーダーの自動設定で一部プロパティがスキャンされない可能性があった問題の修正
+
 ## [1.2.1] - 2021-10-17
 ### 修正
 - ファーの長さプロパティが機能していなかった問題の修正

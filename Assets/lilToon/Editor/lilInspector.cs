@@ -131,10 +131,16 @@ namespace lilToon
             Tessellation
         }
 
+        public enum lilLightingPreset
+        {
+            Default,
+            Stable
+        }
+
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
-        private const string currentVersionName = "1.2.1";
-        private const int currentVersionValue = 14;
+        private const string currentVersionName = "1.2.2";
+        private const int currentVersionValue = 15;
 
         private const string boothURL = "https://lilxyzw.booth.pm/";
         private const string githubURL = "https://github.com/lilxyzw/lilToon";
@@ -7534,6 +7540,29 @@ namespace lilToon
             }
         }
 
+        private void ApplyLightingPreset(lilLightingPreset lightingPreset)
+        {
+            switch(lightingPreset)
+            {
+                case lilLightingPreset.Default:
+                    if(asUnlit != null) asUnlit.floatValue = 0.0f;
+                    if(vertexLightStrength != null) vertexLightStrength.floatValue = 0.0f;
+                    if(lightMinLimit != null) lightMinLimit.floatValue = 0.0f;
+                    if(lightMaxLimit != null) lightMaxLimit.floatValue = 1.0f;
+                    if(monochromeLighting != null) monochromeLighting.floatValue = 0.0f;
+                    if(shadowEnvStrength != null) shadowEnvStrength.floatValue = 0.0f;
+                    break;
+                case lilLightingPreset.Stable:
+                    if(asUnlit != null) asUnlit.floatValue = 0.0f;
+                    if(vertexLightStrength != null) vertexLightStrength.floatValue = 0.0f;
+                    if(lightMinLimit != null) lightMinLimit.floatValue = 0.05f;
+                    if(lightMaxLimit != null) lightMaxLimit.floatValue = 1.0f;
+                    if(monochromeLighting != null) monochromeLighting.floatValue = 0.5f;
+                    if(shadowEnvStrength != null) shadowEnvStrength.floatValue = 0.0f;
+                    break;
+            }
+        }
+
         //------------------------------------------------------------------------------------------------------------------------------
         // Material Setup
         internal static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess)
@@ -7973,6 +8002,9 @@ namespace lilToon
                 if(material.HasProperty("_RimColorTex")) shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR = shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR || material.GetTexture("_RimColorTex") != null;
                 if(material.HasProperty("_AudioLinkMask")) shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK = shaderSetting.LIL_FEATURE_TEX_AUDIOLINK_MASK || material.GetTexture("_AudioLinkMask") != null;
                 if(material.HasProperty("_DissolveNoiseMask")) shaderSetting.LIL_FEATURE_TEX_DISSOLVE_NOISE = shaderSetting.LIL_FEATURE_TEX_DISSOLVE_NOISE || material.GetTexture("_DissolveNoiseMask") != null;
+
+                shaderSetting.LIL_FEATURE_EMISSION_UV = shaderSetting.LIL_FEATURE_EMISSION_UV || shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV;
+                shaderSetting.LIL_FEATURE_EMISSION_MASK_UV = shaderSetting.LIL_FEATURE_EMISSION_MASK_UV || shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_MASK_UV;
             }
 
             // Outline
@@ -8929,6 +8961,15 @@ namespace lilToon
                 materialEditor.ShaderProperty(monochromeLighting, GetLoc("sMonochromeLighting"));
                 materialEditor.ShaderProperty(lightDirectionOverride, GetLoc("sLightDirectionOverride"));
                 if(shadowEnvStrength != null) materialEditor.ShaderProperty(shadowEnvStrength, GetLoc("sShadowEnvStrength"));
+                GUILayout.BeginHorizontal();
+                Rect position2 = EditorGUILayout.GetControlRect();
+                Rect labelRect = new Rect(position2.x, position2.y, EditorGUIUtility.labelWidth, position2.height);
+                Rect buttonRect1 = new Rect(labelRect.x + labelRect.width, position2.y, (position2.width - EditorGUIUtility.labelWidth)*0.5f, position2.height);
+                Rect buttonRect2 = new Rect(buttonRect1.x + buttonRect1.width, position2.y, buttonRect1.width, position2.height);
+                EditorGUI.PrefixLabel(labelRect, new GUIContent(GetLoc("sLightingPreset")));
+                if(GUI.Button(buttonRect1, new GUIContent(GetLoc("sLightingPresetDefault")))) ApplyLightingPreset(lilLightingPreset.Default);
+                if(GUI.Button(buttonRect2, new GUIContent(GetLoc("sLightingPresetStable")))) ApplyLightingPreset(lilLightingPreset.Stable);
+                GUILayout.EndHorizontal();
                 EditorGUI.indentLevel--;
             }
         }

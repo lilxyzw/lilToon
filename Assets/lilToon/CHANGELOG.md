@@ -4,10 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2021-10-18
+### Added
+- Add a button to change lighting settings with one click
+
+### Fixed
+- Fixed an issue where MatCap's custom normal map was not working
+- Fixed an issue with tessellation splitting at long range
+- Fixed an issue where some properties might not be scanned in the auto shader setting
+
 ## [1.2.1] - 2021-10-17
 ### Fixed
 - Fixed an issue where the fur length property was not working
-- Fix log date
+- Fixed log date
 
 ## [1.2.0] - 2021-10-17
 ### Added
