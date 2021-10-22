@@ -22,6 +22,31 @@ namespace lilToon
             lilToonInspector.InitializeLanguage();
 
             // Initialize
+            if(lilToonInspector.isUPM)
+            {
+                StreamReader csr = new StreamReader(shaderCommonPath);
+                string cs = csr.ReadToEnd();
+                csr.Close();
+                cs = cs.Replace(
+                    "#include \"../../../lilToonSetting/lil_setting.hlsl\"",
+                    "#include \"Assets/lilToonSetting/lil_setting.hlsl\"");
+                StreamWriter csw = new StreamWriter(shaderCommonPath,false);
+                csw.Write(cs);
+                csw.Close();
+            }
+            else
+            {
+                StreamReader csr = new StreamReader(shaderCommonPath);
+                string cs = csr.ReadToEnd();
+                csr.Close();
+                cs = cs.Replace(
+                    "#include \"Assets/lilToonSetting/lil_setting.hlsl\"",
+                    "#include \"../../../lilToonSetting/lil_setting.hlsl\"");
+                StreamWriter csw = new StreamWriter(shaderCommonPath,false);
+                csw.Write(cs);
+                csw.Close();
+            }
+
             if(!Directory.Exists(settingFolderPath))
             {
                 // Setting Folder
@@ -34,30 +59,6 @@ namespace lilToon
                     sw.Close();
                     AssetDatabase.ImportAsset(shaderSettingHLSLPath);
                     Debug.Log("Generate setting hlsl file");
-                }
-                if(lilToonInspector.isUPM)
-                {
-                    StreamReader csr = new StreamReader(shaderCommonPath);
-                    string cs = csr.ReadToEnd();
-                    csr.Close();
-                    cs = cs.Replace(
-                        "#include \"../../../lilToonSetting/lil_setting.hlsl\"",
-                        "#include \"Assets/lilToonSetting/lil_setting.hlsl\"");
-                    StreamWriter csw = new StreamWriter(shaderCommonPath,false);
-                    csw.Write(cs);
-                    csw.Close();
-                }
-                else
-                {
-                    StreamReader csr = new StreamReader(shaderCommonPath);
-                    string cs = csr.ReadToEnd();
-                    csr.Close();
-                    cs = cs.Replace(
-                        "#include \"Assets/lilToonSetting/lil_setting.hlsl\"",
-                        "#include \"../../../lilToonSetting/lil_setting.hlsl\"");
-                    StreamWriter csw = new StreamWriter(shaderCommonPath,false);
-                    csw.Write(cs);
-                    csw.Close();
                 }
 
                 // Editor
