@@ -22,11 +22,11 @@ namespace lilToon
             lilToonInspector.InitializeLanguage();
 
             // Initialize
-            if(lilToonInspector.isUPM)
+            StreamReader csr = new StreamReader(shaderCommonPath);
+            string cs = csr.ReadToEnd();
+            csr.Close();
+            if(lilToonInspector.isUPM && cs.Contains("#include \"../../../lilToonSetting/lil_setting.hlsl\""))
             {
-                StreamReader csr = new StreamReader(shaderCommonPath);
-                string cs = csr.ReadToEnd();
-                csr.Close();
                 cs = cs.Replace(
                     "#include \"../../../lilToonSetting/lil_setting.hlsl\"",
                     "#include \"Assets/lilToonSetting/lil_setting.hlsl\"");
@@ -34,11 +34,8 @@ namespace lilToon
                 csw.Write(cs);
                 csw.Close();
             }
-            else
+            else if(!lilToonInspector.isUPM && cs.Contains("#include \"Assets/lilToonSetting/lil_setting.hlsl\""))
             {
-                StreamReader csr = new StreamReader(shaderCommonPath);
-                string cs = csr.ReadToEnd();
-                csr.Close();
                 cs = cs.Replace(
                     "#include \"Assets/lilToonSetting/lil_setting.hlsl\"",
                     "#include \"../../../lilToonSetting/lil_setting.hlsl\"");

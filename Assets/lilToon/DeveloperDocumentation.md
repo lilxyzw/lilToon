@@ -258,6 +258,7 @@ The following keywords are currently supported (more may be added upon request)
 |DISSOLVE|Dissolve|
 |NORMAL_1ST|Normal map|
 |NORMAL_2ND|Normal map 2nd|
+|ANISOTROPY|Anisotropy|
 |AUDIOLINK|AudioLink|
 |MAIN2ND|Main color 2nd|
 |MAIN3RD|Main color 3rd|

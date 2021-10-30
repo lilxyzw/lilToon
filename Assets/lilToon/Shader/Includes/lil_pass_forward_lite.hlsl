@@ -104,13 +104,23 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     float3 albedo = 1.0;
     float3 emissionColor = 0.0;
 
+    float anisotropy = 0.0;
+    float3 anisoTangentWS = 0.0;
+    float3 anisoBitangentWS = 0.0;
     float3 normalDirection = 0.0;
+    float3 reflectionNormalDirection = 0.0;
+    float3 matcapNormalDirection = 0.0;
+    float3 matcap2ndNormalDirection = 0.0;
     float3 viewDirection = 0.0;
     float3 headDirection = 0.0;
     float3x3 tbnWS = 0.0;
     float depth = 0.0;
     float3 parallaxViewDirection = 0.0;
     float2 parallaxOffset = 0.0;
+
+    float smoothness = 1.0;
+    float roughness = 1.0;
+    float perceptualRoughness = 1.0;
 
     float vl = 0.0;
     float hl = 0.0;
@@ -137,7 +147,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     //------------------------------------------------------------------------------------------------------------------------------
     // View Direction
     #if defined(LIL_V2F_POSITION_WS)
-        depth = length(lilViewDirection(input.positionWS));
+        depth = length(lilHeadDirection(input.positionWS));
         viewDirection = normalize(lilViewDirection(input.positionWS));
         headDirection = normalize(lilHeadDirection(input.positionWS));
         vl = dot(viewDirection, lightDirection);
@@ -254,6 +264,10 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             OVERRIDE_BLEND_EMISSION
         #endif
     #endif
+
+    //------------------------------------------------------------------------------------------------------------------------------
+    // Fix Color
+    LIL_HDRP_DEEXPOSURE(col);
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Fog

@@ -110,6 +110,7 @@ namespace lilToon
             NormalMap,
             NormalMap1st,
             NormalMap2nd,
+            Anisotropy,
             Reflections,
             Reflection,
             MatCap1st,
@@ -139,8 +140,8 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
-        private const string currentVersionName = "1.2.2";
-        private const int currentVersionValue = 15;
+        private const string currentVersionName = "1.2.3";
+        private const int currentVersionValue = 16;
 
         private const string boothURL = "https://lilxyzw.booth.pm/";
         private const string githubURL = "https://github.com/lilxyzw/lilToon";
@@ -311,6 +312,8 @@ namespace lilToon
             public bool isShowEmissionBlendMask     = false;
             public bool isShowEmission2ndMap        = false;
             public bool isShowEmission2ndBlendMask  = false;
+            public bool isShowMatCapUV          = false;
+            public bool isShowMatCap2ndUV       = false;
             public bool isShowParallax          = false;
             public bool isShowDistanceFade      = false;
             public bool isShowAudioLink         = false;
@@ -401,6 +404,9 @@ namespace lilToon
         MaterialProperty monochromeLighting;
         MaterialProperty lilDirectionalLightStrength;
         MaterialProperty lightDirectionOverride;
+        MaterialProperty baseColor;
+        MaterialProperty baseMap;
+        MaterialProperty baseColorMap;
         MaterialProperty triMask;
             MaterialProperty cull;
             MaterialProperty srcBlend;
@@ -513,6 +519,7 @@ namespace lilToon
             MaterialProperty backlightDirectivity;
             MaterialProperty backlightViewStrength;
             MaterialProperty backlightReceiveShadow;
+            MaterialProperty backlightBackfaceMask;
         MaterialProperty useBumpMap;
             MaterialProperty bumpMap;
             MaterialProperty bumpScale;
@@ -520,6 +527,24 @@ namespace lilToon
             MaterialProperty bump2ndMap;
             MaterialProperty bump2ndScale;
             MaterialProperty bump2ndScaleMask;
+        MaterialProperty useAnisotropy;
+            MaterialProperty anisotropyTangentMap;
+            MaterialProperty anisotropyScale;
+            MaterialProperty anisotropyScaleMask;
+            MaterialProperty anisotropyTangentWidth;
+            MaterialProperty anisotropyBitangentWidth;
+            MaterialProperty anisotropyShift;
+            MaterialProperty anisotropyShiftNoiseScale;
+            MaterialProperty anisotropySpecularStrength;
+            MaterialProperty anisotropy2ndTangentWidth;
+            MaterialProperty anisotropy2ndBitangentWidth;
+            MaterialProperty anisotropy2ndShift;
+            MaterialProperty anisotropy2ndShiftNoiseScale;
+            MaterialProperty anisotropy2ndSpecularStrength;
+            MaterialProperty anisotropyShiftNoiseMask;
+            MaterialProperty anisotropy2Reflection;
+            MaterialProperty anisotropy2MatCap;
+            MaterialProperty anisotropy2MatCap2nd;
         MaterialProperty useReflection;
             MaterialProperty metallic;
             MaterialProperty metallicGlossMap;
@@ -529,36 +554,43 @@ namespace lilToon
             MaterialProperty reflectionColor;
             MaterialProperty reflectionColorTex;
             MaterialProperty applySpecular;
+            MaterialProperty applySpecularFA;
             MaterialProperty specularToon;
             MaterialProperty applyReflection;
             MaterialProperty reflectionApplyTransparency;
         MaterialProperty useMatCap;
             MaterialProperty matcapTex;
             MaterialProperty matcapColor;
+            MaterialProperty matcapBlendUV1;
+            MaterialProperty matcapZRotCancel;
+            MaterialProperty matcapPerspective;
+            MaterialProperty matcapVRParallaxStrength;
             MaterialProperty matcapBlend;
             MaterialProperty matcapBlendMask;
             MaterialProperty matcapEnableLighting;
             MaterialProperty matcapShadowMask;
-            MaterialProperty matcapVRParallaxStrength;
+            MaterialProperty matcapBackfaceMask;
             MaterialProperty matcapBlendMode;
             MaterialProperty matcapMul;
             MaterialProperty matcapApplyTransparency;
-            MaterialProperty matcapZRotCancel;
             MaterialProperty matcapCustomNormal;
             MaterialProperty matcapBumpMap;
             MaterialProperty matcapBumpScale;
         MaterialProperty useMatCap2nd;
             MaterialProperty matcap2ndTex;
             MaterialProperty matcap2ndColor;
+            MaterialProperty matcap2ndBlendUV1;
+            MaterialProperty matcap2ndZRotCancel;
+            MaterialProperty matcap2ndPerspective;
+            MaterialProperty matcap2ndVRParallaxStrength;
             MaterialProperty matcap2ndBlend;
             MaterialProperty matcap2ndBlendMask;
             MaterialProperty matcap2ndEnableLighting;
             MaterialProperty matcap2ndShadowMask;
-            MaterialProperty matcap2ndVRParallaxStrength;
+            MaterialProperty matcap2ndBackfaceMask;
             MaterialProperty matcap2ndBlendMode;
             MaterialProperty matcap2ndMul;
             MaterialProperty matcap2ndApplyTransparency;
-            MaterialProperty matcap2ndZRotCancel;
             MaterialProperty matcap2ndCustomNormal;
             MaterialProperty matcap2ndBumpMap;
             MaterialProperty matcap2ndBumpScale;
@@ -570,6 +602,7 @@ namespace lilToon
             MaterialProperty rimFresnelPower;
             MaterialProperty rimEnableLighting;
             MaterialProperty rimShadowMask;
+            MaterialProperty rimBackfaceMask;
             MaterialProperty rimApplyTransparency;
             MaterialProperty rimDirStrength;
             MaterialProperty rimDirRange;
@@ -586,6 +619,7 @@ namespace lilToon
             MaterialProperty glitterParams2;
             MaterialProperty glitterEnableLighting;
             MaterialProperty glitterShadowMask;
+            MaterialProperty glitterBackfaceMask;
             MaterialProperty glitterApplyTransparency;
             MaterialProperty glitterVRParallaxStrength;
         MaterialProperty useEmission;
@@ -894,7 +928,7 @@ namespace lilToon
             string sBlendModes = GetLoc("sBlendMode") + "|" + GetLoc("sBlendModeNormal") + "|" + GetLoc("sBlendModeAdd") + "|" + GetLoc("sBlendModeScreen") + "|" + GetLoc("sBlendModeMul");
             string sAlphaMaskModes = GetLoc("sAlphaMask") + "|" + GetLoc("sAlphaMaskModeNone") + "|" + GetLoc("sAlphaMaskModeReplace") + "|" + GetLoc("sAlphaMaskModeMul");
             string blinkSetting = GetLoc("sBlinkStrength") + "|" + GetLoc("sBlinkType") + "|" + GetLoc("sBlinkSpeed") + "|" + GetLoc("sBlinkOffset");
-            string sDistanceFadeSetting = GetLoc("sStartDistance") + "|" + GetLoc("sEndDistance") + "|" + GetLoc("sStrength");
+            string sDistanceFadeSetting = GetLoc("sStartDistance") + "|" + GetLoc("sEndDistance") + "|" + GetLoc("sStrength") + "|" + GetLoc("sBackfaceForceShadow");
             string sDissolveParams = GetLoc("sDissolveMode") + "|" + GetLoc("sDissolveModeNone") + "|" + GetLoc("sDissolveModeAlpha") + "|" + GetLoc("sDissolveModeUV") + "|" + GetLoc("sDissolveModePosition") + "|" + GetLoc("sDissolveShape") + "|" + GetLoc("sDissolveShapePoint") + "|" + GetLoc("sDissolveShapeLine") + "|" + GetLoc("sBorder") + "|" + GetLoc("sBlur");
             string sDissolveParamsMode = GetLoc("sDissolve") + "|" + GetLoc("sDissolveModeNone") + "|" + GetLoc("sDissolveModeAlpha") + "|" + GetLoc("sDissolveModeUV") + "|" + GetLoc("sDissolveModePosition");
             string sDissolveParamsOther = GetLoc("sDissolveShape") + "|" + GetLoc("sDissolveShapePoint") + "|" + GetLoc("sDissolveShapeLine") + "|" + GetLoc("sBorder") + "|" + GetLoc("sBlur") + "|Dummy";
@@ -1596,6 +1630,7 @@ namespace lilToon
                                 outlineStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             }
                             SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                            if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                         }
                         if(GUILayout.Button("Set Reader"))
                         {
@@ -1620,6 +1655,7 @@ namespace lilToon
                                 outlineStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             }
                             SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                            if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                         }
                         if(GUILayout.Button("Reset"))
                         {
@@ -1879,6 +1915,7 @@ namespace lilToon
                             stencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             material.renderQueue = material.shader.renderQueue - 1;
+                            if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                         }
                         if(GUILayout.Button("Set Reader"))
                         {
@@ -1891,6 +1928,7 @@ namespace lilToon
                             stencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             material.renderQueue = -1;
+                            if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                         }
                         if(GUILayout.Button("Reset"))
                         {
@@ -2455,6 +2493,50 @@ namespace lilToon
                                     }
                                     EditorGUILayout.EndVertical();
                                 }
+
+                                //------------------------------------------------------------------------------------------------------------------------------
+                                // Anisotropy
+                                if(CheckFeature(shaderSetting.LIL_FEATURE_ANISOTROPY))
+                                {
+                                    EditorGUILayout.BeginVertical(boxOuter);
+                                    materialEditor.ShaderProperty(useAnisotropy, GetLoc("sAnisotropy"));
+                                    DrawMenuButton(GetLoc("sAnchorAnisotropy"), lilPropertyBlock.Anisotropy);
+                                    if(useAnisotropy.floatValue == 1)
+                                    {
+                                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                                        materialEditor.TexturePropertySingleLine(normalMapContent, anisotropyTangentMap);
+                                        materialEditor.TextureScaleOffsetProperty(anisotropyTangentMap);
+                                        materialEditor.TexturePropertySingleLine(maskStrengthContent, anisotropyScaleMask, anisotropyScale);
+                                        GUILayout.Label(GetLoc("sApplyTo"), EditorStyles.boldLabel);
+                                        EditorGUI.indentLevel++;
+                                        materialEditor.ShaderProperty(anisotropy2Reflection, GetLoc("sReflection"));
+                                        if(anisotropy2Reflection.floatValue != 0.0f)
+                                        {
+                                            EditorGUI.indentLevel++;
+                                            EditorGUILayout.LabelField("1st Specular", EditorStyles.boldLabel);
+                                            materialEditor.ShaderProperty(anisotropyTangentWidth, GetLoc("sTangentWidth"));
+                                            materialEditor.ShaderProperty(anisotropyBitangentWidth, GetLoc("sBitangentWidth"));
+                                            materialEditor.ShaderProperty(anisotropyShift, GetLoc("sOffset"));
+                                            materialEditor.ShaderProperty(anisotropyShiftNoiseScale, GetLoc("sNoiseStrength"));
+                                            materialEditor.ShaderProperty(anisotropySpecularStrength, GetLoc("sStrength"));
+                                            DrawLine();
+                                            EditorGUILayout.LabelField("2nd Specular", EditorStyles.boldLabel);
+                                            materialEditor.ShaderProperty(anisotropy2ndTangentWidth, GetLoc("sTangentWidth"));
+                                            materialEditor.ShaderProperty(anisotropy2ndBitangentWidth, GetLoc("sBitangentWidth"));
+                                            materialEditor.ShaderProperty(anisotropy2ndShift, GetLoc("sOffset"));
+                                            materialEditor.ShaderProperty(anisotropy2ndShiftNoiseScale, GetLoc("sNoiseStrength"));
+                                            materialEditor.ShaderProperty(anisotropy2ndSpecularStrength, GetLoc("sStrength"));
+                                            DrawLine();
+                                            materialEditor.ShaderProperty(anisotropyShiftNoiseMask, GetLoc("sNoise"));
+                                            EditorGUI.indentLevel--;
+                                        }
+                                        materialEditor.ShaderProperty(anisotropy2MatCap, GetLoc("sMatCap"));
+                                        materialEditor.ShaderProperty(anisotropy2MatCap2nd, GetLoc("sMatCap2nd"));
+                                        EditorGUI.indentLevel--;
+                                        EditorGUILayout.EndVertical();
+                                    }
+                                    EditorGUILayout.EndVertical();
+                                }
                             }
                         }
 
@@ -2495,6 +2577,7 @@ namespace lilToon
                                         if(specularMode == 0) {applySpecular.floatValue = 0.0f;}
                                         if(specularMode == 1) {applySpecular.floatValue = 1.0f; specularToon.floatValue = 0.0f;}
                                         if(specularMode == 2) {applySpecular.floatValue = 1.0f; specularToon.floatValue = 1.0f;}
+                                        if(applySpecular.floatValue != 0.0f) materialEditor.ShaderProperty(applySpecularFA, GetLoc("sMultiLightSpecular"));
                                         materialEditor.ShaderProperty(applyReflection, GetLoc("sApplyReflection"));
                                         if(isTransparent) materialEditor.ShaderProperty(reflectionApplyTransparency, GetLoc("sApplyTransparency"));
                                         EditorGUILayout.EndVertical();
@@ -2512,23 +2595,23 @@ namespace lilToon
                                     if(useMatCap.floatValue == 1)
                                     {
                                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                                        materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA")), matcapTex, matcapColor);
+                                        MatCapTextureGUI(materialEditor, ref edSet.isShowMatCapUV, new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA")), matcapTex, matcapColor, matcapBlendUV1, matcapZRotCancel, matcapPerspective, matcapVRParallaxStrength);
                                         if(matcapColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
                                         {
                                             matcapColor.colorValue = new Color(matcapColor.colorValue.r, matcapColor.colorValue.g, matcapColor.colorValue.b, 1.0f);
                                         }
+                                        DrawLine();
                                         if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK)) materialEditor.TexturePropertySingleLine(maskBlendContent, matcapBlendMask, matcapBlend);
                                         else                                                        materialEditor.ShaderProperty(matcapBlend, GetLoc("sBlend"));
                                         materialEditor.ShaderProperty(matcapEnableLighting, GetLoc("sEnableLighting"));
                                         materialEditor.ShaderProperty(matcapShadowMask, GetLoc("sShadowMask"));
+                                        materialEditor.ShaderProperty(matcapBackfaceMask, GetLoc("sBackfaceMask"));
                                         materialEditor.ShaderProperty(matcapBlendMode, sBlendModes);
                                         if(matcapEnableLighting.floatValue != 0.0f && matcapBlendMode.floatValue == 3.0f && AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
                                         {
                                             matcapEnableLighting.floatValue = 0.0f;
                                         }
                                         if(isTransparent) materialEditor.ShaderProperty(matcapApplyTransparency, GetLoc("sApplyTransparency"));
-                                        materialEditor.ShaderProperty(matcapZRotCancel, GetLoc("sMatCapZRotCancel"));
-                                        materialEditor.ShaderProperty(matcapVRParallaxStrength, GetLoc("sVRParallaxStrength"));
                                         if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_MATCAP_NORMALMAP))
                                         {
                                             DrawLine();
@@ -2554,23 +2637,23 @@ namespace lilToon
                                     if(useMatCap2nd.floatValue == 1)
                                     {
                                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                                        materialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA")), matcap2ndTex, matcap2ndColor);
+                                        MatCapTextureGUI(materialEditor, ref edSet.isShowMatCap2ndUV, new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA")), matcap2ndTex, matcap2ndColor, matcap2ndBlendUV1, matcap2ndZRotCancel, matcap2ndPerspective, matcap2ndVRParallaxStrength);
                                         if(matcap2ndColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
                                         {
                                             matcap2ndColor.colorValue = new Color(matcap2ndColor.colorValue.r, matcap2ndColor.colorValue.g, matcap2ndColor.colorValue.b, 1.0f);
                                         }
+                                        DrawLine();
                                         if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK)) materialEditor.TexturePropertySingleLine(maskBlendContent, matcap2ndBlendMask, matcap2ndBlend);
                                         else                                                        materialEditor.ShaderProperty(matcap2ndBlend, GetLoc("sBlend"));
                                         materialEditor.ShaderProperty(matcap2ndEnableLighting, GetLoc("sEnableLighting"));
                                         materialEditor.ShaderProperty(matcap2ndShadowMask, GetLoc("sShadowMask"));
+                                        materialEditor.ShaderProperty(matcap2ndBackfaceMask, GetLoc("sBackfaceMask"));
                                         materialEditor.ShaderProperty(matcap2ndBlendMode, sBlendModes);
                                         if(matcap2ndEnableLighting.floatValue != 0.0f && matcap2ndBlendMode.floatValue == 3.0f && AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
                                         {
                                             matcap2ndEnableLighting.floatValue = 0.0f;
                                         }
                                         if(isTransparent) materialEditor.ShaderProperty(matcap2ndApplyTransparency, GetLoc("sApplyTransparency"));
-                                        materialEditor.ShaderProperty(matcap2ndZRotCancel, GetLoc("sMatCapZRotCancel"));
-                                        materialEditor.ShaderProperty(matcap2ndVRParallaxStrength, GetLoc("sVRParallaxStrength"));
                                         if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_MATCAP_NORMALMAP))
                                         {
                                             DrawLine();
@@ -2604,6 +2687,7 @@ namespace lilToon
                                         }
                                         materialEditor.ShaderProperty(rimEnableLighting, GetLoc("sEnableLighting"));
                                         materialEditor.ShaderProperty(rimShadowMask, GetLoc("sShadowMask"));
+                                        materialEditor.ShaderProperty(rimBackfaceMask, GetLoc("sBackfaceMask"));
                                         if(isTransparent) materialEditor.ShaderProperty(rimApplyTransparency, GetLoc("sApplyTransparency"));
                                         DrawLine();
                                         if(CheckFeature(shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION))
@@ -2661,6 +2745,7 @@ namespace lilToon
                                         materialEditor.ShaderProperty(glitterMainStrength, GetLoc("sMainColorPower"));
                                         materialEditor.ShaderProperty(glitterEnableLighting, GetLoc("sEnableLighting"));
                                         materialEditor.ShaderProperty(glitterShadowMask, GetLoc("sShadowMask"));
+                                        materialEditor.ShaderProperty(glitterBackfaceMask, GetLoc("sBackfaceMask"));
                                         if(isTransparent) materialEditor.ShaderProperty(glitterApplyTransparency, GetLoc("sApplyTransparency"));
                                         DrawLine();
                                         materialEditor.ShaderProperty(glitterParams1, sGlitterParams1);
@@ -2691,6 +2776,7 @@ namespace lilToon
                                         materialEditor.ShaderProperty(backlightDirectivity, GetLoc("sDirectivity"));
                                         materialEditor.ShaderProperty(backlightViewStrength, GetLoc("sViewDirectionStrength"));
                                         materialEditor.ShaderProperty(backlightReceiveShadow, GetLoc("sReceiveShadow"));
+                                        materialEditor.ShaderProperty(backlightBackfaceMask, GetLoc("sBackfaceMask"));
                                         EditorGUILayout.EndVertical();
                                     }
                                     EditorGUILayout.EndVertical();
@@ -2850,7 +2936,7 @@ namespace lilToon
                                 if(audioLinkUVMode.floatValue == 0) materialEditor.ShaderProperty(audioLinkUVParams, GetLoc("sOffset") + "|" + GetLoc("sAudioLinkBand") + "|" + GetLoc("sAudioLinkBandBass") + "|" + GetLoc("sAudioLinkBandLowMid") + "|" + GetLoc("sAudioLinkBandHighMid") + "|" + GetLoc("sAudioLinkBandTreble"));
                                 if(audioLinkUVMode.floatValue == 1) materialEditor.ShaderProperty(audioLinkUVParams, GetLoc("sScale") + "|" + GetLoc("sOffset") + "|" + GetLoc("sAudioLinkBand") + "|" + GetLoc("sAudioLinkBandBass") + "|" + GetLoc("sAudioLinkBandLowMid") + "|" + GetLoc("sAudioLinkBandHighMid") + "|" + GetLoc("sAudioLinkBandTreble"));
                                 if(audioLinkUVMode.floatValue == 2) materialEditor.ShaderProperty(audioLinkUVParams, GetLoc("sScale") + "|" + GetLoc("sOffset") + "|" + GetLoc("sAngle") + "|" + GetLoc("sAudioLinkBand") + "|" + GetLoc("sAudioLinkBandBass") + "|" + GetLoc("sAudioLinkBandLowMid") + "|" + GetLoc("sAudioLinkBandHighMid") + "|" + GetLoc("sAudioLinkBandTreble"));
-                                GUILayout.Label(GetLoc("sAudioLinkApplyTo"), EditorStyles.boldLabel);
+                                GUILayout.Label(GetLoc("sApplyTo"), EditorStyles.boldLabel);
                                 EditorGUI.indentLevel++;
                                 if(CheckFeature(shaderSetting.LIL_FEATURE_MAIN2ND))         materialEditor.ShaderProperty(audioLink2Main2nd, GetLoc("sMainColor2nd"));
                                 if(CheckFeature(shaderSetting.LIL_FEATURE_MAIN3RD))         materialEditor.ShaderProperty(audioLink2Main3rd, GetLoc("sMainColor3rd"));
@@ -3047,6 +3133,7 @@ namespace lilToon
                                 furStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             }
                             SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                            if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                         }
                         if(GUILayout.Button("Set Reader"))
                         {
@@ -3083,6 +3170,7 @@ namespace lilToon
                                 furStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             }
                             SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                            if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                         }
                         if(GUILayout.Button("Reset"))
                         {
@@ -3329,7 +3417,7 @@ namespace lilToon
 
                         // Bake Textures
                         EditorGUILayout.BeginVertical(boxOuter);
-                        EditorGUILayout.LabelField(GetLoc("sBakeTextures"), customToggleFont);
+                        EditorGUILayout.LabelField(GetLoc("sBake"), customToggleFont);
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         string materialName = material.name;
                         if(!isGem && CheckFeature(shaderSetting.LIL_FEATURE_SHADOW)                         && GUILayout.Button(GetLoc("sShadow1stColor")))         AutoBakeColoredMask(material, shadowColorTex,       shadowColor,        "Shadow1stColor");
@@ -3385,6 +3473,7 @@ namespace lilToon
                 SetupMultiMaterial(material);
             }
 
+            CopyMainColorProperties();
             SaveEditorSettingTemp();
 	    }
 
@@ -3405,6 +3494,9 @@ namespace lilToon
             beforeExposureLimit = null;
             monochromeLighting = null;
             lilDirectionalLightStrength = null;
+            baseColor = null;
+            baseMap = null;
+            baseColorMap = null;
             triMask = null;
             cull = null;
             srcBlend = null;
@@ -3509,6 +3601,15 @@ namespace lilToon
             shadowBorderColor = null;
             shadowBorderRange = null;
             shadowReceive = null;
+            useBacklight = null;
+            backlightColor = null;
+            backlightColorTex = null;
+            backlightBorder = null;
+            backlightBlur = null;
+            backlightDirectivity = null;
+            backlightViewStrength = null;
+            backlightReceiveShadow = null;
+            backlightBackfaceMask = null;
             useBumpMap = null;
             bumpMap = null;
             bumpScale = null;
@@ -3516,6 +3617,25 @@ namespace lilToon
             bump2ndMap = null;
             bump2ndScale = null;
             bump2ndScaleMask = null;
+            useAnisotropy = null;
+            anisotropyTangentMap = null;
+            anisotropyScale = null;
+            anisotropyScaleMask = null;
+            anisotropyTangentWidth = null;
+            anisotropyBitangentWidth = null;
+            anisotropyShift = null;
+            anisotropyShiftNoiseScale = null;
+            anisotropySpecularStrength = null;
+            anisotropy2ndTangentWidth = null;
+            anisotropy2ndBitangentWidth = null;
+            anisotropy2ndShift = null;
+            anisotropy2ndShiftNoiseScale = null;
+            anisotropy2ndSpecularStrength = null;
+            anisotropyShiftNoiseMask = null;
+            anisotropyShift = null;
+            anisotropy2Reflection = null;
+            anisotropy2MatCap = null;
+            anisotropy2MatCap2nd = null;
             useReflection = null;
             metallic = null;
             metallicGlossMap = null;
@@ -3525,6 +3645,7 @@ namespace lilToon
             reflectionColor = null;
             reflectionColorTex = null;
             applySpecular = null;
+            applySpecularFA = null;
             specularToon = null;
             applyReflection = null;
             reflectionApplyTransparency = null;
@@ -3535,6 +3656,8 @@ namespace lilToon
             matcapBlendMask = null;
             matcapEnableLighting = null;
             matcapShadowMask = null;
+            matcapBackfaceMask = null;
+            matcapBlendUV1 = null;
             matcapVRParallaxStrength = null;
             matcapBlendMode = null;
             matcapMul = null;
@@ -3550,6 +3673,8 @@ namespace lilToon
             matcap2ndBlendMask = null;
             matcap2ndEnableLighting = null;
             matcap2ndShadowMask = null;
+            matcap2ndBackfaceMask = null;
+            matcap2ndBlendUV1 = null;
             matcap2ndVRParallaxStrength = null;
             matcap2ndBlendMode = null;
             matcap2ndMul = null;
@@ -3566,6 +3691,7 @@ namespace lilToon
             rimFresnelPower = null;
             rimEnableLighting = null;
             rimShadowMask = null;
+            rimBackfaceMask = null;
             rimApplyTransparency = null;
             rimDirStrength = null;
             rimDirRange = null;
@@ -3582,6 +3708,7 @@ namespace lilToon
             glitterParams2 = null;
             glitterEnableLighting = null;
             glitterShadowMask = null;
+            glitterBackfaceMask = null;
             glitterApplyTransparency = null;
             glitterVRParallaxStrength = null;
             useEmission = null;
@@ -3748,6 +3875,9 @@ namespace lilToon
             monochromeLighting = FindProperty("_MonochromeLighting", props);
             lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props);
             lightDirectionOverride = FindProperty("_LightDirectionOverride", props);
+            baseColor = FindProperty("_BaseColor", props);
+            baseMap = FindProperty("_BaseMap", props);
+            baseColorMap = FindProperty("_BaseColorMap", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
                 cull = FindProperty("_Cull", props);
                 srcBlend = FindProperty("_SrcBlend", props);
@@ -3862,6 +3992,7 @@ namespace lilToon
                 backlightDirectivity = FindProperty("_BacklightDirectivity", props);
                 backlightViewStrength = FindProperty("_BacklightViewStrength", props);
                 backlightReceiveShadow = FindProperty("_BacklightReceiveShadow", props);
+                backlightBackfaceMask = FindProperty("_BacklightBackfaceMask", props);
             // Outline
             if(isOutl)
             {
@@ -3909,6 +4040,24 @@ namespace lilToon
                 bump2ndMap = FindProperty("_Bump2ndMap", props);
                 bump2ndScale = FindProperty("_Bump2ndScale", props);
                 bump2ndScaleMask = FindProperty("_Bump2ndScaleMask", props);
+            useAnisotropy = FindProperty("_UseAnisotropy", props);
+                anisotropyTangentMap = FindProperty("_AnisotropyTangentMap", props);
+                anisotropyScale = FindProperty("_AnisotropyScale", props);
+                anisotropyScaleMask = FindProperty("_AnisotropyScaleMask", props);
+                anisotropyTangentWidth = FindProperty("_AnisotropyTangentWidth", props);
+                anisotropyBitangentWidth = FindProperty("_AnisotropyBitangentWidth", props);
+                anisotropyShift = FindProperty("_AnisotropyShift", props);
+                anisotropyShiftNoiseScale = FindProperty("_AnisotropyShiftNoiseScale", props);
+                anisotropySpecularStrength = FindProperty("_AnisotropySpecularStrength", props);
+                anisotropy2ndTangentWidth = FindProperty("_Anisotropy2ndTangentWidth", props);
+                anisotropy2ndBitangentWidth = FindProperty("_Anisotropy2ndBitangentWidth", props);
+                anisotropy2ndShift = FindProperty("_Anisotropy2ndShift", props);
+                anisotropy2ndShiftNoiseScale = FindProperty("_Anisotropy2ndShiftNoiseScale", props);
+                anisotropy2ndSpecularStrength = FindProperty("_Anisotropy2ndSpecularStrength", props);
+                anisotropyShiftNoiseMask = FindProperty("_AnisotropyShiftNoiseMask", props);
+                anisotropy2Reflection = FindProperty("_Anisotropy2Reflection", props);
+                anisotropy2MatCap = FindProperty("_Anisotropy2MatCap", props);
+                anisotropy2MatCap2nd = FindProperty("_Anisotropy2MatCap2nd", props);
             useReflection = FindProperty("_UseReflection", props);
                 smoothness = FindProperty("_Smoothness", props);
                 smoothnessTex = FindProperty("_SmoothnessTex", props);
@@ -3918,34 +4067,41 @@ namespace lilToon
                 reflectionColor = FindProperty("_ReflectionColor", props);
                 reflectionColorTex = FindProperty("_ReflectionColorTex", props);
                 applySpecular = FindProperty("_ApplySpecular", props);
+                applySpecularFA = FindProperty("_ApplySpecularFA", props);
                 specularToon = FindProperty("_SpecularToon", props);
                 applyReflection = FindProperty("_ApplyReflection", props);
                 reflectionApplyTransparency = FindProperty("_ReflectionApplyTransparency", props);
             useMatCap = FindProperty("_UseMatCap", props);
                 matcapTex = FindProperty("_MatCapTex", props);
                 matcapColor = FindProperty("_MatCapColor", props);
+                matcapBlendUV1 = FindProperty("_MatCapBlendUV1", props);
+                matcapZRotCancel = FindProperty("_MatCapZRotCancel", props);
+                matcapPerspective = FindProperty("_MatCapPerspective", props);
+                matcapVRParallaxStrength = FindProperty("_MatCapVRParallaxStrength", props);
                 matcapBlend = FindProperty("_MatCapBlend", props);
                 matcapBlendMask = FindProperty("_MatCapBlendMask", props);
                 matcapEnableLighting = FindProperty("_MatCapEnableLighting", props);
                 matcapShadowMask = FindProperty("_MatCapShadowMask", props);
-                matcapVRParallaxStrength = FindProperty("_MatCapVRParallaxStrength", props);
+                matcapBackfaceMask = FindProperty("_MatCapBackfaceMask", props);
                 matcapBlendMode = FindProperty("_MatCapBlendMode", props);
                 matcapApplyTransparency = FindProperty("_MatCapApplyTransparency", props);
-                matcapZRotCancel = FindProperty("_MatCapZRotCancel", props);
                 matcapCustomNormal = FindProperty("_MatCapCustomNormal", props);
                 matcapBumpMap = FindProperty("_MatCapBumpMap", props);
                 matcapBumpScale = FindProperty("_MatCapBumpScale", props);
             useMatCap2nd = FindProperty("_UseMatCap2nd", props);
                 matcap2ndTex = FindProperty("_MatCap2ndTex", props);
                 matcap2ndColor = FindProperty("_MatCap2ndColor", props);
+                matcap2ndBlendUV1 = FindProperty("_MatCap2ndBlendUV1", props);
+                matcap2ndZRotCancel = FindProperty("_MatCap2ndZRotCancel", props);
+                matcap2ndPerspective = FindProperty("_MatCap2ndPerspective", props);
+                matcap2ndVRParallaxStrength = FindProperty("_MatCap2ndVRParallaxStrength", props);
                 matcap2ndBlend = FindProperty("_MatCap2ndBlend", props);
                 matcap2ndBlendMask = FindProperty("_MatCap2ndBlendMask", props);
                 matcap2ndEnableLighting = FindProperty("_MatCap2ndEnableLighting", props);
                 matcap2ndShadowMask = FindProperty("_MatCap2ndShadowMask", props);
-                matcap2ndVRParallaxStrength = FindProperty("_MatCap2ndVRParallaxStrength", props);
+                matcap2ndBackfaceMask = FindProperty("_MatCap2ndBackfaceMask", props);
                 matcap2ndBlendMode = FindProperty("_MatCap2ndBlendMode", props);
                 matcap2ndApplyTransparency = FindProperty("_MatCap2ndApplyTransparency", props);
-                matcap2ndZRotCancel = FindProperty("_MatCap2ndZRotCancel", props);
                 matcap2ndCustomNormal = FindProperty("_MatCap2ndCustomNormal", props);
                 matcap2ndBumpMap = FindProperty("_MatCap2ndBumpMap", props);
                 matcap2ndBumpScale = FindProperty("_MatCap2ndBumpScale", props);
@@ -3957,6 +4113,7 @@ namespace lilToon
                 rimFresnelPower = FindProperty("_RimFresnelPower", props);
                 rimEnableLighting = FindProperty("_RimEnableLighting", props);
                 rimShadowMask = FindProperty("_RimShadowMask", props);
+                rimBackfaceMask = FindProperty("_RimBackfaceMask", props);
                 rimApplyTransparency = FindProperty("_RimApplyTransparency", props);
                 rimDirStrength = FindProperty("_RimDirStrength", props);
                 rimDirRange = FindProperty("_RimDirRange", props);
@@ -3971,6 +4128,7 @@ namespace lilToon
                 glitterMainStrength = FindProperty("_GlitterMainStrength", props);
                 glitterEnableLighting = FindProperty("_GlitterEnableLighting", props);
                 glitterShadowMask = FindProperty("_GlitterShadowMask", props);
+                glitterBackfaceMask = FindProperty("_GlitterBackfaceMask", props);
                 glitterApplyTransparency = FindProperty("_GlitterApplyTransparency", props);
                 glitterParams1 = FindProperty("_GlitterParams1", props);
                 glitterParams2 = FindProperty("_GlitterParams2", props);
@@ -4068,6 +4226,9 @@ namespace lilToon
             monochromeLighting = FindProperty("_MonochromeLighting", props);
             lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props);
             lightDirectionOverride = FindProperty("_LightDirectionOverride", props);
+            baseColor = FindProperty("_BaseColor", props);
+            baseMap = FindProperty("_BaseMap", props);
+            baseColorMap = FindProperty("_BaseColorMap", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
                 cull = FindProperty("_Cull", props);
                 srcBlend = FindProperty("_SrcBlend", props);
@@ -4178,6 +4339,9 @@ namespace lilToon
             monochromeLighting = FindProperty("_MonochromeLighting", props);
             lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props);
             lightDirectionOverride = FindProperty("_LightDirectionOverride", props);
+            baseColor = FindProperty("_BaseColor", props);
+            baseMap = FindProperty("_BaseMap", props);
+            baseColorMap = FindProperty("_BaseColorMap", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
                 cull = FindProperty("_Cull", props);
                 srcBlend = FindProperty("_SrcBlend", props);
@@ -4210,31 +4374,55 @@ namespace lilToon
                 bump2ndMap = FindProperty("_Bump2ndMap", props);
                 bump2ndScale = FindProperty("_Bump2ndScale", props);
                 bump2ndScaleMask = FindProperty("_Bump2ndScaleMask", props);
+            useAnisotropy = FindProperty("_UseAnisotropy", props);
+                anisotropyTangentMap = FindProperty("_AnisotropyTangentMap", props);
+                anisotropyScale = FindProperty("_AnisotropyScale", props);
+                anisotropyScaleMask = FindProperty("_AnisotropyScaleMask", props);
+                anisotropyTangentWidth = FindProperty("_AnisotropyTangentWidth", props);
+                anisotropyBitangentWidth = FindProperty("_AnisotropyBitangentWidth", props);
+                anisotropyShift = FindProperty("_AnisotropyShift", props);
+                anisotropyShiftNoiseScale = FindProperty("_AnisotropyShiftNoiseScale", props);
+                anisotropySpecularStrength = FindProperty("_AnisotropySpecularStrength", props);
+                anisotropy2ndTangentWidth = FindProperty("_Anisotropy2ndTangentWidth", props);
+                anisotropy2ndBitangentWidth = FindProperty("_Anisotropy2ndBitangentWidth", props);
+                anisotropy2ndShift = FindProperty("_Anisotropy2ndShift", props);
+                anisotropy2ndShiftNoiseScale = FindProperty("_Anisotropy2ndShiftNoiseScale", props);
+                anisotropy2ndSpecularStrength = FindProperty("_Anisotropy2ndSpecularStrength", props);
+                anisotropyShiftNoiseMask = FindProperty("_AnisotropyShiftNoiseMask", props);
+                anisotropy2Reflection = FindProperty("_Anisotropy2Reflection", props);
+                anisotropy2MatCap = FindProperty("_Anisotropy2MatCap", props);
+                anisotropy2MatCap2nd = FindProperty("_Anisotropy2MatCap2nd", props);
             useMatCap = FindProperty("_UseMatCap", props);
                 matcapTex = FindProperty("_MatCapTex", props);
                 matcapColor = FindProperty("_MatCapColor", props);
+                matcapBlendUV1 = FindProperty("_MatCapBlendUV1", props);
+                matcapZRotCancel = FindProperty("_MatCapZRotCancel", props);
+                matcapPerspective = FindProperty("_MatCapPerspective", props);
+                matcapVRParallaxStrength = FindProperty("_MatCapVRParallaxStrength", props);
                 matcapBlend = FindProperty("_MatCapBlend", props);
                 matcapBlendMask = FindProperty("_MatCapBlendMask", props);
                 matcapEnableLighting = FindProperty("_MatCapEnableLighting", props);
                 matcapShadowMask = FindProperty("_MatCapShadowMask", props);
-                matcapVRParallaxStrength = FindProperty("_MatCapVRParallaxStrength", props);
+                matcapBackfaceMask = FindProperty("_MatCapBackfaceMask", props);
                 matcapBlendMode = FindProperty("_MatCapBlendMode", props);
                 matcapApplyTransparency = FindProperty("_MatCapApplyTransparency", props);
-                matcapZRotCancel = FindProperty("_MatCapZRotCancel", props);
                 matcapCustomNormal = FindProperty("_MatCapCustomNormal", props);
                 matcapBumpMap = FindProperty("_MatCapBumpMap", props);
                 matcapBumpScale = FindProperty("_MatCapBumpScale", props);
             useMatCap2nd = FindProperty("_UseMatCap2nd", props);
                 matcap2ndTex = FindProperty("_MatCap2ndTex", props);
                 matcap2ndColor = FindProperty("_MatCap2ndColor", props);
+                matcap2ndBlendUV1 = FindProperty("_MatCap2ndBlendUV1", props);
+                matcap2ndZRotCancel = FindProperty("_MatCap2ndZRotCancel", props);
+                matcap2ndPerspective = FindProperty("_MatCap2ndPerspective", props);
+                matcap2ndVRParallaxStrength = FindProperty("_MatCap2ndVRParallaxStrength", props);
                 matcap2ndBlend = FindProperty("_MatCap2ndBlend", props);
                 matcap2ndBlendMask = FindProperty("_MatCap2ndBlendMask", props);
                 matcap2ndEnableLighting = FindProperty("_MatCap2ndEnableLighting", props);
                 matcap2ndShadowMask = FindProperty("_MatCap2ndShadowMask", props);
-                matcap2ndVRParallaxStrength = FindProperty("_MatCap2ndVRParallaxStrength", props);
+                matcap2ndBackfaceMask = FindProperty("_MatCap2ndBackfaceMask", props);
                 matcap2ndBlendMode = FindProperty("_MatCap2ndBlendMode", props);
                 matcap2ndApplyTransparency = FindProperty("_MatCap2ndApplyTransparency", props);
-                matcap2ndZRotCancel = FindProperty("_MatCap2ndZRotCancel", props);
                 matcap2ndCustomNormal = FindProperty("_MatCap2ndCustomNormal", props);
                 matcap2ndBumpMap = FindProperty("_MatCap2ndBumpMap", props);
                 matcap2ndBumpScale = FindProperty("_MatCap2ndBumpScale", props);
@@ -4246,6 +4434,7 @@ namespace lilToon
                 rimFresnelPower = FindProperty("_RimFresnelPower", props);
                 rimEnableLighting = FindProperty("_RimEnableLighting", props);
                 rimShadowMask = FindProperty("_RimShadowMask", props);
+                rimBackfaceMask = FindProperty("_RimBackfaceMask", props);
                 rimApplyTransparency = FindProperty("_RimApplyTransparency", props);
                 rimDirStrength = FindProperty("_RimDirStrength", props);
                 rimDirRange = FindProperty("_RimDirRange", props);
@@ -4260,6 +4449,7 @@ namespace lilToon
                 glitterMainStrength = FindProperty("_GlitterMainStrength", props);
                 glitterEnableLighting = FindProperty("_GlitterEnableLighting", props);
                 glitterShadowMask = FindProperty("_GlitterShadowMask", props);
+                glitterBackfaceMask = FindProperty("_GlitterBackfaceMask", props);
                 glitterApplyTransparency = FindProperty("_GlitterApplyTransparency", props);
                 glitterParams1 = FindProperty("_GlitterParams1", props);
                 glitterParams2 = FindProperty("_GlitterParams2", props);
@@ -4333,6 +4523,9 @@ namespace lilToon
         private void LoadFakeShadowProperties(MaterialProperty[] props)
         {
             invisible = FindProperty("_Invisible", props);
+            baseColor = FindProperty("_BaseColor", props);
+            baseMap = FindProperty("_BaseMap", props);
+            baseColorMap = FindProperty("_BaseColorMap", props);
                 cull = FindProperty("_Cull", props);
                 srcBlend = FindProperty("_SrcBlend", props);
                 dstBlend = FindProperty("_DstBlend", props);
@@ -4377,6 +4570,9 @@ namespace lilToon
             monochromeLighting = FindProperty("_MonochromeLighting", props);
             lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props);
             lightDirectionOverride = FindProperty("_LightDirectionOverride", props);
+            baseColor = FindProperty("_BaseColor", props);
+            baseMap = FindProperty("_BaseMap", props);
+            baseColorMap = FindProperty("_BaseColorMap", props);
             mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props);
             triMask = FindProperty("_TriMask", props);
                 cull = FindProperty("_Cull", props);
@@ -4460,6 +4656,7 @@ namespace lilToon
             }
             useMatCap = FindProperty("_UseMatCap", props);
                 matcapTex = FindProperty("_MatCapTex", props);
+                matcapBlendUV1 = FindProperty("_MatCapBlendUV1", props);
                 matcapVRParallaxStrength = FindProperty("_MatCapVRParallaxStrength", props);
                 matcapMul = FindProperty("_MatCapMul", props);
                 matcapZRotCancel = FindProperty("_MatCapZRotCancel", props);
@@ -4483,6 +4680,13 @@ namespace lilToon
             usePOM = FindProperty("_UsePOM", props);
             useClippingCanceller = FindProperty("_UseClippingCanceller", props);
             asOverlay = FindProperty("_AsOverlay", props);
+        }
+        
+        private void CopyMainColorProperties()
+        {
+            if(mainColor != null && baseColor != null) baseColor.colorValue = mainColor.colorValue;
+            if(mainTex != null && baseMap != null) baseMap.textureValue = mainTex.textureValue;
+            if(mainTex != null && baseColorMap != null) baseColorMap.textureValue = mainTex.textureValue;
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -4765,6 +4969,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_EMISSION_GRADATION = false;
                 shaderSetting.LIL_FEATURE_NORMAL_1ST = true;
                 shaderSetting.LIL_FEATURE_NORMAL_2ND = false;
+                shaderSetting.LIL_FEATURE_ANISOTROPY = false;
                 shaderSetting.LIL_FEATURE_REFLECTION = false;
                 shaderSetting.LIL_FEATURE_MATCAP = true;
                 shaderSetting.LIL_FEATURE_MATCAP_2ND = false;
@@ -4837,6 +5042,7 @@ namespace lilToon
             shaderSetting.LIL_FEATURE_EMISSION_GRADATION = false;
             shaderSetting.LIL_FEATURE_NORMAL_1ST = false;
             shaderSetting.LIL_FEATURE_NORMAL_2ND = false;
+            shaderSetting.LIL_FEATURE_ANISOTROPY = false;
             shaderSetting.LIL_FEATURE_REFLECTION = false;
             shaderSetting.LIL_FEATURE_MATCAP = false;
             shaderSetting.LIL_FEATURE_MATCAP_2ND = false;
@@ -4985,6 +5191,7 @@ namespace lilToon
                 sb.Append("#define LIL_FEATURE_NORMAL_2ND\r\n");
                 if(shaderSetting.LIL_FEATURE_TEX_NORMAL_MASK) sb.Append("#define LIL_FEATURE_TEX_NORMAL_MASK\r\n");
             }
+            if(shaderSetting.LIL_FEATURE_ANISOTROPY) sb.Append("#define LIL_FEATURE_ANISOTROPY\r\n");
             if(shaderSetting.LIL_FEATURE_REFLECTION)
             {
                 sb.Append("#define LIL_FEATURE_REFLECTION\r\n");
@@ -5157,6 +5364,9 @@ namespace lilToon
                 lilToggleGUI(GetLoc("sSettingTexNormalMask"), ref shaderSetting.LIL_FEATURE_TEX_NORMAL_MASK);
                 EditorGUI.indentLevel--;
             }
+            DrawLine();
+
+            lilToggleGUI(GetLoc("sSettingAnisotropy"), ref shaderSetting.LIL_FEATURE_ANISOTROPY);
             DrawLine();
 
             lilToggleGUI(GetLoc("sSettingReflection"), ref shaderSetting.LIL_FEATURE_REFLECTION);
@@ -5852,16 +6062,6 @@ namespace lilToon
                         CopyProperty(shadowColorTex);
                         CopyProperty(shadow2ndColorTex);
                     break;
-                case lilPropertyBlock.Backlight:
-                        CopyProperty(useBacklight);
-                        CopyProperty(backlightColor);
-                        CopyProperty(backlightBorder);
-                        CopyProperty(backlightBlur);
-                        CopyProperty(backlightDirectivity);
-                        CopyProperty(backlightViewStrength);
-                        CopyProperty(backlightReceiveShadow);
-                        CopyProperty(backlightColorTex);
-                    break;
                 case lilPropertyBlock.Emission:
                         CopyProperty(useEmission);
                         CopyProperty(emissionColor);
@@ -5925,9 +6125,27 @@ namespace lilToon
                         CopyProperty(bumpScale);
                         CopyProperty(useBump2ndMap);
                         CopyProperty(bump2ndScale);
+                        CopyProperty(useAnisotropy);
+                        CopyProperty(anisotropyScale);
+                        CopyProperty(anisotropyTangentWidth);
+                        CopyProperty(anisotropyBitangentWidth);
+                        CopyProperty(anisotropyShift);
+                        CopyProperty(anisotropyShiftNoiseScale);
+                        CopyProperty(anisotropySpecularStrength);
+                        CopyProperty(anisotropy2ndTangentWidth);
+                        CopyProperty(anisotropy2ndBitangentWidth);
+                        CopyProperty(anisotropy2ndShift);
+                        CopyProperty(anisotropy2ndShiftNoiseScale);
+                        CopyProperty(anisotropy2ndSpecularStrength);
+                        CopyProperty(anisotropy2Reflection);
+                        CopyProperty(anisotropy2MatCap);
+                        CopyProperty(anisotropy2MatCap2nd);
                         CopyProperty(bumpMap);
                         CopyProperty(bump2ndMap);
                         CopyProperty(bump2ndScaleMask);
+                        CopyProperty(anisotropyTangentMap);
+                        CopyProperty(anisotropyScaleMask);
+                        CopyProperty(anisotropyShiftNoiseMask);
                     break;
                 case lilPropertyBlock.NormalMap1st:
                         CopyProperty(useBumpMap);
@@ -5940,6 +6158,26 @@ namespace lilToon
                         CopyProperty(bump2ndMap);
                         CopyProperty(bump2ndScaleMask);
                     break;
+                case lilPropertyBlock.Anisotropy:
+                        CopyProperty(useAnisotropy);
+                        CopyProperty(anisotropyScale);
+                        CopyProperty(anisotropyTangentWidth);
+                        CopyProperty(anisotropyBitangentWidth);
+                        CopyProperty(anisotropyShift);
+                        CopyProperty(anisotropyShiftNoiseScale);
+                        CopyProperty(anisotropySpecularStrength);
+                        CopyProperty(anisotropy2ndTangentWidth);
+                        CopyProperty(anisotropy2ndBitangentWidth);
+                        CopyProperty(anisotropy2ndShift);
+                        CopyProperty(anisotropy2ndShiftNoiseScale);
+                        CopyProperty(anisotropy2ndSpecularStrength);
+                        CopyProperty(anisotropy2Reflection);
+                        CopyProperty(anisotropy2MatCap);
+                        CopyProperty(anisotropy2MatCap2nd);
+                        CopyProperty(anisotropyTangentMap);
+                        CopyProperty(anisotropyScaleMask);
+                        CopyProperty(anisotropyShiftNoiseMask);
+                    break;
                 case lilPropertyBlock.Reflections:
                         CopyProperty(useReflection);
                         CopyProperty(metallic);
@@ -5947,27 +6185,38 @@ namespace lilToon
                         CopyProperty(reflectance);
                         CopyProperty(reflectionColor);
                         CopyProperty(applySpecular);
+                        CopyProperty(applySpecularFA);
                         CopyProperty(specularToon);
                         CopyProperty(applyReflection);
                         CopyProperty(reflectionApplyTransparency);
                         CopyProperty(useMatCap);
                         CopyProperty(matcapColor);
+                        CopyProperty(matcapBlendUV1);
+                        CopyProperty(matcapZRotCancel);
+                        CopyProperty(matcapPerspective);
+                        CopyProperty(matcapVRParallaxStrength);
                         CopyProperty(matcapBlend);
                         CopyProperty(matcapEnableLighting);
+                        CopyProperty(matcapShadowMask);
+                        CopyProperty(matcapBackfaceMask);
                         CopyProperty(matcapBlendMode);
                         CopyProperty(matcapMul);
                         CopyProperty(matcapApplyTransparency);
-                        CopyProperty(matcapZRotCancel);
                         CopyProperty(matcapCustomNormal);
                         CopyProperty(matcapBumpScale);
                         CopyProperty(useMatCap2nd);
                         CopyProperty(matcap2ndColor);
+                        CopyProperty(matcap2ndBlendUV1);
+                        CopyProperty(matcap2ndZRotCancel);
+                        CopyProperty(matcap2ndPerspective);
+                        CopyProperty(matcap2ndVRParallaxStrength);
                         CopyProperty(matcap2ndBlend);
                         CopyProperty(matcap2ndEnableLighting);
+                        CopyProperty(matcap2ndShadowMask);
+                        CopyProperty(matcap2ndBackfaceMask);
                         CopyProperty(matcap2ndBlendMode);
                         CopyProperty(matcap2ndMul);
                         CopyProperty(matcap2ndApplyTransparency);
-                        CopyProperty(matcap2ndZRotCancel);
                         CopyProperty(matcap2ndCustomNormal);
                         CopyProperty(matcap2ndBumpScale);
                         CopyProperty(useRim);
@@ -5977,6 +6226,7 @@ namespace lilToon
                         CopyProperty(rimFresnelPower);
                         CopyProperty(rimEnableLighting);
                         CopyProperty(rimShadowMask);
+                        CopyProperty(rimBackfaceMask);
                         CopyProperty(rimApplyTransparency);
                         CopyProperty(rimDirStrength);
                         CopyProperty(rimDirRange);
@@ -5992,8 +6242,17 @@ namespace lilToon
                         CopyProperty(glitterParams2);
                         CopyProperty(glitterEnableLighting);
                         CopyProperty(glitterShadowMask);
+                        CopyProperty(glitterBackfaceMask);
                         CopyProperty(glitterApplyTransparency);
                         CopyProperty(glitterVRParallaxStrength);
+                        CopyProperty(useBacklight);
+                        CopyProperty(backlightColor);
+                        CopyProperty(backlightBorder);
+                        CopyProperty(backlightBlur);
+                        CopyProperty(backlightDirectivity);
+                        CopyProperty(backlightViewStrength);
+                        CopyProperty(backlightReceiveShadow);
+                        CopyProperty(backlightBackfaceMask);
                         CopyProperty(gemChromaticAberration);
                         CopyProperty(gemEnvContrast);
                         CopyProperty(gemEnvColor);
@@ -6013,6 +6272,7 @@ namespace lilToon
                         CopyProperty(matcap2ndBumpMap);
                         CopyProperty(rimColorTex);
                         CopyProperty(glitterColorTex);
+                        CopyProperty(backlightColorTex);
                     break;
                 case lilPropertyBlock.Reflection:
                         CopyProperty(useReflection);
@@ -6021,6 +6281,7 @@ namespace lilToon
                         CopyProperty(reflectance);
                         CopyProperty(reflectionColor);
                         CopyProperty(applySpecular);
+                        CopyProperty(applySpecularFA);
                         CopyProperty(specularToon);
                         CopyProperty(applyReflection);
                         CopyProperty(reflectionApplyTransparency);
@@ -6031,14 +6292,17 @@ namespace lilToon
                 case lilPropertyBlock.MatCap1st:
                         CopyProperty(useMatCap);
                         CopyProperty(matcapColor);
+                        CopyProperty(matcapBlendUV1);
+                        CopyProperty(matcapZRotCancel);
+                        CopyProperty(matcapPerspective);
+                        CopyProperty(matcapVRParallaxStrength);
                         CopyProperty(matcapBlend);
                         CopyProperty(matcapEnableLighting);
                         CopyProperty(matcapShadowMask);
-                        CopyProperty(matcapVRParallaxStrength);
+                        CopyProperty(matcapBackfaceMask);
                         CopyProperty(matcapBlendMode);
                         CopyProperty(matcapMul);
                         CopyProperty(matcapApplyTransparency);
-                        CopyProperty(matcapZRotCancel);
                         CopyProperty(matcapCustomNormal);
                         CopyProperty(matcapBumpScale);
                         CopyProperty(matcapTex);
@@ -6048,14 +6312,17 @@ namespace lilToon
                 case lilPropertyBlock.MatCap2nd:
                         CopyProperty(useMatCap2nd);
                         CopyProperty(matcap2ndColor);
+                        CopyProperty(matcap2ndBlendUV1);
+                        CopyProperty(matcap2ndZRotCancel);
+                        CopyProperty(matcap2ndPerspective);
+                        CopyProperty(matcap2ndVRParallaxStrength);
                         CopyProperty(matcap2ndBlend);
                         CopyProperty(matcap2ndEnableLighting);
                         CopyProperty(matcap2ndShadowMask);
-                        CopyProperty(matcap2ndVRParallaxStrength);
+                        CopyProperty(matcap2ndBackfaceMask);
                         CopyProperty(matcap2ndBlendMode);
                         CopyProperty(matcap2ndMul);
                         CopyProperty(matcap2ndApplyTransparency);
-                        CopyProperty(matcap2ndZRotCancel);
                         CopyProperty(matcap2ndCustomNormal);
                         CopyProperty(matcap2ndBumpScale);
                         CopyProperty(matcap2ndTex);
@@ -6070,6 +6337,7 @@ namespace lilToon
                         CopyProperty(rimFresnelPower);
                         CopyProperty(rimEnableLighting);
                         CopyProperty(rimShadowMask);
+                        CopyProperty(rimBackfaceMask);
                         CopyProperty(rimApplyTransparency);
                         CopyProperty(rimDirStrength);
                         CopyProperty(rimDirRange);
@@ -6088,9 +6356,21 @@ namespace lilToon
                         CopyProperty(glitterParams2);
                         CopyProperty(glitterEnableLighting);
                         CopyProperty(glitterShadowMask);
+                        CopyProperty(glitterBackfaceMask);
                         CopyProperty(glitterApplyTransparency);
                         CopyProperty(glitterVRParallaxStrength);
                         CopyProperty(glitterColorTex);
+                    break;
+                case lilPropertyBlock.Backlight:
+                        CopyProperty(useBacklight);
+                        CopyProperty(backlightColor);
+                        CopyProperty(backlightBorder);
+                        CopyProperty(backlightBlur);
+                        CopyProperty(backlightDirectivity);
+                        CopyProperty(backlightViewStrength);
+                        CopyProperty(backlightReceiveShadow);
+                        CopyProperty(backlightBackfaceMask);
+                        CopyProperty(backlightColorTex);
                     break;
                 case lilPropertyBlock.Gem:
                         CopyProperty(gemChromaticAberration);
@@ -6470,19 +6750,6 @@ namespace lilToon
                             PasteProperty(ref shadow2ndColorTex);
                         }
                     break;
-                case lilPropertyBlock.Backlight:
-                        PasteProperty(ref useBacklight);
-                        PasteProperty(ref backlightColor);
-                        PasteProperty(ref backlightBorder);
-                        PasteProperty(ref backlightBlur);
-                        PasteProperty(ref backlightDirectivity);
-                        PasteProperty(ref backlightViewStrength);
-                        PasteProperty(ref backlightReceiveShadow);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref backlightColorTex);
-                        }
-                    break;
                 case lilPropertyBlock.Emission:
                         PasteProperty(ref useEmission);
                         PasteProperty(ref emissionColor);
@@ -6555,11 +6822,29 @@ namespace lilToon
                         PasteProperty(ref bumpScale);
                         PasteProperty(ref useBump2ndMap);
                         PasteProperty(ref bump2ndScale);
+                        PasteProperty(ref useAnisotropy);
+                        PasteProperty(ref anisotropyScale);
+                        PasteProperty(ref anisotropyTangentWidth);
+                        PasteProperty(ref anisotropyBitangentWidth);
+                        PasteProperty(ref anisotropyShift);
+                        PasteProperty(ref anisotropyShiftNoiseScale);
+                        PasteProperty(ref anisotropySpecularStrength);
+                        PasteProperty(ref anisotropy2ndTangentWidth);
+                        PasteProperty(ref anisotropy2ndBitangentWidth);
+                        PasteProperty(ref anisotropy2ndShift);
+                        PasteProperty(ref anisotropy2ndShiftNoiseScale);
+                        PasteProperty(ref anisotropy2ndSpecularStrength);
+                        PasteProperty(ref anisotropy2Reflection);
+                        PasteProperty(ref anisotropy2MatCap);
+                        PasteProperty(ref anisotropy2MatCap2nd);
                         if(shouldCopyTex)
                         {
                             PasteProperty(ref bumpMap);
                             PasteProperty(ref bump2ndMap);
                             PasteProperty(ref bump2ndScaleMask);
+                            PasteProperty(ref anisotropyTangentMap);
+                            PasteProperty(ref anisotropyScaleMask);
+                            PasteProperty(ref anisotropyShiftNoiseMask);
                         }
                     break;
                 case lilPropertyBlock.NormalMap1st:
@@ -6579,6 +6864,29 @@ namespace lilToon
                             PasteProperty(ref bump2ndScaleMask);
                         }
                     break;
+                case lilPropertyBlock.Anisotropy:
+                        PasteProperty(ref useAnisotropy);
+                        PasteProperty(ref anisotropyScale);
+                        PasteProperty(ref anisotropyTangentWidth);
+                        PasteProperty(ref anisotropyBitangentWidth);
+                        PasteProperty(ref anisotropyShift);
+                        PasteProperty(ref anisotropyShiftNoiseScale);
+                        PasteProperty(ref anisotropySpecularStrength);
+                        PasteProperty(ref anisotropy2ndTangentWidth);
+                        PasteProperty(ref anisotropy2ndBitangentWidth);
+                        PasteProperty(ref anisotropy2ndShift);
+                        PasteProperty(ref anisotropy2ndShiftNoiseScale);
+                        PasteProperty(ref anisotropy2ndSpecularStrength);
+                        PasteProperty(ref anisotropy2Reflection);
+                        PasteProperty(ref anisotropy2MatCap);
+                        PasteProperty(ref anisotropy2MatCap2nd);
+                        if(shouldCopyTex)
+                        {
+                            PasteProperty(ref anisotropyTangentMap);
+                            PasteProperty(ref anisotropyScaleMask);
+                            PasteProperty(ref anisotropyShiftNoiseMask);
+                        }
+                    break;
                 case lilPropertyBlock.Reflections:
                         PasteProperty(ref useReflection);
                         PasteProperty(ref metallic);
@@ -6586,27 +6894,38 @@ namespace lilToon
                         PasteProperty(ref reflectance);
                         PasteProperty(ref reflectionColor);
                         PasteProperty(ref applySpecular);
+                        PasteProperty(ref applySpecularFA);
                         PasteProperty(ref specularToon);
                         PasteProperty(ref applyReflection);
                         PasteProperty(ref reflectionApplyTransparency);
                         PasteProperty(ref useMatCap);
                         PasteProperty(ref matcapColor);
+                        PasteProperty(ref matcapBlendUV1);
+                        PasteProperty(ref matcapZRotCancel);
+                        PasteProperty(ref matcapPerspective);
+                        PasteProperty(ref matcapVRParallaxStrength);
                         PasteProperty(ref matcapBlend);
                         PasteProperty(ref matcapEnableLighting);
+                        PasteProperty(ref matcapShadowMask);
+                        PasteProperty(ref matcapBackfaceMask);
                         PasteProperty(ref matcapBlendMode);
                         PasteProperty(ref matcapMul);
                         PasteProperty(ref matcapApplyTransparency);
-                        PasteProperty(ref matcapZRotCancel);
                         PasteProperty(ref matcapCustomNormal);
                         PasteProperty(ref matcapBumpScale);
                         PasteProperty(ref useMatCap2nd);
                         PasteProperty(ref matcap2ndColor);
+                        PasteProperty(ref matcap2ndBlendUV1);
+                        PasteProperty(ref matcap2ndZRotCancel);
+                        PasteProperty(ref matcap2ndPerspective);
+                        PasteProperty(ref matcap2ndVRParallaxStrength);
                         PasteProperty(ref matcap2ndBlend);
                         PasteProperty(ref matcap2ndEnableLighting);
+                        PasteProperty(ref matcap2ndShadowMask);
+                        PasteProperty(ref matcap2ndBackfaceMask);
                         PasteProperty(ref matcap2ndBlendMode);
                         PasteProperty(ref matcap2ndMul);
                         PasteProperty(ref matcap2ndApplyTransparency);
-                        PasteProperty(ref matcap2ndZRotCancel);
                         PasteProperty(ref matcap2ndCustomNormal);
                         PasteProperty(ref matcap2ndBumpScale);
                         PasteProperty(ref useRim);
@@ -6616,6 +6935,7 @@ namespace lilToon
                         PasteProperty(ref rimFresnelPower);
                         PasteProperty(ref rimEnableLighting);
                         PasteProperty(ref rimShadowMask);
+                        PasteProperty(ref rimBackfaceMask);
                         PasteProperty(ref rimApplyTransparency);
                         PasteProperty(ref rimDirStrength);
                         PasteProperty(ref rimDirRange);
@@ -6631,8 +6951,17 @@ namespace lilToon
                         PasteProperty(ref glitterParams2);
                         PasteProperty(ref glitterEnableLighting);
                         PasteProperty(ref glitterShadowMask);
+                        PasteProperty(ref glitterBackfaceMask);
                         PasteProperty(ref glitterApplyTransparency);
                         PasteProperty(ref glitterVRParallaxStrength);
+                        PasteProperty(ref useBacklight);
+                        PasteProperty(ref backlightColor);
+                        PasteProperty(ref backlightBorder);
+                        PasteProperty(ref backlightBlur);
+                        PasteProperty(ref backlightDirectivity);
+                        PasteProperty(ref backlightViewStrength);
+                        PasteProperty(ref backlightReceiveShadow);
+                        PasteProperty(ref backlightBackfaceMask);
                         PasteProperty(ref gemChromaticAberration);
                         PasteProperty(ref gemEnvContrast);
                         PasteProperty(ref gemEnvColor);
@@ -6654,6 +6983,7 @@ namespace lilToon
                             PasteProperty(ref matcap2ndBumpMap);
                             PasteProperty(ref rimColorTex);
                             PasteProperty(ref glitterColorTex);
+                            PasteProperty(ref backlightColorTex);
                         }
                     break;
                 case lilPropertyBlock.Reflection:
@@ -6663,6 +6993,7 @@ namespace lilToon
                         PasteProperty(ref reflectance);
                         PasteProperty(ref reflectionColor);
                         PasteProperty(ref applySpecular);
+                        PasteProperty(ref applySpecularFA);
                         PasteProperty(ref specularToon);
                         PasteProperty(ref applyReflection);
                         PasteProperty(ref reflectionApplyTransparency);
@@ -6676,14 +7007,17 @@ namespace lilToon
                 case lilPropertyBlock.MatCap1st:
                         PasteProperty(ref useMatCap);
                         PasteProperty(ref matcapColor);
+                        PasteProperty(ref matcapBlendUV1);
+                        PasteProperty(ref matcapZRotCancel);
+                        PasteProperty(ref matcapPerspective);
+                        PasteProperty(ref matcapVRParallaxStrength);
                         PasteProperty(ref matcapBlend);
                         PasteProperty(ref matcapEnableLighting);
                         PasteProperty(ref matcapShadowMask);
-                        PasteProperty(ref matcapVRParallaxStrength);
+                        PasteProperty(ref matcapBackfaceMask);
                         PasteProperty(ref matcapBlendMode);
                         PasteProperty(ref matcapMul);
                         PasteProperty(ref matcapApplyTransparency);
-                        PasteProperty(ref matcapZRotCancel);
                         PasteProperty(ref matcapCustomNormal);
                         PasteProperty(ref matcapBumpScale);
                         if(shouldCopyTex)
@@ -6696,14 +7030,17 @@ namespace lilToon
                 case lilPropertyBlock.MatCap2nd:
                         PasteProperty(ref useMatCap2nd);
                         PasteProperty(ref matcap2ndColor);
+                        PasteProperty(ref matcap2ndBlendUV1);
+                        PasteProperty(ref matcap2ndZRotCancel);
+                        PasteProperty(ref matcap2ndPerspective);
+                        PasteProperty(ref matcap2ndVRParallaxStrength);
                         PasteProperty(ref matcap2ndBlend);
                         PasteProperty(ref matcap2ndEnableLighting);
                         PasteProperty(ref matcap2ndShadowMask);
-                        PasteProperty(ref matcap2ndVRParallaxStrength);
+                        PasteProperty(ref matcap2ndBackfaceMask);
                         PasteProperty(ref matcap2ndBlendMode);
                         PasteProperty(ref matcap2ndMul);
                         PasteProperty(ref matcap2ndApplyTransparency);
-                        PasteProperty(ref matcap2ndZRotCancel);
                         PasteProperty(ref matcap2ndCustomNormal);
                         PasteProperty(ref matcap2ndBumpScale);
                         if(shouldCopyTex)
@@ -6721,6 +7058,7 @@ namespace lilToon
                         PasteProperty(ref rimFresnelPower);
                         PasteProperty(ref rimEnableLighting);
                         PasteProperty(ref rimShadowMask);
+                        PasteProperty(ref rimBackfaceMask);
                         PasteProperty(ref rimApplyTransparency);
                         PasteProperty(ref rimDirStrength);
                         PasteProperty(ref rimDirRange);
@@ -6742,11 +7080,26 @@ namespace lilToon
                         PasteProperty(ref glitterParams2);
                         PasteProperty(ref glitterEnableLighting);
                         PasteProperty(ref glitterShadowMask);
+                        PasteProperty(ref glitterBackfaceMask);
                         PasteProperty(ref glitterApplyTransparency);
                         PasteProperty(ref glitterVRParallaxStrength);
                         if(shouldCopyTex)
                         {
                             PasteProperty(ref glitterColorTex);
+                        }
+                    break;
+                case lilPropertyBlock.Backlight:
+                        PasteProperty(ref useBacklight);
+                        PasteProperty(ref backlightColor);
+                        PasteProperty(ref backlightBorder);
+                        PasteProperty(ref backlightBlur);
+                        PasteProperty(ref backlightDirectivity);
+                        PasteProperty(ref backlightViewStrength);
+                        PasteProperty(ref backlightReceiveShadow);
+                        PasteProperty(ref backlightBackfaceMask);
+                        if(shouldCopyTex)
+                        {
+                            PasteProperty(ref backlightColorTex);
                         }
                     break;
                 case lilPropertyBlock.Gem:
@@ -7124,16 +7477,6 @@ namespace lilToon
                         ResetProperty(ref shadowColorTex);
                         ResetProperty(ref shadow2ndColorTex);
                     break;
-                case lilPropertyBlock.Backlight:
-                        ResetProperty(ref useBacklight);
-                        ResetProperty(ref backlightColor);
-                        ResetProperty(ref backlightBorder);
-                        ResetProperty(ref backlightBlur);
-                        ResetProperty(ref backlightDirectivity);
-                        ResetProperty(ref backlightViewStrength);
-                        ResetProperty(ref backlightReceiveShadow);
-                        ResetProperty(ref backlightColorTex);
-                    break;
                 case lilPropertyBlock.Emission:
                         ResetProperty(ref useEmission);
                         ResetProperty(ref emissionColor);
@@ -7197,9 +7540,27 @@ namespace lilToon
                         ResetProperty(ref bumpScale);
                         ResetProperty(ref useBump2ndMap);
                         ResetProperty(ref bump2ndScale);
+                        ResetProperty(ref useAnisotropy);
+                        ResetProperty(ref anisotropyScale);
+                        ResetProperty(ref anisotropyTangentWidth);
+                        ResetProperty(ref anisotropyBitangentWidth);
+                        ResetProperty(ref anisotropyShift);
+                        ResetProperty(ref anisotropyShiftNoiseScale);
+                        ResetProperty(ref anisotropySpecularStrength);
+                        ResetProperty(ref anisotropy2ndTangentWidth);
+                        ResetProperty(ref anisotropy2ndBitangentWidth);
+                        ResetProperty(ref anisotropy2ndShift);
+                        ResetProperty(ref anisotropy2ndShiftNoiseScale);
+                        ResetProperty(ref anisotropy2ndSpecularStrength);
+                        ResetProperty(ref anisotropy2Reflection);
+                        ResetProperty(ref anisotropy2MatCap);
+                        ResetProperty(ref anisotropy2MatCap2nd);
                         ResetProperty(ref bumpMap);
                         ResetProperty(ref bump2ndMap);
                         ResetProperty(ref bump2ndScaleMask);
+                        ResetProperty(ref anisotropyTangentMap);
+                        ResetProperty(ref anisotropyScaleMask);
+                        ResetProperty(ref anisotropyShiftNoiseMask);
                     break;
                 case lilPropertyBlock.NormalMap1st:
                         ResetProperty(ref useBumpMap);
@@ -7212,6 +7573,26 @@ namespace lilToon
                         ResetProperty(ref bump2ndMap);
                         ResetProperty(ref bump2ndScaleMask);
                     break;
+                case lilPropertyBlock.Anisotropy:
+                        ResetProperty(ref useAnisotropy);
+                        ResetProperty(ref anisotropyScale);
+                        ResetProperty(ref anisotropyTangentWidth);
+                        ResetProperty(ref anisotropyBitangentWidth);
+                        ResetProperty(ref anisotropyShift);
+                        ResetProperty(ref anisotropyShiftNoiseScale);
+                        ResetProperty(ref anisotropySpecularStrength);
+                        ResetProperty(ref anisotropy2ndTangentWidth);
+                        ResetProperty(ref anisotropy2ndBitangentWidth);
+                        ResetProperty(ref anisotropy2ndShift);
+                        ResetProperty(ref anisotropy2ndShiftNoiseScale);
+                        ResetProperty(ref anisotropy2ndSpecularStrength);
+                        ResetProperty(ref anisotropy2Reflection);
+                        ResetProperty(ref anisotropy2MatCap);
+                        ResetProperty(ref anisotropy2MatCap2nd);
+                        ResetProperty(ref anisotropyTangentMap);
+                        ResetProperty(ref anisotropyScaleMask);
+                        ResetProperty(ref anisotropyShiftNoiseMask);
+                    break;
                 case lilPropertyBlock.Reflections:
                         ResetProperty(ref useReflection);
                         ResetProperty(ref metallic);
@@ -7219,27 +7600,38 @@ namespace lilToon
                         ResetProperty(ref reflectance);
                         ResetProperty(ref reflectionColor);
                         ResetProperty(ref applySpecular);
+                        ResetProperty(ref applySpecularFA);
                         ResetProperty(ref specularToon);
                         ResetProperty(ref applyReflection);
                         ResetProperty(ref reflectionApplyTransparency);
                         ResetProperty(ref useMatCap);
                         ResetProperty(ref matcapColor);
+                        ResetProperty(ref matcapBlendUV1);
+                        ResetProperty(ref matcapZRotCancel);
+                        ResetProperty(ref matcapPerspective);
+                        ResetProperty(ref matcapVRParallaxStrength);
                         ResetProperty(ref matcapBlend);
                         ResetProperty(ref matcapEnableLighting);
+                        ResetProperty(ref matcapShadowMask);
+                        ResetProperty(ref matcapBackfaceMask);
                         ResetProperty(ref matcapBlendMode);
                         ResetProperty(ref matcapMul);
                         ResetProperty(ref matcapApplyTransparency);
-                        ResetProperty(ref matcapZRotCancel);
                         ResetProperty(ref matcapCustomNormal);
                         ResetProperty(ref matcapBumpScale);
                         ResetProperty(ref useMatCap2nd);
                         ResetProperty(ref matcap2ndColor);
+                        ResetProperty(ref matcap2ndBlendUV1);
+                        ResetProperty(ref matcap2ndZRotCancel);
+                        ResetProperty(ref matcap2ndPerspective);
+                        ResetProperty(ref matcap2ndVRParallaxStrength);
                         ResetProperty(ref matcap2ndBlend);
                         ResetProperty(ref matcap2ndEnableLighting);
+                        ResetProperty(ref matcap2ndShadowMask);
+                        ResetProperty(ref matcapBackfaceMask);
                         ResetProperty(ref matcap2ndBlendMode);
                         ResetProperty(ref matcap2ndMul);
                         ResetProperty(ref matcap2ndApplyTransparency);
-                        ResetProperty(ref matcap2ndZRotCancel);
                         ResetProperty(ref matcap2ndCustomNormal);
                         ResetProperty(ref matcap2ndBumpScale);
                         ResetProperty(ref useRim);
@@ -7249,6 +7641,7 @@ namespace lilToon
                         ResetProperty(ref rimFresnelPower);
                         ResetProperty(ref rimEnableLighting);
                         ResetProperty(ref rimShadowMask);
+                        ResetProperty(ref rimBackfaceMask);
                         ResetProperty(ref rimApplyTransparency);
                         ResetProperty(ref rimDirStrength);
                         ResetProperty(ref rimDirRange);
@@ -7264,8 +7657,17 @@ namespace lilToon
                         ResetProperty(ref glitterParams2);
                         ResetProperty(ref glitterEnableLighting);
                         ResetProperty(ref glitterShadowMask);
+                        ResetProperty(ref glitterBackfaceMask);
                         ResetProperty(ref glitterApplyTransparency);
                         ResetProperty(ref glitterVRParallaxStrength);
+                        ResetProperty(ref useBacklight);
+                        ResetProperty(ref backlightColor);
+                        ResetProperty(ref backlightBorder);
+                        ResetProperty(ref backlightBlur);
+                        ResetProperty(ref backlightDirectivity);
+                        ResetProperty(ref backlightViewStrength);
+                        ResetProperty(ref backlightReceiveShadow);
+                        ResetProperty(ref backlightBackfaceMask);
                         ResetProperty(ref gemChromaticAberration);
                         ResetProperty(ref gemEnvContrast);
                         ResetProperty(ref gemEnvColor);
@@ -7285,6 +7687,7 @@ namespace lilToon
                         ResetProperty(ref matcap2ndBumpMap);
                         ResetProperty(ref rimColorTex);
                         ResetProperty(ref glitterColorTex);
+                        ResetProperty(ref backlightColorTex);
                     break;
                 case lilPropertyBlock.Reflection:
                         ResetProperty(ref useReflection);
@@ -7293,6 +7696,7 @@ namespace lilToon
                         ResetProperty(ref reflectance);
                         ResetProperty(ref reflectionColor);
                         ResetProperty(ref applySpecular);
+                        ResetProperty(ref applySpecularFA);
                         ResetProperty(ref specularToon);
                         ResetProperty(ref applyReflection);
                         ResetProperty(ref reflectionApplyTransparency);
@@ -7303,14 +7707,17 @@ namespace lilToon
                 case lilPropertyBlock.MatCap1st:
                         ResetProperty(ref useMatCap);
                         ResetProperty(ref matcapColor);
+                        ResetProperty(ref matcapBlendUV1);
+                        ResetProperty(ref matcapZRotCancel);
+                        ResetProperty(ref matcapPerspective);
+                        ResetProperty(ref matcapVRParallaxStrength);
                         ResetProperty(ref matcapBlend);
                         ResetProperty(ref matcapEnableLighting);
                         ResetProperty(ref matcapShadowMask);
-                        ResetProperty(ref matcapVRParallaxStrength);
+                        ResetProperty(ref matcapBackfaceMask);
                         ResetProperty(ref matcapBlendMode);
                         ResetProperty(ref matcapMul);
                         ResetProperty(ref matcapApplyTransparency);
-                        ResetProperty(ref matcapZRotCancel);
                         ResetProperty(ref matcapCustomNormal);
                         ResetProperty(ref matcapBumpScale);
                         ResetProperty(ref matcapTex);
@@ -7320,14 +7727,17 @@ namespace lilToon
                 case lilPropertyBlock.MatCap2nd:
                         ResetProperty(ref useMatCap2nd);
                         ResetProperty(ref matcap2ndColor);
+                        ResetProperty(ref matcap2ndBlendUV1);
+                        ResetProperty(ref matcap2ndZRotCancel);
+                        ResetProperty(ref matcap2ndPerspective);
+                        ResetProperty(ref matcap2ndVRParallaxStrength);
                         ResetProperty(ref matcap2ndBlend);
                         ResetProperty(ref matcap2ndEnableLighting);
                         ResetProperty(ref matcap2ndShadowMask);
-                        ResetProperty(ref matcap2ndVRParallaxStrength);
+                        ResetProperty(ref matcap2ndBackfaceMask);
                         ResetProperty(ref matcap2ndBlendMode);
                         ResetProperty(ref matcap2ndMul);
                         ResetProperty(ref matcap2ndApplyTransparency);
-                        ResetProperty(ref matcap2ndZRotCancel);
                         ResetProperty(ref matcap2ndCustomNormal);
                         ResetProperty(ref matcap2ndBumpScale);
                         ResetProperty(ref matcap2ndTex);
@@ -7342,6 +7752,7 @@ namespace lilToon
                         ResetProperty(ref rimFresnelPower);
                         ResetProperty(ref rimEnableLighting);
                         ResetProperty(ref rimShadowMask);
+                        ResetProperty(ref rimBackfaceMask);
                         ResetProperty(ref rimApplyTransparency);
                         ResetProperty(ref rimDirStrength);
                         ResetProperty(ref rimDirRange);
@@ -7360,9 +7771,21 @@ namespace lilToon
                         ResetProperty(ref glitterParams2);
                         ResetProperty(ref glitterEnableLighting);
                         ResetProperty(ref glitterShadowMask);
+                        ResetProperty(ref glitterBackfaceMask);
                         ResetProperty(ref glitterApplyTransparency);
                         ResetProperty(ref glitterVRParallaxStrength);
                         ResetProperty(ref glitterColorTex);
+                    break;
+                case lilPropertyBlock.Backlight:
+                        ResetProperty(ref useBacklight);
+                        ResetProperty(ref backlightColor);
+                        ResetProperty(ref backlightBorder);
+                        ResetProperty(ref backlightBlur);
+                        ResetProperty(ref backlightDirectivity);
+                        ResetProperty(ref backlightViewStrength);
+                        ResetProperty(ref backlightReceiveShadow);
+                        ResetProperty(ref backlightBackfaceMask);
+                        ResetProperty(ref backlightColorTex);
                     break;
                 case lilPropertyBlock.Gem:
                         ResetProperty(ref gemChromaticAberration);
@@ -7972,6 +8395,7 @@ namespace lilToon
                 if(material.HasProperty("_EmissionUseGrad")) shaderSetting.LIL_FEATURE_EMISSION_GRADATION = shaderSetting.LIL_FEATURE_EMISSION_GRADATION || material.GetFloat("_EmissionUseGrad") != 0.0f;
                 if(material.HasProperty("_UseBumpMap")) shaderSetting.LIL_FEATURE_NORMAL_1ST = shaderSetting.LIL_FEATURE_NORMAL_1ST || material.GetFloat("_UseBumpMap") != 0.0f;
                 if(material.HasProperty("_UseBump2ndMap")) shaderSetting.LIL_FEATURE_NORMAL_2ND = shaderSetting.LIL_FEATURE_NORMAL_2ND || material.GetFloat("_UseBump2ndMap") != 0.0f;
+                if(material.HasProperty("_UseAnisotropy")) shaderSetting.LIL_FEATURE_ANISOTROPY = shaderSetting.LIL_FEATURE_ANISOTROPY || material.GetFloat("_UseAnisotropy") != 0.0f;
                 if(material.HasProperty("_UseReflection")) shaderSetting.LIL_FEATURE_REFLECTION = shaderSetting.LIL_FEATURE_REFLECTION || material.GetFloat("_UseReflection") != 0.0f;
                 if(material.HasProperty("_UseMatCap")) shaderSetting.LIL_FEATURE_MATCAP = shaderSetting.LIL_FEATURE_MATCAP || material.GetFloat("_UseMatCap") != 0.0f;
                 if(material.HasProperty("_UseMatCap2nd")) shaderSetting.LIL_FEATURE_MATCAP_2ND = shaderSetting.LIL_FEATURE_MATCAP_2ND || material.GetFloat("_UseMatCap2nd") != 0.0f;
@@ -8089,6 +8513,7 @@ namespace lilToon
                 if(!shaderSetting.LIL_FEATURE_EMISSION_GRADATION) material.SetFloat("_EmissionUseGrad", 0.0f);
                 if(!shaderSetting.LIL_FEATURE_NORMAL_1ST) material.SetFloat("_UseBumpMap", 0.0f);
                 if(!shaderSetting.LIL_FEATURE_NORMAL_2ND) material.SetFloat("_UseBump2ndMap", 0.0f);
+                if(!shaderSetting.LIL_FEATURE_ANISOTROPY) material.SetFloat("_UseAnisotropy", 0.0f);
                 if(!shaderSetting.LIL_FEATURE_REFLECTION) material.SetFloat("_UseReflection", 0.0f);
                 if(!shaderSetting.LIL_FEATURE_MATCAP) material.SetFloat("_UseMatCap", 0.0f);
                 if(!shaderSetting.LIL_FEATURE_MATCAP_2ND) material.SetFloat("_UseMatCap2nd", 0.0f);
@@ -8194,6 +8619,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_EMISSION_GRADATION = shaderSetting.LIL_FEATURE_EMISSION_GRADATION || propname.Contains("_EmissionUseGrad");
                 shaderSetting.LIL_FEATURE_NORMAL_1ST = shaderSetting.LIL_FEATURE_NORMAL_1ST || propname.Contains("_UseBumpMap");
                 shaderSetting.LIL_FEATURE_NORMAL_2ND = shaderSetting.LIL_FEATURE_NORMAL_2ND || propname.Contains("_UseBump2ndMap");
+                shaderSetting.LIL_FEATURE_ANISOTROPY = shaderSetting.LIL_FEATURE_ANISOTROPY || propname.Contains("_UseAnisotropy");
                 shaderSetting.LIL_FEATURE_REFLECTION = shaderSetting.LIL_FEATURE_REFLECTION || propname.Contains("_UseReflection");
                 shaderSetting.LIL_FEATURE_MATCAP = shaderSetting.LIL_FEATURE_MATCAP || propname.Contains("_UseMatCap");
                 shaderSetting.LIL_FEATURE_MATCAP_2ND = shaderSetting.LIL_FEATURE_MATCAP_2ND || propname.Contains("_UseMatCap2nd");
@@ -8280,6 +8706,7 @@ namespace lilToon
                 SetShaderKeywords(material, "_SUNDISK_SIMPLE",                      false);
                 SetShaderKeywords(material, "_NORMALMAP",                           false);
                 SetShaderKeywords(material, "EFFECT_BUMP",                          false);
+                SetShaderKeywords(material, "SOURCE_GBUFFER",                       false);
                 SetShaderKeywords(material, "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A", false);
                 SetShaderKeywords(material, "_SPECULARHIGHLIGHTS_OFF",              false);
                 SetShaderKeywords(material, "GEOM_TYPE_MESH",                       false);
@@ -8297,6 +8724,7 @@ namespace lilToon
                 SetShaderKeywords(material, "_SUNDISK_SIMPLE",                      useEmission.floatValue != 0.0f && emissionBlendMask.textureValue != null || useEmission2nd.floatValue != 0.0f && emission2ndBlendMask.textureValue != null);
                 SetShaderKeywords(material, "_NORMALMAP",                           useBumpMap.floatValue != 0.0f);
                 SetShaderKeywords(material, "EFFECT_BUMP",                          useBump2ndMap.floatValue != 0.0f);
+                SetShaderKeywords(material, "SOURCE_GBUFFER",                       useAnisotropy.floatValue != 0.0f);
                 SetShaderKeywords(material, "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A", useMatCap.floatValue != 0.0f);
                 SetShaderKeywords(material, "_SPECULARHIGHLIGHTS_OFF",              useMatCap2nd.floatValue != 0.0f);
                 SetShaderKeywords(material, "GEOM_TYPE_MESH",                       useMatCap.floatValue != 0.0f && matcapCustomNormal.floatValue != 0.0f || useMatCap2nd.floatValue != 0.0f && matcap2ndCustomNormal.floatValue != 0.0f);
@@ -8421,6 +8849,12 @@ namespace lilToon
                     material.SetTexture("_Bump2ndMap", null);
                     material.SetTexture("_Bump2ndScaleMask", null);
                 }
+                if(material.GetFloat("_UseAnisotropy") == 0.0f)
+                {
+                    material.SetTexture("_AnisotropyTangentMap", null);
+                    material.SetTexture("_AnisotropyScaleMask", null);
+                    material.SetTexture("_AnisotropyShiftNoiseMask", null);
+                }
                 if(material.GetFloat("_UseReflection") == 0.0f)
                 {
                     material.SetTexture("_SmoothnessTex", null);
@@ -8504,7 +8938,6 @@ namespace lilToon
                 if(preset.floats[i].name == "_StencilPass") material.SetFloat(preset.floats[i].name, preset.floats[i].value);
             }
             if(preset.shader != null) material.shader = preset.shader;
-            if(preset.renderQueue != -2) material.renderQueue = preset.renderQueue;
             bool isoutl         = preset.outline;
             bool istess         = preset.tessellation;
             bool isstencil      = (material.GetFloat("_StencilPass") == (float)UnityEngine.Rendering.StencilOp.Replace);
@@ -8531,6 +8964,7 @@ namespace lilToon
             if(istwopass)       transparentMode = TransparentMode.TwoPass;
 
             SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess);
+            if(preset.renderQueue != -2) material.renderQueue = preset.renderQueue;
 
             for(int i = 0; i < preset.colors.Length;   i++) material.SetColor(preset.colors[i].name, preset.colors[i].value);
             for(int i = 0; i < preset.vectors.Length;  i++) material.SetVector(preset.vectors[i].name, preset.vectors[i].value);
@@ -8871,6 +9305,9 @@ namespace lilToon
             {
                 liteMaterial.SetTexture("_MatCapTex",               bakedMatCap);
                 liteMaterial.SetFloat("_UseMatCap",                 useMatCap.floatValue);
+                liteMaterial.SetFloat("_MatCapBlendUV1",            matcapBlendUV1.floatValue);
+                liteMaterial.SetFloat("_MatCapZRotCancel",          matcapZRotCancel.floatValue);
+                liteMaterial.SetFloat("_MatCapPerspective",         matcapPerspective.floatValue);
                 liteMaterial.SetFloat("_MatCapVRParallaxStrength",  matcapVRParallaxStrength.floatValue);
                 if(matcapBlendMode.floatValue == 3) liteMaterial.SetFloat("_MatCapMul", useMatCap.floatValue);
                 else                                liteMaterial.SetFloat("_MatCapMul", useMatCap.floatValue);
@@ -9332,6 +9769,26 @@ namespace lilToon
             else
             {
                 materialEditor.TexturePropertySingleLine(guiContent, textureName, rgba);
+            }
+        }
+
+        private void MatCapTextureGUI(MaterialEditor materialEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty blendUV1, MaterialProperty zRotCancel, MaterialProperty perspective, MaterialProperty vrParallaxStrength)
+        {
+            // Make space for foldout
+            EditorGUI.indentLevel++;
+            Rect rect = materialEditor.TexturePropertySingleLine(guiContent, textureName, rgba);
+            EditorGUI.indentLevel--;
+            rect.x += 10;
+            isShow = EditorGUI.Foldout(rect, isShow, "");
+            if(isShow)
+            {
+                EditorGUI.indentLevel++;
+                materialEditor.TextureScaleOffsetProperty(textureName);
+                materialEditor.ShaderProperty(blendUV1, GetLoc("sBlendUV1"));
+                materialEditor.ShaderProperty(zRotCancel, GetLoc("sMatCapZRotCancel"));
+                materialEditor.ShaderProperty(perspective, GetLoc("sFixPerspective"));
+                materialEditor.ShaderProperty(vrParallaxStrength, GetLoc("sVRParallaxStrength"));
+                EditorGUI.indentLevel--;
             }
         }
 

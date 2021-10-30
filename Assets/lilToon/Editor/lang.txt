@@ -72,6 +72,8 @@ sVertex	Vertex	頂点	꼭짓점	顶点	頂點
 sColorAlphaZeroWarn	To enable the property, increase the alpha value.	プロパティを有効にするには透明度の値を上げて下さい。	속성을 유효하게 하려면 알파 값을 올려 주십시오.	增加 Alpha 值以启用该属性。	增加 Alpha 值以啟用該屬性。
 sApplyTransparency	Apply Transparency	透明度を適用	투명도 적용	应用透明度	應用透明度
 sVRParallaxStrength	VR Parallax Strength	VR時の視差の強さ	VR Parallax Strength	VR Parallax Strength	VR Parallax Strength
+sShadowMask	Shadow Mask	影部分で無効化	그림자 속에서 무효화	阴影蒙版	陰影蒙版
+sBackfaceMask	Backface Mask	裏面で無効化	후면에서 무효화	背面蒙版	背面蒙版
 sLimShadowStrength	Shadow Strength	影の強さ	그림자 강도	阴影强度	陰影強度
 sLimOutline	Outline	輪郭線の色	윤곽선의 색	轮廓	輪廓
 sLimEmission	Emission	発光色	발광색	发光	發光
@@ -124,8 +126,10 @@ sMaskTiling	Mask UV Tiling	Mask UV Tiling	Mask UV Tiling	蒙版UV Tiling	蒙版U
 sMaskOffset	Mask UV Offset	Mask UV Offset	Mask UV Offset	蒙版UV Offset	蒙版UV Offset
 sNoise	Noise	ノイズ	노이즈	噪点	噪點
 sNoiseR	Noise (R)	Noise (R)	Noise (R)	Noise (R)	Noise (R)
+sNoiseStrength	Noise Strength	ノイズの強度	노이즈 강도	噪点强度	噪點強度
 sTriMask	TriMask (Mat/Rim/Emi)	TriMask (Mat/Rim/Emi)	TriMask (Mat/Rim/Emi)	TriMask (Mat/Rim/Emi)	TriMask (Mat/Rim/Emi)
 sTriMaskRGB	Mask (R:MatCap G:Rim B:Emission)	Mask (R:MatCap G:Rim B:Emission)	Mask (R:MatCap G:Rim B:Emission)	Mask (R:MatCap G:Rim B:Emission)	Mask (R:MatCap G:Rim B:Emission)
+sApplyTo	Apply to	適用先	적용처	申请	申請
 sMainUV	UV Setting	UV設定	UV 설정	UV设置	UV設置
 sMainUVTips	You can set the UV position, scale and animation.	UVの位置やサイズ、アニメーションの設定ができます	UV의 위치 나 크기, 애니메이션을 설정할 수 있습니다	你可以设置UV位置、比例和动画。	你可以設置UV位置、比例和動畫。
 sColors	Color	色設定	색상 설정	颜色设置	顏色設置
@@ -215,7 +219,6 @@ sAudioLinkBandBass	Bass	Bass	Bass	Bass	Bass
 sAudioLinkBandLowMid	Low Mid	Low Mid	Low Mid	Low Mid	Low Mid
 sAudioLinkBandHighMid	High Mid	High Mid	High Mid	High Mid	High Mid
 sAudioLinkBandTreble	Treble	Treble	Treble	Treble	Treble
-sAudioLinkApplyTo	Apply to	適用先	적용처	申请	申請
 sAudioLinkStartPosition	Start Position	開始点	원점	初始点	初始點
 sAudioLinkMovingVector	Moving Vector	移動方向	이동 방향	运动方向	運動方向
 sAudioLinkNormalStrength	Normal Strength	法線方向の強度	법선 방향의 강도	法线强度	法線強度
@@ -244,6 +247,9 @@ sNormalMapTips	You can set the normal map.	ノーマルマップの設定がで�
 sNormalMap	Normal Map	ノーマルマップ	노멀 맵	法线贴图	法線貼圖
 sNormalMap2nd	Normal Map 2nd	ノーマルマップ2nd	노멀 맵 2nd	法线贴图2nd	法線貼圖2nd
 sNormalRGB	Normal (RGB)	ノーマル (RGB)	노멀 (RGB)	法线 (RGB)	法線 (RGB)
+sAnisotropy	Anisotropy	異方性反射	애니소트로픽	各向异性反射	各向異性反射
+sTangentWidth	Tangent Width	タンジェント方向の幅	Tangent Width	Tangent Width	Tangent Width
+sBitangentWidth	Bitangent Width	バイタンジェント方向の幅	Bitangent Width	Bitangent Width	Bitangent Width
 sReflectionsSetting	Reflections	光沢設定	광택 설정	反射设置	反射
 sReflectionsTips	You can set the Reflections.	光沢に関する設定ができます	광택 관한 설정을 할 수 있습니다	你可以设置反射。	你可以設置反射。
 sReflection	Reflection	反射	반사	反射	反射
@@ -256,15 +262,17 @@ sSpecularMode	Specular Mode	光沢のタイプ	광택 타입	反射模式	反射
 sSpecularNone	None	無効	무효	无	無
 sSpecularReal	Realistic	リアル	리얼	现实	現實
 sSpecularToon	Toon	トゥーン	툰	卡通	卡通
+sMultiLightSpecular	Multi Light Specular	複数ライトから光沢を生成	복수 라이트에서 광택 생성	从多个光源生成反射	從多個光源生成反射
 sApplyReflection	Environment Reflections	環境光の反射	환경광 반사	环境反射	環境反射
 sMatCap	MatCap	マットキャップ	매트 캡	MatCap	MatCap
 sMatCap2nd	MatCap 2nd	マットキャップ2nd	매트 캡 2nd	MatCap 2nd	MatCap 2nd
+sBlendUV1	Blend UV1	UV1を合成	Blend UV1	Blend UV1	Blend UV1
+sMatCapZRotCancel	Z-axis rotation cancellation	Z軸回転キャンセル	Z축 회전 취소	Z轴旋转取消	Z軸旋轉取消
+sFixPerspective	Fix Perspective	パース補正	Fix Perspective	Fix Perspective	Fix Perspective
 sHelpMatCapBlending	Turn off "Enable Lighting" in multiply mode.	乗算モードでは"ライティングを適用"を0にしてください	곱셈 모드에서는 "라이팅을 적용"을 0으로 해 주세요	关闭乘法模式下的 启用照明。	關閉乘法模式下的 啟用照明。
 sMatCapCustomNormal	Custom normal map	カスタムノーマルマップ	커스텀 노멀 맵	自定义法线贴图	自定義法線貼圖
-sMatCapZRotCancel	Z-axis rotation cancellation	Z軸回転キャンセル	Z축 회전 취소	Z轴旋转取消	Z軸旋轉取消
 sRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
 sFresnelPower	Fresnel Power	リムライトの細さ	림 라이트의 벌금	菲涅尔功率	菲涅爾功率
-sShadowMask	Shadow Mask	影部分で無効化	그림자 속에서 무효화	阴影蒙版	陰影蒙版
 sRimLightDirection	Light direction strength	ライト方向の影響度	라이트 방향의 영향도	光线方向影响	光線方向影響
 sRimDirectionRange	Direct light width	直接光の幅	직접 빛의 폭	直射光宽	直射光寬
 sRimIndirectionRange	Indirect light width	間接光の幅	간접 조명의 폭	间接光宽	間接光寬
@@ -425,6 +433,7 @@ sSettingEmissionGradation	Emission Gradation	発光グラデーション	발광 
 sSettingNormal1st	Normal Map	ノーマルマップ	노멀 맵	法线贴图	法線貼圖
 sSettingNormal2nd	Normal Map 2nd	ノーマルマップ2nd	노멀 맵 2nd	法线贴图2nd	法線貼圖2nd
 sSettingTexNormalMask	Normal Map 2nd Mask	ノーマルマップ2ndマスク	노멀 맵 2nd 마스크	法线贴图2nd蒙版	法線貼圖2nd蒙版
+sSettingAnisotropy	Anisotropy	異方性反射	애니소트로픽	各向异性反射	各向異性反射
 sSettingReflection	Reflection	反射	반사	反射	反射
 sSettingTexReflectionSmoothness	Reflection Smoothness Mask	滑らかさマスク	부드러운 마스크	反射平滑度蒙版	反射平滑度蒙版
 sSettingTexReflectionMetallic	Reflection Metallic Mask	金属度マスク	금속도 마스크	反射金属程度蒙版	反射金屬程度蒙版
@@ -470,6 +479,7 @@ sAnchorShadow	#shadow	#影設定	#shadow	#shadow	#shadow
 sAnchorEmission	#emission	#発光設定	#emission	#emission	#emission
 sAnchorNormalReflection	#normal-map--reflection	#ノーマルマップ光沢設定	#normal-map--reflection	#normal-map--reflection	#normal-map--reflection
 sAnchorNormalMap	#normal-map	#ノーマルマップ設定	#normal-map	#normal-map	#normal-map
+sAnchorAnisotropy	#anisotropy	#異方性反射	#anisotropy	#anisotropy	#anisotropy
 sAnchorReflections	#reflections	#光沢設定	#reflections	#reflections	#reflections
 sAnchorReflection	#reflection	#反射	#reflection	#reflection	#reflection
 sAnchorMatCap	#matcap	#マットキャップ	#matcap	#matcap	#matcap

@@ -2,7 +2,6 @@ Shader "Hidden/lilToonMultiGem"
 {
     // Memo
     // If you are using Unity 2018 or earlier, you need to replace `shader_feature_local` with` shader_feature`.
-    // Also, if you need to include all variations in mod development etc., you may need to replace "shader_feature_local" with "multi_compile_local".
     // If there are too many variants, you should also replace them with #define.
 
     Properties
@@ -59,7 +58,7 @@ Shader "Hidden/lilToonMultiGem"
         [lilHDR]        _Main2ndDissolveColor       ("Dissolve Color", Color) = (1,1,1,1)
         [lilDissolve]   _Main2ndDissolveParams      ("Dissolve Mode|None|Alpha|UV|Position|Dissolve Shape|Point|Line|Border|Blur", Vector) = (0,0,0.5,0.1)
         [lilDissolveP]  _Main2ndDissolvePos         ("Dissolve Position", Vector) = (0,0,0,0)
-        [lil3Param]     _Main2ndDistanceFade        ("Start|End|Strength", Vector) = (0.1,0.01,0,0)
+        [lilFFFB]       _Main2ndDistanceFade        ("Start|End|Strength|Fix backface", Vector) = (0.1,0.01,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main3rd
@@ -86,7 +85,7 @@ Shader "Hidden/lilToonMultiGem"
         [lilHDR]        _Main3rdDissolveColor       ("Dissolve Color", Color) = (1,1,1,1)
         [lilDissolve]   _Main3rdDissolveParams      ("Dissolve Mode|None|Alpha|UV|Position|Dissolve Shape|Point|Line|Border|Blur", Vector) = (0,0,0.5,0.1)
         [lilDissolveP]  _Main3rdDissolvePos         ("Dissolve Position", Vector) = (0,0,0,0)
-        [lil3Param]     _Main3rdDistanceFade        ("Start|End|Strength", Vector) = (0.1,0.01,0,0)
+        [lilFFFB]       _Main3rdDistanceFade        ("Start|End|Strength|Fix backface", Vector) = (0.1,0.01,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Alpha Mask
@@ -106,6 +105,27 @@ Shader "Hidden/lilToonMultiGem"
         [Normal]        _Bump2ndMap                 ("Normal Map", 2D) = "bump" {}
                         _Bump2ndScale               ("Scale", Range(-10,10)) = 1
         [NoScaleOffset] _Bump2ndScaleMask           ("Mask", 2D) = "white" {}
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Anisotropy
+        [lilToggleLeft] _UseAnisotropy              ("Use Anisotropy", Int) = 0
+        [Normal]        _AnisotropyTangentMap       ("Tangent Map", 2D) = "bump" {}
+                        _AnisotropyScale            ("Scale", Range(-1,1)) = 1
+        [NoScaleOffset] _AnisotropyScaleMask        ("Scale Mask", 2D) = "white" {}
+                        _AnisotropyTangentWidth     ("Tangent Width", Range(0,10)) = 1
+                        _AnisotropyBitangentWidth   ("Bitangent Width", Range(0,10)) = 1
+                        _AnisotropyShift            ("Shift", Range(-10,10)) = 0
+                        _AnisotropyShiftNoiseScale  ("Shift Noise Scale", Range(-1,1)) = 0
+                        _AnisotropySpecularStrength ("Specular Strength", Range(0,10)) = 1
+                        _Anisotropy2ndTangentWidth  ("2nd Tangent Width", Range(0,10)) = 1
+                        _Anisotropy2ndBitangentWidth ("2nd Bitangent Width", Range(0,10)) = 1
+                        _Anisotropy2ndShift         ("2nd Shift", Range(-10,10)) = 0
+                        _Anisotropy2ndShiftNoiseScale ("2nd Shift Noise Scale", Range(-1,1)) = 0
+                        _Anisotropy2ndSpecularStrength ("2nd Specular Strength", Range(0,10)) = 0
+                        _AnisotropyShiftNoiseMask   ("Shift Noise Mask", 2D) = "white" {}
+        [lilToggle]     _Anisotropy2Reflection      ("Reflection", Int) = 0
+        [lilToggle]     _Anisotropy2MatCap          ("MatCap", Int) = 0
+        [lilToggle]     _Anisotropy2MatCap2nd       ("MatCap 2nd", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Shadow
@@ -141,9 +161,10 @@ Shader "Hidden/lilToonMultiGem"
         [Gamma]         _Reflectance                ("Reflectance", Range(0, 1)) = 0.04
         // Reflection
         [lilToggle]     _ApplySpecular              ("Apply Specular", Int) = 1
+        [lilToggle]     _ApplySpecularFA            ("Apply Specular in ForwardAdd", Int) = 1
         [lilToggle]     _SpecularToon               ("Specular Toon", Int) = 1
         [lilToggle]     _ApplyReflection            ("Apply Reflection", Int) = 0
-                        _ReflectionColor            ("Color", Color) = (1,1,1,1)
+        [lilHDR]        _ReflectionColor            ("Color", Color) = (1,1,1,1)
         [NoScaleOffset] _ReflectionColorTex         ("Color", 2D) = "white" {}
         [lilToggle]     _ReflectionApplyTransparency ("Apply Transparency", Int) = 1
 
@@ -151,15 +172,18 @@ Shader "Hidden/lilToonMultiGem"
         // MatCap
         [lilToggleLeft] _UseMatCap                  ("Use MatCap", Int) = 0
         [lilHDR]        _MatCapColor                ("Color", Color) = (1,1,1,1)
-        [NoScaleOffset] _MatCapTex                  ("Texture", 2D) = "white" {}
+                        _MatCapTex                  ("Texture", 2D) = "white" {}
+        [lilVec2R]      _MatCapBlendUV1             ("Blend UV1", Vector) = (0,0,0,0)
+        [lilToggle]     _MatCapZRotCancel           ("Z-axis rotation cancellation", Int) = 1
+        [lilToggle]     _MatCapPerspective          ("Fix Perspective", Int) = 1
+                        _MatCapVRParallaxStrength   ("VR Parallax Strength", Range(0, 1)) = 1
                         _MatCapBlend                ("Blend", Range(0, 1)) = 1
         [NoScaleOffset] _MatCapBlendMask            ("Mask", 2D) = "white" {}
                         _MatCapEnableLighting       ("Enable Lighting", Range(0, 1)) = 1
                         _MatCapShadowMask           ("Shadow Mask", Range(0, 1)) = 0
-                        _MatCapVRParallaxStrength   ("VR Parallax Strength", Range(0, 1)) = 1
+        [lilToggle]     _MatCapBackfaceMask         ("Backface Mask", Int) = 0
         [lilEnum]       _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCapApplyTransparency    ("Apply Transparency", Int) = 1
-        [lilToggle]     _MatCapZRotCancel           ("Z-axis rotation cancellation", Int) = 1
         [lilToggle]     _MatCapCustomNormal         ("MatCap Custom Normal Map", Int) = 0
         [Normal]        _MatCapBumpMap              ("Normal Map", 2D) = "bump" {}
                         _MatCapBumpScale            ("Scale", Range(-10,10)) = 1
@@ -168,15 +192,18 @@ Shader "Hidden/lilToonMultiGem"
         // MatCap 2nd
         [lilToggleLeft] _UseMatCap2nd               ("Use MatCap 2nd", Int) = 0
         [lilHDR]        _MatCap2ndColor             ("Color", Color) = (1,1,1,1)
-        [NoScaleOffset] _MatCap2ndTex               ("Texture", 2D) = "white" {}
+                        _MatCap2ndTex               ("Texture", 2D) = "white" {}
+        [lilVec2R]      _MatCap2ndBlendUV1          ("Blend UV1", Vector) = (0,0,0,0)
+        [lilToggle]     _MatCap2ndZRotCancel        ("Z-axis rotation cancellation", Int) = 1
+        [lilToggle]     _MatCap2ndPerspective       ("Fix Perspective", Int) = 1
+                        _MatCap2ndVRParallaxStrength ("VR Parallax Strength", Range(0, 1)) = 1
                         _MatCap2ndBlend             ("Blend", Range(0, 1)) = 1
         [NoScaleOffset] _MatCap2ndBlendMask         ("Mask", 2D) = "white" {}
                         _MatCap2ndEnableLighting    ("Enable Lighting", Range(0, 1)) = 1
                         _MatCap2ndShadowMask        ("Shadow Mask", Range(0, 1)) = 0
-                        _MatCap2ndVRParallaxStrength ("VR Parallax Strength", Range(0, 1)) = 1
+        [lilToggle]     _MatCap2ndBackfaceMask      ("Backface Mask", Int) = 0
         [lilEnum]       _MatCap2ndBlendMode         ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCap2ndApplyTransparency ("Apply Transparency", Int) = 1
-        [lilToggle]     _MatCap2ndZRotCancel        ("Z-axis rotation cancellation", Int) = 1
         [lilToggle]     _MatCap2ndCustomNormal      ("MatCap Custom Normal Map", Int) = 0
         [Normal]        _MatCap2ndBumpMap           ("Normal Map", 2D) = "bump" {}
                         _MatCap2ndBumpScale         ("Scale", Range(-10,10)) = 1
@@ -191,6 +218,7 @@ Shader "Hidden/lilToonMultiGem"
         [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
                         _RimEnableLighting          ("Enable Lighting", Range(0, 1)) = 1
                         _RimShadowMask              ("Shadow Mask", Range(0, 1)) = 0
+        [lilToggle]     _RimBackfaceMask            ("Backface Mask", Int) = 0
         [lilToggle]     _RimApplyTransparency       ("Apply Transparency", Int) = 1
                         _RimDirStrength             ("Light direction strength", Range(0, 1)) = 0
                         _RimDirRange                ("Direction range", Range(-1, 1)) = 0
@@ -210,6 +238,7 @@ Shader "Hidden/lilToonMultiGem"
         [lilGlitParam2] _GlitterParams2             ("Blink Speed|Angle|Blend Light Direction|Color Randomness", Vector) = (0.25,0,0,0)
                         _GlitterEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
                         _GlitterShadowMask          ("Shadow Mask", Range(0, 1)) = 0
+        [lilToggle]     _GlitterBackfaceMask        ("Backface Mask", Int) = 0
         [lilToggle]     _GlitterApplyTransparency   ("Apply Transparency", Int) = 1
                         _GlitterVRParallaxStrength  ("VR Parallax Strength", Range(0, 1)) = 1
 
@@ -293,7 +322,7 @@ Shader "Hidden/lilToonMultiGem"
         //----------------------------------------------------------------------------------------------------------------------
         // Distance Fade
         [lilHDR]        _DistanceFadeColor          ("Color", Color) = (0,0,0,1)
-        [lil3Param]     _DistanceFade               ("Start|End|Strength", Vector) = (0.1,0.01,0,0)
+        [lilFFFB]       _DistanceFade               ("Start|End|Strength|Fix backface", Vector) = (0.1,0.01,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // AudioLink
@@ -373,6 +402,12 @@ Shader "Hidden/lilToonMultiGem"
         [lilToggle]     _UsePOM                     ("Use POM", Int) = 0
         [lilToggle]     _UseClippingCanceller       ("Use Clipping Canceller", Int) = 0
         [lilToggle]     _AsOverlay                  ("As Overlay", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Save (Unused)
+        [HideInInspector] [MainColor]                   _BaseColor          ("Color", Color) = (1,1,1,1)
+        [HideInInspector] [MainTexture]                 _BaseMap            ("Texture", 2D) = "white" {}
+        [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
     }
 
     HLSLINCLUDE
@@ -382,6 +417,7 @@ Shader "Hidden/lilToonMultiGem"
         #define LIL_MULTI_INPUTS_EMISSION_2ND
         #define LIL_MULTI_INPUTS_NORMAL
         #define LIL_MULTI_INPUTS_NORMAL_2ND
+        #define LIL_MULTI_INPUTS_ANISOTROPY
         #define LIL_MULTI_INPUTS_MATCAP
         #define LIL_MULTI_INPUTS_MATCAP_2ND
         #define LIL_MULTI_INPUTS_RIM
@@ -485,6 +521,7 @@ Shader "Hidden/lilToonMultiGem"
             #pragma shader_feature_local _SUNDISK_SIMPLE
             #pragma shader_feature_local _NORMALMAP
             #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local SOURCE_GBUFFER
             #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
             #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
             #pragma shader_feature_local GEOM_TYPE_MESH
@@ -669,6 +706,7 @@ Shader "Hidden/lilToonMultiGem"
             #pragma shader_feature_local _SUNDISK_SIMPLE
             #pragma shader_feature_local _NORMALMAP
             #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local SOURCE_GBUFFER
             #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
             #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
             #pragma shader_feature_local GEOM_TYPE_MESH
@@ -876,6 +914,7 @@ Shader "Hidden/lilToonMultiGem"
             #pragma shader_feature_local _SUNDISK_SIMPLE
             #pragma shader_feature_local _NORMALMAP
             #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local SOURCE_GBUFFER
             #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
             #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
             #pragma shader_feature_local GEOM_TYPE_MESH
@@ -1090,6 +1129,7 @@ Shader "Hidden/lilToonMultiGem"
             #pragma shader_feature_local _SUNDISK_SIMPLE
             #pragma shader_feature_local _NORMALMAP
             #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local SOURCE_GBUFFER
             #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
             #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
             #pragma shader_feature_local GEOM_TYPE_MESH
@@ -1367,6 +1407,7 @@ Shader "Hidden/lilToonMultiGem"
             #pragma shader_feature_local _SUNDISK_SIMPLE
             #pragma shader_feature_local _NORMALMAP
             #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local SOURCE_GBUFFER
             #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
             #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
             #pragma shader_feature_local GEOM_TYPE_MESH
@@ -1650,6 +1691,7 @@ Shader "Hidden/lilToonMultiGem"
             #pragma shader_feature_local _SUNDISK_SIMPLE
             #pragma shader_feature_local _NORMALMAP
             #pragma shader_feature_local EFFECT_BUMP
+            #pragma shader_feature_local SOURCE_GBUFFER
             #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
             #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
             #pragma shader_feature_local GEOM_TYPE_MESH

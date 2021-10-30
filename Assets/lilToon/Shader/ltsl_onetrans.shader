@@ -42,10 +42,12 @@ Shader "Hidden/lilToonLiteOnePassTransparent"
         //----------------------------------------------------------------------------------------------------------------------
         // MatCap
         [lilToggleLeft] _UseMatCap                  ("Use MatCap", Int) = 0
-        [NoScaleOffset] _MatCapTex                  ("Texture", 2D) = "white" {}
+                        _MatCapTex                  ("Texture", 2D) = "white" {}
+        [lilVec2R]      _MatCapBlendUV1             ("Blend UV1", Vector) = (0,0,0,0)
+        [lilToggle]     _MatCapZRotCancel           ("Z-axis rotation cancellation", Int) = 1
+        [lilToggle]     _MatCapPerspective          ("Fix Perspective", Int) = 1
                         _MatCapVRParallaxStrength   ("VR Parallax Strength", Range(0, 1)) = 1
         [lilToggle]     _MatCapMul                  ("Multiply", Int) = 0
-        [lilToggle]     _MatCapZRotCancel           ("Z-axis rotation cancellation", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Rim
@@ -92,6 +94,12 @@ Shader "Hidden/lilToonLiteOnePassTransparent"
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
         [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Save (Unused)
+        [HideInInspector] [MainColor]                   _BaseColor          ("Color", Color) = (1,1,1,1)
+        [HideInInspector] [MainTexture]                 _BaseMap            ("Texture", 2D) = "white" {}
+        [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
     }
 
 //----------------------------------------------------------------------------------------------------------------------

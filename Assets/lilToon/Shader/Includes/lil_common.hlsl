@@ -14,6 +14,7 @@
     #define _UseBacklight true
     #define _UseBumpMap true
     #define _UseBump2ndMap true
+    #define _UseAnisotropy true
     #define _UseReflection true
     #define _UseMatCap true
     #define _UseMatCap2nd true

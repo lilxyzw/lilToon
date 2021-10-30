@@ -29,12 +29,6 @@
 #define LIL_REFRACTION_SAMPNUM 8
 #define LIL_REFRACTION_GAUSDIST(i) exp(-(float)i*(float)i/(LIL_REFRACTION_SAMPNUM*LIL_REFRACTION_SAMPNUM/2.0))
 
-// Specular mode (Default : 0)
-// 0 : BRP Specular
-// 1 : URP Specular
-// 2 : Fast Specular
-#define LIL_SPECULAR_MODE 0
-
 // MatCap mode (Default : 1)
 // 0 : Simple
 // 1 : Fix Z-Rotation
@@ -131,7 +125,7 @@
 // Optimization Macro
 
 // tangentWS / bitangentWS / normalWS
-#if defined(LIL_FEATURE_NORMAL_1ST) || defined(LIL_FEATURE_NORMAL_2ND) || defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX)
+#if defined(LIL_FEATURE_NORMAL_1ST) || defined(LIL_FEATURE_NORMAL_2ND) || defined(LIL_FEATURE_ANISOTROPY) || defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX)
     #define LIL_SHOULD_TBN
 #endif
 
@@ -151,12 +145,12 @@
 #endif
 
 // positionWS
-#if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD) || defined(LIL_FEATURE_RECEIVE_SHADOW) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_MATCAP) || defined(LIL_FEATURE_MATCAP_2ND) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_BACKLIGHT) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX) || defined(LIL_FEATURE_DISTANCE_FADE) || defined(LIL_REFRACTION) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
+#if defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD) || defined(LIL_FEATURE_ANISOTROPY) || defined(LIL_FEATURE_RECEIVE_SHADOW) || defined(LIL_FEATURE_REFLECTION) || defined(LIL_FEATURE_MATCAP) || defined(LIL_FEATURE_MATCAP_2ND) || defined(LIL_FEATURE_RIMLIGHT) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_BACKLIGHT) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX) || defined(LIL_FEATURE_DISTANCE_FADE) || defined(LIL_REFRACTION) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
     #define LIL_SHOULD_POSITION_WS
 #endif
 
 // uv1
-#if defined(LIL_FEATURE_GLITTER)
+#if defined(LIL_FEATURE_MATCAP) || defined(LIL_FEATURE_MATCAP_2ND) || defined(LIL_FEATURE_GLITTER)
     #define LIL_SHOULD_UV1
 #endif
 
@@ -455,6 +449,8 @@ float3 lilHeadDirection(float3 positionWS)
         return 0;
     }
     #define LIL_GET_HDRPDATA(input)
+    #define LIL_HDRP_DEEXPOSURE(col)
+    #define LIL_HDRP_INVDEEXPOSURE(col)
 
     // Main light
     #define LIL_MAINLIGHT_COLOR                         _LightColor0.rgb
@@ -660,15 +656,25 @@ float3 lilHeadDirection(float3 positionWS)
         }
     #endif
 
+    #if VERSION_LOWER(11, 0)
+        #define LIL_HDRP_DEEXPOSURE(col)
+        #define LIL_HDRP_INVDEEXPOSURE(col)
+    #else
+        #define LIL_HDRP_DEEXPOSURE(col)    col.rgb *= _DeExposureMultiplier
+        #define LIL_HDRP_INVDEEXPOSURE(col) col.rgb /= _DeExposureMultiplier
+    #endif
+
     float4 SampleEnv(LightLoopContext lightLoopContext, PositionInputs posInput, EnvLightData lightData, float3 reflUVW, float lod)
     {
         #if VERSION_GREATER_EQUAL(10, 1)
-            return SampleEnv(lightLoopContext, lightData.envIndex, reflUVW, lod * lightData.roughReflections, lightData.rangeCompressionFactorCompensation, posInput.positionNDC);
+            float4 reflectionCol = SampleEnv(lightLoopContext, lightData.envIndex, reflUVW, lod * lightData.roughReflections, lightData.rangeCompressionFactorCompensation, posInput.positionNDC);
         #elif VERSION_GREATER_EQUAL(7, 1)
-            return SampleEnv(lightLoopContext, lightData.envIndex, reflUVW, lod, lightData.rangeCompressionFactorCompensation);
+            float4 reflectionCol = SampleEnv(lightLoopContext, lightData.envIndex, reflUVW, lod, lightData.rangeCompressionFactorCompensation);
         #else
-            return SampleEnv(lightLoopContext, lightData.envIndex, reflUVW, lod);
+            float4 reflectionCol = SampleEnv(lightLoopContext, lightData.envIndex, reflUVW, lod);
         #endif
+        LIL_HDRP_INVDEEXPOSURE(reflectionCol);
+        return reflectionCol;
     }
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -1136,6 +1142,8 @@ float3 lilHeadDirection(float3 positionWS)
         return 0;
     }
     #define LIL_GET_HDRPDATA(input)
+    #define LIL_HDRP_DEEXPOSURE(col)
+    #define LIL_HDRP_INVDEEXPOSURE(col)
 
     // Main light
     #define LIL_MAINLIGHT_COLOR                         _MainLightColor.rgb

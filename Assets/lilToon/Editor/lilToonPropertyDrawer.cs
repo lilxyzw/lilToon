@@ -158,6 +158,31 @@ namespace lilToon
         }
     }
 
+    public class lilVec2RDrawer : MaterialPropertyDrawer
+    {
+        // Draw vector4 as vector3
+        // [lilVec2R]
+        public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
+        {
+            Rect position1 = EditorGUILayout.GetControlRect();
+            float x = prop.vectorValue.x;
+            float y = prop.vectorValue.y;
+
+            EditorGUIUtility.wideMode = true;
+
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.showMixedValue = prop.hasMixedValue;
+            x = EditorGUI.Slider(position, label + ": x", x, 0.0f, 1.0f);
+            y = EditorGUI.Slider(position1, label + ": y", y, 0.0f, 1.0f);
+            EditorGUI.showMixedValue = false;
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.vectorValue = new Vector4(x, y, prop.vectorValue.z, prop.vectorValue.w);
+            }
+        }
+    }
+
     public class lilVec3Drawer : MaterialPropertyDrawer
     {
         // Draw vector4 as vector3
@@ -455,6 +480,36 @@ namespace lilToon
             if(EditorGUI.EndChangeCheck())
             {
                 prop.vectorValue = new Vector4(param1, param2, param3, unused);
+            }
+        }
+    }
+
+    public class lilFFFB : MaterialPropertyDrawer
+    {
+        // [lilFFFB]
+        public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
+        {
+            string[] labels = label.Split('|');
+            float param1 = prop.vectorValue.x;
+            float param2 = prop.vectorValue.y;
+            float param3 = prop.vectorValue.z;
+            bool param4 = (prop.vectorValue.w != 0.0f);
+
+            EditorGUI.indentLevel++;
+            Rect position1 = EditorGUILayout.GetControlRect();
+            Rect position2 = EditorGUILayout.GetControlRect();
+            Rect position3 = EditorGUILayout.GetControlRect();
+
+            EditorGUI.BeginChangeCheck();
+            param1 = EditorGUI.FloatField(position, labels[0], param1);
+            param2 = EditorGUI.FloatField(position1, labels[1], param2);
+            param3 = EditorGUI.FloatField(position2, labels[2], param3);
+            param4 = EditorGUI.Toggle(position3, labels[3], param4);
+            EditorGUI.indentLevel--;
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.vectorValue = new Vector4(param1, param2, param3, param4 ? 1.0f : 0.0f);
             }
         }
     }

@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3] - 2021-10-30
+### 追加
+- マットキャップのUV関係の機能を拡張
+- 異方性反射を追加
+- メインカラーのプロパティを_BaseMapと_BaseColorMapと_BaseColorにも保存されるように変更
+- `複数ライトから光沢を生成`プロパティの追加
+- マットキャップ、リムライト、ラメ、逆光ライトに`裏面で無効化`プロパティの追加
+
+### 変更
+- Stencil設定ボタンでOpaqueマテリアルのRenderQueueをAlphaTestに合わせるように変更
+
+### 修正
+- プリセットのRenderQueueがうまく適用されていなかったのを修正
+- ファーのマスクをファーの処理後に適用されるように修正
+- UPM版でシェーダー書き換えが適切に行われていなかった問題の修正
+- ローカライゼーション対応漏れを修正
+- HDRPでExposure使用時、Planer Reflection内で暗くなる問題を修正 (HDRP 11.0.0以降)
+- 距離フェード機能に視差が発生しないように修正
+
 ## [1.2.2] - 2021-10-18
 ### 追加
 - ライティングの設定をワンクリックで切り替える機能の追加

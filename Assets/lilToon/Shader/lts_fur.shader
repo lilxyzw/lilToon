@@ -50,7 +50,7 @@ Shader "Hidden/lilToonFur"
         //----------------------------------------------------------------------------------------------------------------------
         // Distance Fade
         [lilHDR]        _DistanceFadeColor          ("Color", Color) = (0,0,0,1)
-        [lil3Param]     _DistanceFade               ("Start|End|Strength", Vector) = (0.1,0.01,0,0)
+        [lilFFFB]       _DistanceFade               ("Start|End|Strength|Fix backface", Vector) = (0.1,0.01,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Encryption
@@ -128,6 +128,12 @@ Shader "Hidden/lilToonFur"
                                                         _FurOffsetUnits         ("Offset Units", Float) = 0
         [lilColorMask]                                  _FurColorMask           ("Color Mask", Int) = 15
         [lilToggle]                                     _FurAlphaToMask         ("AlphaToMask", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Save (Unused)
+        [HideInInspector] [MainColor]                   _BaseColor          ("Color", Color) = (1,1,1,1)
+        [HideInInspector] [MainTexture]                 _BaseMap            ("Texture", 2D) = "white" {}
+        [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
     }
     HLSLINCLUDE
         #pragma require geometry

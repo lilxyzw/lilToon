@@ -100,6 +100,11 @@
     #undef EFFECT_BUMP
 #endif
 
+#if defined(SOURCE_GBUFFER)
+    #define LIL_FEATURE_ANISOTROPY
+    #undef SOURCE_GBUFFER
+#endif
+
 #if defined(_GLOSSYREFLECTIONS_OFF)
     #define LIL_FEATURE_REFLECTION
     #undef _GLOSSYREFLECTIONS_OFF

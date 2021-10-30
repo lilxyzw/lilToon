@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.3] - 2021-10-30
+### Added
+- Extended UV settings for MatCap
+- Anisotropic reflection
+- Changed main color properties to be saved in _BaseMap, _BaseColorMap and _BaseColor
+- `Multi Light Specular` property
+- `Backface Mask` property to MatCap, rim light, glitter, and backlight
+
+### Changed
+- Changed the RenderQueue of the opaque material in the Stencil settings button to match AlphaTest
+
+### Fixed
+- Fixed an issue where the preset RenderQueue was not being applied
+- Fixed fur masking to be applied after fur processing
+- Fixed an issue where shader rewriting was not being done properly in the UPM version
+- Fixed missing localization
+- Fixed an issue where a material would become dark in Planer Reflection when using Exposure in HDRP (HDRP 11.0.0 or later)
+- Fixed an issue that caused parallax in distance fade
+
 ## [1.2.2] - 2021-10-18
 ### Added
 - Add a button to change lighting settings with one click

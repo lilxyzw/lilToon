@@ -220,6 +220,8 @@ SAMPLER(sampler_linear_clamp);
     float4  _MainTex_ST;
     float4  _MainTex_ScrollRotate;
     float4  _ShadowBorderColor;
+    float4  _MatCapTex_ST;
+    float4  _MatCapBlendUV1;
     float4  _RimColor;
     float4  _EmissionColor;
     float4  _EmissionBlink;
@@ -259,6 +261,7 @@ SAMPLER(sampler_linear_clamp);
     lilBool _UseShadow;
     lilBool _UseMatCap;
     lilBool _MatCapMul;
+    lilBool _MatCapPerspective;
     lilBool _MatCapZRotCancel;
     lilBool _UseRim;
     lilBool _UseEmission;
@@ -366,15 +369,23 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_MULTI_INPUTS_NORMAL_2ND)
         float4  _Bump2ndMap_ST;
     #endif
+    #if defined(LIL_MULTI_INPUTS_ANISOTROPY)
+        float4  _AnisotropyTangentMap_ST;
+        float4  _AnisotropyShiftNoiseMask_ST;
+    #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION)
         float4  _ReflectionColor;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP)
         float4  _MatCapColor;
+        float4  _MatCapTex_ST;
+        float4  _MatCapBlendUV1;
         float4  _MatCapBumpMap_ST;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP_2ND)
         float4  _MatCap2ndColor;
+        float4  _MatCap2ndTex_ST;
+        float4  _MatCap2ndBlendUV1;
         float4  _MatCap2ndBumpMap_ST;
     #endif
     #if defined(LIL_MULTI_INPUTS_RIM)
@@ -468,12 +479,26 @@ SAMPLER(sampler_linear_clamp);
         float   _BacklightBlur;
         float   _BacklightDirectivity;
         float   _BacklightViewStrength;
+        float   _BacklightBackfaceMask;
     #endif
     #if defined(LIL_MULTI_INPUTS_NORMAL)
         float   _BumpScale;
     #endif
     #if defined(LIL_MULTI_INPUTS_NORMAL_2ND)
         float   _Bump2ndScale;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_ANISOTROPY)
+        float   _AnisotropyScale;
+        float   _AnisotropyTangentWidth;
+        float   _AnisotropyBitangentWidth;
+        float   _AnisotropyShift;
+        float   _AnisotropyShiftNoiseScale;
+        float   _AnisotropySpecularStrength;
+        float   _Anisotropy2ndTangentWidth;
+        float   _Anisotropy2ndBitangentWidth;
+        float   _Anisotropy2ndShift;
+        float   _Anisotropy2ndShiftNoiseScale;
+        float   _Anisotropy2ndSpecularStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION) || defined(LIL_GEM)
         float   _Smoothness;
@@ -487,6 +512,7 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCapEnableLighting;
         float   _MatCapShadowMask;
         float   _MatCapVRParallaxStrength;
+        float   _MatCapBackfaceMask;
         float   _MatCapBumpScale;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP_2ND)
@@ -494,6 +520,7 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCap2ndEnableLighting;
         float   _MatCap2ndShadowMask;
         float   _MatCap2ndVRParallaxStrength;
+        float   _MatCap2ndBackfaceMask;
         float   _MatCap2ndBumpScale;
     #endif
     #if defined(LIL_MULTI_INPUTS_RIM)
@@ -507,12 +534,14 @@ SAMPLER(sampler_linear_clamp);
         float   _RimIndirRange;
         float   _RimIndirBorder;
         float   _RimIndirBlur;
+        float   _RimBackfaceMask;
     #endif
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         float   _GlitterMainStrength;
         float   _GlitterEnableLighting;
         float   _GlitterShadowMask;
         float   _GlitterVRParallaxStrength;
+        float   _GlitterBackfaceMask;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION)
         float   _EmissionBlend;
@@ -613,19 +642,27 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
         lilBool _BacklightReceiveShadow;
     #endif
+    #if defined(LIL_MULTI_INPUTS_ANISOTROPY)
+        lilBool _Anisotropy2Reflection;
+        lilBool _Anisotropy2MatCap;
+        lilBool _Anisotropy2MatCap2nd;
+    #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION)
         lilBool _ApplySpecular;
+        lilBool _ApplySpecularFA;
         lilBool _ApplyReflection;
         lilBool _SpecularToon;
         lilBool _ReflectionApplyTransparency;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP)
         lilBool _MatCapApplyTransparency;
+        lilBool _MatCapPerspective;
         lilBool _MatCapZRotCancel;
         lilBool _MatCapCustomNormal;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP_2ND)
         lilBool _MatCap2ndApplyTransparency;
+        lilBool _MatCap2ndPerspective;
         lilBool _MatCap2ndZRotCancel;
         lilBool _MatCap2ndCustomNormal;
     #endif
@@ -782,6 +819,12 @@ SAMPLER(sampler_linear_clamp);
         float4  _Bump2ndMap_ST;
     #endif
 
+    // Anisotropy
+    #if defined(LIL_FEATURE_ANISOTROPY)
+        float4  _AnisotropyTangentMap_ST;
+        float4  _AnisotropyShiftNoiseMask_ST;
+    #endif
+
     // Reflection
     #if defined(LIL_FEATURE_REFLECTION)
         float4  _ReflectionColor;
@@ -790,6 +833,8 @@ SAMPLER(sampler_linear_clamp);
     // MatCap
     #if defined(LIL_FEATURE_MATCAP)
         float4  _MatCapColor;
+        float4  _MatCapTex_ST;
+        float4  _MatCapBlendUV1;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             float4  _MatCapBumpMap_ST;
         #endif
@@ -798,6 +843,8 @@ SAMPLER(sampler_linear_clamp);
     // MatCap 2nd
     #if defined(LIL_FEATURE_MATCAP_2ND)
         float4  _MatCap2ndColor;
+        float4  _MatCap2ndTex_ST;
+        float4  _MatCap2ndBlendUV1;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             float4  _MatCap2ndBumpMap_ST;
         #endif
@@ -934,12 +981,26 @@ SAMPLER(sampler_linear_clamp);
         float   _BacklightBlur;
         float   _BacklightDirectivity;
         float   _BacklightViewStrength;
+        float   _BacklightBackfaceMask;
     #endif
     #if defined(LIL_FEATURE_NORMAL_1ST)
         float   _BumpScale;
     #endif
     #if defined(LIL_FEATURE_NORMAL_2ND)
         float   _Bump2ndScale;
+    #endif
+    #if defined(LIL_FEATURE_ANISOTROPY)
+        float   _AnisotropyScale;
+        float   _AnisotropyTangentWidth;
+        float   _AnisotropyBitangentWidth;
+        float   _AnisotropyShift;
+        float   _AnisotropyShiftNoiseScale;
+        float   _AnisotropySpecularStrength;
+        float   _Anisotropy2ndTangentWidth;
+        float   _Anisotropy2ndBitangentWidth;
+        float   _Anisotropy2ndShift;
+        float   _Anisotropy2ndShiftNoiseScale;
+        float   _Anisotropy2ndSpecularStrength;
     #endif
     #if defined(LIL_FEATURE_REFLECTION) || defined(LIL_GEM)
         float   _Smoothness;
@@ -953,6 +1014,7 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCapEnableLighting;
         float   _MatCapShadowMask;
         float   _MatCapVRParallaxStrength;
+        float   _MatCapBackfaceMask;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             float   _MatCapBumpScale;
         #endif
@@ -962,6 +1024,7 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCap2ndEnableLighting;
         float   _MatCap2ndShadowMask;
         float   _MatCap2ndVRParallaxStrength;
+        float   _MatCap2ndBackfaceMask;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             float   _MatCap2ndBumpScale;
         #endif
@@ -972,6 +1035,7 @@ SAMPLER(sampler_linear_clamp);
         float   _RimFresnelPower;
         float   _RimEnableLighting;
         float   _RimShadowMask;
+        float   _RimBackfaceMask;
         #if defined(LIL_FEATURE_RIMLIGHT_DIRECTION)
             float   _RimDirStrength;
             float   _RimDirRange;
@@ -985,6 +1049,7 @@ SAMPLER(sampler_linear_clamp);
         float   _GlitterEnableLighting;
         float   _GlitterShadowMask;
         float   _GlitterVRParallaxStrength;
+        float   _GlitterBackfaceMask;
     #endif
     #if defined(LIL_FEATURE_EMISSION_1ST)
         float   _EmissionBlend;
@@ -1115,9 +1180,16 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_NORMAL_2ND)
         lilBool _UseBump2ndMap;
     #endif
+    #if defined(LIL_FEATURE_ANISOTROPY)
+        lilBool _UseAnisotropy;
+        lilBool _Anisotropy2Reflection;
+        lilBool _Anisotropy2MatCap;
+        lilBool _Anisotropy2MatCap2nd;
+    #endif
     #if defined(LIL_FEATURE_REFLECTION)
         lilBool _UseReflection;
         lilBool _ApplySpecular;
+        lilBool _ApplySpecularFA;
         lilBool _ApplyReflection;
         lilBool _SpecularToon;
         lilBool _ReflectionApplyTransparency;
@@ -1125,6 +1197,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_MATCAP)
         lilBool _UseMatCap;
         lilBool _MatCapApplyTransparency;
+        lilBool _MatCapPerspective;
         lilBool _MatCapZRotCancel;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             lilBool _MatCapCustomNormal;
@@ -1133,6 +1206,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_MATCAP_2ND)
         lilBool _UseMatCap2nd;
         lilBool _MatCap2ndApplyTransparency;
+        lilBool _MatCap2ndPerspective;
         lilBool _MatCap2ndZRotCancel;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             lilBool _MatCap2ndCustomNormal;
@@ -1222,6 +1296,9 @@ TEXTURE2D(_AlphaMask);
 TEXTURE2D(_BumpMap);
 TEXTURE2D(_Bump2ndMap);
 TEXTURE2D(_Bump2ndScaleMask);
+TEXTURE2D(_AnisotropyTangentMap);
+TEXTURE2D(_AnisotropyScaleMask);
+TEXTURE2D(_AnisotropyShiftNoiseMask);
 TEXTURE2D(_ShadowBorderMask);
 TEXTURE2D(_ShadowBlurMask);
 TEXTURE2D(_ShadowStrengthMask);

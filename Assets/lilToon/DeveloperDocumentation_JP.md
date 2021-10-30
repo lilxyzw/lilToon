@@ -258,6 +258,7 @@ METAパスではエラーになるのでMETAパスに以下の変更を加えま
 |DISSOLVE|Dissolveの処理|
 |NORMAL_1ST|ノーマルマップの処理|
 |NORMAL_2ND|ノーマルマップ2ndの処理|
+|ANISOTROPY|異方性反射の処理|
 |AUDIOLINK|AudioLinkの処理|
 |MAIN2ND|メインカラー2ndの処理|
 |MAIN3RD|メインカラー3rdの処理|

@@ -190,13 +190,23 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     float3 albedo = 1.0;
     float3 emissionColor = 0.0;
 
+    float anisotropy = 0.0;
+    float3 anisoTangentWS = 0.0;
+    float3 anisoBitangentWS = 0.0;
     float3 normalDirection = 0.0;
+    float3 reflectionNormalDirection = 0.0;
+    float3 matcapNormalDirection = 0.0;
+    float3 matcap2ndNormalDirection = 0.0;
     float3 viewDirection = 0.0;
     float3 headDirection = 0.0;
     float3x3 tbnWS = 0.0;
     float depth = 0.0;
     float3 parallaxViewDirection = 0.0;
     float2 parallaxOffset = 0.0;
+
+    float smoothness = 1.0;
+    float roughness = 1.0;
+    float perceptualRoughness = 1.0;
 
     float vl = 0.0;
     float hl = 0.0;
@@ -223,7 +233,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     //------------------------------------------------------------------------------------------------------------------------------
     // View Direction
     #if defined(LIL_V2F_POSITION_WS)
-        depth = length(lilViewDirection(input.positionWS));
+        depth = length(lilHeadDirection(input.positionWS));
         viewDirection = normalize(lilViewDirection(input.positionWS));
         headDirection = normalize(lilHeadDirection(input.positionWS));
         vl = dot(viewDirection, lightDirection);
@@ -415,6 +425,16 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
                 nvabs = abs(dot(normalDirection, viewDirection));
             #endif
         #endif
+        reflectionNormalDirection = normalDirection;
+        matcapNormalDirection = normalDirection;
+        matcap2ndNormalDirection = normalDirection;
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Anisotropy
+        BEFORE_ANISOTROPY
+        #if defined(LIL_FEATURE_ANISOTROPY)
+            OVERRIDE_ANISOTROPY
+        #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
         // AudioLink (https://github.com/llealloo/vrc-udon-audio-link)
@@ -502,10 +522,10 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         BEFORE_REFRACTION
         #if defined(LIL_REFRACTION) && !defined(LIL_PASS_FORWARDADD)
             #if defined(LIL_REFRACTION_BLUR2) && defined(LIL_FEATURE_REFLECTION)
-                float smoothness = _Smoothness;
+                smoothness = _Smoothness;
                 if(Exists_SmoothnessTex) smoothness *= LIL_SAMPLE_2D(_SmoothnessTex, sampler_MainTex, uvMain).r;
-                float perceptualRoughness = 1.0 - smoothness;
-                float roughness = perceptualRoughness * perceptualRoughness;
+                perceptualRoughness = perceptualRoughness - smoothness * perceptualRoughness;
+                roughness = perceptualRoughness * perceptualRoughness;
             #endif
             OVERRIDE_REFRACTION
         #endif
@@ -583,6 +603,10 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     #if defined(LIL_FEATURE_DISTANCE_FADE)
         OVERRIDE_DISTANCE_FADE
     #endif
+
+    //------------------------------------------------------------------------------------------------------------------------------
+    // Fix Color
+    LIL_HDRP_DEEXPOSURE(col);
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Fog

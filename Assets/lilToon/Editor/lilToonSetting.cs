@@ -23,6 +23,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_EMISSION_GRADATION;
     public bool LIL_FEATURE_NORMAL_1ST;
     public bool LIL_FEATURE_NORMAL_2ND;
+    public bool LIL_FEATURE_ANISOTROPY;
     public bool LIL_FEATURE_REFLECTION;
     public bool LIL_FEATURE_MATCAP;
     public bool LIL_FEATURE_MATCAP_2ND;

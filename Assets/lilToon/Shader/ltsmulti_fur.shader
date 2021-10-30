@@ -1,5 +1,9 @@
 Shader "Hidden/lilToonMultiFur"
 {
+    // Memo
+    // If you are using Unity 2018 or earlier, you need to replace `shader_feature_local` with` shader_feature`.
+    // If there are too many variants, you should also replace them with #define.
+
     Properties
     {
         //----------------------------------------------------------------------------------------------------------------------
@@ -50,7 +54,7 @@ Shader "Hidden/lilToonMultiFur"
         //----------------------------------------------------------------------------------------------------------------------
         // Distance Fade
         [lilHDR]        _DistanceFadeColor          ("Color", Color) = (0,0,0,1)
-        [lil3Param]     _DistanceFade               ("Start|End|Strength", Vector) = (0.1,0.01,0,0)
+        [lilFFFB]       _DistanceFade               ("Start|End|Strength|Fix backface", Vector) = (0.1,0.01,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Encryption
@@ -136,6 +140,12 @@ Shader "Hidden/lilToonMultiFur"
         [lilToggle]     _UsePOM                     ("Use POM", Int) = 0
         [lilToggle]     _UseClippingCanceller       ("Use Clipping Canceller", Int) = 0
         [lilToggle]     _AsOverlay                  ("As Overlay", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Save (Unused)
+        [HideInInspector] [MainColor]                   _BaseColor          ("Color", Color) = (1,1,1,1)
+        [HideInInspector] [MainTexture]                 _BaseMap            ("Texture", 2D) = "white" {}
+        [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
     }
     HLSLINCLUDE
         #pragma require geometry

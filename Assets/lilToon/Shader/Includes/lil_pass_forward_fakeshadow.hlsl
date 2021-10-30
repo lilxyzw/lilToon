@@ -76,6 +76,7 @@ float4 frag(v2f input) : SV_Target
     #endif
     float4 col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, input.uv);
     col *= _Color;
+    LIL_HDRP_DEEXPOSURE(col);
     float4 fogColor = float4(1,1,1,1);
     LIL_APPLY_FOG_COLOR(col, input.fogCoord, fogColor);
     return col;

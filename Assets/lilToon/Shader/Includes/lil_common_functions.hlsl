@@ -144,6 +144,11 @@ float lilNsqDistance(float2 a, float2 b)
     return dot(a-b,a-b);
 }
 
+float3 lilOrthoNormalize(float3 tangent, float3 normal)
+{
+    return normalize(tangent - normal * dot(normal, tangent));
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Position Transform
 struct lilVertexPositionInputs
@@ -416,7 +421,7 @@ float2 lilCalcAtlasAnimation(float2 uv, float4 decalAnimation, float4 decalSubPa
     return outuv;
 }
 
-float2 lilCalcMatCapUV(float3 normalWS, float3 viewDirection, float3 headDirection, float matcapVRParallaxStrength, bool zRotCancel = true)
+float2 lilCalcMatCapUV(float2 uv1, float3 normalWS, float3 viewDirection, float3 headDirection, float4 matcap_ST, float2 matcapBlendUV1, bool zRotCancel, bool matcapPerspective, float matcapVRParallaxStrength)
 {
     #if LIL_MATCAP_MODE == 0
         // Simple
@@ -427,11 +432,16 @@ float2 lilCalcMatCapUV(float3 normalWS, float3 viewDirection, float3 headDirecti
         #else
             float3 normalVD = viewDirection;
         #endif
+        normalVD = matcapPerspective ? normalVD : LIL_MATRIX_V._m20_m21_m22;
         float3 bitangentVD = zRotCancel ? float3(0,1,0) : LIL_MATRIX_V._m10_m11_m12;
-        bitangentVD = normalize(bitangentVD - normalVD * dot(normalVD, bitangentVD));
+        bitangentVD = lilOrthoNormalize(bitangentVD, normalVD);
         float3 tangentVD = cross(normalVD, bitangentVD);
         float3x3 tbnVD = float3x3(tangentVD, bitangentVD, normalVD);
-        return mul(tbnVD, normalWS).xy * 0.5 + 0.5;
+        float2 uvMat = mul(tbnVD, normalWS).xy;
+        uvMat = lerp(uvMat, uv1*2-1, matcapBlendUV1);
+        uvMat = uvMat * matcap_ST.xy + matcap_ST.zw;
+        uvMat = uvMat * 0.5 + 0.5;
+        return uvMat;
     #endif
 }
 
@@ -970,50 +980,85 @@ float3 lilFresnelLerp(float3 F0, float3 F90, float cosA)
     return lerp(F0, F90, a * a * a * a * a);
 }
 
-float3 lilCalcSpecular(float nv, float nl, float nh, float lh, float roughness, float3 specular, bool isSpecularToon, float attenuation = 1.0)
+float3 lilCalcSpecular(float3 N, float3 T, float3 B, float3 L, float3 V, float roughness, float3 specular, float anisotropy, float anisoTangentWidth, float anisoBitangentWidth, float aniso2ndTangentWidth, float aniso2ndBitangentWidth, float anisoSpecularStrength, float aniso2ndSpecularStrength, float anisoShift, float aniso2ndShift, bool isSpecularToon, float attenuation, bool isAnisotropy)
 {
-    #if LIL_SPECULAR_MODE == 0
-        // BRP Specular
-        float roughness2 = max(roughness, 0.002);
+    float3 H = normalize(V + L);
+    float nv = saturate(dot(N, V));
+    float nl = saturate(dot(N, L));
+    float lh = saturate(dot(L, H));
+    float nh = saturate(dot(N, H));
 
-        float lambdaV = nl * (nv * (1.0 - roughness2) + roughness2);
-        float lambdaL = nv * (nl * (1.0 - roughness2) + roughness2);
-        #if defined(SHADER_API_SWITCH)
-            float sjggx =  0.5 / (lambdaV + lambdaL + 1e-4f);
-        #else
-            float sjggx =  0.5 / (lambdaV + lambdaL + 1e-5f);
-        #endif
+    // BRP Specular
+    float ggx, sjggx = 0.0;
+    float lambdaV = 0.0;
+    float lambdaL = 0.0;
+    float vh = dot(V,H);
+    float d = 1.0;
+    if(isAnisotropy)
+    {
+        float roughnessT = max(roughness * (1.0 + anisotropy), 0.002);
+        float roughnessB = max(roughness * (1.0 - anisotropy), 0.002);
+
+        float tv = dot(T, V);
+        float bv = dot(B, V);
+        float tl = dot(T, L);
+        float bl = dot(B, L);
+
+        lambdaV = nl * length(float3(roughnessT * tv, roughnessB * bv, nv));
+        lambdaL = nv * length(float3(roughnessT * tl, roughnessB * bl, nl));
+
+        float roughnessT1 = roughnessT * anisoTangentWidth;
+        float roughnessB1 = roughnessB * anisoBitangentWidth;
+        float roughnessT2 = roughnessT * aniso2ndTangentWidth;
+        float roughnessB2 = roughnessB * aniso2ndBitangentWidth;
+        float3 T1 = normalize(T - N * anisoShift);
+        float3 B1 = normalize(B - N * anisoShift);
+        float3 T2 = normalize(T - N * aniso2ndShift);
+        float3 B2 = normalize(B - N * aniso2ndShift);
+        float th1 = dot(T1, H);
+        float bh1 = dot(B1, H);
+        float th2 = dot(T2, H);
+        float bh2 = dot(B2, H);
+
+        float r1 = roughnessT1 * roughnessB1;
+        float r2 = roughnessT2 * roughnessB2;
+        float3 v1 = float3(th1 * roughnessB1, bh1 * roughnessT1, nh * r1);
+        float3 v2 = float3(th2 * roughnessB2, bh2 * roughnessT2, nh * r2);
+        float w1 = r1 / dot(v1, v1);
+        float w2 = r2 / dot(v2, v2);
+        ggx = r1 * w1 * w1 * anisoSpecularStrength + r2 * w2 * w2 * aniso2ndSpecularStrength;
+    }
+    else
+    {
+        float roughness2 = max(roughness, 0.002);
+        lambdaV = nl * (nv * (1.0 - roughness2) + roughness2);
+        lambdaL = nv * (nl * (1.0 - roughness2) + roughness2);
 
         float r2 = roughness2 * roughness2;
-        float d = (nh * r2 - nh) * nh + 1.0;
-        float ggx = r2 / (d * d + 1e-7f);
+        d = (nh * r2 - nh) * nh + 1.0;
+        ggx = r2 / (d * d + 1e-7f);
+    }
 
-        //float specularTerm = SmithJointGGXVisibilityTerm(nl,nv,roughness2) * GGXTerm(nh,roughness2) * LIL_PI;
-        float specularTerm = sjggx * ggx;
-        #ifdef LIL_COLORSPACE_GAMMA
-            specularTerm = sqrt(max(1e-4h, specularTerm));
-        #endif
-        specularTerm *= nl * attenuation;
-        if(isSpecularToon) return lilTooning(specularTerm, 0.5);
-        else               return specularTerm * lilFresnelTerm(specular, lh);
-    #elif LIL_SPECULAR_MODE == 1
-        // URP Specular
-        float roughness2 = max(roughness, 0.002);
-        float r2 = roughness2 * roughness2;
-        float d = (nh * r2 - nh) * nh + 1.00001;
-        float specularTerm = r2 / ((d * d) * max(0.1, lh * lh) * (roughness * 4.0 + 2.0));
-        #if defined (SHADER_API_MOBILE) || defined (SHADER_API_SWITCH)
-            specularTerm = clamp(specularTerm, 0.0, 100.0);
-        #endif
-        if(isSpecularToon) return lilTooning(specularTerm, 0.5);
-        else               return specularTerm * specular;
+    #if defined(SHADER_API_MOBILE) || defined(SHADER_API_SWITCH)
+        sjggx = 0.5 / (lambdaV + lambdaL + 1e-4f);
     #else
-        // Fast Specular
-        float smoothness = 1.0/max(roughness, 0.002);
-        float specularTerm = pow(nh, smoothness);
-        if(isSpecularToon) return lilTooning(specularTerm, 0.5);
-        else               return specularTerm * smoothness * 0.1 * specular;
+        sjggx = 0.5 / (lambdaV + lambdaL + 1e-5f);
     #endif
+
+    float specularTerm = sjggx * ggx;
+    #ifdef LIL_COLORSPACE_GAMMA
+        specularTerm = sqrt(max(1e-4h, specularTerm));
+    #endif
+    specularTerm *= nl * attenuation;
+    if(isSpecularToon) return lilTooning(specularTerm, 0.5);
+    else               return specularTerm * lilFresnelTerm(specular, lh);
+}
+
+float3 lilGetAnisotropyNormalWS(float3 normalWS, float3 anisoTangentWS, float3 anisoBitangentWS, float3 viewDirection, float anisotropy)
+{
+    float3 anisoDirectionWS = anisotropy > 0.0 ? anisoBitangentWS : anisoTangentWS;
+    anisoDirectionWS = lilOrthoNormalize(viewDirection, anisoDirectionWS);
+    return normalize(lerp(normalWS, anisoDirectionWS, abs(anisotropy)));
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
