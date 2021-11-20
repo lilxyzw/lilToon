@@ -27,7 +27,7 @@
         #define LIL_V2G_INDLIGHTCOLOR
     #endif
 #endif
-#define LIL_V2G_FOG
+#define LIL_V2G_VERTEXLIGHT_FOG
 #define LIL_V2G_FURVECTOR
 
 // g2f

@@ -1618,7 +1618,7 @@ struct lilLightData
 #else
     #define LIL_VERTEXLIGHT_FOG_TYPE            float
     #define LIL_VERTEXLIGHT_FOG_COORDS(idx)     float vlf : TEXCOORD##idx;
-    #define LIL_TRANSFER_FOG(i,o)               o.vlf = 1.0
+    #define LIL_TRANSFER_FOG(i,o)               o.vlf = lilCalcFogFactor(i.positionCS.z)
     #define LIL_APPLY_FOG(col,i)                LIL_APPLY_FOG_BASE(col,i.vlf)
     #define LIL_APPLY_FOG_COLOR(col,i,fogColor) LIL_APPLY_FOG_COLOR_BASE(col,i.vlf,fogColor)
 #endif
