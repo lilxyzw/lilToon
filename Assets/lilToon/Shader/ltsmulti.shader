@@ -175,6 +175,8 @@ Shader "_lil/lilToonMulti"
         [lilToggle]     _ApplySpecular              ("Apply Specular", Int) = 1
         [lilToggle]     _ApplySpecularFA            ("Apply Specular in ForwardAdd", Int) = 1
         [lilToggle]     _SpecularToon               ("Specular Toon", Int) = 1
+                        _SpecularBorder             ("Border", Range(0, 1)) = 0.5
+                        _SpecularBlur               ("Blur", Range(0, 1)) = 0.0
         [lilToggle]     _ApplyReflection            ("Apply Reflection", Int) = 0
         [lilHDR]        _ReflectionColor            ("Color", Color) = (1,1,1,1)
         [NoScaleOffset] _ReflectionColorTex         ("Color", 2D) = "white" {}
@@ -260,6 +262,7 @@ Shader "_lil/lilToonMulti"
         [HDR][lilHDR]   _EmissionColor              ("Color", Color) = (1,1,1,1)
                         _EmissionMap                ("Texture", 2D) = "white" {}
         [lilUVAnim]     _EmissionMap_ScrollRotate   ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
+        [lilEnum]       _EmissionMap_UVMode         ("UV Mode|UV0|UV1|UV2|UV3|Rim", Int) = 0
                         _EmissionBlend              ("Blend", Range(0,1)) = 1
                         _EmissionBlendMask          ("Mask", 2D) = "white" {}
         [lilUVAnim]     _EmissionBlendMask_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
@@ -295,6 +298,7 @@ Shader "_lil/lilToonMulti"
         [HDR][lilHDR]   _Emission2ndColor           ("Color", Color) = (1,1,1,1)
                         _Emission2ndMap             ("Texture", 2D) = "white" {}
         [lilUVAnim]     _Emission2ndMap_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
+        [lilEnum]       _Emission2ndMap_UVMode      ("UV Mode|UV0|UV1|UV2|UV3|Rim", Int) = 0
                         _Emission2ndBlend           ("Blend", Range(0,1)) = 1
                         _Emission2ndBlendMask       ("Mask", 2D) = "white" {}
         [lilUVAnim]     _Emission2ndBlendMask_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
@@ -522,9 +526,10 @@ Shader "_lil/lilToonMulti"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
+            #pragma skip_variants DIRLIGHTMAP_COMBINED
 
             // Transparent mode
             #pragma shader_feature_local UNITY_UI_ALPHACLIP
@@ -604,10 +609,10 @@ Shader "_lil/lilToonMulti"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fwdbase
-            #pragma multi_compile_fog
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
-            #pragma skip_variants SHADOWS_SCREEN
+            #pragma skip_variants SHADOWS_SCREEN DIRLIGHTMAP_COMBINED
 
             // Transparent mode
             #pragma shader_feature_local UNITY_UI_ALPHACLIP
@@ -631,8 +636,8 @@ Shader "_lil/lilToonMulti"
                 #include "Includes/lil_pass_forward.hlsl"
             #else
                 #include "Includes/lil_pipeline.hlsl"
-                void vert(){}
-                void frag(){}
+                float4 vert() : SV_POSITION {return float4(0.0,0.0,0.0,0.0);}
+                float4 frag() : SV_Target {return float4(0.0,0.0,0.0,0.0);}
             #endif
 
             ENDHLSL
@@ -670,8 +675,8 @@ Shader "_lil/lilToonMulti"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile_fwdadd
-            #pragma multi_compile_fog
+            #pragma multi_compile_fragment POINT DIRECTIONAL SPOT POINT_COOKIE DIRECTIONAL_COOKIE
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
 
@@ -831,11 +836,9 @@ Shader "_lil/lilToonMulti"
             #pragma fragment frag
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
+            #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
+            #pragma multi_compile_fragment _ LIGHTMAP_ON
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -921,9 +924,9 @@ Shader "_lil/lilToonMulti"
             #pragma fragment frag
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
+            #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
+            #pragma multi_compile_fragment _ LIGHTMAP_ON
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -949,8 +952,8 @@ Shader "_lil/lilToonMulti"
                 #include "Includes/lil_pass_forward.hlsl"
             #else
                 #include "Includes/lil_pipeline.hlsl"
-                void vert(){}
-                void frag(){}
+                float4 vert() : SV_POSITION {return float4(0.0,0.0,0.0,0.0);}
+                float4 frag() : SV_Target {return float4(0.0,0.0,0.0,0.0);}
             #endif
 
             ENDHLSL
@@ -1100,11 +1103,9 @@ Shader "_lil/lilToonMulti"
             #pragma fragment frag
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
+            #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
+            #pragma multi_compile_fragment _ LIGHTMAP_ON
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
 
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
@@ -1189,9 +1190,9 @@ Shader "_lil/lilToonMulti"
             #pragma fragment frag
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
+            #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
+            #pragma multi_compile_fragment _ LIGHTMAP_ON
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
 
             // Transparent mode
@@ -1216,8 +1217,8 @@ Shader "_lil/lilToonMulti"
                 #include "Includes/lil_pass_forward.hlsl"
             #else
                 #include "Includes/lil_pipeline.hlsl"
-                void vert(){}
-                void frag(){}
+                float4 vert() : SV_POSITION {return float4(0.0,0.0,0.0,0.0);}
+                float4 frag() : SV_Target {return float4(0.0,0.0,0.0,0.0);}
             #endif
 
             ENDHLSL
@@ -1370,12 +1371,18 @@ Shader "_lil/lilToonMulti"
             #pragma fragment frag
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
+            #pragma multi_compile _ _LIGHT_LAYERS
+            #pragma multi_compile _ _CLUSTERED_RENDERING
+            #pragma multi_compile_fragment _ _LIGHT_COOKIES
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
+            #pragma multi_compile_fragment _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
+            #pragma multi_compile_fragment _ LIGHTMAP_ON
+            #pragma multi_compile_fragment _ DYNAMICLIGHTMAP_ON
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
@@ -1460,10 +1467,13 @@ Shader "_lil/lilToonMulti"
             #pragma fragment frag
             #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
+            #pragma multi_compile _ _LIGHT_LAYERS
+            #pragma multi_compile _ _CLUSTERED_RENDERING
+            #pragma multi_compile_fragment _ LIGHTMAP_ON
+            #pragma multi_compile_fragment _ DYNAMICLIGHTMAP_ON
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
             // Transparent mode
@@ -1488,8 +1498,8 @@ Shader "_lil/lilToonMulti"
                 #include "Includes/lil_pass_forward.hlsl"
             #else
                 #include "Includes/lil_pipeline.hlsl"
-                void vert(){}
-                void frag(){}
+                float4 vert() : SV_POSITION {return float4(0.0,0.0,0.0,0.0);}
+                float4 frag() : SV_Target {return float4(0.0,0.0,0.0,0.0);}
             #endif
 
             ENDHLSL
@@ -1712,12 +1722,18 @@ Shader "_lil/lilToonMulti"
             #pragma fragment frag
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
+            #pragma multi_compile _ _LIGHT_LAYERS
+            #pragma multi_compile _ _CLUSTERED_RENDERING
+            #pragma multi_compile_fragment _ _LIGHT_COOKIES
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
+            #pragma multi_compile_fragment _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
+            #pragma multi_compile_fragment _ LIGHTMAP_ON
+            #pragma multi_compile_fragment _ DYNAMICLIGHTMAP_ON
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
 
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
@@ -1801,10 +1817,13 @@ Shader "_lil/lilToonMulti"
             #pragma fragment frag
             #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile_fog
+            #pragma multi_compile _ _LIGHT_LAYERS
+            #pragma multi_compile _ _CLUSTERED_RENDERING
+            #pragma multi_compile_fragment _ LIGHTMAP_ON
+            #pragma multi_compile_fragment _ DYNAMICLIGHTMAP_ON
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
 
             // Transparent mode
             #pragma shader_feature_local UNITY_UI_ALPHACLIP
@@ -1828,8 +1847,8 @@ Shader "_lil/lilToonMulti"
                 #include "Includes/lil_pass_forward.hlsl"
             #else
                 #include "Includes/lil_pipeline.hlsl"
-                void vert(){}
-                void frag(){}
+                float4 vert() : SV_POSITION {return float4(0.0,0.0,0.0,0.0);}
+                float4 frag() : SV_Target {return float4(0.0,0.0,0.0,0.0);}
             #endif
 
             ENDHLSL
@@ -2055,13 +2074,12 @@ Shader "_lil/lilToonMulti"
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ DYNAMICLIGHTMAP_ON
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile_fragment _ LIGHTMAP_ON
+            #pragma multi_compile_fragment _ DYNAMICLIGHTMAP_ON
+            #pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
 
-            #pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
-            #pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
+            #pragma multi_compile_fragment SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON
+            #pragma multi_compile_fragment SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH
 
             #define SHADERPASS SHADERPASS_FORWARD
 
@@ -2145,10 +2163,9 @@ Shader "_lil/lilToonMulti"
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
-            #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
-            #pragma multi_compile _ DYNAMICLIGHTMAP_ON
-            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            #pragma multi_compile_fragment _ LIGHTMAP_ON
+            #pragma multi_compile_fragment _ DYNAMICLIGHTMAP_ON
+            #pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
 
             #define SHADERPASS SHADERPASS_FORWARD
 
@@ -2174,8 +2191,8 @@ Shader "_lil/lilToonMulti"
                 #include "Includes/lil_pass_forward.hlsl"
             #else
                 #include "Includes/lil_pipeline.hlsl"
-                void vert(){}
-                void frag(){}
+                float4 vert() : SV_POSITION {return float4(0.0,0.0,0.0,0.0);}
+                float4 frag() : SV_Target {return float4(0.0,0.0,0.0,0.0);}
             #endif
 
             ENDHLSL

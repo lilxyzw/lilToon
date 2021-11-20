@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.4] - 2021-11-20
+### 追加
+- 光沢のタイプのトゥーンに`範囲`と`ぼかし`パラメーターを追加
+- 発光に様々なUVモードを追加
+- カスタムシェーダー作成時のappdata構造体の入力に`uint vertexID : SV_VertexID`を追加
+- Light Layersに対応 (URP)
+
+### 変更
+- マテリアル・アニメーションからシェーダー設定をスキャンする機能のダイアログの表示タイミングを変更
+- GUIを微調整
+- interpolatorを削減
+- トゥーンの光沢のタイプのアルゴリズムを変更
+- lilToonMultiの輪郭線スキップ時の関数を変更
+
+### 修正
+- AudioLink非対応ワールドの判定がうまくできていなかった問題の修正
+- ファーシェーダーで環境光の強度プロパティが適用されていなかったのを修正
+- lilToonMultiの透過ファーシェーダーで描画モード切り替え時にZWriteがオフになっていたのを修正
+- UVのスクロールと回転を併用した際の挙動を修正
+
 ## [1.2.3] - 2021-10-30
 ### 追加
 - マットキャップのUV関係の機能を拡張

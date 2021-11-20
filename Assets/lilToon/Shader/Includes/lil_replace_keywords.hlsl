@@ -10,6 +10,49 @@
 #define LIL_IGNORE_SHADERSETTING
 
 //----------------------------------------------------------------------------------------------------------------------
+// Shader keyword list
+
+// Built-in keyword                     Replace
+// ------------------------------------ --------------------------------------------------------------------------------
+// UNITY_UI_ALPHACLIP                   LIL_RENDER 1
+// UNITY_UI_CLIP_RECT                   LIL_RENDER 2
+// ------------------------------------ --------------------------------------------------------------------------------
+// EFFECT_HUE_VARIATION                 LIL_FEATURE_MAIN_GRADATION_MAP LIL_FEATURE_MAIN_TONE_CORRECTION
+// _COLORADDSUBDIFF_ON                  LIL_FEATURE_MAIN2ND
+// _COLORCOLOR_ON                       LIL_FEATURE_MAIN3RD
+// _SUNDISK_NONE                        LIL_FEATURE_ANIMATE_DECAL
+// GEOM_TYPE_FROND                      LIL_FEATURE_LAYER_DISSOLVE
+// _COLOROVERLAY_ON                     LIL_FEATURE_ALPHAMASK
+// ------------------------------------ --------------------------------------------------------------------------------
+// _REQUIRE_UV2                         LIL_FEATURE_SHADOW
+// ANTI_FLICKER                         LIL_FEATURE_BACKLIGHT
+// _EMISSION                            LIL_FEATURE_EMISSION_1ST
+// GEOM_TYPE_BRANCH                     LIL_FEATURE_EMISSION_2ND
+// _SUNDISK_SIMPLE                      LIL_FEATURE_TEX_EMISSION_MASK
+// ------------------------------------ --------------------------------------------------------------------------------
+// _NORMALMAP                           LIL_FEATURE_NORMAL_1ST
+// EFFECT_BUMP                          LIL_FEATURE_NORMAL_2ND
+// SOURCE_GBUFFER                       LIL_FEATURE_ANISOTROPY
+// _GLOSSYREFLECTIONS_OFF               LIL_FEATURE_REFLECTION
+// _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A LIL_FEATURE_MATCAP
+// _SPECULARHIGHLIGHTS_OFF              LIL_FEATURE_MATCAP_2ND
+// GEOM_TYPE_MESH                       LIL_FEATURE_TEX_MATCAP_NORMALMAP
+// _METALLICGLOSSMAP                    LIL_FEATURE_RIMLIGHT
+// GEOM_TYPE_LEAF                       LIL_FEATURE_RIMLIGHT_DIRECTION
+// _SPECGLOSSMAP                        LIL_FEATURE_GLITTER
+// ------------------------------------ --------------------------------------------------------------------------------
+// _PARALLAXMAP                         LIL_FEATURE_PARALLAX
+// PIXELSNAP_ON                         LIL_FEATURE_POM
+// BILLBOARD_FACE_CAMERA_POS            LIL_FEATURE_CLIPPING_CANCELLER
+// _FADING_ON                           LIL_FEATURE_DISTANCE_FADE
+// _MAPPING_6_FRAMES_LAYOUT             LIL_FEATURE_AUDIOLINK
+// _SUNDISK_HIGH_QUALITY                LIL_FEATURE_AUDIOLINK_LOCAL
+// GEOM_TYPE_BRANCH_DETAIL              LIL_FEATURE_DISSOLVE
+// ------------------------------------ --------------------------------------------------------------------------------
+// ETC1_EXTERNAL_ALPHA                  LIL_MULTI_OUTLINE
+// _DETAIL_MULX2                        LIL_FEATURE_OUTLINE_TONE_CORRECTION
+
+//----------------------------------------------------------------------------------------------------------------------
 // Replace keyword to transparent mode and outline
 #if defined(ETC1_EXTERNAL_ALPHA)
     #define LIL_MULTI_OUTLINE

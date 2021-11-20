@@ -12,11 +12,11 @@
 
 struct v2f
 {
-    float4 positionCS : SV_POSITION;
-    float2 uv : TEXCOORD0;
-    LIL_FOG_COORDS(1)
+    float4 positionCS   : SV_POSITION;
+    float2 uv0          : TEXCOORD0;
+    LIL_VERTEXLIGHT_FOG_COORDS(1)
     #if defined(LIL_HDRP) || defined(LIL_V2F_FORCE_POSITION_WS)
-        float3 positionWS : TEXCOORD2;
+        float3 positionWS   : TEXCOORD2;
     #endif
     LIL_CUSTOM_V2F_MEMBER(3,4,5,6,7,8,9,10)
     LIL_VERTEX_INPUT_INSTANCE_ID
@@ -48,7 +48,8 @@ v2f vert(appdata input)
     LIL_VERTEX_POSITION_INPUTS(input.positionOS, vertexInput);
     #if defined(LIL_HDRP)
         LIL_VERTEX_NORMAL_INPUTS(input.normalOS, vertexNormalInput);
-        LIL_GET_HDRPDATA(vertexInput);
+        lilFragData fd = lilInitFragData();
+        LIL_GET_HDRPDATA(vertexInput,fd);
         float3 lightColor;
         float3 lightDirection;
         lilGetLightDirectionAndColor(lightDirection, lightColor, posInput);
@@ -60,7 +61,7 @@ v2f vert(appdata input)
     float2 lightShift = mul((float3x3)LIL_MATRIX_VP, lightDirection * _FakeShadowVector.w).xy;
     output.positionCS = vertexInput.positionCS;
     output.positionCS.xy -= lightShift.xy;
-    output.uv = input.uv * _MainTex_ST.xy + _MainTex_ST.zw;
+    output.uv0 = input.uv0 * _MainTex_ST.xy + _MainTex_ST.zw;
     LIL_TRANSFER_FOG(vertexInput, output);
 
     return output;
@@ -68,18 +69,24 @@ v2f vert(appdata input)
 
 float4 frag(v2f input) : SV_Target
 {
+    lilFragData fd = lilInitFragData();
+
+    fd.uv0 = input.uv0;
+    #if defined(LIL_HDRP) || defined(LIL_V2F_FORCE_POSITION_WS)
+        fd.positionWS = input.positionWS;
+    #endif
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-    LIL_GET_HDRPDATA(input);
+    LIL_GET_HDRPDATA(input,fd);
     #if defined(LIL_HDRP)
-        float3 viewDirection = normalize(lilViewDirection(input.positionWS));
+        fd.V = normalize(lilViewDirection(fd.positionWS));
     #endif
-    float4 col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, input.uv);
-    col *= _Color;
-    LIL_HDRP_DEEXPOSURE(col);
+    fd.col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, fd.uv0);
+    fd.col *= _Color;
+    LIL_HDRP_DEEXPOSURE(fd.col);
     float4 fogColor = float4(1,1,1,1);
-    LIL_APPLY_FOG_COLOR(col, input.fogCoord, fogColor);
-    return col;
+    LIL_APPLY_FOG_COLOR(fd.col, input, fogColor);
+    return fd.col;
 }
 
 #endif

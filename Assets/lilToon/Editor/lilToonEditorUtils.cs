@@ -22,6 +22,16 @@ namespace lilToon
             string shaderSettingPath = lilToonInspector.GetShaderSettingPath();
             lilToonSetting shaderSetting = (lilToonSetting)AssetDatabase.LoadAssetAtPath(shaderSettingPath, typeof(lilToonSetting));
             if(shaderSetting != null) lilToonInspector.ApplyShaderSetting(shaderSetting);
+
+            string[] shaderFolderPaths = lilToonInspector.GetShaderFolderPaths();
+            bool isShadowReceive = shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW || shaderSetting.LIL_FEATURE_BACKLIGHT;
+            string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
+            foreach(string shaderGuid in shaderGuids)
+            {
+                string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
+                lilToonInspector.RewriteReceiveShadow(shaderPath, isShadowReceive);
+            }
+
             lilToonInspector.ReimportPassShaders();
             AssetDatabase.Refresh();
         }

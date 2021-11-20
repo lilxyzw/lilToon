@@ -86,6 +86,9 @@
 - lts_ref.shader
 - lts_ref_blur.shader
 - ltsmulti.shader
+- ltsmulti_fur.shader
+- ltsmulti_gem.shader
+- ltsmulti_ref.shader
 
 ## パスについて
 非常に多くのバリエーションがありますが、シェーダー冒頭の`HLSLINCLUDE`でシェーダーバリエーションごとのマクロを宣言し、各パスで`#include "Includes/lil_pass_xx.hlsl"`を呼び出してマクロに応じた分岐をさせることでなるべくコードを共通化しています。  
@@ -101,7 +104,7 @@
             - lil_common_macro.hlsl
             - lil_common_input.hlsl
             - lil_common_functions.hlsl
-            - lil_common_appdata.hlsl
+    - lil_common_appdata.hlsl
     - 各パスごとのv2f構造体の宣言
     - lil_common_vert.hlsl
     - lil_common_frag.hlsl
@@ -141,7 +144,6 @@ ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _
         [lilVec3]       _CustomVertexWaveStrength   ("Vertex Wave Strength", Vector) = (0.0,0.1,0.0,0.0)
                         _CustomVertexWaveSpeed      ("Vertex Wave Speed", float) = 10.0
         [NoScaleOffset] _CustomVertexWaveMask       ("Vertex Wave Mask", 2D) = "white" {}
-        [lilEnum]       _CustomEmissionUVMode       ("Emission UV Mode|UV0|UV1|UV2|UV3", Int) = 0
 ```
 これで`custom_lts.shader`の編集は終わりです。  
 エディタをカスタマイズする場合は`CustomEditor "lilToon.lilToonInspector"`を任意のものに変更します。
@@ -154,8 +156,7 @@ ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _
 #define LIL_CUSTOM_PROPERTIES \
     float4  _CustomVertexWaveScale; \
     float4  _CustomVertexWaveStrength; \
-    float   _CustomVertexWaveSpeed; \
-    uint    _CustomEmissionUVMode;
+    float   _CustomVertexWaveSpeed;
 
 #define LIL_CUSTOM_TEXTURES \
     TEXTURE2D(_CustomVertexWaveMask);
@@ -181,45 +182,11 @@ ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _
 |LIL_REQUIRE_APP_COLOR|color|COLOR|
 |LIL_REQUIRE_APP_NORMAL|normalOS|NORMAL|
 |LIL_REQUIRE_APP_TANGENT|tangentOS|TANGENT|
-
-今回は「EmissionでUV0～UV3を指定できるようにする」ので以下のマクロを追加します。
-```HLSL
-#define LIL_REQUIRE_APP_TEXCOORD0
-#define LIL_REQUIRE_APP_TEXCOORD1
-#define LIL_REQUIRE_APP_TEXCOORD2
-#define LIL_REQUIRE_APP_TEXCOORD3
-```
+|LIL_REQUIRE_APP_VERTEXID|vertexID|SV_VertexID|
 
 ## 頂点シェーダーの出力の追加（v2f構造体）
 構造体のメンバーは`#define LIL_CUSTOM_V2F_MEMBER`から追加できます。  
-もともと構造体に含まれるものは`#define LIL_V2F_FORCE_(キーワード)`で強制的にメンバーにさせることができます。  
-今回の例では以下のようにします。
-```HLSL
-#define LIL_V2F_FORCE_TEXCOORD1
-#define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
-    float2 uv2 : TEXCOORD##id0; \
-    float2 uv3 : TEXCOORD##id1;
-
-#define LIL_CUSTOM_VERT_COPY \
-    LIL_V2F_OUT_BASE.uv2 = input.uv2; \
-    LIL_V2F_OUT_BASE.uv3 = input.uv3;
-```
-
-METAパスではエラーになるのでMETAパスに以下の変更を加えます。
-```HLSL
-//----------------------------------------------------------------------------------------------------------------------
-// Pass
-#undef LIL_CUSTOM_V2F_MEMBER
-#define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
-    float2 uv1 : TEXCOORD##id1; \
-    float2 uv2 : TEXCOORD##id2; \
-    float2 uv3 : TEXCOORD##id3;
-
-#include "Includes/lil_pipeline.hlsl"
-// Insert functions and includes that depend on Unity here
-
-#include "Includes/lil_pass_meta.hlsl"
-```
+もともと構造体に含まれるものは`#define LIL_V2F_FORCE_(キーワード)`で強制的にメンバーにさせることができます。
 
 ## 頂点シェーダーに処理を挿入する
 以下のマクロで処理を挿入できます。
@@ -229,10 +196,10 @@ METAパスではエラーになるのでMETAパスに以下の変更を加えま
 |LIL_CUSTOM_VERTEX_OS|オブジェクト空間での処理|
 |LIL_CUSTOM_VERTEX_WS|ワールド空間での処理|
 
-今回の例では以下のように波のアニメーションを追加しつつUV2、UV3の書き出しも行います。
+今回の例では以下のように波のアニメーションを追加します。
 ```HLSL
 #define LIL_CUSTOM_VERTEX_OS \
-    float3 customWaveStrength = LIL_SAMPLE_2D_LOD(_CustomVertexWaveMask, sampler_linear_repeat, input.uv, 0).r * _CustomVertexWaveStrength.xyz; \
+    float3 customWaveStrength = LIL_SAMPLE_2D_LOD(_CustomVertexWaveMask, sampler_linear_repeat, input.uv0, 0).r * _CustomVertexWaveStrength.xyz; \
     positionOS.xyz += sin(LIL_TIME * _CustomVertexWaveSpeed + dot(positionOS.xyz, _CustomVertexWaveScale.xyz)) * customWaveStrength;
 ```
 
@@ -248,6 +215,7 @@ METAパスではエラーになるのでMETAパスに以下の変更を加えま
 
 |名前|説明|
 |-|-|
+|UNPACK_V2F|v2f構造体の展開|
 |ANIMATE_MAIN_UV|メインUVのアニメーション処理|
 |ANIMATE_OUTLINE_UV|輪郭線UVのアニメーション処理|
 |PARALLAX|視差マップの処理|
@@ -278,14 +246,10 @@ METAパスではエラーになるのでMETAパスに以下の変更を加えま
 |FOG|フォグの処理|
 |OUTPUT|最終書き出し|
 
-今回は以下のようにします。
+例:
 ```HLSL
-#define OVERRIDE_EMISSION_1ST \
-    float2 customEmissionUV = input.uv; \
-    if(_CustomEmissionUVMode == 1) customEmissionUV = input.uv1; \
-    if(_CustomEmissionUVMode == 2) customEmissionUV = input.uv2; \
-    if(_CustomEmissionUVMode == 3) customEmissionUV = input.uv3; \
-    lilEmission(emissionColor, customEmissionUV, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
+#define BEFORE_UNPACK_V2F \
+    fd.uv0 = input.uv0;
 ```
 
 ## 拡張Inspector
@@ -331,7 +295,6 @@ namespace lilToon
         MaterialProperty customVertexWaveStrength;
         MaterialProperty customVertexWaveSpeed;
         MaterialProperty customVertexWaveMask;
-        MaterialProperty customEmissionUVMode;
 
         private static bool isShowCustomProperties;
 
@@ -343,7 +306,6 @@ namespace lilToon
             customVertexWaveStrength = FindProperty("_CustomVertexWaveStrength", props);
             customVertexWaveSpeed = FindProperty("_CustomVertexWaveSpeed", props);
             customVertexWaveMask = FindProperty("_CustomVertexWaveMask", props);
-            customEmissionUVMode = FindProperty("_CustomEmissionUVMode", props);
         }
 
         protected override void DrawCustomProperties(
@@ -368,16 +330,6 @@ namespace lilToon
                 materialEditor.ShaderProperty(customVertexWaveStrength, "Strength");
                 materialEditor.ShaderProperty(customVertexWaveSpeed, "Speed");
                 materialEditor.TexturePropertySingleLine(new GUIContent("Mask", "Strength (R)"), customVertexWaveMask);
-
-                EditorGUILayout.EndVertical();
-                EditorGUILayout.EndVertical();
-
-                // Emission UV
-                EditorGUILayout.BeginVertical(boxOuter);
-                EditorGUILayout.LabelField(GetLoc("Emission UV"), customToggleFont);
-                EditorGUILayout.BeginVertical(boxInnerHalf);
-
-                materialEditor.ShaderProperty(customEmissionUVMode, "UV Mode|UV0|UV1|UV2|UV3");
 
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndVertical();
@@ -416,7 +368,7 @@ namespace lilToon
 |vertexInput.positionWS|ワールド座標|
 |vertexInput.positionVS|ビュー座標|
 |vertexInput.positionCS|クリップ座標 (SV_POSITION)|
-|vertexInput.positionSS|画面座標 (ピクセルシェーダー用)|
+|vertexInput.positionSS|画面座標|
 
 ## ベクターのトランスフォーム (LIL_VERTEX_NORMAL_TANGENT_INPUTS)
 |名前|説明|
@@ -435,17 +387,5 @@ namespace lilToon
 |float lilTooning()|入力値をトゥーン化|
 
 # ピクセルシェーダー
-一般的に使われる変数は以下の通りです。
-|名前|説明|
-|-|-|
-|v2f input|頂点シェーダーからの入力|
-|float4 col|出力色|
-|float3 albedo|Unlitの色|
-|float2 uvMain|計算済みのUV|
-|float facing|面の向き|
-|float3 lightColor|ライトの色 (メインライトとSHライト)|
-|float3 lightDirection|ライトの向き (メインライトとSHライト)|
-|float attenuation|ライトの減衰や影|
-|float3 normalDirection|ワールド空間の法線|
-|float3 viewDirection|ビュー方向|
-|float3x3 tbnWS|float3x3(input.tangentWS, input.bitangentWS, input.normalWS)|
+lilFragDataという共通の構造体を用いて変数を管理しています。  
+詳しくはlil_common.hlslを確認してください。

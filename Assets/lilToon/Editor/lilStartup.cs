@@ -105,30 +105,32 @@ namespace lilToon
                 // Scan imported assets
                 if(File.Exists(lilToonInspector.packageListTempPath))
                 {
-                    if(EditorUtility.DisplayDialog("lilToon",lilToonInspector.GetLoc("sUtilImportTargetFound"),lilToonInspector.GetLoc("sYes"),lilToonInspector.GetLoc("sCancel")))
+                    lilToonSetting shaderSettingNew = UnityEngine.Object.Instantiate(shaderSetting);
+                    StreamReader srPackage = new StreamReader(lilToonInspector.packageListTempPath);
+                    string tempPackage = srPackage.ReadToEnd();
+                    srPackage.Close();
+
+                    string[] importedAssets = tempPackage.Split('\n');
+
+                    foreach(string str in importedAssets)
                     {
-                        StreamReader srPackage = new StreamReader(lilToonInspector.packageListTempPath);
-                        string tempPackage = srPackage.ReadToEnd();
-                        srPackage.Close();
-
-                        string[] importedAssets = tempPackage.Split('\n');
-
-                        foreach(string str in importedAssets)
+                        if(str.EndsWith(".mat") && AssetDatabase.GetMainAssetTypeAtPath(str) == typeof(Material))
                         {
-                            if(str.EndsWith(".mat") && AssetDatabase.GetMainAssetTypeAtPath(str) == typeof(Material))
-                            {
-                                Material material = (Material)AssetDatabase.LoadAssetAtPath(str, typeof(Material));
-                                if(!material.shader.name.Contains("lilToon") || material.shader.name.Contains("Lite")) continue;
-                                lilToonInspector.SetupShaderSettingFromMaterial(material, ref shaderSetting);
-                            }
-                            if(str.EndsWith(".anim") && AssetDatabase.GetMainAssetTypeAtPath(str) == typeof(AnimationClip))
-                            {
-                                AnimationClip clip = (AnimationClip)AssetDatabase.LoadAssetAtPath(str, typeof(AnimationClip));
-                                lilToonInspector.SetupShaderSettingFromAnimationClip(clip, ref shaderSetting);
-                            }
+                            Material material = (Material)AssetDatabase.LoadAssetAtPath(str, typeof(Material));
+                            if(!material.shader.name.Contains("lilToon") || material.shader.name.Contains("Lite")) continue;
+                            lilToonInspector.SetupShaderSettingFromMaterial(material, ref shaderSettingNew);
                         }
+                        if(str.EndsWith(".anim") && AssetDatabase.GetMainAssetTypeAtPath(str) == typeof(AnimationClip))
+                        {
+                            AnimationClip clip = (AnimationClip)AssetDatabase.LoadAssetAtPath(str, typeof(AnimationClip));
+                            lilToonInspector.SetupShaderSettingFromAnimationClip(clip, ref shaderSettingNew);
+                        }
+                    }
 
+                    if(!lilToonInspector.EqualsShaderSetting(shaderSettingNew, shaderSetting) && EditorUtility.DisplayDialog("lilToon",lilToonInspector.GetLoc("sUtilNewFeatureFound"),lilToonInspector.GetLoc("sYes"),lilToonInspector.GetLoc("sNo")))
+                    {
                         // Apply
+                        lilToonInspector.CopyShaderSetting(ref shaderSetting, shaderSettingNew);
                         EditorUtility.SetDirty(shaderSetting);
                         AssetDatabase.SaveAssets();
                         lilToonInspector.ApplyShaderSetting(shaderSetting);
@@ -138,7 +140,17 @@ namespace lilToon
                     File.Delete(lilToonInspector.packageListTempPath);
                 }
 
+                // Refresh
+                string[] shaderFolderPaths = lilToonInspector.GetShaderFolderPaths();
+                bool isShadowReceive = shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW || shaderSetting.LIL_FEATURE_BACKLIGHT;
+                string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
+                foreach(string shaderGuid in shaderGuids)
+                {
+                    string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
+                    lilToonInspector.RewriteReceiveShadow(shaderPath, isShadowReceive);
+                }
                 AssetDatabase.SaveAssets();
+                AssetDatabase.ImportAsset(shaderSettingHLSLPath);
                 AssetDatabase.Refresh();
             };
         }

@@ -1,5 +1,5 @@
 # lilToon
-Version 1.2.3
+Version 1.2.4
 
 # Overview
 This shader is developed for services using avatars (VRChat, etc.) and has the following features.
@@ -13,6 +13,14 @@ This shader is developed for services using avatars (VRChat, etc.) and has the f
 Supported Unity versions
 - Unity 2017 - Unity 2021.2
 
+Tested version
+- Unity 2017.1.0f3
+- Unity 2018.4.20f1 (Built-in RP / LWRP 4.0.0 / HDRP 4.0.0)
+- Unity 2019.3.0f6  (Built-in RP / URP 7.1.8 / HDRP 7.1.8)
+- Unity 2019.4.31f1 (Built-in RP / URP 7.7.1 / HDRP 7.7.1)
+- Unity 2020.3.20f1 (Built-in RP / URP 10.6.0 / HDRP 10.6.0)
+- Unity 2021.1.24f1 (Built-in RP / URP 12.0.0 / HDRP 12.0.0)
+
 Supported Shader Models
 - Normal: SM4.0 / ES3.0 or later
 - Lite: SM3.0 / ES2.0 or later
@@ -22,9 +30,8 @@ Supported Shader Models
 Supported Rendering Pipelines
 - Built-in Render Pipeline
 - Lightweight Render Pipeline 4.0.0 - 6.9.1
-- Universal Render Pipeline 7.0.0 - 11.0.0
-- High Definition Render Pipeline 4.0.0 - 11.0.0
-- Refraction and Gem shaders are supported only for BRP
+- Universal Render Pipeline 7.0.0 - 12.0.0
+- High Definition Render Pipeline 4.0.0 - 12.0.0
 
 # Features
 - Main color x3 layers (Decal, Layer mask, Gif animation, Normal / Additive / Multiplicative / Screen blending)
@@ -32,11 +39,13 @@ Supported Rendering Pipelines
 - Flexible shadows (2 shadows, SSS, Environment light compositing, AO mask to adjust the ease of shadowing)
 - Emission x2 layers (Animation, Mask, Blinking, Color change over time, Parallax)
 - Normal map x2 layers
+- Anisotropic reflection
 - Specular reflection
-- MatCap (Z-axis rotation cancellation, Normal / Additive / Multiplicative / Screen blending)
+- MatCap x2 (Z-axis rotation cancellation, Normal / Additive / Multiplicative / Screen blending)
 - Rim light
+- Backlight
 - Outline (Color specification by texture, Mask, Thickness based on vertex color and distance)
-- Fur, Refraction
+- Fur, Refraction, Gem
 - Distance Clipping Canceler
 - Distance Fade (Changes color according to distance)
 - AudioLink (Animate materials in sync with sound in supported VRChat worlds)

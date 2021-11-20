@@ -1,7 +1,11 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // PS Macro
 
-// Insert
+// Insert for custom shader
+#if !defined(BEFORE_UNPACK_V2F)
+    #define BEFORE_UNPACK_V2F
+#endif
+
 #if !defined(BEFORE_ANIMATE_MAIN_UV)
     #define BEFORE_ANIMATE_MAIN_UV
 #endif
@@ -122,23 +126,107 @@
 // Override
 
 //------------------------------------------------------------------------------------------------------------------------------
+// Unpack v2f
+#if defined(LIL_V2F_PACKED_TEXCOORD01)
+    #define LIL_UNPACK_TEXCOORD0(i,o)   o.uv0 = i.uv01.xy;
+#elif defined(LIL_V2F_TEXCOORD0)
+    #define LIL_UNPACK_TEXCOORD0(i,o)   o.uv0 = i.uv0;
+#else
+    #define LIL_UNPACK_TEXCOORD0(i,o)
+#endif
+
+#if defined(LIL_V2F_PACKED_TEXCOORD01)
+    #define LIL_UNPACK_TEXCOORD1(i,o)   o.uv1 = i.uv01.zw;
+#elif defined(LIL_V2F_TEXCOORD1)
+    #define LIL_UNPACK_TEXCOORD1(i,o)   o.uv1 = i.uv1;
+#else
+    #define LIL_UNPACK_TEXCOORD1(i,o)
+#endif
+
+#if defined(LIL_V2F_PACKED_TEXCOORD23)
+    #define LIL_UNPACK_TEXCOORD2(i,o)   o.uv2 = i.uv23.xy;
+#elif defined(LIL_V2F_TEXCOORD2)
+    #define LIL_UNPACK_TEXCOORD2(i,o)   o.uv2 = i.uv2;
+#else
+    #define LIL_UNPACK_TEXCOORD2(i,o)
+#endif
+
+#if defined(LIL_V2F_PACKED_TEXCOORD23)
+    #define LIL_UNPACK_TEXCOORD3(i,o)   o.uv3 = i.uv23.zw;
+#elif defined(LIL_V2F_TEXCOORD3)
+    #define LIL_UNPACK_TEXCOORD3(i,o)   o.uv3 = i.uv3;
+#else
+    #define LIL_UNPACK_TEXCOORD3(i,o)
+#endif
+
+#if defined(LIL_V2F_POSITION_OS)
+    #define LIL_UNPACK_POSITION_OS(i,o) o.positionOS = i.positionOS;
+#else
+    #define LIL_UNPACK_POSITION_OS(i,o)
+#endif
+
+#if defined(LIL_V2F_POSITION_WS)
+    #define LIL_UNPACK_POSITION_WS(i,o) o.positionWS = lilToAbsolutePositionWS(i.positionWS);
+#else
+    #define LIL_UNPACK_POSITION_WS(i,o)
+#endif
+
+#if defined(LIL_V2F_POSITION_CS)
+    #define LIL_UNPACK_POSITION_CS(i,o) \
+        o.positionCS = i.positionCS; \
+        o.positionSS = lilTransformCStoSSFrag(i.positionCS); \
+        o.uvScn = i.positionCS.xy / _ScreenParams.xy;
+#else
+    #define LIL_UNPACK_POSITION_CS(i,o)
+#endif
+
+#if defined(LIL_V2F_POSITION_SS)
+    #define LIL_UNPACK_POSITION_SS(i,o) o.positionSS = i.positionSS;
+#else
+    #define LIL_UNPACK_POSITION_SS(i,o)
+#endif
+
+#if defined(LIL_V2F_LIGHTDIRECTION) && !defined(LIL_HDRP)
+    #define LIL_UNPACK_LIGHT_DIRECTION(i,o) \
+        fd.L = input.lightDirection; \
+        fd.origL = LIL_MAINLIGHT_DIRECTION;
+#elif defined(LIL_V2F_LIGHTDIRECTION)
+    #define LIL_UNPACK_LIGHT_DIRECTION(i,o) \
+        fd.L = input.lightDirection; \
+        fd.origL = input.lightDirection;
+#else
+    #define LIL_UNPACK_LIGHT_DIRECTION(i,o)
+#endif
+
+#define OVERRIDE_UNPACK_V2F \
+    LIL_UNPACK_TEXCOORD0(input,fd); \
+    LIL_UNPACK_TEXCOORD1(input,fd); \
+    LIL_UNPACK_TEXCOORD2(input,fd); \
+    LIL_UNPACK_TEXCOORD3(input,fd); \
+    LIL_UNPACK_POSITION_OS(input,fd); \
+    LIL_UNPACK_POSITION_WS(input,fd); \
+    LIL_UNPACK_POSITION_CS(input,fd); \
+    LIL_UNPACK_POSITION_SS(input,fd); \
+    LIL_UNPACK_LIGHT_DIRECTION(input,fd);
+
+//------------------------------------------------------------------------------------------------------------------------------
 // UV Animation
 #if !defined(OVERRIDE_ANIMATE_MAIN_UV)
     #if defined(LIL_PASS_META_INCLUDED) && (defined(LIL_FEATURE_ANIMATE_MAIN_UV) || defined(LIL_LITE))
         #define OVERRIDE_ANIMATE_MAIN_UV \
-            float2 uvMain = lilCalcDoubleSideUV(input.uv, facing, _ShiftBackfaceUV); \
-            uvMain = lilCalcUVWithoutAnimation(uvMain, _MainTex_ST, _MainTex_ScrollRotate);
+            fd.uvMain = lilCalcDoubleSideUV(fd.uv0, fd.facing, _ShiftBackfaceUV); \
+            fd.uvMain = lilCalcUVWithoutAnimation(fd.uvMain, _MainTex_ST, _MainTex_ScrollRotate);
     #elif defined(LIL_FEATURE_ANIMATE_MAIN_UV) || defined(LIL_LITE)
         #define OVERRIDE_ANIMATE_MAIN_UV \
-            float2 uvMain = lilCalcDoubleSideUV(input.uv, facing, _ShiftBackfaceUV); \
-            uvMain = lilCalcUV(uvMain, _MainTex_ST, _MainTex_ScrollRotate);
+            fd.uvMain = lilCalcDoubleSideUV(fd.uv0, fd.facing, _ShiftBackfaceUV); \
+            fd.uvMain = lilCalcUV(fd.uvMain, _MainTex_ST, _MainTex_ScrollRotate);
     #elif !defined(LIL_PASS_FORWARD_FUR_INCLUDED)
         #define OVERRIDE_ANIMATE_MAIN_UV \
-            float2 uvMain = lilCalcDoubleSideUV(input.uv, facing, _ShiftBackfaceUV); \
-            uvMain = lilCalcUV(uvMain, _MainTex_ST);
+            fd.uvMain = lilCalcDoubleSideUV(fd.uv0, fd.facing, _ShiftBackfaceUV); \
+            fd.uvMain = lilCalcUV(fd.uvMain, _MainTex_ST);
     #else
         #define OVERRIDE_ANIMATE_MAIN_UV \
-            float2 uvMain = lilCalcUV(input.uv, _MainTex_ST);
+            fd.uvMain = lilCalcUV(fd.uv0, _MainTex_ST);
     #endif
 #endif
 
@@ -147,10 +235,10 @@
 #if !defined(OVERRIDE_ANIMATE_OUTLINE_UV)
     #if defined(LIL_FEATURE_ANIMATE_OUTLINE_UV) || defined(LIL_LITE)
         #define OVERRIDE_ANIMATE_OUTLINE_UV \
-            float2 uvMain = lilCalcUV(input.uv, _OutlineTex_ST, _OutlineTex_ScrollRotate);
+            fd.uvMain = lilCalcUV(fd.uv0, _OutlineTex_ST, _OutlineTex_ScrollRotate);
     #else
         #define OVERRIDE_ANIMATE_OUTLINE_UV \
-            float2 uvMain = lilCalcUV(input.uv, _OutlineTex_ST);
+            fd.uvMain = lilCalcUV(fd.uv0, _OutlineTex_ST);
     #endif
 #endif
 
@@ -159,10 +247,10 @@
 #if !defined(OVERRIDE_PARALLAX)
     #if defined(LIL_FEATURE_POM)
         #define OVERRIDE_PARALLAX \
-            lilPOM(uvMain, input.uv, _UseParallax, _MainTex_ST, parallaxViewDirection, _ParallaxMap, _Parallax, _ParallaxOffset);
+            lilPOM(fd.uvMain, fd.uv0, _UseParallax, _MainTex_ST, fd.parallaxViewDirection, _ParallaxMap, _Parallax, _ParallaxOffset);
     #else
         #define OVERRIDE_PARALLAX \
-            lilParallax(uvMain, input.uv, _UseParallax, parallaxOffset, _ParallaxMap, _Parallax, _ParallaxOffset);
+            lilParallax(fd.uvMain, fd.uv0, _UseParallax, fd.parallaxOffset, _ParallaxMap, _Parallax, _ParallaxOffset);
     #endif
 #endif
 
@@ -170,12 +258,12 @@
 // Main Texture
 #if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && !defined(LIL_FUR)
     #define LIL_GET_MAIN_TEX \
-        col = LIL_SAMPLE_2D_POM(_MainTex, sampler_MainTex, uvMain, ddxMain, ddyMain);
+        fd.col = LIL_SAMPLE_2D_POM(_MainTex, sampler_MainTex, fd.uvMain, ddxMain, ddyMain);
 
     // Tone correction
     #if defined(LIL_FEATURE_MAIN_TONE_CORRECTION)
         #define LIL_MAIN_TONECORRECTION \
-            col.rgb = lilToneCorrection(col.rgb, _MainTexHSVG);
+            fd.col.rgb = lilToneCorrection(fd.col.rgb, _MainTexHSVG);
     #else
         #define LIL_MAIN_TONECORRECTION
     #endif
@@ -183,24 +271,24 @@
     // Gradation map
     #if defined(LIL_FEATURE_MAIN_GRADATION_MAP)
         #define LIL_MAIN_GRADATION_MAP \
-            col.rgb = lilGradationMap(col.rgb, _MainGradationTex, _MainGradationStrength);
+            fd.col.rgb = lilGradationMap(fd.col.rgb, _MainGradationTex, _MainGradationStrength);
     #else
         #define LIL_MAIN_GRADATION_MAP
     #endif
 
     #if defined(LIL_FEATURE_MAIN_TONE_CORRECTION) || defined(LIL_FEATURE_MAIN_GRADATION_MAP)
         #define LIL_APPLY_MAIN_TONECORRECTION \
-            float3 beforeToneCorrectionColor = col.rgb; \
-            float colorAdjustMask = LIL_SAMPLE_2D(_MainColorAdjustMask, sampler_MainTex, uvMain).r; \
+            float3 beforeToneCorrectionColor = fd.col.rgb; \
+            float colorAdjustMask = LIL_SAMPLE_2D(_MainColorAdjustMask, sampler_MainTex, fd.uvMain).r; \
             LIL_MAIN_TONECORRECTION \
             LIL_MAIN_GRADATION_MAP \
-            col.rgb = lerp(beforeToneCorrectionColor, col.rgb, colorAdjustMask);
+            fd.col.rgb = lerp(beforeToneCorrectionColor, fd.col.rgb, colorAdjustMask);
     #else
         #define LIL_APPLY_MAIN_TONECORRECTION
     #endif
 #else
     #define LIL_GET_MAIN_TEX \
-        col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, uvMain);
+        fd.col = LIL_SAMPLE_2D(_MainTex, sampler_MainTex, fd.uvMain);
     #define LIL_APPLY_MAIN_TONECORRECTION
 #endif
 
@@ -208,21 +296,21 @@
     #define OVERRIDE_MAIN \
         LIL_GET_MAIN_TEX \
         LIL_APPLY_MAIN_TONECORRECTION \
-        col *= _Color;
+        fd.col *= _Color;
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Outline Color
 #if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FEATURE_TEX_OUTLINE_COLOR) || !defined(LIL_PASS_FORWARD_NORMAL_INCLUDED)
     #define LIL_GET_OUTLINE_TEX \
-        col = LIL_SAMPLE_2D(_OutlineTex, sampler_OutlineTex, uvMain);
+        fd.col = LIL_SAMPLE_2D(_OutlineTex, sampler_OutlineTex, fd.uvMain);
 #else
     #define LIL_GET_OUTLINE_TEX
 #endif
 
 #if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FEATURE_OUTLINE_TONE_CORRECTION)
     #define LIL_APPLY_OUTLINE_TONECORRECTION \
-        col.rgb = lilToneCorrection(col.rgb, _OutlineTexHSVG);
+        fd.col.rgb = lilToneCorrection(fd.col.rgb, _OutlineTexHSVG);
 #else
     #define LIL_APPLY_OUTLINE_TONECORRECTION
 #endif
@@ -231,7 +319,7 @@
     #define OVERRIDE_OUTLINE_COLOR \
         LIL_GET_OUTLINE_TEX \
         LIL_APPLY_OUTLINE_TONECORRECTION \
-        col *= _OutlineColor;
+        fd.col *= _OutlineColor;
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -245,7 +333,7 @@
             furAlpha = saturate(furAlpha - input.furLayer * furLayer * furLayer * furLayer + 0.25);
     #endif
     #define LIL_FUR_LAYER_AO \
-        col.rgb *= furLayer * _FurAO * 2.0 + 1.0 - _FurAO;
+        fd.col.rgb *= furLayer * _FurAO * 2.0 + 1.0 - _FurAO;
 #else
     #if defined(LIL_ONEPASS_FUR)
         #define LIL_FUR_LAYER_ALPHA \
@@ -255,7 +343,7 @@
             furAlpha = saturate(furAlpha - input.furLayer * furLayer * furLayer);
     #endif
     #define LIL_FUR_LAYER_AO \
-        col.rgb *= (1.0-furAlpha) * _FurAO * 1.25 + 1.0 - _FurAO;
+        fd.col.rgb *= (1.0-furAlpha) * _FurAO * 1.25 + 1.0 - _FurAO;
 #endif
 
 #if defined(LIL_ALPHA_PS)
@@ -267,10 +355,10 @@
     #define OVERRIDE_FUR \
         float furAlpha = 1.0; \
         float furLayer = abs(input.furLayer); \
-        if(Exists_FurNoiseMask) furAlpha = LIL_SAMPLE_2D_ST(_FurNoiseMask, sampler_MainTex, input.uv).r; \
+        if(Exists_FurNoiseMask) furAlpha = LIL_SAMPLE_2D_ST(_FurNoiseMask, sampler_MainTex, fd.uv0).r; \
         LIL_FUR_LAYER_ALPHA \
-        if(Exists_FurMask) furAlpha *= LIL_SAMPLE_2D(_FurMask, sampler_MainTex, uvMain).r; \
-        col.a *= furAlpha; \
+        if(Exists_FurMask) furAlpha *= LIL_SAMPLE_2D(_FurMask, sampler_MainTex, fd.uvMain).r; \
+        fd.col.a *= furAlpha; \
         LIL_FUR_LAYER_AO
 #endif
 
@@ -280,9 +368,9 @@
     #define OVERRIDE_ALPHAMASK \
         if(_AlphaMaskMode) \
         { \
-            float alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, uvMain).r; \
+            float alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, fd.uvMain).r; \
             alphaMask = saturate(alphaMask + _AlphaMaskValue); \
-            col.a = _AlphaMaskMode == 1 ? alphaMask : col.a * alphaMask; \
+            fd.col.a = _AlphaMaskMode == 1 ? alphaMask : fd.col.a * alphaMask; \
         }
 #endif
 
@@ -292,10 +380,10 @@
     #if defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
         #define OVERRIDE_DISSOLVE \
             lilCalcDissolveWithNoise( \
-                col.a, \
+                fd.col.a, \
                 dissolveAlpha, \
-                input.uv, \
-                input.positionOS, \
+                fd.uv0, \
+                fd.positionOS, \
                 _DissolveParams, \
                 _DissolvePos, \
                 _DissolveMask, \
@@ -309,10 +397,10 @@
     #else
         #define OVERRIDE_DISSOLVE \
             lilCalcDissolve( \
-                col.a, \
+                fd.col.a, \
                 dissolveAlpha, \
-                input.uv, \
-                input.positionOS, \
+                fd.uv0, \
+                fd.positionOS, \
                 _DissolveParams, \
                 _DissolvePos, \
                 _DissolveMask, \
@@ -329,7 +417,7 @@
         LIL_BRANCH \
         if(Exists_BumpMap && _UseBumpMap) \
         { \
-            float4 normalTex = LIL_SAMPLE_2D_ST(_BumpMap, sampler_MainTex, uvMain); \
+            float4 normalTex = LIL_SAMPLE_2D_ST(_BumpMap, sampler_MainTex, fd.uvMain); \
             normalmap = UnpackNormalScale(normalTex, _BumpScale); \
         }
 #endif
@@ -339,9 +427,9 @@
         LIL_BRANCH \
         if(Exists_Bump2ndMap && _UseBump2ndMap) \
         { \
-            float4 normal2ndTex = LIL_SAMPLE_2D_ST(_Bump2ndMap, sampler_MainTex, uvMain); \
+            float4 normal2ndTex = LIL_SAMPLE_2D_ST(_Bump2ndMap, sampler_MainTex, fd.uvMain); \
             float bump2ndScale = _Bump2ndScale; \
-            if(Exists_Bump2ndScaleMask) bump2ndScale *= LIL_SAMPLE_2D(_Bump2ndScaleMask, sampler_MainTex, uvMain).r; \
+            if(Exists_Bump2ndScaleMask) bump2ndScale *= LIL_SAMPLE_2D(_Bump2ndScaleMask, sampler_MainTex, fd.uvMain).r; \
             normalmap = lilBlendNormal(normalmap, UnpackNormalScale(normal2ndTex, bump2ndScale)); \
         }
 #endif
@@ -353,40 +441,73 @@
         LIL_BRANCH \
         if(_UseAnisotropy) \
         { \
-            float4 anisoTangentMap = LIL_SAMPLE_2D_ST(_AnisotropyTangentMap, sampler_MainTex, uvMain); \
+            float4 anisoTangentMap = LIL_SAMPLE_2D_ST(_AnisotropyTangentMap, sampler_MainTex, fd.uvMain); \
             float3 anisoTangent = UnpackNormalScale(anisoTangentMap, 1.0); \
-            anisoTangentWS = lilOrthoNormalize(normalize(mul(anisoTangent, tbnWS)), normalDirection); \
-            anisoBitangentWS = cross(normalDirection, anisoTangentWS); \
-            anisotropy = _AnisotropyScale; \
-            anisotropy *= LIL_SAMPLE_2D(_AnisotropyScaleMask, sampler_MainTex, uvMain).r; \
-            float3 anisoNormalWS = lilGetAnisotropyNormalWS(normalDirection, anisoTangentWS, anisoBitangentWS, viewDirection, anisotropy); \
-            if(_Anisotropy2Reflection) reflectionNormalDirection = anisoNormalWS; \
-            if(_Anisotropy2MatCap) matcapNormalDirection = anisoNormalWS; \
-            if(_Anisotropy2MatCap2nd) matcap2ndNormalDirection = anisoNormalWS; \
-            if(_Anisotropy2Reflection) perceptualRoughness = saturate(1.2 - abs(anisotropy)); \
+            fd.T = lilOrthoNormalize(normalize(mul(anisoTangent, fd.TBN)), fd.N); \
+            fd.B = cross(fd.N, fd.T); \
+            fd.anisotropy = _AnisotropyScale; \
+            fd.anisotropy *= LIL_SAMPLE_2D(_AnisotropyScaleMask, sampler_MainTex, fd.uvMain).r; \
+            float3 anisoNormalWS = lilGetAnisotropyNormalWS(fd.N, fd.T, fd.B, fd.V, fd.anisotropy); \
+            if(_Anisotropy2Reflection)  fd.reflectionN  = anisoNormalWS; \
+            if(_Anisotropy2MatCap)      fd.matcapN      = anisoNormalWS; \
+            if(_Anisotropy2MatCap2nd)   fd.matcap2ndN   = anisoNormalWS; \
+            if(_Anisotropy2Reflection)  fd.perceptualRoughness = saturate(1.2 - abs(fd.anisotropy)); \
         }
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // AudioLink
+#if defined(LIL_FEATURE_AUDIOLINK)
+    void lilAudioLinkFrag(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
+    {
+        if(_UseAudioLink)
+        {
+            fd.audioLinkValue = 0.0;
+            float4 audioLinkMask = 1.0;
+            float2 audioLinkUV;
+            if(_AudioLinkUVMode == 0) audioLinkUV.x = _AudioLinkUVParams.g;
+            if(_AudioLinkUVMode == 1) audioLinkUV.x = _AudioLinkUVParams.r - fd.nv * _AudioLinkUVParams.r + _AudioLinkUVParams.g;
+            if(_AudioLinkUVMode == 2) audioLinkUV.x = lilRotateUV(fd.uv0, _AudioLinkUVParams.b).x * _AudioLinkUVParams.r + _AudioLinkUVParams.g;
+            audioLinkUV.y = _AudioLinkUVParams.a;
+
+            // Mask (R:Delay G:Band B:Strength)
+            if(_AudioLinkUVMode == 3 && Exists_AudioLinkMask)
+            {
+                audioLinkMask = LIL_SAMPLE_2D(_AudioLinkMask, samp, fd.uvMain);
+                audioLinkUV = audioLinkMask.rg;
+            }
+
+            // Local
+            #if defined(LIL_FEATURE_AUDIOLINK_LOCAL)
+                if(_AudioLinkAsLocal)
+                {
+                    audioLinkUV.x += frac(-LIL_TIME * _AudioLinkLocalMapParams.r / 60 * _AudioLinkLocalMapParams.g) + _AudioLinkLocalMapParams.b;
+                    fd.audioLinkValue = LIL_SAMPLE_2D(_AudioLinkLocalMap, sampler_linear_repeat, audioLinkUV).r;
+                }
+                else
+            #endif
+            // Global
+            if(lilCheckAudioLink())
+            {
+                // Scaling for _AudioTexture (4/64)
+                audioLinkUV.y *= 0.0625;
+                fd.audioLinkValue = LIL_SAMPLE_2D(_AudioTexture, sampler_linear_clamp, audioLinkUV).r;
+                fd.audioLinkValue = saturate(fd.audioLinkValue);
+            }
+            fd.audioLinkValue *= audioLinkMask.b;
+        }
+    }
+#endif
+
 #if !defined(OVERRIDE_AUDIOLINK)
-    #if defined(LIL_FEATURE_AUDIOLINK_LOCAL)
-        #define OVERRIDE_AUDIOLINK \
-            lilAudioLinkFrag(audioLinkValue, uvMain, input.uv, nv, _UseAudioLink, _AudioLinkUVMode, _AudioLinkUVParams, _AudioLinkMask, _AudioTexture_TexelSize, _AudioTexture, _AudioLinkAsLocal, _AudioLinkLocalMapParams, _AudioLinkLocalMap LIL_SAMP_IN(sampler_MainTex));
-    #else
-        #define OVERRIDE_AUDIOLINK \
-            lilAudioLinkFrag(audioLinkValue, uvMain, input.uv, nv, _UseAudioLink, _AudioLinkUVMode, _AudioLinkUVParams, _AudioLinkMask, _AudioTexture_TexelSize, _AudioTexture LIL_SAMP_IN(sampler_MainTex));
-    #endif
+    #define OVERRIDE_AUDIOLINK \
+        lilAudioLinkFrag(fd LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Main 2nd
 #if defined(LIL_FEATURE_MAIN2ND) && defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && !defined(LIL_LITE) && !defined(LIL_FUR)
-    #if defined(LIL_V2F_POSITION_OS)
-        void lilGetMain2nd(inout float4 col, inout float4 color2nd, inout float main2ndDissolveAlpha, float2 uvMain, float2 uv, float nv, float3 positionOS, float audioLinkValue, float depth, bool isRightHand LIL_SAMP_IN_FUNC(samp))
-    #else
-        void lilGetMain2nd(inout float4 col, inout float4 color2nd, inout float main2ndDissolveAlpha, float2 uvMain, float2 uv, float nv, float audioLinkValue, float depth, bool isRightHand LIL_SAMP_IN_FUNC(samp))
-    #endif
+    void lilGetMain2nd(inout lilFragData fd, inout float4 color2nd, inout float main2ndDissolveAlpha LIL_SAMP_IN_FUNC(samp))
     {
         #if !(defined(LIL_FEATURE_DECAL) && defined(LIL_FEATURE_ANIMATE_DECAL))
             float4 _Main2ndTexDecalAnimation = 0.0;
@@ -404,15 +525,15 @@
         LIL_BRANCH
         if(_UseMain2ndTex)
         {
-            if(Exists_Main2ndTex) color2nd *= LIL_GET_SUBTEX(_Main2ndTex, uv);
-            if(Exists_Main2ndBlendMask) color2nd.a *= LIL_SAMPLE_2D(_Main2ndBlendMask, samp, uvMain).r;
+            if(Exists_Main2ndTex) color2nd *= LIL_GET_SUBTEX(_Main2ndTex, fd.uv0);
+            if(Exists_Main2ndBlendMask) color2nd.a *= LIL_SAMPLE_2D(_Main2ndBlendMask, samp, fd.uvMain).r;
             #if defined(LIL_FEATURE_LAYER_DISSOLVE)
                 #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
                     lilCalcDissolveWithNoise(
                         color2nd.a,
                         main2ndDissolveAlpha,
-                        uv,
-                        positionOS,
+                        fd.uv0,
+                        fd.positionOS,
                         _Main2ndDissolveParams,
                         _Main2ndDissolvePos,
                         _Main2ndDissolveMask,
@@ -427,8 +548,8 @@
                     lilCalcDissolve(
                         color2nd.a,
                         main2ndDissolveAlpha,
-                        uv,
-                        positionOS,
+                        fd.uv0,
+                        fd.positionOS,
                         _Main2ndDissolveParams,
                         _Main2ndDissolvePos,
                         _Main2ndDissolveMask,
@@ -438,32 +559,23 @@
                 #endif
             #endif
             #if defined(LIL_FEATURE_AUDIOLINK)
-                if(_AudioLink2Main2nd) color2nd.a *= audioLinkValue;
+                if(_AudioLink2Main2nd) color2nd.a *= fd.audioLinkValue;
             #endif
-            color2nd.a = lerp(color2nd.a, color2nd.a * saturate((depth - _Main2ndDistanceFade.x) / (_Main2ndDistanceFade.y - _Main2ndDistanceFade.x)), _Main2ndDistanceFade.z);
-            col.rgb = lilBlendColor(col.rgb, color2nd.rgb, color2nd.a * _Main2ndEnableLighting, _Main2ndTexBlendMode);
+            color2nd.a = lerp(color2nd.a, color2nd.a * saturate((fd.depth - _Main2ndDistanceFade.x) / (_Main2ndDistanceFade.y - _Main2ndDistanceFade.x)), _Main2ndDistanceFade.z);
+            fd.col.rgb = lilBlendColor(fd.col.rgb, color2nd.rgb, color2nd.a * _Main2ndEnableLighting, _Main2ndTexBlendMode);
         }
     }
 #endif
 
 #if !defined(OVERRIDE_MAIN2ND)
-    #if defined(LIL_V2F_POSITION_OS)
-        #define OVERRIDE_MAIN2ND \
-            lilGetMain2nd(col, color2nd, main2ndDissolveAlpha, uvMain, input.uv, nv, input.positionOS, audioLinkValue, depth, isRightHand LIL_SAMP_IN(sampler_MainTex));
-    #else
-        #define OVERRIDE_MAIN2ND \
-            lilGetMain2nd(col, color2nd, main2ndDissolveAlpha, uvMain, input.uv, nv, audioLinkValue, depth, isRightHand LIL_SAMP_IN(sampler_MainTex));
-    #endif
+    #define OVERRIDE_MAIN2ND \
+        lilGetMain2nd(fd, color2nd, main2ndDissolveAlpha LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Main 3rd
 #if defined(LIL_FEATURE_MAIN3RD) && defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && !defined(LIL_LITE) && !defined(LIL_FUR)
-    #if defined(LIL_V2F_POSITION_OS)
-        void lilGetMain3rd(inout float4 col, inout float4 color3rd, inout float main3rdDissolveAlpha, float2 uvMain, float2 uv, float nv, float3 positionOS, float audioLinkValue, float depth, bool isRightHand LIL_SAMP_IN_FUNC(samp))
-    #else
-        void lilGetMain3rd(inout float4 col, inout float4 color3rd, inout float main3rdDissolveAlpha, float2 uvMain, float2 uv, float nv, float audioLinkValue, float depth, bool isRightHand LIL_SAMP_IN_FUNC(samp))
-    #endif
+    void lilGetMain3rd(inout lilFragData fd, inout float4 color3rd, inout float main3rdDissolveAlpha LIL_SAMP_IN_FUNC(samp))
     {
         #if !(defined(LIL_FEATURE_DECAL) && defined(LIL_FEATURE_ANIMATE_DECAL))
             float4 _Main3rdTexDecalAnimation = 0.0;
@@ -481,15 +593,15 @@
         LIL_BRANCH
         if(_UseMain3rdTex)
         {
-            if(Exists_Main3rdTex) color3rd *= LIL_GET_SUBTEX(_Main3rdTex, uv);
-            if(Exists_Main3rdBlendMask) color3rd.a *= LIL_SAMPLE_2D(_Main3rdBlendMask, samp, uvMain).r;
+            if(Exists_Main3rdTex) color3rd *= LIL_GET_SUBTEX(_Main3rdTex, fd.uv0);
+            if(Exists_Main3rdBlendMask) color3rd.a *= LIL_SAMPLE_2D(_Main3rdBlendMask, samp, fd.uvMain).r;
             #if defined(LIL_FEATURE_LAYER_DISSOLVE)
                 #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
                     lilCalcDissolveWithNoise(
                         color3rd.a,
                         main3rdDissolveAlpha,
-                        uv,
-                        positionOS,
+                        fd.uv0,
+                        fd.positionOS,
                         _Main3rdDissolveParams,
                         _Main3rdDissolvePos,
                         _Main3rdDissolveMask,
@@ -504,8 +616,8 @@
                     lilCalcDissolve(
                         color3rd.a,
                         main3rdDissolveAlpha,
-                        uv,
-                        positionOS,
+                        fd.uv0,
+                        fd.positionOS,
                         _Main3rdDissolveParams,
                         _Main3rdDissolvePos,
                         _Main3rdDissolveMask,
@@ -515,137 +627,104 @@
                 #endif
             #endif
             #if defined(LIL_FEATURE_AUDIOLINK)
-                if(_AudioLink2Main3rd) color3rd.a *= audioLinkValue;
+                if(_AudioLink2Main3rd) color3rd.a *= fd.audioLinkValue;
             #endif
-            color3rd.a = lerp(color3rd.a, color3rd.a * saturate((depth - _Main3rdDistanceFade.x) / (_Main3rdDistanceFade.y - _Main3rdDistanceFade.x)), _Main3rdDistanceFade.z);
-            col.rgb = lilBlendColor(col.rgb, color3rd.rgb, color3rd.a * _Main3rdEnableLighting, _Main3rdTexBlendMode);
+            color3rd.a = lerp(color3rd.a, color3rd.a * saturate((fd.depth - _Main3rdDistanceFade.x) / (_Main3rdDistanceFade.y - _Main3rdDistanceFade.x)), _Main3rdDistanceFade.z);
+            fd.col.rgb = lilBlendColor(fd.col.rgb, color3rd.rgb, color3rd.a * _Main3rdEnableLighting, _Main3rdTexBlendMode);
         }
     }
 #endif
 
 #if !defined(OVERRIDE_MAIN3RD)
-    #if defined(LIL_V2F_POSITION_OS)
-        #define OVERRIDE_MAIN3RD \
-            lilGetMain3rd(col, color3rd, main3rdDissolveAlpha, uvMain, input.uv, nv, input.positionOS, audioLinkValue, depth, isRightHand LIL_SAMP_IN(sampler_MainTex));
-    #else
-        #define OVERRIDE_MAIN3RD \
-            lilGetMain3rd(col, color3rd, main3rdDissolveAlpha, uvMain, input.uv, nv, audioLinkValue, depth, isRightHand LIL_SAMP_IN(sampler_MainTex));
-    #endif
+    #define OVERRIDE_MAIN3RD \
+        lilGetMain3rd(fd, color3rd, main3rdDissolveAlpha LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Shadow
 #if defined(LIL_FEATURE_SHADOW) && !defined(LIL_LITE) && !defined(LIL_GEM)
-void lilGetShading(
-    inout float4 col,
-    inout float shadowmix,
-    float3 albedo,
-    float3 lightColor,
-    float3 indLightColor,
-    float2 uv,
-    float facing,
-    float ln,
-    float3 lightDirection,
-    float3 lightDirectionCopy,
-    bool cullOff,
-    float attenuation
-    LIL_SAMP_IN_FUNC(samp))
+void lilGetShading(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
 {
     LIL_BRANCH
     if(_UseShadow)
     {
         // Shade
-        float ln1 = saturate(ln*0.5+0.5);
-        if(Exists_ShadowBorderMask) ln1 *= LIL_SAMPLE_2D(_ShadowBorderMask, samp, uv).r;
+        float ln1 = saturate(fd.ln*0.5+0.5);
+        if(Exists_ShadowBorderMask) ln1 *= LIL_SAMPLE_2D(_ShadowBorderMask, samp, fd.uvMain).r;
         float ln2 = ln1;
         float lnB = ln1;
 
         // Shadow
         #if (defined(LIL_USE_SHADOW) || defined(LIL_LIGHTMODE_SHADOWMASK)) && defined(LIL_FEATURE_RECEIVE_SHADOW)
-            float shadowAttenuation = saturate(attenuation + distance(lightDirection, lightDirectionCopy));
+            float shadowAttenuation = saturate(fd.attenuation + distance(fd.L, fd.origL));
             if(_ShadowReceive) ln1 *= shadowAttenuation;
             if(_ShadowReceive) lnB *= shadowAttenuation;
         #endif
 
         // Toon
         float shadowBlur = _ShadowBlur;
-        if(Exists_ShadowBlurMask) shadowBlur *= LIL_SAMPLE_2D(_ShadowBlurMask, samp, uv).r;
+        if(Exists_ShadowBlurMask) shadowBlur *= LIL_SAMPLE_2D(_ShadowBlurMask, samp, fd.uvMain).r;
         ln1 = lilTooning(ln1, _ShadowBorder, shadowBlur);
         ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
         lnB = lilTooning(lnB, _ShadowBorder, shadowBlur, _ShadowBorderRange);
 
-        if(cullOff)
-        {
-            // Force shadow on back face
-            float bfshadow = (facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
-            ln1 *= bfshadow;
-            ln2 *= bfshadow;
-            lnB *= bfshadow;
-        }
+        // Force shadow on back face
+        float bfshadow = (fd.facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
+        ln1 *= bfshadow;
+        ln2 *= bfshadow;
+        lnB *= bfshadow;
 
         // Copy
-        shadowmix = ln1;
+        fd.shadowmix = ln1;
 
         // Strength
         float shadowStrength = _ShadowStrength;
         #ifdef LIL_COLORSPACE_GAMMA
             shadowStrength = lilSRGBToLinear(shadowStrength);
         #endif
-        if(Exists_ShadowStrengthMask) shadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, samp, uv).r;
+        if(Exists_ShadowStrengthMask) shadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, samp, fd.uvMain).r;
         ln1 = lerp(1.0, ln1, shadowStrength);
 
         // Shadow Color 1
         float4 shadowColorTex = 0.0;
-        if(Exists_ShadowColorTex) shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, uv);
-        float3 indirectCol = lerp(albedo, shadowColorTex.rgb, shadowColorTex.a) * _ShadowColor.rgb;
+        if(Exists_ShadowColorTex) shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, fd.uvMain);
+        float3 indirectCol = lerp(fd.albedo, shadowColorTex.rgb, shadowColorTex.a) * _ShadowColor.rgb;
         // Shadow Color 2
         float4 shadow2ndColorTex = 0.0;
-        if(Exists_Shadow2ndColorTex) shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, uv);
-        shadow2ndColorTex.rgb = lerp(albedo, shadow2ndColorTex.rgb, shadow2ndColorTex.a) * _Shadow2ndColor.rgb;
+        if(Exists_Shadow2ndColorTex) shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, fd.uvMain);
+        shadow2ndColorTex.rgb = lerp(fd.albedo, shadow2ndColorTex.rgb, shadow2ndColorTex.a) * _Shadow2ndColor.rgb;
         ln2 = _Shadow2ndColor.a - ln2 * _Shadow2ndColor.a;
         indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, ln2);
         // Multiply Main Color
-        indirectCol = lerp(indirectCol, indirectCol*albedo, _ShadowMainStrength);
+        indirectCol = lerp(indirectCol, indirectCol*fd.albedo, _ShadowMainStrength);
 
         // Apply Light
-        float3 directCol = albedo * lightColor;
-        indirectCol = indirectCol * lightColor;
+        float3 directCol = fd.albedo * fd.lightColor;
+        indirectCol = indirectCol * fd.lightColor;
 
         // Environment Light
-        indirectCol = lerp(indirectCol, albedo, indLightColor);
+        indirectCol = lerp(indirectCol, fd.albedo, fd.indLightColor);
         // Fix
         indirectCol = min(indirectCol, directCol);
         // Gradation
         indirectCol = lerp(indirectCol, directCol, lnB * _ShadowBorderColor.rgb);
 
         // Mix
-        col.rgb = lerp(indirectCol, directCol, ln1);
+        fd.col.rgb = lerp(indirectCol, directCol, ln1);
     }
     else
     {
-        col.rgb *= lightColor;
+        fd.col.rgb *= fd.lightColor;
     }
 }
 #elif defined(LIL_LITE)
-void lilGetShading(
-    inout float4 col,
-    inout float shadowmix,
-    float3 albedo,
-    float3 lightColor,
-    float3 indLightColor,
-    float2 uv,
-    float facing,
-    float ln,
-    float3 lightDirection,
-    float3 lightDirectionCopy,
-    bool cullOff
-    LIL_SAMP_IN_FUNC(samp))
+void lilGetShading(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
 {
     LIL_BRANCH
     if(_UseShadow)
     {
         // Shade
-        float ln1 = saturate(ln*0.5+0.5);
+        float ln1 = saturate(fd.ln*0.5+0.5);
         float ln2 = ln1;
         float lnB = ln1;
 
@@ -654,97 +733,84 @@ void lilGetShading(
         ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
         lnB = lilTooning(lnB, _ShadowBorder, _ShadowBlur, _ShadowBorderRange);
 
-        if(cullOff)
-        {
-            // Force shadow on back face
-            float bfshadow = (facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
-            ln1 *= bfshadow;
-            ln2 *= bfshadow;
-            lnB *= bfshadow;
-        }
+        // Force shadow on back face
+        float bfshadow = (fd.facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
+        ln1 *= bfshadow;
+        ln2 *= bfshadow;
+        lnB *= bfshadow;
 
         // Copy
-        shadowmix = ln1;
+        fd.shadowmix = ln1;
 
         // Shadow Color 1
-        float4 shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, uv);
-        float3 indirectCol = lerp(albedo, shadowColorTex.rgb, shadowColorTex.a);
+        float4 shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, fd.uvMain);
+        float3 indirectCol = lerp(fd.albedo, shadowColorTex.rgb, shadowColorTex.a);
         // Shadow Color 2
-        float4 shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, uv);
+        float4 shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, fd.uvMain);
         indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, shadow2ndColorTex.a - ln2 * shadow2ndColorTex.a);
 
         // Apply Light
-        float3 directCol = albedo * lightColor;
-        indirectCol = indirectCol * lightColor;
+        float3 directCol = fd.albedo * fd.lightColor;
+        indirectCol = indirectCol * fd.lightColor;
 
         // Environment Light
-        indirectCol = lerp(indirectCol, albedo, indLightColor);
+        indirectCol = lerp(indirectCol, fd.albedo, fd.indLightColor);
         // Fix
         indirectCol = min(indirectCol, directCol);
         // Gradation
         indirectCol = lerp(indirectCol, directCol, lnB * _ShadowBorderColor.rgb);
 
         // Mix
-        col.rgb = lerp(indirectCol, directCol, ln1);
+        fd.col.rgb = lerp(indirectCol, directCol, ln1);
     }
     else
     {
-        col.rgb *= lightColor;
+        fd.col.rgb *= fd.lightColor;
     }
 }
 #endif
 
 #if !defined(OVERRIDE_SHADOW)
-    #if defined(LIL_LITE)
-        #define OVERRIDE_SHADOW \
-            lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uvMain,facing,ln,lightDirection,LIL_LIGHTDIRECTION_ORIG,true LIL_SAMP_IN(sampler_MainTex));
-    #else
-        #define OVERRIDE_SHADOW \
-            lilGetShading(col,shadowmix,albedo,lightColor,input.indLightColor,uvMain,facing,ln,lightDirection,LIL_LIGHTDIRECTION_ORIG,true,attenuation LIL_SAMP_IN(sampler_MainTex));
-    #endif
+    #define OVERRIDE_SHADOW \
+        lilGetShading(fd LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Backlight
 #if defined(LIL_FEATURE_BACKLIGHT) && !defined(LIL_LITE) && !defined(LIL_FUR) && !defined(LIL_GEM)
-    void lilBacklight(inout float4 col, float2 uvMain, float facing, float hl, float3 lightColor, float3 lightDirection, float3 lightDirectionCopy, float attenuation, float3 headDirection, float3 normalDirection LIL_SAMP_IN_FUNC(samp))
+    void lilBacklight(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
         if(_UseBacklight)
         {
-            float3 backlightColor = LIL_SAMPLE_2D(_BacklightColorTex, samp, uvMain).rgb * _BacklightColor.rgb;
-            float backlightFactor = pow(saturate(-hl * 0.5 + 0.5), _BacklightDirectivity);
-            float backlightLN = dot(normalize(-headDirection * _BacklightViewStrength + lightDirection), normalDirection) * 0.5 + 0.5;
+            float3 backlightColor = LIL_SAMPLE_2D(_BacklightColorTex, samp, fd.uvMain).rgb * _BacklightColor.rgb;
+            float backlightFactor = pow(saturate(-fd.hl * 0.5 + 0.5), _BacklightDirectivity);
+            float backlightLN = dot(normalize(-fd.headV * _BacklightViewStrength + fd.L), fd.N) * 0.5 + 0.5;
             #if defined(LIL_USE_SHADOW) || defined(LIL_LIGHTMODE_SHADOWMASK)
-                if(_BacklightReceiveShadow) backlightLN *= saturate(attenuation + distance(lightDirection, lightDirectionCopy));
+                if(_BacklightReceiveShadow) backlightLN *= saturate(fd.attenuation + distance(fd.L, fd.origL));
             #endif
             backlightLN = lilTooning(backlightLN, _BacklightBorder, _BacklightBlur);
-            float backlight = backlightFactor * backlightLN;
-            backlight = facing < (_BacklightBackfaceMask-1.0) ? 0.0 : backlight;
-            col.rgb += backlight * backlightColor * lightColor;
+            float backlight = saturate(backlightFactor * backlightLN);
+            backlight = fd.facing < (_BacklightBackfaceMask-1.0) ? 0.0 : backlight;
+            fd.col.rgb += backlight * backlightColor * fd.lightColor;
         }
     }
 #endif
 
 #if !defined(OVERRIDE_BACKLIGHT)
-    #define OVERRIDE_BACKLIGHT lilBacklight(col, uvMain, facing, hl, lightColor, lightDirection, LIL_LIGHTDIRECTION_ORIG, attenuation, headDirection, normalDirection LIL_SAMP_IN(sampler_MainTex));
+    #define OVERRIDE_BACKLIGHT lilBacklight(fd LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Refraction
 #if defined(LIL_REFRACTION) && !defined(LIL_LITE) && !defined(LIL_FUR)
-    #if (defined(LIL_REFRACTION_BLUR) || defined(LIL_REFRACTION_BLUR2)) && defined(LIL_FEATURE_REFLECTION)
-        void lilRefraction(inout float4 col, float3 albedo, float4 positionSS, float nv, float3 normalDirection, float perceptualRoughness LIL_SAMP_IN_FUNC(samp))
-    #else
-        void lilRefraction(inout float4 col, float3 albedo, float4 positionSS, float nv, float3 normalDirection LIL_SAMP_IN_FUNC(samp))
-    #endif
+    void lilRefraction(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
-        float2 scnUV = positionSS.xy/positionSS.w;
-        float2 refractUV = scnUV + (pow(1.0 - nv, _RefractionFresnelPower) * _RefractionStrength) * mul((float3x3)LIL_MATRIX_V, normalDirection).xy;
+        float2 refractUV = fd.uvScn + (pow(1.0 - fd.nv, _RefractionFresnelPower) * _RefractionStrength) * mul((float3x3)LIL_MATRIX_V, fd.N).xy;
         #if defined(LIL_REFRACTION_BLUR2) && defined(LIL_FEATURE_REFLECTION)
             #if defined(LIL_BRP)
                 float3 refractCol = 0;
                 float sum = 0;
-                float blurOffset = perceptualRoughness / positionSS.z * (0.0005 / LIL_REFRACTION_SAMPNUM);
+                float blurOffset = fd.perceptualRoughness / fd.positionSS.z * (0.0005 / LIL_REFRACTION_SAMPNUM);
                 for(int j = -16; j <= 16; j++)
                 {
                     refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0,j*blurOffset), 0).rgb * LIL_REFRACTION_GAUSDIST(j);
@@ -753,7 +819,7 @@ void lilGetShading(
                 refractCol /= sum;
                 refractCol *= _RefractionColor.rgb;
             #else
-                float refractLod = min(sqrt(perceptualRoughness / positionSS.z * 0.05), 10);
+                float refractLod = min(sqrt(fd.perceptualRoughness / fd.positionSS.z * 0.05), 10);
                 float3 refractCol = LIL_GET_GRAB_TEX(refractUV, refractLod).rgb * _RefractionColor.rgb;
             #endif
         #elif defined(LIL_REFRACTION_BLUR2)
@@ -761,32 +827,117 @@ void lilGetShading(
         #else
             float3 refractCol = LIL_GET_BG_TEX(refractUV,0).rgb * _RefractionColor.rgb;
         #endif
-        if(_RefractionColorFromMain) refractCol *= albedo;
-        col.rgb = lerp(refractCol, col.rgb, col.a);
+        if(_RefractionColorFromMain) refractCol *= fd.albedo;
+        fd.col.rgb = lerp(refractCol, fd.col.rgb, fd.col.a);
     }
 #endif
 
 #if !defined(OVERRIDE_REFRACTION)
-    #if (defined(LIL_REFRACTION_BLUR) || defined(LIL_REFRACTION_BLUR2)) && defined(LIL_FEATURE_REFLECTION)
-        #define OVERRIDE_REFRACTION \
-            lilRefraction(col, albedo, input.positionSS, nv, normalDirection, perceptualRoughness LIL_SAMP_IN(sampler_MainTex));
-    #else
-        #define OVERRIDE_REFRACTION \
-            lilRefraction(col, albedo, input.positionSS, nv, normalDirection LIL_SAMP_IN(sampler_MainTex));
-    #endif
+    #define OVERRIDE_REFRACTION \
+        lilRefraction(fd LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Reflection
 #if defined(LIL_HDRP)
-    #define LIL_HDRP_VAL_INPUT          , posInput, renderingLayers, featureFlags
-    #define LIL_HDRP_VAL_INPUT_FUNC     , PositionInputs posInput, uint renderingLayers, uint featureFlags
+    #define LIL_HDRP_POSITION_INPUT_VAR , posInput
+    #define LIL_HDRP_POSITION_INPUT_ARGS , PositionInputs posInput
 #else
-    #define LIL_HDRP_VAL_INPUT
-    #define LIL_HDRP_VAL_INPUT_FUNC
+    #define LIL_HDRP_POSITION_INPUT_VAR
+    #define LIL_HDRP_POSITION_INPUT_ARGS
 #endif
 #if defined(LIL_FEATURE_REFLECTION) && defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && !defined(LIL_LITE) && !defined(LIL_FUR)
-    void lilReflection(inout float4 col, float2 uvMain, float3 albedo, float3 positionWS, float3 normalDirection, float3 reflectionNormalDirection, float3 anisoTangentWS, float3 anisoBitangentWS, float3 viewDirection, float nv, float3 lightColor, float3 lightDirection, float shadowmix, float attenuation, float nvabs, float smoothness, float perceptualRoughness, float roughness, float anisotropy LIL_SAMP_IN_FUNC(samp) LIL_HDRP_VAL_INPUT_FUNC)
+    float3 lilCalcSpecular(inout lilFragData fd, float3 L, float3 specular, float attenuation LIL_SAMP_IN_FUNC(samp))
+    {
+        float3 H = normalize(fd.V + L);
+        float nh = saturate(dot(fd.N, H));
+        #if defined(LIL_FEATURE_ANISOTROPY)
+        bool isAnisotropy = _UseAnisotropy && _Anisotropy2Reflection;
+            if(_SpecularToon & !isAnisotropy)
+        #else
+            if(_SpecularToon)
+        #endif
+        return lilTooning(pow(nh,1.0/fd.roughness), _SpecularBorder, _SpecularBlur);
+
+        float nv = saturate(dot(fd.N, fd.V));
+        float nl = saturate(dot(fd.N, L));
+        float lh = saturate(dot(L, H));
+
+        float ggx, sjggx = 0.0;
+        float lambdaV = 0.0;
+        float lambdaL = 0.0;
+        float d = 1.0;
+        #if defined(LIL_FEATURE_ANISOTROPY)
+            if(isAnisotropy)
+            {
+
+                float roughnessT = max(fd.roughness * (1.0 + fd.anisotropy), 0.002);
+                float roughnessB = max(fd.roughness * (1.0 - fd.anisotropy), 0.002);
+
+                float tv = dot(fd.T, fd.V);
+                float bv = dot(fd.B, fd.V);
+                float tl = dot(fd.T, L);
+                float bl = dot(fd.B, L);
+
+                lambdaV = nl * length(float3(roughnessT * tv, roughnessB * bv, nv));
+                lambdaL = nv * length(float3(roughnessT * tl, roughnessB * bl, nl));
+
+                float roughnessT1 = roughnessT * _AnisotropyTangentWidth;
+                float roughnessB1 = roughnessB * _AnisotropyBitangentWidth;
+                float roughnessT2 = roughnessT * _Anisotropy2ndTangentWidth;
+                float roughnessB2 = roughnessB * _Anisotropy2ndBitangentWidth;
+
+                float anisotropyShiftNoise = LIL_SAMPLE_2D_ST(_AnisotropyShiftNoiseMask, samp, fd.uvMain).r - 0.5;
+                float anisotropyShift = anisotropyShiftNoise * _AnisotropyShiftNoiseScale + _AnisotropyShift;
+                float anisotropy2ndShift = anisotropyShiftNoise * _Anisotropy2ndShiftNoiseScale + _Anisotropy2ndShift;
+                float3 T1 = normalize(fd.T - fd.N * anisotropyShift);
+                float3 B1 = normalize(fd.B - fd.N * anisotropyShift);
+                float3 T2 = normalize(fd.T - fd.N * anisotropy2ndShift);
+                float3 B2 = normalize(fd.B - fd.N * anisotropy2ndShift);
+
+                float th1 = dot(T1, H);
+                float bh1 = dot(B1, H);
+                float th2 = dot(T2, H);
+                float bh2 = dot(B2, H);
+
+                float r1 = roughnessT1 * roughnessB1;
+                float r2 = roughnessT2 * roughnessB2;
+                float3 v1 = float3(th1 * roughnessB1, bh1 * roughnessT1, nh * r1);
+                float3 v2 = float3(th2 * roughnessB2, bh2 * roughnessT2, nh * r2);
+                float w1 = r1 / dot(v1, v1);
+                float w2 = r2 / dot(v2, v2);
+                ggx = r1 * w1 * w1 * _AnisotropySpecularStrength + r2 * w2 * w2 * _Anisotropy2ndSpecularStrength;
+            }
+            else
+        #endif
+        {
+            float roughness2 = max(fd.roughness, 0.002);
+            lambdaV = nl * (nv * (1.0 - roughness2) + roughness2);
+            lambdaL = nv * (nl * (1.0 - roughness2) + roughness2);
+
+            float r2 = roughness2 * roughness2;
+            d = (nh * r2 - nh) * nh + 1.0;
+            ggx = r2 / (d * d + 1e-7f);
+        }
+
+        #if defined(SHADER_API_MOBILE) || defined(SHADER_API_SWITCH)
+            sjggx = 0.5 / (lambdaV + lambdaL + 1e-4f);
+        #else
+            sjggx = 0.5 / (lambdaV + lambdaL + 1e-5f);
+        #endif
+
+        float specularTerm = sjggx * ggx;
+        #ifdef LIL_COLORSPACE_GAMMA
+            specularTerm = sqrt(max(1e-4h, specularTerm));
+        #endif
+        specularTerm *= nl * attenuation;
+        #if defined(LIL_FEATURE_ANISOTROPY)
+            if(_SpecularToon) return lilTooning(specularTerm, 0.5);
+        #endif
+        return specularTerm * lilFresnelTerm(specular, lh);
+    }
+
+    void lilReflection(inout lilFragData fd LIL_SAMP_IN_FUNC(samp) LIL_HDRP_POSITION_INPUT_ARGS)
     {
         #if defined(LIL_PASS_FORWARDADD)
             LIL_BRANCH
@@ -799,16 +950,16 @@ void lilGetShading(
             float3 reflectCol = 0;
             // Smoothness
             #if !defined(LIL_REFRACTION_BLUR2) || defined(LIL_PASS_FORWARDADD)
-                smoothness = _Smoothness;
-                if(Exists_SmoothnessTex) smoothness *= LIL_SAMPLE_2D(_SmoothnessTex, samp, uvMain).r;
-                perceptualRoughness = perceptualRoughness - smoothness * perceptualRoughness;
-                roughness = perceptualRoughness * perceptualRoughness;
+                fd.smoothness = _Smoothness;
+                if(Exists_SmoothnessTex) fd.smoothness *= LIL_SAMPLE_2D(_SmoothnessTex, samp, fd.uvMain).r;
+                fd.perceptualRoughness = fd.perceptualRoughness - fd.smoothness * fd.perceptualRoughness;
+                fd.roughness = fd.perceptualRoughness * fd.perceptualRoughness;
             #endif
             // Metallic
             float metallic = _Metallic;
-            if(Exists_MetallicGlossMap) metallic *= LIL_SAMPLE_2D(_MetallicGlossMap, samp, uvMain).r;
-            col.rgb = col.rgb - metallic * col.rgb;
-            float3 specular = lerp(_Reflectance, albedo, metallic);
+            if(Exists_MetallicGlossMap) metallic *= LIL_SAMPLE_2D(_MetallicGlossMap, samp, fd.uvMain).r;
+            fd.col.rgb = fd.col.rgb - metallic * fd.col.rgb;
+            float3 specular = lerp(_Reflectance, fd.albedo, metallic);
             // Specular
             #if !defined(LIL_PASS_FORWARDADD)
                 LIL_BRANCH
@@ -816,34 +967,18 @@ void lilGetShading(
             #endif
             {
                 #if 1
-                    float3 lightDirectionSpc = lightDirection;
-                    float3 lightColorSpc = lightColor;
+                    float3 lightDirectionSpc = fd.L;
+                    float3 lightColorSpc = fd.lightColor;
                 #else
-                    float3 lightDirectionSpc = lilGetLightDirection(positionWS);
+                    float3 lightDirectionSpc = lilGetLightDirection(fd.positionWS);
                     float3 lightColorSpc = LIL_MAINLIGHT_COLOR;
                 #endif
-                #if defined(LIL_FEATURE_ANISOTROPY)
-                    bool isAnisotropy = _UseAnisotropy && _Anisotropy2Reflection;
-                    float anisotropyShiftNoise = LIL_SAMPLE_2D_ST(_AnisotropyShiftNoiseMask, samp, uvMain).r - 0.5;
-                    float anisotropyShift = anisotropyShiftNoise * _AnisotropyShiftNoiseScale + _AnisotropyShift;
-                    float anisotropy2ndShift = anisotropyShiftNoise * _Anisotropy2ndShiftNoiseScale + _Anisotropy2ndShift;
-                #else
-                    bool isAnisotropy = false;
-                    float _AnisotropyTangentWidth = 1.0;
-                    float _AnisotropyBitangentWidth = 1.0;
-                    float _AnisotropySpecularStrength = 1.0;
-                    float _Anisotropy2ndTangentWidth = 1.0;
-                    float _Anisotropy2ndBitangentWidth = 1.0;
-                    float _Anisotropy2ndSpecularStrength = 0.0;
-                    float anisotropyShift = 0.0;
-                    float anisotropy2ndShift = 0.0;
-                #endif
                 #if defined(LIL_PASS_FORWARDADD)
-                    reflectCol = lilCalcSpecular(normalDirection, anisoTangentWS, anisoBitangentWS, lightDirectionSpc, viewDirection, roughness, specular, anisotropy, _AnisotropyTangentWidth, _AnisotropyBitangentWidth, _Anisotropy2ndTangentWidth, _Anisotropy2ndBitangentWidth, _AnisotropySpecularStrength, _Anisotropy2ndSpecularStrength, anisotropyShift, anisotropy2ndShift, _SpecularToon, attenuation, isAnisotropy) * lightColorSpc;
+                    reflectCol = lilCalcSpecular(fd, lightDirectionSpc, specular, fd.attenuation LIL_SAMP_IN(samp)) * lightColorSpc;
                 #elif defined(SHADOWS_SCREEN)
-                    reflectCol = lilCalcSpecular(normalDirection, anisoTangentWS, anisoBitangentWS, lightDirectionSpc, viewDirection, roughness, specular, anisotropy, _AnisotropyTangentWidth, _AnisotropyBitangentWidth, _Anisotropy2ndTangentWidth, _Anisotropy2ndBitangentWidth, _AnisotropySpecularStrength, _Anisotropy2ndSpecularStrength, anisotropyShift, anisotropy2ndShift, _SpecularToon, shadowmix, isAnisotropy) * lightColorSpc;
+                    reflectCol = lilCalcSpecular(fd, lightDirectionSpc, specular, fd.shadowmix LIL_SAMP_IN(samp)) * lightColorSpc;
                 #else
-                    reflectCol = lilCalcSpecular(normalDirection, anisoTangentWS, anisoBitangentWS, lightDirectionSpc, viewDirection, roughness, specular, anisotropy, _AnisotropyTangentWidth, _AnisotropyBitangentWidth, _Anisotropy2ndTangentWidth, _Anisotropy2ndBitangentWidth, _AnisotropySpecularStrength, _Anisotropy2ndSpecularStrength, anisotropyShift, anisotropy2ndShift, _SpecularToon, 1.0, isAnisotropy) * lightColorSpc;
+                    reflectCol = lilCalcSpecular(fd, lightDirectionSpc, specular, 1.0 LIL_SAMP_IN(samp)) * lightColorSpc;
                 #endif
             }
             // Reflection
@@ -851,164 +986,143 @@ void lilGetShading(
                 LIL_BRANCH
                 if(_ApplyReflection)
                 {
-                    float3 envReflectionColor = LIL_GET_ENVIRONMENT_REFLECTION(viewDirection, reflectionNormalDirection, perceptualRoughness, positionWS);
+                    float3 envReflectionColor = LIL_GET_ENVIRONMENT_REFLECTION(fd.V, fd.reflectionN, fd.perceptualRoughness, fd.positionWS);
 
                     float oneMinusReflectivity = LIL_DIELECTRIC_SPECULAR.a - metallic * LIL_DIELECTRIC_SPECULAR.a;
-                    float grazingTerm = saturate(smoothness + (1.0-oneMinusReflectivity));
+                    float grazingTerm = saturate(fd.smoothness + (1.0-oneMinusReflectivity));
                     #ifdef LIL_COLORSPACE_GAMMA
-                        float surfaceReduction = 1.0 - 0.28 * roughness * perceptualRoughness;
+                        float surfaceReduction = 1.0 - 0.28 * fd.roughness * fd.perceptualRoughness;
                     #else
-                        float surfaceReduction = 1.0 / (roughness * roughness + 1.0);
+                        float surfaceReduction = 1.0 / (fd.roughness * fd.roughness + 1.0);
                     #endif
 
                     #ifdef LIL_REFRACTION
-                        col.rgb = lerp(envReflectionColor, col.rgb, col.a+(1.0-col.a)*pow(nvabs,abs(_RefractionStrength)*0.5+0.25));
-                        reflectCol += col.a * surfaceReduction * envReflectionColor * lilFresnelLerp(specular, grazingTerm, nv);
-                        col.a = 1.0;
+                        fd.col.rgb = lerp(envReflectionColor, fd.col.rgb, fd.col.a+(1.0-fd.col.a)*pow(fd.nvabs,abs(_RefractionStrength)*0.5+0.25));
+                        reflectCol += fd.col.a * surfaceReduction * envReflectionColor * lilFresnelLerp(specular, grazingTerm, fd.nv);
+                        fd.col.a = 1.0;
                     #else
-                        reflectCol += surfaceReduction * envReflectionColor * lilFresnelLerp(specular, grazingTerm, nv);
+                        reflectCol += surfaceReduction * envReflectionColor * lilFresnelLerp(specular, grazingTerm, fd.nv);
                     #endif
                 }
             #endif
             // Mix
             float4 reflectionColor = _ReflectionColor;
-            if(Exists_ReflectionColorTex) reflectionColor *= LIL_SAMPLE_2D(_ReflectionColorTex, samp, uvMain);
+            if(Exists_ReflectionColorTex) reflectionColor *= LIL_SAMPLE_2D(_ReflectionColorTex, samp, fd.uvMain);
             #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
-                if(_ReflectionApplyTransparency) reflectionColor.a *= col.a;
+                if(_ReflectionApplyTransparency) reflectionColor.a *= fd.col.a;
             #endif
-            col.rgb += reflectionColor.rgb * reflectionColor.a * reflectCol;
+            fd.col.rgb += reflectionColor.rgb * reflectionColor.a * reflectCol;
         }
     }
 #endif
 
 #if !defined(OVERRIDE_REFLECTION)
     #define OVERRIDE_REFLECTION \
-        lilReflection(col, uvMain, albedo, input.positionWS, normalDirection, reflectionNormalDirection, anisoTangentWS, anisoBitangentWS, viewDirection, nv, lightColor, lightDirection, shadowmix, attenuation, nvabs, smoothness, perceptualRoughness, roughness, anisotropy LIL_SAMP_IN(sampler_MainTex) LIL_HDRP_VAL_INPUT);
+        lilReflection(fd LIL_SAMP_IN(sampler_MainTex) LIL_HDRP_POSITION_INPUT_VAR);
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // MatCap
 #if defined(LIL_FEATURE_MATCAP) && !defined(LIL_LITE) && !defined(LIL_FUR)
-    #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
-        void lilGetMatCap(inout float4 col, float2 uvMain, float2 uv1, float facing, float shadowmix, float3 lightColor, float3 normalDirection, float3 viewDirection, float3 headDirection, float3x3 tbnWS LIL_SAMP_IN_FUNC(samp))
-    #else
-        void lilGetMatCap(inout float4 col, float2 uvMain, float2 uv1, float facing, float shadowmix, float3 lightColor, float3 normalDirection, float3 viewDirection, float3 headDirection LIL_SAMP_IN_FUNC(samp))
-    #endif
+    void lilGetMatCap(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
         LIL_BRANCH
         if(_UseMatCap)
         {
             float2 matUV = float2(0,0);
-            float3 matcapNormalDirection = normalDirection;
+            float3 matcapNormalDirection = fd.matcapN;
             #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
                 LIL_BRANCH
                 if(_MatCapCustomNormal)
                 {
-                    float4 normalTex = LIL_SAMPLE_2D_ST(_MatCapBumpMap, samp, uvMain);
+                    float4 normalTex = LIL_SAMPLE_2D_ST(_MatCapBumpMap, samp, fd.uvMain);
                     float3 normalmap = UnpackNormalScale(normalTex, _MatCapBumpScale);
-                    matcapNormalDirection = normalize(mul(normalmap, tbnWS));
-                    matcapNormalDirection = facing < (_FlipNormal-1.0) ? -matcapNormalDirection : matcapNormalDirection;
+                    matcapNormalDirection = normalize(mul(normalmap, fd.TBN));
+                    matcapNormalDirection = fd.facing < (_FlipNormal-1.0) ? -matcapNormalDirection : matcapNormalDirection;
                 }
             #endif
-            matUV = lilCalcMatCapUV(uv1, matcapNormalDirection, viewDirection, headDirection, _MatCapTex_ST, _MatCapBlendUV1.xy, _MatCapZRotCancel, _MatCapPerspective, _MatCapVRParallaxStrength);
+            matUV = lilCalcMatCapUV(fd.uv1, matcapNormalDirection, fd.V, fd.headV, _MatCapTex_ST, _MatCapBlendUV1.xy, _MatCapZRotCancel, _MatCapPerspective, _MatCapVRParallaxStrength);
             float4 matCapColor = _MatCapColor;
             if(Exists_MatCapTex) matCapColor *= LIL_SAMPLE_2D(_MatCapTex, samp, matUV);
             #if !defined(LIL_PASS_FORWARDADD)
-                matCapColor.rgb = lerp(matCapColor.rgb, matCapColor.rgb * lightColor, _MatCapEnableLighting);
-                matCapColor.a = lerp(matCapColor.a, matCapColor.a * shadowmix, _MatCapShadowMask);
+                matCapColor.rgb = lerp(matCapColor.rgb, matCapColor.rgb * fd.lightColor, _MatCapEnableLighting);
+                matCapColor.a = lerp(matCapColor.a, matCapColor.a * fd.shadowmix, _MatCapShadowMask);
             #else
-                if(_MatCapBlendMode < 3) matCapColor.rgb *= lightColor * _MatCapEnableLighting;
+                if(_MatCapBlendMode < 3) matCapColor.rgb *= fd.lightColor * _MatCapEnableLighting;
             #endif
             #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
-                if(_MatCapApplyTransparency) matCapColor.a *= col.a;
+                if(_MatCapApplyTransparency) matCapColor.a *= fd.col.a;
             #endif
-            matCapColor.a = facing < (_MatCapBackfaceMask-1.0) ? 0.0 : matCapColor.a;
-            if(Exists_MatCapBlendMask) matCapColor.a *= LIL_SAMPLE_2D(_MatCapBlendMask, samp, uvMain).r;
-            col.rgb = lilBlendColor(col.rgb, matCapColor.rgb, _MatCapBlend * matCapColor.a, _MatCapBlendMode);
+            matCapColor.a = fd.facing < (_MatCapBackfaceMask-1.0) ? 0.0 : matCapColor.a;
+            if(Exists_MatCapBlendMask) matCapColor.a *= LIL_SAMPLE_2D(_MatCapBlendMask, samp, fd.uvMain).r;
+            fd.col.rgb = lilBlendColor(fd.col.rgb, matCapColor.rgb, _MatCapBlend * matCapColor.a, _MatCapBlendMode);
         }
     }
 #elif defined(LIL_LITE)
-    void lilGetMatCap(inout float4 col, float2 uvMain, float3 lightColor, float2 uvMat, float4 triMask LIL_SAMP_IN_FUNC(samp))
+    void lilGetMatCap(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
         if(_UseMatCap)
         {
             float3 matcap = 1.0;
-            matcap = LIL_SAMPLE_2D(_MatCapTex, samp, uvMat).rgb;
-            col.rgb = lerp(col.rgb, _MatCapMul ? col.rgb * matcap : col.rgb + matcap, triMask.r);
+            matcap = LIL_SAMPLE_2D(_MatCapTex, samp, fd.uvMat).rgb;
+            fd.col.rgb = lerp(fd.col.rgb, _MatCapMul ? fd.col.rgb * matcap : fd.col.rgb + matcap, fd.triMask.r);
         }
     }
 #endif
 
 #if !defined(OVERRIDE_MATCAP)
-    #if defined(LIL_LITE)
-        #define OVERRIDE_MATCAP \
-            lilGetMatCap(col, uvMain, lightColor, input.uvMat, triMask LIL_SAMP_IN(sampler_MainTex));
-    #elif defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
-        #define OVERRIDE_MATCAP \
-            lilGetMatCap(col, uvMain, input.uv1, facing, shadowmix, lightColor, matcapNormalDirection, viewDirection, headDirection, tbnWS LIL_SAMP_IN(sampler_MainTex));
-    #else
-        #define OVERRIDE_MATCAP \
-            lilGetMatCap(col, uvMain, input.uv1, facing, shadowmix, lightColor, matcapNormalDirection, viewDirection, headDirection LIL_SAMP_IN(sampler_MainTex));
-    #endif
+    #define OVERRIDE_MATCAP \
+        lilGetMatCap(fd LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // MatCap 2nd
 #if defined(LIL_FEATURE_MATCAP_2ND) && !defined(LIL_LITE) && !defined(LIL_FUR)
-    #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
-        void lilGetMatCap2nd(inout float4 col, float2 uvMain, float2 uv1, float facing, float shadowmix, float3 lightColor, float3 normalDirection, float3 viewDirection, float3 headDirection, float3x3 tbnWS LIL_SAMP_IN_FUNC(samp))
-    #else
-        void lilGetMatCap2nd(inout float4 col, float2 uvMain, float2 uv1, float facing, float shadowmix, float3 lightColor, float3 normalDirection, float3 viewDirection, float3 headDirection LIL_SAMP_IN_FUNC(samp))
-    #endif
+    void lilGetMatCap2nd(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
         LIL_BRANCH
         if(_UseMatCap2nd)
         {
             float2 mat2ndUV = float2(0,0);
-            float3 matcap2ndNormalDirection = normalDirection;
+            float3 matcap2ndNormalDirection = fd.matcap2ndN;
             #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
                 LIL_BRANCH
                 if(_MatCap2ndCustomNormal)
                 {
-                    float4 normalTex = LIL_SAMPLE_2D_ST(_MatCap2ndBumpMap, samp, uvMain);
+                    float4 normalTex = LIL_SAMPLE_2D_ST(_MatCap2ndBumpMap, samp, fd.uvMain);
                     float3 normalmap = UnpackNormalScale(normalTex, _MatCap2ndBumpScale);
-                    matcap2ndNormalDirection = normalize(mul(normalmap, tbnWS));
-                    matcap2ndNormalDirection = facing < (_FlipNormal-1.0) ? -matcap2ndNormalDirection : matcap2ndNormalDirection;
+                    matcap2ndNormalDirection = normalize(mul(normalmap, fd.TBN));
+                    matcap2ndNormalDirection = fd.facing < (_FlipNormal-1.0) ? -matcap2ndNormalDirection : matcap2ndNormalDirection;
                 }
             #endif
-            mat2ndUV = lilCalcMatCapUV(uv1, matcap2ndNormalDirection, viewDirection, headDirection, _MatCap2ndTex_ST, _MatCap2ndBlendUV1.xy, _MatCap2ndZRotCancel, _MatCap2ndPerspective, _MatCap2ndVRParallaxStrength);
+            mat2ndUV = lilCalcMatCapUV(fd.uv1, matcap2ndNormalDirection, fd.V, fd.headV, _MatCap2ndTex_ST, _MatCap2ndBlendUV1.xy, _MatCap2ndZRotCancel, _MatCap2ndPerspective, _MatCap2ndVRParallaxStrength);
             float4 matCap2ndColor = _MatCap2ndColor;
             if(Exists_MatCapTex) matCap2ndColor *= LIL_SAMPLE_2D(_MatCap2ndTex, samp, mat2ndUV);
             #if !defined(LIL_PASS_FORWARDADD)
-                matCap2ndColor.rgb = lerp(matCap2ndColor.rgb, matCap2ndColor.rgb * lightColor, _MatCap2ndEnableLighting);
-                matCap2ndColor.a = lerp(matCap2ndColor.a, matCap2ndColor.a * shadowmix, _MatCap2ndShadowMask);
+                matCap2ndColor.rgb = lerp(matCap2ndColor.rgb, matCap2ndColor.rgb * fd.lightColor, _MatCap2ndEnableLighting);
+                matCap2ndColor.a = lerp(matCap2ndColor.a, matCap2ndColor.a * fd.shadowmix, _MatCap2ndShadowMask);
             #else
-                if(_MatCap2ndBlendMode < 3) matCap2ndColor.rgb *= lightColor * _MatCap2ndEnableLighting;
+                if(_MatCap2ndBlendMode < 3) matCap2ndColor.rgb *= fd.lightColor * _MatCap2ndEnableLighting;
             #endif
             #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
-                if(_MatCap2ndApplyTransparency) matCap2ndColor.a *= col.a;
+                if(_MatCap2ndApplyTransparency) matCap2ndColor.a *= fd.col.a;
             #endif
-            matCap2ndColor.a = facing < (_MatCap2ndBackfaceMask-1.0) ? 0.0 : matCap2ndColor.a;
-            if(Exists_MatCap2ndBlendMask) matCap2ndColor.a *= LIL_SAMPLE_2D(_MatCap2ndBlendMask, samp, uvMain).r;
-            col.rgb = lilBlendColor(col.rgb, matCap2ndColor.rgb, _MatCap2ndBlend * matCap2ndColor.a, _MatCap2ndBlendMode);
+            matCap2ndColor.a = fd.facing < (_MatCap2ndBackfaceMask-1.0) ? 0.0 : matCap2ndColor.a;
+            if(Exists_MatCap2ndBlendMask) matCap2ndColor.a *= LIL_SAMPLE_2D(_MatCap2ndBlendMask, samp, fd.uvMain).r;
+            fd.col.rgb = lilBlendColor(fd.col.rgb, matCap2ndColor.rgb, _MatCap2ndBlend * matCap2ndColor.a, _MatCap2ndBlendMode);
         }
     }
 #endif
 
 #if !defined(OVERRIDE_MATCAP_2ND)
-    #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
-        #define OVERRIDE_MATCAP_2ND \
-            lilGetMatCap2nd(col, uvMain, input.uv1, facing, shadowmix, lightColor, matcap2ndNormalDirection, viewDirection, headDirection, tbnWS LIL_SAMP_IN(sampler_MainTex));
-    #else
-        #define OVERRIDE_MATCAP_2ND \
-            lilGetMatCap2nd(col, uvMain, input.uv1, facing, shadowmix, lightColor, matcap2ndNormalDirection, viewDirection, headDirection LIL_SAMP_IN(sampler_MainTex));
-    #endif
+    #define OVERRIDE_MATCAP_2ND \
+        lilGetMatCap2nd(fd LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Rim Light
 #if defined(LIL_FEATURE_RIMLIGHT) && !defined(LIL_LITE) && !defined(LIL_FUR)
-    void lilGetRim(inout float4 col, float2 uvMain, float facing, float shadowmix, float nvabs, float3 lightColor, float3 normalDirection, float3 lightDirection LIL_SAMP_IN_FUNC(samp))
+    void lilGetRim(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
         #if !defined(LIL_PASS_FORWARDADD)
             LIL_BRANCH
@@ -1023,70 +1137,70 @@ void lilGetShading(
                 float4 rimIndirColor = _RimIndirColor;
                 if(Exists_RimColorTex)
                 {
-                    float4 rimColorTex = LIL_SAMPLE_2D(_RimColorTex, samp, uvMain);
+                    float4 rimColorTex = LIL_SAMPLE_2D(_RimColorTex, samp, fd.uvMain);
                     rimColor *= rimColorTex;
                     rimIndirColor *= rimColorTex;
                 }
 
-                float lnRaw = dot(lightDirection,normalDirection) * 0.5 + 0.5;
+                float lnRaw = fd.ln * 0.5 + 0.5;
                 float lnDir = saturate((lnRaw + _RimDirRange) / (1.0 + _RimDirRange));
                 float lnIndir = saturate((1.0-lnRaw + _RimIndirRange) / (1.0 + _RimIndirRange));
-                float rim = pow(saturate(1.0 - nvabs), _RimFresnelPower);
-                rim = facing < (_RimBackfaceMask-1.0) ? 0.0 : rim;
+                float rim = pow(saturate(1.0 - fd.nvabs), _RimFresnelPower);
+                rim = fd.facing < (_RimBackfaceMask-1.0) ? 0.0 : rim;
                 float rimDir = lerp(rim, rim*lnDir, _RimDirStrength);
                 float rimIndir = rim * lnIndir * _RimDirStrength;
                 rimDir = lilTooning(rimDir, _RimBorder, _RimBlur);
                 rimIndir = lilTooning(rimIndir, _RimIndirBorder, _RimIndirBlur);
 
                 #if !defined(LIL_PASS_FORWARDADD)
-                    rimDir = lerp(rimDir, rimDir * shadowmix, _RimShadowMask);
-                    rimIndir = lerp(rimIndir, rimIndir * shadowmix, _RimShadowMask);
+                    rimDir = lerp(rimDir, rimDir * fd.shadowmix, _RimShadowMask);
+                    rimIndir = lerp(rimIndir, rimIndir * fd.shadowmix, _RimShadowMask);
                 #endif
                 #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                     if(_RimApplyTransparency)
                     {
-                        rimDir *= col.a;
-                        rimIndir *= col.a;
+                        rimDir *= fd.col.a;
+                        rimIndir *= fd.col.a;
                     }
                 #endif
                 float3 rimSum = rimDir * rimColor.a * rimColor.rgb + rimIndir * rimIndirColor.a * rimIndirColor.rgb;
                 #if !defined(LIL_PASS_FORWARDADD)
-                    rimSum = lerp(rimSum, rimSum * lightColor, _RimEnableLighting);
-                    col.rgb += rimSum;
+                    rimSum = lerp(rimSum, rimSum * fd.lightColor, _RimEnableLighting);
+                    fd.col.rgb += rimSum;
                 #else
-                    col.rgb += rimSum * _RimEnableLighting * lightColor;
+                    fd.col.rgb += rimSum * _RimEnableLighting * fd.lightColor;
                 #endif
             #else
                 float4 rimColor = _RimColor;
-                if(Exists_RimColorTex) rimColor *= LIL_SAMPLE_2D(_RimColorTex, samp, uvMain);
-                float rim = pow(saturate(1.0 - nvabs), _RimFresnelPower);
-                rim = facing < (_RimBackfaceMask-1.0) ? 0.0 : rim;
+                if(Exists_RimColorTex) rimColor *= LIL_SAMPLE_2D(_RimColorTex, samp, fd.uvMain);
+                float rim = pow(saturate(1.0 - fd.nvabs), _RimFresnelPower);
+                rim = fd.facing < (_RimBackfaceMask-1.0) ? 0.0 : rim;
                 rim = lilTooning(rim, _RimBorder, _RimBlur);
                 #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
-                    if(_RimApplyTransparency) rim *= col.a;
+                    if(_RimApplyTransparency) rim *= fd.col.a;
                 #endif
                 #if !defined(LIL_PASS_FORWARDADD)
-                    rim = lerp(rim, rim * shadowmix, _RimShadowMask);
-                    rimColor.rgb = lerp(rimColor.rgb, rimColor.rgb * lightColor, _RimEnableLighting);
-                    col.rgb += rim * rimColor.a * rimColor.rgb;
+                    rim = lerp(rim, rim * fd.shadowmix, _RimShadowMask);
+                    rimColor.rgb = lerp(rimColor.rgb, rimColor.rgb * fd.lightColor, _RimEnableLighting);
+                    fd.col.rgb += rim * rimColor.a * rimColor.rgb;
                 #else
-                    col.rgb += rim * _RimEnableLighting * rimColor.a * rimColor.rgb * lightColor;
+                    fd.col.rgb += rim * _RimEnableLighting * rimColor.a * rimColor.rgb * fd.lightColor;
                 #endif
             #endif
         }
     }
 #elif defined(LIL_LITE)
-    void lilGetRim(inout float4 col, float shadowmix, float nvabs, float3 lightColor, float4 triMask)
+    void lilGetRim(inout lilFragData fd)
     {
         LIL_BRANCH
         if(_UseRim)
         {
-            float rim = pow(saturate(1.0 - nvabs), _RimFresnelPower);
+            float rim = pow(saturate(1.0 - fd.nvabs), _RimFresnelPower);
             rim = lilTooning(rim, _RimBorder, _RimBlur);
             #if !defined(LIL_PASS_FORWARDADD)
-                rim = lerp(rim, rim * shadowmix, _RimShadowMask);
+                rim = lerp(rim, rim * fd.shadowmix, _RimShadowMask);
             #endif
-            col.rgb += rim * triMask.g * _RimColor.rgb * lightColor;
+            fd.col.rgb += rim * fd.triMask.g * _RimColor.rgb * fd.lightColor;
         }
     }
 #endif
@@ -1094,41 +1208,41 @@ void lilGetShading(
 #if !defined(OVERRIDE_RIMLIGHT)
     #if defined(LIL_LITE)
         #define OVERRIDE_RIMLIGHT \
-            lilGetRim(col, shadowmix, nvabs, lightColor, triMask);
+            lilGetRim(fd);
     #else
         #define OVERRIDE_RIMLIGHT \
-            lilGetRim(col, uvMain, facing, shadowmix, nvabs, lightColor, normalDirection, lightDirection LIL_SAMP_IN(sampler_MainTex));
+            lilGetRim(fd LIL_SAMP_IN(sampler_MainTex));
     #endif
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Glitter
 #if defined(LIL_FEATURE_GLITTER) && !defined(LIL_LITE) && !defined(LIL_FUR)
-    void lilGlitter(inout float4 col, float3 albedo, float facing, float2 uvMain, float2 uv, float2 uv1, float3 viewDirection, float3 headDirection, float3 lightColor, float3 normalDirection, float3 lightDirection, float shadowmix LIL_SAMP_IN_FUNC(samp))
+    void lilGlitter(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
         LIL_BRANCH
         if(_UseGlitter)
         {
             #if defined(USING_STEREO_MATRICES)
-                float3 glitterViewDirection = lerp(headDirection, viewDirection, _GlitterVRParallaxStrength);
+                float3 glitterViewDirection = lerp(fd.headV, fd.V, _GlitterVRParallaxStrength);
             #else
-                float3 glitterViewDirection = viewDirection;
+                float3 glitterViewDirection = fd.V;
             #endif
             float4 glitterColor = _GlitterColor;
-            if(Exists_GlitterColorTex) glitterColor *= LIL_SAMPLE_2D(_GlitterColorTex, samp, uvMain);
-            float2 glitterPos = _GlitterUVMode ? uv1 : uv;
-            glitterColor.rgb *= lilCalcGlitter(glitterPos, normalDirection, glitterViewDirection, lightDirection, _GlitterParams1, _GlitterParams2);
-            glitterColor.rgb = lerp(glitterColor.rgb, glitterColor.rgb * albedo, _GlitterMainStrength);
+            if(Exists_GlitterColorTex) glitterColor *= LIL_SAMPLE_2D(_GlitterColorTex, samp, fd.uvMain);
+            float2 glitterPos = _GlitterUVMode ? fd.uv1 : fd.uv0;
+            glitterColor.rgb *= lilCalcGlitter(glitterPos, fd.N, glitterViewDirection, fd.L, _GlitterParams1, _GlitterParams2);
+            glitterColor.rgb = lerp(glitterColor.rgb, glitterColor.rgb * fd.albedo, _GlitterMainStrength);
             #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
-                if(_GlitterApplyTransparency) glitterColor.a *= col.a;
+                if(_GlitterApplyTransparency) glitterColor.a *= fd.col.a;
             #endif
-            glitterColor.a = facing < (_GlitterBackfaceMask-1.0) ? 0.0 : glitterColor.a;
+            glitterColor.a = fd.facing < (_GlitterBackfaceMask-1.0) ? 0.0 : glitterColor.a;
             #if !defined(LIL_PASS_FORWARDADD)
-                glitterColor.a = lerp(glitterColor.a, glitterColor.a * shadowmix, _GlitterShadowMask);
-                glitterColor.rgb = lerp(glitterColor.rgb, glitterColor.rgb * lightColor, _GlitterEnableLighting);
-                col.rgb += glitterColor.rgb * glitterColor.a;
+                glitterColor.a = lerp(glitterColor.a, glitterColor.a * fd.shadowmix, _GlitterShadowMask);
+                glitterColor.rgb = lerp(glitterColor.rgb, glitterColor.rgb * fd.lightColor, _GlitterEnableLighting);
+                fd.col.rgb += glitterColor.rgb * glitterColor.a;
             #else
-                col.rgb += glitterColor.a * _GlitterEnableLighting * glitterColor.rgb * lightColor;
+                fd.col.rgb += glitterColor.a * _GlitterEnableLighting * glitterColor.rgb * fd.lightColor;
             #endif
         }
     }
@@ -1136,56 +1250,69 @@ void lilGetShading(
 
 #if !defined(OVERRIDE_GLITTER)
     #define OVERRIDE_GLITTER \
-        lilGlitter(col, albedo, facing, uvMain, input.uv, input.uv1, viewDirection, headDirection, lightColor, normalDirection, lightDirection, shadowmix LIL_SAMP_IN(sampler_MainTex));
+        lilGlitter(fd LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Emission
 #if defined(LIL_FEATURE_EMISSION_1ST) && !defined(LIL_LITE) && !defined(LIL_FUR)
-    void lilEmission(inout float3 col, float2 uvMain, float2 uv, float3 invLighting, float2 parallaxOffset, float audioLinkValue LIL_SAMP_IN_FUNC(samp))
+    void lilEmission(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
         LIL_BRANCH
         if(_UseEmission)
         {
-            float2 _EmissionMapParaTex = uv + _EmissionParallaxDepth * parallaxOffset;
             float4 emissionColor = _EmissionColor;
-            // Texture
-            #if defined(LIL_FEATURE_EMISSION_UV) && defined(LIL_FEATURE_ANIMATE_EMISSION_UV)
-                if(Exists_EmissionMap) emissionColor *= LIL_GET_EMITEX(_EmissionMap, _EmissionMapParaTex);
-            #elif defined(LIL_FEATURE_EMISSION_UV)
-                if(Exists_EmissionMap) emissionColor *= LIL_SAMPLE_2D(_EmissionMap, sampler_EmissionMap, lilCalcUV(_EmissionMapParaTex, _EmissionMap_ST));
+            #if defined(LIL_FEATURE_EMISSION_UV)
+                float2 emissionUV = fd.uv0;
+                if(_EmissionMap_UVMode == 1) emissionUV = fd.uv1;
+                if(_EmissionMap_UVMode == 2) emissionUV = fd.uv2;
+                if(_EmissionMap_UVMode == 3) emissionUV = fd.uv3;
+                if(_EmissionMap_UVMode == 4) emissionUV = fd.uvRim;
+                //if(_EmissionMap_UVMode == 4) emissionUV = fd.uvPanorama;
+                float2 _EmissionMapParaTex = emissionUV + _EmissionParallaxDepth * fd.parallaxOffset;
+                // Texture
+                #if defined(LIL_FEATURE_ANIMATE_EMISSION_UV)
+                    if(Exists_EmissionMap) emissionColor *= LIL_GET_EMITEX(_EmissionMap, _EmissionMapParaTex);
+                #else
+                    if(Exists_EmissionMap) emissionColor *= LIL_SAMPLE_2D(_EmissionMap, sampler_EmissionMap, lilCalcUV(_EmissionMapParaTex, _EmissionMap_ST));
+                #endif
             #else
-                if(Exists_EmissionMap) emissionColor *= LIL_SAMPLE_2D(_EmissionMap, sampler_EmissionMap, uvMain + _EmissionParallaxDepth * parallaxOffset);
+                if(Exists_EmissionMap) emissionColor *= LIL_SAMPLE_2D(_EmissionMap, sampler_EmissionMap, fd.uvMain + _EmissionParallaxDepth * fd.parallaxOffset);
             #endif
             // Mask
             #if defined(LIL_FEATURE_EMISSION_MASK_UV) && defined(LIL_FEATURE_ANIMATE_EMISSION_MASK_UV)
-                if(Exists_EmissionBlendMask) emissionColor *= LIL_GET_EMIMASK(_EmissionBlendMask, uv);
+                if(Exists_EmissionBlendMask) emissionColor *= LIL_GET_EMIMASK(_EmissionBlendMask, fd.uv0);
             #elif defined(LIL_FEATURE_EMISSION_MASK_UV)
-                if(Exists_EmissionBlendMask) emissionColor *= LIL_SAMPLE_2D(_EmissionBlendMask, samp, lilCalcUV(uv, _EmissionBlendMask_ST));
+                if(Exists_EmissionBlendMask) emissionColor *= LIL_SAMPLE_2D(_EmissionBlendMask, samp, lilCalcUV(fd.uv0, _EmissionBlendMask_ST));
             #else
-                if(Exists_EmissionBlendMask) emissionColor *= LIL_SAMPLE_2D(_EmissionBlendMask, samp, uvMain);
+                if(Exists_EmissionBlendMask) emissionColor *= LIL_SAMPLE_2D(_EmissionBlendMask, samp, fd.uvMain);
             #endif
             // Gradation
             #if defined(LIL_FEATURE_EMISSION_GRADATION)
                 if(Exists_EmissionGradTex && _EmissionUseGrad) emissionColor *= LIL_SAMPLE_1D(_EmissionGradTex, sampler_linear_repeat, _EmissionGradSpeed*LIL_TIME);
             #endif
             #if defined(LIL_FEATURE_AUDIOLINK)
-                if(_AudioLink2Emission) emissionColor.a *= audioLinkValue;
+                if(_AudioLink2Emission) emissionColor.a *= fd.audioLinkValue;
             #endif
-            emissionColor.rgb = lerp(emissionColor.rgb, emissionColor.rgb * invLighting, _EmissionFluorescence);
-            col += _EmissionBlend * lilCalcBlink(_EmissionBlink) * emissionColor.a * emissionColor.rgb;
+            emissionColor.rgb = lerp(emissionColor.rgb, emissionColor.rgb * fd.invLighting, _EmissionFluorescence);
+            fd.emissionColor += _EmissionBlend * lilCalcBlink(_EmissionBlink) * emissionColor.a * emissionColor.rgb;
         }
     }
 #elif defined(LIL_LITE)
-    void lilEmission(inout float3 col, float2 uv, float4 triMask)
+    void lilEmission(inout lilFragData fd)
     {
         if(_UseEmission)
         {
             float emissionBlinkSeq = lilCalcBlink(_EmissionBlink);
             float4 emissionColor = _EmissionColor;
-            emissionColor *= LIL_GET_EMITEX(_EmissionMap,uv);
-            col += emissionBlinkSeq * triMask.b * emissionColor.rgb;
+            float2 emissionUV = fd.uv0;
+            if(_EmissionMap_UVMode == 1) emissionUV = fd.uv1;
+            if(_EmissionMap_UVMode == 2) emissionUV = fd.uv2;
+            if(_EmissionMap_UVMode == 3) emissionUV = fd.uv3;
+            if(_EmissionMap_UVMode == 4) emissionUV = fd.uvRim;
+            emissionColor *= LIL_GET_EMITEX(_EmissionMap,emissionUV);
+            fd.emissionColor += emissionBlinkSeq * fd.triMask.b * emissionColor.rgb;
         }
     }
 #endif
@@ -1193,62 +1320,70 @@ void lilGetShading(
 #if !defined(OVERRIDE_EMISSION_1ST)
     #if defined(LIL_LITE)
         #define OVERRIDE_EMISSION_1ST \
-            lilEmission(emissionColor, input.uv, triMask);
+            lilEmission(fd);
     #else
         #define OVERRIDE_EMISSION_1ST \
-            lilEmission(emissionColor, uvMain, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
+            lilEmission(fd LIL_SAMP_IN(sampler_MainTex));
     #endif
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Emission 2nd
 #if defined(LIL_FEATURE_EMISSION_2ND) && !defined(LIL_LITE) && !defined(LIL_FUR)
-    void lilEmission2nd(inout float3 col, float2 uvMain, float2 uv, float3 invLighting, float2 parallaxOffset, float audioLinkValue LIL_SAMP_IN_FUNC(samp))
+    void lilEmission2nd(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
         LIL_BRANCH
         if(_UseEmission2nd)
         {
-            float2 _Emission2ndMapParaTex = uv + _Emission2ndParallaxDepth * parallaxOffset;
             float4 emission2ndColor = _Emission2ndColor;
-            // Texture
-            #if defined(LIL_FEATURE_EMISSION_UV) && defined(LIL_FEATURE_ANIMATE_EMISSION_UV)
-                if(Exists_Emission2ndMap) emission2ndColor *= LIL_GET_EMITEX(_Emission2ndMap, _Emission2ndMapParaTex);
-            #elif defined(LIL_FEATURE_EMISSION_UV)
-                if(Exists_Emission2ndMap) emission2ndColor *= LIL_SAMPLE_2D(_Emission2ndMap, sampler_Emission2ndMap, lilCalcUV(_Emission2ndMapParaTex, _Emission2ndMap_ST));
+            #if defined(LIL_FEATURE_EMISSION_UV)
+                float2 emission2ndUV = fd.uv0;
+                if(_Emission2ndMap_UVMode == 1) emission2ndUV = fd.uv1;
+                if(_Emission2ndMap_UVMode == 2) emission2ndUV = fd.uv2;
+                if(_Emission2ndMap_UVMode == 3) emission2ndUV = fd.uv3;
+                if(_Emission2ndMap_UVMode == 4) emission2ndUV = fd.uvRim;
+                //if(_Emission2ndMap_UVMode == 4) emission2ndUV = fd.uvPanorama;
+                float2 _Emission2ndMapParaTex = emission2ndUV + _Emission2ndParallaxDepth * fd.parallaxOffset;
+                // Texture
+                #if defined(LIL_FEATURE_ANIMATE_EMISSION_UV)
+                    if(Exists_Emission2ndMap) emission2ndColor *= LIL_GET_EMITEX(_Emission2ndMap, _Emission2ndMapParaTex);
+                #else
+                    if(Exists_Emission2ndMap) emission2ndColor *= LIL_SAMPLE_2D(_Emission2ndMap, sampler_Emission2ndMap, lilCalcUV(_Emission2ndMapParaTex, _Emission2ndMap_ST));
+                #endif
             #else
-                if(Exists_Emission2ndMap) emission2ndColor *= LIL_SAMPLE_2D(_Emission2ndMap, sampler_Emission2ndMap, uvMain + _Emission2ndParallaxDepth * parallaxOffset);
+                if(Exists_Emission2ndMap) emission2ndColor *= LIL_SAMPLE_2D(_Emission2ndMap, sampler_Emission2ndMap, fd.uvMain + _Emission2ndParallaxDepth * fd.parallaxOffset);
             #endif
             // Mask
             #if defined(LIL_FEATURE_EMISSION_MASK_UV) && defined(LIL_FEATURE_ANIMATE_EMISSION_MASK_UV)
-                if(Exists_Emission2ndBlendMask) emission2ndColor *= LIL_GET_EMIMASK(_Emission2ndBlendMask, uv);
+                if(Exists_Emission2ndBlendMask) emission2ndColor *= LIL_GET_EMIMASK(_Emission2ndBlendMask, fd.uv0);
             #elif defined(LIL_FEATURE_EMISSION_MASK_UV)
-                if(Exists_Emission2ndBlendMask) emission2ndColor *= LIL_SAMPLE_2D(_Emission2ndBlendMask, samp, lilCalcUV(uv, _Emission2ndBlendMask_ST));
+                if(Exists_Emission2ndBlendMask) emission2ndColor *= LIL_SAMPLE_2D(_Emission2ndBlendMask, samp, lilCalcUV(fd.uv0, _Emission2ndBlendMask_ST));
             #else
-                if(Exists_Emission2ndBlendMask) emission2ndColor *= LIL_SAMPLE_2D(_Emission2ndBlendMask, samp, uvMain);
+                if(Exists_Emission2ndBlendMask) emission2ndColor *= LIL_SAMPLE_2D(_Emission2ndBlendMask, samp, fd.uvMain);
             #endif
             // Gradation
             #if defined(LIL_FEATURE_EMISSION_GRADATION)
                 if(Exists_Emission2ndGradTex && _Emission2ndUseGrad) emission2ndColor *= LIL_SAMPLE_1D(_Emission2ndGradTex, sampler_linear_repeat, _Emission2ndGradSpeed*LIL_TIME);
             #endif
             #if defined(LIL_FEATURE_AUDIOLINK)
-                if(_AudioLink2Emission2nd) emission2ndColor.a *= audioLinkValue;
+                if(_AudioLink2Emission2nd) emission2ndColor.a *= fd.audioLinkValue;
             #endif
-            emission2ndColor.rgb = lerp(emission2ndColor.rgb, emission2ndColor.rgb * invLighting, _Emission2ndFluorescence);
-            col += _Emission2ndBlend * lilCalcBlink(_Emission2ndBlink) * emission2ndColor.a * emission2ndColor.rgb;
+            emission2ndColor.rgb = lerp(emission2ndColor.rgb, emission2ndColor.rgb * fd.invLighting, _Emission2ndFluorescence);
+            fd.emissionColor += _Emission2ndBlend * lilCalcBlink(_Emission2ndBlink) * emission2ndColor.a * emission2ndColor.rgb;
         }
     }
 #endif
 
 #if !defined(OVERRIDE_EMISSION_2ND)
     #define OVERRIDE_EMISSION_2ND \
-        lilEmission2nd(emissionColor, uvMain, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
+        lilEmission2nd(fd LIL_SAMP_IN(sampler_MainTex));
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Dissolve Add
 #if !defined(OVERRIDE_DISSOLVE_ADD)
     #define OVERRIDE_DISSOLVE_ADD \
-        emissionColor += _DissolveColor.rgb * dissolveAlpha;
+        fd.emissionColor += _DissolveColor.rgb * dissolveAlpha;
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -1256,34 +1391,34 @@ void lilGetShading(
 #if !defined(OVERRIDE_BLEND_EMISSION)
     #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
         #define OVERRIDE_BLEND_EMISSION \
-            col.rgb += emissionColor * col.a;
+            fd.col.rgb += fd.emissionColor * fd.col.a;
     #else
         #define OVERRIDE_BLEND_EMISSION \
-            col.rgb += emissionColor;
+            fd.col.rgb += fd.emissionColor;
     #endif
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Distance Fade
 #if defined(LIL_FEATURE_DISTANCE_FADE) && !defined(LIL_LITE)
-    void lilDistanceFade(inout float4 col, float3 positionWS, float depth, float facing)
+    void lilDistanceFade(inout lilFragData fd)
     {
-        float distFade = saturate((depth - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x));
-        distFade = facing < (_DistanceFade.w-1.0) ? _DistanceFade.z : distFade * _DistanceFade.z;
+        float distFade = saturate((fd.depth - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x));
+        distFade = fd.facing < (_DistanceFade.w-1.0) ? _DistanceFade.z : distFade * _DistanceFade.z;
         #if defined(LIL_PASS_FORWARDADD)
-            col.rgb = lerp(col.rgb, 0.0, distFade);
+            fd.col.rgb = lerp(fd.col.rgb, 0.0, distFade);
         #elif LIL_RENDER == 2
-            col.rgb = lerp(col.rgb, _DistanceFadeColor.rgb * _DistanceFadeColor.a, distFade);
-            col.a = lerp(col.a, col.a * _DistanceFadeColor.a, distFade);
+            fd.col.rgb = lerp(fd.col.rgb, _DistanceFadeColor.rgb * _DistanceFadeColor.a, distFade);
+            fd.col.a = lerp(fd.col.a, fd.col.a * _DistanceFadeColor.a, distFade);
         #else
-            col.rgb = lerp(col.rgb, _DistanceFadeColor.rgb, distFade);
+            fd.col.rgb = lerp(fd.col.rgb, _DistanceFadeColor.rgb, distFade);
         #endif
     }
 #endif
 
 #if !defined(OVERRIDE_DISTANCE_FADE)
     #define OVERRIDE_DISTANCE_FADE \
-        lilDistanceFade(col, input.positionWS, depth, facing);
+        lilDistanceFade(fd);
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -1291,10 +1426,10 @@ void lilGetShading(
 #if !defined(OVERRIDE_FOG)
     #if defined(LIL_GEM) && !defined(LIL_GEM_PRE)
         #define OVERRIDE_FOG \
-            LIL_APPLY_FOG_COLOR(col, input.fogCoord, fogColor);
+            LIL_APPLY_FOG_COLOR(fd.col, input, fogColor);
     #else
         #define OVERRIDE_FOG \
-            LIL_APPLY_FOG(col, input.fogCoord);
+            LIL_APPLY_FOG(fd.col, input);
     #endif
 #endif
 
@@ -1302,5 +1437,5 @@ void lilGetShading(
 // Output
 #if !defined(OVERRIDE_OUTPUT)
     #define OVERRIDE_OUTPUT \
-        return col;
+        return fd.col;
 #endif

@@ -12,10 +12,8 @@
 
 #if defined(LIL_OUTLINE)
     #define LIL_V2F_POSITION_CS
-    #define LIL_V2F_TEXCOORD0
-    #if defined(LIL_V2F_FORCE_TEXCOORD1) || defined(LIL_USE_LIGHTMAP_UV)
-        #define LIL_V2F_TEXCOORD1
-    #endif
+    #define LIL_V2F_PACKED_TEXCOORD01
+    #define LIL_V2F_PACKED_TEXCOORD23
     #if defined(LIL_V2F_FORCE_POSITION_OS) || defined(LIL_SHOULD_POSITION_OS)
         #define LIL_V2F_POSITION_OS
     #endif
@@ -27,39 +25,33 @@
     #endif
     #if !defined(LIL_PASS_FORWARDADD)
         #define LIL_V2F_LIGHTCOLOR
-        #define LIL_V2F_VERTEXLIGHT
     #endif
-    #define LIL_V2F_FOG
+    #define LIL_V2F_VERTEXLIGHT_FOG
 
     struct v2f
     {
-        float4 positionCS       : SV_POSITION;
-        float2 uv               : TEXCOORD0;
-        #if defined(LIL_V2F_TEXCOORD1)
-            float2 uv1              : TEXCOORD1;
-        #endif
+        float4 positionCS   : SV_POSITION;
+        float4 uv01         : TEXCOORD0;
+        float4 uv23         : TEXCOORD1;
         #if defined(LIL_V2F_POSITION_OS)
-            float3 positionOS       : TEXCOORD2;
+            float3 positionOS   : TEXCOORD2;
         #endif
         #if defined(LIL_V2F_POSITION_WS)
-            float3 positionWS       : TEXCOORD3;
+            float3 positionWS   : TEXCOORD3;
         #endif
         #if defined(LIL_V2F_NORMAL_WS)
-            float3 normalWS         : TEXCOORD4;
+            float3 normalWS     : TEXCOORD4;
         #endif
         LIL_LIGHTCOLOR_COORDS(5)
-        LIL_VERTEXLIGHT_COORDS(6)
-        LIL_FOG_COORDS(7)
-        LIL_CUSTOM_V2F_MEMBER(8,9,10,11,12,13,14,15)
+        LIL_VERTEXLIGHT_FOG_COORDS(6)
+        LIL_CUSTOM_V2F_MEMBER(7,8,9,10,11,12,13,14)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
 #elif defined(LIL_FUR)
     #define LIL_V2F_POSITION_CS
-    #define LIL_V2F_TEXCOORD0
-    #if defined(LIL_V2F_FORCE_TEXCOORD1) || defined(LIL_USE_LIGHTMAP_UV)
-        #define LIL_V2F_TEXCOORD1
-    #endif
+    #define LIL_V2F_PACKED_TEXCOORD01
+    #define LIL_V2F_PACKED_TEXCOORD23
     #if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
         #define LIL_V2F_POSITION_WS
     #endif
@@ -69,49 +61,40 @@
     #if !defined(LIL_PASS_FORWARDADD)
         #define LIL_V2F_LIGHTCOLOR
         #define LIL_V2F_LIGHTDIRECTION
-        #define LIL_V2F_VERTEXLIGHT
         #if defined(LIL_FEATURE_SHADOW)
             #define LIL_V2F_INDLIGHTCOLOR
         #endif
     #endif
-    #define LIL_V2F_FOG
+    #define LIL_V2F_VERTEXLIGHT_FOG
 
     struct v2f
     {
-        float4 positionCS       : SV_POSITION;
-        float2 uv               : TEXCOORD0;
-        #if defined(LIL_V2F_TEXCOORD1)
-            float2 uv1              : TEXCOORD1;
-        #endif
+        float4 positionCS   : SV_POSITION;
+        float4 uv01         : TEXCOORD0;
+        float4 uv23         : TEXCOORD1;
         #if defined(LIL_V2F_POSITION_WS)
-            float3 positionWS       : TEXCOORD2;
+            float3 positionWS   : TEXCOORD2;
         #endif
         #if defined(LIL_V2F_NORMAL_WS)
-            float3 normalWS         : TEXCOORD3;
+            float3 normalWS     : TEXCOORD3;
         #endif
         LIL_LIGHTCOLOR_COORDS(4)
         LIL_LIGHTDIRECTION_COORDS(5)
         LIL_INDLIGHTCOLOR_COORDS(6)
-        LIL_VERTEXLIGHT_COORDS(7)
-        LIL_FOG_COORDS(8)
-        LIL_CUSTOM_V2F_MEMBER(9,10,11,12,13,14,15,16)
+        LIL_VERTEXLIGHT_FOG_COORDS(7)
+        LIL_CUSTOM_V2F_MEMBER(8,9,10,11,12,13,14,15)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
 #else
     #define LIL_V2F_POSITION_CS
-    #define LIL_V2F_TEXCOORD0
-    #if defined(LIL_V2F_FORCE_TEXCOORD1) || defined(LIL_USE_LIGHTMAP_UV) || defined(LIL_SHOULD_UV1)
-        #define LIL_V2F_TEXCOORD1
-    #endif
+    #define LIL_V2F_PACKED_TEXCOORD01
+    #define LIL_V2F_PACKED_TEXCOORD23
     #if defined(LIL_V2F_FORCE_POSITION_OS) || defined(LIL_SHOULD_POSITION_OS)
         #define LIL_V2F_POSITION_OS
     #endif
     #if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_SHOULD_POSITION_WS)
         #define LIL_V2F_POSITION_WS
-    #endif
-    #if defined(LIL_V2F_FORCE_POSITION_SS) || defined(LIL_REFRACTION)
-        #define LIL_V2F_POSITION_SS
     #endif
     #if defined(LIL_V2F_FORCE_NORMAL) || defined(LIL_SHOULD_NORMAL)
         #define LIL_V2F_NORMAL_WS
@@ -119,13 +102,9 @@
     #if defined(LIL_V2F_FORCE_TANGENT) || defined(LIL_SHOULD_TBN)
         #define LIL_V2F_TANGENT_WS
     #endif
-    #if defined(LIL_V2F_FORCE_BITANGENT) || defined(LIL_SHOULD_TBN)
-        #define LIL_V2F_BITANGENT_WS
-    #endif
     #if !defined(LIL_PASS_FORWARDADD)
         #define LIL_V2F_LIGHTCOLOR
         #define LIL_V2F_LIGHTDIRECTION
-        #define LIL_V2F_VERTEXLIGHT
         #if defined(LIL_FEATURE_SHADOW)
             #define LIL_V2F_INDLIGHTCOLOR
         #endif
@@ -133,40 +112,31 @@
             #define LIL_V2F_SHADOW
         #endif
     #endif
-    #define LIL_V2F_FOG
+    #define LIL_V2F_VERTEXLIGHT_FOG
 
     struct v2f
     {
-        float4 positionCS       : SV_POSITION;
-        float2 uv               : TEXCOORD0;
-        #if defined(LIL_V2F_TEXCOORD1)
-            float2 uv1          : TEXCOORD1;
-        #endif
+        float4 positionCS   : SV_POSITION;
+        float4 uv01         : TEXCOORD0;
+        float4 uv23         : TEXCOORD1;
         #if defined(LIL_V2F_POSITION_OS)
-            float3 positionOS       : TEXCOORD2;
+            float3 positionOS   : TEXCOORD2;
         #endif
         #if defined(LIL_V2F_POSITION_WS)
-            float3 positionWS       : TEXCOORD3;
+            float3 positionWS   : TEXCOORD3;
         #endif
         #if defined(LIL_V2F_NORMAL_WS)
-            float3 normalWS         : TEXCOORD4;
+            float3 normalWS     : TEXCOORD4;
         #endif
         #if defined(LIL_V2F_TANGENT_WS)
-            float4 tangentWS        : TEXCOORD5;
+            float4 tangentWS    : TEXCOORD5;
         #endif
-        #if defined(LIL_V2F_BITANGENT_WS)
-            float3 bitangentWS      : TEXCOORD6;
-        #endif
-        #if defined(LIL_V2F_POSITION_SS)
-            float4 positionSS       : TEXCOORD7;
-        #endif
-        LIL_LIGHTCOLOR_COORDS(8)
-        LIL_LIGHTDIRECTION_COORDS(9)
-        LIL_INDLIGHTCOLOR_COORDS(10)
-        LIL_VERTEXLIGHT_COORDS(11)
-        LIL_FOG_COORDS(12)
-        LIL_SHADOW_COORDS(13)
-        LIL_CUSTOM_V2F_MEMBER(14,15,16,17,18,19,20,21)
+        LIL_LIGHTCOLOR_COORDS(6)
+        LIL_LIGHTDIRECTION_COORDS(7)
+        LIL_INDLIGHTCOLOR_COORDS(8)
+        LIL_VERTEXLIGHT_FOG_COORDS(9)
+        LIL_SHADOW_COORDS(10)
+        LIL_CUSTOM_V2F_MEMBER(11,12,13,14,15,16,17,18)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
@@ -181,70 +151,26 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 {
     //------------------------------------------------------------------------------------------------------------------------------
     // Initialize
-    float3 lightDirection = float3(0.0, 1.0, 0.0);
-    float3 lightColor = 1.0;
-    float3 addLightColor = 0.0;
-    float attenuation = 1.0;
+    lilFragData fd = lilInitFragData();
 
-    float4 col = 1.0;
-    float3 albedo = 1.0;
-    float3 emissionColor = 0.0;
-
-    float anisotropy = 0.0;
-    float3 anisoTangentWS = 0.0;
-    float3 anisoBitangentWS = 0.0;
-    float3 normalDirection = 0.0;
-    float3 reflectionNormalDirection = 0.0;
-    float3 matcapNormalDirection = 0.0;
-    float3 matcap2ndNormalDirection = 0.0;
-    float3 viewDirection = 0.0;
-    float3 headDirection = 0.0;
-    float3x3 tbnWS = 0.0;
-    float depth = 0.0;
-    float3 parallaxViewDirection = 0.0;
-    float2 parallaxOffset = 0.0;
-
-    float smoothness = 1.0;
-    float roughness = 1.0;
-    float perceptualRoughness = 1.0;
-
-    float vl = 0.0;
-    float hl = 0.0;
-    float ln = 0.0;
-    float nv = 0.0;
-    float nvabs = 0.0;
-
-    bool isRightHand = true;
-    float shadowmix = 1.0;
-    float audioLinkValue = 1.0;
-    float3 invLighting = 0.0;
-
-    LIL_VFACE_FALLBACK(facing);
+    BEFORE_UNPACK_V2F
+    OVERRIDE_UNPACK_V2F
+    LIL_COPY_VFACE(fd.facing);
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-    LIL_GET_HDRPDATA(input);
-    #if defined(LIL_V2F_LIGHTDIRECTION)
-        lightDirection = input.lightDirection;
-    #endif
-    LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
-    LIL_GET_ADDITIONALLIGHT(input, addLightColor);
-    invLighting = saturate((1.0 - lightColor) * sqrt(lightColor));
+    LIL_GET_HDRPDATA(input,fd);
+    LIL_GET_LIGHTING_DATA(input,fd);
 
     //------------------------------------------------------------------------------------------------------------------------------
     // View Direction
     #if defined(LIL_V2F_POSITION_WS)
-        depth = length(lilHeadDirection(input.positionWS));
-        viewDirection = normalize(lilViewDirection(input.positionWS));
-        headDirection = normalize(lilHeadDirection(input.positionWS));
-        vl = dot(viewDirection, lightDirection);
-        hl = dot(headDirection, lightDirection);
+        LIL_GET_POSITION_WS_DATA(input,fd);
     #endif
-    #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS)
-        tbnWS = float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
-        #if defined(LIL_V2F_POSITION_WS)
-            parallaxViewDirection = mul(tbnWS, viewDirection);
-            parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
-        #endif
+    #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS)
+        LIL_GET_TBN_DATA(input,fd);
+    #endif
+    #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_POSITION_WS)
+        LIL_GET_PARALLAX_DATA(input,fd);
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -281,19 +207,19 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             // Opaque
         #elif LIL_RENDER == 1
             // Cutout
-            col.a = saturate((col.a - _Cutoff) / max(fwidth(col.a), 0.0001) + 0.5);
+            fd.col.a = saturate((fd.col.a - _Cutoff) / max(fwidth(fd.col.a), 0.0001) + 0.5);
         #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
             // Transparent
-            clip(col.a - _Cutoff);
+            clip(fd.col.a - _Cutoff);
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Copy
-        albedo = col.rgb;
+        fd.albedo = fd.col.rgb;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Lighting
-        col.rgb = lerp(col.rgb, col.rgb * min(lightColor + addLightColor, _LightMaxLimit), _OutlineEnableLighting);
+        fd.col.rgb = lerp(fd.col.rgb, fd.col.rgb * min(fd.lightColor + fd.addLightColor, _LightMaxLimit), _OutlineEnableLighting);
     #elif defined(LIL_FUR)
         //------------------------------------------------------------------------------------------------------------------------------
         // UV
@@ -311,41 +237,41 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             // Opaque
         #elif LIL_RENDER == 1
             // Cutout
-            col.a = saturate((col.a - _Cutoff) / max(fwidth(col.a), 0.0001) + 0.5);
+            fd.col.a = saturate((fd.col.a - _Cutoff) / max(fwidth(fd.col.a), 0.0001) + 0.5);
         #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
             // Transparent
-            clip(col.a - _Cutoff);
+            clip(fd.col.a - _Cutoff);
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Fur AO
         #if LIL_RENDER == 1
-            col.rgb *= 1.0-_FurAO;
+            fd.col.rgb *= 1.0-_FurAO;
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Copy
-        albedo = col.rgb;
+        fd.albedo = fd.col.rgb;
 
         BEFORE_SHADOW
         #ifndef LIL_PASS_FORWARDADD
             //------------------------------------------------------------------------------------------------------------------------------
             // Lighting
             #if defined(LIL_FEATURE_SHADOW)
-                normalDirection = normalize(input.normalWS);
-                normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
-                ln = dot(lightDirection, normalDirection);
+                fd.N = normalize(input.normalWS);
+                fd.N = fd.facing < (_FlipNormal-1.0) ? -fd.N : fd.N;
+                fd.ln = dot(fd.L, fd.N);
                 OVERRIDE_SHADOW
             #else
-                col.rgb *= lightColor;
+                fd.col.rgb *= fd.lightColor;
             #endif
-            col.rgb += albedo * addLightColor;
-            col.rgb = min(col.rgb, albedo * _LightMaxLimit);
+            fd.col.rgb += fd.albedo * fd.addLightColor;
+            fd.col.rgb = min(fd.col.rgb, fd.albedo * _LightMaxLimit);
         #else
-            col.rgb *= lightColor;
+            fd.col.rgb *= fd.lightColor;
             // Premultiply for ForwardAdd
             #if LIL_RENDER == 2 && LIL_PREMULTIPLY_FA
-                col.rgb *= col.a;
+                fd.col.rgb *= fd.col.a;
             #endif
         #endif
     #else
@@ -358,8 +284,8 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         // Parallax
         BEFORE_PARALLAX
         #if defined(LIL_FEATURE_PARALLAX)
-            float2 ddxMain = ddx(uvMain);
-            float2 ddyMain = ddy(uvMain);
+            float2 ddxMain = ddx(fd.uvMain);
+            float2 ddyMain = ddy(fd.uvMain);
             OVERRIDE_PARALLAX
         #endif
 
@@ -389,10 +315,10 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             // Opaque
         #elif LIL_RENDER == 1
             // Cutout
-            col.a = saturate((col.a - _Cutoff) / max(fwidth(col.a), 0.0001) + 0.5);
+            fd.col.a = saturate((fd.col.a - _Cutoff) / max(fwidth(fd.col.a), 0.0001) + 0.5);
         #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
             // Transparent
-            clip(col.a - _Cutoff);
+            clip(fd.col.a - _Cutoff);
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -413,21 +339,22 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
                     OVERRIDE_NORMAL_2ND
                 #endif
 
-                normalDirection = normalize(mul(normalmap, tbnWS));
-                normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
+                fd.N = normalize(mul(normalmap, fd.TBN));
+                fd.N = fd.facing < (_FlipNormal-1.0) ? -fd.N : fd.N;
             #else
-                normalDirection = normalize(input.normalWS);
-                normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
+                fd.N = normalize(input.normalWS);
+                fd.N = fd.facing < (_FlipNormal-1.0) ? -fd.N : fd.N;
             #endif
-            ln = dot(lightDirection, normalDirection);
+            fd.ln = dot(fd.L, fd.N);
             #if defined(LIL_V2F_POSITION_WS)
-                nv = saturate(dot(normalDirection, viewDirection));
-                nvabs = abs(dot(normalDirection, viewDirection));
+                fd.nv = saturate(dot(fd.N, fd.V));
+                fd.nvabs = abs(dot(fd.N, fd.V));
+                fd.uvRim = float2(fd.nvabs,fd.nvabs);
             #endif
         #endif
-        reflectionNormalDirection = normalDirection;
-        matcapNormalDirection = normalDirection;
-        matcap2ndNormalDirection = normalDirection;
+        fd.reflectionN = fd.N;
+        fd.matcapN = fd.N;
+        fd.matcap2ndN = fd.N;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Anisotropy
@@ -446,7 +373,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         //------------------------------------------------------------------------------------------------------------------------------
         // Layer Color
         #if defined(LIL_V2F_TANGENT_WS)
-            isRightHand = input.tangentWS.w > 0.0;
+            fd.isRightHand = input.tangentWS.w > 0.0;
         #endif
         // 2nd
         BEFORE_MAIN2ND
@@ -466,7 +393,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Copy
-        albedo = col.rgb;
+        fd.albedo = fd.col.rgb;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Lighting
@@ -475,30 +402,30 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             #if defined(LIL_FEATURE_SHADOW)
                 OVERRIDE_SHADOW
             #else
-                col.rgb *= lightColor;
+                fd.col.rgb *= fd.lightColor;
             #endif
 
-            lightColor += addLightColor;
-            shadowmix += lilLuminance(addLightColor);
-            col.rgb += albedo * addLightColor;
+            fd.lightColor += fd.addLightColor;
+            fd.shadowmix += lilLuminance(fd.addLightColor);
+            fd.col.rgb += fd.albedo * fd.addLightColor;
 
-            lightColor = min(lightColor, _LightMaxLimit);
-            shadowmix = saturate(shadowmix);
-            col.rgb = min(col.rgb, albedo * _LightMaxLimit);
+            fd.lightColor = min(fd.lightColor, _LightMaxLimit);
+            fd.shadowmix = saturate(fd.shadowmix);
+            fd.col.rgb = min(fd.col.rgb, fd.albedo * _LightMaxLimit);
 
             #if defined(LIL_FEATURE_MAIN2ND)
-                if(_UseMain2ndTex) col.rgb = lilBlendColor(col.rgb, color2nd.rgb, color2nd.a - color2nd.a * _Main2ndEnableLighting, _Main2ndTexBlendMode);
+                if(_UseMain2ndTex) fd.col.rgb = lilBlendColor(fd.col.rgb, color2nd.rgb, color2nd.a - color2nd.a * _Main2ndEnableLighting, _Main2ndTexBlendMode);
             #endif
             #if defined(LIL_FEATURE_MAIN3RD)
-                if(_UseMain3rdTex) col.rgb = lilBlendColor(col.rgb, color3rd.rgb, color3rd.a - color3rd.a * _Main3rdEnableLighting, _Main3rdTexBlendMode);
+                if(_UseMain3rdTex) fd.col.rgb = lilBlendColor(fd.col.rgb, color3rd.rgb, color3rd.a - color3rd.a * _Main3rdEnableLighting, _Main3rdTexBlendMode);
             #endif
         #else
-            col.rgb *= lightColor;
+            fd.col.rgb *= fd.lightColor;
             #if defined(LIL_FEATURE_MAIN2ND)
-                if(_UseMain2ndTex) col.rgb = lerp(col.rgb, 0, color2nd.a - color2nd.a * _Main2ndEnableLighting);
+                if(_UseMain2ndTex) fd.col.rgb = lerp(fd.col.rgb, 0, color2nd.a - color2nd.a * _Main2ndEnableLighting);
             #endif
             #if defined(LIL_FEATURE_MAIN3RD)
-                if(_UseMain3rdTex) col.rgb = lerp(col.rgb, 0, color3rd.a - color3rd.a * _Main3rdEnableLighting);
+                if(_UseMain3rdTex) fd.col.rgb = lerp(fd.col.rgb, 0, color3rd.a - color3rd.a * _Main3rdEnableLighting);
             #endif
         #endif
 
@@ -514,7 +441,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         //------------------------------------------------------------------------------------------------------------------------------
         // Premultiply
         #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
-            col.rgb *= col.a;
+            fd.col.rgb *= fd.col.a;
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -522,10 +449,10 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         BEFORE_REFRACTION
         #if defined(LIL_REFRACTION) && !defined(LIL_PASS_FORWARDADD)
             #if defined(LIL_REFRACTION_BLUR2) && defined(LIL_FEATURE_REFLECTION)
-                smoothness = _Smoothness;
-                if(Exists_SmoothnessTex) smoothness *= LIL_SAMPLE_2D(_SmoothnessTex, sampler_MainTex, uvMain).r;
-                perceptualRoughness = perceptualRoughness - smoothness * perceptualRoughness;
-                roughness = perceptualRoughness * perceptualRoughness;
+                fd.smoothness = _Smoothness;
+                if(Exists_SmoothnessTex) fd.smoothness *= LIL_SAMPLE_2D(_SmoothnessTex, sampler_MainTex, fd.uvMain).r;
+                fd.perceptualRoughness = fd.perceptualRoughness - fd.smoothness * fd.perceptualRoughness;
+                fd.roughness = fd.perceptualRoughness * fd.perceptualRoughness;
             #endif
             OVERRIDE_REFRACTION
         #endif
@@ -585,10 +512,10 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 
             #if defined(LIL_FEATURE_LAYER_DISSOLVE)
                 #if defined(LIL_FEATURE_MAIN2ND)
-                    emissionColor += _Main2ndDissolveColor.rgb * main2ndDissolveAlpha;
+                    fd.emissionColor += _Main2ndDissolveColor.rgb * main2ndDissolveAlpha;
                 #endif
                 #if defined(LIL_FEATURE_MAIN3RD)
-                    emissionColor += _Main3rdDissolveColor.rgb * main3rdDissolveAlpha;
+                    fd.emissionColor += _Main3rdDissolveColor.rgb * main3rdDissolveAlpha;
                 #endif
             #endif
 
@@ -606,7 +533,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Fix Color
-    LIL_HDRP_DEEXPOSURE(col);
+    LIL_HDRP_DEEXPOSURE(fd.col);
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Fog

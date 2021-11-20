@@ -86,6 +86,9 @@ However, the following shaders have their own pass.
 - lts_ref.shader
 - lts_ref_blur.shader
 - ltsmulti.shader
+- ltsmulti_fur.shader
+- ltsmulti_gem.shader
+- ltsmulti_ref.shader
 
 ## About passes
 There are so many variations, but I declare a macro for each shader variation in `HLSLINCLUDE` at the beginning of the shader, and call `#include "Includes/lil_pass_xx.hlsl"` in each pass to branch according to the macro. The code is made as common as possible.  
@@ -101,7 +104,7 @@ In each path, `#include "Includes/lil_pass_xx.hlsl"` is called, and the hlsl fil
             - lil_common_macro.hlsl
             - lil_common_input.hlsl
             - lil_common_functions.hlsl
-            - lil_common_appdata.hlsl
+    - lil_common_appdata.hlsl
     - Declare a v2f structure for each path
     - lil_common_vert.hlsl
     - lil_common_frag.hlsl
@@ -141,7 +144,6 @@ This time, add the following.
         [lilVec3]       _CustomVertexWaveStrength   ("Vertex Wave Strength", Vector) = (0.0,0.1,0.0,0.0)
                         _CustomVertexWaveSpeed      ("Vertex Wave Speed", float) = 10.0
         [NoScaleOffset] _CustomVertexWaveMask       ("Vertex Wave Mask", 2D) = "white" {}
-        [lilEnum]       _CustomEmissionUVMode       ("Emission UV Mode|UV0|UV1|UV2|UV3", Int) = 0
 ```
 This is the end of editing `custom_lts.shader`.  
 If you want to customize the editor, change `CustomEditor "lilToon.lilToonInspector"` to something else.
@@ -154,8 +156,7 @@ Write the macro as follows.
 #define LIL_CUSTOM_PROPERTIES \
     float4  _CustomVertexWaveScale; \
     float4  _CustomVertexWaveStrength; \
-    float   _CustomVertexWaveSpeed; \
-    uint    _CustomEmissionUVMode;
+    float   _CustomVertexWaveSpeed;
 
 #define LIL_CUSTOM_TEXTURES \
     TEXTURE2D(_CustomVertexWaveMask);
@@ -181,45 +182,11 @@ The following keywords can be `#define` to add the corresponding input.
 |LIL_REQUIRE_APP_COLOR|color|COLOR|
 |LIL_REQUIRE_APP_NORMAL|normalOS|NORMAL|
 |LIL_REQUIRE_APP_TANGENT|tangentOS|TANGENT|
-
-In this case, we will add the following macro since we want to be able to select UV0 to UV3 in Emission.
-```HLSL
-#define LIL_REQUIRE_APP_TEXCOORD0
-#define LIL_REQUIRE_APP_TEXCOORD1
-#define LIL_REQUIRE_APP_TEXCOORD2
-#define LIL_REQUIRE_APP_TEXCOORD3
-```
+|LIL_REQUIRE_APP_VERTEXID|vertexID|SV_VertexID|
 
 ## Add vertex shader output (v2f structure)
 Members of the structure can be added from `#define LIL_CUSTOM_V2F_MEMBER`.  
-Those originally included in the structure can be forced to become members with `#define LIL_V2F_FORCE_(keyword)`.  
-In this example, do as follows.
-```HLSL
-#define LIL_V2F_FORCE_TEXCOORD1
-#define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
-    float2 uv2 : TEXCOORD##id0; \
-    float2 uv3 : TEXCOORD##id1;
-
-#define LIL_CUSTOM_VERT_COPY \
-    LIL_V2F_OUT_BASE.uv2 = input.uv2; \
-    LIL_V2F_OUT_BASE.uv3 = input.uv3;
-```
-
-META path gives an error, so make the following changes to the META path.
-```HLSL
-//----------------------------------------------------------------------------------------------------------------------
-// Pass
-#undef LIL_CUSTOM_V2F_MEMBER
-#define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7) \
-    float2 uv1 : TEXCOORD##id1; \
-    float2 uv2 : TEXCOORD##id2; \
-    float2 uv3 : TEXCOORD##id3;
-
-#include "Includes/lil_pipeline.hlsl"
-// Insert functions and includes that depend on Unity here
-
-#include "Includes/lil_pass_meta.hlsl"
-```
+Those originally included in the structure can be forced to become members with `#define LIL_V2F_FORCE_(keyword)`.
 
 ## Inserting a process into the vertex shader
 You can use the following macro to insert the process.
@@ -229,7 +196,7 @@ You can use the following macro to insert the process.
 |LIL_CUSTOM_VERTEX_OS|Processing in object space|
 |LIL_CUSTOM_VERTEX_WS|Processing in world space|
 
-In this example, we will add a wave animation and copy UV2 / UV3.
+In this example, we will add a wave animation.
 ```HLSL
 #define LIL_CUSTOM_VERTEX_OS \
     float3 customWaveStrength = LIL_SAMPLE_2D_LOD(_CustomVertexWaveMask, sampler_linear_repeat, input.uv, 0).r * _CustomVertexWaveStrength.xyz; \
@@ -248,6 +215,7 @@ The following keywords are currently supported (more may be added upon request)
 
 |Name|Description|
 |-|-|
+|UNPACK_V2F|Unpack of v2f structure|
 |ANIMATE_MAIN_UV|Animation for main UV|
 |ANIMATE_OUTLINE_UV|Animation for outline UV|
 |PARALLAX|Parallax map|
@@ -278,14 +246,10 @@ The following keywords are currently supported (more may be added upon request)
 |FOG|Fog|
 |OUTPUT|Output|
 
-This time, edit as follows.
+Example:
 ```HLSL
-#define OVERRIDE_EMISSION_1ST \
-    float2 customEmissionUV = input.uv; \
-    if(_CustomEmissionUVMode == 1) customEmissionUV = input.uv1; \
-    if(_CustomEmissionUVMode == 2) customEmissionUV = input.uv2; \
-    if(_CustomEmissionUVMode == 3) customEmissionUV = input.uv3; \
-    lilEmission(emissionColor, customEmissionUV, input.uv, invLighting, parallaxOffset, audioLinkValue LIL_SAMP_IN(sampler_MainTex));
+#define BEFORE_UNPACK_V2F \
+    fd.uv0 = input.uv0;
 ```
 
 ## Custom Inspector
@@ -332,7 +296,6 @@ namespace lilToon
         MaterialProperty customVertexWaveStrength;
         MaterialProperty customVertexWaveSpeed;
         MaterialProperty customVertexWaveMask;
-        MaterialProperty customEmissionUVMode;
 
         private static bool isShowCustomProperties;
 
@@ -344,7 +307,6 @@ namespace lilToon
             customVertexWaveStrength = FindProperty("_CustomVertexWaveStrength", props);
             customVertexWaveSpeed = FindProperty("_CustomVertexWaveSpeed", props);
             customVertexWaveMask = FindProperty("_CustomVertexWaveMask", props);
-            customEmissionUVMode = FindProperty("_CustomEmissionUVMode", props);
         }
 
         protected override void DrawCustomProperties(
@@ -369,16 +331,6 @@ namespace lilToon
                 materialEditor.ShaderProperty(customVertexWaveStrength, "Strength");
                 materialEditor.ShaderProperty(customVertexWaveSpeed, "Speed");
                 materialEditor.TexturePropertySingleLine(new GUIContent("Mask", "Strength (R)"), customVertexWaveMask);
-
-                EditorGUILayout.EndVertical();
-                EditorGUILayout.EndVertical();
-
-                // Emission UV
-                EditorGUILayout.BeginVertical(boxOuter);
-                EditorGUILayout.LabelField(GetLoc("Emission UV"), customToggleFont);
-                EditorGUILayout.BeginVertical(boxInnerHalf);
-
-                materialEditor.ShaderProperty(customEmissionUVMode, "UV Mode|UV0|UV1|UV2|UV3");
 
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndVertical();
@@ -416,7 +368,7 @@ Please refer to the HLSL file for more information.
 |vertexInput.positionWS|World space position|
 |vertexInput.positionVS|View space position|
 |vertexInput.positionCS|Clip space position (SV_POSITION)|
-|vertexInput.positionSS|Screen space position (for fragment shader)|
+|vertexInput.positionSS|Screen space position|
 
 ## Vector Transform (LIL_VERTEX_NORMAL_TANGENT_INPUTS)
 |Name|Description|
@@ -435,17 +387,5 @@ Please refer to the HLSL file for more information.
 |float lilTooning()|Convert input values to toon|
 
 # Fragment shader
-Commonly used variables are as follows.
-|Name|Description|
-|-|-|
-|v2f input|Input from vertex shader|
-|float4 col|Output color|
-|float3 albedo|Unlit color|
-|float2 uvMain|UV transformed by _MainTex|
-|float facing|Surface orientation|
-|float3 lightColor|Color of light (main light & sh light)|
-|float3 lightDirection|Direction of light (main light & sh light)|
-|float attenuation|Attenuation of light|
-|float3 normalDirection|World space normal|
-|float3 viewDirection|View direction|
-|float3x3 tbnWS|float3x3(input.tangentWS, input.bitangentWS, input.normalWS)|
+Variables are managed using a common structure called lilFragData.  
+Check lil_common.hlsl for more information.

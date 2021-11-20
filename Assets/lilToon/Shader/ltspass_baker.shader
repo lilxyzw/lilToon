@@ -65,14 +65,12 @@ Shader "Hidden/ltsother_baker"
             #define LIL_BAKER
             #define LIL_WITHOUT_ANIMATION
             #include "Includes/lil_pipeline.hlsl"
-            #include "Includes/lil_common_input.hlsl"
-            #include "Includes/lil_common_functions.hlsl"
             #include "Includes/lil_common_appdata.hlsl"
 
             struct v2f
             {
                 float4 positionCS   : SV_POSITION;
-                float2 uv           : TEXCOORD0;
+                float2 uv0          : TEXCOORD0;
                 float  tangentW     : TEXCOORD1;
             };
 
@@ -81,7 +79,7 @@ Shader "Hidden/ltsother_baker"
                 v2f o;
                 LIL_VERTEX_POSITION_INPUTS(input.positionOS, vertexInput);
                 o.positionCS    = vertexInput.positionCS;
-                o.uv = input.uv;
+                o.uv0 = input.uv0;
                 o.tangentW = input.tangentOS.w;
                 return o;
             }
@@ -89,26 +87,26 @@ Shader "Hidden/ltsother_baker"
             float4 frag(v2f input) : SV_Target
             {
                 #ifdef _TRIMASK
-                    float4 col1 = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
-                    float4 col2 = LIL_SAMPLE_2D(_Main2ndTex,sampler_Main2ndTex,input.uv);
-                    float4 col3 = LIL_SAMPLE_2D(_Main3rdTex,sampler_Main3rdTex,input.uv);
+                    float4 col1 = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv0);
+                    float4 col2 = LIL_SAMPLE_2D(_Main2ndTex,sampler_Main2ndTex,input.uv0);
+                    float4 col3 = LIL_SAMPLE_2D(_Main3rdTex,sampler_Main3rdTex,input.uv0);
                     float mat = lilGray(col1.rgb);
                     float rim = lilGray(col2.rgb);
                     float emi = lilGray(col3.rgb);
                     float4 col = float4(mat,rim,emi,1);
                 #elif _ALPHAMASK
-                    float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
-                    float alphaMask = LIL_SAMPLE_2D(_AlphaMask,sampler_MainTex,input.uv).r;
+                    float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv0);
+                    float alphaMask = LIL_SAMPLE_2D(_AlphaMask,sampler_MainTex,input.uv0).r;
                     alphaMask = saturate(alphaMask + _AlphaMaskValue);
                     col.a = _AlphaMaskMode == 1 ? alphaMask : col.a * alphaMask;
                 #elif _NORMAL_DXGL
-                    float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
+                    float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv0);
                     col.g = 1.0 - col.g;
                 #else
                     // Main
-                    float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv);
+                    float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv0);
                     float3 baseColor = col.rgb;
-                    float colorAdjustMask = LIL_SAMPLE_2D(_MainColorAdjustMask, sampler_MainTex, input.uv).r;
+                    float colorAdjustMask = LIL_SAMPLE_2D(_MainColorAdjustMask, sampler_MainTex, input.uv0).r;
                     col.rgb = lilToneCorrection(col.rgb, _MainTexHSVG);
                     #if defined(LIL_FEATURE_MAIN_GRADATION_MAP)
                         col.rgb = lilGradationMap(col.rgb, _MainGradationTex, _MainGradationStrength);
@@ -122,16 +120,16 @@ Shader "Hidden/ltsother_baker"
                     UNITY_BRANCH
                     if(_UseMain2ndTex)
                     {
-                        _Color2nd *= LIL_GET_SUBTEX(_Main2ndTex,input.uv);
-                        col.rgb = lilBlendColor(col.rgb, _Color2nd.rgb, LIL_SAMPLE_2D(_Main2ndBlendMask,sampler_MainTex,input.uv).r * _Color2nd.a, _Main2ndTexBlendMode);
+                        _Color2nd *= LIL_GET_SUBTEX(_Main2ndTex,input.uv0);
+                        col.rgb = lilBlendColor(col.rgb, _Color2nd.rgb, LIL_SAMPLE_2D(_Main2ndBlendMask,sampler_MainTex,input.uv0).r * _Color2nd.a, _Main2ndTexBlendMode);
                     }
 
                     // 3rd
                     UNITY_BRANCH
                     if(_UseMain3rdTex)
                     {
-                        _Color3rd *= LIL_GET_SUBTEX(_Main3rdTex,input.uv);
-                        col.rgb = lilBlendColor(col.rgb, _Color3rd.rgb, LIL_SAMPLE_2D(_Main3rdBlendMask,sampler_MainTex,input.uv).r * _Color3rd.a, _Main3rdTexBlendMode);
+                        _Color3rd *= LIL_GET_SUBTEX(_Main3rdTex,input.uv0);
+                        col.rgb = lilBlendColor(col.rgb, _Color3rd.rgb, LIL_SAMPLE_2D(_Main3rdBlendMask,sampler_MainTex,input.uv0).r * _Color3rd.a, _Main3rdTexBlendMode);
                     }
                 #endif
 

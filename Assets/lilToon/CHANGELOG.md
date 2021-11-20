@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.4] - 2021-11-20
+### Added
+- `Border` and` Blur` properties for toon specular
+- UV Mode in Emission
+- `uint vertexID : SV_VertexID` to the input of the appdata structure
+- Support for Light Layers (URP)
+
+### Changed
+- Changed the display timing of the dialog for the function to scan shader settings from material animation
+- Adjusted GUI a little
+- Reduced the number of interpolators
+- Changed algorithm for toon specular
+- Changed function when skipping outline of lilToonMulti
+
+### Fixed
+- Fixed an issue where the worlds that do not support AudioLink could not be determined properly
+- Fixed an issue where the environment light strength property was not applied in the fur shader
+- Fixed ZWrite being turned off when switching rendering mode in transparent fur shader of lilToonMulti
+- Fixed behavior when UV scrolling and rotation are used together
+
 ## [1.2.3] - 2021-10-30
 ### Added
 - Extended UV settings for MatCap

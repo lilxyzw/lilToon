@@ -16,7 +16,7 @@
 struct v2f
 {
     float4 positionCS   : SV_POSITION;
-    float2 uv           : TEXCOORD0;
+    float2 uv0          : TEXCOORD0;
     LIL_CUSTOM_V2F_MEMBER(1,2,3,4,5,6,7,8)
 };
 
@@ -27,23 +27,26 @@ struct v2f
 
 float4 frag(v2f input) : SV_Target
 {
-    float facing = 1.0;
+    lilFragData fd = lilInitFragData();
+
+    BEFORE_UNPACK_V2F
+    OVERRIDE_UNPACK_V2F
+
     BEFORE_ANIMATE_MAIN_UV
     OVERRIDE_ANIMATE_MAIN_UV
 
-    float4 col = 1.0;
     BEFORE_MAIN
     OVERRIDE_MAIN
     #if LIL_RENDER == 1
         #ifdef LIL_LITE
-            clip(col.a - _Cutoff);
+            clip(fd.col.a - _Cutoff);
         #else
-            col.a = saturate((col.a - _Cutoff) / max(fwidth(col.a), 0.0001) + 0.5);
+            fd.col.a = saturate((fd.col.a - _Cutoff) / max(fwidth(fd.col.a), 0.0001) + 0.5);
         #endif
     #elif LIL_RENDER == 2
-        clip(col.a - _Cutoff);
+        clip(fd.col.a - _Cutoff);
     #endif
-    return col;
+    return fd.col;
 }
 
 #endif

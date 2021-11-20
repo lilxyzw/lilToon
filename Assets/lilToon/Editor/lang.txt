@@ -514,3 +514,4 @@ sUtilSelectGameObject	Select gameobject before run.	実行前にオブジェク�
 sUtilSelectPresets	Select presets	プリセットを選択してください。	사전 설정을 선택하십시오.	请选择一个预设。	請選擇一個預設。
 sUtilMaterialAlreadyExist	Materials may already exist. Are you sure you want to overwrite it?	マテリアルが既に存在している可能性があります。上書きしてもよろしいですか？	재료가 이미있을 수 있습니다. 덮어 하시겠습니까?	该材料可能已经存在。 您确定要覆盖它吗？	該材料可能已經存在。 您確定要覆蓋它嗎？
 sUtilImportTargetFound	Material or animation found. Do you want to scan it?	マテリアルまたはアニメーションが見つかりました。スキャンしますか？	Material 나 Animation이 발견되었습니다. 스캔 하시겠습니까?	找到了Material或Animation。 您要扫描吗？	找到了Material或Animation。 您要掃描嗎？
+sUtilNewFeatureFound	A shader setting feature that is currently turned off has been founded in an imported material or animation. Do you want to enable the missing features?	インポートしたマテリアルやアニメーションから現在オフになっているシェーダー設定の項目が見つかりました。不足している項目を有効化しますか？	임포트된 머티리얼이나 애니메이션에서 현재 꺼져 있는 셰이더 설정 항목을 발견했습니다.부족한 기능을 활성화 하시겠습니까?	从导入的Material和Animation中发现了当前关闭的Shader设定项目。启用不足的功能吗？	從導入的Material和Animation中發現了當前關閉的Shader設定項目。啟用不足的功能嗎？

@@ -61,8 +61,15 @@ LIL_V2F_TYPE vert(appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Invisible
-    LIL_BRANCH
-    if(_Invisible) return LIL_V2F_OUT;
+    #if defined(LIL_TESSELLATION)
+        LIL_BRANCH
+        if(!_Invisible)
+        {
+    #else
+        // In the tessellation shader this gives a warning
+        LIL_BRANCH
+        if(_Invisible) return LIL_V2F_OUT;
+    #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Single Pass Instanced rendering
@@ -72,7 +79,7 @@ LIL_V2F_TYPE vert(appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // UV
-    float2 uvMain = lilCalcUV(input.uv, _MainTex_ST);
+    float2 uvMain = lilCalcUV(input.uv0, _MainTex_ST);
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Vertex Modification
@@ -148,10 +155,24 @@ LIL_V2F_TYPE vert(appdata input)
 
     // UV
     #if defined(LIL_V2F_TEXCOORD0)
-        LIL_V2F_OUT_BASE.uv             = input.uv;
+        LIL_V2F_OUT_BASE.uv0            = input.uv0;
     #endif
     #if defined(LIL_V2F_TEXCOORD1)
         LIL_V2F_OUT_BASE.uv1            = input.uv1;
+    #endif
+    #if defined(LIL_V2F_TEXCOORD2)
+        LIL_V2F_OUT_BASE.uv2            = input.uv2;
+    #endif
+    #if defined(LIL_V2F_TEXCOORD3)
+        LIL_V2F_OUT_BASE.uv3            = input.uv3;
+    #endif
+    #if defined(LIL_V2F_PACKED_TEXCOORD01)
+        LIL_V2F_OUT_BASE.uv01.xy        = input.uv0;
+        LIL_V2F_OUT_BASE.uv01.zw        = input.uv1;
+    #endif
+    #if defined(LIL_V2F_PACKED_TEXCOORD23)
+        LIL_V2F_OUT_BASE.uv23.xy        = input.uv2;
+        LIL_V2F_OUT_BASE.uv23.zw        = input.uv3;
     #endif
     #if defined(LIL_V2F_UVMAT)
         LIL_V2F_OUT_BASE.uvMat          = lilCalcMatCapUV(input.uv1, vertexNormalInput.normalWS, viewDirection, headDirection, _MatCapTex_ST, _MatCapBlendUV1.xy, _MatCapZRotCancel, _MatCapPerspective, _MatCapVRParallaxStrength);
@@ -167,9 +188,6 @@ LIL_V2F_TYPE vert(appdata input)
     #if defined(LIL_V2F_POSITION_WS)
         LIL_V2F_OUT_BASE.positionWS     = vertexInput.positionWS;
     #endif
-    #if defined(LIL_V2F_POSITION_SS)
-        LIL_V2F_OUT_BASE.positionSS     = vertexInput.positionSS;
-    #endif
 
     // Normal
     #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_NORMALIZE_NORMAL_IN_VS) && !defined(SHADER_QUALITY_LOW)
@@ -180,9 +198,6 @@ LIL_V2F_TYPE vert(appdata input)
     #if defined(LIL_V2F_TANGENT_WS)
         LIL_V2F_OUT_BASE.tangentWS      = float4(vertexNormalInput.tangentWS, input.tangentOS.w);
     #endif
-    #if defined(LIL_V2F_BITANGENT_WS)
-        LIL_V2F_OUT_BASE.bitangentWS    = vertexNormalInput.bitangentWS;
-    #endif
 
     LIL_CUSTOM_VERT_COPY
 
@@ -190,10 +205,9 @@ LIL_V2F_TYPE vert(appdata input)
     // Meta
     #if defined(LIL_PASS_META_INCLUDED) && !defined(LIL_HDRP)
         LIL_TRANSFER_METAPASS(input,LIL_V2F_OUT_BASE);
-        LIL_V2F_OUT_BASE.uv = input.uv;
         #if defined(EDITOR_VISUALIZATION)
             if (unity_VisualizationMode == EDITORVIZ_TEXTURE)
-                LIL_V2F_OUT_BASE.vizUV = UnityMetaVizUV(unity_EditorViz_UVIndex, input.uv, input.uv1, input.uv2, unity_EditorViz_Texture_ST);
+                LIL_V2F_OUT_BASE.vizUV = UnityMetaVizUV(unity_EditorViz_UVIndex, input.uv0, input.uv1, input.uv2, unity_EditorViz_Texture_ST);
             else if (unity_VisualizationMode == EDITORVIZ_SHOWLIGHTMASK)
             {
                 LIL_V2F_OUT_BASE.vizUV = input.uv1 * unity_LightmapST.xy + unity_LightmapST.zw;
@@ -204,7 +218,8 @@ LIL_V2F_TYPE vert(appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Fog & Lighting
-    LIL_GET_HDRPDATA(vertexInput);
+    lilFragData fd = lilInitFragData();
+    LIL_GET_HDRPDATA(vertexInput,fd);
     #if defined(LIL_V2F_LIGHTCOLOR) || defined(LIL_V2F_LIGHTDIRECTION) || defined(LIL_V2F_INDLIGHTCOLOR)
         LIL_CALC_MAINLIGHT(vertexInput, lightdataInput);
     #endif
@@ -220,10 +235,8 @@ LIL_V2F_TYPE vert(appdata input)
     #if defined(LIL_V2F_SHADOW)
         LIL_TRANSFER_SHADOW(vertexInput, input.uv1, LIL_V2F_OUT_BASE);
     #endif
-    #if defined(LIL_V2F_FOG)
+    #if defined(LIL_V2F_VERTEXLIGHT_FOG)
         LIL_TRANSFER_FOG(vertexInput, LIL_V2F_OUT_BASE);
-    #endif
-    #if defined(LIL_V2F_VERTEXLIGHT)
         LIL_CALC_VERTEXLIGHT(vertexInput, LIL_V2F_OUT_BASE);
     #endif
     #if defined(LIL_V2F_SHADOW_CASTER)
@@ -286,6 +299,10 @@ LIL_V2F_TYPE vert(appdata input)
             // OpenGL
             LIL_V2F_OUT.positionCSOL.z += 0.0001;
         #endif
+    #endif
+
+    #if defined(LIL_TESSELLATION)
+        }
     #endif
 
     return LIL_V2F_OUT;

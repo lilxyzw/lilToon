@@ -89,7 +89,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile_fog
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
 
@@ -146,7 +146,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             #pragma vertex vert
             #pragma fragment frag
             #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile_fog
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -199,7 +199,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             #pragma vertex vert
             #pragma fragment frag
             #pragma only_renderers gles gles3 glcore d3d11
-            #pragma multi_compile_fog
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -256,7 +256,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             #pragma vertex vert
             #pragma fragment frag
             #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile_fog
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -309,7 +309,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             #pragma vertex vert
             #pragma fragment frag
             #pragma only_renderers gles gles3 glcore d3d11
-            #pragma multi_compile_fog
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
 
             //----------------------------------------------------------------------------------------------------------------------

@@ -28,16 +28,16 @@ struct v2f
 {
     float4 positionCS   : SV_POSITION;
     #if defined(LIL_V2F_TEXCOORD0)
-        float2 uv       : TEXCOORD0;
+        float2 uv0          : TEXCOORD0;
     #endif
     #if defined(LIL_V2F_POSITION_OS)
         float3 positionOS   : TEXCOORD1;
     #endif
     #if defined(LIL_V2F_NORMAL_WS)
-        float3 normalWS         : TEXCOORD2;
+        float3 normalWS     : TEXCOORD2;
     #endif
     #if defined(LIL_FUR)
-        float furLayer          : TEXCOORD3;
+        float furLayer      : TEXCOORD3;
     #endif
     LIL_CUSTOM_V2F_MEMBER(4,5,6,7,8,9,10,11)
     LIL_VERTEX_INPUT_INSTANCE_ID
@@ -55,10 +55,10 @@ struct v2f
     struct v2g
     {
         float3 positionWS   : TEXCOORD0;
-        float2 uv           : TEXCOORD1;
-        float3 furVector        : TEXCOORD2;
+        float2 uv0          : TEXCOORD1;
+        float3 furVector    : TEXCOORD2;
         #if defined(LIL_V2G_NORMAL_WS)
-            float3 normalWS         : TEXCOORD3;
+            float3 normalWS     : TEXCOORD3;
         #endif
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
@@ -98,7 +98,11 @@ void frag(v2f input
     #endif
 )
 {
-    LIL_VFACE_FALLBACK(facing);
+    lilFragData fd = lilInitFragData();
+
+    BEFORE_UNPACK_V2F
+    OVERRIDE_UNPACK_V2F
+    LIL_COPY_VFACE(fd.facing);
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 

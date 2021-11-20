@@ -46,7 +46,7 @@ v2g vert(appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // UV
-    float2 uvMain = lilCalcUV(input.uv, _MainTex_ST);
+    float2 uvMain = lilCalcUV(input.uv0, _MainTex_ST);
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Vertex Modification
@@ -95,10 +95,24 @@ v2g vert(appdata input)
         output.positionWS       = vertexInput.positionWS;
     #endif
     #if defined(LIL_V2G_TEXCOORD0)
-        output.uv               = input.uv;
+        output.uv0              = input.uv0;
     #endif
     #if defined(LIL_V2G_TEXCOORD1)
         output.uv1              = input.uv1;
+    #endif
+    #if defined(LIL_V2G_TEXCOORD2)
+        output.uv2              = input.uv2;
+    #endif
+    #if defined(LIL_V2G_TEXCOORD3)
+        output.uv3              = input.uv3;
+    #endif
+    #if defined(LIL_V2G_PACKED_TEXCOORD01)
+        output.uv01.xy          = input.uv0;
+        output.uv01.zw          = input.uv1;
+    #endif
+    #if defined(LIL_V2G_PACKED_TEXCOORD23)
+        output.uv23.xy          = input.uv2;
+        output.uv23.zw          = input.uv3;
     #endif
     #if defined(LIL_V2G_NORMAL_WS)
         output.normalWS         = vertexNormalInput.normalWS;
@@ -108,7 +122,8 @@ v2g vert(appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Fog & Lighting
-    LIL_GET_HDRPDATA(vertexInput);
+    lilFragData fd = lilInitFragData();
+    LIL_GET_HDRPDATA(vertexInput,fd);
     #if defined(LIL_V2F_LIGHTCOLOR) || defined(LIL_V2F_LIGHTDIRECTION) || defined(LIL_V2F_INDLIGHTCOLOR)
         LIL_CALC_MAINLIGHT(vertexInput, lightdataInput);
     #endif
@@ -119,15 +134,13 @@ v2g vert(appdata input)
         output.lightDirection   = lightdataInput.lightDirection;
     #endif
     #if defined(LIL_V2F_INDLIGHTCOLOR)
-        output.indLightColor    = lightdataInput.indLightColor;
+        output.indLightColor    = lightdataInput.indLightColor * _ShadowEnvStrength;
     #endif
     #if defined(LIL_V2G_SHADOW)
         LIL_TRANSFER_SHADOW(vertexInput, input.uv1, output);
     #endif
-    #if defined(LIL_V2G_FOG)
+    #if defined(LIL_V2G_VERTEXLIGHT_FOG)
         LIL_TRANSFER_FOG(vertexInput, output);
-    #endif
-    #if defined(LIL_V2G_VERTEXLIGHT)
         LIL_CALC_VERTEXLIGHT(vertexInput, output);
     #endif
 
@@ -182,7 +195,7 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                 outputBase[i].previousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(input[i].previousPositionWS, 1.0));
             #endif
             #if defined(LIL_V2F_TEXCOORD0)
-                outputBase[i].uv = input[i].uv;
+                outputBase[i].uv0 = input[i].uv0;
             #endif
             #if defined(LIL_V2F_NORMAL_WS)
                 outputBase[i].normalWS = input[i].normalWS;
@@ -229,19 +242,28 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
         float3 wpc = (input[0].positionWS   +input[1].positionWS    +input[2].positionWS)   *0.333333333333;
     #endif
     #if defined(LIL_V2G_TEXCOORD0)
-        float2 uvc = (input[0].uv           +input[1].uv            +input[2].uv)           *0.333333333333;
+        float2 uv0c = (input[0].uv0         +input[1].uv0           +input[2].uv0)          *0.333333333333;
     #endif
     #if defined(LIL_V2G_TEXCOORD1)
-        float2 uv1c = (input[0].uv1          +input[1].uv1           +input[2].uv1)          *0.333333333333;
+        float2 uv1c = (input[0].uv1         +input[1].uv1           +input[2].uv1)          *0.333333333333;
+    #endif
+    #if defined(LIL_V2G_TEXCOORD2)
+        float2 uv1c = (input[0].uv2         +input[1].uv2           +input[2].uv2)          *0.333333333333;
+    #endif
+    #if defined(LIL_V2G_TEXCOORD3)
+        float2 uv1c = (input[0].uv3         +input[1].uv3           +input[2].uv3)          *0.333333333333;
+    #endif
+    #if defined(LIL_V2G_PACKED_TEXCOORD01)
+        float4 uv01c = (input[0].uv01       +input[1].uv01          +input[2].uv01)         *0.333333333333;
+    #endif
+    #if defined(LIL_V2G_PACKED_TEXCOORD23)
+        float4 uv23c = (input[0].uv23       +input[1].uv23          +input[2].uv23)         *0.333333333333;
     #endif
     #if defined(LIL_V2G_NORMAL_WS)
         float3 ndc = (input[0].normalWS     +input[1].normalWS      +input[2].normalWS)     *0.333333333333;
     #endif
-    #if defined(LIL_V2G_FOG) && (defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2))
-        float fcc = (input[0].fogCoord      +input[1].fogCoord      +input[2].fogCoord)     *0.333333333333;
-    #endif
-    #if defined(LIL_V2G_VERTEXLIGHT) && defined(LIL_USE_VERTEXLIGHT)
-        float3 vlc = (input[0].vl           +input[1].vl            +input[2].vl)           *0.333333333333;
+    #if defined(LIL_V2G_VERTEXLIGHT_FOG) && (defined(LIL_USE_ADDITIONALLIGHT_VS) || defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2))
+        LIL_VERTEXLIGHT_FOG_TYPE vlfc = (input[0].vlf + input[1].vlf + input[2].vlf) * 0.333333333333;
     #endif
     #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
         float3 pwpc = (input[0].previousPositionWS + input[1].previousPositionWS + input[2].previousPositionWS) *0.333333333333;
@@ -269,21 +291,30 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
             int ii2 = ii==3 ? 0 : ii;
 
             // Common
-            float2 outUV = lerp(input[ii2].uv,uvc,lpmix);
+            float2 outUV = lerp(input[ii2].uv0,uv0c,lpmix);
             #if defined(LIL_V2F_TEXCOORD0)
-                output.uv = outUV;
+                output.uv0 = outUV;
             #endif
             #if defined(LIL_V2F_TEXCOORD1)
                 output.uv1 = lerp(input[ii2].uv1,uv1c,lpmix);
             #endif
+            #if defined(LIL_V2F_TEXCOORD2)
+                output.uv2 = lerp(input[ii2].uv2,uv2c,lpmix);
+            #endif
+            #if defined(LIL_V2F_TEXCOORD3)
+                output.uv3 = lerp(input[ii2].uv3,uv3c,lpmix);
+            #endif
+            #if defined(LIL_V2F_PACKED_TEXCOORD01)
+                output.uv01 = lerp(input[ii2].uv01,uv01c,lpmix);
+            #endif
+            #if defined(LIL_V2F_PACKED_TEXCOORD23)
+                output.uv23 = lerp(input[ii2].uv23,uv23c,lpmix);
+            #endif
             #if defined(LIL_V2F_NORMAL_WS)
                 output.normalWS = lerp(input[ii2].normalWS,ndc,lpmix);
             #endif
-            #if defined(LIL_V2F_FOG) && (defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2))
-                output.fogCoord = lerp(input[ii2].fogCoord,fcc,lpmix);
-            #endif
-            #if defined(LIL_V2F_VERTEXLIGHT) && defined(LIL_USE_VERTEXLIGHT)
-                output.vl = lerp(input[ii2].vl,vlc,lpmix);
+            #if defined(LIL_V2G_VERTEXLIGHT_FOG) && (defined(LIL_USE_ADDITIONALLIGHT_VS) || defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2))
+                output.vlf = lerp(input[ii2].vlf,vlfc,lpmix);
             #endif
 
             float3 fvmix = lerp(input[ii2].furVector,fvc,lpmix);

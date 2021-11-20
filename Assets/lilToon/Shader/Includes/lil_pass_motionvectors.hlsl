@@ -50,16 +50,16 @@ struct v2f
     float4 positionCS   : SV_POSITION;
     float4 previousPositionCS : TEXCOORD4;
     #if defined(LIL_V2F_TEXCOORD0)
-        float2 uv       : TEXCOORD0;
+        float2 uv0      : TEXCOORD0;
     #endif
     #if defined(LIL_V2F_POSITION_OS)
         float3 positionOS   : TEXCOORD1;
     #endif
     #if defined(LIL_V2F_NORMAL_WS)
-        float3 normalWS         : TEXCOORD2;
+        float3 normalWS     : TEXCOORD2;
     #endif
     #if defined(LIL_FUR)
-        float furLayer          : TEXCOORD3;
+        float furLayer      : TEXCOORD3;
     #endif
     LIL_CUSTOM_V2F_MEMBER(7,8,9,10,11,12,13,14)
     LIL_VERTEX_INPUT_INSTANCE_ID
@@ -78,10 +78,10 @@ struct v2f
     struct v2g
     {
         float3 positionWS   : TEXCOORD0;
-        float2 uv           : TEXCOORD1;
-        float3 furVector        : TEXCOORD2;
+        float2 uv0          : TEXCOORD1;
+        float3 furVector    : TEXCOORD2;
         #if defined(LIL_V2G_NORMAL_WS)
-            float3 normalWS         : TEXCOORD3;
+            float3 normalWS     : TEXCOORD3;
         #endif
         float3 previousPositionWS : TEXCOORD4;
         LIL_VERTEX_INPUT_INSTANCE_ID
@@ -125,7 +125,11 @@ void frag(v2f input
     #endif
 )
 {
-    LIL_VFACE_FALLBACK(facing);
+    lilFragData fd = lilInitFragData();
+
+    BEFORE_UNPACK_V2F
+    OVERRIDE_UNPACK_V2F
+    LIL_COPY_VFACE(fd.facing);
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
@@ -138,10 +142,10 @@ void frag(v2f input
     if(forceNoMotion) outMotionVector = float4(2.0, 0.0, 0.0, 0.0);
 
     #ifdef WRITE_MSAA_DEPTH
-        depthColor = input.positionCS.z;
+        depthColor = fd.positionCS.z;
         #ifdef _ALPHATOMASK_ON
             #if LIL_RENDER > 0
-                depthColor.a = saturate((alpha - _Cutoff) / max(fwidth(alpha), 0.0001) + 0.5);
+                depthColor.a = saturate((fd.col.a - _Cutoff) / max(fwidth(fd.col.a), 0.0001) + 0.5);
             #else
                 depthColor.a = 1.0;
             #endif
@@ -149,12 +153,12 @@ void frag(v2f input
     #endif
 
     #if defined(WRITE_NORMAL_BUFFER)
-        float3 normalDirection = normalize(input.normalWS);
-        normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
+        fd.N = normalize(input.normalWS);
+        fd.N = facing < (_FlipNormal-1.0) ? -fd.N : fd.N;
 
         const float seamThreshold = 1.0 / 1024.0;
-        normalDirection.z = CopySign(max(seamThreshold, abs(normalDirection.z)), normalDirection.z);
-        float2 octNormalWS = PackNormalOctQuadEncode(normalDirection);
+        fd.N.z = CopySign(max(seamThreshold, abs(fd.N.z)), fd.N.z);
+        float2 octNormalWS = PackNormalOctQuadEncode(fd.N);
         float3 packNormalWS = PackFloat2To888(saturate(octNormalWS * 0.5 + 0.5));
         outNormalBuffer = float4(packNormalWS, 1.0);
     #endif

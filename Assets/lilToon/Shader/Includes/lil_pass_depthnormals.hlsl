@@ -24,7 +24,7 @@ struct v2f
     float4 positionCS   : SV_POSITION;
     float3 normalWS     : TEXCOORD0;
     #if defined(LIL_V2F_TEXCOORD0)
-        float2 uv       : TEXCOORD1;
+        float2 uv0      : TEXCOORD1;
     #endif
     #if defined(LIL_V2F_POSITION_OS)
         float3 positionOS   : TEXCOORD2;
@@ -42,7 +42,11 @@ struct v2f
 
 float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 {
-    LIL_VFACE_FALLBACK(facing);
+    lilFragData fd = lilInitFragData();
+
+    BEFORE_UNPACK_V2F
+    OVERRIDE_UNPACK_V2F
+    LIL_COPY_VFACE(fd.facing);
     LIL_SETUP_INSTANCE_ID(input);
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 

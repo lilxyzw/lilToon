@@ -15,68 +15,54 @@
     #if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_HDRP)
         #define LIL_V2F_POSITION_WS
     #endif
-    #define LIL_V2F_FOG
+    #define LIL_V2F_VERTEXLIGHT_FOG
 
     struct v2f
     {
-        float4 positionCS : SV_POSITION;
+        float4 positionCS   : SV_POSITION;
         #if defined(LIL_V2F_POSITION_WS)
-            float3 positionWS : TEXCOORD0;
+            float3 positionWS   : TEXCOORD0;
         #endif
-        LIL_FOG_COORDS(1)
+        LIL_VERTEXLIGHT_FOG_COORDS(1)
         LIL_CUSTOM_V2F_MEMBER(2,3,4,5,6,7,8,9)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
 #else
     #define LIL_V2F_POSITION_CS
-    #define LIL_V2F_TEXCOORD0
-    #if defined(LIL_V2F_FORCE_TEXCOORD1) || defined(LIL_USE_LIGHTMAP_UV) || defined(LIL_SHOULD_UV1)
-        #define LIL_V2F_TEXCOORD1
-    #endif
+    #define LIL_V2F_PACKED_TEXCOORD01
+    #define LIL_V2F_PACKED_TEXCOORD23
     #if defined(LIL_V2F_FORCE_POSITION_OS) || defined(LIL_SHOULD_POSITION_OS)
         #define LIL_V2F_POSITION_OS
     #endif
     #define LIL_V2F_POSITION_WS
-    #define LIL_V2F_POSITION_SS
     #define LIL_V2F_NORMAL_WS
     #if defined(LIL_V2F_FORCE_TANGENT) || defined(LIL_SHOULD_TBN)
         #define LIL_V2F_TANGENT_WS
     #endif
-    #if defined(LIL_V2F_FORCE_BITANGENT) || defined(LIL_SHOULD_TBN)
-        #define LIL_V2F_BITANGENT_WS
-    #endif
     #if !defined(LIL_PASS_FORWARDADD)
         #define LIL_V2F_LIGHTCOLOR
         #define LIL_V2F_LIGHTDIRECTION
-        #define LIL_V2F_VERTEXLIGHT
     #endif
-    #define LIL_V2F_FOG
+    #define LIL_V2F_VERTEXLIGHT_FOG
 
     struct v2f
     {
-        float4 positionCS : SV_POSITION;
-        float2 uv : TEXCOORD0;
-        #if defined(LIL_V2F_TEXCOORD1)
-            float2 uv1          : TEXCOORD1;
-        #endif
-        float3 normalWS : TEXCOORD2;
-        float3 positionWS : TEXCOORD3;
-        float4 positionSS : TEXCOORD4;
+        float4 positionCS   : SV_POSITION;
+        float4 uv01         : TEXCOORD0;
+        float4 uv23         : TEXCOORD1;
+        float3 normalWS     : TEXCOORD2;
+        float3 positionWS   : TEXCOORD3;
         #if defined(LIL_V2F_TANGENT_WS)
-            float4 tangentWS        : TEXCOORD5;
-        #endif
-        #if defined(LIL_V2F_BITANGENT_WS)
-            float3 bitangentWS      : TEXCOORD6;
+            float4 tangentWS    : TEXCOORD4;
         #endif
         #if defined(LIL_V2F_POSITION_OS)
-            float3 positionOS       : TEXCOORD7;
+            float3 positionOS   : TEXCOORD5;
         #endif
-        LIL_LIGHTCOLOR_COORDS(8)
-        LIL_LIGHTDIRECTION_COORDS(9)
-        LIL_VERTEXLIGHT_COORDS(10)
-        LIL_FOG_COORDS(11)
-        LIL_CUSTOM_V2F_MEMBER(12,13,14,15,16,17,18,19)
+        LIL_LIGHTCOLOR_COORDS(6)
+        LIL_LIGHTDIRECTION_COORDS(7)
+        LIL_VERTEXLIGHT_FOG_COORDS(8)
+        LIL_CUSTOM_V2F_MEMBER(9,10,11,12,13,14,15,16)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
@@ -90,85 +76,45 @@
 #if defined(LIL_GEM_PRE)
     float4 frag(v2f input) : SV_Target
     {
+        lilFragData fd = lilInitFragData();
+
+        BEFORE_UNPACK_V2F
+        OVERRIDE_UNPACK_V2F
         LIL_SETUP_INSTANCE_ID(input);
         LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-        LIL_GET_HDRPDATA(input);
+        LIL_GET_HDRPDATA(input,fd);
         #if defined(LIL_HDRP)
-            float3 viewDirection = normalize(lilViewDirection(input.positionWS));
+            fd.V = normalize(lilViewDirection(input.positionWS));
         #endif
-        float4 col = 0;
+        fd.col = 0;
         OVERRIDE_FOG
-        return col;
+        return fd.col;
     }
 #else
     float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     {
         //------------------------------------------------------------------------------------------------------------------------------
         // Initialize
-        float3 lightDirection = float3(0.0, 1.0, 0.0);
-        float3 lightColor = 1.0;
-        float3 addLightColor = 0.0;
-        float attenuation = 1.0;
+        lilFragData fd = lilInitFragData();
 
-        float4 col = 1.0;
-        float3 albedo = 1.0;
-        float3 emissionColor = 0.0;
-
-        float anisotropy = 0.0;
-        float3 anisoTangentWS = 0.0;
-        float3 anisoBitangentWS = 0.0;
-        float3 normalDirection = 0.0;
-        float3 reflectionNormalDirection = 0.0;
-        float3 matcapNormalDirection = 0.0;
-        float3 matcap2ndNormalDirection = 0.0;
-        float3 viewDirection = 0.0;
-        float3 headDirection = 0.0;
-        float3x3 tbnWS = 0.0;
-        float depth = 0.0;
-        float3 parallaxViewDirection = 0.0;
-        float2 parallaxOffset = 0.0;
-
-        float smoothness = 1.0;
-        float roughness = 1.0;
-        float perceptualRoughness = 1.0;
-
-        float vl = 0.0;
-        float hl = 0.0;
-        float ln = 0.0;
-        float nv = 0.0;
-        float nvabs = 0.0;
-
-        bool isRightHand = true;
-        float shadowmix = 1.0;
-        float audioLinkValue = 1.0;
-        float3 invLighting = 0.0;
-
-        LIL_VFACE_FALLBACK(facing);
+        BEFORE_UNPACK_V2F
+        OVERRIDE_UNPACK_V2F
+        LIL_COPY_VFACE(fd.facing);
         LIL_SETUP_INSTANCE_ID(input);
         LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-        LIL_GET_HDRPDATA(input);
-        #if defined(LIL_V2F_LIGHTDIRECTION)
-            lightDirection = input.lightDirection;
-        #endif
-        LIL_GET_MAINLIGHT(input, lightColor, lightDirection, attenuation);
-        LIL_GET_ADDITIONALLIGHT(input, addLightColor);
-        invLighting = saturate((1.0 - lightColor) * sqrt(lightColor));
+        LIL_GET_HDRPDATA(input,fd);
+        LIL_GET_LIGHTING_DATA(input,fd);
 
         //------------------------------------------------------------------------------------------------------------------------------
         // View Direction
         #if defined(LIL_V2F_POSITION_WS)
-            depth = length(lilHeadDirection(input.positionWS));
-            viewDirection = normalize(lilViewDirection(input.positionWS));
-            headDirection = normalize(lilHeadDirection(input.positionWS));
-            vl = dot(viewDirection, lightDirection);
-            hl = dot(headDirection, lightDirection);
+            LIL_GET_POSITION_WS_DATA(input,fd);
         #endif
         #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS)
-            tbnWS = float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
-            #if defined(LIL_V2F_POSITION_WS)
-                parallaxViewDirection = mul(tbnWS, viewDirection);
-                parallaxOffset = (parallaxViewDirection.xy / (parallaxViewDirection.z+0.5));
-            #endif
+            LIL_GET_TBN_DATA(input,fd);
+        #endif
+        #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS) && defined(LIL_V2F_POSITION_WS)
+            LIL_GET_PARALLAX_DATA(input,fd);
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -179,9 +125,9 @@
         //------------------------------------------------------------------------------------------------------------------------------
         // Gem View Direction
         #if defined(USING_STEREO_MATRICES)
-            float3 gemViewDirection = lerp(headDirection, viewDirection, _GemVRParallaxStrength);
+            float3 gemViewDirection = lerp(fd.headV, fd.V, _GemVRParallaxStrength);
         #else
-            float3 gemViewDirection = viewDirection;
+            float3 gemViewDirection = fd.V;
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -206,25 +152,26 @@
                 OVERRIDE_NORMAL_2ND
             #endif
 
-            normalDirection = mul(normalmap, tbnWS);
-            normalDirection = facing < 0.0 ? -normalDirection - viewDirection * 0.2 : normalDirection;
-            normalDirection = normalize(normalDirection);
+            fd.N = mul(normalmap, fd.TBN);
+            fd.N = fd.facing < 0.0 ? -fd.N - fd.V * 0.2 : fd.N;
+            fd.N = normalize(fd.N);
         #else
-            normalDirection = input.normalWS;
-            normalDirection = facing < 0.0 ? -normalDirection - viewDirection * 0.2 : normalDirection;
-            normalDirection = normalize(normalDirection);
+            fd.N = input.normalWS;
+            fd.N = fd.facing < 0.0 ? -fd.N - fd.V * 0.2 : fd.N;
+            fd.N = normalize(fd.N);
         #endif
-        reflectionNormalDirection = normalDirection;
-        matcapNormalDirection = normalDirection;
-        matcap2ndNormalDirection = normalDirection;
+        fd.reflectionN = fd.N;
+        fd.matcapN = fd.N;
+        fd.matcap2ndN = fd.N;
 
-        nvabs = abs(dot(normalDirection, viewDirection));
-        nv = nvabs;
-        float nv1 = abs(dot(normalDirection, gemViewDirection));
-        float nv2 = abs(dot(normalDirection, gemViewDirection.yzx));
-        float nv3 = abs(dot(normalDirection, gemViewDirection.zxy));
+        fd.nvabs = abs(dot(fd.N, fd.V));
+        fd.nv = fd.nvabs;
+        fd.uvRim = float2(fd.nvabs,fd.nvabs);
+        float nv1 = abs(dot(fd.N, gemViewDirection));
+        float nv2 = abs(dot(fd.N, gemViewDirection.yzx));
+        float nv3 = abs(dot(fd.N, gemViewDirection.zxy));
         float invnv = 1-nv1;
-        ln = dot(lightDirection, normalDirection);
+        fd.ln = dot(fd.L, fd.N);
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Anisotropy
@@ -243,60 +190,59 @@
         //------------------------------------------------------------------------------------------------------------------------------
         // Lighting
         #ifndef LIL_PASS_FORWARDADD
-            shadowmix = saturate(ln);
-            lightColor = saturate(lightColor + addLightColor);
-            shadowmix = saturate(shadowmix + lilLuminance(addLightColor));
+            fd.shadowmix = saturate(fd.ln);
+            fd.lightColor = saturate(fd.lightColor + fd.addLightColor);
+            fd.shadowmix = saturate(fd.shadowmix + lilLuminance(fd.addLightColor));
         #endif
 
-        albedo = col.rgb;
-        col.rgb *= nv;
-        float4 baseCol = col;
-        col.rgb *= 0.75;
+        fd.albedo = fd.col.rgb;
+        fd.col.rgb *= fd.nv;
+        float4 baseCol = fd.col;
+        fd.col.rgb *= 0.75;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Refraction
-        float2 scnUV = input.positionSS.xy/input.positionSS.w;
-        float2 ref = mul((float3x3)LIL_MATRIX_V, normalDirection).xy;
-        float nvRef = pow(saturate(1.0 - nv), _RefractionFresnelPower);
+        float2 ref = mul((float3x3)LIL_MATRIX_V, fd.N).xy;
+        float nvRef = pow(saturate(1.0 - fd.nv), _RefractionFresnelPower);
         float3 refractColor;
-        refractColor.r = LIL_GET_BG_TEX(scnUV + (nvRef * _RefractionStrength) * ref, 0).r;
-        refractColor.g = LIL_GET_BG_TEX(scnUV + (nvRef * (_RefractionStrength + _GemChromaticAberration)) * ref, 0).g;
-        refractColor.b = LIL_GET_BG_TEX(scnUV + (nvRef * (_RefractionStrength + _GemChromaticAberration * 2)) * ref, 0).b;
+        refractColor.r = LIL_GET_BG_TEX(fd.uvScn + (nvRef * _RefractionStrength) * ref, 0).r;
+        refractColor.g = LIL_GET_BG_TEX(fd.uvScn + (nvRef * (_RefractionStrength + _GemChromaticAberration)) * ref, 0).g;
+        refractColor.b = LIL_GET_BG_TEX(fd.uvScn + (nvRef * (_RefractionStrength + _GemChromaticAberration * 2)) * ref, 0).b;
         refractColor = pow(saturate(refractColor), _GemEnvContrast) * _GemEnvContrast;
         refractColor = lerp(dot(refractColor, float3(1.0/3.0,1.0/3.0,1.0/3.0)), refractColor, saturate(1.0/_GemEnvContrast));
-        col.rgb *= refractColor;
+        fd.col.rgb *= refractColor;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Reflection
-        smoothness = _Smoothness;
-        if(Exists_SmoothnessTex) smoothness *= LIL_SAMPLE_2D(_SmoothnessTex, sampler_MainTex, uvMain).r;
-        perceptualRoughness = perceptualRoughness - smoothness * perceptualRoughness;
-        roughness = perceptualRoughness * perceptualRoughness;
+        fd.smoothness = _Smoothness;
+        if(Exists_SmoothnessTex) fd.smoothness *= LIL_SAMPLE_2D(_SmoothnessTex, sampler_MainTex, fd.uvMain).r;
+        fd.perceptualRoughness = fd.perceptualRoughness - fd.smoothness * fd.perceptualRoughness;
+        fd.roughness = fd.perceptualRoughness * fd.perceptualRoughness;
 
-        float3 normalDirectionR = normalDirection;
-        float3 normalDirectionG = facing < 0.0 ? normalize(normalDirection + viewDirection * invnv * _GemChromaticAberration) : normalDirection;
-        float3 normalDirectionB = facing < 0.0 ? normalize(normalDirection + viewDirection * invnv * _GemChromaticAberration * 2) : normalDirection;
-        float envReflectionColorR = LIL_GET_ENVIRONMENT_REFLECTION(viewDirection, normalDirectionR, perceptualRoughness, input.positionWS).r;
-        float envReflectionColorG = LIL_GET_ENVIRONMENT_REFLECTION(viewDirection, normalDirectionG, perceptualRoughness, input.positionWS).g;
-        float envReflectionColorB = LIL_GET_ENVIRONMENT_REFLECTION(viewDirection, normalDirectionB, perceptualRoughness, input.positionWS).b;
+        float3 normalDirectionR = fd.N;
+        float3 normalDirectionG = fd.facing < 0.0 ? normalize(fd.N + fd.V * invnv * _GemChromaticAberration) : fd.N;
+        float3 normalDirectionB = fd.facing < 0.0 ? normalize(fd.N + fd.V * invnv * _GemChromaticAberration * 2) : fd.N;
+        float envReflectionColorR = LIL_GET_ENVIRONMENT_REFLECTION(fd.V, normalDirectionR, fd.perceptualRoughness, fd.positionWS).r;
+        float envReflectionColorG = LIL_GET_ENVIRONMENT_REFLECTION(fd.V, normalDirectionG, fd.perceptualRoughness, fd.positionWS).g;
+        float envReflectionColorB = LIL_GET_ENVIRONMENT_REFLECTION(fd.V, normalDirectionB, fd.perceptualRoughness, fd.positionWS).b;
 
         float3 envReflectionColor = float3(envReflectionColorR, envReflectionColorG, envReflectionColorB);
         envReflectionColor = pow(saturate(envReflectionColor), _GemEnvContrast) * _GemEnvContrast * _GemEnvColor.rgb;
         envReflectionColor = lerp(dot(envReflectionColor, float3(1.0/3.0,1.0/3.0,1.0/3.0)), envReflectionColor, saturate(1.0/_GemEnvContrast));
-        envReflectionColor = facing < 0.0 ? envReflectionColor * baseCol.rgb : envReflectionColor;
+        envReflectionColor = fd.facing < 0.0 ? envReflectionColor * baseCol.rgb : envReflectionColor;
 
         float oneMinusReflectivity = LIL_DIELECTRIC_SPECULAR.a;
-        float grazingTerm = saturate(smoothness + (1.0-oneMinusReflectivity));
+        float grazingTerm = saturate(fd.smoothness + (1.0-oneMinusReflectivity));
         #ifdef LIL_COLORSPACE_GAMMA
-            float surfaceReduction = 1.0 - 0.28 * roughness * perceptualRoughness;
+            float surfaceReduction = 1.0 - 0.28 * fd.roughness * fd.perceptualRoughness;
         #else
-            float surfaceReduction = 1.0 / (roughness * roughness + 1.0);
+            float surfaceReduction = 1.0 / (fd.roughness * fd.roughness + 1.0);
         #endif
 
         float particle = step(0.5, frac(nv1 * _GemParticleLoop)) * step(0.5, frac(nv2 * _GemParticleLoop)) * step(0.5, frac(nv3 * _GemParticleLoop));
-        float3 particleColor = facing < 0.0 ? 1.0 + particle * _GemParticleColor.rgb : 1.0;
+        float3 particleColor = fd.facing < 0.0 ? 1.0 + particle * _GemParticleColor.rgb : 1.0;
 
-        col.rgb += (surfaceReduction * lilFresnelLerp(_Reflectance, grazingTerm, nv) + 0.5) * 0.5 * particleColor * envReflectionColor;
+        fd.col.rgb += (surfaceReduction * lilFresnelLerp(_Reflectance, grazingTerm, fd.nv) + 0.5) * 0.5 * particleColor * envReflectionColor;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // MatCap
@@ -342,7 +288,7 @@
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Fix Color
-        LIL_HDRP_DEEXPOSURE(col);
+        LIL_HDRP_DEEXPOSURE(fd.col);
 
         float4 fogColor = float4(0,0,0,0);
         BEFORE_FOG

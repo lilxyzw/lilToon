@@ -257,6 +257,7 @@ SAMPLER(sampler_linear_clamp);
     float   _OutlineEnableLighting;
     uint    _Cull;
     uint    _OutlineCull;
+    uint    _EmissionMap_UVMode;
     lilBool _Invisible;
     lilBool _UseShadow;
     lilBool _UseMatCap;
@@ -503,6 +504,8 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_MULTI_INPUTS_REFLECTION) || defined(LIL_GEM)
         float   _Smoothness;
         float   _Reflectance;
+        float   _SpecularBorder;
+        float   _SpecularBlur;
     #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION)
         float   _Metallic;
@@ -609,6 +612,12 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         uint    _GlitterUVMode;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_EMISSION)
+        uint    _EmissionMap_UVMode;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_EMISSION_2ND)
+        uint    _Emission2ndMap_UVMode;
     #endif
     #if defined(LIL_MULTI_INPUTS_AUDIOLINK)
         uint    _AudioLinkUVMode;
@@ -1005,6 +1014,8 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_REFLECTION) || defined(LIL_GEM)
         float   _Smoothness;
         float   _Reflectance;
+        float   _SpecularBorder;
+        float   _SpecularBlur;
     #endif
     #if defined(LIL_FEATURE_REFLECTION)
         float   _Metallic;
@@ -1126,6 +1137,12 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FEATURE_GLITTER)
         uint    _GlitterUVMode;
+    #endif
+    #if defined(LIL_FEATURE_EMISSION_1ST) && defined(LIL_FEATURE_EMISSION_UV)
+        uint    _EmissionMap_UVMode;
+    #endif
+    #if defined(LIL_FEATURE_EMISSION_2ND) && defined(LIL_FEATURE_EMISSION_UV)
+        uint    _Emission2ndMap_UVMode;
     #endif
     #if defined(LIL_FEATURE_AUDIOLINK)
         uint    _AudioLinkUVMode;
