@@ -26,6 +26,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlpha      ("DstBlendAlpha", Int) = 1
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOp            ("BlendOp", Int) = 0
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlpha       ("BlendOpAlpha", Int) = 0
+        [lilToggle]                                     _ZClip              ("ZClip", Int) = 1
         [lilToggle]                                     _ZWrite             ("ZWrite", Int) = 1
         [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest              ("ZTest", Int) = 4
         [IntRange]                                      _StencilRef         ("Stencil Reference Value", Range(0, 255)) = 51
@@ -75,6 +76,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -131,6 +133,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -184,6 +187,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -241,6 +245,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -294,6 +299,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -349,6 +355,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]

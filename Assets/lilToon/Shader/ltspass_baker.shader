@@ -48,7 +48,19 @@ Shader "Hidden/ltsother_baker"
         // Alpha Mask
         [lilEnumLabel]  _AlphaMaskMode              ("AlphaMask|", Int) = 0
         [NoScaleOffset] _AlphaMask                  ("AlphaMask", 2D) = "white" {}
-                        _AlphaMaskValue             ("AlphaMaskValue", Range(-1,1)) = 0
+                        _AlphaMaskScale             ("Scale", Float) = 1
+                        _AlphaMaskValue             ("Offset", Float) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Texture Packing
+        [NoScaleOffset] _PackingTexture1            ("Texture", 2D) = "white" {}
+        [NoScaleOffset] _PackingTexture2            ("Texture", 2D) = "white" {}
+        [NoScaleOffset] _PackingTexture3            ("Texture", 2D) = "white" {}
+        [NoScaleOffset] _PackingTexture4            ("Texture", 2D) = "white" {}
+                        _PackingChannel1            ("Channel", Int) = 0
+                        _PackingChannel2            ("Channel", Int) = 0
+                        _PackingChannel3            ("Channel", Int) = 0
+                        _PackingChannel4            ("Channel", Int) = 0
     }
     SubShader
     {
@@ -58,7 +70,7 @@ Shader "Hidden/ltsother_baker"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma shader_feature _ _TRIMASK _ALPHAMASK _NORMAL_DXGL
+            #pragma shader_feature _ _TRIMASK _ALPHAMASK _NORMAL_DXGL _TEXTURE_PACKING
 
             //------------------------------------------------------------------------------------------------------------------
             // Shader
@@ -66,6 +78,15 @@ Shader "Hidden/ltsother_baker"
             #define LIL_WITHOUT_ANIMATION
             #include "Includes/lil_pipeline.hlsl"
             #include "Includes/lil_common_appdata.hlsl"
+
+            TEXTURE2D(_PackingTexture1);
+            TEXTURE2D(_PackingTexture2);
+            TEXTURE2D(_PackingTexture3);
+            TEXTURE2D(_PackingTexture4);
+            uint _PackingChannel1;
+            uint _PackingChannel2;
+            uint _PackingChannel3;
+            uint _PackingChannel4;
 
             struct v2f
             {
@@ -86,7 +107,7 @@ Shader "Hidden/ltsother_baker"
 
             float4 frag(v2f input) : SV_Target
             {
-                #ifdef _TRIMASK
+                #if defined(_TRIMASK)
                     float4 col1 = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv0);
                     float4 col2 = LIL_SAMPLE_2D(_Main2ndTex,sampler_Main2ndTex,input.uv0);
                     float4 col3 = LIL_SAMPLE_2D(_Main3rdTex,sampler_Main3rdTex,input.uv0);
@@ -94,14 +115,40 @@ Shader "Hidden/ltsother_baker"
                     float rim = lilGray(col2.rgb);
                     float emi = lilGray(col3.rgb);
                     float4 col = float4(mat,rim,emi,1);
-                #elif _ALPHAMASK
+                #elif defined(_ALPHAMASK)
                     float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv0);
                     float alphaMask = LIL_SAMPLE_2D(_AlphaMask,sampler_MainTex,input.uv0).r;
-                    alphaMask = saturate(alphaMask + _AlphaMaskValue);
+                    alphaMask = saturate(alphaMask * _AlphaMaskScale + _AlphaMaskValue);
                     col.a = _AlphaMaskMode == 1 ? alphaMask : col.a * alphaMask;
-                #elif _NORMAL_DXGL
+                #elif defined(_NORMAL_DXGL)
                     float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv0);
                     col.g = 1.0 - col.g;
+                #elif defined(_TEXTURE_PACKING)
+                    float4 p1 = LIL_SAMPLE_2D(_PackingTexture1,sampler_linear_clamp,input.uv0);
+                    float4 p2 = LIL_SAMPLE_2D(_PackingTexture2,sampler_linear_clamp,input.uv0);
+                    float4 p3 = LIL_SAMPLE_2D(_PackingTexture3,sampler_linear_clamp,input.uv0);
+                    float4 p4 = LIL_SAMPLE_2D(_PackingTexture4,sampler_linear_clamp,input.uv0);
+                    float4 col = 1.0f;
+                    if(_PackingChannel1 >= 4) {
+                        col.r = dot(p1.rgb, 1.0/3.0);
+                    } else {
+                        col.r = p1[_PackingChannel1];
+                    }
+                    if(_PackingChannel2 >= 4) {
+                        col.g = dot(p2.rgb, 1.0/3.0);
+                    } else {
+                        col.g = p1[_PackingChannel2];
+                    }
+                    if(_PackingChannel3 >= 4) {
+                        col.b = dot(p3.rgb, 1.0/3.0);
+                    } else {
+                        col.b = p1[_PackingChannel3];
+                    }
+                    if(_PackingChannel4 >= 4) {
+                        col.a = dot(p4.rgb, 1.0/3.0);
+                    } else {
+                        col.a = p1[_PackingChannel4];
+                    }
                 #else
                     // Main
                     float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv0);

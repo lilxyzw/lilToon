@@ -217,6 +217,7 @@ You can blend colors into the main color. This is the layer function in painting
 |Name|Description|
 |-|-|
 |Alpha Mask|None: Disables the function / Replace: Replace the transparency of the main texture / Multiply: Multiplies the transparency of the main texture|
+|Scale / Offset|Scale and offset amount of alpha mask. For example, you can invert alpha mask by setting Scale = -1 and Offset = 1.|
 |Bake Alphamask|Applies a mask with a specified transparency to the texture.|
 
 <br/>
@@ -224,14 +225,17 @@ You can blend colors into the main color. This is the layer function in painting
 ## Shadow
 |Name|Description|
 |-|-|
-|AO & Border|Range of shadow. You can specify an AO texture to change the ease of shadows.|
-|Blur|Amount of shadow blur.|
 |Mask & Strength|Strength of shadow. Shadows do not appear in the areas painted black by the mask.|
 |1st/2nd Color|Color of shadow. You can specify a texture to override the color.|
-|Main Color Power|Multiply the Main Color to emphasize the shadows.|
-|Environment strength on shadow color|The intensity with which environment light affects the color of the shadow.|
+|Border|Range of shadow.|
+|Blur|Amount of shadow blur.|
+|Normal Map Strength|Strength of normal map.|
 |Border Color|Color of shadow border.|
 |Border Range|Range of Border Color.|
+|AO Map|You can specify an AO texture to change the ease of shadows.|
+|Scale / Offset|Scale and offset amount of AO Map. For example, you can invert AO Map by setting Scale = -1 and Offset = 1.|
+|Contrast|Multiply the Main Color to emphasize the shadows.|
+|Environment strength on shadow color|The intensity with which environment light affects the color of the shadow.|
 |Receive Shadow|Receive shadows from other objects. It can look unnatural under a roof and is often better to turn it off.|
 
 <br/>
@@ -406,7 +410,8 @@ You can blend colors into the main color. This is the layer function in painting
 |Offset|Amount of timing shift.|
 |Angle|The angle of UV.|
 |Band|Bandwidth (pitch) to be sampled.|
-|Mask|Mask texture that change the AudioLink process. (R:Delay G:Band B:Strength)|
+|Mask|Mask texture that change the AudioLink process.<br>Normal: RGB = Delay / Band / Strength<br>Spectrum: RGB = Volume / Band / Strength|
+|Default value for no AudioLink|Default value in a world that does not support AudioLink.|
 |Apply to|Target to apply the effect to.|
 |-|-|
 |As Local|Use local texture instead of getting them from AudioLink.|

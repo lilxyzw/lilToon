@@ -147,8 +147,8 @@ LIL_V2F_TYPE vert(appdata input)
     #if defined(LIL_CUSTOM_VERTEX_WS)
         LIL_RE_VERTEX_POSITION_INPUTS(vertexInput);
     #endif
-    float3 viewDirection = normalize(lilViewDirection(vertexInput.positionWS));
-    float3 headDirection = normalize(lilHeadDirection(vertexInput.positionWS));
+    float3 viewDirection = normalize(lilViewDirection(lilToAbsolutePositionWS(vertexInput.positionWS)));
+    float3 headDirection = normalize(lilHeadDirection(lilToAbsolutePositionWS(vertexInput.positionWS)));
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Copy

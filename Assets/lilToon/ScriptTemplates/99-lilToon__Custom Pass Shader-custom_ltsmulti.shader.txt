@@ -93,7 +93,8 @@ Shader "#NAME#"
         // Alpha Mask
         [lilEnumLabel]  _AlphaMaskMode              ("AlphaMask|", Int) = 0
         [NoScaleOffset] _AlphaMask                  ("AlphaMask", 2D) = "white" {}
-                        _AlphaMaskValue             ("AlphaMaskValue", Range(-1,1)) = 0
+                        _AlphaMaskScale             ("Scale", Float) = 1
+                        _AlphaMaskValue             ("Offset", Float) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // NormalMap
@@ -134,6 +135,7 @@ Shader "#NAME#"
         [lilToggleLeft] _UseBacklight               ("Use Backlight", Int) = 0
         [lilHDR]        _BacklightColor             ("Color", Color) = (0.85,0.8,0.7,1.0)
         [NoScaleOffset] _BacklightColorTex          ("Texture", 2D) = "white" {}
+                        _BacklightNormalStrength    ("Normal Strength", Range(0, 1)) = 1.0
                         _BacklightBorder            ("Border", Range(0, 1)) = 0.35
                         _BacklightBlur              ("Blur", Range(0, 1)) = 0.05
                         _BacklightDirectivity       ("Directivity", Float) = 5.0
@@ -145,19 +147,22 @@ Shader "#NAME#"
         // Shadow
         [lilToggleLeft] _UseShadow                  ("Use Shadow", Int) = 0
         [lilToggle]     _ShadowReceive              ("Receive Shadow", Int) = 0
+                        _ShadowStrength             ("Strength", Range(0, 1)) = 1
+        [NoScaleOffset] _ShadowStrengthMask         ("Strength", 2D) = "white" {}
+        [lilFFFF]       _ShadowAOShift              ("1st Scale|1st Offset|2nd Scale|2nd Offset", Vector) = (1,0,1,0)
+                        _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
+        [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
+                        _ShadowNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
                         _ShadowBorder               ("Border", Range(0, 1)) = 0.5
         [NoScaleOffset] _ShadowBorderMask           ("Border", 2D) = "white" {}
                         _ShadowBlur                 ("Blur", Range(0, 1)) = 0.1
         [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
-                        _ShadowStrength             ("Strength", Range(0, 1)) = 1
-        [NoScaleOffset] _ShadowStrengthMask         ("Strength", 2D) = "white" {}
-                        _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
-        [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
-                        _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
-                        _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
                         _Shadow2ndColor             ("Shadow 2nd Color", Color) = (0,0,0,0)
         [NoScaleOffset] _Shadow2ndColorTex          ("Shadow 2nd Color", 2D) = "black" {}
-                        _ShadowMainStrength         ("Main Color Strength", Range(0, 1)) = 1
+                        _Shadow2ndNormalStrength    ("Normal Strength", Range(0, 1)) = 1.0
+                        _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
+                        _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
+                        _ShadowMainStrength         ("Contrast", Range(0, 1)) = 1
                         _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 0
                         _ShadowBorderColor          ("Border Color", Color) = (1,0,0,1)
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
@@ -177,7 +182,11 @@ Shader "#NAME#"
         [lilToggle]     _ApplySpecular              ("Apply Specular", Int) = 1
         [lilToggle]     _ApplySpecularFA            ("Apply Specular in ForwardAdd", Int) = 1
         [lilToggle]     _SpecularToon               ("Specular Toon", Int) = 1
+                        _SpecularNormalStrength     ("Normal Strength", Range(0, 1)) = 1.0
+                        _SpecularBorder             ("Border", Range(0, 1)) = 0.5
+                        _SpecularBlur               ("Blur", Range(0, 1)) = 0.0
         [lilToggle]     _ApplyReflection            ("Apply Reflection", Int) = 0
+                        _ReflectionNormalStrength   ("Normal Strength", Range(0, 1)) = 1.0
         [lilHDR]        _ReflectionColor            ("Color", Color) = (1,1,1,1)
         [NoScaleOffset] _ReflectionColorTex         ("Color", 2D) = "white" {}
         [lilToggle]     _ReflectionApplyTransparency ("Apply Transparency", Int) = 1
@@ -196,8 +205,10 @@ Shader "#NAME#"
                         _MatCapEnableLighting       ("Enable Lighting", Range(0, 1)) = 1
                         _MatCapShadowMask           ("Shadow Mask", Range(0, 1)) = 0
         [lilToggle]     _MatCapBackfaceMask         ("Backface Mask", Int) = 0
+                        _MatCapLod                  ("Blur", Range(0, 10)) = 0
         [lilEnum]       _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCapApplyTransparency    ("Apply Transparency", Int) = 1
+                        _MatCapNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
         [lilToggle]     _MatCapCustomNormal         ("MatCap Custom Normal Map", Int) = 0
         [Normal]        _MatCapBumpMap              ("Normal Map", 2D) = "bump" {}
                         _MatCapBumpScale            ("Scale", Range(-10,10)) = 1
@@ -216,8 +227,10 @@ Shader "#NAME#"
                         _MatCap2ndEnableLighting    ("Enable Lighting", Range(0, 1)) = 1
                         _MatCap2ndShadowMask        ("Shadow Mask", Range(0, 1)) = 0
         [lilToggle]     _MatCap2ndBackfaceMask      ("Backface Mask", Int) = 0
+                        _MatCap2ndLod               ("Blur", Range(0, 10)) = 0
         [lilEnum]       _MatCap2ndBlendMode         ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCap2ndApplyTransparency ("Apply Transparency", Int) = 1
+                        _MatCap2ndNormalStrength    ("Normal Strength", Range(0, 1)) = 1.0
         [lilToggle]     _MatCap2ndCustomNormal      ("MatCap Custom Normal Map", Int) = 0
         [Normal]        _MatCap2ndBumpMap           ("Normal Map", 2D) = "bump" {}
                         _MatCap2ndBumpScale         ("Scale", Range(-10,10)) = 1
@@ -227,6 +240,7 @@ Shader "#NAME#"
         [lilToggleLeft] _UseRim                     ("Use Rim", Int) = 0
         [lilHDR]        _RimColor                   ("Color", Color) = (1,1,1,1)
         [NoScaleOffset] _RimColorTex                ("Texture", 2D) = "white" {}
+                        _RimNormalStrength          ("Normal Strength", Range(0, 1)) = 1.0
                         _RimBorder                  ("Border", Range(0, 1)) = 0.5
                         _RimBlur                    ("Blur", Range(0, 1)) = 0.1
         [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
@@ -248,6 +262,7 @@ Shader "#NAME#"
         [lilHDR]        _GlitterColor               ("Color", Color) = (1,1,1,1)
                         _GlitterColorTex            ("Texture", 2D) = "white" {}
                         _GlitterMainStrength        ("Main Color Strength", Range(0, 1)) = 0
+                        _GlitterNormalStrength      ("Normal Strength", Range(0, 1)) = 1.0
         [lilGlitParam1] _GlitterParams1             ("Tiling|Particle Size|Contrast", Vector) = (256,256,0.16,50)
         [lilGlitParam2] _GlitterParams2             ("Blink Speed|Angle|Blend Light Direction|Color Randomness", Vector) = (0.25,0,0,0)
                         _GlitterEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
@@ -262,6 +277,7 @@ Shader "#NAME#"
         [HDR][lilHDR]   _EmissionColor              ("Color", Color) = (1,1,1,1)
                         _EmissionMap                ("Texture", 2D) = "white" {}
         [lilUVAnim]     _EmissionMap_ScrollRotate   ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
+        [lilEnum]       _EmissionMap_UVMode         ("UV Mode|UV0|UV1|UV2|UV3|Rim", Int) = 0
                         _EmissionBlend              ("Blend", Range(0,1)) = 1
                         _EmissionBlendMask          ("Mask", 2D) = "white" {}
         [lilUVAnim]     _EmissionBlendMask_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
@@ -297,6 +313,7 @@ Shader "#NAME#"
         [HDR][lilHDR]   _Emission2ndColor           ("Color", Color) = (1,1,1,1)
                         _Emission2ndMap             ("Texture", 2D) = "white" {}
         [lilUVAnim]     _Emission2ndMap_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
+        [lilEnum]       _Emission2ndMap_UVMode      ("UV Mode|UV0|UV1|UV2|UV3|Rim", Int) = 0
                         _Emission2ndBlend           ("Blend", Range(0,1)) = 1
                         _Emission2ndBlendMask       ("Mask", 2D) = "white" {}
         [lilUVAnim]     _Emission2ndBlendMask_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
@@ -341,15 +358,19 @@ Shader "#NAME#"
         //----------------------------------------------------------------------------------------------------------------------
         // AudioLink
         [lilToggleLeft] _UseAudioLink               ("Use AudioLink", Int) = 0
-        [lilALUVMode]   _AudioLinkUVMode            ("UV Mode|None|Rim|UV|Mask", Int) = 1
+        [lilFRFR]       _AudioLinkDefaultValue      ("Strength|Blink Strength|Blink Speed|Blink Threshold", Vector) = (0.0,0.0,2.0,0.75)
+        [lilEnum]       _AudioLinkUVMode            ("UV Mode|None|Rim|UV|Mask|Mask Spectrum|Position", Int) = 1
         [lilALUVParams] _AudioLinkUVParams          ("Scale|Offset|Angle|Band|Bass|Low Mid|High Mid|Treble", Vector) = (0.25,0,0,0.125)
+        [lilVec3]       _AudioLinkStart             ("Start Position", Vector) = (0.0,0.0,0.0,0.0)
         [NoScaleOffset] _AudioLinkMask              ("Mask", 2D) = "blue" {}
         [lilToggle]     _AudioLink2Main2nd          ("Main 2nd", Int) = 0
         [lilToggle]     _AudioLink2Main3rd          ("Main 3rd", Int) = 0
         [lilToggle]     _AudioLink2Emission         ("Emission", Int) = 0
+        [lilToggle]     _AudioLink2EmissionGrad     ("Emission Grad", Int) = 0
         [lilToggle]     _AudioLink2Emission2nd      ("Emission 2nd", Int) = 0
+        [lilToggle]     _AudioLink2Emission2ndGrad  ("Emission 2nd Grad", Int) = 0
         [lilToggle]     _AudioLink2Vertex           ("Vertex", Int) = 0
-        [lilALUVMode]   _AudioLinkVertexUVMode      ("UV Mode|None|Position|UV|Mask", Int) = 1
+        [lilEnum]       _AudioLinkVertexUVMode      ("UV Mode|None|Position|UV|Mask", Int) = 1
         [lilALUVParams] _AudioLinkVertexUVParams    ("Scale|Offset|Angle|Band|Bass|Low Mid|High Mid|Treble", Vector) = (0.25,0,0,0.125)
         [lilVec3]       _AudioLinkVertexStart       ("Start Position", Vector) = (0.0,0.0,0.0,0.0)
         [lilVec3Float]  _AudioLinkVertexStrength    ("Moving Vector|Normal Strength", Vector) = (0.0,0.0,0.0,1.0)
@@ -387,6 +408,7 @@ Shader "#NAME#"
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlphaFA    ("ForwardAdd DstBlendAlpha", Int) = 1
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpFA          ("ForwardAdd BlendOp", Int) = 4
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlphaFA     ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _ZClip              ("ZClip", Int) = 1
         [lilToggle]                                     _ZWrite             ("ZWrite", Int) = 1
         [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest              ("ZTest", Int) = 4
         [IntRange]                                      _StencilRef         ("Stencil Reference Value", Range(0, 255)) = 0
@@ -428,6 +450,7 @@ Shader "#NAME#"
         [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlendAlphaFA     ("ForwardAdd DstBlendAlpha", Int) = 1
         [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpFA           ("ForwardAdd BlendOp", Int) = 4
         [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpAlphaFA      ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _OutlineZClip               ("ZClip", Int) = 1
         [lilToggle]                                     _OutlineZWrite              ("ZWrite", Int) = 1
         [Enum(UnityEngine.Rendering.CompareFunction)]   _OutlineZTest               ("ZTest", Int) = 2
         [IntRange]                                      _OutlineStencilRef          ("Stencil Reference Value", Range(0, 255)) = 0
@@ -514,7 +537,7 @@ Shader "#NAME#"
         // Type     Name                    Description
         // -------- ----------------------- --------------------------------------------------------------------
         // float4   input.positionOS        POSITION
-        // float2   input.uv                TEXCOORD0
+        // float2   input.uv0               TEXCOORD0
         // float2   input.uv1               TEXCOORD1
         // float2   input.uv2               TEXCOORD2
         // float2   input.uv3               TEXCOORD3
@@ -525,6 +548,7 @@ Shader "#NAME#"
         // float4   input.color             COLOR
         // float3   input.normalOS          NORMAL
         // float4   input.tangentOS         TANGENT
+        // uint     vertexID                SV_VertexID
 
         //----------------------------------------------------------------------------------------------------------------------
         // Vertex shader outputs or pixel shader inputs (v2f structure)
@@ -535,37 +559,60 @@ Shader "#NAME#"
         // Type     Name                    Description
         // -------- ----------------------- --------------------------------------------------------------------
         // float4   output.positionCS       SV_POSITION
-        // float2   output.uv               TEXCOORD0
-        // float2   output.uv1              TEXCOORD1
+        // float2   output.uv01             TEXCOORD0 TEXCOORD1
+        // float2   output.uv23             TEXCOORD2 TEXCOORD3
         // float3   output.positionOS       object space position
         // float3   output.positionWS       world space position
-        // float4   output.positionSS       screen space position
         // float3   output.normalWS         world space normal
         // float4   output.tangentWS        world space tangent
-        // float3   output.bitangentWS      world space bitangent
 
         //----------------------------------------------------------------------------------------------------------------------
         // Variables commonly used in the forward pass
         //
+        // These are members of `lilFragData fd`
+        //
         // Type     Name                    Description
-        // -------- ----------------------- --------------------------------------------------------------------
-        // float3   lightDirection          direction of light
-        // float3   lightColor              color of light
-        // float3   addLightColor           color of additional light
-        // float    attenuation             attenuation of light
         // -------- ----------------------- --------------------------------------------------------------------
         // float4   col                     lit color
         // float3   albedo                  unlit color
-        // float3   reflectionColor         color of reflection
         // float3   emissionColor           color of emission
         // -------- ----------------------- --------------------------------------------------------------------
-        // float3   normalDirection         world space normal
-        // float3   viewDirection           normalize(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
-        // float3   headDirection           normalize(LIL_GET_HEADDIR_WS(input.positionWS.xyz));
-        // float3x3 tbnWS                   float3x3(input.tangentWS.xyz, input.bitangentWS, input.normalWS);
-        // float    depth                   length(LIL_GET_VIEWDIR_WS(input.positionWS.xyz));
-        // float3   parallaxViewDirection   mul(tbnWS, viewDirection);
-        // float2   parallaxOffset          parallaxViewDirection.xy / (parallaxViewDirection.z+0.5);
+        // float3   lightColor              color of light
+        // float3   indLightColor           color of indirectional light
+        // float3   addLightColor           color of additional light
+        // float    attenuation             attenuation of light
+        // float3   invLighting             saturate((1.0 - lightColor) * sqrt(lightColor));
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float2   uv0                     TEXCOORD0
+        // float2   uv1                     TEXCOORD1
+        // float2   uv2                     TEXCOORD2
+        // float2   uv3                     TEXCOORD3
+        // float2   uvMain                  Main UV
+        // float2   uvMat                   MatCap UV
+        // float2   uvRim                   Rim Light UV
+        // float2   uvPanorama              Panorama UV
+        // float2   uvScn                   Screen UV
+        // bool     isRightHand             input.tangentWS.w > 0.0;
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float3   positionOS              object space position
+        // float3   positionWS              world space position
+        // float4   positionCS              clip space position
+        // float4   positionSS              screen space position
+        // float    depth                   distance from camera
+        // -------- ----------------------- --------------------------------------------------------------------
+        // float3x3 TBN                     tangent / bitangent / normal matrix
+        // float3   T                       tangent direction
+        // float3   B                       bitangent direction
+        // float3   N                       normal direction
+        // float3   V                       view direction
+        // float3   L                       light direction
+        // float3   origN                   normal direction without normal map
+        // float3   origL                   light direction without sh light
+        // float3   headV                   middle view direction of 2 cameras
+        // float3   reflectionN             normal direction for reflection
+        // float3   matcapN                 normal direction for reflection for MatCap
+        // float3   matcap2ndN              normal direction for reflection for MatCap 2nd
+        // float    facing                  VFACE
         // -------- ----------------------- --------------------------------------------------------------------
         // float    vl                      dot(viewDirection, lightDirection);
         // float    hl                      dot(headDirection, lightDirection);
@@ -573,25 +620,19 @@ Shader "#NAME#"
         // float    nv                      saturate(dot(normalDirection, viewDirection));
         // float    nvabs                   abs(dot(normalDirection, viewDirection));
         // -------- ----------------------- --------------------------------------------------------------------
-        // bool     isRightHand             input.tangentWS.w > 0.0;
+        // float4   triMask                 TriMask (for lite version)
+        // float3   parallaxViewDirection   mul(tbnWS, viewDirection);
+        // float2   parallaxOffset          parallaxViewDirection.xy / (parallaxViewDirection.z+0.5);
+        // float    anisotropy              strength of anisotropy
+        // float    smoothness              smoothness
+        // float    roughness               roughness
+        // float    perceptualRoughness     perceptual roughness
         // float    shadowmix               this variable is 0 in the shadow area
         // float    audioLinkValue          volume acquired by AudioLink
-        // float3   invLighting             saturate((1.0 - lightColor) * sqrt(lightColor));
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Variables commonly used in the meta pass
-        //
-        // Type     Name                    Description
         // -------- ----------------------- --------------------------------------------------------------------
-        // float4   col                     color
-        // float3   emissionColor           color of emission
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Variables commonly used in other passes
-        //
-        // Type     Name                    Description
-        // -------- ----------------------- --------------------------------------------------------------------
-        // float4   col                     color (use only col.a)
+        // uint     renderingLayers         light layer of object (for URP / HDRP)
+        // uint     featureFlags            feature flags (for HDRP)
+        // uint2    tileIndex               tile index (for HDRP)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Multi compile macro
@@ -646,6 +687,7 @@ Shader "#NAME#"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -732,6 +774,7 @@ Shader "#NAME#"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -801,6 +844,7 @@ Shader "#NAME#"
                 ZFail [_StencilZFail]
             }
 		    Cull [_Cull]
+            ZClip [_ZClip]
 			ZWrite Off
             ZTest LEqual
             ColorMask [_ColorMask]
@@ -970,6 +1014,7 @@ Shader "#NAME#"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1061,6 +1106,7 @@ Shader "#NAME#"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -1160,6 +1206,7 @@ Shader "#NAME#"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
 
             HLSLPROGRAM
 
@@ -1252,6 +1299,7 @@ Shader "#NAME#"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1342,6 +1390,7 @@ Shader "#NAME#"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -1439,6 +1488,7 @@ Shader "#NAME#"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
 
             HLSLPROGRAM
 
@@ -1535,6 +1585,7 @@ Shader "#NAME#"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1634,6 +1685,7 @@ Shader "#NAME#"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -1736,6 +1788,7 @@ Shader "#NAME#"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
 
             HLSLPROGRAM
 
@@ -1774,6 +1827,7 @@ Shader "#NAME#"
             Name "DEPTHNORMALS"
             Tags {"LightMode" = "DepthNormals"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
 
             HLSLPROGRAM
 
@@ -1823,6 +1877,7 @@ Shader "#NAME#"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1907,6 +1962,7 @@ Shader "#NAME#"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -2005,6 +2061,7 @@ Shader "#NAME#"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -2105,6 +2162,7 @@ Shader "#NAME#"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
 
             HLSLPROGRAM
 
@@ -2142,6 +2200,7 @@ Shader "#NAME#"
             Name "DEPTHNORMALS"
             Tags {"LightMode" = "DepthNormals"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
 
             HLSLPROGRAM
 
@@ -2190,6 +2249,7 @@ Shader "#NAME#"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -2279,6 +2339,7 @@ Shader "#NAME#"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -2371,6 +2432,7 @@ Shader "#NAME#"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -2487,6 +2549,7 @@ Shader "#NAME#"
                 ZFail [_StencilZFail]
             }
             Cull Back
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -2547,6 +2610,7 @@ Shader "#NAME#"
                 Pass Replace
             }
             Cull Back
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]

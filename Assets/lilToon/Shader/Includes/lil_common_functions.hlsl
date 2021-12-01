@@ -283,7 +283,7 @@ float3 lilSRGBToLinear(float3 col)
     return col * (col * (col * 0.305306011 + 0.682171111) + 0.012522878);
 }
 
-float3 lilBlendColor(float3 dstCol, float3 srcCol, float srcA, uint blendMode)
+float3 lilBlendColor(float3 dstCol, float3 srcCol, float3 srcA, uint blendMode)
 {
     float3 ad = dstCol + srcCol;
     float3 mu = dstCol * srcCol;
@@ -293,6 +293,11 @@ float3 lilBlendColor(float3 dstCol, float3 srcCol, float srcA, uint blendMode)
     if(blendMode == 2) outCol = max(ad - mu, dstCol); // Screen
     if(blendMode == 3) outCol = mu;                   // Multiply
     return lerp(dstCol, outCol, srcA);
+}
+
+float3 lilBlendColor(float3 dstCol, float3 srcCol, float srcA, uint blendMode)
+{
+    return lilBlendColor(dstCol, srcCol, float3(srcA,srcA,srcA), blendMode);
 }
 
 float lilLuminance(float3 rgb)

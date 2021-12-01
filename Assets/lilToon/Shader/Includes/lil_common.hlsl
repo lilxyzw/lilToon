@@ -92,6 +92,7 @@ struct lilFragData
     float3 N;
     float3 V;
     float3 L;
+    float3 origN;
     float3 origL;
     float3 headV;
     float3 reflectionN;
@@ -163,6 +164,7 @@ lilFragData lilInitFragData()
     fd.N = 0.0;
     fd.V = 0.0;
     fd.L = float3(0.0, 1.0, 0.0);
+    fd.origN = 0.0;
     fd.origL = float3(0.0, 1.0, 0.0);
     fd.headV = 0.0;
     fd.reflectionN = 0.0;

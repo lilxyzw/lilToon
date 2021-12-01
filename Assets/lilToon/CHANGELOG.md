@@ -4,13 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.6] - 2021-12-01
+### Added
+- Custom UV for some textures
+- `Normal Map Strength` to each function
+- `Blur` properties for MatCap
+- Adjustment properties to alpha mask and AO mask
+- Properties for non-AudioLink compatible worlds
+- Spectrum display for AudioLink
+- A feature to customize shader safety fallback in VRChat
+
+### Changed
+- Changed to use G channel of AO map as range of 2nd shadow color
+- Changed to use each RGB channel of a MatCap mask
+- Changed to remove custom UVs that had little impact on performance from shader settings and always enable them
+- Changed sampler to trilinear
+
+### Fixed
+- Fixed an issue where the ForwardAdd path did not reflect the transparency of the refraction shader
+- Fixed refraction / gem shader rendering
+- Fixed an issue where the tessellation shader wasn't handling fogs well
+- Fixed an issue where MatCap uv calculation of lite version wasn't working well in HDRP
+
 ## [1.2.5] - 2021-11-21
 ### Fixed
 - Fixed an issue where the fur shader wasn't handling fogs well
 
 ## [1.2.4] - 2021-11-20
 ### Added
-- `Border` and` Blur` properties for toon specular
+- `Border` and `Blur` properties for toon specular
 - UV Mode in Emission
 - `uint vertexID : SV_VertexID` to the input of the appdata structure
 - Support for Light Layers (URP)

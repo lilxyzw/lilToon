@@ -30,6 +30,7 @@ namespace lilToon
             {
                 string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
                 lilToonInspector.RewriteReceiveShadow(shaderPath, isShadowReceive);
+                lilToonInspector.RewriteZClip(shaderPath);
             }
 
             lilToonInspector.ReimportPassShaders();

@@ -13,7 +13,9 @@
     SAMPLER(sampler_DitherMaskLOD);
 #endif
 
-SAMPLER(sampler_linear_repeat);
+SAMPLER(sampler_trilinear_repeat);
+//SAMPLER(sampler_linear_repeat);
+#define sampler_linear_repeat sampler_trilinear_repeat
 SAMPLER(sampler_linear_clamp);
 
 #if defined(LIL_BRP)
@@ -142,10 +144,10 @@ SAMPLER(sampler_linear_clamp);
     #define Exists_Emission2ndBlendMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_AUDIOLINK_MASK)
-    #define Exists_AudioLinkMask    true
+#if defined(LIL_FEATURE_AUDIOLINK)
+    #define Exists_AudioLinkMask        true
 #else
-    #define Exists_AudioLinkMask    false
+    #define Exists_AudioLinkMask        false
 #endif
 
 #if defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
@@ -284,6 +286,7 @@ SAMPLER(sampler_linear_clamp);
     float   _MainGradationStrength;
     float   _Main2ndTexAngle;
     float   _Main3rdTexAngle;
+    float   _AlphaMaskScale;
     float   _AlphaMaskValue;
     uint    _Main2ndTexBlendMode;
     uint    _Main3rdTexBlendMode;
@@ -344,9 +347,11 @@ SAMPLER(sampler_linear_clamp);
         float4  _ShadowColor;
         float4  _Shadow2ndColor;
         float4  _ShadowBorderColor;
+        float4  _ShadowAOShift;
     #endif
     #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
         float4  _BacklightColor;
+        float4  _BacklightColorTex_ST;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION)
         float4  _EmissionColor;
@@ -369,32 +374,41 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_NORMAL_2ND)
         float4  _Bump2ndMap_ST;
+        float4  _Bump2ndScaleMask_ST;
     #endif
     #if defined(LIL_MULTI_INPUTS_ANISOTROPY)
         float4  _AnisotropyTangentMap_ST;
+        float4  _AnisotropyScaleMask_ST;
         float4  _AnisotropyShiftNoiseMask_ST;
     #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION)
         float4  _ReflectionColor;
+        float4  _SmoothnessTex_ST;
+        float4  _MetallicGlossMap_ST;
+        float4  _ReflectionColorTex_ST;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP)
         float4  _MatCapColor;
         float4  _MatCapTex_ST;
+        float4  _MatCapBlendMask_ST;
         float4  _MatCapBlendUV1;
         float4  _MatCapBumpMap_ST;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP_2ND)
         float4  _MatCap2ndColor;
         float4  _MatCap2ndTex_ST;
+        float4  _MatCap2ndBlendMask_ST;
         float4  _MatCap2ndBlendUV1;
         float4  _MatCap2ndBumpMap_ST;
     #endif
     #if defined(LIL_MULTI_INPUTS_RIM)
         float4  _RimColor;
+        float4  _RimColorTex_ST;
         float4  _RimIndirColor;
     #endif
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         float4  _GlitterColor;
+        float4  _GlitterColorTex_ST;
         float4  _GlitterParams1;
         float4  _GlitterParams2;
     #endif
@@ -403,7 +417,9 @@ SAMPLER(sampler_linear_clamp);
         float4  _DistanceFadeColor;
     #endif
     #if defined(LIL_MULTI_INPUTS_AUDIOLINK)
+        float4  _AudioLinkDefaultValue;
         float4  _AudioLinkUVParams;
+        float4  _AudioLinkStart;
         float4  _AudioLinkVertexUVParams;
         float4  _AudioLinkVertexStart;
         float4  _AudioLinkVertexStrength;
@@ -462,13 +478,16 @@ SAMPLER(sampler_linear_clamp);
         float   _Main3rdDissolveNoiseStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_ALPHAMASK)
+        float   _AlphaMaskScale;
         float   _AlphaMaskValue;
     #endif
     float   _BackfaceForceShadow;
     #if defined(LIL_MULTI_INPUTS_SHADOW)
         float   _ShadowStrength;
+        float   _ShadowNormalStrength;
         float   _ShadowBorder;
         float   _ShadowBlur;
+        float   _Shadow2ndNormalStrength;
         float   _Shadow2ndBorder;
         float   _Shadow2ndBlur;
         float   _ShadowMainStrength;
@@ -476,6 +495,7 @@ SAMPLER(sampler_linear_clamp);
         float   _ShadowBorderRange;
     #endif
     #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
+        float   _BacklightNormalStrength;
         float   _BacklightBorder;
         float   _BacklightBlur;
         float   _BacklightDirectivity;
@@ -504,8 +524,10 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_MULTI_INPUTS_REFLECTION) || defined(LIL_GEM)
         float   _Smoothness;
         float   _Reflectance;
+        float   _SpecularNormalStrength;
         float   _SpecularBorder;
         float   _SpecularBlur;
+        float   _ReflectionNormalStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION)
         float   _Metallic;
@@ -516,6 +538,8 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCapShadowMask;
         float   _MatCapVRParallaxStrength;
         float   _MatCapBackfaceMask;
+        float   _MatCapLod;
+        float   _MatCapNormalStrength;
         float   _MatCapBumpScale;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP_2ND)
@@ -524,9 +548,12 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCap2ndShadowMask;
         float   _MatCap2ndVRParallaxStrength;
         float   _MatCap2ndBackfaceMask;
+        float   _MatCap2ndLod;
+        float   _MatCap2ndNormalStrength;
         float   _MatCap2ndBumpScale;
     #endif
     #if defined(LIL_MULTI_INPUTS_RIM)
+        float   _RimNormalStrength;
         float   _RimBorder;
         float   _RimBlur;
         float   _RimFresnelPower;
@@ -541,6 +568,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         float   _GlitterMainStrength;
+        float   _GlitterNormalStrength;
         float   _GlitterEnableLighting;
         float   _GlitterShadowMask;
         float   _GlitterVRParallaxStrength;
@@ -561,6 +589,10 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_MULTI_INPUTS_PARALLAX)
         float   _Parallax;
         float   _ParallaxOffset;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_AUDIOLINK)
+        float   _AudioLink2EmissionGrad;
+        float   _AudioLink2Emission2ndGrad;
     #endif
     #if defined(LIL_MULTI_INPUTS_DISSOLVE)
         float   _DissolveNoiseStrength;
@@ -775,28 +807,26 @@ SAMPLER(sampler_linear_clamp);
         float4  _ShadowColor;
         float4  _Shadow2ndColor;
         float4  _ShadowBorderColor;
+        float4  _ShadowAOShift;
     #endif
 
     // Backlight
     #if defined(LIL_FEATURE_BACKLIGHT)
         float4  _BacklightColor;
+        float4  _BacklightColorTex_ST;
     #endif
 
     // Emission
     #if defined(LIL_FEATURE_EMISSION_1ST)
         float4  _EmissionColor;
         float4  _EmissionBlink;
-        #if defined(LIL_FEATURE_EMISSION_UV)
-            float4  _EmissionMap_ST;
-            #if defined(LIL_FEATURE_ANIMATE_EMISSION_UV)
-                float4  _EmissionMap_ScrollRotate;
-            #endif
+        float4  _EmissionMap_ST;
+        #if defined(LIL_FEATURE_ANIMATE_EMISSION_UV)
+            float4  _EmissionMap_ScrollRotate;
         #endif
-        #if defined(LIL_FEATURE_EMISSION_MASK_UV)
-            float4  _EmissionBlendMask_ST;
-            #if defined(LIL_FEATURE_ANIMATE_EMISSION_MASK_UV)
-                float4  _EmissionBlendMask_ScrollRotate;
-            #endif
+        float4  _EmissionBlendMask_ST;
+        #if defined(LIL_FEATURE_ANIMATE_EMISSION_MASK_UV)
+            float4  _EmissionBlendMask_ScrollRotate;
         #endif
     #endif
 
@@ -804,17 +834,13 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_EMISSION_2ND)
         float4  _Emission2ndColor;
         float4  _Emission2ndBlink;
-        #if defined(LIL_FEATURE_EMISSION_UV)
-            float4  _Emission2ndMap_ST;
-            #if defined(LIL_FEATURE_ANIMATE_EMISSION_UV)
-                float4  _Emission2ndMap_ScrollRotate;
-            #endif
+        float4  _Emission2ndMap_ST;
+        #if defined(LIL_FEATURE_ANIMATE_EMISSION_UV)
+            float4  _Emission2ndMap_ScrollRotate;
         #endif
-        #if defined(LIL_FEATURE_EMISSION_MASK_UV)
-            float4  _Emission2ndBlendMask_ST;
-            #if defined(LIL_FEATURE_ANIMATE_EMISSION_MASK_UV)
-                float4  _Emission2ndBlendMask_ScrollRotate;
-            #endif
+        float4  _Emission2ndBlendMask_ST;
+        #if defined(LIL_FEATURE_ANIMATE_EMISSION_MASK_UV)
+            float4  _Emission2ndBlendMask_ScrollRotate;
         #endif
     #endif
 
@@ -826,23 +852,29 @@ SAMPLER(sampler_linear_clamp);
     // Normal Map 2nd
     #if defined(LIL_FEATURE_NORMAL_2ND)
         float4  _Bump2ndMap_ST;
+        float4  _Bump2ndScaleMask_ST;
     #endif
 
     // Anisotropy
     #if defined(LIL_FEATURE_ANISOTROPY)
         float4  _AnisotropyTangentMap_ST;
+        float4  _AnisotropyScaleMask_ST;
         float4  _AnisotropyShiftNoiseMask_ST;
     #endif
 
     // Reflection
     #if defined(LIL_FEATURE_REFLECTION)
         float4  _ReflectionColor;
+        float4  _SmoothnessTex_ST;
+        float4  _MetallicGlossMap_ST;
+        float4  _ReflectionColorTex_ST;
     #endif
 
     // MatCap
     #if defined(LIL_FEATURE_MATCAP)
         float4  _MatCapColor;
         float4  _MatCapTex_ST;
+        float4  _MatCapBlendMask_ST;
         float4  _MatCapBlendUV1;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             float4  _MatCapBumpMap_ST;
@@ -853,6 +885,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_MATCAP_2ND)
         float4  _MatCap2ndColor;
         float4  _MatCap2ndTex_ST;
+        float4  _MatCap2ndBlendMask_ST;
         float4  _MatCap2ndBlendUV1;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             float4  _MatCap2ndBumpMap_ST;
@@ -862,27 +895,31 @@ SAMPLER(sampler_linear_clamp);
     // Rim Light
     #if defined(LIL_FEATURE_RIMLIGHT)
         float4  _RimColor;
+        float4  _RimColorTex_ST;
         #if defined(LIL_FEATURE_RIMLIGHT_DIRECTION)
-            float4 _RimIndirColor;
+            float4  _RimIndirColor;
         #endif
     #endif
 
     // Glitter
     #if defined(LIL_FEATURE_GLITTER)
         float4  _GlitterColor;
-        float4 _GlitterParams1;
-        float4 _GlitterParams2;
+        float4  _GlitterColorTex_ST;
+        float4  _GlitterParams1;
+        float4  _GlitterParams2;
     #endif
 
     // Distance Fade
     #if defined(LIL_FEATURE_DISTANCE_FADE)
-        float4 _DistanceFade;
-        float4 _DistanceFadeColor;
+        float4  _DistanceFade;
+        float4  _DistanceFadeColor;
     #endif
 
     // AudioLink
     #if defined(LIL_FEATURE_AUDIOLINK)
+        float4  _AudioLinkDefaultValue;
         float4  _AudioLinkUVParams;
+        float4  _AudioLinkStart;
         #if defined(LIL_FEATURE_AUDIOLINK_VERTEX)
             float4  _AudioLinkVertexUVParams;
             float4  _AudioLinkVertexStart;
@@ -972,13 +1009,16 @@ SAMPLER(sampler_linear_clamp);
         #endif
     #endif
     #if defined(LIL_FEATURE_ALPHAMASK)
+        float   _AlphaMaskScale;
         float   _AlphaMaskValue;
     #endif
     #if defined(LIL_FEATURE_SHADOW)
         float   _BackfaceForceShadow;
         float   _ShadowStrength;
+        float   _ShadowNormalStrength;
         float   _ShadowBorder;
         float   _ShadowBlur;
+        float   _Shadow2ndNormalStrength;
         float   _Shadow2ndBorder;
         float   _Shadow2ndBlur;
         float   _ShadowMainStrength;
@@ -986,6 +1026,7 @@ SAMPLER(sampler_linear_clamp);
         float   _ShadowBorderRange;
     #endif
     #if defined(LIL_FEATURE_BACKLIGHT)
+        float   _BacklightNormalStrength;
         float   _BacklightBorder;
         float   _BacklightBlur;
         float   _BacklightDirectivity;
@@ -1014,8 +1055,10 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_REFLECTION) || defined(LIL_GEM)
         float   _Smoothness;
         float   _Reflectance;
+        float   _SpecularNormalStrength;
         float   _SpecularBorder;
         float   _SpecularBlur;
+        float   _ReflectionNormalStrength;
     #endif
     #if defined(LIL_FEATURE_REFLECTION)
         float   _Metallic;
@@ -1026,6 +1069,8 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCapShadowMask;
         float   _MatCapVRParallaxStrength;
         float   _MatCapBackfaceMask;
+        float   _MatCapLod;
+        float   _MatCapNormalStrength;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             float   _MatCapBumpScale;
         #endif
@@ -1036,11 +1081,14 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCap2ndShadowMask;
         float   _MatCap2ndVRParallaxStrength;
         float   _MatCap2ndBackfaceMask;
+        float   _MatCap2ndLod;
+        float   _MatCap2ndNormalStrength;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             float   _MatCap2ndBumpScale;
         #endif
     #endif
     #if defined(LIL_FEATURE_RIMLIGHT)
+        float   _RimNormalStrength;
         float   _RimBorder;
         float   _RimBlur;
         float   _RimFresnelPower;
@@ -1057,6 +1105,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FEATURE_GLITTER)
         float   _GlitterMainStrength;
+        float   _GlitterNormalStrength;
         float   _GlitterEnableLighting;
         float   _GlitterShadowMask;
         float   _GlitterVRParallaxStrength;
@@ -1082,8 +1131,10 @@ SAMPLER(sampler_linear_clamp);
         float   _Parallax;
         float   _ParallaxOffset;
     #endif
-
-    // Dissolve
+    #if defined(LIL_FEATURE_AUDIOLINK)
+        float   _AudioLink2EmissionGrad;
+        float   _AudioLink2Emission2ndGrad;
+    #endif
     #if defined(LIL_FEATURE_DISSOLVE) &&  defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
         float   _DissolveNoiseStrength;
     #endif
@@ -1138,10 +1189,10 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_GLITTER)
         uint    _GlitterUVMode;
     #endif
-    #if defined(LIL_FEATURE_EMISSION_1ST) && defined(LIL_FEATURE_EMISSION_UV)
+    #if defined(LIL_FEATURE_EMISSION_1ST)
         uint    _EmissionMap_UVMode;
     #endif
-    #if defined(LIL_FEATURE_EMISSION_2ND) && defined(LIL_FEATURE_EMISSION_UV)
+    #if defined(LIL_FEATURE_EMISSION_2ND)
         uint    _Emission2ndMap_UVMode;
     #endif
     #if defined(LIL_FEATURE_AUDIOLINK)

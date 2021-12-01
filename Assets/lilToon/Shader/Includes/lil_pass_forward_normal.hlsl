@@ -351,6 +351,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
                 fd.nvabs = abs(dot(fd.N, fd.V));
                 fd.uvRim = float2(fd.nvabs,fd.nvabs);
             #endif
+            fd.origN = normalize(input.normalWS);
         #endif
         fd.reflectionN = fd.N;
         fd.matcapN = fd.N;
@@ -440,7 +441,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Premultiply
-        #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+        #if LIL_RENDER == 2
             fd.col.rgb *= fd.col.a;
         #endif
 
@@ -450,7 +451,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         #if defined(LIL_REFRACTION) && !defined(LIL_PASS_FORWARDADD)
             #if defined(LIL_REFRACTION_BLUR2) && defined(LIL_FEATURE_REFLECTION)
                 fd.smoothness = _Smoothness;
-                if(Exists_SmoothnessTex) fd.smoothness *= LIL_SAMPLE_2D(_SmoothnessTex, sampler_MainTex, fd.uvMain).r;
+                if(Exists_SmoothnessTex) fd.smoothness *= LIL_SAMPLE_2D_ST(_SmoothnessTex, sampler_MainTex, fd.uvMain).r;
                 fd.perceptualRoughness = fd.perceptualRoughness - fd.smoothness * fd.perceptualRoughness;
                 fd.roughness = fd.perceptualRoughness * fd.perceptualRoughness;
             #endif

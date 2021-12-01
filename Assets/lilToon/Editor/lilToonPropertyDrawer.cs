@@ -484,6 +484,34 @@ namespace lilToon
         }
     }
 
+    public class lilFFFF : MaterialPropertyDrawer
+    {
+        // [lilFFFF]
+        public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
+        {
+            string[] labels = label.Split('|');
+            float param1 = prop.vectorValue.x;
+            float param2 = prop.vectorValue.y;
+            float param3 = prop.vectorValue.z;
+            float param4 = prop.vectorValue.w;
+
+            Rect position1 = EditorGUILayout.GetControlRect();
+            Rect position2 = EditorGUILayout.GetControlRect();
+            Rect position3 = EditorGUILayout.GetControlRect();
+
+            EditorGUI.BeginChangeCheck();
+            param1 = EditorGUI.FloatField(position, labels[0], param1);
+            param2 = EditorGUI.FloatField(position1, labels[1], param2);
+            param3 = EditorGUI.FloatField(position2, labels[2], param3);
+            param4 = EditorGUI.FloatField(position3, labels[3], param4);
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.vectorValue = new Vector4(param1, param2, param3, param4);
+            }
+        }
+    }
+
     public class lilFFFB : MaterialPropertyDrawer
     {
         // [lilFFFB]
@@ -495,7 +523,6 @@ namespace lilToon
             float param3 = prop.vectorValue.z;
             bool param4 = (prop.vectorValue.w != 0.0f);
 
-            EditorGUI.indentLevel++;
             Rect position1 = EditorGUILayout.GetControlRect();
             Rect position2 = EditorGUILayout.GetControlRect();
             Rect position3 = EditorGUILayout.GetControlRect();
@@ -505,7 +532,6 @@ namespace lilToon
             param2 = EditorGUI.FloatField(position1, labels[1], param2);
             param3 = EditorGUI.FloatField(position2, labels[2], param3);
             param4 = EditorGUI.Toggle(position3, labels[3], param4);
-            EditorGUI.indentLevel--;
 
             if(EditorGUI.EndChangeCheck())
             {
@@ -514,23 +540,30 @@ namespace lilToon
         }
     }
 
-    public class lilALUVMode : MaterialPropertyDrawer
+    public class lilFRFR : MaterialPropertyDrawer
     {
-        // [lilALUVMode]
+        // [lilFRFR]
         public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
         {
             string[] labels = label.Split('|');
-            float value = prop.floatValue;
+            float param1 = prop.vectorValue.x;
+            float param2 = prop.vectorValue.y;
+            float param3 = prop.vectorValue.z;
+            float param4 = prop.vectorValue.w;
+
+            Rect position1 = EditorGUILayout.GetControlRect();
+            Rect position2 = EditorGUILayout.GetControlRect();
+            Rect position3 = EditorGUILayout.GetControlRect();
 
             EditorGUI.BeginChangeCheck();
-            EditorGUI.showMixedValue = prop.hasMixedValue;
-            if(labels.Length == 5) value = (float)EditorGUI.Popup(position, labels[0], (int)prop.floatValue, new String[]{labels[1],labels[2],labels[3],labels[4]});
-            if(labels.Length == 4) value = (float)EditorGUI.Popup(position, labels[0], (int)prop.floatValue, new String[]{labels[1],labels[2],labels[3]});
-            EditorGUI.showMixedValue = false;
+            param1 = EditorGUI.FloatField(position, labels[0], param1);
+            param2 = EditorGUI.Slider(position1, labels[1], param2, 0.0f, 1.0f);
+            param3 = EditorGUI.FloatField(position2, labels[2], param3);
+            param4 = EditorGUI.Slider(position3, labels[3], param4, 0.0f, 1.0f);
 
             if(EditorGUI.EndChangeCheck())
             {
-                prop.floatValue = value;
+                prop.vectorValue = new Vector4(param1, param2, param3, param4);
             }
         }
     }

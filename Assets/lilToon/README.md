@@ -1,5 +1,5 @@
 # lilToon
-Version 1.2.5
+Version 1.2.6
 
 # Overview
 This shader is developed for services using avatars (VRChat, etc.) and has the following features.
@@ -16,10 +16,12 @@ Supported Unity versions
 Tested version
 - Unity 2017.1.0f3
 - Unity 2018.4.20f1 (Built-in RP / LWRP 4.0.0 / HDRP 4.0.0)
+- Unity 2019.2.0f1 (Built-in RP / LWRP 6.9.0 / HDRP 6.9.0)
 - Unity 2019.3.0f6  (Built-in RP / URP 7.1.8 / HDRP 7.1.8)
 - Unity 2019.4.31f1 (Built-in RP / URP 7.7.1 / HDRP 7.7.1)
 - Unity 2020.3.20f1 (Built-in RP / URP 10.6.0 / HDRP 10.6.0)
-- Unity 2021.1.24f1 (Built-in RP / URP 12.0.0 / HDRP 12.0.0)
+- Unity 2021.1.24f1 (Built-in RP / URP 11.0.0 / HDRP 11.0.0)
+- Unity 2021.2.2f1 (Built-in RP / URP 12.1.1 / HDRP 12.1.1)
 
 Supported Shader Models
 - Normal: SM4.0 / ES3.0 or later
@@ -30,8 +32,8 @@ Supported Shader Models
 Supported Rendering Pipelines
 - Built-in Render Pipeline
 - Lightweight Render Pipeline 4.0.0 - 6.9.1
-- Universal Render Pipeline 7.0.0 - 12.0.0
-- High Definition Render Pipeline 4.0.0 - 12.0.0
+- Universal Render Pipeline 7.0.0 - 12.1.1
+- High Definition Render Pipeline 4.0.0 - 12.1.1
 
 # Features
 - Main color x3 layers (Decal, Layer mask, Gif animation, Normal / Additive / Multiplicative / Screen blending)

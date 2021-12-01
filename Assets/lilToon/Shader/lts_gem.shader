@@ -87,7 +87,8 @@ Shader "Hidden/lilToonGem"
         // Alpha Mask
         [lilEnumLabel]  _AlphaMaskMode              ("AlphaMask|", Int) = 0
         [NoScaleOffset] _AlphaMask                  ("AlphaMask", 2D) = "white" {}
-                        _AlphaMaskValue             ("AlphaMaskValue", Range(-1,1)) = 0
+                        _AlphaMaskScale             ("Scale", Float) = 1
+                        _AlphaMaskValue             ("Offset", Float) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // NormalMap
@@ -127,19 +128,22 @@ Shader "Hidden/lilToonGem"
         // Shadow
         [lilToggleLeft] _UseShadow                  ("Use Shadow", Int) = 0
         [lilToggle]     _ShadowReceive              ("Receive Shadow", Int) = 0
+                        _ShadowStrength             ("Strength", Range(0, 1)) = 1
+        [NoScaleOffset] _ShadowStrengthMask         ("Strength", 2D) = "white" {}
+        [lilFFFF]       _ShadowAOShift              ("1st Scale|1st Offset|2nd Scale|2nd Offset", Vector) = (1,0,1,0)
+                        _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
+        [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
+                        _ShadowNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
                         _ShadowBorder               ("Border", Range(0, 1)) = 0.5
         [NoScaleOffset] _ShadowBorderMask           ("Border", 2D) = "white" {}
                         _ShadowBlur                 ("Blur", Range(0, 1)) = 0.1
         [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
-                        _ShadowStrength             ("Strength", Range(0, 1)) = 1
-        [NoScaleOffset] _ShadowStrengthMask         ("Strength", 2D) = "white" {}
-                        _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
-        [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
-                        _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
-                        _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
                         _Shadow2ndColor             ("Shadow 2nd Color", Color) = (0,0,0,0)
         [NoScaleOffset] _Shadow2ndColorTex          ("Shadow 2nd Color", 2D) = "black" {}
-                        _ShadowMainStrength         ("Main Color Strength", Range(0, 1)) = 1
+                        _Shadow2ndNormalStrength    ("Normal Strength", Range(0, 1)) = 1.0
+                        _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
+                        _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
+                        _ShadowMainStrength         ("Contrast", Range(0, 1)) = 1
                         _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 0
                         _ShadowBorderColor          ("Border Color", Color) = (1,0,0,1)
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
@@ -159,9 +163,11 @@ Shader "Hidden/lilToonGem"
         [lilToggle]     _ApplySpecular              ("Apply Specular", Int) = 1
         [lilToggle]     _ApplySpecularFA            ("Apply Specular in ForwardAdd", Int) = 1
         [lilToggle]     _SpecularToon               ("Specular Toon", Int) = 1
+                        _SpecularNormalStrength     ("Normal Strength", Range(0, 1)) = 1.0
                         _SpecularBorder             ("Border", Range(0, 1)) = 0.5
                         _SpecularBlur               ("Blur", Range(0, 1)) = 0.0
         [lilToggle]     _ApplyReflection            ("Apply Reflection", Int) = 0
+                        _ReflectionNormalStrength   ("Normal Strength", Range(0, 1)) = 1.0
         [lilHDR]        _ReflectionColor            ("Color", Color) = (1,1,1,1)
         [NoScaleOffset] _ReflectionColorTex         ("Color", 2D) = "white" {}
         [lilToggle]     _ReflectionApplyTransparency ("Apply Transparency", Int) = 1
@@ -180,8 +186,10 @@ Shader "Hidden/lilToonGem"
                         _MatCapEnableLighting       ("Enable Lighting", Range(0, 1)) = 1
                         _MatCapShadowMask           ("Shadow Mask", Range(0, 1)) = 0
         [lilToggle]     _MatCapBackfaceMask         ("Backface Mask", Int) = 0
+                        _MatCapLod                  ("Blur", Range(0, 10)) = 0
         [lilEnum]       _MatCapBlendMode            ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCapApplyTransparency    ("Apply Transparency", Int) = 1
+                        _MatCapNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
         [lilToggle]     _MatCapCustomNormal         ("MatCap Custom Normal Map", Int) = 0
         [Normal]        _MatCapBumpMap              ("Normal Map", 2D) = "bump" {}
                         _MatCapBumpScale            ("Scale", Range(-10,10)) = 1
@@ -200,8 +208,10 @@ Shader "Hidden/lilToonGem"
                         _MatCap2ndEnableLighting    ("Enable Lighting", Range(0, 1)) = 1
                         _MatCap2ndShadowMask        ("Shadow Mask", Range(0, 1)) = 0
         [lilToggle]     _MatCap2ndBackfaceMask      ("Backface Mask", Int) = 0
+                        _MatCap2ndLod               ("Blur", Range(0, 10)) = 0
         [lilEnum]       _MatCap2ndBlendMode         ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilToggle]     _MatCap2ndApplyTransparency ("Apply Transparency", Int) = 1
+                        _MatCap2ndNormalStrength    ("Normal Strength", Range(0, 1)) = 1.0
         [lilToggle]     _MatCap2ndCustomNormal      ("MatCap Custom Normal Map", Int) = 0
         [Normal]        _MatCap2ndBumpMap           ("Normal Map", 2D) = "bump" {}
                         _MatCap2ndBumpScale         ("Scale", Range(-10,10)) = 1
@@ -211,6 +221,7 @@ Shader "Hidden/lilToonGem"
         [lilToggleLeft] _UseRim                     ("Use Rim", Int) = 0
         [lilHDR]        _RimColor                   ("Color", Color) = (1,1,1,1)
         [NoScaleOffset] _RimColorTex                ("Texture", 2D) = "white" {}
+                        _RimNormalStrength          ("Normal Strength", Range(0, 1)) = 1.0
                         _RimBorder                  ("Border", Range(0, 1)) = 0.5
                         _RimBlur                    ("Blur", Range(0, 1)) = 0.1
         [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
@@ -232,6 +243,7 @@ Shader "Hidden/lilToonGem"
         [lilHDR]        _GlitterColor               ("Color", Color) = (1,1,1,1)
                         _GlitterColorTex            ("Texture", 2D) = "white" {}
                         _GlitterMainStrength        ("Main Color Strength", Range(0, 1)) = 0
+                        _GlitterNormalStrength      ("Normal Strength", Range(0, 1)) = 1.0
         [lilGlitParam1] _GlitterParams1             ("Tiling|Particle Size|Contrast", Vector) = (256,256,0.16,50)
         [lilGlitParam2] _GlitterParams2             ("Blink Speed|Angle|Blend Light Direction|Color Randomness", Vector) = (0.25,0,0,0)
                         _GlitterEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
@@ -327,15 +339,19 @@ Shader "Hidden/lilToonGem"
         //----------------------------------------------------------------------------------------------------------------------
         // AudioLink
         [lilToggleLeft] _UseAudioLink               ("Use AudioLink", Int) = 0
-        [lilALUVMode]   _AudioLinkUVMode            ("UV Mode|None|Rim|UV|Mask", Int) = 1
+        [lilFRFR]       _AudioLinkDefaultValue      ("Strength|Blink Strength|Blink Speed|Blink Threshold", Vector) = (0.0,0.0,2.0,0.75)
+        [lilEnum]       _AudioLinkUVMode            ("UV Mode|None|Rim|UV|Mask|Mask Spectrum|Position", Int) = 1
         [lilALUVParams] _AudioLinkUVParams          ("Scale|Offset|Angle|Band|Bass|Low Mid|High Mid|Treble", Vector) = (0.25,0,0,0.125)
+        [lilVec3]       _AudioLinkStart             ("Start Position", Vector) = (0.0,0.0,0.0,0.0)
         [NoScaleOffset] _AudioLinkMask              ("Mask", 2D) = "blue" {}
         [lilToggle]     _AudioLink2Main2nd          ("Main 2nd", Int) = 0
         [lilToggle]     _AudioLink2Main3rd          ("Main 3rd", Int) = 0
         [lilToggle]     _AudioLink2Emission         ("Emission", Int) = 0
+        [lilToggle]     _AudioLink2EmissionGrad     ("Emission Grad", Int) = 0
         [lilToggle]     _AudioLink2Emission2nd      ("Emission 2nd", Int) = 0
+        [lilToggle]     _AudioLink2Emission2ndGrad  ("Emission 2nd Grad", Int) = 0
         [lilToggle]     _AudioLink2Vertex           ("Vertex", Int) = 0
-        [lilALUVMode]   _AudioLinkVertexUVMode      ("UV Mode|None|Position|UV|Mask", Int) = 1
+        [lilEnum]       _AudioLinkVertexUVMode      ("UV Mode|None|Position|UV|Mask", Int) = 1
         [lilALUVParams] _AudioLinkVertexUVParams    ("Scale|Offset|Angle|Band|Bass|Low Mid|High Mid|Treble", Vector) = (0.25,0,0,0.125)
         [lilVec3]       _AudioLinkVertexStart       ("Start Position", Vector) = (0.0,0.0,0.0,0.0)
         [lilVec3Float]  _AudioLinkVertexStrength    ("Moving Vector|Normal Strength", Vector) = (0.0,0.0,0.0,1.0)
@@ -367,6 +383,7 @@ Shader "Hidden/lilToonGem"
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlpha      ("DstBlendAlpha", Int) = 10
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOp            ("BlendOp", Int) = 0
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlpha       ("BlendOpAlpha", Int) = 0
+        [lilToggle]                                     _ZClip              ("ZClip", Int) = 1
         [lilToggle]                                     _ZWrite             ("ZWrite", Int) = 0
         [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest              ("ZTest", Int) = 4
         [IntRange]                                      _StencilRef         ("Stencil Reference Value", Range(0, 255)) = 0
@@ -470,6 +487,7 @@ Shader "Hidden/lilToonGem"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -569,6 +587,7 @@ Shader "Hidden/lilToonGem"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -629,6 +648,9 @@ Shader "Hidden/lilToonGem"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -732,6 +754,7 @@ Shader "Hidden/lilToonGem"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -790,6 +813,9 @@ Shader "Hidden/lilToonGem"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -900,6 +926,7 @@ Shader "Hidden/lilToonGem"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -968,6 +995,9 @@ Shader "Hidden/lilToonGem"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -992,6 +1022,9 @@ Shader "Hidden/lilToonGem"
             Name "DEPTHNORMALS"
             Tags {"LightMode" = "DepthNormals"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -1027,6 +1060,7 @@ Shader "Hidden/lilToonGem"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1135,6 +1169,7 @@ Shader "Hidden/lilToonGem"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1201,6 +1236,9 @@ Shader "Hidden/lilToonGem"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -1224,6 +1262,9 @@ Shader "Hidden/lilToonGem"
             Name "DEPTHNORMALS"
             Tags {"LightMode" = "DepthNormals"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -1258,6 +1299,7 @@ Shader "Hidden/lilToonGem"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1374,6 +1416,7 @@ Shader "Hidden/lilToonGem"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1451,6 +1494,7 @@ Shader "Hidden/lilToonGem"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -1491,6 +1535,7 @@ Shader "Hidden/lilToonGem"
                 Pass Replace
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]

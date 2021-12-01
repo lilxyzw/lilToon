@@ -28,6 +28,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -72,6 +73,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -117,6 +119,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_StencilZFail]
             }
 		    Cull [_Cull]
+            ZClip [_ZClip]
 			ZWrite Off
             ZTest LEqual
             ColorMask [_ColorMask]
@@ -124,7 +127,6 @@ Shader "Hidden/ltspass_lite_cutout"
             Blend [_SrcBlendFA] [_DstBlendFA], Zero One
             BlendOp [_BlendOpFA], [_BlendOpAlphaFA]
             AlphaToMask [_AlphaToMask]
-            Fog { Color(0,0,0,0) }
 
             HLSLPROGRAM
 
@@ -223,6 +225,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -269,6 +272,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -330,6 +334,9 @@ Shader "Hidden/ltspass_lite_cutout"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -391,6 +398,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -436,6 +444,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -495,6 +504,9 @@ Shader "Hidden/ltspass_lite_cutout"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -565,6 +577,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -619,6 +632,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -683,6 +697,9 @@ Shader "Hidden/ltspass_lite_cutout"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -707,6 +724,9 @@ Shader "Hidden/ltspass_lite_cutout"
             Name "DEPTHNORMALS"
             Tags {"LightMode" = "DepthNormals"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -742,6 +762,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -806,6 +827,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -859,6 +881,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -921,6 +944,9 @@ Shader "Hidden/ltspass_lite_cutout"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -944,6 +970,9 @@ Shader "Hidden/ltspass_lite_cutout"
             Name "DEPTHNORMALS"
             Tags {"LightMode" = "DepthNormals"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -978,6 +1007,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1051,6 +1081,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1098,6 +1129,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -1176,6 +1208,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -1219,6 +1252,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 ZFail [_StencilZFail]
             }
             Cull Back
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -1262,6 +1296,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 Pass Replace
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -1302,6 +1337,7 @@ Shader "Hidden/ltspass_lite_cutout"
                 Pass Replace
             }
             Cull Back
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]

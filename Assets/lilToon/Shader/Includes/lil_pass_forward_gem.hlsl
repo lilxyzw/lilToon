@@ -110,10 +110,10 @@
         #if defined(LIL_V2F_POSITION_WS)
             LIL_GET_POSITION_WS_DATA(input,fd);
         #endif
-        #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS)
+        #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS)
             LIL_GET_TBN_DATA(input,fd);
         #endif
-        #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_BITANGENT_WS) && defined(LIL_V2F_POSITION_WS)
+        #if defined(LIL_V2F_NORMAL_WS) && defined(LIL_V2F_TANGENT_WS) && defined(LIL_V2F_POSITION_WS)
             LIL_GET_PARALLAX_DATA(input,fd);
         #endif
 

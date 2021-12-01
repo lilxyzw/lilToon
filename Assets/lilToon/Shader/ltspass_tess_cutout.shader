@@ -28,6 +28,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -46,7 +47,7 @@ Shader "Hidden/ltspass_tess_cutout"
             #pragma domain domain
             #pragma require tesshw tessellation
             #pragma multi_compile_fwdbase
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
             #pragma skip_variants DIRLIGHTMAP_COMBINED
@@ -79,6 +80,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -97,7 +99,7 @@ Shader "Hidden/ltspass_tess_cutout"
             #pragma domain domain
             #pragma require tesshw tessellation
             #pragma multi_compile_fwdbase
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
             #pragma skip_variants SHADOWS_SCREEN DIRLIGHTMAP_COMBINED
@@ -128,6 +130,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_StencilZFail]
             }
 		    Cull [_Cull]
+            ZClip [_ZClip]
 			ZWrite Off
             ZTest LEqual
             ColorMask [_ColorMask]
@@ -135,7 +138,6 @@ Shader "Hidden/ltspass_tess_cutout"
             Blend [_SrcBlendFA] [_DstBlendFA], Zero One
             BlendOp [_BlendOpFA], [_BlendOpAlphaFA]
             AlphaToMask [_AlphaToMask]
-            Fog { Color(0,0,0,0) }
 
             HLSLPROGRAM
 
@@ -147,7 +149,7 @@ Shader "Hidden/ltspass_tess_cutout"
             #pragma domain domain
             #pragma require tesshw tessellation
             #pragma multi_compile_fragment POINT DIRECTIONAL SPOT POINT_COOKIE DIRECTIONAL_COOKIE
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
 
@@ -234,6 +236,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -255,7 +258,7 @@ Shader "Hidden/ltspass_tess_cutout"
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
             #pragma multi_compile_fragment _ LIGHTMAP_ON
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -287,6 +290,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -308,7 +312,7 @@ Shader "Hidden/ltspass_tess_cutout"
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
             #pragma multi_compile_fragment _ LIGHTMAP_ON
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -351,6 +355,9 @@ Shader "Hidden/ltspass_tess_cutout"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -412,6 +419,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -433,7 +441,7 @@ Shader "Hidden/ltspass_tess_cutout"
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
             #pragma multi_compile_fragment _ LIGHTMAP_ON
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
 
             // Skip receiving shadow
@@ -464,6 +472,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -485,7 +494,7 @@ Shader "Hidden/ltspass_tess_cutout"
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
             #pragma multi_compile_fragment _ LIGHTMAP_ON
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -526,6 +535,9 @@ Shader "Hidden/ltspass_tess_cutout"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -593,6 +605,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -621,7 +634,7 @@ Shader "Hidden/ltspass_tess_cutout"
             #pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
             #pragma multi_compile_fragment _ LIGHTMAP_ON
             #pragma multi_compile_fragment _ DYNAMICLIGHTMAP_ON
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -654,6 +667,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -677,7 +691,7 @@ Shader "Hidden/ltspass_tess_cutout"
             #pragma multi_compile _ _CLUSTERED_RENDERING
             #pragma multi_compile_fragment _ LIGHTMAP_ON
             #pragma multi_compile_fragment _ DYNAMICLIGHTMAP_ON
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -721,6 +735,9 @@ Shader "Hidden/ltspass_tess_cutout"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -745,6 +762,9 @@ Shader "Hidden/ltspass_tess_cutout"
             Name "DEPTHNORMALS"
             Tags {"LightMode" = "DepthNormals"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -780,6 +800,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -844,6 +865,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -872,7 +894,7 @@ Shader "Hidden/ltspass_tess_cutout"
             #pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
             #pragma multi_compile_fragment _ LIGHTMAP_ON
             #pragma multi_compile_fragment _ DYNAMICLIGHTMAP_ON
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
 
@@ -904,6 +926,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -927,7 +950,7 @@ Shader "Hidden/ltspass_tess_cutout"
             #pragma multi_compile _ _CLUSTERED_RENDERING
             #pragma multi_compile_fragment _ LIGHTMAP_ON
             #pragma multi_compile_fragment _ DYNAMICLIGHTMAP_ON
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma instancing_options renderinglayer
 
@@ -969,6 +992,9 @@ Shader "Hidden/ltspass_tess_cutout"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -992,6 +1018,9 @@ Shader "Hidden/ltspass_tess_cutout"
             Name "DEPTHNORMALS"
             Tags {"LightMode" = "DepthNormals"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -1026,6 +1055,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1096,6 +1126,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1150,6 +1181,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_OutlineStencilZFail]
             }
             Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
             ZWrite [_OutlineZWrite]
             ZTest [_OutlineZTest]
             ColorMask [_OutlineColorMask]
@@ -1231,6 +1263,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -1277,6 +1310,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 ZFail [_StencilZFail]
             }
             Cull Back
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -1323,6 +1357,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 Pass Replace
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -1366,6 +1401,7 @@ Shader "Hidden/ltspass_tess_cutout"
                 Pass Replace
             }
             Cull Back
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]

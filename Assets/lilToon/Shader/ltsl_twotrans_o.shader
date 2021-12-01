@@ -82,6 +82,7 @@ Shader "Hidden/lilToonLiteTwoPassTransparentOutline"
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlphaFA    ("ForwardAdd DstBlendAlpha", Int) = 1
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpFA          ("ForwardAdd BlendOp", Int) = 4
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlphaFA     ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _ZClip              ("ZClip", Int) = 1
         [lilToggle]                                     _ZWrite             ("ZWrite", Int) = 1
         [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest              ("ZTest", Int) = 4
         [IntRange]                                      _StencilRef         ("Stencil Reference Value", Range(0, 255)) = 0
@@ -122,6 +123,7 @@ Shader "Hidden/lilToonLiteTwoPassTransparentOutline"
         [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlendAlphaFA     ("ForwardAdd DstBlendAlpha", Int) = 1
         [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpFA           ("ForwardAdd BlendOp", Int) = 4
         [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpAlphaFA      ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _OutlineZClip               ("ZClip", Int) = 1
         [lilToggle]                                     _OutlineZWrite              ("ZWrite", Int) = 1
         [Enum(UnityEngine.Rendering.CompareFunction)]   _OutlineZTest               ("ZTest", Int) = 2
         [IntRange]                                      _OutlineStencilRef          ("Stencil Reference Value", Range(0, 255)) = 0

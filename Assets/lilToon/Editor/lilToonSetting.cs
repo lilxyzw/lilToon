@@ -16,9 +16,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_RECEIVE_SHADOW;
     public bool LIL_FEATURE_EMISSION_1ST;
     public bool LIL_FEATURE_EMISSION_2ND;
-    public bool LIL_FEATURE_EMISSION_UV;
     public bool LIL_FEATURE_ANIMATE_EMISSION_UV;
-    public bool LIL_FEATURE_EMISSION_MASK_UV;
     public bool LIL_FEATURE_ANIMATE_EMISSION_MASK_UV;
     public bool LIL_FEATURE_EMISSION_GRADATION;
     public bool LIL_FEATURE_NORMAL_1ST;
@@ -57,7 +55,6 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_TEX_MATCAP_MASK;
     public bool LIL_FEATURE_TEX_MATCAP_NORMALMAP;
     public bool LIL_FEATURE_TEX_RIMLIGHT_COLOR;
-    public bool LIL_FEATURE_TEX_AUDIOLINK_MASK;
     public bool LIL_FEATURE_TEX_DISSOLVE_NOISE;
     public bool LIL_FEATURE_TEX_OUTLINE_COLOR;
     public bool LIL_FEATURE_TEX_OUTLINE_WIDTH;

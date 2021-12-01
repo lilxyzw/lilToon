@@ -180,7 +180,7 @@
 #endif
 
 // positionOS
-#if (defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD)) && defined(LIL_FEATURE_LAYER_DISSOLVE) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_DISSOLVE)
+#if (defined(LIL_FEATURE_MAIN2ND) || defined(LIL_FEATURE_MAIN3RD)) && defined(LIL_FEATURE_LAYER_DISSOLVE) || defined(LIL_FEATURE_GLITTER) || defined(LIL_FEATURE_DISSOLVE) || defined(LIL_FEATURE_AUDIOLINK)
     #define LIL_SHOULD_POSITION_OS
 #endif
 
@@ -438,6 +438,15 @@ float3 lilHeadDirection(float3 positionWS)
     #endif
 }
 
+float2 lilCStoGrabUV(float4 positionCS)
+{
+    float2 uvScn = positionCS.xy / _ScreenParams.xy;
+    #if defined(UNITY_SINGLE_PASS_STEREO)
+        uvScn.xy = TransformStereoScreenSpaceTex(uvScn.xy, 1.0);
+    #endif
+    return uvScn;
+}
+
 /*
 // Built-in RP
 #define UnityWorldToViewPos(positionWS)                     lilTransformWStoVS(positionWS)
@@ -595,7 +604,11 @@ float3 lilHeadDirection(float3 positionWS)
         lilGetEnvReflection(viewDirection,normalDirection,perceptualRoughness,positionWS)
 
     // Fog
-    #define LIL_APPLY_FOG_BASE(col,fogCoord)                 UNITY_FOG_LERP_COLOR(col,unity_FogColor,fogCoord)
+    #if defined(LIL_PASS_FORWARDADD)
+        #define LIL_APPLY_FOG_BASE(col,fogCoord)                 UNITY_FOG_LERP_COLOR(col,float4(0,0,0,0),fogCoord)
+    #else
+        #define LIL_APPLY_FOG_BASE(col,fogCoord)                 UNITY_FOG_LERP_COLOR(col,unity_FogColor,fogCoord)
+    #endif
     #define LIL_APPLY_FOG_COLOR_BASE(col,fogCoord,fogColor)  UNITY_FOG_LERP_COLOR(col,fogColor,fogCoord)
     float lilCalcFogFactor(float depth)
     {
@@ -1445,8 +1458,10 @@ float3 lilGetLightMapDirection(float2 uv)
 
 #if !defined(LIL_PASS_FORWARDADD) && (defined(LIL_FEATURE_SHADOW) || defined(LIL_LITE))
     #define LIL_INDLIGHTCOLOR_COORDS(idx)   LIL_NOPERSPECTIVE float3 indLightColor : TEXCOORD##idx;
+    #define LIL_GET_INDLIGHTCOLOR(i,o)      o.indLightColor = i.indLightColor
 #else
     #define LIL_INDLIGHTCOLOR_COORDS(idx)
+    #define LIL_GET_INDLIGHTCOLOR(i,o)
 #endif
 
 // Dir light & indir light
@@ -1625,7 +1640,7 @@ struct lilLightData
 
 #if defined(LIL_USE_ADDITIONALLIGHT_VS) && (defined(VERTEXLIGHT_ON) || !defined(LIL_BRP))
     #define LIL_CALC_VERTEXLIGHT(i,o) \
-        o.vlf.rgb = lilGetAdditionalLights(i.positionWS); \
+        o.vlf.rgb = lilGetAdditionalLights(i.positionWS) * _VertexLightStrength; \
         o.vlf.rgb = lerp(o.vlf.rgb, lilGray(o.vlf.rgb), _MonochromeLighting); \
         o.vlf.rgb = lerp(o.vlf.rgb, 0.0, _AsUnlit)
 #elif defined(LIL_USE_ADDITIONALLIGHT_VS)
@@ -1637,7 +1652,7 @@ struct lilLightData
 // Additional Light PS
 #if defined(LIL_USE_ADDITIONALLIGHT_PS)
     #define LIL_GET_ADDITIONALLIGHT(i,o) \
-        o = lilGetAdditionalLights(i.positionWS); \
+        o = lilGetAdditionalLights(i.positionWS) * _VertexLightStrength; \
         o = lerp(o, lilGray(o), _MonochromeLighting); \
         o = lerp(o, 0.0, _AsUnlit)
 #elif defined(LIL_USE_ADDITIONALLIGHT_VS)

@@ -30,19 +30,22 @@ Shader "Hidden/lilToonFur"
         // Shadow
         [lilToggleLeft] _UseShadow                  ("Use Shadow", Int) = 0
         [lilToggle]     _ShadowReceive              ("Receive Shadow", Int) = 0
+                        _ShadowStrength             ("Strength", Range(0, 1)) = 1
+        [NoScaleOffset] _ShadowStrengthMask         ("Strength", 2D) = "white" {}
+        [lilFFFF]       _ShadowAOShift              ("1st Scale|1st Offset|2nd Scale|2nd Offset", Vector) = (1,0,1,0)
+                        _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
+        [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
+                        _ShadowNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
                         _ShadowBorder               ("Border", Range(0, 1)) = 0.5
         [NoScaleOffset] _ShadowBorderMask           ("Border", 2D) = "white" {}
                         _ShadowBlur                 ("Blur", Range(0, 1)) = 0.1
         [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
-                        _ShadowStrength             ("Strength", Range(0, 1)) = 1
-        [NoScaleOffset] _ShadowStrengthMask         ("Strength", 2D) = "white" {}
-                        _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
-        [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
-                        _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
-                        _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
                         _Shadow2ndColor             ("Shadow 2nd Color", Color) = (0,0,0,0)
         [NoScaleOffset] _Shadow2ndColorTex          ("Shadow 2nd Color", 2D) = "black" {}
-                        _ShadowMainStrength         ("Main Color Strength", Range(0, 1)) = 1
+                        _Shadow2ndNormalStrength    ("Normal Strength", Range(0, 1)) = 1.0
+                        _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
+                        _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
+                        _ShadowMainStrength         ("Contrast", Range(0, 1)) = 1
                         _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 0
                         _ShadowBorderColor          ("Border Color", Color) = (1,0,0,1)
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
@@ -72,6 +75,7 @@ Shader "Hidden/lilToonFur"
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlphaFA    ("ForwardAdd DstBlendAlpha", Int) = 1
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpFA          ("ForwardAdd BlendOp", Int) = 4
         [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlphaFA     ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _ZClip              ("ZClip", Int) = 1
         [lilToggle]                                     _ZWrite             ("ZWrite", Int) = 1
         [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest              ("ZTest", Int) = 4
         [IntRange]                                      _StencilRef         ("Stencil Reference Value", Range(0, 255)) = 0
@@ -115,6 +119,7 @@ Shader "Hidden/lilToonFur"
         [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlendAlphaFA     ("ForwardAdd DstBlendAlpha", Int) = 1
         [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOpFA           ("ForwardAdd BlendOp", Int) = 4
         [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOpAlphaFA      ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _FurZClip               ("ZClip", Int) = 1
         [lilToggle]                                     _FurZWrite              ("ZWrite", Int) = 0
         [Enum(UnityEngine.Rendering.CompareFunction)]   _FurZTest               ("ZTest", Int) = 4
         [IntRange]                                      _FurStencilRef          ("Stencil Reference Value", Range(0, 255)) = 0
@@ -165,6 +170,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -209,6 +215,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_FurStencilZFail]
             }
             Cull [_FurCull]
+            ZClip [_FurZClip]
             ZWrite [_FurZWrite]
             ZTest [_FurZTest]
             ColorMask [_FurColorMask]
@@ -292,6 +299,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -338,6 +346,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_FurStencilZFail]
             }
             Cull [_FurCull]
+            ZClip [_FurZClip]
             ZWrite [_FurZWrite]
             ZTest [_FurZTest]
             ColorMask [_FurColorMask]
@@ -399,6 +408,9 @@ Shader "Hidden/lilToonFur"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -462,6 +474,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -506,6 +519,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_FurStencilZFail]
             }
             Cull [_FurCull]
+            ZClip [_FurZClip]
             ZWrite [_FurZWrite]
             ZTest [_FurZTest]
             ColorMask [_FurColorMask]
@@ -564,6 +578,9 @@ Shader "Hidden/lilToonFur"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -634,6 +651,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -680,6 +698,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_FurStencilZFail]
             }
             Cull [_FurCull]
+            ZClip [_FurZClip]
             ZWrite [_FurZWrite]
             ZTest [_FurZTest]
             ColorMask [_FurColorMask]
@@ -749,6 +768,9 @@ Shader "Hidden/lilToonFur"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -773,6 +795,9 @@ Shader "Hidden/lilToonFur"
             Name "DEPTHNORMALS"
             Tags {"LightMode" = "DepthNormals"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -808,6 +833,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -874,6 +900,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -919,6 +946,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_FurStencilZFail]
             }
             Cull [_FurCull]
+            ZClip [_FurZClip]
             ZWrite [_FurZWrite]
             ZTest [_FurZTest]
             ColorMask [_FurColorMask]
@@ -986,6 +1014,9 @@ Shader "Hidden/lilToonFur"
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -1009,6 +1040,9 @@ Shader "Hidden/lilToonFur"
             Name "DEPTHNORMALS"
             Tags {"LightMode" = "DepthNormals"}
 		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
 
             HLSLPROGRAM
 
@@ -1043,6 +1077,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1117,6 +1152,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_StencilZFail]
             }
             Cull [_Cull]
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             ColorMask [_ColorMask]
@@ -1164,6 +1200,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_FurStencilZFail]
             }
             Cull [_FurCull]
+            ZClip [_FurZClip]
             ZWrite [_FurZWrite]
             ZTest [_FurZTest]
             ColorMask [_FurColorMask]
@@ -1244,6 +1281,7 @@ Shader "Hidden/lilToonFur"
                 ZFail [_StencilZFail]
             }
             Cull Back
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -1286,6 +1324,7 @@ Shader "Hidden/lilToonFur"
                 Pass Replace
             }
             Cull Back
+            ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
             Offset [_OffsetFactor], [_OffsetUnits]
