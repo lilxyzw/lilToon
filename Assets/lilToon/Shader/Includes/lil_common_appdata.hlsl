@@ -48,7 +48,7 @@
     #define LIL_APP_NORMAL
 #endif
 
-#if defined(LIL_REQUIRE_APP_TANGENT) || ((defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) || defined(LIL_GEM)) && defined(LIL_SHOULD_TANGENT) && !defined(LIL_OUTLINE) && !defined(LIL_FUR)) || defined(LIL_PASS_FORWARD_FUR_INCLUDED) || (!defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FUR)) || defined(LIL_BAKER)
+#if defined(LIL_REQUIRE_APP_TANGENT) || ((defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) || defined(LIL_GEM)) && defined(LIL_SHOULD_TANGENT) && !defined(LIL_OUTLINE) && !defined(LIL_FUR)) || defined(LIL_OUTLINE) && defined(LIL_FEATURE_TEX_OUTLINE_NORMAL) || defined(LIL_PASS_FORWARD_FUR_INCLUDED) || (!defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FUR)) || defined(LIL_BAKER)
     #define LIL_APP_TANGENT
 #endif
 

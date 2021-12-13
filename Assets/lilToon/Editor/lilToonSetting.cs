@@ -58,6 +58,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_TEX_DISSOLVE_NOISE;
     public bool LIL_FEATURE_TEX_OUTLINE_COLOR;
     public bool LIL_FEATURE_TEX_OUTLINE_WIDTH;
+    public bool LIL_FEATURE_TEX_OUTLINE_NORMAL;
     public bool LIL_FEATURE_TEX_FUR_NORMAL;
     public bool LIL_FEATURE_TEX_FUR_MASK;
     public bool LIL_FEATURE_TEX_FUR_LENGTH;

@@ -232,6 +232,7 @@ Shader "Hidden/lilToonMultiGem"
                         _RimEnableLighting          ("Enable Lighting", Range(0, 1)) = 1
                         _RimShadowMask              ("Shadow Mask", Range(0, 1)) = 0
         [lilToggle]     _RimBackfaceMask            ("Backface Mask", Int) = 0
+                        _RimVRParallaxStrength      ("VR Parallax Strength", Range(0, 1)) = 1
         [lilToggle]     _RimApplyTransparency       ("Apply Transparency", Int) = 1
                         _RimDirStrength             ("Light direction strength", Range(0, 1)) = 0
                         _RimDirRange                ("Direction range", Range(-1, 1)) = 0
@@ -1650,7 +1651,7 @@ Shader "Hidden/lilToonMultiGem"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent-100"}
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
 
         // Forward Pre
         Pass
@@ -1660,13 +1661,10 @@ Shader "Hidden/lilToonMultiGem"
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                WriteMask 6
+                Ref 0
+                Comp Always
+                Pass Replace
             }
 		    Cull [_Cull]
             Blend One Zero
@@ -1702,13 +1700,10 @@ Shader "Hidden/lilToonMultiGem"
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                WriteMask 6
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull [_Cull]
             ZClip [_ZClip]
@@ -1810,13 +1805,10 @@ Shader "Hidden/lilToonMultiGem"
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                WriteMask 8
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull Back
             ZClip [_ZClip]
@@ -1863,8 +1855,8 @@ Shader "Hidden/lilToonMultiGem"
 
             Stencil
             {
-                WriteMask [_StencilWriteMaskMV]
-                Ref [_StencilRefMV]
+                WriteMask 40
+                Ref 32
                 Comp Always
                 Pass Replace
             }

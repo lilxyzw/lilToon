@@ -1143,13 +1143,10 @@ Shader "Hidden/lilToonFur"
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                WriteMask 6
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull [_Cull]
             ZClip [_ZClip]
@@ -1191,13 +1188,10 @@ Shader "Hidden/lilToonFur"
 
             Stencil
             {
-                Ref [_FurStencilRef]
-                ReadMask [_FurStencilReadMask]
-                WriteMask [_FurStencilWriteMask]
-                Comp [_FurStencilComp]
-                Pass [_FurStencilPass]
-                Fail [_FurStencilFail]
-                ZFail [_FurStencilZFail]
+                WriteMask 6
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull [_FurCull]
             ZClip [_FurZClip]
@@ -1272,13 +1266,10 @@ Shader "Hidden/lilToonFur"
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                WriteMask 8
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull Back
             ZClip [_ZClip]
@@ -1318,8 +1309,8 @@ Shader "Hidden/lilToonFur"
 
             Stencil
             {
-                WriteMask [_StencilWriteMaskMV]
-                Ref [_StencilRefMV]
+                WriteMask 40
+                Ref 32
                 Comp Always
                 Pass Replace
             }

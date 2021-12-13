@@ -338,7 +338,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+55"}
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
         Pass
         {
             Name "FORWARD"
@@ -346,13 +346,10 @@ Shader "_lil/[Optional] lilToonFakeShadow"
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                WriteMask 6
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull [_Cull]
             ZClip [_ZClip]

@@ -1,4 +1,4 @@
-Shader "Hidden/lilToonTessellationCutout"
+Shader "_lil/[Optional] lilToonOutlineOnlyCutout"
 {
     Properties
     {
@@ -419,11 +419,48 @@ Shader "Hidden/lilToonTessellationCutout"
         [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
-        // Tessellation
-                        _TessEdge                   ("Tessellation Edge", Range(1, 100)) = 10
-                        _TessStrength               ("Tessellation Strength", Range(0, 1)) = 0.5
-                        _TessShrink                 ("Tessellation Shrink", Range(0, 1)) = 0.0
-        [IntRange]      _TessFactorMax              ("Tessellation Max", Range(1, 8)) = 3
+        // Outline
+        [lilHDR]        _OutlineColor               ("Outline Color", Color) = (0.8,0.85,0.9,1)
+                        _OutlineTex                 ("Texture", 2D) = "white" {}
+        [lilUVAnim]     _OutlineTex_ScrollRotate    ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
+        [lilHSVG]       _OutlineTexHSVG             ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
+        [lilOLWidth]    _OutlineWidth               ("Width", Range(0,1)) = 0.05
+        [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
+        [lilToggle]     _OutlineFixWidth            ("Fix Width", Int) = 1
+        [lilToggle]     _OutlineVertexR2Width       ("Vertex R -> Width", Int) = 0
+        [NoScaleOffset][Normal] _OutlineVectorTex   ("Vector", 2D) = "bump" {}
+                        _OutlineVectorScale         ("Vector scale", Range(-10,10)) = 1
+                        _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Outline Advanced
+        [lilEnum]                                       _OutlineCull                ("Cull Mode|Off|Front|Back", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlend            ("SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlend            ("DstBlend", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlendAlpha       ("SrcBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlendAlpha       ("DstBlendAlpha", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOp             ("BlendOp", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpAlpha        ("BlendOpAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlendFA          ("ForwardAdd SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlendFA          ("ForwardAdd DstBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineSrcBlendAlphaFA     ("ForwardAdd SrcBlendAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _OutlineDstBlendAlphaFA     ("ForwardAdd DstBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpFA           ("ForwardAdd BlendOp", Int) = 4
+        [Enum(UnityEngine.Rendering.BlendOp)]           _OutlineBlendOpAlphaFA      ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _OutlineZClip               ("ZClip", Int) = 1
+        [lilToggle]                                     _OutlineZWrite              ("ZWrite", Int) = 1
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _OutlineZTest               ("ZTest", Int) = 2
+        [IntRange]                                      _OutlineStencilRef          ("Stencil Reference Value", Range(0, 255)) = 0
+        [IntRange]                                      _OutlineStencilReadMask     ("Stencil ReadMask Value", Range(0, 255)) = 255
+        [IntRange]                                      _OutlineStencilWriteMask    ("Stencil WriteMask Value", Range(0, 255)) = 255
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _OutlineStencilComp         ("Stencil Compare Function", Float) = 8
+        [Enum(UnityEngine.Rendering.StencilOp)]         _OutlineStencilPass         ("Stencil Pass", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _OutlineStencilFail         ("Stencil Fail", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _OutlineStencilZFail        ("Stencil ZFail", Float) = 0
+                                                        _OutlineOffsetFactor        ("Offset Factor", Float) = 0
+                                                        _OutlineOffsetUnits         ("Offset Units", Float) = 0
+        [lilColorMask]                                  _OutlineColorMask           ("Color Mask", Int) = 15
+        [lilToggle]                                     _OutlineAlphaToMask         ("AlphaToMask", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Save (Unused)
@@ -438,10 +475,8 @@ Shader "Hidden/lilToonTessellationCutout"
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
-        UsePass "Hidden/ltspass_tess_cutout/FORWARD"
-        UsePass "Hidden/ltspass_tess_cutout/FORWARD_ADD"
-        UsePass "Hidden/ltspass_tess_cutout/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_tess_cutout/META"
+        UsePass "Hidden/ltspass_cutout/FORWARD_OUTLINE"
+        UsePass "Hidden/ltspass_dummy/FORWARD_ADD"
     }
 //
 // BRP End
@@ -452,10 +487,7 @@ Shader "Hidden/lilToonTessellationCutout"
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
-        UsePass "Hidden/ltspass_tess_cutout/FORWARD"
-        UsePass "Hidden/ltspass_tess_cutout/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_tess_cutout/DEPTHONLY"
-        UsePass "Hidden/ltspass_tess_cutout/META"
+        UsePass "Hidden/ltspass_cutout/FORWARD_OUTLINE"
     }
 */
 // LWRP End
@@ -466,12 +498,7 @@ Shader "Hidden/lilToonTessellationCutout"
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
-        UsePass "Hidden/ltspass_tess_cutout/FORWARD"
-        UsePass "Hidden/ltspass_tess_cutout/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_tess_cutout/DEPTHONLY"
-        UsePass "Hidden/ltspass_tess_cutout/DEPTHNORMALS"
-        UsePass "Hidden/ltspass_tess_cutout/UNIVERSAL2D"
-        UsePass "Hidden/ltspass_tess_cutout/META"
+        UsePass "Hidden/ltspass_cutout/FORWARD_OUTLINE"
     }
 */
 // URP End
@@ -482,11 +509,9 @@ Shader "Hidden/lilToonTessellationCutout"
     SubShader
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest"}
-        UsePass "Hidden/ltspass_tess_cutout/FORWARD"
-        UsePass "Hidden/ltspass_tess_cutout/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_tess_cutout/DEPTHONLY"
-        UsePass "Hidden/ltspass_tess_cutout/MOTIONVECTORS"
-        UsePass "Hidden/ltspass_tess_cutout/META"
+        UsePass "Hidden/ltspass_cutout/FORWARD_OUTLINE"
+        UsePass "Hidden/ltspass_cutout/DEPTHONLY_OUTLINEONLY"
+        UsePass "Hidden/ltspass_cutout/MOTIONVECTORS_OUTLINEONLY"
     }
 */
 // HDRP End

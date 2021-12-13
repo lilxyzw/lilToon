@@ -1,4 +1,4 @@
-Shader "Hidden/lilToonLiteTransparent"
+Shader "_lil/[Optional] lilToonFurOnly"
 {
     Properties
     {
@@ -18,59 +18,52 @@ Shader "Hidden/lilToonLiteTransparent"
                         _MonochromeLighting         ("Monochrome lighting", Range(0,1)) = 0
                         _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
         [lilVec3]       _LightDirectionOverride     ("Light Direction Override", Vector) = (0,0.001,0,0)
-        [NoScaleOffset] _TriMask                    ("TriMask", 2D) = "white" {}
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
         [lilHDR]        _Color                      ("Color", Color) = (1,1,1,1)
                         _MainTex                    ("Texture", 2D) = "white" {}
         [lilUVAnim]     _MainTex_ScrollRotate       ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
+        [lilHSVG]       _MainTexHSVG                ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Shadow
         [lilToggleLeft] _UseShadow                  ("Use Shadow", Int) = 0
-                        _ShadowBorder               ("Border", Range(0, 1)) = 0.5
-                        _ShadowBlur                 ("Blur", Range(0, 1)) = 0.1
+        [lilToggle]     _ShadowReceive              ("Receive Shadow", Int) = 0
+                        _ShadowStrength             ("Strength", Range(0, 1)) = 1
+        [NoScaleOffset] _ShadowStrengthMask         ("Strength", 2D) = "white" {}
+        [lilFFFF]       _ShadowAOShift              ("1st Scale|1st Offset|2nd Scale|2nd Offset", Vector) = (1,0,1,0)
+                        _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
         [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
+                        _ShadowNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
+                        _ShadowBorder               ("Border", Range(0, 1)) = 0.5
+        [NoScaleOffset] _ShadowBorderMask           ("Border", 2D) = "white" {}
+                        _ShadowBlur                 ("Blur", Range(0, 1)) = 0.1
+        [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
+                        _Shadow2ndColor             ("Shadow 2nd Color", Color) = (0,0,0,0)
+        [NoScaleOffset] _Shadow2ndColorTex          ("Shadow 2nd Color", 2D) = "black" {}
+                        _Shadow2ndNormalStrength    ("Normal Strength", Range(0, 1)) = 1.0
                         _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
                         _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
-        [NoScaleOffset] _Shadow2ndColorTex          ("Shadow 2nd Color", 2D) = "black" {}
+                        _ShadowMainStrength         ("Contrast", Range(0, 1)) = 1
                         _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 0
                         _ShadowBorderColor          ("Border Color", Color) = (1,0,0,1)
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
-        // MatCap
-        [lilToggleLeft] _UseMatCap                  ("Use MatCap", Int) = 0
-                        _MatCapTex                  ("Texture", 2D) = "white" {}
-        [lilVec2R]      _MatCapBlendUV1             ("Blend UV1", Vector) = (0,0,0,0)
-        [lilToggle]     _MatCapZRotCancel           ("Z-axis rotation cancellation", Int) = 1
-        [lilToggle]     _MatCapPerspective          ("Fix Perspective", Int) = 1
-                        _MatCapVRParallaxStrength   ("VR Parallax Strength", Range(0, 1)) = 1
-        [lilToggle]     _MatCapMul                  ("Multiply", Int) = 0
+        // Distance Fade
+        [lilHDR]        _DistanceFadeColor          ("Color", Color) = (0,0,0,1)
+        [lilFFFB]       _DistanceFade               ("Start|End|Strength|Fix backface", Vector) = (0.1,0.01,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
-        // Rim
-        [lilToggleLeft] _UseRim                     ("Use Rim", Int) = 0
-        [lilHDR]        _RimColor                   ("Color", Color) = (1,1,1,1)
-                        _RimBorder                  ("Border", Range(0, 1)) = 0.5
-                        _RimBlur                    ("Blur", Range(0, 1)) = 0.1
-        [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
-                        _RimShadowMask              ("Shadow Mask", Range(0, 1)) = 0
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Emmision
-        [lilToggleLeft] _UseEmission                ("Use Emission", Int) = 0
-        [HDR][lilHDR]   _EmissionColor              ("Color", Color) = (1,1,1,1)
-                        _EmissionMap                ("Texture", 2D) = "white" {}
-        [lilUVAnim]     _EmissionMap_ScrollRotate   ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
-        [lilEnum]       _EmissionMap_UVMode         ("UV Mode|UV0|UV1|UV2|UV3|Rim", Int) = 0
-        [lilBlink]      _EmissionBlink              ("Blink Strength|Blink Type|Blink Speed|Blink Offset", Vector) = (0,0,3.141593,0)
+        // Encryption
+        [lilToggle]     _IgnoreEncryption           ("Ignore Encryption", Int) = 0
+                        _Keys                       ("Keys", Vector) = (0,0,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilEnum]                                       _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 5
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 10
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlpha      ("SrcBlendAlpha", Int) = 1
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlpha      ("DstBlendAlpha", Int) = 10
@@ -98,6 +91,50 @@ Shader "Hidden/lilToonLiteTransparent"
         [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Fur
+                        _FurNoiseMask               ("Fur Noise", 2D) = "white" {}
+        [NoScaleOffset] _FurMask                    ("Fur Mask", 2D) = "white" {}
+        [NoScaleOffset] _FurLengthMask              ("Fur Length Mask", 2D) = "white" {}
+        [NoScaleOffset][Normal] _FurVectorTex       ("Fur Vector", 2D) = "bump" {}
+                        _FurVectorScale             ("Fur Vector scale", Range(-10,10)) = 1
+        [lilVec3Float]  _FurVector                  ("Fur Vector|Fur Length", Vector) = (0.0,0.0,1.0,0.2)
+        [lilToggle]     _VertexColor2FurVector      ("VertexColor->Vector", Int) = 0
+                        _FurGravity                 ("Fur Gravity", Range(0,1)) = 0.25
+                        _FurAO                      ("Fur AO", Range(0,1)) = 0
+        [IntRange]      _FurLayerNum                ("Fur Layer Num", Range(1, 6)) = 2
+                        _FurRootOffset              ("Fur Root Offset", Range(-1,0)) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Fur Advanced
+        [lilCullMode]                                   _FurCull                ("Cull Mode|Off|Front|Back", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlend            ("SrcBlend", Int) = 5
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlend            ("DstBlend", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlendAlpha       ("SrcBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlendAlpha       ("DstBlendAlpha", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOp             ("BlendOp", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOpAlpha        ("BlendOpAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlendFA          ("ForwardAdd SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlendFA          ("ForwardAdd DstBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlendAlphaFA     ("ForwardAdd SrcBlendAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlendAlphaFA     ("ForwardAdd DstBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOpFA           ("ForwardAdd BlendOp", Int) = 4
+        [Enum(UnityEngine.Rendering.BlendOp)]           _FurBlendOpAlphaFA      ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _FurZClip               ("ZClip", Int) = 1
+        [lilToggle]                                     _FurZWrite              ("ZWrite", Int) = 0
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _FurZTest               ("ZTest", Int) = 4
+        [IntRange]                                      _FurStencilRef          ("Stencil Reference Value", Range(0, 255)) = 0
+        [IntRange]                                      _FurStencilReadMask     ("Stencil ReadMask Value", Range(0, 255)) = 255
+        [IntRange]                                      _FurStencilWriteMask    ("Stencil WriteMask Value", Range(0, 255)) = 255
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _FurStencilComp         ("Stencil Compare Function", Float) = 8
+        [Enum(UnityEngine.Rendering.StencilOp)]         _FurStencilPass         ("Stencil Pass", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _FurStencilFail         ("Stencil Fail", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _FurStencilZFail        ("Stencil ZFail", Float) = 0
+                                                        _FurOffsetFactor        ("Offset Factor", Float) = 0
+                                                        _FurOffsetUnits         ("Offset Units", Float) = 0
+        [lilColorMask]                                  _FurColorMask           ("Color Mask", Int) = 15
+        [lilToggle]                                     _FurAlphaToMask         ("AlphaToMask", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Save (Unused)
         [HideInInspector] [MainColor]                   _BaseColor          ("Color", Color) = (1,1,1,1)
         [HideInInspector] [MainTexture]                 _BaseMap            ("Texture", 2D) = "white" {}
@@ -109,11 +146,8 @@ Shader "Hidden/lilToonLiteTransparent"
 //
     SubShader
     {
-        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
-        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
-        UsePass "Hidden/ltspass_lite_transparent/FORWARD_ADD"
-        UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_lite_transparent/META"
+        Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
+        UsePass "Hidden/lilToonFur/FORWARD_FUR"
     }
 //
 // BRP End
@@ -123,11 +157,8 @@ Shader "Hidden/lilToonLiteTransparent"
 /*
     SubShader
     {
-        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
-        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
-        UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_lite_transparent/DEPTHONLY"
-        UsePass "Hidden/ltspass_lite_transparent/META"
+        Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
+        UsePass "Hidden/lilToonFur/FORWARD_FUR"
     }
 */
 // LWRP End
@@ -137,13 +168,8 @@ Shader "Hidden/lilToonLiteTransparent"
 /*
     SubShader
     {
-        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
-        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
-        UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_lite_transparent/DEPTHONLY"
-        UsePass "Hidden/ltspass_lite_transparent/DEPTHNORMALS"
-        UsePass "Hidden/ltspass_lite_transparent/UNIVERSAL2D"
-        UsePass "Hidden/ltspass_lite_transparent/META"
+        Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
+        UsePass "Hidden/lilToonFur/FORWARD_FUR"
     }
 */
 // URP End
@@ -154,11 +180,7 @@ Shader "Hidden/lilToonLiteTransparent"
     SubShader
     {
         Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
-        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
-        UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_lite_transparent/DEPTHONLY"
-        UsePass "Hidden/ltspass_lite_transparent/MOTIONVECTORS"
-        UsePass "Hidden/ltspass_lite_transparent/META"
+        UsePass "Hidden/lilToonFur/FORWARD_FUR"
     }
 */
 // HDRP End

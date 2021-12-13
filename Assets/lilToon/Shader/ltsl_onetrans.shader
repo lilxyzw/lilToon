@@ -152,7 +152,7 @@ Shader "Hidden/lilToonLiteOnePassTransparent"
 /*
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+10"}
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
         UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
         UsePass "Hidden/ltspass_lite_transparent/DEPTHONLY"

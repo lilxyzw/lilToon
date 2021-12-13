@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.7] - 2021-12-13
+### 追加
+- 輪郭線を押し出す方向を調整できるノーマルマップを追加
+- 輪郭線のみ、ファーのみのシェーダーを追加
+- リムライトにVR時の視差の強さを調整する機能を追加
+
+### 変更
+- Render Queueを基本設定にも表示
+- HDRPでステンシルを無効化
+- HDRPでファーの影が濃く出るように変更
+
+### 修正
+- Single Pass Instanced環境での屈折シェーダーの動作を修正
+- HDRPでの透過シェーダーのRender Queueを修正
+- HDRPでのモーションベクターの出力を修正
+
 ## [1.2.6] - 2021-12-01
 ### 追加
 - いくつかのテクスチャにカスタムUVを追加

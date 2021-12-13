@@ -1,5 +1,5 @@
 # lilToon
-Version 1.2.6
+Version 1.2.7
 
 # 概要
 アバターを用いたサービス（VRChat等）向けに開発したシェーダーで以下のような特徴があります。
@@ -21,7 +21,7 @@ Unityバージョン
 - Unity 2019.4.31f1 (Built-in RP / URP 7.7.1 / HDRP 7.7.1)
 - Unity 2020.3.20f1 (Built-in RP / URP 10.6.0 / HDRP 10.6.0)
 - Unity 2021.1.24f1 (Built-in RP / URP 11.0.0 / HDRP 11.0.0)
-- Unity 2021.2.2f1 (Built-in RP / URP 12.1.1 / HDRP 12.1.1)
+- Unity 2021.2.6f1 (Built-in RP / URP 12.1.2 / HDRP 12.1.2)
 
 シェーダーモデル
 - 通常版: SM4.0・ES3.0以降

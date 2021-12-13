@@ -82,6 +82,16 @@ LIL_V2F_TYPE vert(appdata input)
     float2 uvMain = lilCalcUV(input.uv0, _MainTex_ST);
 
     //------------------------------------------------------------------------------------------------------------------------------
+    // Object space direction
+    #if defined(LIL_APP_NORMAL) && defined(LIL_APP_TANGENT)
+        float3 bitangentOS = cross(input.normalOS, input.tangentOS.xyz) * (input.tangentOS.w * LIL_NEGATIVE_SCALE);
+        float3x3 tbnOS = float3x3(input.tangentOS.xyz, bitangentOS, input.normalOS);
+    #else
+        float3 bitangentOS = 0.0;
+        float3x3 tbnOS = 0.0;
+    #endif
+
+    //------------------------------------------------------------------------------------------------------------------------------
     // Vertex Modification
     #include "Includes/lil_vert_encryption.hlsl"
     lilCustomVertexOS(input, uvMain, input.positionOS);
@@ -298,6 +308,18 @@ LIL_V2F_TYPE vert(appdata input)
         #else
             // OpenGL
             LIL_V2F_OUT.positionCSOL.z += 0.0001;
+        #endif
+    #endif
+
+    //------------------------------------------------------------------------------------------------------------------------------
+    // Offset z for Less ZTest
+    #if defined(SHADERPASS) && SHADERPASS == SHADERPASS_DEPTH_ONLY && defined(LIL_OUTLINE) && (!defined(LIL_MULTI) || defined(LIL_MULTI) && defined(LIL_MULTI_OUTLINE))
+        #if defined(UNITY_REVERSED_Z)
+            // DirectX
+            LIL_V2F_OUT.positionCS.z -= 0.0001;
+        #else
+            // OpenGL
+            LIL_V2F_OUT.positionCS.z += 0.0001;
         #endif
     #endif
 

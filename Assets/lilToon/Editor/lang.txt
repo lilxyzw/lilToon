@@ -466,6 +466,7 @@ sSettingAnimateOutlineUV	Animate Outline UV	輪郭線UVアニメーション	윤
 sSettingTexOutlineColor	Outline Color Texture	輪郭線色テクスチャ	윤곽선 색상 질감	轮廓颜色纹理	輪廓顏色紋理
 sSettingOutlineToneCorrection	Outline Tone Correction	色調補正	색상 보정	轮廓色调校正	輪廓色調校正
 sSettingTexOutlineWidth	Outline Width Mask	輪郭線太さマスク	윤곽선 두께 마스크	轮廓宽度掩码	輪廓寬度掩碼
+sSettingTexOutlineNormal	Outline Normal Map	輪郭線ノーマルマップ	윤곽선 노멀 맵	轮廓法线贴图	輪廓法線貼圖
 sSettingTexFurNormal	Fur Normal Map	ファーノーマルマップ	퍼 노멀 맵	毛皮法线贴图	毛皮法線貼圖
 sSettingTexFurMask	Fur Mask	ファーマスク	퍼 마스크	毛皮蒙版	毛皮蒙版
 sSettingTexFurLength	Fur Length Mask	ファー長さマスク	퍼 길이 마스크	毛皮长度蒙版	毛皮長度蒙版

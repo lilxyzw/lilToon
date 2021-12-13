@@ -1117,13 +1117,10 @@ Shader "Hidden/ltspass_tess_cutout"
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                WriteMask 6
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull [_Cull]
             ZClip [_ZClip]
@@ -1172,13 +1169,10 @@ Shader "Hidden/ltspass_tess_cutout"
 
             Stencil
             {
-                Ref [_OutlineStencilRef]
-                ReadMask [_OutlineStencilReadMask]
-                WriteMask [_OutlineStencilWriteMask]
-                Comp [_OutlineStencilComp]
-                Pass [_OutlineStencilPass]
-                Fail [_OutlineStencilFail]
-                ZFail [_OutlineStencilZFail]
+                WriteMask 6
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull [_OutlineCull]
             ZClip [_OutlineZClip]
@@ -1254,13 +1248,10 @@ Shader "Hidden/ltspass_tess_cutout"
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                WriteMask 8
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull [_Cull]
             ZClip [_ZClip]
@@ -1301,13 +1292,10 @@ Shader "Hidden/ltspass_tess_cutout"
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                WriteMask 8
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull Back
             ZClip [_ZClip]
@@ -1351,8 +1339,8 @@ Shader "Hidden/ltspass_tess_cutout"
 
             Stencil
             {
-                WriteMask [_StencilWriteMaskMV]
-                Ref [_StencilRefMV]
+                WriteMask 40
+                Ref 32
                 Comp Always
                 Pass Replace
             }
@@ -1395,8 +1383,8 @@ Shader "Hidden/ltspass_tess_cutout"
 
             Stencil
             {
-                WriteMask [_StencilWriteMaskMV]
-                Ref [_StencilRefMV]
+                WriteMask 40
+                Ref 32
                 Comp Always
                 Pass Replace
             }

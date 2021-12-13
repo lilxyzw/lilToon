@@ -241,6 +241,7 @@ Shader "Hidden/lilToonOnePassTransparentOutline"
                         _RimEnableLighting          ("Enable Lighting", Range(0, 1)) = 1
                         _RimShadowMask              ("Shadow Mask", Range(0, 1)) = 0
         [lilToggle]     _RimBackfaceMask            ("Backface Mask", Int) = 0
+                        _RimVRParallaxStrength      ("VR Parallax Strength", Range(0, 1)) = 1
         [lilToggle]     _RimApplyTransparency       ("Apply Transparency", Int) = 1
                         _RimDirStrength             ("Light direction strength", Range(0, 1)) = 0
                         _RimDirRange                ("Direction range", Range(-1, 1)) = 0
@@ -427,6 +428,8 @@ Shader "Hidden/lilToonOnePassTransparentOutline"
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
         [lilToggle]     _OutlineFixWidth            ("Fix Width", Int) = 1
         [lilToggle]     _OutlineVertexR2Width       ("Vertex R -> Width", Int) = 0
+        [NoScaleOffset][Normal] _OutlineVectorTex   ("Vector", 2D) = "bump" {}
+                        _OutlineVectorScale         ("Vector scale", Range(-10,10)) = 1
                         _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -517,7 +520,7 @@ Shader "Hidden/lilToonOnePassTransparentOutline"
 /*
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+10"}
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
         UsePass "Hidden/ltspass_transparent/FORWARD"
         UsePass "Hidden/ltspass_transparent/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_transparent/SHADOW_CASTER"

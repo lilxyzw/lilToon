@@ -241,6 +241,7 @@ Shader "_lil/[Optional] lilToonOverlayOnePass"
                         _RimEnableLighting          ("Enable Lighting", Range(0, 1)) = 1
                         _RimShadowMask              ("Shadow Mask", Range(0, 1)) = 0
         [lilToggle]     _RimBackfaceMask            ("Backface Mask", Int) = 0
+                        _RimVRParallaxStrength      ("VR Parallax Strength", Range(0, 1)) = 1
         [lilToggle]     _RimApplyTransparency       ("Apply Transparency", Int) = 1
                         _RimDirStrength             ("Light direction strength", Range(0, 1)) = 0
                         _RimDirRange                ("Direction range", Range(-1, 1)) = 0
@@ -462,7 +463,7 @@ Shader "_lil/[Optional] lilToonOverlayOnePass"
 /*
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest+10"}
+        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
         UsePass "Hidden/ltspass_transparent/FORWARD"
     }
 */

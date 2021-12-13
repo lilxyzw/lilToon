@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.7] - 2021-12-13
+### Added
+- Normal map for adjusting the direction of pushing out the outline
+- Outline / Fur only shader
+- Property to adjust the strength of parallax during VR to rim light
+
+### Changed
+- Show render queue in base settings as well
+- Disable stencil in HDRP
+- Changed so that fur shadows appear stronger in HDRP
+
+### Fixed
+- Fixed refraction shader behavior in Single Pass Instanced
+- Fixed render queue for transparent shaders in HDRP
+- Fixed motion vector in HDRP
+
 ## [1.2.6] - 2021-12-01
 ### Added
 - Custom UV for some textures

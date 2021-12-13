@@ -1101,13 +1101,10 @@ Shader "Hidden/ltspass_opaque"
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                WriteMask 6
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull [_Cull]
             ZClip [_ZClip]
@@ -1153,13 +1150,10 @@ Shader "Hidden/ltspass_opaque"
 
             Stencil
             {
-                Ref [_OutlineStencilRef]
-                ReadMask [_OutlineStencilReadMask]
-                WriteMask [_OutlineStencilWriteMask]
-                Comp [_OutlineStencilComp]
-                Pass [_OutlineStencilPass]
-                Fail [_OutlineStencilFail]
-                ZFail [_OutlineStencilZFail]
+                WriteMask 6
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull [_OutlineCull]
             ZClip [_OutlineZClip]
@@ -1232,13 +1226,10 @@ Shader "Hidden/ltspass_opaque"
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                WriteMask 8
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull [_Cull]
             ZClip [_ZClip]
@@ -1276,13 +1267,10 @@ Shader "Hidden/ltspass_opaque"
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                WriteMask 8
+                Ref 0
+                Comp Always
+                Pass Replace
             }
             Cull Back
             ZClip [_ZClip]
@@ -1315,6 +1303,48 @@ Shader "Hidden/ltspass_opaque"
             ENDHLSL
         }
 
+        // DepthOnly Outline Only
+        Pass
+        {
+            Name "DEPTHONLY_OUTLINEONLY"
+            Tags {"LightMode" = "DepthForwardOnly"}
+
+            Stencil
+            {
+                WriteMask 8
+                Ref 0
+                Comp Always
+                Pass Replace
+            }
+            Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
+            ZWrite [_OutlineZWrite]
+            ZTest [_OutlineZTest]
+            Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
+            AlphaToMask [_OutlineAlphaToMask]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+            #pragma multi_compile _ WRITE_NORMAL_BUFFER
+            #pragma multi_compile _ WRITE_MSAA_DEPTH
+
+            #define SHADERPASS SHADERPASS_DEPTH_ONLY
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_OUTLINE
+            #include "Includes/lil_pass_depthonly.hlsl"
+
+            ENDHLSL
+        }
+
         // MotionVectors
         Pass
         {
@@ -1323,8 +1353,8 @@ Shader "Hidden/ltspass_opaque"
 
             Stencil
             {
-                WriteMask [_StencilWriteMaskMV]
-                Ref [_StencilRefMV]
+                WriteMask 40
+                Ref 32
                 Comp Always
                 Pass Replace
             }
@@ -1364,8 +1394,8 @@ Shader "Hidden/ltspass_opaque"
 
             Stencil
             {
-                WriteMask [_StencilWriteMaskMV]
-                Ref [_StencilRefMV]
+                WriteMask 40
+                Ref 32
                 Comp Always
                 Pass Replace
             }
@@ -1395,6 +1425,48 @@ Shader "Hidden/ltspass_opaque"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_ONEPASS_OUTLINE
+            #include "Includes/lil_pass_motionvectors.hlsl"
+
+            ENDHLSL
+        }
+
+        // MotionVectors Outline Only
+        Pass
+        {
+            Name "MOTIONVECTORS_OUTLINEONLY"
+            Tags {"LightMode" = "MotionVectors"}
+
+            Stencil
+            {
+                WriteMask 40
+                Ref 32
+                Comp Always
+                Pass Replace
+            }
+            Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
+            ZWrite [_OutlineZWrite]
+            ZTest [_OutlineZTest]
+            Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
+            AlphaToMask [_OutlineAlphaToMask]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+            #pragma multi_compile _ WRITE_NORMAL_BUFFER
+            #pragma multi_compile _ WRITE_MSAA_DEPTH
+
+            #define SHADERPASS SHADERPASS_MOTION_VECTORS
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_OUTLINE
             #include "Includes/lil_pass_motionvectors.hlsl"
 
             ENDHLSL

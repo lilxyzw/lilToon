@@ -19,21 +19,21 @@ SAMPLER(sampler_trilinear_repeat);
 SAMPLER(sampler_linear_clamp);
 
 #if defined(LIL_BRP)
-    TEXTURE2D(_lilBackgroundTexture);
-    TEXTURE2D(_GrabTexture);
+    TEXTURE2D_SCREEN(_lilBackgroundTexture);
+    TEXTURE2D_SCREEN(_GrabTexture);
     SAMPLER(sampler_lilBackgroundTexture);
     SAMPLER(sampler_GrabTexture);
     float4 _lilBackgroundTexture_TexelSize;
-    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_2D(_lilBackgroundTexture, sampler_lilBackgroundTexture, uv)
-    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_2D(_GrabTexture, sampler_GrabTexture, uv)
+    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN(_lilBackgroundTexture, sampler_lilBackgroundTexture, uv)
+    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN(_GrabTexture, sampler_GrabTexture, uv)
 #elif defined(LIL_HDRP)
     #define LIL_GET_BG_TEX(uv,lod) SampleCameraColor(uv,lod)
     #define LIL_GET_GRAB_TEX(uv,lod) SampleCameraColor(uv,lod)
 #else
-    TEXTURE2D(_CameraOpaqueTexture);
+    TEXTURE2D_SCREEN(_CameraOpaqueTexture);
     SAMPLER(sampler_CameraOpaqueTexture);
-    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_2D_LOD(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv, lod)
-    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_2D_LOD(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv, lod)
+    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN_LOD(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv, lod)
+    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN_LOD(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv, lod)
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -166,6 +166,12 @@ SAMPLER(sampler_linear_clamp);
     #define Exists_OutlineWidthMask     true
 #else
     #define Exists_OutlineWidthMask     false
+#endif
+
+#if defined(LIL_FEATURE_TEX_OUTLINE_NORMAL)
+    #define Exists_OutlineVectorTex     true
+#else
+    #define Exists_OutlineVectorTex     false
 #endif
 
 #if defined(LIL_FEATURE_TEX_FUR_MASK)
@@ -559,6 +565,7 @@ SAMPLER(sampler_linear_clamp);
         float   _RimFresnelPower;
         float   _RimEnableLighting;
         float   _RimShadowMask;
+        float   _RimVRParallaxStrength;
         float   _RimDirStrength;
         float   _RimDirRange;
         float   _RimIndirRange;
@@ -600,6 +607,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
         float   _OutlineWidth;
         float   _OutlineEnableLighting;
+        float   _OutlineVectorScale;
     #endif
     #if defined(LIL_FUR)
         float   _FurVectorScale;
@@ -1094,6 +1102,7 @@ SAMPLER(sampler_linear_clamp);
         float   _RimFresnelPower;
         float   _RimEnableLighting;
         float   _RimShadowMask;
+        float   _RimVRParallaxStrength;
         float   _RimBackfaceMask;
         #if defined(LIL_FEATURE_RIMLIGHT_DIRECTION)
             float   _RimDirStrength;
@@ -1141,6 +1150,7 @@ SAMPLER(sampler_linear_clamp);
 
     float   _OutlineWidth;
     float   _OutlineEnableLighting;
+    float   _OutlineVectorScale;
 
     #if defined(LIL_FUR)
         float   _FurVectorScale;
@@ -1397,6 +1407,7 @@ TEXTURE2D(_DissolveMask);
 TEXTURE2D(_DissolveNoiseMask);
 TEXTURE2D(_OutlineTex);
 TEXTURE2D(_OutlineWidthMask);
+TEXTURE2D(_OutlineVectorTex);
 TEXTURE2D(_FurNoiseMask);
 TEXTURE2D(_FurMask);
 TEXTURE2D(_FurLengthMask);

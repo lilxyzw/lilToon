@@ -241,44 +241,58 @@
 #endif
 
 #if defined(SHADER_API_D3D9) || (UNITY_VERSION < 201800 && defined(SHADER_API_GLES)) || (defined(SHADER_TARGET_SURFACE_ANALYSIS) && defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER)) || defined(SHADER_TARGET_SURFACE_ANALYSIS)
-    #define LIL_SAMPLE_1D(tex,samp,uv)              tex2D(tex,float2(uv,0.5))
-    #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)      tex2Dlod(tex,float4(uv,0.5,0,lod))
-    #define LIL_SAMPLE_2D(tex,samp,uv)              tex2D(tex,uv)
-    #define LIL_SAMPLE_2D_ST(tex,samp,uv)           tex2D(tex,uv*tex##_ST.xy+tex##_ST.zw)
-    #define LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)      tex2Dlod(tex,float4(uv,0,lod))
-    #define LIL_SAMPLE_2D_BIAS(tex,samp,uv,bias)    tex2Dbias(tex,float4(uv,0,bias))
-    #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)   tex2Dgrad(tex,float4(uv,dx,dy))
-    #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)  tex2DArray(tex,float3(uv,index))
-    #define LIL_SAMPLE_3D(tex,samp,uv)              tex3D(tex,uv)
-    #define TEXTURE2D(tex)                          sampler2D tex
-    #define TEXTURE2D_FLOAT(tex)                    sampler2D tex
-    #define TEXTURE3D(tex)                          sampler3D tex
+    #define LIL_SAMPLE_1D(tex,samp,uv)                      tex2D(tex,float2(uv,0.5))
+    #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)              tex2Dlod(tex,float4(uv,0.5,0,lod))
+    #define LIL_SAMPLE_2D(tex,samp,uv)                      tex2D(tex,uv)
+    #define LIL_SAMPLE_2D_ST(tex,samp,uv)                   tex2D(tex,uv*tex##_ST.xy+tex##_ST.zw)
+    #define LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)              tex2Dlod(tex,float4(uv,0,lod))
+    #define LIL_SAMPLE_2D_BIAS(tex,samp,uv,bias)            tex2Dbias(tex,float4(uv,0,bias))
+    #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)           tex2Dgrad(tex,float4(uv,dx,dy))
+    #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)          tex2DArray(tex,float3(uv,index))
+    #define LIL_SAMPLE_2D_ARRAY_LOD(tex,samp,uv,index,lod)  tex2DArraylod(tex,float4(uv,index,lod))
+    #define LIL_SAMPLE_3D(tex,samp,uv)                      tex3D(tex,uv)
+    #define TEXTURE2D(tex)                                  sampler2D tex
+    #define TEXTURE2D_FLOAT(tex)                            sampler2D tex
+    #define TEXTURE2D_ARRAY(tex)                            sampler2DArray tex
+    #define TEXTURE3D(tex)                                  sampler3D tex
     #define SAMPLER(samp)
     #define LIL_SAMP_IN_FUNC(samp)
     #define LIL_SAMP_IN(samp)
     #define LIL_LWTEX
 #else
-    #define LIL_SAMPLE_1D(tex,samp,uv)              tex.Sample(samp,uv)
-    #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)      tex.SampleLevel(samp,uv,lod)
-    #define LIL_SAMPLE_2D(tex,samp,uv)              tex.Sample(samp,uv)
-    #define LIL_SAMPLE_2D_ST(tex,samp,uv)           tex.Sample(samp,uv*tex##_ST.xy+tex##_ST.zw)
-    #define LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)      tex.SampleLevel(samp,uv,lod)
-    #define LIL_SAMPLE_2D_BIAS(tex,samp,uv,bias)    tex.SampleBias(samp,uv,bias)
-    #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)   tex.SampleGrad(samp,uv,dx,dy)
-    #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)  tex.Sample(samp,float3(uv,index))
-    #define LIL_SAMPLE_3D(tex,samp,coord)           tex.Sample(samp,coord)
-    #define TEXTURE2D(tex)                          Texture2D tex
-    #define TEXTURE2D_FLOAT(tex)                    Texture2D<float4> tex
-    #define TEXTURE3D(tex)                          Texture3D tex
-    #define SAMPLER(samp)                           SamplerState samp
-    #define LIL_SAMP_IN_FUNC(samp)                  , SamplerState samp
-    #define LIL_SAMP_IN(samp)                       , samp
+    #define LIL_SAMPLE_1D(tex,samp,uv)                      tex.Sample(samp,uv)
+    #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)              tex.SampleLevel(samp,uv,lod)
+    #define LIL_SAMPLE_2D(tex,samp,uv)                      tex.Sample(samp,uv)
+    #define LIL_SAMPLE_2D_ST(tex,samp,uv)                   tex.Sample(samp,uv*tex##_ST.xy+tex##_ST.zw)
+    #define LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)              tex.SampleLevel(samp,uv,lod)
+    #define LIL_SAMPLE_2D_BIAS(tex,samp,uv,bias)            tex.SampleBias(samp,uv,bias)
+    #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)           tex.SampleGrad(samp,uv,dx,dy)
+    #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)          tex.Sample(samp,float3(uv,index))
+    #define LIL_SAMPLE_2D_ARRAY_LOD(tex,samp,uv,index,lod)  tex.SampleLevel(samp,float3(uv,index),lod)
+    #define LIL_SAMPLE_3D(tex,samp,coord)                   tex.Sample(samp,coord)
+    #define TEXTURE2D(tex)                                  Texture2D tex
+    #define TEXTURE2D_FLOAT(tex)                            Texture2D<float4> tex
+    #define TEXTURE2D_ARRAY(tex)                            Texture2DArray tex
+    #define TEXTURE3D(tex)                                  Texture3D tex
+    #define SAMPLER(samp)                                   SamplerState samp
+    #define LIL_SAMP_IN_FUNC(samp)                          , SamplerState samp
+    #define LIL_SAMP_IN(samp)                               , samp
 #endif
 
 #if defined(LIL_FEATURE_PARALLAX) && defined(LIL_FEATURE_POM)
     #define LIL_SAMPLE_2D_POM(tex,samp,uv,dx,dy)    LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)
 #else
     #define LIL_SAMPLE_2D_POM(tex,samp,uv,dx,dy)    LIL_SAMPLE_2D(tex,samp,uv)
+#endif
+
+#if defined(UNITY_STEREO_INSTANCING_ENABLED) || defined(UNITY_STEREO_MULTIVIEW_ENABLED)
+    #define TEXTURE2D_SCREEN(tex)                   TEXTURE2D_ARRAY(tex)
+    #define LIL_SAMPLE_SCREEN(tex,samp,uv)          LIL_SAMPLE_2D_ARRAY(tex,samp,uv,(float)unity_StereoEyeIndex)
+    #define LIL_SAMPLE_SCREEN_LOD(tex,samp,uv,lod)  LIL_SAMPLE_2D_ARRAY_LOD(tex,samp,uv,(float)unity_StereoEyeIndex,lod)
+#else
+    #define TEXTURE2D_SCREEN(tex)                   TEXTURE2D(tex)
+    #define LIL_SAMPLE_SCREEN(tex,samp,uv)          LIL_SAMPLE_2D(tex,samp,uv)
+    #define LIL_SAMPLE_SCREEN_LOD(tex,samp,uv,lod)  LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------

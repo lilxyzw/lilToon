@@ -8,7 +8,10 @@
 // Motion Vector
 float2 lilCalculateMotionVector(float4 positionCS, float4 previousPositionCS)
 {
-    positionCS.xy = positionCS.xy / positionCS.w;
+    positionCS.xy = positionCS.xy / _ScreenParams.xy * 2.0 - 1.0;
+    #if UNITY_UV_STARTS_AT_TOP
+        positionCS.y = -positionCS.y;
+    #endif
     previousPositionCS.xy = previousPositionCS.xy / previousPositionCS.w;
     float2 motionVec = (positionCS.xy - previousPositionCS.xy);
 

@@ -245,6 +245,21 @@ float lilGetOutlineWidth(float3 positionOS, float2 uv, float4 color, float outli
     return outlineWidth;
 }
 
+float3 lilGetOutlineVector(float3x3 tbnOS, float2 uv, float outlineVectorScale, TEXTURE2D(outlineVectorTex) LIL_SAMP_IN_FUNC(samp))
+{
+    float3 outlineVector = UnpackNormalScale(LIL_SAMPLE_2D_LOD(outlineVectorTex, samp, uv, 0), outlineVectorScale);
+    outlineVector = mul(outlineVector, tbnOS);
+    return outlineVector;
+}
+
+void lilCalcOutlinePosition(inout float3 positionOS, float2 uv, float4 color, float3 normalOS, float3x3 tbnOS, float outlineWidth, TEXTURE2D(outlineWidthMask), lilBool outlineVertexR2Width, lilBool outlineFixWidth, float outlineVectorScale, TEXTURE2D(outlineVectorTex) LIL_SAMP_IN_FUNC(samp))
+{
+    float width = lilGetOutlineWidth(positionOS, uv, color, outlineWidth, outlineWidthMask, outlineVertexR2Width, outlineFixWidth LIL_SAMP_IN(samp));
+    float3 outlineN = normalOS;
+    if(Exists_OutlineVectorTex) outlineN = lilGetOutlineVector(tbnOS, uv, outlineVectorScale, outlineVectorTex LIL_SAMP_IN(samp));
+    positionOS += outlineN * width;
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Encryption (https://github.com/rygo6/GTAvaCrypt)
 #if !defined(LIL_LITE) && !defined(LIL_BAKER) &&  defined(LIL_FEATURE_ENCRYPTION)

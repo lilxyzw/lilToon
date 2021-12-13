@@ -137,8 +137,8 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
-        private const string currentVersionName = "1.2.6";
-        private const int currentVersionValue = 19;
+        private const string currentVersionName = "1.2.7";
+        private const int currentVersionValue = 20;
 
         private const string boothURL = "https://lilxyzw.booth.pm/";
         private const string githubURL = "https://github.com/lilxyzw/lilToon";
@@ -224,65 +224,69 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Shader
-        protected static Shader lts           = Shader.Find("lilToon");
-        protected static Shader ltsc          = Shader.Find("Hidden/lilToonCutout");
-        protected static Shader ltst          = Shader.Find("Hidden/lilToonTransparent");
-        protected static Shader ltsot         = Shader.Find("Hidden/lilToonOnePassTransparent");
-        protected static Shader ltstt         = Shader.Find("Hidden/lilToonTwoPassTransparent");
+        protected static Shader lts         = Shader.Find("lilToon");
+        protected static Shader ltsc        = Shader.Find("Hidden/lilToonCutout");
+        protected static Shader ltst        = Shader.Find("Hidden/lilToonTransparent");
+        protected static Shader ltsot       = Shader.Find("Hidden/lilToonOnePassTransparent");
+        protected static Shader ltstt       = Shader.Find("Hidden/lilToonTwoPassTransparent");
 
-        protected static Shader ltso          = Shader.Find("Hidden/lilToonOutline");
-        protected static Shader ltsco         = Shader.Find("Hidden/lilToonCutoutOutline");
-        protected static Shader ltsto         = Shader.Find("Hidden/lilToonTransparentOutline");
-        protected static Shader ltsoto        = Shader.Find("Hidden/lilToonOnePassTransparentOutline");
-        protected static Shader ltstto        = Shader.Find("Hidden/lilToonTwoPassTransparentOutline");
+        protected static Shader ltso        = Shader.Find("Hidden/lilToonOutline");
+        protected static Shader ltsco       = Shader.Find("Hidden/lilToonCutoutOutline");
+        protected static Shader ltsto       = Shader.Find("Hidden/lilToonTransparentOutline");
+        protected static Shader ltsoto      = Shader.Find("Hidden/lilToonOnePassTransparentOutline");
+        protected static Shader ltstto      = Shader.Find("Hidden/lilToonTwoPassTransparentOutline");
 
-        protected static Shader ltstess       = Shader.Find("Hidden/lilToonTessellation");
-        protected static Shader ltstessc      = Shader.Find("Hidden/lilToonTessellationCutout");
-        protected static Shader ltstesst      = Shader.Find("Hidden/lilToonTessellationTransparent");
-        protected static Shader ltstessot     = Shader.Find("Hidden/lilToonTessellationOnePassTransparent");
-        protected static Shader ltstesstt     = Shader.Find("Hidden/lilToonTessellationTwoPassTransparent");
+        protected static Shader ltsoo       = Shader.Find("_lil/[Optional] lilToonOutlineOnly");
+        protected static Shader ltscoo      = Shader.Find("_lil/[Optional] lilToonCutoutOutlineOnly");
+        protected static Shader ltstoo      = Shader.Find("_lil/[Optional] lilToonTransparentOutlineOnly");
 
-        protected static Shader ltstesso      = Shader.Find("Hidden/lilToonTessellationOutline");
-        protected static Shader ltstessco     = Shader.Find("Hidden/lilToonTessellationCutoutOutline");
-        protected static Shader ltstessto     = Shader.Find("Hidden/lilToonTessellationTransparentOutline");
-        protected static Shader ltstessoto    = Shader.Find("Hidden/lilToonTessellationOnePassTransparentOutline");
-        protected static Shader ltstesstto    = Shader.Find("Hidden/lilToonTessellationTwoPassTransparentOutline");
+        protected static Shader ltstess     = Shader.Find("Hidden/lilToonTessellation");
+        protected static Shader ltstessc    = Shader.Find("Hidden/lilToonTessellationCutout");
+        protected static Shader ltstesst    = Shader.Find("Hidden/lilToonTessellationTransparent");
+        protected static Shader ltstessot   = Shader.Find("Hidden/lilToonTessellationOnePassTransparent");
+        protected static Shader ltstesstt   = Shader.Find("Hidden/lilToonTessellationTwoPassTransparent");
 
-        protected static Shader ltsl          = Shader.Find("Hidden/lilToonLite");
-        protected static Shader ltslc         = Shader.Find("Hidden/lilToonLiteCutout");
-        protected static Shader ltslt         = Shader.Find("Hidden/lilToonLiteTransparent");
-        protected static Shader ltslot        = Shader.Find("Hidden/lilToonLiteOnePassTransparent");
-        protected static Shader ltsltt        = Shader.Find("Hidden/lilToonLiteTwoPassTransparent");
+        protected static Shader ltstesso    = Shader.Find("Hidden/lilToonTessellationOutline");
+        protected static Shader ltstessco   = Shader.Find("Hidden/lilToonTessellationCutoutOutline");
+        protected static Shader ltstessto   = Shader.Find("Hidden/lilToonTessellationTransparentOutline");
+        protected static Shader ltstessoto  = Shader.Find("Hidden/lilToonTessellationOnePassTransparentOutline");
+        protected static Shader ltstesstto  = Shader.Find("Hidden/lilToonTessellationTwoPassTransparentOutline");
 
-        protected static Shader ltslo         = Shader.Find("Hidden/lilToonLiteOutline");
-        protected static Shader ltslco        = Shader.Find("Hidden/lilToonLiteCutoutOutline");
-        protected static Shader ltslto        = Shader.Find("Hidden/lilToonLiteTransparentOutline");
-        protected static Shader ltsloto       = Shader.Find("Hidden/lilToonLiteOnePassTransparentOutline");
-        protected static Shader ltsltto       = Shader.Find("Hidden/lilToonLiteTwoPassTransparentOutline");
+        protected static Shader ltsl        = Shader.Find("Hidden/lilToonLite");
+        protected static Shader ltslc       = Shader.Find("Hidden/lilToonLiteCutout");
+        protected static Shader ltslt       = Shader.Find("Hidden/lilToonLiteTransparent");
+        protected static Shader ltslot      = Shader.Find("Hidden/lilToonLiteOnePassTransparent");
+        protected static Shader ltsltt      = Shader.Find("Hidden/lilToonLiteTwoPassTransparent");
 
-        protected static Shader ltsref        = Shader.Find("Hidden/lilToonRefraction");
-        protected static Shader ltsrefb       = Shader.Find("Hidden/lilToonRefractionBlur");
-        protected static Shader ltsfur        = Shader.Find("Hidden/lilToonFur");
-        protected static Shader ltsfurc       = Shader.Find("Hidden/lilToonFurCutout");
+        protected static Shader ltslo       = Shader.Find("Hidden/lilToonLiteOutline");
+        protected static Shader ltslco      = Shader.Find("Hidden/lilToonLiteCutoutOutline");
+        protected static Shader ltslto      = Shader.Find("Hidden/lilToonLiteTransparentOutline");
+        protected static Shader ltsloto     = Shader.Find("Hidden/lilToonLiteOnePassTransparentOutline");
+        protected static Shader ltsltto     = Shader.Find("Hidden/lilToonLiteTwoPassTransparentOutline");
 
-        protected static Shader ltsgem        = Shader.Find("Hidden/lilToonGem");
+        protected static Shader ltsref      = Shader.Find("Hidden/lilToonRefraction");
+        protected static Shader ltsrefb     = Shader.Find("Hidden/lilToonRefractionBlur");
+        protected static Shader ltsfur      = Shader.Find("Hidden/lilToonFur");
+        protected static Shader ltsfurc     = Shader.Find("Hidden/lilToonFurCutout");
 
-        protected static Shader ltsfs         = Shader.Find("_lil/lilToonFakeShadow");
+        protected static Shader ltsgem      = Shader.Find("Hidden/lilToonGem");
 
-        protected static Shader ltsbaker      = Shader.Find("Hidden/ltsother_baker");
-        protected static Shader ltspo         = Shader.Find("Hidden/ltspass_opaque");
-        protected static Shader ltspc         = Shader.Find("Hidden/ltspass_cutout");
-        protected static Shader ltspt         = Shader.Find("Hidden/ltspass_transparent");
-        protected static Shader ltsptesso     = Shader.Find("Hidden/ltspass_tess_opaque");
-        protected static Shader ltsptessc     = Shader.Find("Hidden/ltspass_tess_cutout");
-        protected static Shader ltsptesst     = Shader.Find("Hidden/ltspass_tess_transparent");
+        protected static Shader ltsfs       = Shader.Find("_lil/lilToonFakeShadow");
 
-        protected static Shader ltsm          = Shader.Find("_lil/lilToonMulti");
-        protected static Shader ltsmref       = Shader.Find("Hidden/lilToonMultiRefraction");
-        protected static Shader ltsmfur       = Shader.Find("Hidden/lilToonMultiFur");
-        protected static Shader ltsmgem       = Shader.Find("Hidden/lilToonMultiGem");
+        protected static Shader ltsbaker    = Shader.Find("Hidden/ltsother_baker");
+        protected static Shader ltspo       = Shader.Find("Hidden/ltspass_opaque");
+        protected static Shader ltspc       = Shader.Find("Hidden/ltspass_cutout");
+        protected static Shader ltspt       = Shader.Find("Hidden/ltspass_transparent");
+        protected static Shader ltsptesso   = Shader.Find("Hidden/ltspass_tess_opaque");
+        protected static Shader ltsptessc   = Shader.Find("Hidden/ltspass_tess_cutout");
+        protected static Shader ltsptesst   = Shader.Find("Hidden/ltspass_tess_transparent");
 
-        private static Shader mtoon         = Shader.Find("VRM/MToon");
+        protected static Shader ltsm        = Shader.Find("_lil/lilToonMulti");
+        protected static Shader ltsmref     = Shader.Find("Hidden/lilToonMultiRefraction");
+        protected static Shader ltsmfur     = Shader.Find("Hidden/lilToonMultiFur");
+        protected static Shader ltsmgem     = Shader.Find("Hidden/lilToonMultiGem");
+
+        protected static Shader mtoon       = Shader.Find("VRM/MToon");
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Editor
@@ -631,6 +635,7 @@ namespace lilToon
             MaterialProperty rimEnableLighting;
             MaterialProperty rimShadowMask;
             MaterialProperty rimBackfaceMask;
+            MaterialProperty rimVRParallaxStrength;
             MaterialProperty rimApplyTransparency;
             MaterialProperty rimDirStrength;
             MaterialProperty rimDirRange;
@@ -688,6 +693,8 @@ namespace lilToon
             MaterialProperty outlineWidthMask;
             MaterialProperty outlineFixWidth;
             MaterialProperty outlineVertexR2Width;
+            MaterialProperty outlineVectorTex;
+            MaterialProperty outlineVectorScale;
             MaterialProperty outlineEnableLighting;
             MaterialProperty outlineCull;
             MaterialProperty outlineSrcBlend;
@@ -883,9 +890,7 @@ namespace lilToon
             isOnePass       = material.shader.name.Contains("OnePass");
             isTwoPass       = material.shader.name.Contains("TwoPass");
             isMulti         = material.shader.name.Contains("lilToonMulti");
-
-            isCustomShader  = material.shader.name.Contains("Overlay");
-            isCustomShader  = material.shader.name.Contains("FakeShadow");
+            isCustomShader  = material.shader.name.Contains("Optional");
 
                                 renderingModeBuf = RenderingMode.Opaque;
             if(isCutout)        renderingModeBuf = RenderingMode.Cutout;
@@ -1478,6 +1483,7 @@ namespace lilToon
                                 zwrite.floatValue = 1.0f;
                             }
                             EditorGUI.indentLevel--;
+                        materialEditor.RenderQueueField();
                         DrawLine();
                         DrawLightingSettings(materialEditor);
                         DrawLine();
@@ -1899,6 +1905,7 @@ namespace lilToon
                         materialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
                         GUILayout.Label("FakeShadow", EditorStyles.boldLabel);
                         materialEditor.ShaderProperty(fakeShadowVector, GetLoc("sVector") + "|" + GetLoc("sOffset"));
+                        materialEditor.RenderQueueField();
                     }
                     EditorGUILayout.EndVertical();
 
@@ -2192,6 +2199,7 @@ namespace lilToon
                                 zwrite.floatValue = 1.0f;
                             }
                             EditorGUI.indentLevel--;
+                        materialEditor.RenderQueueField();
                         if(isMulti) materialEditor.ShaderProperty(useClippingCanceller, GetLoc("sSettingClippingCanceller"));
                         DrawLine();
                         DrawLightingSettings(materialEditor);
@@ -2870,6 +2878,7 @@ namespace lilToon
                                         }
                                         materialEditor.ShaderProperty(rimNormalStrength, GetLoc("sNormalStrength"));
                                         materialEditor.ShaderProperty(rimFresnelPower, GetLoc("sFresnelPower"));
+                                        materialEditor.ShaderProperty(rimVRParallaxStrength, GetLoc("sVRParallaxStrength"));
                                         EditorGUILayout.EndVertical();
                                     }
                                     EditorGUILayout.EndVertical();
@@ -3013,6 +3022,11 @@ namespace lilToon
                                 else                                                            materialEditor.ShaderProperty(outlineWidth, GetLoc("sWidth"));
                                 materialEditor.ShaderProperty(outlineFixWidth, GetLoc("sFixWidth"));
                                 materialEditor.ShaderProperty(outlineVertexR2Width, GetLoc("sVertexR2Width"));
+                                if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_OUTLINE_NORMAL))
+                                {
+                                    DrawLine();
+                                    materialEditor.TexturePropertySingleLine(normalMapContent, outlineVectorTex, outlineVectorScale);
+                                }
                                 EditorGUILayout.EndVertical();
                             }
                             EditorGUILayout.EndVertical();
@@ -3865,6 +3879,7 @@ namespace lilToon
             rimEnableLighting = null;
             rimShadowMask = null;
             rimBackfaceMask = null;
+            rimVRParallaxStrength = null;
             rimApplyTransparency = null;
             rimDirStrength = null;
             rimDirRange = null;
@@ -4192,6 +4207,8 @@ namespace lilToon
                 outlineWidthMask = FindProperty("_OutlineWidthMask", props);
                 outlineFixWidth = FindProperty("_OutlineFixWidth", props);
                 outlineVertexR2Width = FindProperty("_OutlineVertexR2Width", props);
+                outlineVectorTex = FindProperty("_OutlineVectorTex", props);
+                outlineVectorScale = FindProperty("_OutlineVectorScale", props);
                 outlineEnableLighting = FindProperty("_OutlineEnableLighting", props);
                 outlineCull = FindProperty("_OutlineCull", props);
                 outlineSrcBlend = FindProperty("_OutlineSrcBlend", props);
@@ -4219,7 +4236,7 @@ namespace lilToon
                 outlineOffsetFactor = FindProperty("_OutlineOffsetFactor", props);
                 outlineOffsetUnits = FindProperty("_OutlineOffsetUnits", props);
                 outlineColorMask = FindProperty("_OutlineColorMask", props);
-                outlineAlphaToMask = FindProperty("_AlphaToMask", props);
+                outlineAlphaToMask = FindProperty("_OutlineAlphaToMask", props);
             }
             // Normal
             useBumpMap = FindProperty("_UseBumpMap", props);
@@ -4312,6 +4329,7 @@ namespace lilToon
                 rimEnableLighting = FindProperty("_RimEnableLighting", props);
                 rimShadowMask = FindProperty("_RimShadowMask", props);
                 rimBackfaceMask = FindProperty("_RimBackfaceMask", props);
+                rimVRParallaxStrength = FindProperty("_RimVRParallaxStrength", props);
                 rimApplyTransparency = FindProperty("_RimApplyTransparency", props);
                 rimDirStrength = FindProperty("_RimDirStrength", props);
                 rimDirRange = FindProperty("_RimDirRange", props);
@@ -4651,6 +4669,7 @@ namespace lilToon
                 rimEnableLighting = FindProperty("_RimEnableLighting", props);
                 rimShadowMask = FindProperty("_RimShadowMask", props);
                 rimBackfaceMask = FindProperty("_RimBackfaceMask", props);
+                rimVRParallaxStrength = FindProperty("_RimVRParallaxStrength", props);
                 rimApplyTransparency = FindProperty("_RimApplyTransparency", props);
                 rimDirStrength = FindProperty("_RimDirStrength", props);
                 rimDirRange = FindProperty("_RimDirRange", props);
@@ -5232,6 +5251,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_TEX_DISSOLVE_NOISE = false;
                 shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR = true;
                 shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH = true;
+                shaderSetting.LIL_FEATURE_TEX_OUTLINE_NORMAL = false;
                 shaderSetting.LIL_FEATURE_TEX_FUR_NORMAL = false;
                 shaderSetting.LIL_FEATURE_TEX_FUR_MASK = false;
                 shaderSetting.LIL_FEATURE_TEX_FUR_LENGTH = false;
@@ -5302,6 +5322,7 @@ namespace lilToon
             shaderSetting.LIL_FEATURE_TEX_DISSOLVE_NOISE = false;
             shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR = false;
             shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH = false;
+            shaderSetting.LIL_FEATURE_TEX_OUTLINE_NORMAL = false;
             shaderSetting.LIL_FEATURE_TEX_FUR_NORMAL = false;
             shaderSetting.LIL_FEATURE_TEX_FUR_MASK = false;
             shaderSetting.LIL_FEATURE_TEX_FUR_LENGTH = false;
@@ -5460,6 +5481,7 @@ namespace lilToon
             }
             if(shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV) sb.Append("#define LIL_FEATURE_ANIMATE_OUTLINE_UV\r\n");
             if(shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH) sb.Append("#define LIL_FEATURE_TEX_OUTLINE_WIDTH\r\n");
+            if(shaderSetting.LIL_FEATURE_TEX_OUTLINE_NORMAL) sb.Append("#define LIL_FEATURE_TEX_OUTLINE_NORMAL\r\n");
             if(shaderSetting.LIL_FEATURE_TEX_FUR_NORMAL) sb.Append("#define LIL_FEATURE_TEX_FUR_NORMAL\r\n");
             if(shaderSetting.LIL_FEATURE_TEX_FUR_MASK) sb.Append("#define LIL_FEATURE_TEX_FUR_MASK\r\n");
             if(shaderSetting.LIL_FEATURE_TEX_FUR_LENGTH) sb.Append("#define LIL_FEATURE_TEX_FUR_LENGTH\r\n");
@@ -5705,6 +5727,7 @@ namespace lilToon
             }
             lilToggleGUI(GetLoc("sSettingAnimateOutlineUV"), ref shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV);
             lilToggleGUI(GetLoc("sSettingTexOutlineWidth"), ref shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH);
+            lilToggleGUI(GetLoc("sSettingTexOutlineNormal"), ref shaderSetting.LIL_FEATURE_TEX_OUTLINE_NORMAL);
             DrawLine();
 
             lilToggleGUI(GetLoc("sSettingTexFurNormal"), ref shaderSetting.LIL_FEATURE_TEX_FUR_NORMAL);
@@ -5728,53 +5751,69 @@ namespace lilToon
         // Initialize Editor Variable
         public static void InitializeShaders()
         {
-            lts       = Shader.Find("lilToon");
-            ltsc      = Shader.Find("Hidden/lilToonCutout");
-            ltst      = Shader.Find("Hidden/lilToonTransparent");
+            lts         = Shader.Find("lilToon");
+            ltsc        = Shader.Find("Hidden/lilToonCutout");
+            ltst        = Shader.Find("Hidden/lilToonTransparent");
+            ltsot       = Shader.Find("Hidden/lilToonOnePassTransparent");
+            ltstt       = Shader.Find("Hidden/lilToonTwoPassTransparent");
 
-            ltso      = Shader.Find("Hidden/lilToonOutline");
-            ltsco     = Shader.Find("Hidden/lilToonCutoutOutline");
-            ltsto     = Shader.Find("Hidden/lilToonTransparentOutline");
+            ltso        = Shader.Find("Hidden/lilToonOutline");
+            ltsco       = Shader.Find("Hidden/lilToonCutoutOutline");
+            ltsto       = Shader.Find("Hidden/lilToonTransparentOutline");
+            ltsoto      = Shader.Find("Hidden/lilToonOnePassTransparentOutline");
+            ltstto      = Shader.Find("Hidden/lilToonTwoPassTransparentOutline");
 
-            ltstess   = Shader.Find("Hidden/lilToonTessellation");
-            ltstessc  = Shader.Find("Hidden/lilToonTessellationCutout");
-            ltstesst  = Shader.Find("Hidden/lilToonTessellationTransparent");
+            ltsoo       = Shader.Find("_lil/[Optional] lilToonOutlineOnly");
+            ltscoo      = Shader.Find("_lil/[Optional] lilToonCutoutOutlineOnly");
+            ltstoo      = Shader.Find("_lil/[Optional] lilToonTransparentOutlineOnly");
 
-            ltstesso  = Shader.Find("Hidden/lilToonTessellationOutline");
-            ltstessco = Shader.Find("Hidden/lilToonTessellationCutoutOutline");
-            ltstessto = Shader.Find("Hidden/lilToonTessellationTransparentOutline");
+            ltstess     = Shader.Find("Hidden/lilToonTessellation");
+            ltstessc    = Shader.Find("Hidden/lilToonTessellationCutout");
+            ltstesst    = Shader.Find("Hidden/lilToonTessellationTransparent");
+            ltstessot   = Shader.Find("Hidden/lilToonTessellationOnePassTransparent");
+            ltstesstt   = Shader.Find("Hidden/lilToonTessellationTwoPassTransparent");
 
-            ltsl      = Shader.Find("Hidden/lilToonLite");
-            ltslc     = Shader.Find("Hidden/lilToonLiteCutout");
-            ltslt     = Shader.Find("Hidden/lilToonLiteTransparent");
+            ltstesso    = Shader.Find("Hidden/lilToonTessellationOutline");
+            ltstessco   = Shader.Find("Hidden/lilToonTessellationCutoutOutline");
+            ltstessto   = Shader.Find("Hidden/lilToonTessellationTransparentOutline");
+            ltstessoto  = Shader.Find("Hidden/lilToonTessellationOnePassTransparentOutline");
+            ltstesstto  = Shader.Find("Hidden/lilToonTessellationTwoPassTransparentOutline");
 
-            ltslo     = Shader.Find("Hidden/lilToonLiteOutline");
-            ltslco    = Shader.Find("Hidden/lilToonLiteCutoutOutline");
-            ltslto    = Shader.Find("Hidden/lilToonLiteTransparentOutline");
+            ltsl        = Shader.Find("Hidden/lilToonLite");
+            ltslc       = Shader.Find("Hidden/lilToonLiteCutout");
+            ltslt       = Shader.Find("Hidden/lilToonLiteTransparent");
+            ltslot      = Shader.Find("Hidden/lilToonLiteOnePassTransparent");
+            ltsltt      = Shader.Find("Hidden/lilToonLiteTwoPassTransparent");
 
-            ltsref    = Shader.Find("Hidden/lilToonRefraction");
-            ltsrefb   = Shader.Find("Hidden/lilToonRefractionBlur");
-            ltsfur    = Shader.Find("Hidden/lilToonFur");
-            ltsfurc   = Shader.Find("Hidden/lilToonFurCutout");
+            ltslo       = Shader.Find("Hidden/lilToonLiteOutline");
+            ltslco      = Shader.Find("Hidden/lilToonLiteCutoutOutline");
+            ltslto      = Shader.Find("Hidden/lilToonLiteTransparentOutline");
+            ltsloto     = Shader.Find("Hidden/lilToonLiteOnePassTransparentOutline");
+            ltsltto     = Shader.Find("Hidden/lilToonLiteTwoPassTransparentOutline");
 
-            ltsgem    = Shader.Find("Hidden/lilToonGem");
+            ltsref      = Shader.Find("Hidden/lilToonRefraction");
+            ltsrefb     = Shader.Find("Hidden/lilToonRefractionBlur");
+            ltsfur      = Shader.Find("Hidden/lilToonFur");
+            ltsfurc     = Shader.Find("Hidden/lilToonFurCutout");
 
-            ltsfs     = Shader.Find("_lil/lilToonFakeShadow");
+            ltsgem      = Shader.Find("Hidden/lilToonGem");
 
-            ltsbaker  = Shader.Find("Hidden/ltsother_baker");
-            ltspo     = Shader.Find("Hidden/ltspass_opaque");
-            ltspc     = Shader.Find("Hidden/ltspass_cutout");
-            ltspt     = Shader.Find("Hidden/ltspass_transparent");
-            ltsptesso = Shader.Find("Hidden/ltspass_tess_opaque");
-            ltsptessc = Shader.Find("Hidden/ltspass_tess_cutout");
-            ltsptesst = Shader.Find("Hidden/ltspass_tess_transparent");
+            ltsfs       = Shader.Find("_lil/lilToonFakeShadow");
 
-            ltsm      = Shader.Find("_lil/lilToonMulti");
-            ltsmref   = Shader.Find("Hidden/lilToonMultiRefraction");
-            ltsmfur   = Shader.Find("Hidden/lilToonMultiFur");
-            ltsmgem   = Shader.Find("Hidden/lilToonMultiGem");
+            ltsbaker    = Shader.Find("Hidden/ltsother_baker");
+            ltspo       = Shader.Find("Hidden/ltspass_opaque");
+            ltspc       = Shader.Find("Hidden/ltspass_cutout");
+            ltspt       = Shader.Find("Hidden/ltspass_transparent");
+            ltsptesso   = Shader.Find("Hidden/ltspass_tess_opaque");
+            ltsptessc   = Shader.Find("Hidden/ltspass_tess_cutout");
+            ltsptesst   = Shader.Find("Hidden/ltspass_tess_transparent");
 
-            mtoon     = Shader.Find("VRM/MToon");
+            ltsm        = Shader.Find("_lil/lilToonMulti");
+            ltsmref     = Shader.Find("Hidden/lilToonMultiRefraction");
+            ltsmfur     = Shader.Find("Hidden/lilToonMultiFur");
+            ltsmgem     = Shader.Find("Hidden/lilToonMultiGem");
+
+            mtoon       = Shader.Find("VRM/MToon");
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -6051,7 +6090,7 @@ namespace lilToon
                 if(edSet.isShowVRChat)
                 {
                     EditorGUILayout.BeginVertical(boxOuter);
-                    string tag = material.GetTag("VRCFallBack", false);
+                    string tag = material.GetTag("VRCFallback", false);
                     bool shouldSetTag = EditorGUI.ToggleLeft(EditorGUILayout.GetControlRect(), "Custom Safety Fallback", !String.IsNullOrEmpty(tag), customToggleFont);
                     if(shouldSetTag)
                     {
@@ -6107,12 +6146,12 @@ namespace lilToon
                             default: break;
                         }
                         EditorGUILayout.LabelField("Result:", '"' + tag + '"');
-                        material.SetOverrideTag("VRCFallBack", tag);
+                        material.SetOverrideTag("VRCFallback", tag);
                         EditorGUILayout.EndVertical();
                     }
                     else
                     {
-                        material.SetOverrideTag("VRCFallBack", "");
+                        material.SetOverrideTag("VRCFallback", "");
                     }
                     EditorGUILayout.EndVertical();
                 }
@@ -6589,6 +6628,7 @@ namespace lilToon
                         CopyProperty(rimEnableLighting);
                         CopyProperty(rimShadowMask);
                         CopyProperty(rimBackfaceMask);
+                        CopyProperty(rimVRParallaxStrength);
                         CopyProperty(rimApplyTransparency);
                         CopyProperty(rimDirStrength);
                         CopyProperty(rimDirRange);
@@ -6711,6 +6751,7 @@ namespace lilToon
                         CopyProperty(rimEnableLighting);
                         CopyProperty(rimShadowMask);
                         CopyProperty(rimBackfaceMask);
+                        CopyProperty(rimVRParallaxStrength);
                         CopyProperty(rimApplyTransparency);
                         CopyProperty(rimDirStrength);
                         CopyProperty(rimDirRange);
@@ -6766,6 +6807,8 @@ namespace lilToon
                         CopyProperty(outlineWidth);
                         CopyProperty(outlineFixWidth);
                         CopyProperty(outlineVertexR2Width);
+                        CopyProperty(outlineVectorTex);
+                        CopyProperty(outlineVectorScale);
                         CopyProperty(outlineEnableLighting);
                         CopyProperty(outlineTex);
                         CopyProperty(outlineWidthMask);
@@ -7335,6 +7378,7 @@ namespace lilToon
                         PasteProperty(ref rimEnableLighting);
                         PasteProperty(ref rimShadowMask);
                         PasteProperty(ref rimBackfaceMask);
+                        PasteProperty(ref rimVRParallaxStrength);
                         PasteProperty(ref rimApplyTransparency);
                         PasteProperty(ref rimDirStrength);
                         PasteProperty(ref rimDirRange);
@@ -7469,6 +7513,7 @@ namespace lilToon
                         PasteProperty(ref rimEnableLighting);
                         PasteProperty(ref rimShadowMask);
                         PasteProperty(ref rimBackfaceMask);
+                        PasteProperty(ref rimVRParallaxStrength);
                         PasteProperty(ref rimApplyTransparency);
                         PasteProperty(ref rimDirStrength);
                         PasteProperty(ref rimDirRange);
@@ -7536,6 +7581,8 @@ namespace lilToon
                         PasteProperty(ref outlineWidth);
                         PasteProperty(ref outlineFixWidth);
                         PasteProperty(ref outlineVertexR2Width);
+                        PasteProperty(ref outlineVectorTex);
+                        PasteProperty(ref outlineVectorScale);
                         PasteProperty(ref outlineEnableLighting);
                         if(shouldCopyTex)
                         {
@@ -8078,6 +8125,7 @@ namespace lilToon
                         ResetProperty(ref rimEnableLighting);
                         ResetProperty(ref rimShadowMask);
                         ResetProperty(ref rimBackfaceMask);
+                        ResetProperty(ref rimVRParallaxStrength);
                         ResetProperty(ref rimApplyTransparency);
                         ResetProperty(ref rimDirStrength);
                         ResetProperty(ref rimDirRange);
@@ -8200,6 +8248,7 @@ namespace lilToon
                         ResetProperty(ref rimEnableLighting);
                         ResetProperty(ref rimShadowMask);
                         ResetProperty(ref rimBackfaceMask);
+                        ResetProperty(ref rimVRParallaxStrength);
                         ResetProperty(ref rimApplyTransparency);
                         ResetProperty(ref rimDirStrength);
                         ResetProperty(ref rimDirRange);
@@ -8255,6 +8304,8 @@ namespace lilToon
                         ResetProperty(ref outlineWidth);
                         ResetProperty(ref outlineFixWidth);
                         ResetProperty(ref outlineVertexR2Width);
+                        ResetProperty(ref outlineVectorTex);
+                        ResetProperty(ref outlineVectorScale);
                         ResetProperty(ref outlineEnableLighting);
                         ResetProperty(ref outlineTex);
                         ResetProperty(ref outlineWidthMask);
@@ -8448,6 +8499,7 @@ namespace lilToon
         {
             if(isMulti)
             {
+                lilRenderPipeline lilRP = CheckRP();
                 float tpmode = material.GetFloat("_TransparentMode");
                 if(tpmode == 1.0f)
                 {
@@ -8471,7 +8523,7 @@ namespace lilToon
                     material.SetInt("_AlphaToMask", 0);
                     material.SetInt("_OutlineAlphaToMask", 0);
                     material.SetOverrideTag("RenderType", "TransparentCutout");
-                    material.renderQueue = 2460;
+                    material.renderQueue = lilRP == lilRenderPipeline.HDRP ? 3000 : 2460;
                 }
                 else if(tpmode == 3.0f)
                 {
@@ -8886,6 +8938,7 @@ namespace lilToon
                 if(material.HasProperty("_OutlineTexHSVG")) shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION || material.GetVector("_OutlineTexHSVG") != defaultHSVG;
                 if(material.HasProperty("_OutlineTex")) shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR = shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR || material.GetTexture("_OutlineTex") != null;
                 if(material.HasProperty("_OutlineWidthMask")) shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH = shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH || material.GetTexture("_OutlineWidthMask") != null;
+                if(material.HasProperty("_OutlineVectorTex")) shaderSetting.LIL_FEATURE_TEX_OUTLINE_NORMAL = shaderSetting.LIL_FEATURE_TEX_OUTLINE_NORMAL || material.GetTexture("_OutlineVectorTex") != null;
             }
 
             // Tessellation
@@ -9011,6 +9064,7 @@ namespace lilToon
                 if(!shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION) material.SetVector("_OutlineTexHSVG", defaultHSVG);
                 if(!shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR) material.SetTexture("_OutlineTex", null);
                 if(!shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH) material.SetTexture("_OutlineWidthMask", null);
+                if(!shaderSetting.LIL_FEATURE_TEX_OUTLINE_NORMAL) material.SetTexture("_OutlineVectorTex", null);
             }
 
             // Tessellation
@@ -9090,6 +9144,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION || propname.Contains("_OutlineTexHSVG");
                 shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR = shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR || propname.Contains("_OutlineTex");
                 shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH = shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH || propname.Contains("_OutlineWidthMask");
+                shaderSetting.LIL_FEATURE_TEX_OUTLINE_NORMAL = shaderSetting.LIL_FEATURE_TEX_OUTLINE_NORMAL || propname.Contains("_OutlineVectorTex");
             }
         }
 

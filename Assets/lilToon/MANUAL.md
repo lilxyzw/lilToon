@@ -2,6 +2,7 @@
 
 # Table of Contents
 - [Terms](#terms)
+- [Shader variation](#shader-variation)
 - [Upper part of Inspector](#upper-part-of-inspector)
 - [Base Setting](#base-setting)
     - [UV Setting](#uv-setting)
@@ -52,6 +53,16 @@
 |MatCap|Texture with light reflections drawn in.|
 |Rim Light|Light that brightens only the outline of an object.|
 |Stencil|Mask done on screen. You can draw eyebrows over hair.|
+
+<br/>
+
+# Shader variation
+|名前|説明|
+|-|-|
+|lilToon|This is the main shader. Use this one for general purposes.|
+|_lil/[Optional] lilToonOverlay|This is a transparent shader to be displayed on top of a material. Unnecessary passes are removed, and the performance is better than layering a normal transparent shader.|
+|_lil/[Optional] lilToonOutlineOnly|This is an outline-only shader. For example, if you want to draw outlines on a model with hard edges, you can prepare a mesh with smooth normals separately and assign this shader to it to draw smooth outlines.|
+|_lil/[Optional] lilToonFurOnly|This shader draws only the fins of fur. Recommended for layering on top of normal shaders or combining cutout fur and transparent fur.|
 
 <br/>
 
@@ -321,6 +332,7 @@ You can blend colors into the main color. This is the layer function in painting
 |Light direction strength|Influence of light direction.|
 |Direct light width|Range of direct light.|
 |Indirect light width|Range of indirect light (shadow).|
+|VR Parallax Strength|Strength of parallax in VR.|
 
 ### Glitter
 |Name|Description|
@@ -377,10 +389,11 @@ You can blend colors into the main color. This is the layer function in painting
 |Value|Lightness or darkness of a color.|
 |Gamma|Emphasizes contrast.|
 |Bake|Export the color-corrected texture.|
+|Enable Lighting|Apply changes in brightness due to lighting.|
 |Mask & Width|Width of outline. The outline does not appear in the area painted black by the mask.|
 |Fix Width|Correct width changes with distance.|
 |Vertex R -> Width|Apply the R value of vertex color to the width.|
-|Enable Lighting|Apply changes in brightness due to lighting.|
+|Normal Map|Control outline vectors with Normal Map.|
 
 <br/>
 

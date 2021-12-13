@@ -1132,7 +1132,7 @@
             #endif
 
             // UV
-            float2 matUV = lilCalcMatCapUV(fd.uv1, N, fd.V, fd.headV, _MatCapTex_ST, _MatCapBlendUV1.xy, _MatCapZRotCancel, _MatCapPerspective, _MatCapVRParallaxStrength);
+            float2 matUV = lilCalcMatCapUV(fd.uv1, normalize(N), fd.V, fd.headV, _MatCapTex_ST, _MatCapBlendUV1.xy, _MatCapZRotCancel, _MatCapPerspective, _MatCapVRParallaxStrength);
 
             // Color
             float4 matCapColor = _MatCapColor;
@@ -1230,13 +1230,8 @@
 #if defined(LIL_FEATURE_RIMLIGHT) && !defined(LIL_LITE) && !defined(LIL_FUR)
     void lilGetRim(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
-        #if !defined(LIL_PASS_FORWARDADD)
-            LIL_BRANCH
-            if(_UseRim)
-        #else
-            LIL_BRANCH
-            if(_UseRim)
-        #endif
+        LIL_BRANCH
+        if(_UseRim)
         {
             #if defined(LIL_FEATURE_RIMLIGHT_DIRECTION)
                 // Color
@@ -1249,12 +1244,19 @@
                     rimIndirColor *= rimColorTex;
                 }
 
+                // View direction
+                #if defined(USING_STEREO_MATRICES)
+                    float3 V = lerp(fd.headV, fd.V, _RimVRParallaxStrength);
+                #else
+                    float3 V = fd.V;
+                #endif
+
                 // Normal
                 float3 N = fd.N;
                 #if defined(LIL_FEATURE_NORMAL_1ST) || defined(LIL_FEATURE_NORMAL_2ND)
                     N = lerp(fd.origN, fd.N, _RimNormalStrength);
                 #endif
-                float nvabs = abs(dot(N,fd.V));
+                float nvabs = abs(dot(N,V));
 
                 // Factor
                 float lnRaw = dot(fd.L, N) * 0.5 + 0.5;
