@@ -83,12 +83,10 @@ Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Asse
 - lilToonMulti : This is the version that uses the local shader keyword. It is not affected by shader settings. [Details](#about-multi-version)
 
 # How to distribute your works that use lilToon
-I recommend right-clicking on the material and running `lilToon/Remove unused properties` so that the appearance does not change when shader settings are changed. It used to be necessary to include lilToonSetting, but now it is not necessary. `Shader Setting` is automatically optimized by scanning materials and animations when importing assets.  
-1. Select the folder of your works.
-2. (only if you want to include shaders) hold down ctrl and select the `lilToon` folder.
-3. Right click and select `Export package...`.
-4. uncheck `Include Dependencies`.
-5. Press `Export...` to save the unitypackage.
+- I recommend right-clicking on the material and running `lilToon/Remove unused properties` so that the appearance does not change when shader settings are changed.
+- If you want to include shaders, it is recommended to include a shortcut to the BOOTH or GitHub download page, or to include the shader unitypackage as a separate file.
+- The method of combining shaders and creations into a single unitypackage has been deprecated. (due to problems such as overwriting with an older version during import)
+- It is not necessary to include the shader settings (in the lilToonSetting folder), as they will be scanned for materials and animations and automatically set when the assets are imported.
 
 # Common Problems
 - Material error has occurred.  
