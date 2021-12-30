@@ -84,7 +84,7 @@ Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Asse
 
 # How to distribute your works that use lilToon
 - I recommend right-clicking on the material and running `lilToon/Remove unused properties` so that the appearance does not change when shader settings are changed.
-- If you want to include shaders, it is recommended to include a shortcut to the BOOTH or GitHub download page, or to include the shader unitypackage as a separate file.
+- If you want to include shaders, it is recommended to include a shortcut to the [BOOTH](https://booth.pm/ja/items/3087170) or [GitHub](https://github.com/lilxyzw/lilToon/releases) download page, or to include the shader unitypackage as a separate file.
 - The method of combining shaders and creations into a single unitypackage has been deprecated. (due to problems such as overwriting with an older version during import)
 - It is not necessary to include the shader settings (in the lilToonSetting folder), as they will be scanned for materials and animations and automatically set when the assets are imported.
 
