@@ -2,18 +2,18 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System;
 
 namespace lilToon
 {
-    class lilToonAssetPostprocessor : AssetPostprocessor
+    public class lilToonAssetPostprocessor : AssetPostprocessor
     {
-        static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+        private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
-            string shaderSettingHLSLPath = lilToonInspector.GetShaderSettingHLSLPath();
-
             // Runs only when there is no user action
             if(Event.current != null) return;
 
+            string shaderSettingHLSLPath = lilToonInspector.GetShaderSettingHLSLPath();
             bool existsTarget = false;
             foreach(string str in importedAssets)
             {
@@ -24,7 +24,7 @@ namespace lilToon
                 }
                 if(str.EndsWith(".mat") && AssetDatabase.GetMainAssetTypeAtPath(str) == typeof(Material))
                 {
-                    Material material = (Material)AssetDatabase.LoadAssetAtPath(str, typeof(Material));
+                    Material material = AssetDatabase.LoadAssetAtPath<Material>(str);
                     if(material.shader.name.Contains("lilToon") && !material.shader.name.Contains("Lite") && !material.shader.name.Contains("Multi"))
                     {
                         existsTarget = true;
@@ -44,16 +44,9 @@ namespace lilToon
             }
             if(shaderSettingString.Contains("//INITIALIZE")) return;
 
-            lilToonSetting shaderSetting = null;
-            lilToonInspector.InitializeShaderSetting(ref shaderSetting);
-            if(shaderSetting == null || shaderSetting.isLocked || shaderSetting.shouldNotScan) return;
-
             // Write temp file
             StreamWriter sw = new StreamWriter(lilToonInspector.packageListTempPath, true);
-            foreach(string str in importedAssets)
-            {
-                sw.Write(str + "\n");
-            }
+            Array.ForEach(importedAssets, str => sw.WriteLine(str));
             sw.Close();
         }
     }

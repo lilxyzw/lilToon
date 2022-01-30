@@ -1,9 +1,12 @@
 {
   "name": "jp.lilxyzw.liltoon",
+  "version": "1.2.8",
   "displayName": "lilToon",
-  "version": "1.2.7",
-  "unity": "2017.1",
   "description": "Feature-rich toon shader.",
-  "keywords": ["Toon", "Shader", "Material"],
-  "license": "MIT"
+  "unity": "2017.1",
+  "documentationUrl": "https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md",
+  "changelogUrl": "https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/CHANGELOG.md",
+  "licensesUrl": "https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/LICENSE",
+  "license": "MIT",
+  "keywords": ["Toon", "Shader", "Material"]
 }

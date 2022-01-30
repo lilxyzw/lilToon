@@ -9,6 +9,7 @@ sHelpAdvanced	In this mode, you can make detailed settings for the material.	詳
 sHelpPreset	In this mode, you can easily set up materials from presets.	プリセットから一括で設定するモードです。	프리셋에서 일괄로 설정하는 모드입니다.	在这个模式下，你可以很容易地从预设中设置材料。	在這個模式下，你可以很容易地從預設中設置材料。
 sHelpSelectOverlay	Currently lilToonOverray is selected. Change to lilToon for normal use.	現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。	현재 lilToonOverray가 선택되어있습니다.일반 용도에서는 lilToon으로 변경해주세요.	目前正在选择lilToonOverray。如果是通常的用途的话请变更为lilToon。	目前正在選擇lilToonOverray。如果是通常的用途的話請變更為lilToon。
 sColor	Color	色	색	颜色	顏色
+sColorAlpha	Color / Alpha	色 / 透明度	색 / 투명도	颜色 / 透明度	顏色 / 透明度
 sGamma	Gamma	ガンマ	감마	伽玛	伽瑪
 sHue	Hue	色相	색상	色相	色相
 sSaturation	Saturation	彩度	채도	饱和度	飽和度
@@ -30,6 +31,7 @@ sBorderAO	AO & Border	AOと影範囲	AO과 그림자 범위	AO & 边界	AO & 邊
 sBorderR	Border (R)	範囲 (R)	범위 (R)	边界 (R)	邊界 (R)
 sBlur	Blur	ぼかし	흐리게	模糊	模糊
 sBlurR	Blur (R)	ぼかし (R)	흐리게 (R)	模糊 (R)	模糊 (R)
+sBlurMask	Blur Mask	ぼかし量マスク	흐림 효과 마스크	模糊掩码	模糊掩碼
 sAlphaR	Alpha (R)	透明度 (R)	투명도 (R)	透明度 (R)	透明度 (R)
 sMainColorPower	Main Color Power	メインカラーの強度	메인 컬러의 강도	主色功率	主色功率
 sEnableLighting	Enable Lighting	ライティングを適用	라이팅을 적용	启用照明	啟用照明
@@ -76,6 +78,7 @@ sApplyTransparency	Apply Transparency	透明度を適用	투명도 적용	应用
 sVRParallaxStrength	VR Parallax Strength	VR時の視差の強さ	VR Parallax Strength	VR Parallax Strength	VR Parallax Strength
 sShadowMask	Shadow Mask	影部分で無効化	그림자 속에서 무효화	阴影蒙版	陰影蒙版
 sBackfaceMask	Backface Mask	裏面で無効化	후면에서 무효화	背面蒙版	背面蒙版
+sRandomize	Randomize	ランダム化	임의화	随机化	隨機化
 sLimShadowStrength	Shadow Strength	影の強さ	그림자 강도	阴影强度	陰影強度
 sLimOutline	Outline	輪郭線の色	윤곽선의 색	轮廓	輪廓
 sLimEmission	Emission	発光色	발광색	发光	發光
@@ -94,6 +97,7 @@ sRenderingModeRefraction	[high-load] Refraction	[高負荷] 屈折	[과부하] �
 sRenderingModeRefractionBlur	[high-load] Refraction Blur	[高負荷] 屈折ぼかし	[과부하] 굴절 흐리게	[高负荷] 折射模糊	[高負荷] 折射模糊
 sRenderingModeFur	[high-load] Fur	[高負荷] ファー	[과부하] 퍼	[高负荷] 毛皮	[高負荷] 毛皮
 sRenderingModeFurCutout	[high-load] Fur (Cutout)	[高負荷] ファー (カットアウト)	[과부하] 퍼 (컷아웃)	[高负荷] 毛皮(镂空)	[高負荷] 毛皮(鏤空)
+sRenderingModeFurTwoPass	[high-load] Fur (2 pass)	[高負荷] ファー (2パス)	[과부하] 퍼 (2 pass)	[高负荷] 毛皮(2 pass)	[高負荷] 毛皮(2 pass)
 sRenderingModeGem	[high-load] Gem	[高負荷] 宝石	[과부하] 보석	[高负荷] 宝石	[高負荷] 寶石
 sTransparentMode	Transparent Mode	透過モード	투명 모드	Transparent Mode	Transparent Mode
 sTransparentModeNormal	Normal	通常	Normal	Normal	Normal
@@ -109,21 +113,27 @@ sCullModeBack	Back	Back (前面のみ描画)	Back	Back	Back
 sFlipBackfaceNormal	Flip Backface Normal	背面の法線を反転	후면의 법선을 반전	翻转背影法线	翻轉背影法線
 sShiftBackfaceUV	Shift Backface UV	背面のUVをずらす	후면의 UV를 드티다	移动背面的UV	移動背面的UV
 sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면에 그림자를 드리우다	背面的力量阴影	背面的力量陰影
-sLightingSettings	Lighting Settings	ライティング設定	Lighting Settings	Lighting Settings	Lighting Settings
-sVertexLightStrength	Vertex Light Strength	頂点ライトの強度	Vertex Light Strength	Vertex Light Strength	Vertex Light Strength
-sLightMinLimit	Lower brightness limit	明るさの下限	Lower brightness limit	Lower brightness limit	Lower brightness limit
-sLightMaxLimit	Upper brightness limit	明るさの上限	Upper brightness limit	Upper brightness limit	Upper brightness limit
-sMonochromeLighting	Monochrome Lighting	ライトのモノクロ化	Monochrome Lighting	Monochrome Lighting	Monochrome Lighting
+sLightingSettings	Lighting	ライティング設定	라이팅 설정	照明设置	照明設置
+sVertexLightStrength	Vertex Light Strength	頂点ライトの強度	꼭지점 라이트의 강도	顶点灯的强度	頂點燈的強度
+sLightMinLimit	Lower brightness limit	明るさの下限	밝기의 하한	亮度下限	亮度下限
+sLightMaxLimit	Upper brightness limit	明るさの上限	밝기의 상한	亮度上限	亮度上限
+sMonochromeLighting	Monochrome Lighting	ライトのモノクロ化	라이트의 흑백화	光的单色化	光的單色化
 sLightDirectionOverride	Light Direction Override	ライト方向のオーバーライド	Light Direction Override	Light Direction Override	Light Direction Override
+sObjectFollowing	Object following	オブジェクトに追従	오브젝트 추종	跟随对象	跟隨對象
 sDirectionalLightStrength	[HDRP] Directional Light Strength	[HDRP] Directional Lightの強さ	[HDRP] Directional Light Strength	[HDRP] Directional Light Strength	[HDRP] Directional Light Strength
 sBeforeExposureLimit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit
 sLightingPreset	Apply Preset	プリセットを適用	프리셋 적용	应用预设	應用預設
 sLightingPresetDefault	Default	通常	디폴트	通常	通常
 sLightingPresetStable	Stable	安定	안정	稳定	穩定
-sHelpRenderingTransparent	When two transparent materials overlap, one of them may become invisible.	透過マテリアル同士が重なったときに片方が見えなくなる場合があります	투명 Material끼리 겹친 때 한쪽이 보이지 않을 수 있습니다	当两个透明Material重叠时，其中一个可能会变得不可见。	當兩個透明Material重疊時，其中一個可能會變得不可見。
+sLightingPresetSemiMonochrome	Semi-monochrome	半モノクロ	세미 모노크롬	半单色	半單色
+sHelpRenderingTransparent	When two transparent materials overlap, one of them may become invisible. In this case, increase the "Render Queue" value of the material in the foreground to fix the problem.	透過マテリアル同士が重なったときに片方が見えなくなる場合があります。その場合は手前に表示されるマテリアルのRender Queueの値を上げることで改善されます。	투명 Material끼리 겹친 때 한쪽이 보이지 않을 수 있습니다. 이 경우는 앞에 표시되는 머티리얼의 "Render Queue" 값을 올림으로써 수정됩니다.	当两个透明Material重叠时，其中一个可能会变得不可见。这种情况下，通过提高前面显示的材料的"Render Queue"值来修正。	當兩個透明Material重疊時，其中一個可能會變得不可見。這種情況下，通過提高前面顯示的材料的"Render Queue"值來修正。
 sHelpOnePassVertexLight	When using One Pass / Two Pass Transparent, it is recommended to set Vertex Light Strength to 1.0.	1パス・2パス使用時は頂点ライトの強度を1.0にしておくことをオススメします。	One Pass / Two Pass Transparent 사용 시에는 Vertex Light Strength를 1.0으로 설정할 것을 권장합니다.	使用One Pass/Two Pass Transparent时推荐将Vertex Light Strength设定为1.0。	使用One Pass/Two Pass Transparent時推薦將Vertex Light Strength設定為1.0。
 sHelpCullMode	If the material does not look right, set the CullMode to Off or Back.	表示がおかしい場合はCullModeをOffもしくはBackにしてください	표시가 이상한 경우는 CullMode을 Off 또는 Back합니다	如果材质看起来不对，请将CullMode设置为Off或Back。	如果材質看起來不對，請將CullMode設置為Off或Back。
 sHelpZWrite	If the material does not look right, turn on ZWrite.	表示がおかしい場合はZWriteをオンにしてください	표시가 이상한 경우는 ZWrite을 선택하십시오	如果材质看起来不对，请打开ZWrite。	如果材質看起來不對，請打開ZWrite。
+sAlphaBoostFA	[Built-in RP] Alpha Boost (Point / Spot Light)	[Built-in RP] 透明度ブースト (Point / Spot Light)	[Built-in RP] Alpha Boost (Point / Spot Light)	[Built-in RP] Alpha Boost (Point / Spot Light)	[Built-in RP] Alpha Boost (Point / Spot Light)
+sLightBlending	[Built-in RP] Light Blending	[Built-in RP] ライトの合成	[Built-in RP] Light Blending	[Built-in RP] Light Blending	[Built-in RP] Light Blending
+sBlendingAdd	Add	加算	Add	Add	Add
+sBlendingMax	Max	比較（明）	Max	Max	Max
 sMaskTiling	Mask UV Tiling	Mask UV Tiling	Mask UV Tiling	蒙版UV Tiling	蒙版UV Tiling
 sMaskOffset	Mask UV Offset	Mask UV Offset	Mask UV Offset	蒙版UV Offset	蒙版UV Offset
 sNoise	Noise	ノイズ	노이즈	噪点	噪點
@@ -135,8 +145,9 @@ sApplyTo	Apply to	適用先	적용처	申请	申請
 sMainUV	UV Setting	UV設定	UV 설정	UV设置	UV設置
 sMainUVTips	You can set the UV position, scale and animation.	UVの位置やサイズ、アニメーションの設定ができます	UV의 위치 나 크기, 애니메이션을 설정할 수 있습니다	你可以设置UV位置、比例和动画。	你可以設置UV位置、比例和動畫。
 sColors	Color	色設定	색상 설정	颜色设置	顏色設置
-sMainColorSetting	Main Color	基本色設定	기본 색상 설정	主色设置	主色設置
+sMainColorSetting	Main Color / Alpha	メインカラー / 透過設定	메인 컬러 / 알파 설정	主色 / Alpha设置	主色 / Alpha設置
 sMainColorTips	You can set the color and transparency.	色や透明度の設定ができます	색상과 투명도를 설정할 수 있습니다	你可以设置颜色和透明度。	你可以設置顏色和透明度。
+sMainColorAlpha	Main Color / Alpha	メインカラー / 透過	메인 컬러 / 알파	主色 / Alpha	主色 / Alpha
 sMainColor	Main Color	メインカラー	메인 컬러	主色	主色
 sMainColor2nd	Main Color 2nd	メインカラー2nd	메인 컬러 2nd	主色2nd	主色2nd
 sMainColor3rd	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	主色3rd	主色3rd
@@ -155,9 +166,11 @@ sReceiveShadow	Receive Shadow	影を受け取る	그림자를받는	接收阴影
 sShadowColor	ShadowColor	影色	그림자 색	阴影颜色	陰影顏色
 sShadow1stColor	1st Color	影色1	그림자 색 1	颜色1	顏色1
 sShadow2ndColor	2nd Color	影色2	그림자 색 2	颜色2	顏色2
+sShadow3rdColor	3rd Color	影色3	그림자 색 3	颜色3	顏色3
 sShadowEnvStrength	Environment strength on shadow color	影色への環境光影響度	그림자 색에 환경 광의 영향	阴影颜色的环境强度	陰影顏色的環境強度
 sShadowBorderColor	Border Color	境界の色	경계의 색	边界颜色	邊界顏色
 sShadowBorderRange	Border Range	境界の幅	경계의 폭	边界范围	邊界範圍
+sBacklightSetting	Backlight	逆光ライト	Backlight 설정	Backlight设置	Backlight設置
 sBacklight	Backlight	逆光ライト	Backlight	Backlight	Backlight
 sBacklightTips	Add a backlight when the light is behind the model.	逆光時に光を乗せる表現ができます	라이트가 모델 뒤에 있을 때 백라이트를 추가하다	当照明在模型后面时添加背光灯	當照明在模型後面時添加背光燈
 sDirectivity	Directivity	指向性	지향성	指向性	指向性
@@ -182,6 +195,7 @@ sAO	AO	陰影	AO	AO	AO
 sVertexColor2Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> Vector
 sLayerNum	Layer Counts	レイヤー数	레이어 수	层数	層數
 sRootWidth	Root Width	根本の太さ	근본 굵기	根厚度	根厚度
+sTouchStrength	Touch strength	接触強度	접촉 강도	接触强度	接觸強度
 sTessellation	Tessellation	テッセレーション	텟세레이션	Tessellation	Tessellation
 sTessellationTips	You can set the tessellation.	テッセレーションのかかり方を設定できます	텟세레이션을 설정할 수 있습니다.	你可以设置Tessellation。	你可以設置Tessellation。
 sTessellationEdge	Threshold length	閾値	길이의 한계	阈值长度	閾值長度
@@ -253,7 +267,7 @@ sNormalRGB	Normal (RGB)	ノーマル (RGB)	노멀 (RGB)	法线 (RGB)	法線 (RGB
 sAnisotropy	Anisotropy	異方性反射	애니소트로픽	各向异性反射	各向異性反射
 sTangentWidth	Tangent Width	タンジェント方向の幅	Tangent Width	Tangent Width	Tangent Width
 sBitangentWidth	Bitangent Width	バイタンジェント方向の幅	Bitangent Width	Bitangent Width	Bitangent Width
-sReflectionsSetting	Reflections	光沢設定	광택 설정	反射设置	反射
+sReflectionsSetting	Reflections	光沢設定	광택 설정	反射设置	反射設置
 sReflectionsTips	You can set the Reflections.	光沢に関する設定ができます	광택 관한 설정을 할 수 있습니다	你可以设置反射。	你可以設置反射。
 sReflection	Reflection	反射	반사	反射	反射
 sSmoothness	Smoothness	滑らかさ	부드러움	平滑度	平滑度
@@ -267,6 +281,7 @@ sSpecularReal	Realistic	リアル	리얼	现实	現實
 sSpecularToon	Toon	トゥーン	툰	卡通	卡通
 sMultiLightSpecular	Multi Light Specular	複数ライトから光沢を生成	복수 라이트에서 광택 생성	从多个光源生成反射	從多個光源生成反射
 sApplyReflection	Environment Reflections	環境光の反射	환경광 반사	环境反射	環境反射
+sMatCapSetting	MatCap	マットキャップ設定	매트 캡 설정	MatCap设置	MatCap設置
 sMatCap	MatCap	マットキャップ	매트 캡	MatCap	MatCap
 sMatCap2nd	MatCap 2nd	マットキャップ2nd	매트 캡 2nd	MatCap 2nd	MatCap 2nd
 sBlendUV1	Blend UV1	UV1を合成	Blend UV1	Blend UV1	Blend UV1
@@ -274,16 +289,19 @@ sMatCapZRotCancel	Z-axis rotation cancellation	Z軸回転キャンセル	Z축 �
 sFixPerspective	Fix Perspective	パース補正	Fix Perspective	Fix Perspective	Fix Perspective
 sHelpMatCapBlending	Turn off "Enable Lighting" in multiply mode.	乗算モードでは"ライティングを適用"を0にしてください	곱셈 모드에서는 "라이팅을 적용"을 0으로 해 주세요	关闭乘法模式下的 启用照明。	關閉乘法模式下的 啟用照明。
 sMatCapCustomNormal	Custom normal map	カスタムノーマルマップ	커스텀 노멀 맵	自定义法线贴图	自定義法線貼圖
+sRimLightSetting	Rim Light	リムライト設定	림 라이트 설정	Rim Light设置	Rim Light設置
 sRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
 sFresnelPower	Fresnel Power	リムライトの細さ	림 라이트의 벌금	菲涅尔功率	菲涅爾功率
 sRimLightDirection	Light direction strength	ライト方向の影響度	라이트 방향의 영향도	光线方向影响	光線方向影響
 sRimDirectionRange	Direct light width	直接光の幅	직접 빛의 폭	直射光宽	直射光寬
 sRimIndirectionRange	Indirect light width	間接光の幅	간접 조명의 폭	间接光宽	間接光寬
+sGlitterSetting	Glitter	ラメ設定	Glitter 설정	Glitter设置	Glitter設置
 sGlitter	Glitter	ラメ	Glitter	Glitter	Glitter
 sParticleSize	Particle Size	パーティクルサイズ	파티클 사이즈	粒子大小	粒子大小
 sContrast	Contrast	コントラスト	콘트라스트	对比度	對比度
 sAngleLimit	Angle limit	角度制限	각도 제한	角度限制	角度限制
 sColorRandomness	Color Randomness	ランダムカラー	랜덤 컬러	随机颜色	隨機顏色
+sGemSetting	Gem	宝石設定	보석 설정	宝石设置	寶石設置
 sGem	Gem	宝石	보석	宝石	寶石
 sChromaticAberration	Chromatic Aberration	色収差	색수차	色差	色差
 sEnvironmentColor	Environment Color	環境光の色	환경광 색상	环境光色	環境光色
@@ -324,6 +342,7 @@ sRemoveUnused	Remove unused textures	未使用のテクスチャを外す	미사
 sConvertLite	Convert to lilToonLite	lilToonLiteに変換	lilToonLite로 변환	转换为lilToonLite	轉換為lilToonLite
 sConvertMulti	Convert to lilToonMulti	lilToonMultiに変換	lilToonMulti로 변환	转换为lilToonMulti	轉換為lilToonMulti
 sConvertMToon	Convert to MToon (VRM)	MToon(VRM)に変換	MToon (VRM)로 변환	转换为MToon (VRM)	轉換為MToon (VRM)
+sOptimizeForEvents	Optimize for submission to the event	イベント入稿用に最適化	이벤트에 대한 제도 최적화	优化以提交到活动	優化以提交到活動
 sYes	Yes	はい	Yes	Yes	Yes
 sNo	No	いいえ	No	No	No
 sOK	OK	OK	OK	OK	OK
@@ -407,7 +426,7 @@ sShaderSetting	Shader Setting (for all materials)	シェーダー設定 (全マ�
 sShaderSettingTips	You can toggle unused functions.	不要な機能を無効化できます	불필요한 기능을 비활성화 할 수 있습니다	你可以切换不使用的功能。	你可以切換不使用的功能。
 sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	在这里关闭的功能将从着色器中删除。通过关闭不使用的功能，你可以减少你的头像的大小，同时也可以减少负载。	在這里關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的頭像的大小，同時也可以減少負載。​​
 sSettingApply	Apply	シェーダー設定を適用	Apply	Apply	Apply
-sSettingCancelAutoScan	Do not auto-scan on import	インポート時に自動スキャンしない	Do not auto-scan on import	Do not auto-scan on import	Do not auto-scan on import
+sSettingCancelAutoScan	Do not auto-scan on import	インポート時に自動スキャンしない	임포트시에 자동 스캔하지 않음	导入时不自动扫描	導入時不自動掃描
 sSettingLock	Lock	ロック	Lock	Lock	Lock
 sSettingAnimateMainUV	UV Animation & Angle	UVアニメーション&角度	UV 애니메이션 & 각도	UV动画和角度	UV動畫和角度
 sSettingMainToneCorrection	Tone Correction	色調補正	색상 보정	色调校正	色調校正
@@ -426,6 +445,8 @@ sSettingTexShadowBorder	AO Mask	AOマスク	AO 마스크	AO蒙版	AO蒙版
 sSettingTexShadowStrength	Shadow Strength Mask	強度マスク	강도 마스크	阴影强度掩码	陰影強度掩碼
 sSettingTexShadow1st	Shadow Color 1st Texture	影色1テクスチャ	그림자 색 1 텍스처	阴影颜色1纹理	陰影顏色1紋理
 sSettingTexShadow2nd	Shadow Color 2nd Texture	影色2テクスチャ	그림자 색 2 텍스처	阴影颜色2纹理	陰影顏色2紋理
+sSettingShadow3rd	Shadow Color 3rd	影色3	그림자 색 3	阴影颜色3	陰影顏色3
+sSettingTexShadow3rd	Shadow Color 3rd Texture	影色3テクスチャ	그림자 색 3 텍스처	阴影颜色3纹理	陰影顏色3紋理
 sSettingEmission1st	Emission	発光テクスチャ	발광 텍스처	发光	發光
 sSettingEmission2nd	Emission 2nd	発光テクスチャ2nd	발광 텍스처 2nd	发光2nd	發光2nd
 sSettingEmissionUV	Emission UV	発光テクスチャUV	발광 텍스처 UV	发光UV	發光UV
@@ -470,14 +491,22 @@ sSettingTexOutlineNormal	Outline Normal Map	輪郭線ノーマルマップ	윤�
 sSettingTexFurNormal	Fur Normal Map	ファーノーマルマップ	퍼 노멀 맵	毛皮法线贴图	毛皮法線貼圖
 sSettingTexFurMask	Fur Mask	ファーマスク	퍼 마스크	毛皮蒙版	毛皮蒙版
 sSettingTexFurLength	Fur Length Mask	ファー長さマスク	퍼 길이 마스크	毛皮长度蒙版	毛皮長度蒙版
+sSettingFurCollision	Fur Collision	ファー当たり判定	퍼 충돌	毛皮碰撞	毛皮碰撞
 sSettingTessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	Tessellation (极高的负荷)	Tessellation (極高的負荷)
+sSettingDefaultValue	Default Value (used for "Fix Lighting" and lighting presets)	初期値 (Fix Lightingやライティングプリセットに使用)	초기값 (Fix Lighting이나 라이팅 프리셋에 사용)	初始值 (用于Fix Lighting或照明预设)	初始值 (用於Fix Lighting或照明預設)
+sSettingBuildSizeOptimization	Build size optimization	ビルドサイズの最適化	빌드 사이즈 최적화	优化构建大小	優化構建大小
+sSettingApplyShadowFA	Enable shadow in ForwardAdd	ForwardAddパスで影を有効化	ForwardAdd로 그림자 활성화	通过ForwardAdd启用阴影	通過ForwardAdd啟用陰影
+sSettingUseForwardAdd	Use ForwardAdd	ForwardAddパスを使用	ForwardAdd 사용	使用ForwardAdd	使用ForwardAdd
+sSettingUseVertexLight	Use vertex light	頂点ライトを使用	꼭지점 라이트 사용	使用顶点灯	使用頂點燈
+sSettingUseLightmap	Use lightmap	ライトマップを使用	라이트 맵 사용	使用照明图	使用照明圖
 sManualURL	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md
 sAnchorTerms	#terms	#登場する用語	#terms	#terms	#terms
 sAnchorBaseSetting	#base-setting	#基本設定	#base-setting	#base-setting	#base-setting
+sAnchorLighting	#lighting	#ライティング設定	#lighting	#lighting	#lighting
 sAnchorUVSetting	#uv-setting	#uv設定	#uv-setting	#uv-setting	#uv-setting
 sAnchorColor	#color	#色設定	#color	#color	#color
-sAnchorMainColor	#main-color	#基本色設定	#main-color	#main-color	#main-color
-sAnchorMainColor1	#main-color-1	#メインカラー	#main-color-1	#main-color-1	#main-color-1
+sAnchorMainColor	#main-color-/-alpha	#メインカラー-/-透過設定	#main-color-/-alpha	#main-color-/-alpha	#main-color-/-alpha
+sAnchorMainColor1	#main-color-/-alpha-1	#メインカラー-/-透過	#main-color-/-alpha-1	#main-color-/-alpha-1	#main-color-/-alpha-1
 sAnchorMainColor2	#main-color-2nd--3rd	#メインカラー2nd3rd	#main-color-2nd--3rd	#main-color-2nd--3rd	#main-color-2nd--3rd
 sAnchorAlphaMask	#alpha-mask	#アルファマスク	#alpha-mask	#alpha-mask	#alpha-mask
 sAnchorShadow	#shadow	#影設定	#shadow	#shadow	#shadow

@@ -54,7 +54,7 @@ v2g vert(appdata input)
     lilCustomVertexOS(input, uvMain, input.positionOS);
 
     //------------------------------------------------------------------------------------------------------------------------------
-    // Previous Position
+    // Previous Position (for HDRP)
     #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
         input.previousPositionOS = unity_MotionVectorsParams.x > 0.0 ? input.previousPositionOS : input.positionOS.xyz;
         #if defined(_ADD_PRECOMPUTED_VELOCITY)
@@ -114,6 +114,9 @@ v2g vert(appdata input)
         output.uv23.xy          = input.uv2;
         output.uv23.zw          = input.uv3;
     #endif
+    #if !defined(LIL_NOT_SUPPORT_VERTEXID) && defined(LIL_V2G_VERTEXID)
+        output.vertexID         = input.vertexID;
+    #endif
     #if defined(LIL_V2G_NORMAL_WS)
         output.normalWS         = vertexNormalInput.normalWS;
     #endif
@@ -152,9 +155,32 @@ v2g vert(appdata input)
         output.furVector = _FurVector.xyz;
         if(_VertexColor2FurVector) output.furVector = lilBlendNormal(output.furVector, input.color.xyz);
         if(Exists_FurVectorTex) output.furVector = lilBlendNormal(output.furVector, UnpackNormalScale(LIL_SAMPLE_2D_LOD(_FurVectorTex, sampler_linear_repeat, uvMain, 0), _FurVectorScale));
-        output.furVector = mul(normalize(output.furVector), tbnOS) * _FurVector.w;
+        output.furVector = mul(normalize(output.furVector), tbnOS);
+        output.furVector *= _FurVector.w;
+        #if defined(LIL_FUR_PRE)
+            output.furVector *= _FurCutoutLength;
+        #endif
         output.furVector = lilTransformDirOStoWS(output.furVector, false);
-        output.furVector.y -= _FurGravity * length(output.furVector);
+        float furLength = length(output.furVector);
+        output.furVector.y -= _FurGravity * furLength;
+
+        #if defined(LIL_FEATURE_FUR_COLLISION) && defined(LIL_BRP) && defined(VERTEXLIGHT_ON)
+            // Touch
+            float3 positionWS2 = output.positionWS + output.furVector;
+            float4 toLightX = unity_4LightPosX0 - positionWS2.x;
+            float4 toLightY = unity_4LightPosY0 - positionWS2.y;
+            float4 toLightZ = unity_4LightPosZ0 - positionWS2.z;
+            float4 lengthSq = toLightX * toLightX + 0.000001;
+            lengthSq += toLightY * toLightY;
+            lengthSq += toLightZ * toLightZ;
+            float4 atten = saturate(1.0 - lengthSq * unity_4LightAtten0 / 25.0) * _FurTouchStrength * furLength;
+            //float4 rangeToggle = abs(frac(sqrt(25.0 / unity_4LightAtten0) * 100.0) - 0.22);
+            float4 rangeToggle = abs(frac(sqrt(250000 / unity_4LightAtten0)) - 0.22);
+            output.furVector = rangeToggle[0] < 0.001 - unity_LightColor[0].r - unity_LightColor[0].g - unity_LightColor[0].b ? output.furVector - float3(toLightX[0], toLightY[0], toLightZ[0]) * rsqrt(lengthSq[0]) * atten[0] : output.furVector;
+            output.furVector = rangeToggle[1] < 0.001 - unity_LightColor[1].r - unity_LightColor[1].g - unity_LightColor[1].b ? output.furVector - float3(toLightX[1], toLightY[1], toLightZ[1]) * rsqrt(lengthSq[1]) * atten[1] : output.furVector;
+            output.furVector = rangeToggle[2] < 0.001 - unity_LightColor[2].r - unity_LightColor[2].g - unity_LightColor[2].b ? output.furVector - float3(toLightX[2], toLightY[2], toLightZ[2]) * rsqrt(lengthSq[2]) * atten[2] : output.furVector;
+            output.furVector = rangeToggle[3] < 0.001 - unity_LightColor[3].r - unity_LightColor[3].g - unity_LightColor[3].b ? output.furVector - float3(toLightX[3], toLightY[3], toLightZ[3]) * rsqrt(lengthSq[3]) * atten[3] : output.furVector;
+        #endif
     #endif
 
     return output;
@@ -281,7 +307,7 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
-    // FakeFur (whiteflare)
+    // FakeFur (based on UnlitWF/UnToon by whiteflare, MIT License)
     // https://github.com/whiteflare/Unlit_WF_ShaderSuite
     for(uint fl = 0; fl < _FurLayerNum; fl++)
     {
@@ -318,6 +344,13 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
             #endif
 
             float3 fvmix = lerp(input[ii2].furVector,fvc,lpmix);
+            float3 furVector = normalize(fvmix);
+            #if !defined(LIL_NOT_SUPPORT_VERTEXID)
+                uint3 n0 = (input[0].vertexID * input[1].vertexID * input[2].vertexID + (fl * 439853 + ii * 364273 + 1)) * uint3(1597334677U, 3812015801U, 2912667907U);
+                //uint3 n0 = (input[0].vertexID * input[1].vertexID * input[2].vertexID + (fl * 439853 + 1)) * uint3(1597334677U, 3812015801U, 2912667907U);
+                float3 noise0 = normalize(float3(n0) * (2.0/float(0xffffffffU)) - 1.0);
+                fvmix += noise0 * _FurVector.w * _FurRandomize;
+            #endif
             if(Exists_FurLengthMask) fvmix *= LIL_SAMPLE_2D_LOD(_FurLengthMask, sampler_linear_repeat, outUV * _MainTex_ST.xy + _MainTex_ST.zw, 0).r;
 
             // In
@@ -333,7 +366,24 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                 output.previousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousPositionWS, 1.0));
             #endif
             #if defined(LIL_V2F_FURLAYER)
-                output.furLayer = _FurRootOffset;
+                output.furLayer = 0;
+            #endif
+            #if defined(LIL_V2F_POSITION_CS) && defined(LIL_FEATURE_CLIPPING_CANCELLER) && !defined(LIL_PASS_SHADOWCASTER_INCLUDED) && !defined(LIL_PASS_META_INCLUDED)
+                //------------------------------------------------------------------------------------------------------------------------------
+                // Clipping Canceller
+                #if defined(UNITY_REVERSED_Z)
+                    // DirectX
+                    if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 LIL_MULTI_SHOULD_CLIPPING)
+                    {
+                        output.positionCS.z = output.positionCS.z * 0.0001 + output.positionCS.w * 0.999;
+                    }
+                #else
+                    // OpenGL
+                    if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 LIL_MULTI_SHOULD_CLIPPING)
+                    {
+                        output.positionCS.z = output.positionCS.z * 0.0001 - output.positionCS.w * 0.999;
+                    }
+                #endif
             #endif
             outStream.Append(output);
 
@@ -351,6 +401,23 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
             #endif
             #if defined(LIL_V2F_FURLAYER)
                 output.furLayer = 1;
+            #endif
+            #if defined(LIL_V2F_POSITION_CS) && defined(LIL_FEATURE_CLIPPING_CANCELLER) && !defined(LIL_PASS_SHADOWCASTER_INCLUDED) && !defined(LIL_PASS_META_INCLUDED)
+                //------------------------------------------------------------------------------------------------------------------------------
+                // Clipping Canceller
+                #if defined(UNITY_REVERSED_Z)
+                    // DirectX
+                    if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 LIL_MULTI_SHOULD_CLIPPING)
+                    {
+                        output.positionCS.z = output.positionCS.z * 0.0001 + output.positionCS.w * 0.999;
+                    }
+                #else
+                    // OpenGL
+                    if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 LIL_MULTI_SHOULD_CLIPPING)
+                    {
+                        output.positionCS.z = output.positionCS.z * 0.0001 - output.positionCS.w * 0.999;
+                    }
+                #endif
             #endif
             outStream.Append(output);
         }

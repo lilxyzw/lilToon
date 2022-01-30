@@ -9,6 +9,7 @@
 #define LIL_APP_TEXCOORD2
 #define LIL_APP_TEXCOORD3
 
+/*
 #if defined(LIL_REQUIRE_APP_POSITION)
 #endif
 
@@ -23,6 +24,7 @@
 
 #if defined(LIL_REQUIRE_APP_TEXCOORD3)
 #endif
+*/
 
 #if defined(LIL_REQUIRE_APP_TEXCOORD4)
     #define LIL_APP_TEXCOORD4
@@ -48,11 +50,11 @@
     #define LIL_APP_NORMAL
 #endif
 
-#if defined(LIL_REQUIRE_APP_TANGENT) || ((defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) || defined(LIL_GEM)) && defined(LIL_SHOULD_TANGENT) && !defined(LIL_OUTLINE) && !defined(LIL_FUR)) || defined(LIL_OUTLINE) && defined(LIL_FEATURE_TEX_OUTLINE_NORMAL) || defined(LIL_PASS_FORWARD_FUR_INCLUDED) || (!defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FUR)) || defined(LIL_BAKER)
+#if defined(LIL_REQUIRE_APP_TANGENT) || ((defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) || defined(LIL_GEM)) && defined(LIL_SHOULD_TANGENT) && !defined(LIL_OUTLINE)) || defined(LIL_OUTLINE) && defined(LIL_FEATURE_TEX_OUTLINE_NORMAL) || defined(LIL_PASS_FORWARD_FUR_INCLUDED) || (!defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FUR)) || defined(LIL_BAKER)
     #define LIL_APP_TANGENT
 #endif
 
-#if defined(LIL_REQUIRE_APP_VERTEXID)
+#if !defined(LIL_NOT_SUPPORT_VERTEXID) && (defined(LIL_REQUIRE_APP_VERTEXID) || defined(LIL_FUR))
     #define LIL_APP_VERTEXID
 #endif
 

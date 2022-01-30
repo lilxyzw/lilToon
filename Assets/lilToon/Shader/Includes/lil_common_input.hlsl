@@ -98,6 +98,12 @@ SAMPLER(sampler_linear_clamp);
     #define Exists_Shadow2ndColorTex    false
 #endif
 
+#if defined(LIL_FEATURE_TEX_SHADOW_3RD)
+    #define Exists_Shadow3rdColorTex    true
+#else
+    #define Exists_Shadow3rdColorTex    false
+#endif
+
 #if defined(LIL_FEATURE_TEX_REFLECTION_SMOOTHNESS)
     #define Exists_SmoothnessTex        true
 #else
@@ -246,9 +252,14 @@ SAMPLER(sampler_linear_clamp);
     float   _VertexLightStrength;
     float   _LightMinLimit;
     float   _LightMaxLimit;
-    float   _BeforeExposureLimit;
     float   _MonochromeLighting;
-    float   _lilDirectionalLightStrength;
+    #if defined(LIL_BRP)
+        float   _AlphaBoostFA;
+    #endif
+    #if defined(LIL_HDRP)
+        float   _BeforeExposureLimit;
+        float   _lilDirectionalLightStrength;
+    #endif
     float   _BackfaceForceShadow;
     float   _ShadowBorder;
     float   _ShadowBlur;
@@ -352,8 +363,10 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_MULTI_INPUTS_SHADOW)
         float4  _ShadowColor;
         float4  _Shadow2ndColor;
+        float4  _Shadow3rdColor;
         float4  _ShadowBorderColor;
         float4  _ShadowAOShift;
+        float4  _ShadowAOShift2;
     #endif
     #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
         float4  _BacklightColor;
@@ -467,9 +480,14 @@ SAMPLER(sampler_linear_clamp);
     float   _VertexLightStrength;
     float   _LightMinLimit;
     float   _LightMaxLimit;
-    float   _BeforeExposureLimit;
     float   _MonochromeLighting;
-    float   _lilDirectionalLightStrength;
+    #if defined(LIL_BRP)
+        float   _AlphaBoostFA;
+    #endif
+    #if defined(LIL_HDRP)
+        float   _BeforeExposureLimit;
+        float   _lilDirectionalLightStrength;
+    #endif
     #if defined(LIL_MULTI_INPUTS_MAIN_TONECORRECTION)
         float   _MainGradationStrength;
     #endif
@@ -496,6 +514,9 @@ SAMPLER(sampler_linear_clamp);
         float   _Shadow2ndNormalStrength;
         float   _Shadow2ndBorder;
         float   _Shadow2ndBlur;
+        float   _Shadow3rdNormalStrength;
+        float   _Shadow3rdBorder;
+        float   _Shadow3rdBlur;
         float   _ShadowMainStrength;
         float   _ShadowEnvStrength;
         float   _ShadowBorderRange;
@@ -614,6 +635,8 @@ SAMPLER(sampler_linear_clamp);
         float   _FurGravity;
         float   _FurAO;
         float   _FurRootOffset;
+        float   _FurRandomize;
+        float   _FurTouchStrength;
     #endif
     #if defined(LIL_REFRACTION) || defined(LIL_GEM)
         float   _RefractionStrength;
@@ -667,6 +690,7 @@ SAMPLER(sampler_linear_clamp);
         uint    _FurLayerNum;
     #endif
     lilBool _Invisible;
+    lilBool _UseClippingCanceller;
     #if defined(LIL_MULTI_INPUTS_MAIN2ND)
         lilBool _Main2ndTexIsMSDF;
         lilBool _Main2ndTexIsDecal;
@@ -814,8 +838,14 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_SHADOW)
         float4  _ShadowColor;
         float4  _Shadow2ndColor;
+        #if defined(LIL_FEATURE_SHADOW_3RD)
+            float4  _Shadow3rdColor;
+        #endif
         float4  _ShadowBorderColor;
         float4  _ShadowAOShift;
+        #if defined(LIL_FEATURE_SHADOW_3RD)
+            float4  _ShadowAOShift2;
+        #endif
     #endif
 
     // Backlight
@@ -994,9 +1024,12 @@ SAMPLER(sampler_linear_clamp);
     float   _VertexLightStrength;
     float   _LightMinLimit;
     float   _LightMaxLimit;
-    float   _BeforeExposureLimit;
     float   _MonochromeLighting;
+    #if defined(LIL_BRP)
+        float   _AlphaBoostFA;
+    #endif
     #if defined(LIL_HDRP)
+        float   _BeforeExposureLimit;
         float   _lilDirectionalLightStrength;
     #endif
     #if defined(LIL_FEATURE_MAIN_GRADATION_MAP)
@@ -1029,6 +1062,11 @@ SAMPLER(sampler_linear_clamp);
         float   _Shadow2ndNormalStrength;
         float   _Shadow2ndBorder;
         float   _Shadow2ndBlur;
+        #if defined(LIL_FEATURE_SHADOW_3RD)
+            float   _Shadow3rdNormalStrength;
+            float   _Shadow3rdBorder;
+            float   _Shadow3rdBlur;
+        #endif
         float   _ShadowMainStrength;
         float   _ShadowEnvStrength;
         float   _ShadowBorderRange;
@@ -1157,6 +1195,11 @@ SAMPLER(sampler_linear_clamp);
         float   _FurGravity;
         float   _FurAO;
         float   _FurRootOffset;
+        float   _FurRandomize;
+        float   _FurCutoutLength;
+        #if defined(LIL_FEATURE_FUR_COLLISION)
+            float   _FurTouchStrength;
+        #endif
     #endif
     #if defined(LIL_REFRACTION)
         float   _RefractionStrength;
@@ -1382,6 +1425,7 @@ TEXTURE2D(_ShadowBlurMask);
 TEXTURE2D(_ShadowStrengthMask);
 TEXTURE2D(_ShadowColorTex);
 TEXTURE2D(_Shadow2ndColorTex);
+TEXTURE2D(_Shadow3rdColorTex);
 TEXTURE2D(_BacklightColorTex);
 TEXTURE2D(_SmoothnessTex);
 TEXTURE2D(_MetallicGlossMap);
@@ -1418,6 +1462,7 @@ SAMPLER(sampler_Main2ndTex);
 SAMPLER(sampler_Main3rdTex);
 SAMPLER(sampler_EmissionMap);
 SAMPLER(sampler_Emission2ndMap);
+SAMPLER(sampler_AudioLinkMask);
 SAMPLER(sampler_OutlineTex);
 
 // AudioLink

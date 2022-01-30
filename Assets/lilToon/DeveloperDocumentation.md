@@ -3,8 +3,9 @@
 # Files
 - lilToon
     - Editor : Editor assets
-        - gui_xx : GUI assets
-        - lang.txt : Language file (tsv format)
+        - Resources : Editor assets
+            - gui_xx : GUI assets
+            - lang.txt : Language file (tsv format)
         - lilInspector.cs : ShaderGUI
         - lilStartup.cs : Startup (shader setting generation, version check, etc.)
         - lilToonAssetPostprocessor.cs : AssetPostprocessor that analyzes and automatically sets the shader settings used for the asset
@@ -114,7 +115,7 @@ In each path, `#include "Includes/lil_pass_xx.hlsl"` is called, and the hlsl fil
 The following shader keywords are used in `lilToonMulti`.  
 These match the built-in shader keywords, so the shader keyword limit is avoided and no warning is displayed by the VRCSDK.
 ```
-ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _COLORADDSUBDIFF_ON _COLORCOLOR_ON _SUNDISK_NONE GEOM_TYPE_FROND _COLOROVERLAY_ON _REQUIRE_UV2 ANTI_FLICKER _EMISSION GEOM_TYPE_BRANCH _SUNDISK_SIMPLE _NORMALMAP EFFECT_BUMP _GLOSSYREFLECTIONS_OFF _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A _SPECULARHIGHLIGHTS_OFF GEOM_TYPE_MESH _METALLICGLOSSMAP GEOM_TYPE_LEAF _SPECGLOSSMAP _PARALLAXMAP PIXELSNAP_ON BILLBOARD_FACE_CAMERA_POS _FADING_ON _MAPPING_6_FRAMES_LAYOUT _SUNDISK_HIGH_QUALITY GEOM_TYPE_BRANCH_DETAIL _DETAIL_MULX2
+ETC1_EXTERNAL_ALPHA UNITY_UI_ALPHACLIP UNITY_UI_CLIP_RECT EFFECT_HUE_VARIATION _COLORADDSUBDIFF_ON _COLORCOLOR_ON _SUNDISK_NONE GEOM_TYPE_FROND _COLOROVERLAY_ON _REQUIRE_UV2 ANTI_FLICKER _EMISSION GEOM_TYPE_BRANCH _SUNDISK_SIMPLE _NORMALMAP EFFECT_BUMP _GLOSSYREFLECTIONS_OFF _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A _SPECULARHIGHLIGHTS_OFF GEOM_TYPE_MESH _METALLICGLOSSMAP GEOM_TYPE_LEAF _SPECGLOSSMAP _PARALLAXMAP PIXELSNAP_ON _FADING_ON _MAPPING_6_FRAMES_LAYOUT _SUNDISK_HIGH_QUALITY GEOM_TYPE_BRANCH_DETAIL _DETAIL_MULX2
 ```
 
 # How to make a custom shader
@@ -269,7 +270,6 @@ You can use the following GUIStyle for lilToon.
 |boxInner|inside of the property box (the upper part is a circle to make it nicer without labels)|
 |customBox|Similar to Unity's default box, but with borders for better visibility|
 |customToggleFont|Bold font used for property box labels|
-|offsetButton|Button indented to fit the property box|
 
 You can also use functions such as the following.
 |Name|Description|
@@ -309,16 +309,16 @@ namespace lilToon
             customVertexWaveMask = FindProperty("_CustomVertexWaveMask", props);
         }
 
-        protected override void DrawCustomProperties(
-            MaterialEditor materialEditor,
-            Material material,
-            GUIStyle boxOuter,          // outer box
-            GUIStyle boxInnerHalf,      // inner box
-            GUIStyle boxInner,          // inner box without label
-            GUIStyle customBox,         // box (similar to unity default box)
-            GUIStyle customToggleFont,  // bold font
-            GUIStyle offsetButton)      // button with indent
+        protected override void DrawCustomProperties(Material material)
         {
+            // GUIStyles Name   Description
+            // ---------------- ------------------------------------
+            // boxOuter         outer box
+            // boxInnerHalf     inner box
+            // boxInner         inner box without label
+            // customBox        box (similar to unity default box)
+            // customToggleFont label for box
+
             isShowCustomProperties = Foldout("Vertex Wave & Emission UV", "Vertex Wave & Emission UV", isShowCustomProperties);
             if(isShowCustomProperties)
             {
@@ -327,10 +327,10 @@ namespace lilToon
                 EditorGUILayout.LabelField(GetLoc("Vertex Wave"), customToggleFont);
                 EditorGUILayout.BeginVertical(boxInnerHalf);
 
-                materialEditor.ShaderProperty(customVertexWaveScale, "Scale");
-                materialEditor.ShaderProperty(customVertexWaveStrength, "Strength");
-                materialEditor.ShaderProperty(customVertexWaveSpeed, "Speed");
-                materialEditor.TexturePropertySingleLine(new GUIContent("Mask", "Strength (R)"), customVertexWaveMask);
+                m_MaterialEditor.ShaderProperty(customVertexWaveScale, "Scale");
+                m_MaterialEditor.ShaderProperty(customVertexWaveStrength, "Strength");
+                m_MaterialEditor.ShaderProperty(customVertexWaveSpeed, "Speed");
+                m_MaterialEditor.TexturePropertySingleLine(new GUIContent("Mask", "Strength (R)"), customVertexWaveMask);
 
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndVertical();

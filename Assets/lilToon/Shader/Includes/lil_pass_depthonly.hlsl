@@ -14,7 +14,7 @@
 #if defined(LIL_V2F_FORCE_TEXCOORD0) || (LIL_RENDER > 0)
     #define LIL_V2F_TEXCOORD0
 #endif
-#if defined(LIL_V2F_FORCE_POSITION_OS) || ((LIL_RENDER > 0) && !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_DISSOLVE))
+#if defined(LIL_V2F_FORCE_POSITION_OS) || ((LIL_RENDER > 0) && !defined(LIL_LITE) && defined(LIL_FEATURE_DISSOLVE))
     #define LIL_V2F_POSITION_OS
 #endif
 #if defined(LIL_V2F_FORCE_NORMAL) || defined(WRITE_NORMAL_BUFFER)
@@ -51,14 +51,16 @@ struct v2f
         #define LIL_V2G_NORMAL_WS
     #endif
     #define LIL_V2G_FURVECTOR
+    #define LIL_V2G_VERTEXID
 
     struct v2g
     {
         float3 positionWS   : TEXCOORD0;
         float2 uv0          : TEXCOORD1;
         float3 furVector    : TEXCOORD2;
+        uint vertexID       : TEXCOORD3;
         #if defined(LIL_V2G_NORMAL_WS)
-            float3 normalWS     : TEXCOORD3;
+            float3 normalWS     : TEXCOORD4;
         #endif
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO

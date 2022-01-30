@@ -43,22 +43,20 @@
 // ------------------------------------ --------------------------------------------------------------------------------
 // _PARALLAXMAP                         LIL_FEATURE_PARALLAX
 // PIXELSNAP_ON                         LIL_FEATURE_POM
-// BILLBOARD_FACE_CAMERA_POS            LIL_FEATURE_CLIPPING_CANCELLER
 // _FADING_ON                           LIL_FEATURE_DISTANCE_FADE
 // _MAPPING_6_FRAMES_LAYOUT             LIL_FEATURE_AUDIOLINK
 // _SUNDISK_HIGH_QUALITY                LIL_FEATURE_AUDIOLINK_LOCAL
 // GEOM_TYPE_BRANCH_DETAIL              LIL_FEATURE_DISSOLVE
 // ------------------------------------ --------------------------------------------------------------------------------
-// ETC1_EXTERNAL_ALPHA                  LIL_MULTI_OUTLINE
 // _DETAIL_MULX2                        LIL_FEATURE_OUTLINE_TONE_CORRECTION
 
-//----------------------------------------------------------------------------------------------------------------------
-// Replace keyword to transparent mode and outline
-#if defined(ETC1_EXTERNAL_ALPHA)
-    #define LIL_MULTI_OUTLINE
-    #undef ETC1_EXTERNAL_ALPHA
-#endif
 
+// removed
+// BILLBOARD_FACE_CAMERA_POS            LIL_FEATURE_CLIPPING_CANCELLER
+// ETC1_EXTERNAL_ALPHA                  LIL_MULTI_OUTLINE
+
+//----------------------------------------------------------------------------------------------------------------------
+// Replace keyword to transparent mode
 #if defined(UNITY_UI_CLIP_RECT) || defined(LIL_REFRACTION)
     #define LIL_RENDER 2
 #elif defined(UNITY_UI_ALPHACLIP) || defined(LIL_FUR)
@@ -193,11 +191,6 @@
     #undef PIXELSNAP_ON
 #endif
 
-#if defined(BILLBOARD_FACE_CAMERA_POS)
-    #define LIL_FEATURE_CLIPPING_CANCELLER
-    #undef BILLBOARD_FACE_CAMERA_POS
-#endif
-
 #if defined(_FADING_ON)
     #define LIL_FEATURE_DISTANCE_FADE
     #undef _FADING_ON
@@ -229,12 +222,14 @@
 #define LIL_FEATURE_DECAL
 #define LIL_FEATURE_TEX_LAYER_MASK
 #define LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE
+#define LIL_FEATURE_SHADOW_3RD
 #define LIL_FEATURE_RECEIVE_SHADOW
 #define LIL_FEATURE_TEX_SHADOW_BLUR
 #define LIL_FEATURE_TEX_SHADOW_BORDER
 #define LIL_FEATURE_TEX_SHADOW_STRENGTH
 #define LIL_FEATURE_TEX_SHADOW_1ST
 #define LIL_FEATURE_TEX_SHADOW_2ND
+#define LIL_FEATURE_TEX_SHADOW_3RD
 #define LIL_FEATURE_EMISSION_UV
 #define LIL_FEATURE_ANIMATE_EMISSION_UV
 #define LIL_FEATURE_EMISSION_MASK_UV
@@ -249,6 +244,7 @@
 #define LIL_FEATURE_AUDIOLINK_VERTEX
 #define LIL_FEATURE_TEX_AUDIOLINK_MASK
 #define LIL_FEATURE_TEX_DISSOLVE_NOISE
+#define LIL_FEATURE_CLIPPING_CANCELLER
 #define LIL_FEATURE_TEX_OUTLINE_COLOR
 #define LIL_FEATURE_ANIMATE_OUTLINE_UV
 #define LIL_FEATURE_TEX_OUTLINE_WIDTH
@@ -256,5 +252,6 @@
 #define LIL_FEATURE_TEX_FUR_NORMAL
 #define LIL_FEATURE_TEX_FUR_MASK
 #define LIL_FEATURE_TEX_FUR_LENGTH
+#define LIL_FEATURE_FUR_COLLISION
 
 #endif

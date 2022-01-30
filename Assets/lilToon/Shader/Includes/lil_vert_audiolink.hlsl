@@ -6,7 +6,7 @@
     #define LIL_MODIFY_TARGET input.positionOS
 #endif
 
-#if !defined(LIL_FUR) && !defined(LIL_LITE) && defined(LIL_FEATURE_AUDIOLINK) && defined(LIL_FEATURE_AUDIOLINK_VERTEX)
+#if !defined(LIL_LITE) && defined(LIL_FEATURE_AUDIOLINK) && defined(LIL_FEATURE_AUDIOLINK_VERTEX)
     if(_UseAudioLink && _AudioLink2Vertex)
     {
         // UV

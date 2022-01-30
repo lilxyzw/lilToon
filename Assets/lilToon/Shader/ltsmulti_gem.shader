@@ -10,18 +10,19 @@ Shader "Hidden/lilToonMultiGem"
         // Base
         [lilToggle]     _Invisible                  ("Invisible", Int) = 0
                         _AsUnlit                    ("As Unlit", Range(0, 1)) = 0
-                        _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.5
+                        _Cutoff                     ("Alpha Cutoff", Range(-0.001,1.001)) = 0.5
                         _SubpassCutoff              ("Subpass Alpha Cutoff", Range(0,1)) = 0.5
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
         [lilToggle]     _ShiftBackfaceUV            ("Shift Backface UV", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
-                        _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
-                        _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0
+                        _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 0
+                        _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0.05
                         _LightMaxLimit              ("Light Max Limit", Range(0,10)) = 1
                         _BeforeExposureLimit        ("Before Exposure Limit", Float) = 10000
                         _MonochromeLighting         ("Monochrome lighting", Range(0,1)) = 0
+                        _AlphaBoostFA               ("Alpha Boost", Range(1,100)) = 10
                         _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
-        [lilVec3]       _LightDirectionOverride     ("Light Direction Override", Vector) = (0,0.001,0,0)
+        [lilVec3B]      _LightDirectionOverride     ("Light Direction Override", Vector) = (0,0.001,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
@@ -134,23 +135,29 @@ Shader "Hidden/lilToonMultiGem"
         [lilToggle]     _ShadowReceive              ("Receive Shadow", Int) = 0
                         _ShadowStrength             ("Strength", Range(0, 1)) = 1
         [NoScaleOffset] _ShadowStrengthMask         ("Strength", 2D) = "white" {}
+        [NoScaleOffset] _ShadowBorderMask           ("Border", 2D) = "white" {}
+        [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
         [lilFFFF]       _ShadowAOShift              ("1st Scale|1st Offset|2nd Scale|2nd Offset", Vector) = (1,0,1,0)
+        [lilFF]         _ShadowAOShift2             ("3rd Scale|3rd Offset", Vector) = (1,0,1,0)
                         _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
         [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
                         _ShadowNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
                         _ShadowBorder               ("Border", Range(0, 1)) = 0.5
-        [NoScaleOffset] _ShadowBorderMask           ("Border", 2D) = "white" {}
                         _ShadowBlur                 ("Blur", Range(0, 1)) = 0.1
-        [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
-                        _Shadow2ndColor             ("Shadow 2nd Color", Color) = (0,0,0,0)
-        [NoScaleOffset] _Shadow2ndColorTex          ("Shadow 2nd Color", 2D) = "black" {}
-                        _Shadow2ndNormalStrength    ("Normal Strength", Range(0, 1)) = 1.0
+                        _Shadow2ndColor             ("2nd Color", Color) = (0,0,0,0)
+        [NoScaleOffset] _Shadow2ndColorTex          ("2nd Color", 2D) = "black" {}
+                        _Shadow2ndNormalStrength    ("2nd Normal Strength", Range(0, 1)) = 1.0
                         _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
                         _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
-                        _ShadowMainStrength         ("Contrast", Range(0, 1)) = 1
-                        _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 0
+                        _Shadow3rdColor             ("3rd Color", Color) = (0,0,0,0)
+        [NoScaleOffset] _Shadow3rdColorTex          ("3rd Color", 2D) = "black" {}
+                        _Shadow3rdNormalStrength    ("3rd Normal Strength", Range(0, 1)) = 1.0
+                        _Shadow3rdBorder            ("3rd Border", Range(0, 1)) = 0.25
+                        _Shadow3rdBlur              ("3rd Blur", Range(0, 1)) = 0.1
                         _ShadowBorderColor          ("Border Color", Color) = (1,0,0,1)
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
+                        _ShadowMainStrength         ("Contrast", Range(0, 1)) = 1
+                        _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Reflection
@@ -430,6 +437,7 @@ Shader "Hidden/lilToonMultiGem"
         [HideInInspector] [MainColor]                   _BaseColor          ("Color", Color) = (1,1,1,1)
         [HideInInspector] [MainTexture]                 _BaseMap            ("Texture", 2D) = "white" {}
         [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
+        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
 
     HLSLINCLUDE
@@ -551,7 +559,6 @@ Shader "Hidden/lilToonMultiGem"
             #pragma shader_feature_local _METALLICGLOSSMAP
             #pragma shader_feature_local GEOM_TYPE_LEAF
             #pragma shader_feature_local _SPECGLOSSMAP
-            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
             #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
             #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
 
@@ -625,229 +632,16 @@ Shader "Hidden/lilToonMultiGem"
             ENDHLSL
         }
     }
+    Fallback "Unlit/Texture"
 //
 // BRP End
 
 //----------------------------------------------------------------------------------------------------------------------
 // LWRP Start
 /*
-    //----------------------------------------------------------------------------------------------------------------------
-    // Lightweight Render Pipeline SM4.5
     SubShader
     {
-        Tags{"ShaderModel" = "4.5" "RenderType" = "Opaque" "Queue" = "Transparent-100"}
-        HLSLINCLUDE
-            #pragma target 4.5
-        ENDHLSL
-
-        // Forward Pre
-        Pass
-        {
-            Name "FORWARD_PRE"
-            Tags {"LightMode" = "SRPDefaultUnlit"}
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-		    Cull [_Cull]
-            Blend One Zero
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-            AlphaToMask [_AlphaToMask]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //------------------------------------------------------------------------------------------------------------------------------
-            // Shader
-            #define LIL_GEM_PRE
-            #include "Includes/lil_pass_forward_gem.hlsl"
-
-            ENDHLSL
-        }
-
-        // Forward
-        Pass
-        {
-            Name "FORWARD"
-            Tags {"LightMode" = "LightweightForward"}
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-            Cull [_Cull]
-            ZClip [_ZClip]
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-            ColorMask [_ColorMask]
-            Offset [_OffsetFactor], [_OffsetUnits]
-            BlendOp [_BlendOp], [_BlendOpAlpha]
-            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask [_AlphaToMask]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
-            #pragma multi_compile_fragment _ LIGHTMAP_ON
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            // AlphaMask and Dissolve
-            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
-
-            // Main
-            #pragma shader_feature_local GEOM_TYPE_FROND
-            #pragma shader_feature_local _EMISSION
-            #pragma shader_feature_local GEOM_TYPE_BRANCH
-            #pragma shader_feature_local _SUNDISK_SIMPLE
-            #pragma shader_feature_local _NORMALMAP
-            #pragma shader_feature_local EFFECT_BUMP
-            #pragma shader_feature_local SOURCE_GBUFFER
-            #pragma shader_feature_local _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-            #pragma shader_feature_local _SPECULARHIGHLIGHTS_OFF
-            #pragma shader_feature_local GEOM_TYPE_MESH
-            #pragma shader_feature_local _METALLICGLOSSMAP
-            #pragma shader_feature_local GEOM_TYPE_LEAF
-            #pragma shader_feature_local _SPECGLOSSMAP
-            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
-            #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
-            #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
-
-            // Replace keywords
-            #include "Includes/lil_replace_keywords.hlsl"
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #include "Includes/lil_pass_forward_gem.hlsl"
-
-            ENDHLSL
-        }
-
-        // ShadowCaster
-        Pass
-        {
-            Name "SHADOW_CASTER"
-            Tags {"LightMode" = "ShadowCaster"}
-		    Cull [_Cull]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            // AlphaMask and Dissolve
-            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
-
-            // Replace keywords
-            #include "Includes/lil_replace_keywords.hlsl"
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #include "Includes/lil_pass_shadowcaster.hlsl"
-
-            ENDHLSL
-        }
-
-        // DepthOnly
-        Pass
-        {
-            Name "DEPTHONLY"
-            Tags {"LightMode" = "DepthOnly"}
-		    Cull [_Cull]
-            ZClip [_ZClip]
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            // AlphaMask and Dissolve
-            #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
-
-            // Replace keywords
-            #include "Includes/lil_replace_keywords.hlsl"
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #include "Includes/lil_pass_depthonly.hlsl"
-
-            ENDHLSL
-        }
-
-        // Meta
-        Pass
-        {
-            Name "META"
-            Tags {"LightMode" = "Meta"}
-            Cull Off
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-
-            // Tone correction and emission
-            #pragma shader_feature_local _EMISSION
-            #pragma shader_feature_local GEOM_TYPE_BRANCH
-            #pragma shader_feature_local _SUNDISK_SIMPLE
-
-            // Replace keywords
-            #include "Includes/lil_replace_keywords.hlsl"
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #include "Includes/lil_pass_meta.hlsl"
-            ENDHLSL
-        }
-    }
-
-    //----------------------------------------------------------------------------------------------------------------------
-    // Lightweight Render Pipeline
-    SubShader
-    {
-        Tags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
+        Tags{"RenderType" = "Opaque" "Queue" = "Transparent-100"}
         HLSLINCLUDE
             #pragma target 3.5
         ENDHLSL
@@ -878,7 +672,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
             //------------------------------------------------------------------------------------------------------------------------------
@@ -921,7 +714,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
             #pragma multi_compile_fragment _ LIGHTMAP_ON
@@ -945,7 +737,6 @@ Shader "Hidden/lilToonMultiGem"
             #pragma shader_feature_local _METALLICGLOSSMAP
             #pragma shader_feature_local GEOM_TYPE_LEAF
             #pragma shader_feature_local _SPECGLOSSMAP
-            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
             #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
             #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
 
@@ -972,8 +763,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
-            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
 
             // AlphaMask and Dissolve
@@ -1005,7 +794,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
             // AlphaMask and Dissolve
@@ -1034,7 +822,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
 
             // Tone correction and emission
             #pragma shader_feature_local _EMISSION
@@ -1050,6 +837,7 @@ Shader "Hidden/lilToonMultiGem"
             ENDHLSL
         }
     }
+    Fallback "Lightweight Render Pipeline/Unlit"
 */
 // LWRP End
 
@@ -1063,6 +851,7 @@ Shader "Hidden/lilToonMultiGem"
         Tags{"ShaderModel" = "4.5" "RenderType" = "Opaque" "Queue" = "Transparent-100"}
         HLSLINCLUDE
             #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
         ENDHLSL
 
         // Forward Pre
@@ -1093,7 +882,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -1137,7 +925,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ _LIGHT_LAYERS
             #pragma multi_compile _ _CLUSTERED_RENDERING
@@ -1170,7 +957,6 @@ Shader "Hidden/lilToonMultiGem"
             #pragma shader_feature_local _METALLICGLOSSMAP
             #pragma shader_feature_local GEOM_TYPE_LEAF
             #pragma shader_feature_local _SPECGLOSSMAP
-            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
             #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
             #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
 
@@ -1197,7 +983,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -1231,7 +1016,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -1264,7 +1048,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -1312,7 +1095,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1333,7 +1115,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
 
             // Tone correction and emission
             #pragma shader_feature_local _EMISSION
@@ -1357,6 +1138,7 @@ Shader "Hidden/lilToonMultiGem"
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
         HLSLINCLUDE
             #pragma target 3.5
+            #pragma only_renderers gles gles3 glcore d3d11
         ENDHLSL
 
         // Forward Pre
@@ -1387,7 +1169,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
             //------------------------------------------------------------------------------------------------------------------------------
@@ -1430,7 +1211,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ _LIGHT_LAYERS
             #pragma multi_compile _ _CLUSTERED_RENDERING
@@ -1462,7 +1242,6 @@ Shader "Hidden/lilToonMultiGem"
             #pragma shader_feature_local _METALLICGLOSSMAP
             #pragma shader_feature_local GEOM_TYPE_LEAF
             #pragma shader_feature_local _SPECGLOSSMAP
-            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
             #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
             #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
 
@@ -1489,7 +1268,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
 
@@ -1522,7 +1300,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
             // AlphaMask and Dissolve
@@ -1554,7 +1331,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
             // AlphaMask and Dissolve
@@ -1601,7 +1377,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1622,7 +1397,6 @@ Shader "Hidden/lilToonMultiGem"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
 
             // Tone correction and emission
             #pragma shader_feature_local _EMISSION
@@ -1638,16 +1412,16 @@ Shader "Hidden/lilToonMultiGem"
             ENDHLSL
         }
     }
+    Fallback "Universal Render Pipeline/Unlit"
 */
 // URP End
 
 //----------------------------------------------------------------------------------------------------------------------
 // HDRP Start
 /*
-    //----------------------------------------------------------------------------------------------------------------------
-    // High Definition Render Pipeline
     HLSLINCLUDE
         #pragma target 4.5
+        #pragma exclude_renderers gles gles3 glcore
     ENDHLSL
     SubShader
     {
@@ -1747,7 +1521,6 @@ Shader "Hidden/lilToonMultiGem"
             #pragma shader_feature_local _METALLICGLOSSMAP
             #pragma shader_feature_local GEOM_TYPE_LEAF
             #pragma shader_feature_local _SPECGLOSSMAP
-            #pragma shader_feature_local BILLBOARD_FACE_CAMERA_POS
             #pragma shader_feature_local _MAPPING_6_FRAMES_LAYOUT
             #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
 
@@ -1930,9 +1703,9 @@ Shader "Hidden/lilToonMultiGem"
             ENDHLSL
         }
     }
+    Fallback "HDRP/Unlit"
 */
 // HDRP End
 
-    Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"
 }

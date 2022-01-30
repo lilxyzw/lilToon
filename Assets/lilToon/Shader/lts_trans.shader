@@ -6,18 +6,19 @@ Shader "Hidden/lilToonTransparent"
         // Base
         [lilToggle]     _Invisible                  ("Invisible", Int) = 0
                         _AsUnlit                    ("As Unlit", Range(0, 1)) = 0
-                        _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.001
+                        _Cutoff                     ("Alpha Cutoff", Range(-0.001,1.001)) = 0.001
                         _SubpassCutoff              ("Subpass Alpha Cutoff", Range(0,1)) = 0.5
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
         [lilToggle]     _ShiftBackfaceUV            ("Shift Backface UV", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
-                        _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
-                        _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0
+                        _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 0
+                        _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0.05
                         _LightMaxLimit              ("Light Max Limit", Range(0,10)) = 1
                         _BeforeExposureLimit        ("Before Exposure Limit", Float) = 10000
                         _MonochromeLighting         ("Monochrome lighting", Range(0,1)) = 0
+                        _AlphaBoostFA               ("Alpha Boost", Range(1,100)) = 10
                         _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
-        [lilVec3]       _LightDirectionOverride     ("Light Direction Override", Vector) = (0,0.001,0,0)
+        [lilVec3B]      _LightDirectionOverride     ("Light Direction Override", Vector) = (0,0.001,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
@@ -143,23 +144,29 @@ Shader "Hidden/lilToonTransparent"
         [lilToggle]     _ShadowReceive              ("Receive Shadow", Int) = 0
                         _ShadowStrength             ("Strength", Range(0, 1)) = 1
         [NoScaleOffset] _ShadowStrengthMask         ("Strength", 2D) = "white" {}
+        [NoScaleOffset] _ShadowBorderMask           ("Border", 2D) = "white" {}
+        [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
         [lilFFFF]       _ShadowAOShift              ("1st Scale|1st Offset|2nd Scale|2nd Offset", Vector) = (1,0,1,0)
+        [lilFF]         _ShadowAOShift2             ("3rd Scale|3rd Offset", Vector) = (1,0,1,0)
                         _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
         [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
                         _ShadowNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
                         _ShadowBorder               ("Border", Range(0, 1)) = 0.5
-        [NoScaleOffset] _ShadowBorderMask           ("Border", 2D) = "white" {}
                         _ShadowBlur                 ("Blur", Range(0, 1)) = 0.1
-        [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
-                        _Shadow2ndColor             ("Shadow 2nd Color", Color) = (0,0,0,0)
-        [NoScaleOffset] _Shadow2ndColorTex          ("Shadow 2nd Color", 2D) = "black" {}
-                        _Shadow2ndNormalStrength    ("Normal Strength", Range(0, 1)) = 1.0
+                        _Shadow2ndColor             ("2nd Color", Color) = (0,0,0,0)
+        [NoScaleOffset] _Shadow2ndColorTex          ("2nd Color", 2D) = "black" {}
+                        _Shadow2ndNormalStrength    ("2nd Normal Strength", Range(0, 1)) = 1.0
                         _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
                         _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
-                        _ShadowMainStrength         ("Contrast", Range(0, 1)) = 1
-                        _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 0
+                        _Shadow3rdColor             ("3rd Color", Color) = (0,0,0,0)
+        [NoScaleOffset] _Shadow3rdColorTex          ("3rd Color", 2D) = "black" {}
+                        _Shadow3rdNormalStrength    ("3rd Normal Strength", Range(0, 1)) = 1.0
+                        _Shadow3rdBorder            ("3rd Border", Range(0, 1)) = 0.25
+                        _Shadow3rdBlur              ("3rd Blur", Range(0, 1)) = 0.1
                         _ShadowBorderColor          ("Border Color", Color) = (1,0,0,1)
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
+                        _ShadowMainStrength         ("Contrast", Range(0, 1)) = 1
+                        _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Reflection
@@ -423,6 +430,7 @@ Shader "Hidden/lilToonTransparent"
         [HideInInspector] [MainColor]                   _BaseColor          ("Color", Color) = (1,1,1,1)
         [HideInInspector] [MainTexture]                 _BaseMap            ("Texture", 2D) = "white" {}
         [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
+        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -436,6 +444,7 @@ Shader "Hidden/lilToonTransparent"
         UsePass "Hidden/ltspass_transparent/SHADOW_CASTER"
         UsePass "Hidden/ltspass_transparent/META"
     }
+    Fallback "Unlit/Texture"
 //
 // BRP End
 
@@ -450,6 +459,7 @@ Shader "Hidden/lilToonTransparent"
         UsePass "Hidden/ltspass_transparent/DEPTHONLY"
         UsePass "Hidden/ltspass_transparent/META"
     }
+    Fallback "Lightweight Render Pipeline/Unlit"
 */
 // LWRP End
 
@@ -466,6 +476,7 @@ Shader "Hidden/lilToonTransparent"
         UsePass "Hidden/ltspass_transparent/UNIVERSAL2D"
         UsePass "Hidden/ltspass_transparent/META"
     }
+    Fallback "Universal Render Pipeline/Unlit"
 */
 // URP End
 
@@ -481,9 +492,9 @@ Shader "Hidden/lilToonTransparent"
         UsePass "Hidden/ltspass_transparent/MOTIONVECTORS"
         UsePass "Hidden/ltspass_transparent/META"
     }
+    Fallback "HDRP/Unlit"
 */
 // HDRP End
 
-    Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"
 }

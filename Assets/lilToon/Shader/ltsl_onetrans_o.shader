@@ -6,18 +6,19 @@ Shader "Hidden/lilToonLiteOnePassTransparentOutline"
         // Base
         [lilToggle]     _Invisible                  ("Invisible", Int) = 0
                         _AsUnlit                    ("As Unlit", Range(0, 1)) = 0
-                        _Cutoff                     ("Alpha Cutoff", Range(0,1)) = 0.001
+                        _Cutoff                     ("Alpha Cutoff", Range(-0.001,1.001)) = 0.001
                         _SubpassCutoff              ("Subpass Alpha Cutoff", Range(0,1)) = 0.5
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
         [lilToggle]     _ShiftBackfaceUV            ("Shift Backface UV", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
-                        _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 1
-                        _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0
+                        _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 0
+                        _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0.05
                         _LightMaxLimit              ("Light Max Limit", Range(0,10)) = 1
                         _BeforeExposureLimit        ("Before Exposure Limit", Float) = 10000
                         _MonochromeLighting         ("Monochrome lighting", Range(0,1)) = 0
+                        _AlphaBoostFA               ("Alpha Boost", Range(1,100)) = 10
                         _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
-        [lilVec3]       _LightDirectionOverride     ("Light Direction Override", Vector) = (0,0.001,0,0)
+        [lilVec3B]      _LightDirectionOverride     ("Light Direction Override", Vector) = (0,0.001,0,0)
         [NoScaleOffset] _TriMask                    ("TriMask", 2D) = "white" {}
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -143,6 +144,7 @@ Shader "Hidden/lilToonLiteOnePassTransparentOutline"
         [HideInInspector] [MainColor]                   _BaseColor          ("Color", Color) = (1,1,1,1)
         [HideInInspector] [MainTexture]                 _BaseMap            ("Texture", 2D) = "white" {}
         [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
+        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -153,9 +155,10 @@ Shader "Hidden/lilToonLiteOnePassTransparentOutline"
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
         UsePass "Hidden/ltspass_lite_transparent/FORWARD_OUTLINE"
-        UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
+        UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER_OUTLINE"
         UsePass "Hidden/ltspass_lite_transparent/META"
     }
+    Fallback "Unlit/Texture"
 //
 // BRP End
 
@@ -171,6 +174,7 @@ Shader "Hidden/lilToonLiteOnePassTransparentOutline"
         UsePass "Hidden/ltspass_lite_transparent/DEPTHONLY"
         UsePass "Hidden/ltspass_lite_transparent/META"
     }
+    Fallback "Lightweight Render Pipeline/Unlit"
 */
 // LWRP End
 
@@ -188,6 +192,7 @@ Shader "Hidden/lilToonLiteOnePassTransparentOutline"
         UsePass "Hidden/ltspass_lite_transparent/UNIVERSAL2D"
         UsePass "Hidden/ltspass_lite_transparent/META"
     }
+    Fallback "Universal Render Pipeline/Unlit"
 */
 // URP End
 
@@ -204,9 +209,9 @@ Shader "Hidden/lilToonLiteOnePassTransparentOutline"
         UsePass "Hidden/ltspass_lite_transparent/MOTIONVECTORS_OUTLINE"
         UsePass "Hidden/ltspass_lite_transparent/META"
     }
+    Fallback "HDRP/Unlit"
 */
 // HDRP End
 
-    Fallback "Unlit/Texture"
     CustomEditor "lilToon.lilToonInspector"
 }

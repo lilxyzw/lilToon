@@ -5,10 +5,11 @@
 - [Shader variation](#shader-variation)
 - [Upper part of Inspector](#upper-part-of-inspector)
 - [Base Setting](#base-setting)
+    - [Lighting](#lighting)
     - [UV Setting](#uv-setting)
 - [Color](#color)
-    - [Main Color](#main-color)
-        - [Main Color](#main-color-1)
+    - [Main Color / Alpha](#main-color-/-alpha)
+        - [Main Color / Alpha](#main-color-/-alpha-1)
         - [Main Color 2nd / 3rd](#main-color-2nd--3rd)
         - [Alpha Mask](#alpha-mask)
     - [Shadow](#shadow)
@@ -57,7 +58,7 @@
 <br/>
 
 # Shader variation
-|名前|説明|
+|Name|Description|
 |-|-|
 |lilToon|This is the main shader. Use this one for general purposes.|
 |_lil/[Optional] lilToonOverlay|This is a transparent shader to be displayed on top of a material. Unnecessary passes are removed, and the performance is better than layering a normal transparent shader.|
@@ -95,14 +96,6 @@
 |Frip Backface Normal|Reverse backface lighting and other processes.|
 |Backface Force Shadow|Intensity to force the back face to dark.|
 |ZWrite|Whether to write depth. Basically, set it to on.|
-|-|-|
-|As Unlit|Disable lighting.|
-|Vertex Light Strength|If you have multiple meshes, you can mitigate the difference in brightness between them by setting this property to 0.|
-|Lower brightness limit|Limiting the darkness of a material by lighting|
-|Upper brightness limit|Limiting the lightness of a material by lighting|
-|Monochrome Lighting|Saturation of the light.|
-|Light Direction Override|Vector to add to the light direction.|
-|Environment strength on shadow color|The intensity with which environment light affects the color of the shadow.|
 
 <br/>
 
@@ -113,10 +106,12 @@
 |Opacue|Ignore transparency.|
 |Cutout|Transparency is used, but translucent drawing is not possible.|
 |Transparent|Transparency is used. If two transparent objects overlap, one of them may not be visible.|
-|Refraction|[High-load] The transparent area will appear distorted.|
-|Refraction Blur|[High-load] In addition to refraction, you can also create a frosted glass-like blur.|
-|Fur|[High-load] Furry. In a spotlight, it becomes brighter than other materials.|
-|Fur (Cutout)|[High-load] Furry. There is no brightness problem, but the appearance is rough.|
+|[High-load] Refraction|The transparent area will appear distorted.|
+|[High-load] Refraction Blur|In addition to refraction, you can also create a frosted glass-like blur.|
+|[High-load] Fur|Furry.|
+|[High-load] Fur (Cutout)|Furry.|
+|[High-load] Fur (2 pass)|Furry. Blends transparent and cutout fur.|
+|[High-load] Gem|Render complex refraction.|
 </details>
 
 <details><summary>FakeShadow Setting</summary>
@@ -155,6 +150,22 @@ If shadows overlap other than hair, set the material in the same way as hair.
 
 <br/>
 
+# Lighting
+|Name|Description|
+|-|-|
+|Lower brightness limit|Limiting the darkness of a material by lighting|
+|Upper brightness limit|Limiting the lightness of a material by lighting|
+|Monochrome Lighting|Saturation of the light.|
+|Environment strength on shadow color|The intensity with which environment light affects the color of the shadow.|
+|As Unlit|Disable lighting.|
+|Vertex Light Strength|If you have multiple meshes, you can mitigate the difference in brightness between them by setting this property to 0.|
+|Light Direction Override|Vector to add to the light direction.|
+|[Built-in RP] Light Blending|Blending of additional real-time lights such as point lights and spot lights.<br>Add: Optically correct but easy to overexpose<br>Max: Optically incorrect but hard to overexpose|
+|[HDRP] Before exposure limit|Brightness limit applied before exposure.|
+|[HDRP] Directional Lightの強さ|The strength of Directional Light applied to the material.|
+
+<br/>
+
 ## UV Setting
 |Name|Description|
 |-|-|
@@ -168,8 +179,8 @@ If shadows overlap other than hair, set the material in the same way as hair.
 <br/>
 
 # Color
-## Main Color
-### Main Color
+## Main Color / Alpha
+### Main Color / Alpha
 |Name|Description|
 |-|-|
 |Texture|Specifies the texture. You can also use the color picker on the right to set the color.|
@@ -237,7 +248,7 @@ You can blend colors into the main color. This is the layer function in painting
 |Name|Description|
 |-|-|
 |Mask & Strength|Strength of shadow. Shadows do not appear in the areas painted black by the mask.|
-|1st/2nd Color|Color of shadow. You can specify a texture to override the color.|
+|1st/2nd/3rd Color|Color of shadow. You can specify a texture to override the color.|
 |Border|Range of shadow.|
 |Blur|Amount of shadow blur.|
 |Normal Map Strength|Strength of normal map.|
@@ -531,6 +542,7 @@ This is an experimental feature that smooths polygons when you get close to them
 |Length|Length of fur.|
 |VertexColor -> Vector|Use vertex color as fur vector.|
 |Gravity|Strength of gravity.|
+|Randomize|Strength to randomize the vector of the fur.|
 |Noise|Noise texture used to generate fur.|
 |Tiling|Fineness of the noise, or fineness of fur.|
 |Offset|Offset of noise.|

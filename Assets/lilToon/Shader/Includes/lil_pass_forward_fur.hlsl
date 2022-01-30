@@ -17,7 +17,7 @@
 // v2g
 #define LIL_V2G_TEXCOORD0
 #define LIL_V2G_POSITION_WS
-#if defined(LIL_V2G_FORCE_NORMAL_WS) || (!defined(LIL_PASS_FORWARDADD) && defined(LIL_SHOULD_NORMAL))
+#if defined(LIL_V2G_FORCE_NORMAL_WS) || defined(LIL_SHOULD_NORMAL)
     #define LIL_V2G_NORMAL_WS
 #endif
 #if !defined(LIL_PASS_FORWARDADD)
@@ -29,6 +29,7 @@
 #endif
 #define LIL_V2G_VERTEXLIGHT_FOG
 #define LIL_V2G_FURVECTOR
+#define LIL_V2G_VERTEXID
 
 // g2f
 #define LIL_V2F_POSITION_CS
@@ -38,7 +39,7 @@
     #define LIL_V2F_POSITION_WS
 #endif
 
-#if defined(LIL_V2F_FORCE_NORMAL_WS) || !defined(LIL_PASS_FORWARDADD) && defined(LIL_SHOULD_NORMAL)
+#if defined(LIL_V2F_FORCE_NORMAL_WS) || defined(LIL_SHOULD_NORMAL)
     #define LIL_V2F_NORMAL_WS
 #endif
 #if !defined(LIL_PASS_FORWARDADD)
@@ -56,14 +57,15 @@ struct v2g
     float2 uv0          : TEXCOORD0;
     float3 positionWS   : TEXCOORD1;
     float3 furVector    : TEXCOORD2;
+    uint vertexID       : TEXCOORD3;
     #if defined(LIL_V2G_NORMAL_WS)
-        float3 normalWS     : TEXCOORD3;
+        float3 normalWS     : TEXCOORD4;
     #endif
-    LIL_LIGHTCOLOR_COORDS(4)
-    LIL_LIGHTDIRECTION_COORDS(5)
-    LIL_INDLIGHTCOLOR_COORDS(6)
-    LIL_VERTEXLIGHT_FOG_COORDS(7)
-    LIL_CUSTOM_V2G_MEMBER(8,9,10,11,12,13,14,15)
+    LIL_LIGHTCOLOR_COORDS(5)
+    LIL_LIGHTDIRECTION_COORDS(6)
+    LIL_INDLIGHTCOLOR_COORDS(7)
+    LIL_VERTEXLIGHT_FOG_COORDS(8)
+    LIL_CUSTOM_V2G_MEMBER(9,10,11,12,13,14,15,16)
     LIL_VERTEX_INPUT_INSTANCE_ID
     LIL_VERTEX_OUTPUT_STEREO
 };
@@ -139,7 +141,7 @@ float4 frag(v2f input) : SV_Target
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Alpha
-    #if LIL_RENDER == 1
+    #if LIL_RENDER == 1 || defined(LIL_FUR_PRE)
         // Cutout
         fd.col.a = saturate(fd.col.a*5.0-2.0);
     #else
@@ -161,7 +163,17 @@ float4 frag(v2f input) : SV_Target
             fd.col.rgb *= saturate(fd.lightColor + fd.addLightColor);
         #endif
     #else
-        fd.col.rgb *= fd.lightColor;
+        #if defined(LIL_FEATURE_SHADOW) && defined(LIL_OPTIMIZE_APPLY_SHADOW_FA)
+            fd.N = normalize(input.normalWS);
+            fd.ln = dot(fd.L, fd.N);
+            OVERRIDE_SHADOW
+        #else
+            fd.col.rgb *= fd.lightColor;
+        #endif
+
+        #if LIL_RENDER == 2 && !defined(LIL_FUR_PRE)
+            fd.col.rgb *= sqrt(sqrt(fd.col.a));
+        #endif
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------

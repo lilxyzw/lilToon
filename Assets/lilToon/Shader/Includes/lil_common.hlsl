@@ -17,9 +17,10 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Common
-
 #if !defined(LIL_CUSTOM_SHADER) && !defined(LIL_LITE) && !defined(LIL_MULTI) && !defined(LIL_IGNORE_SHADERSETTING)
-#include "../../../lilToonSetting/lil_setting.hlsl"
+    #include "../../../lilToonSetting/lil_setting.hlsl"
+#else
+    #define LIL_OPTIMIZE_APPLY_SHADOW_FA
 #endif
 #include "Includes/lil_common_macro.hlsl"
 #include "Includes/lil_common_input.hlsl"
@@ -46,6 +47,9 @@
     #define _AudioLinkAsLocal true
     #undef LIL_BRANCH
     #define LIL_BRANCH
+    #define LIL_MULTI_SHOULD_CLIPPING && _UseClippingCanceller
+#else
+    #define LIL_MULTI_SHOULD_CLIPPING
 #endif
 
 #include "Includes/lil_common_functions.hlsl"

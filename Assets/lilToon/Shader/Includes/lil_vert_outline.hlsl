@@ -6,6 +6,10 @@
     #define LIL_MODIFY_TARGET input.positionOS
 #endif
 
+#if defined(LIL_PASS_SHADOWCASTER_INCLUDED) && defined(LIL_OUTLINE)
+    if(LIL_MATRIX_P._m33 == 0.0)
+#endif
+
 #if (defined(LIL_OUTLINE) || defined(LIL_ONEPASS_OUTLINE)) && defined(LIL_LITE)
     LIL_MODIFY_TARGET.xyz += input.normalOS.xyz * lilGetOutlineWidth(LIL_MODIFY_TARGET.xyz, uvMain, input.color, _OutlineWidth, _OutlineWidthMask, _OutlineVertexR2Width, _OutlineFixWidth LIL_SAMP_IN(sampler_linear_repeat));
 #elif defined(LIL_OUTLINE) || defined(LIL_ONEPASS_OUTLINE)

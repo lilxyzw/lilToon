@@ -24,14 +24,14 @@
     //------------------------------------------------------------------------------------------------------------------------------
     // Alpha Mask
     BEFORE_ALPHAMASK
-    #if !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_ALPHAMASK)
+    #if !defined(LIL_LITE) && defined(LIL_FEATURE_ALPHAMASK)
         OVERRIDE_ALPHAMASK
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Dissolve
     BEFORE_DISSOLVE
-    #if !defined(LIL_LITE) && !defined(LIL_FUR) && defined(LIL_FEATURE_DISSOLVE)
+    #if !defined(LIL_LITE) && defined(LIL_FEATURE_DISSOLVE)
         float dissolveAlpha = 0.0;
         OVERRIDE_DISSOLVE
     #endif

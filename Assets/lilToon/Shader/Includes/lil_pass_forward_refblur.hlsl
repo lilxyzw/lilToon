@@ -47,7 +47,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         if(Exists_SmoothnessTex) fd.smoothness *= LIL_SAMPLE_2D_ST(_SmoothnessTex, sampler_linear_repeat, fd.uvMain).r;
         float perceptualRoughness = 1.0 - fd.smoothness;
         float roughness = perceptualRoughness * perceptualRoughness;
-        float blurOffset = perceptualRoughness / fd.positionSS.z * _lilBackgroundTexture_TexelSize.x / _lilBackgroundTexture_TexelSize.y * (0.0005 / LIL_REFRACTION_SAMPNUM);
+        float blurOffset = perceptualRoughness / sqrt(fd.positionSS.w) * _lilBackgroundTexture_TexelSize.x / _lilBackgroundTexture_TexelSize.y * (0.05 / LIL_REFRACTION_SAMPNUM);
         for(int j = -LIL_REFRACTION_SAMPNUM; j <= LIL_REFRACTION_SAMPNUM; j++)
         {
             refractCol += LIL_SAMPLE_2D(_lilBackgroundTexture, sampler_lilBackgroundTexture, fd.uvScn + float2(j*blurOffset,0)).rgb * LIL_REFRACTION_GAUSDIST(j);

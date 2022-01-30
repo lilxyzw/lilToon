@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: f8d9dfac6dbfaaf4c9c3aaf4bd8c955f
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _MainTex: {instanceID: 0}
+  - _ShadowStrengthMask: {instanceID: 0}
+  - _ShadowColorTex: {instanceID: 0}
+  - _ShadowBorderMask: {instanceID: 0}
+  - _ShadowBlurMask: {instanceID: 0}
+  - _Shadow2ndColorTex: {instanceID: 0}
+  - _FurNoiseMask: {fileID: 2800000, guid: 8a7dbcb2f4a32ec4297486403aee5f74, type: 3}
+  - _FurMask: {instanceID: 0}
+  - _FurLengthMask: {instanceID: 0}
+  - _FurVectorTex: {instanceID: 0}
+  - _BaseMap: {instanceID: 0}
+  - _BaseColorMap: {instanceID: 0}
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

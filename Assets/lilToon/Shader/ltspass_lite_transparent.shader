@@ -49,6 +49,12 @@ Shader "Hidden/ltspass_lite_transparent"
             #pragma fragmentoption ARB_precision_hint_fastest
             #pragma skip_variants SHADOWS_SCREEN DIRLIGHTMAP_COMBINED
 
+            // Skip vertex light
+            //#pragma skip_variants VERTEXLIGHT_ON
+
+            // Skip lightmap
+            #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pass_forward.hlsl"
@@ -93,6 +99,12 @@ Shader "Hidden/ltspass_lite_transparent"
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
             #pragma skip_variants SHADOWS_SCREEN DIRLIGHTMAP_COMBINED
+
+            // Skip vertex light
+            //#pragma skip_variants VERTEXLIGHT_ON
+
+            // Skip lightmap
+            #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -139,6 +151,12 @@ Shader "Hidden/ltspass_lite_transparent"
             #pragma fragmentoption ARB_precision_hint_fastest
             #pragma skip_variants SHADOWS_SCREEN DIRLIGHTMAP_COMBINED
 
+            // Skip vertex light
+            //#pragma skip_variants VERTEXLIGHT_ON
+
+            // Skip lightmap
+            #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
@@ -146,6 +164,10 @@ Shader "Hidden/ltspass_lite_transparent"
 
             ENDHLSL
         }
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // ForwardAdd Start
+        //
 
         // ForwardAdd
         Pass
@@ -192,6 +214,55 @@ Shader "Hidden/ltspass_lite_transparent"
             ENDHLSL
         }
 
+        // ForwardAdd Outline
+        Pass
+        {
+            Name "FORWARD_ADD_OUTLINE"
+            Tags {"LightMode" = "ForwardAdd"}
+
+            Stencil
+            {
+                Ref [_OutlineStencilRef]
+                ReadMask [_OutlineStencilReadMask]
+                WriteMask [_OutlineStencilWriteMask]
+                Comp [_OutlineStencilComp]
+                Pass [_OutlineStencilPass]
+                Fail [_OutlineStencilFail]
+                ZFail [_OutlineStencilZFail]
+            }
+            Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
+			ZWrite Off
+            ZTest LEqual
+            ColorMask [_OutlineColorMask]
+            Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
+            Blend [_OutlineSrcBlendFA] [_OutlineDstBlendFA], Zero One
+            BlendOp [_OutlineBlendOpFA], [_OutlineBlendOpAlphaFA]
+            AlphaToMask [_OutlineAlphaToMask]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_fragment POINT DIRECTIONAL SPOT POINT_COOKIE DIRECTIONAL_COOKIE
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_instancing
+            #pragma fragmentoption ARB_precision_hint_fastest
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_OUTLINE
+            #define LIL_PASS_FORWARDADD
+            #include "Includes/lil_pass_forward.hlsl"
+
+            ENDHLSL
+        }
+
+        //
+        // ForwardAdd End
+
         // ShadowCaster
         Pass
         {
@@ -211,6 +282,31 @@ Shader "Hidden/ltspass_lite_transparent"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pass_shadowcaster.hlsl"
+
+            ENDHLSL
+        }
+
+        // ShadowCaster Outline
+        Pass
+        {
+            Name "SHADOW_CASTER_OUTLINE"
+            Tags {"LightMode" = "ShadowCaster"}
+            Offset 1, 1
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_shadowcaster
+            #pragma multi_compile_instancing
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_OUTLINE
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -244,186 +340,6 @@ Shader "Hidden/ltspass_lite_transparent"
 //----------------------------------------------------------------------------------------------------------------------
 // LWRP Start
 /*
-    //----------------------------------------------------------------------------------------------------------------------
-    // Lightweight Render Pipeline SM4.5
-    SubShader
-    {
-        Tags{"ShaderModel" = "4.5"}
-        HLSLINCLUDE
-            #pragma target 4.5
-        ENDHLSL
-
-        // Forward
-        Pass
-        {
-            Name "FORWARD"
-            Tags {"LightMode" = "LightweightForward"}
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-            Cull [_Cull]
-            ZClip [_ZClip]
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-            ColorMask [_ColorMask]
-            Offset [_OffsetFactor], [_OffsetUnits]
-            BlendOp [_BlendOp], [_BlendOpAlpha]
-            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask [_AlphaToMask]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
-            #pragma multi_compile_fragment _ LIGHTMAP_ON
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #include "Includes/lil_pass_forward.hlsl"
-
-            ENDHLSL
-        }
-
-        // Forward Outline
-        Pass
-        {
-            Name "FORWARD_OUTLINE"
-            Tags {"LightMode" = "SRPDefaultUnlit"}
-
-            Stencil
-            {
-                Ref [_OutlineStencilRef]
-                ReadMask [_OutlineStencilReadMask]
-                WriteMask [_OutlineStencilWriteMask]
-                Comp [_OutlineStencilComp]
-                Pass [_OutlineStencilPass]
-                Fail [_OutlineStencilFail]
-                ZFail [_OutlineStencilZFail]
-            }
-            Cull [_OutlineCull]
-            ZClip [_OutlineZClip]
-            ZWrite [_OutlineZWrite]
-            ZTest [_OutlineZTest]
-            ColorMask [_OutlineColorMask]
-            Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
-            BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
-            Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
-            AlphaToMask [_OutlineAlphaToMask]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
-            #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
-            #pragma multi_compile_fragment _ LIGHTMAP_ON
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #define LIL_OUTLINE
-            #include "Includes/lil_pass_forward.hlsl"
-
-            ENDHLSL
-        }
-
-        // ShadowCaster
-        Pass
-        {
-            Name "SHADOW_CASTER"
-            Tags {"LightMode" = "ShadowCaster"}
-		    Cull [_Cull]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #include "Includes/lil_pass_shadowcaster.hlsl"
-
-            ENDHLSL
-        }
-
-        // DepthOnly
-        Pass
-        {
-            Name "DEPTHONLY"
-            Tags {"LightMode" = "DepthOnly"}
-		    Cull [_Cull]
-            ZClip [_ZClip]
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #include "Includes/lil_pass_depthonly.hlsl"
-
-            ENDHLSL
-        }
-
-        // Meta
-        Pass
-        {
-            Name "META"
-            Tags {"LightMode" = "Meta"}
-            Cull Off
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #include "Includes/lil_pass_meta.hlsl"
-            ENDHLSL
-        }
-    }
-
-    //----------------------------------------------------------------------------------------------------------------------
-    // Lightweight Render Pipeline
     SubShader
     {
         // Forward
@@ -458,7 +374,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
             #pragma multi_compile_fragment _ LIGHTMAP_ON
@@ -504,7 +419,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile_fragment _ _MIXED_LIGHTING_SUBTRACTIVE
             #pragma multi_compile_fragment _ LIGHTMAP_ON
@@ -532,8 +446,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
-            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -559,7 +471,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -582,7 +493,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -603,6 +513,7 @@ Shader "Hidden/ltspass_lite_transparent"
         Tags{"ShaderModel" = "4.5"}
         HLSLINCLUDE
             #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
         ENDHLSL
 
         // Forward
@@ -637,7 +548,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ _LIGHT_LAYERS
             #pragma multi_compile _ _CLUSTERED_RENDERING
@@ -692,7 +602,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ _LIGHT_LAYERS
             #pragma multi_compile _ _CLUSTERED_RENDERING
@@ -724,7 +633,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -752,7 +660,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -779,7 +686,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
@@ -821,7 +727,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -842,7 +747,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -855,6 +759,10 @@ Shader "Hidden/ltspass_lite_transparent"
     // Universal Render Pipeline
     SubShader
     {
+        HLSLINCLUDE
+            #pragma only_renderers gles gles3 glcore d3d11
+        ENDHLSL
+
         // Forward
         Pass
         {
@@ -887,7 +795,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ _LIGHT_LAYERS
             #pragma multi_compile _ _CLUSTERED_RENDERING
@@ -941,7 +848,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ _LIGHT_LAYERS
             #pragma multi_compile _ _CLUSTERED_RENDERING
@@ -972,7 +878,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
             #pragma multi_compile_instancing
 
@@ -999,7 +904,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -1025,7 +929,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_instancing
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -1066,7 +969,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1087,7 +989,6 @@ Shader "Hidden/ltspass_lite_transparent"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1101,10 +1002,9 @@ Shader "Hidden/ltspass_lite_transparent"
 //----------------------------------------------------------------------------------------------------------------------
 // HDRP Start
 /*
-    //----------------------------------------------------------------------------------------------------------------------
-    // High Definition Render Pipeline
     HLSLINCLUDE
         #pragma target 4.5
+        #pragma exclude_renderers gles gles3 glcore
     ENDHLSL
     SubShader
     {

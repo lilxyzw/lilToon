@@ -136,7 +136,15 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Lighting
-        fd.col.rgb = lerp(fd.col.rgb, fd.col.rgb * min(fd.lightColor + fd.addLightColor, _LightMaxLimit), _OutlineEnableLighting);
+        #if defined(LIL_PASS_FORWARDADD)
+            fd.col.rgb = fd.col.rgb * fd.lightColor * _OutlineEnableLighting;
+        #else
+            fd.col.rgb = lerp(fd.col.rgb, fd.col.rgb * min(fd.lightColor + fd.addLightColor, _LightMaxLimit), _OutlineEnableLighting);
+        #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Premultiply
+        LIL_PREMULTIPLY
     #else
         //------------------------------------------------------------------------------------------------------------------------------
         // UV
@@ -179,7 +187,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         //------------------------------------------------------------------------------------------------------------------------------
         // Lighting
         BEFORE_SHADOW
-        #ifndef LIL_PASS_FORWARDADD
+        #if !defined(LIL_PASS_FORWARDADD)
             OVERRIDE_SHADOW
 
             fd.lightColor += fd.addLightColor;
@@ -190,7 +198,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             fd.shadowmix = saturate(fd.shadowmix);
             fd.col.rgb = min(fd.col.rgb, fd.albedo * _LightMaxLimit);
         #else
-            fd.col.rgb *= fd.lightColor;
+            OVERRIDE_SHADOW
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -207,6 +215,10 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             BEFORE_BLEND_EMISSION
             OVERRIDE_BLEND_EMISSION
         #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Premultiply
+        LIL_PREMULTIPLY
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------

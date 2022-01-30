@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.8] - 2022-1-30
+### Added
+- 3rd shadow
+- `Randomize` property for  fur
+- Add the same properties to the fur as a normal shader
+- `Optimize for submission to the event` button and the function to automatically optimize shader settings before build (only available when VRCSDK for world is imported)
+- Reduce the build size of shaders that use shader keywords
+- 2 pass (cutout & transparent) fur shader
+- Default settings for material parameters applied by`[lilToon] Fix Lighting`
+- Added shader settings to reduce build size
+- Added `Object following` to light direction override
+
+### Changed
+- Changed to use G channel of shadow blur map as strength of 2nd shadow blur
+- Changed distance clipping canceller of lilToonMulti to parameter
+- Changed to apply spotlight shape even with transparent fur shader
+- Changed to apply the ForwardAdd pass to the outline
+- Changed the default value of `Vertex Light Strength` to 0
+- Changed the default value of `Lower brightness limit` to 0.05
+- Changed the name of the lighting preset from `Stable` to `Semi-monochrome`
+- Changed to apply shadow even in ForwardAdd pass
+- Adjusted GUI a little
+- Changed to apply shader settings automatically when the shader settings menu is closed
+- Changed the cutout value range from -0.001 to 1.001
+- Organized the right-click menu
+- Changed the outline so that it is not blurred by DOF
+
+### Fixed
+- Fixed the `Upper brightness limit` not being able to be changed in ForwardAdd pass
+- Fixed an issue where the refraction shader blur strength had changed with the Clipping distance
+
 ## [1.2.7] - 2021-12-13
 ### Added
 - Normal map for adjusting the direction of pushing out the outline

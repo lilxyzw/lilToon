@@ -8,10 +8,13 @@ using System.Collections;
 
 namespace lilToon
 {
-    public class lilStartup {
+    public static class lilStartup
+    {
         [InitializeOnLoadMethod]
-        static void lilStartupMethod()
+        public static void lilStartupMethod()
         {
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Variables
             string editorPath = lilToonInspector.GetEditorPath();
             lilToonInspector.isUPM = editorPath.Contains("Packages");
             string settingFolderPath = lilToonInspector.GetSettingFolderPath();
@@ -21,7 +24,8 @@ namespace lilToon
             lilToonInspector.ApplyEditorSettingTemp();
             lilToonInspector.InitializeLanguage();
 
-            // Initialize
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Fix for UPM
             StreamReader csr = new StreamReader(shaderCommonPath);
             string cs = csr.ReadToEnd();
             csr.Close();
@@ -44,6 +48,8 @@ namespace lilToon
                 csw.Close();
             }
 
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Create files
             if(!Directory.Exists(settingFolderPath))
             {
                 // Setting Folder
@@ -90,42 +96,52 @@ namespace lilToon
                 }
             }
 
+            //------------------------------------------------------------------------------------------------------------------------------
             // Version check
             if(!File.Exists(lilToonInspector.versionInfoTempPath))
             {
                 CoroutineHandler.StartStaticCoroutine(GetLatestVersionInfo());
             }
 
-            AssetDatabase.importPackageCompleted += OnImportPackageCompleted =>
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Migration
+            if(lilToonInspector.edSet.currentVersionValue < lilToonInspector.currentVersionValue)
+            {
+                lilToonInspector.MigrateMaterials();
+                lilToonInspector.edSet.currentVersionValue = lilToonInspector.currentVersionValue;
+                lilToonInspector.SaveEditorSettingTemp();
+            }
+
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Scan imported assets
+            AssetDatabase.importPackageCompleted += _ =>
             {
                 lilToonSetting shaderSetting = null;
                 lilToonInspector.InitializeShaderSetting(ref shaderSetting);
                 lilToonInspector.InitializeSettingHLSL(ref shaderSetting);
 
-                // Scan imported assets
-                if(File.Exists(lilToonInspector.packageListTempPath))
+                if(!shaderSetting.isLocked && !shaderSetting.shouldNotScan && File.Exists(lilToonInspector.packageListTempPath))
                 {
                     lilToonSetting shaderSettingNew = UnityEngine.Object.Instantiate(shaderSetting);
                     StreamReader srPackage = new StreamReader(lilToonInspector.packageListTempPath);
-                    string tempPackage = srPackage.ReadToEnd();
-                    srPackage.Close();
-
-                    string[] importedAssets = tempPackage.Split('\n');
-
-                    foreach(string str in importedAssets)
+                    string str;
+                    while((str = srPackage.ReadLine()) != null)
                     {
                         if(str.EndsWith(".mat") && AssetDatabase.GetMainAssetTypeAtPath(str) == typeof(Material))
                         {
-                            Material material = (Material)AssetDatabase.LoadAssetAtPath(str, typeof(Material));
-                            if(!material.shader.name.Contains("lilToon") || material.shader.name.Contains("Lite")) continue;
+                            Material material = AssetDatabase.LoadAssetAtPath<Material>(str);
+                            if(!material.shader.name.Contains("lilToon")) continue;
+                            lilToonInspector.MigrateMaterial(material);
+                            if(material.shader.name.Contains("Lite")) continue;
                             lilToonInspector.SetupShaderSettingFromMaterial(material, ref shaderSettingNew);
                         }
                         if(str.EndsWith(".anim") && AssetDatabase.GetMainAssetTypeAtPath(str) == typeof(AnimationClip))
                         {
-                            AnimationClip clip = (AnimationClip)AssetDatabase.LoadAssetAtPath(str, typeof(AnimationClip));
+                            AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(str);
                             lilToonInspector.SetupShaderSettingFromAnimationClip(clip, ref shaderSettingNew);
                         }
                     }
+                    srPackage.Close();
 
                     if(!lilToonInspector.EqualsShaderSetting(shaderSettingNew, shaderSetting) && EditorUtility.DisplayDialog("lilToon",lilToonInspector.GetLoc("sUtilNewFeatureFound"),lilToonInspector.GetLoc("sYes"),lilToonInspector.GetLoc("sNo")))
                     {
@@ -142,20 +158,18 @@ namespace lilToon
 
                 // Refresh
                 string[] shaderFolderPaths = lilToonInspector.GetShaderFolderPaths();
-                bool isShadowReceive = shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW || shaderSetting.LIL_FEATURE_BACKLIGHT;
-                string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
-                foreach(string shaderGuid in shaderGuids)
-                {
-                    string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
-                    lilToonInspector.RewriteReceiveShadow(shaderPath, isShadowReceive);
-                }
+                bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;
+                Array.ForEach(
+                    AssetDatabase.FindAssets("t:shader", shaderFolderPaths),
+                    shaderGuid => lilToonInspector.RewriteReceiveShadow(AssetDatabase.GUIDToAssetPath(shaderGuid), isShadowReceive)
+                );
                 AssetDatabase.SaveAssets();
                 AssetDatabase.ImportAsset(shaderSettingHLSLPath);
                 AssetDatabase.Refresh();
             };
         }
 
-        static IEnumerator GetLatestVersionInfo()
+        private static IEnumerator GetLatestVersionInfo()
         {
             using(UnityWebRequest webRequest = UnityWebRequest.Get(lilToonInspector.versionInfoURL))
             {
@@ -178,17 +192,22 @@ namespace lilToon
         }
     }
 
+    //------------------------------------------------------------------------------------------------------------------------------
+    // based on CoroutineHandler.cs
+    // https://github.com/Unity-Technologies/EndlessRunnerSampleGame/blob/master/Assets/Scripts/CoroutineHandler.cs
     public class CoroutineHandler : MonoBehaviour
     {
         static protected CoroutineHandler m_Instance;
-        static public CoroutineHandler instance
+        static public CoroutineHandler Instance
         {
             get
             {
                 if(m_Instance == null)
                 {
-                    GameObject o = new GameObject("CoroutineHandler");
-                    o.hideFlags = HideFlags.HideAndDontSave;
+                    GameObject o = new GameObject("CoroutineHandler")
+                    {
+                        hideFlags = HideFlags.HideAndDontSave
+                    };
                     m_Instance = o.AddComponent<CoroutineHandler>();
                 }
 
@@ -198,13 +217,12 @@ namespace lilToon
 
         public void OnDisable()
         {
-            if(m_Instance)
-                Destroy(m_Instance.gameObject);
+            if(m_Instance) Destroy(m_Instance.gameObject);
         }
 
         static public Coroutine StartStaticCoroutine(IEnumerator coroutine)
         {
-            return instance.StartCoroutine(coroutine);
+            return Instance.StartCoroutine(coroutine);
         }
     }
 }

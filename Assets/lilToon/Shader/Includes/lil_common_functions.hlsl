@@ -735,16 +735,23 @@ float4 lilGetSubTexWithoutAnimation(
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Light Direction
+float3 lilGetCustomLightDirection(float4 lightDirectionOverride)
+{
+    float3 customDir = length(lightDirectionOverride.xyz) * normalize(mul((float3x3)LIL_MATRIX_M, lightDirectionOverride.xyz));
+    return lightDirectionOverride.w ? customDir : lightDirectionOverride.xyz;
+}
+
 float3 lilGetLightDirection(float4 lightDirectionOverride)
 {
     #if LIL_LIGHT_DIRECTION_MODE == 0
-        return normalize(LIL_MAINLIGHT_DIRECTION + lightDirectionOverride.xyz);
+        return normalize(LIL_MAINLIGHT_DIRECTION + lilGetCustomLightDirection(lightDirectionOverride));
     #else
         return normalize(LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR) + 
                         unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + 
-                        lightDirectionOverride.xyz);
+                        lilGetCustomLightDirection(lightDirectionOverride));
     #endif
 }
+
 float3 lilGetLightDirection()
 {
     return lilGetLightDirection(float4(0.0,0.001,0.0,0.0));

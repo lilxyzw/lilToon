@@ -1,32 +1,61 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-
 #if !UNITY_2018_1_OR_NEWER
     using System.Reflection;
+#endif
+#if VRC_SDK_VRCSDK3 && UDON
+    using VRC.SDKBase.Editor.BuildPipeline;
 #endif
 
 namespace lilToon
 {
-    public class lilRefreshShaders : MonoBehaviour
+    public static class lilToonEditorUtils
     {
-        [MenuItem("Assets/lilToon/Refresh shaders", false, 20)]
-        static void RefreshShaders()
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Constant
+        private const string menuPathAssets                 = "Assets/lilToon/";
+        private const string menuPathGameObject             = "GameObject/lilToon/";
+        private const string menuPathRefreshShaders         = menuPathAssets + "[Shader] Refresh shaders";
+        private const string menuPathAutoShaderSetting      = menuPathAssets + "[Shader] Full scan and auto shader setting";
+        private const string menuPathRemoveUnusedProperties = menuPathAssets + "[Material] Remove unused properties";
+        private const string menuPathConvertNormal          = menuPathAssets + "[Texture] Convert normal map (DirectX <-> OpenGL)";
+        private const string menuPathPixelArtReduction      = menuPathAssets + "[Texture] Pixel art reduction";
+        private const string menuPathConvertGifToAtlas      = menuPathAssets + "[Texture] Convert Gif to Atlas";
+        private const string menuPathSetupFromFBX           = menuPathAssets + "[Model] Setup from FBX";
+        private const string menuPathFixLighting            = menuPathGameObject + "[GameObject] Fix lighting";
+
+        private const int menuPriorityAssets = 1100;
+        private const int menuPriorityGameObject = 1100;
+        private const int menuPriorityRefreshShaders            = menuPriorityAssets + 0;
+        private const int menuPriorityAutoShaderSetting         = menuPriorityAssets + 1;
+        private const int menuPriorityRemoveUnusedProperties    = menuPriorityAssets + 20;
+        private const int menuPriorityConvertNormal             = menuPriorityAssets + 21;
+        private const int menuPriorityPixelArtReduction         = menuPriorityAssets + 22;
+        private const int menuPriorityConvertGifToAtlas         = menuPriorityAssets + 23;
+        private const int menuPrioritySetupFromFBX              = menuPriorityAssets + 24;
+        private const int menuPriorityFixLighting               = menuPriorityGameObject + 0;
+
+        private const string anchorName = "AutoAnchorObject";
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Assets/lilToon/Refresh shaders
+        [MenuItem(menuPathRefreshShaders, false, menuPriorityRefreshShaders)]
+        private static void RefreshShaders()
         {
             lilToonInspector.RewriteShaderRP();
             string shaderSettingPath = lilToonInspector.GetShaderSettingPath();
-            lilToonSetting shaderSetting = (lilToonSetting)AssetDatabase.LoadAssetAtPath(shaderSettingPath, typeof(lilToonSetting));
+            lilToonSetting shaderSetting = AssetDatabase.LoadAssetAtPath<lilToonSetting>(shaderSettingPath);
             if(shaderSetting != null) lilToonInspector.ApplyShaderSetting(shaderSetting);
 
             string[] shaderFolderPaths = lilToonInspector.GetShaderFolderPaths();
-            bool isShadowReceive = shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW || shaderSetting.LIL_FEATURE_BACKLIGHT;
-            string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
-            foreach(string shaderGuid in shaderGuids)
+            bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;
+            foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
             {
                 string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
                 lilToonInspector.RewriteReceiveShadow(shaderPath, isShadowReceive);
@@ -36,12 +65,11 @@ namespace lilToon
             lilToonInspector.ReimportPassShaders();
             AssetDatabase.Refresh();
         }
-    }
 
-    public class lilAutoShaderSetting : MonoBehaviour
-    {
-        [MenuItem("Assets/lilToon/Auto shader setting", false, 20)]
-        static void AutoShaderSetting()
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Assets/lilToon/Auto shader setting
+        [MenuItem(menuPathAutoShaderSetting, false, menuPriorityAutoShaderSetting)]
+        private static void AutoShaderSetting()
         {
             // Load shader setting
             lilToonSetting shaderSetting = null;
@@ -62,18 +90,16 @@ namespace lilToon
             lilToonInspector.TurnOffAllShaderSetting(ref shaderSetting);
 
             // Get materials
-            string[] materialGuids = AssetDatabase.FindAssets("t:material");
-            foreach(string guid in materialGuids)
+            foreach(string guid in AssetDatabase.FindAssets("t:material"))
             {
-                Material material = (Material)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(Material));
+                Material material = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(guid));
                 lilToonInspector.SetupShaderSettingFromMaterial(material, ref shaderSetting);
             }
 
             // Get animations
-            string[] clipGuids = AssetDatabase.FindAssets("t:animationclip");
-            foreach(string guid in clipGuids)
+            foreach(string guid in AssetDatabase.FindAssets("t:animationclip"))
             {
-                AnimationClip clip = (AnimationClip)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(AnimationClip));
+                AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(AssetDatabase.GUIDToAssetPath(guid));
                 lilToonInspector.SetupShaderSettingFromAnimationClip(clip, ref shaderSetting);
             }
 
@@ -90,37 +116,133 @@ namespace lilToon
             AssetDatabase.Refresh();
             EditorUtility.DisplayDialog("Auto Shader Setting",lilToonInspector.GetLoc("sComplete"),lilToonInspector.GetLoc("sOK"));
         }
-    }
 
-    public class lilRemoveUnusedProperties : MonoBehaviour
-    {
-        [MenuItem("Assets/lilToon/Remove unused properties")]
-        static void RemoveUnusedProperties()
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Assets/lilToon/Remove unused properties
+        [MenuItem(menuPathRemoveUnusedProperties, false, menuPriorityRemoveUnusedProperties)]
+        private static void RemoveUnusedProperties()
         {
             if(Selection.objects.Length == 0) return;
             for(int i = 0; i < Selection.objects.Length; i++)
             {
                 if(Selection.objects[i] is Material)
                 {
-                    Material material = (Material)Selection.objects[i];
-                    lilToonInspector.RemoveUnusedTexture(material);
+                    lilToonInspector.RemoveUnusedTexture((Material)Selection.objects[i]);
                 }
             }
         }
 
-        [MenuItem("Assets/lilToon/Remove unused properties", true, 20)]
-        static bool CheckFormat()
+        [MenuItem(menuPathRemoveUnusedProperties, true, menuPriorityRemoveUnusedProperties)]
+        private static bool CheckRemoveUnusedProperties()
         {
-            if(Selection.activeObject == null) return false;
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject).ToLower();
-            return path.EndsWith(".mat");
+            return CheckExtension(".mat");
         }
-    }
 
-    public class lilSetupFromFBX : MonoBehaviour
-    {
-        [MenuItem("Assets/lilToon/Setup from FBX")]
-        static void SetupFromFBX()
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Assets/lilToon/Convert normal map (DirectX <-> OpenGL)
+        [MenuItem(menuPathConvertNormal, false, menuPriorityConvertNormal)]
+        private static void ConvertNormal()
+        {
+            Texture2D srcTexture = new Texture2D(2, 2, TextureFormat.ARGB32, true, true);
+            Material hsvgMaterial = new Material(Shader.Find("Hidden/ltsother_baker"));
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+            byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
+            srcTexture.LoadImage(bytes);
+            hsvgMaterial.SetTexture("_MainTex", srcTexture);
+            hsvgMaterial.EnableKeyword("_NORMAL_DXGL");
+
+            RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+
+            Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
+
+            Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height, TextureFormat.ARGB32, true, true);
+            outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
+            outTexture.Apply();
+
+            // Save
+            lilToonInspector.SavePng(path, "_conv", outTexture);
+            AssetDatabase.Refresh();
+
+            UnityEngine.Object.DestroyImmediate(hsvgMaterial);
+            UnityEngine.Object.DestroyImmediate(srcTexture);
+            UnityEngine.Object.DestroyImmediate(dstTexture);
+        }
+
+        [MenuItem(menuPathConvertNormal, true, menuPriorityConvertNormal)]
+        private static bool CheckConvertNormal()
+        {
+            return CheckImageExtension();
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Assets/lilToon/Convert Gif to Atlas
+        #if SYSTEM_DRAWING
+            // Gif to Atlas
+            [MenuItem(menuPathConvertGifToAtlas, false, menuPriorityConvertGifToAtlas)]
+            private static void ConvertGifToAtlas()
+            {
+                lilToonInspector.ConvertGifToAtlas(Selection.activeObject);
+            }
+
+            [MenuItem(menuPathConvertGifToAtlas, true, menuPriorityConvertGifToAtlas)]
+            private static bool CheckConvertGifToAtlas()
+            {
+                return CheckExtension(".gif");
+            }
+        #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Assets/lilToon/Dot texture reduction
+        [MenuItem(menuPathPixelArtReduction, false, menuPriorityPixelArtReduction)]
+        private static void PixelArtReduction()
+        {
+            Texture2D srcTexture = new Texture2D(2, 2);
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+            byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
+            srcTexture.LoadImage(bytes);
+            int finalWidth;
+            int finalHeight;
+            int scale;
+            if(EditorUtility.DisplayDialog("Dot Texture reduction",lilToonInspector.GetLoc("sUtilDotTexRedRatio"),"1/2","1/4"))
+            {
+                finalWidth = srcTexture.width / 2;
+                finalHeight = srcTexture.height / 2;
+                scale = 2;
+            }
+            else
+            {
+                finalWidth = srcTexture.width / 4;
+                finalHeight = srcTexture.height / 4;
+                scale = 4;
+            }
+            Texture2D outTex = new Texture2D(finalWidth, finalHeight);
+            for(int x = 0; x < finalWidth; x++)
+            {
+                for(int y = 0; y < finalHeight; y++)
+                {
+                    outTex.SetPixel(x, y, srcTexture.GetPixel(x*scale, y*scale));
+                }
+            }
+            outTex.Apply();
+
+            // Save
+            string savePath = lilToonInspector.SavePng(path, "_resized", outTex);
+            AssetDatabase.Refresh();
+            TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(savePath);
+            textureImporter.filterMode = FilterMode.Point;
+            AssetDatabase.ImportAsset(savePath);
+        }
+
+        [MenuItem(menuPathPixelArtReduction, true, menuPriorityPixelArtReduction)]
+        private static bool CheckPixelArtReduction()
+        {
+            return CheckImageExtension();
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Assets/lilToon/Setup from FBX
+        [MenuItem(menuPathSetupFromFBX, false, menuPrioritySetupFromFBX)]
+        private static void SetupFromFBX()
         {
             if(Selection.objects.Length == 0) return;
             Shader lts = Shader.Find("lilToon");
@@ -129,9 +251,9 @@ namespace lilToon
             foreach(UnityEngine.Object selectionObj in Selection.objects)
             {
                 string path = AssetDatabase.GetAssetPath(selectionObj);
-                if(!path.ToLower().EndsWith(".fbx")) continue;
+                if(!path.EndsWith(".fbx", StringComparison.OrdinalIgnoreCase)) continue;
 
-                ModelImporter importer = (ModelImporter)ModelImporter.GetAtPath(path);
+                ModelImporter importer = (ModelImporter)AssetImporter.GetAtPath(path);
                 #if UNITY_2019_3_OR_NEWER
                     importer.materialImportMode = ModelImporterMaterialImportMode.ImportStandard;
                 #else
@@ -161,15 +283,16 @@ namespace lilToon
                     Material material = (Material)serializedMaterial.FindPropertyRelative("second").objectReferenceValue;
                     if(material == null)
                     {
-                        material = new Material(lts);
-                        material.name = serializedMaterial.FindPropertyRelative("first.name").stringValue;
+                        material = new Material(lts)
+                        {
+                            name = serializedMaterial.FindPropertyRelative("first.name").stringValue
+                        };
                     }
                     SetUpMaterial(ref material, materialFolder, isStandardPreset);
                 }
 
                 // Materials in model
-                UnityEngine.Object[] objectsInFBX = AssetDatabase.LoadAllAssetsAtPath(path);
-                foreach(UnityEngine.Object obj in objectsInFBX)
+                foreach(UnityEngine.Object obj in AssetDatabase.LoadAllAssetsAtPath(path))
                 {
                     if(obj == null || !(obj is Material)) continue;
                     Material material = new Material((Material)obj);
@@ -187,24 +310,22 @@ namespace lilToon
             }
         }
 
-        [MenuItem("Assets/lilToon/Setup from FBX", true, 20)]
-        static bool CheckFormat()
+        [MenuItem(menuPathSetupFromFBX, true, menuPrioritySetupFromFBX)]
+        private static bool CheckSetupFromFBX()
         {
-            if(Selection.activeObject == null) return false;
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject).ToLower();
-            return path.EndsWith(".fbx");
+            return CheckExtension(".fbx");
         }
 
-        static void SetUpMaterial(ref Material material, string materialFolder, bool isStandardPreset)
+        private static void SetUpMaterial(ref Material material, string materialFolder, bool isStandardPreset)
         {
-            if(String.IsNullOrEmpty(material.name)) return;
+            if(string.IsNullOrEmpty(material.name)) return;
             string materialFileName = material.name;
             string materialLowerName = material.name.ToLower();
             if(!materialFileName.EndsWith(".mat")) materialFileName += ".mat";
             string materialPath = materialFolder + "/" + materialFileName;
             if(File.Exists(materialPath))
             {
-                material = (Material)AssetDatabase.LoadAssetAtPath(materialPath, typeof(Material));
+                material = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
             }
             else
             {
@@ -213,13 +334,13 @@ namespace lilToon
             Shader lts = Shader.Find("lilToon");
             if(lts != null) material.shader = lts;
 
-            lilToonPreset presetSkin = (lilToonPreset)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath("dbec582958af3f340988b3ff86a12633"), typeof(lilToonPreset));
-            lilToonPreset presetSkinAnime = (lilToonPreset)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath("322c901472f2b9a4d98da370ea954214"), typeof(lilToonPreset));
-            lilToonPreset presetSkinFlat = (lilToonPreset)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath("125301c732c00f84091ef099d83833b7"), typeof(lilToonPreset));
-            lilToonPreset presetHair = (lilToonPreset)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath("2357e878227675d4bade1cc9e4c2f8ca"), typeof(lilToonPreset));
-            lilToonPreset presetHairAnime = (lilToonPreset)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath("13a5da17b9b512c45a20e627ef499e01"), typeof(lilToonPreset));
-            lilToonPreset presetCloth = (lilToonPreset)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath("5132cf0fbee6ea540831dc73b68c8c25"), typeof(lilToonPreset));
-            lilToonPreset presetClothAnime = (lilToonPreset)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath("72377412f6a548c459a5e79549f29dff"), typeof(lilToonPreset));
+            lilToonPreset presetSkin        = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("dbec582958af3f340988b3ff86a12633"));
+            lilToonPreset presetSkinAnime   = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("322c901472f2b9a4d98da370ea954214"));
+            lilToonPreset presetSkinFlat    = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("125301c732c00f84091ef099d83833b7"));
+            lilToonPreset presetHair        = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("2357e878227675d4bade1cc9e4c2f8ca"));
+            lilToonPreset presetHairAnime   = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("13a5da17b9b512c45a20e627ef499e01"));
+            lilToonPreset presetCloth       = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("5132cf0fbee6ea540831dc73b68c8c25"));
+            lilToonPreset presetClothAnime  = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("72377412f6a548c459a5e79549f29dff"));
             if(isStandardPreset)
             {
                 if(materialLowerName.Contains("face"))                                              lilToonInspector.ApplyPreset(material, presetSkinFlat);
@@ -239,10 +360,9 @@ namespace lilToon
 
             if(material.GetTexture("_MainTex") == null)
             {
-                string[] texGUIDs = AssetDatabase.FindAssets("t:texture2d");
-                foreach(string texGUID in texGUIDs)
+                foreach(string texGUID in AssetDatabase.FindAssets("t:texture2d"))
                 {
-                    Texture2D tex = (Texture2D)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(texGUID), typeof(Texture2D));
+                    Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
                     if(tex == null) continue;
                     string texNameLow = tex.name.ToLower();
                     if(!texNameLow.Contains(materialLowerName)) continue;
@@ -256,10 +376,9 @@ namespace lilToon
 
             if(!material.HasProperty("_ShadowStrengthMask") || material.GetTexture("_ShadowStrengthMask") == null)
             {
-                string[] texGUIDs = AssetDatabase.FindAssets("t:texture2d");
-                foreach(string texGUID in texGUIDs)
+                foreach(string texGUID in AssetDatabase.FindAssets("t:texture2d"))
                 {
-                    Texture2D tex = (Texture2D)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(texGUID), typeof(Texture2D));
+                    Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
                     if(tex == null) continue;
                     string texNameLow = tex.name.ToLower();
                     if(!texNameLow.Contains(materialLowerName)) continue;
@@ -273,10 +392,9 @@ namespace lilToon
 
             if(isOutl && (!material.HasProperty("_OutlineWidthMask") || material.GetTexture("_OutlineWidthMask") == null))
             {
-                string[] texGUIDs = AssetDatabase.FindAssets("t:texture2d");
-                foreach(string texGUID in texGUIDs)
+                foreach(string texGUID in AssetDatabase.FindAssets("t:texture2d"))
                 {
-                    Texture2D tex = (Texture2D)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(texGUID), typeof(Texture2D));
+                    Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
                     if(tex == null) continue;
                     string texNameLow = tex.name.ToLower();
                     if(texNameLow.Contains(materialLowerName) && texNameLow.Contains("outline"))
@@ -308,189 +426,23 @@ namespace lilToon
 
             EditorUtility.SetDirty(material);
         }
-    }
 
-    public class lilConvertNormal : MonoBehaviour
-    {
-        // Normal Map DirectX <-> OpenGL
-        [MenuItem("Assets/lilToon/Convert normal map (DirectX <-> OpenGL)")]
-        static void ConvertNormal()
-        {
-            Texture2D srcTexture = new Texture2D(2, 2, TextureFormat.ARGB32, true, true);
-            Material hsvgMaterial = new Material(Shader.Find("Hidden/ltsother_baker"));
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
-            byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
-            srcTexture.LoadImage(bytes);
-            hsvgMaterial.SetTexture("_MainTex", srcTexture);
-            hsvgMaterial.EnableKeyword("_NORMAL_DXGL");
-
-            RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
-
-            Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
-
-            Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height, TextureFormat.ARGB32, true, true);
-            outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
-            outTexture.Apply();
-
-            // Save
-            string savePath = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path) + "_conv" + ".png";
-            File.WriteAllBytes(savePath, outTexture.EncodeToPNG());
-            AssetDatabase.Refresh();
-            AssetDatabase.ImportAsset(savePath);
-
-            UnityEngine.Object.DestroyImmediate(hsvgMaterial);
-            UnityEngine.Object.DestroyImmediate(srcTexture);
-            UnityEngine.Object.DestroyImmediate(dstTexture);
-        }
-
-        [MenuItem("Assets/lilToon/Convert normal map (DirectX <-> OpenGL)", true, 20)]
-        static bool CheckFormat()
-        {
-            if(Selection.activeObject == null) return false;
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject).ToLower();
-            return path.EndsWith(".png");
-        }
-    }
-
-    #if SYSTEM_DRAWING
-        public class lilGifToAtlas : MonoBehaviour
-        {
-            // Gif to Atlas
-            [MenuItem("Assets/lilToon/Convert Gif to Atlas")]
-            static void ConvertGifToAtlas()
-            {
-                string path = AssetDatabase.GetAssetPath(Selection.activeObject);
-                System.Drawing.Image origGif = System.Drawing.Image.FromFile(path);
-                System.Drawing.Imaging.FrameDimension dimension = new System.Drawing.Imaging.FrameDimension(origGif.FrameDimensionsList[0]);
-                int frameCount = origGif.GetFrameCount(dimension);
-                int loopXY = Mathf.CeilToInt(Mathf.Sqrt(frameCount));
-                int finalWidth = 1;
-                int finalHeight = 1;
-                if(EditorUtility.DisplayDialog("Convert Gif to Atlas", lilToonInspector.GetLoc("sUtilGif2AtlasPow2"), lilToonInspector.GetLoc("sYes"), lilToonInspector.GetLoc("sNo")))
-                {
-                    while(finalWidth < origGif.Width * loopXY) finalWidth *= 2;
-                    while(finalHeight < origGif.Height * loopXY) finalHeight *= 2;
-                }
-                else
-                {
-                    finalWidth = origGif.Width * loopXY;
-                    finalHeight = origGif.Height * loopXY;
-                }
-                Texture2D atlasTexture = new Texture2D(finalWidth, finalHeight);
-                int duration = BitConverter.ToInt32(origGif.GetPropertyItem(20736).Value, 0);
-                for(int x = 0; x < finalWidth; x++)
-                {
-                    for(int y = 0; y < finalHeight; y++)
-                    {
-                        atlasTexture.SetPixel(x, finalHeight - 1 - y, Color.clear);
-                    }
-                }
-                for(int i = 0; i < frameCount; i++)
-                {
-                    int offsetX = i%loopXY;
-                    int offsetY = Mathf.FloorToInt(i/loopXY);
-                    origGif.SelectActiveFrame(dimension, i);
-                    System.Drawing.Bitmap frame = new System.Drawing.Bitmap(origGif.Width, origGif.Height);
-                    System.Drawing.Graphics.FromImage(frame).DrawImage(origGif, System.Drawing.Point.Empty);
-
-                    for(int x = 0; x < frame.Width; x++)
-                    {
-                        for(int y = 0; y < frame.Height; y++)
-                        {
-                            System.Drawing.Color sourceColor = frame.GetPixel(x, y);
-                            atlasTexture.SetPixel(x + frame.Width*offsetX, finalHeight - frame.Height * offsetY - 1 - y, new Color32(sourceColor.R, sourceColor.G, sourceColor.B, sourceColor.A));
-                        }
-                    }
-                }
-                atlasTexture.Apply();
-
-                // Save
-                string savePath = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path) + "_gif2png_" + loopXY + "_" + frameCount + "_" + duration + ".png";
-                File.WriteAllBytes(savePath, atlasTexture.EncodeToPNG());
-                AssetDatabase.Refresh();
-            }
-
-            [MenuItem("Assets/lilToon/Convert Gif to Atlas", true, 20)]
-            static bool CheckFormat()
-            {
-                if(Selection.activeObject == null) return false;
-                string path = AssetDatabase.GetAssetPath(Selection.activeObject).ToLower();
-                return path.EndsWith(".gif");
-            }
-        }
-    #endif
-
-    public class lilDotTextureReduction : MonoBehaviour
-    {
-        // Dot Texture reduction
-        [MenuItem("Assets/lilToon/Dot texture reduction")]
-        static void DotTextureReduction()
-        {
-            Texture2D srcTexture = new Texture2D(2, 2);
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
-            byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
-            srcTexture.LoadImage(bytes);
-            int finalWidth = 0;
-            int finalHeight = 0;
-            int scale = 0;
-            if(EditorUtility.DisplayDialog("Dot Texture reduction",lilToonInspector.GetLoc("sUtilDotTexRedRatio"),"1/2","1/4"))
-            {
-                finalWidth = srcTexture.width / 2;
-                finalHeight = srcTexture.height / 2;
-                scale = 2;
-            }
-            else
-            {
-                finalWidth = srcTexture.width / 4;
-                finalHeight = srcTexture.height / 4;
-                scale = 4;
-            }
-            Texture2D outTex = new Texture2D(finalWidth, finalHeight);
-            for(int x = 0; x < finalWidth; x++)
-            {
-                for(int y = 0; y < finalHeight; y++)
-                {
-                    outTex.SetPixel(x, y, srcTexture.GetPixel(x*scale, y*scale));
-                }
-            }
-            outTex.Apply();
-
-            // Save
-            string savePath = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path) + "_resized" + ".png";
-            File.WriteAllBytes(savePath, outTex.EncodeToPNG());
-            AssetDatabase.Refresh();
-            TextureImporter textureImporter = (TextureImporter)TextureImporter.GetAtPath(savePath);
-            textureImporter.filterMode = FilterMode.Point;
-            AssetDatabase.ImportAsset(savePath);
-        }
-
-        [MenuItem("Assets/lilToon/Dot texture reduction", true, 20)]
-        static bool CheckFormat()
-        {
-            if(Selection.activeObject == null) return false;
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject).ToLower();
-            return path.EndsWith(".png");
-        }
-    }
-
-    public class lilFixLighting : MonoBehaviour
-    {
-        public const string anchorName = "AutoAnchorObject";
-        // Dot Texture reduction
-        [MenuItem("GameObject/[lilToon] Fix lighting", false, 20)]
-        static void FixLighting()
+        //------------------------------------------------------------------------------------------------------------------------------
+        // GameObject/[lilToon] Fix lighting
+        [MenuItem(menuPathFixLighting, false, menuPriorityFixLighting)]
+        private static void FixLighting()
         {
             GameObject gameObject = Selection.activeGameObject;
-            if(gameObject == null)
+            /*if(gameObject == null)
             {
                 EditorUtility.DisplayDialog("[lilToon] Fix lighting",lilToonInspector.GetLoc("sUtilSelectGameObject"),lilToonInspector.GetLoc("sOK"));
                 return;
-            }
+            }*/
 
             // Create Anchor
             if(gameObject.transform.Find(anchorName) != null)
             {
-                DestroyImmediate(gameObject.transform.Find(anchorName).gameObject);
+                UnityEngine.Object.DestroyImmediate(gameObject.transform.Find(anchorName).gameObject);
             }
             GameObject anchorObject = new GameObject(anchorName);
 
@@ -501,8 +453,7 @@ namespace lilToon
             float maxX = -10000.0f;
             float maxY = -10000.0f;
             float maxZ = -10000.0f;
-            Transform[] objTransforms = gameObject.GetComponentsInChildren<Transform>(true);
-            foreach(Transform objTransform in objTransforms)
+            foreach(Transform objTransform in gameObject.GetComponentsInChildren<Transform>(true))
             {
                 minX = minX < objTransform.position.x ? minX : objTransform.position.x;
                 minY = minY < objTransform.position.y ? minY : objTransform.position.y;
@@ -533,6 +484,9 @@ namespace lilToon
             avatarWidth =  maxZ > avatarWidth ?  maxZ : avatarWidth;
             avatarWidth *= 2.5f;
 
+            string shaderSettingPath = lilToonInspector.GetShaderSettingPath();
+            lilToonSetting shaderSetting = AssetDatabase.LoadAssetAtPath<lilToonSetting>(shaderSettingPath);
+
             // MeshRenderer
             MeshRenderer[] meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>(true);
             if(meshRenderers.Length != 0)
@@ -542,9 +496,16 @@ namespace lilToon
                     // Fix vertex light
                     foreach(Material material in meshRenderer.sharedMaterials)
                     {
-                        if(material.shader.name.Contains("lilToon"))
+                        if(material.shader.name.Contains("lilToon") && shaderSetting != null)
                         {
-                            material.SetFloat("_VertexLightStrength", 0.0f);
+                            material.SetFloat("_AsUnlit", shaderSetting.defaultAsUnlit);
+                            material.SetFloat("_VertexLightStrength", shaderSetting.defaultVertexLightStrength);
+                            material.SetFloat("_LightMinLimit", shaderSetting.defaultLightMinLimit);
+                            material.SetFloat("_LightMaxLimit", shaderSetting.defaultLightMaxLimit);
+                            material.SetFloat("_BeforeExposureLimit", shaderSetting.defaultBeforeExposureLimit);
+                            material.SetFloat("_MonochromeLighting", shaderSetting.defaultMonochromeLighting);
+                            material.SetFloat("_lilDirectionalLightStrength", shaderSetting.defaultlilDirectionalLightStrength);
+                            material.SetVector("_LightDirectionOverride", shaderSetting.defaultLightDirectionOverride);
                             EditorUtility.SetDirty(material);
                         }
                     }
@@ -571,9 +532,16 @@ namespace lilToon
                     // Fix vertex light
                     foreach(Material material in skinnedMeshRenderer.sharedMaterials)
                     {
-                        if(material.shader.name.Contains("lilToon"))
+                        if(material != null && material.shader != null && material.shader.name.Contains("lilToon") && shaderSetting != null)
                         {
-                            material.SetFloat("_VertexLightStrength", 0.0f);
+                            material.SetFloat("_AsUnlit", shaderSetting.defaultAsUnlit);
+                            material.SetFloat("_VertexLightStrength", shaderSetting.defaultVertexLightStrength);
+                            material.SetFloat("_LightMinLimit", shaderSetting.defaultLightMinLimit);
+                            material.SetFloat("_LightMaxLimit", shaderSetting.defaultLightMaxLimit);
+                            material.SetFloat("_BeforeExposureLimit", shaderSetting.defaultBeforeExposureLimit);
+                            material.SetFloat("_MonochromeLighting", shaderSetting.defaultMonochromeLighting);
+                            material.SetFloat("_lilDirectionalLightStrength", shaderSetting.defaultlilDirectionalLightStrength);
+                            material.SetVector("_LightDirectionOverride", shaderSetting.defaultLightDirectionOverride);
                             EditorUtility.SetDirty(material);
                         }
                     }
@@ -600,6 +568,191 @@ namespace lilToon
 
             EditorUtility.DisplayDialog("[lilToon] Fix Lighting",lilToonInspector.GetLoc("sComplete"),lilToonInspector.GetLoc("sOK"));
         }
+
+        [MenuItem(menuPathFixLighting, true, menuPriorityFixLighting)]
+        private static bool CheckFixLighting()
+        {
+            return Selection.activeGameObject != null;
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Format checker
+        private static bool CheckExtension(string extension)
+        {
+            if(Selection.activeObject == null) return false;
+            return AssetDatabase.GetAssetPath(Selection.activeObject).EndsWith(extension, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool CheckImageExtension()
+        {
+            if(Selection.activeObject == null) return false;
+            string assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
+            return assetPath.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
+                   assetPath.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+                   assetPath.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase);
+        }
     }
+
+#if UNITY_2019_3_OR_NEWER
+    //------------------------------------------------------------------------------------------------------------------------------
+    // Build size optimization
+    public class lilToonPreprocessShaders : UnityEditor.Build.IPreprocessShaders
+    {
+        public int callbackOrder { get { return default(int); } }
+
+        public void OnProcessShader(Shader shader, ShaderSnippetData snippet, IList<ShaderCompilerData> data)
+        {
+            if(!shader.name.Contains("lilToon") && !shader.name.Contains("ltspass")) return;
+
+            lilToonInspector.lilRenderPipeline lilRP = lilToonInspector.CheckRP();
+
+            if(shader.name.Contains("lilToonMulti"))
+            {
+                string[] keywords = GatherKeywords(shader, data);
+                Material[] materials = GatherMaterials(shader);
+
+                for(int i = data.Count - 1; i >= 0; i--)
+                {
+                    bool isMatch = false;
+                    if(ShouldRemoveShadowsScreen(shader, data[i].shaderKeywordSet, lilRP))
+                    {
+                        data.RemoveAt(i);
+                        continue;
+                    }
+                    foreach(Material material in materials)
+                    {
+                        if(IsMatchKeywords(material, data[i].shaderKeywordSet, shader, keywords))
+                        {
+                            isMatch = true;
+                            break;
+                        }
+                    }
+                    if(isMatch) continue;
+                    data.RemoveAt(i);
+                }
+            }
+        }
+
+        private Material[] GatherMaterials(Shader shader)
+        {
+            List<Material> materialList = new List<Material>();
+            foreach(string guid in AssetDatabase.FindAssets("t:material"))
+            {
+                Material material = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(guid));
+                if(material.shader == shader) materialList.Add(material);
+            }
+            return materialList.ToArray();
+        }
+
+        private bool IsMatchKeywords(Material material, ShaderKeywordSet shaderKeywordSet, Shader shader, string[] keywords)
+        {
+            foreach(string keyword in keywords)
+            {
+                bool materialHasKeyword = System.Array.IndexOf(material.shaderKeywords, keyword) >= 0;
+                ShaderKeyword keyword2 = new ShaderKeyword(shader, keyword);
+                if(materialHasKeyword && shaderKeywordSet.IsEnabled(keyword2))
+                {
+                    continue;
+                }
+                if(!materialHasKeyword && !shaderKeywordSet.IsEnabled(keyword2))
+                {
+                    continue;
+                }
+                return false;
+            }
+            return true;
+        }
+
+        private bool ShouldRemoveShadowsScreen(Shader shader, ShaderKeywordSet shaderKeywordSet, lilToonInspector.lilRenderPipeline lilRP)
+        {
+            ShaderKeyword _REQUIRE_UV2 = new ShaderKeyword(shader, "_REQUIRE_UV2");
+            ShaderKeyword ANTI_FLICKER = new ShaderKeyword(shader, "ANTI_FLICKER");
+            if(shaderKeywordSet.IsEnabled(_REQUIRE_UV2) || shaderKeywordSet.IsEnabled(ANTI_FLICKER)) return false;
+            if(lilRP == lilToonInspector.lilRenderPipeline.BRP)
+            {
+                ShaderKeyword SHADOWS_SCREEN                = new ShaderKeyword(shader, "SHADOWS_SCREEN");
+                return shaderKeywordSet.IsEnabled(SHADOWS_SCREEN);
+            }
+            else if(lilRP == lilToonInspector.lilRenderPipeline.LWRP || lilRP == lilToonInspector.lilRenderPipeline.URP)
+            {
+                ShaderKeyword _MAIN_LIGHT_SHADOWS           = new ShaderKeyword(shader, "_MAIN_LIGHT_SHADOWS");
+                ShaderKeyword _MAIN_LIGHT_SHADOWS_CASCADE   = new ShaderKeyword(shader, "_MAIN_LIGHT_SHADOWS_CASCADE");
+                ShaderKeyword _MAIN_LIGHT_SHADOWS_SCREEN    = new ShaderKeyword(shader, "_MAIN_LIGHT_SHADOWS_SCREEN");
+                ShaderKeyword _SHADOWS_SOFT                 = new ShaderKeyword(shader, "_SHADOWS_SOFT");
+                return shaderKeywordSet.IsEnabled(_MAIN_LIGHT_SHADOWS) || shaderKeywordSet.IsEnabled(_MAIN_LIGHT_SHADOWS_CASCADE) || shaderKeywordSet.IsEnabled(_MAIN_LIGHT_SHADOWS_SCREEN) || shaderKeywordSet.IsEnabled(_SHADOWS_SOFT);
+            }
+            else if(lilRP == lilToonInspector.lilRenderPipeline.HDRP)
+            {
+                ShaderKeyword SCREEN_SPACE_SHADOWS_OFF      = new ShaderKeyword(shader, "SCREEN_SPACE_SHADOWS_OFF");
+                ShaderKeyword SCREEN_SPACE_SHADOWS_ON       = new ShaderKeyword(shader, "SCREEN_SPACE_SHADOWS_ON");
+                ShaderKeyword SHADOW_LOW                    = new ShaderKeyword(shader, "SHADOW_LOW");
+                ShaderKeyword SHADOW_MEDIUM                 = new ShaderKeyword(shader, "SHADOW_MEDIUM");
+                ShaderKeyword SHADOW_HIGH                   = new ShaderKeyword(shader, "SHADOW_HIGH");
+                return shaderKeywordSet.IsEnabled(SCREEN_SPACE_SHADOWS_OFF) || shaderKeywordSet.IsEnabled(SCREEN_SPACE_SHADOWS_ON) || shaderKeywordSet.IsEnabled(SHADOW_LOW) || shaderKeywordSet.IsEnabled(SHADOW_MEDIUM) || shaderKeywordSet.IsEnabled(SHADOW_HIGH);
+            }
+            return false;
+        }
+
+        private string[] GatherKeywords(Shader shader, IList<ShaderCompilerData> data)
+        {
+            List<string> keywordList = new List<string>();
+            foreach(ShaderCompilerData part in data)
+            {
+                foreach(ShaderKeyword keyword in part.shaderKeywordSet.GetShaderKeywords())
+                {
+                    #if UNITY_2021_2_OR_NEWER
+                        if(!ShaderKeyword.IsKeywordLocal(keyword) || keywordList.Contains(keyword.name)) continue;
+                        keywordList.Add(keyword.name);
+                    #else
+                        if(!ShaderKeyword.IsKeywordLocal(keyword) || keywordList.Contains(ShaderKeyword.GetKeywordName(shader, keyword))) continue;
+                        keywordList.Add(ShaderKeyword.GetKeywordName(shader, keyword));
+                    #endif
+                }
+            }
+            return keywordList.ToArray();
+        }
+    }
+#endif
+
+#if VRC_SDK_VRCSDK3 && UDON
+    //------------------------------------------------------------------------------------------------------------------------------
+    // VRChat
+    public class lilToonVRCBuildPreprocess : IVRCSDKBuildRequestedCallback
+    {
+        public int callbackOrder => 0;
+
+        public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
+        {
+            // Load shader setting
+            lilToonSetting shaderSetting = null;
+            lilToonInspector.InitializeShaderSetting(ref shaderSetting);
+
+            if(shaderSetting == null || shaderSetting.isLocked) return true;
+
+            lilToonInspector.TurnOffAllShaderSetting(ref shaderSetting);
+
+            // Get materials
+            foreach(string guid in AssetDatabase.FindAssets("t:material"))
+            {
+                Material material = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(guid));
+                lilToonInspector.SetupShaderSettingFromMaterial(material, ref shaderSetting);
+            }
+
+            // Get animations
+            foreach(string guid in AssetDatabase.FindAssets("t:animationclip"))
+            {
+                AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(AssetDatabase.GUIDToAssetPath(guid));
+                lilToonInspector.SetupShaderSettingFromAnimationClip(clip, ref shaderSetting);
+            }
+
+            // Apply
+            EditorUtility.SetDirty(shaderSetting);
+            AssetDatabase.SaveAssets();
+            lilToonInspector.ApplyShaderSetting(shaderSetting);
+            AssetDatabase.Refresh();
+            return true;
+        }
+    }
+#endif
 }
 #endif

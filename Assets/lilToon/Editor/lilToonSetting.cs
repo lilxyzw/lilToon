@@ -14,6 +14,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_ALPHAMASK;
     public bool LIL_FEATURE_SHADOW;
     public bool LIL_FEATURE_RECEIVE_SHADOW;
+    public bool LIL_FEATURE_SHADOW_3RD;
     public bool LIL_FEATURE_EMISSION_1ST;
     public bool LIL_FEATURE_EMISSION_2ND;
     public bool LIL_FEATURE_ANIMATE_EMISSION_UV;
@@ -40,6 +41,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_ENCRYPTION;
     public bool LIL_FEATURE_ANIMATE_OUTLINE_UV;
     public bool LIL_FEATURE_OUTLINE_TONE_CORRECTION;
+    public bool LIL_FEATURE_FUR_COLLISION;
     public bool LIL_FEATURE_TEX_LAYER_MASK;
     public bool LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE;
     public bool LIL_FEATURE_TEX_SHADOW_BLUR;
@@ -47,6 +49,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_TEX_SHADOW_STRENGTH;
     public bool LIL_FEATURE_TEX_SHADOW_1ST;
     public bool LIL_FEATURE_TEX_SHADOW_2ND;
+    public bool LIL_FEATURE_TEX_SHADOW_3RD;
     public bool LIL_FEATURE_TEX_EMISSION_MASK;
     public bool LIL_FEATURE_TEX_NORMAL_MASK;
     public bool LIL_FEATURE_TEX_REFLECTION_SMOOTHNESS;
@@ -63,7 +66,21 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_TEX_FUR_MASK;
     public bool LIL_FEATURE_TEX_FUR_LENGTH;
     public bool LIL_FEATURE_TEX_TESSELLATION;
-    public bool isLocked;
-    public bool shouldNotScan;
+    public bool isLocked = false;
+    public bool shouldNotScan = false;
+
+    public bool LIL_OPTIMIZE_APPLY_SHADOW_FA = true;
+    public bool LIL_OPTIMIZE_USE_FORWARDADD = true;
+    public bool LIL_OPTIMIZE_USE_VERTEXLIGHT = true;
+    public bool LIL_OPTIMIZE_USE_LIGHTMAP = false;
+
+    public float defaultAsUnlit = 0.0f;
+    public float defaultVertexLightStrength = 0.0f;
+    public float defaultLightMinLimit = 0.05f;
+    public float defaultLightMaxLimit = 1.0f;
+    public float defaultBeforeExposureLimit = 10000.0f;
+    public float defaultMonochromeLighting = 0.0f;
+    public float defaultlilDirectionalLightStrength = 1.0f;
+    public Vector4 defaultLightDirectionOverride = new Vector4(0.0f, 0.001f, 0.0f, 0.0f);
 }
 #endif

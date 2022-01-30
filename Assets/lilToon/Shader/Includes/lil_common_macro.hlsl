@@ -39,12 +39,12 @@
 // 1 : On
 #define LIL_ANTIALIAS_MODE 1
 
-// Light Probe Proxy Volumes
+// Light Probe Proxy Volumes (Default : 0)
 #define LIL_LPPV_MODE 0
 // 0 : Off
 // 1 : On
 
-// Additional Lights Mode
+// Additional Lights Mode (Default : 1)
 #define LIL_ADDITIONAL_LIGHT_MODE 1
 // 0 : Off
 // 1 : In Vertex Shader
@@ -202,6 +202,9 @@
 #if defined(TEXTURE2D_FLOAT)
     #undef TEXTURE2D_FLOAT
 #endif
+#if defined(TEXTURE2D_ARRAY)
+    #undef TEXTURE2D_ARRAY
+#endif
 #if defined(TEXTURE3D)
     #undef TEXTURE3D
 #endif
@@ -238,6 +241,10 @@
 #else
     #define LIL_VFACE(facing) , float facing : VFACE
     #define LIL_COPY_VFACE(o) o = facing
+#endif
+
+#if defined(SHADER_API_MOBILE)
+    #define LIL_NOT_SUPPORT_VERTEXID
 #endif
 
 #if defined(SHADER_API_D3D9) || (UNITY_VERSION < 201800 && defined(SHADER_API_GLES)) || (defined(SHADER_TARGET_SURFACE_ANALYSIS) && defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER)) || defined(SHADER_TARGET_SURFACE_ANALYSIS)
@@ -512,6 +519,8 @@ float2 lilCStoGrabUV(float4 positionCS)
     #if defined(LIL_USE_SHADOW) && !defined(LIL_PASS_FORWARDADD)
         #define LIL_SHADOW_COORDS(idx)                  UNITY_SHADOW_COORDS(idx)
         #define LIL_TRANSFER_SHADOW(vi,uv,o) \
+            DummyStructure v; \
+            v.vertex = input.positionOS; \
             BRPShadowCoords brpShadowCoords; \
             brpShadowCoords.pos = vi.positionCS; \
             UNITY_TRANSFER_LIGHTING(brpShadowCoords, uv) \
@@ -527,11 +536,23 @@ float2 lilCStoGrabUV(float4 positionCS)
         #define LIL_TRANSFER_SHADOW(vi,uv,o)
         #define LIL_LIGHT_ATTENUATION(atten,i)
     #else
+        #if defined(POINT)
+            #define LIL_CALC_LIGHT_COORDS(o,i) o._LightCoord = mul(unity_WorldToLight, float4(i.positionWS, 1.0)).xyz;
+        #elif defined(SPOT)
+            #define LIL_CALC_LIGHT_COORDS(o,i) o._LightCoord = mul(unity_WorldToLight, float4(i.positionWS, 1.0));
+        #elif defined(POINT_COOKIE)
+            #define LIL_CALC_LIGHT_COORDS(o,i) o._LightCoord = mul(unity_WorldToLight, float4(i.positionWS, 1.0)).xyz;
+        #elif defined(DIRECTIONAL_COOKIE)
+            #define LIL_CALC_LIGHT_COORDS(o,i) o._LightCoord = mul(unity_WorldToLight, float4(i.positionWS, 1.0)).xy;
+        #else
+            #define LIL_CALC_LIGHT_COORDS(o,i)
+        #endif
         #define LIL_SHADOW_COORDS(idx)
         #define LIL_TRANSFER_SHADOW(vi,uv,o)
         #define LIL_LIGHT_ATTENUATION(atten,i) \
             BRPShadowCoords brpShadowCoords; \
             brpShadowCoords.pos = i.positionCS; \
+            LIL_CALC_LIGHT_COORDS(brpShadowCoords,i) \
             UNITY_LIGHT_ATTENUATION(attenuationOrig, brpShadowCoords, i.positionWS); \
             atten = attenuationOrig
     #endif
@@ -539,7 +560,23 @@ float2 lilCStoGrabUV(float4 positionCS)
     {
         float4 pos;
         LIL_SHADOW_COORDS(0)
+        #if defined(DECLARE_LIGHT_COORDS)
+            DECLARE_LIGHT_COORDS(1)
+        #elif defined(POINT)
+            unityShadowCoord3 _LightCoord : TEXCOORD1;
+        #elif defined(SPOT)
+            unityShadowCoord4 _LightCoord : TEXCOORD1;
+        #elif defined(POINT_COOKIE)
+            unityShadowCoord3 _LightCoord : TEXCOORD1;
+        #elif defined(DIRECTIONAL_COOKIE)
+            unityShadowCoord2 _LightCoord : TEXCOORD1;
+        #endif
     };
+    struct DummyStructure
+    {
+        float4 vertex;
+    };
+
 
     // Shadow caster
     #define LIL_V2F_SHADOW_CASTER_OUTPUT            V2F_SHADOW_CASTER_NOPOS float4 positionCS : SV_POSITION;
@@ -555,7 +592,7 @@ float2 lilCStoGrabUV(float4 positionCS)
     #define LIL_SHADOW_CASTER_FRAGMENT(i)           SHADOW_CASTER_FRAGMENT(i)
 
     // Additional Light
-    float3 lilGetAdditionalLights(float3 positionWS)
+    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
     {
         float4 toLightX = unity_4LightPosX0 - positionWS.x;
         float4 toLightY = unity_4LightPosY0 - positionWS.y;
@@ -1170,7 +1207,7 @@ float2 lilCStoGrabUV(float4 positionCS)
     #define LIL_SHADOW_CASTER_FRAGMENT(i)
 
     // Additional Light
-    float3 lilGetAdditionalLights(float3 positionWS)
+    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
     {
         uint renderingLayers = lilGetRenderingLayer();
         uint featureFlags = LIGHT_FEATURE_MASK_FLAGS_OPAQUE;
@@ -1286,7 +1323,7 @@ float2 lilCStoGrabUV(float4 positionCS)
     #define LIL_SHADOW_CASTER_FRAGMENT(i)       return 0
 
     // Additional Light
-    float3 lilGetAdditionalLights(float3 positionWS)
+    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
     {
         float3 additionalLightColor = 0.0;
         uint renderingLayers = lilGetRenderingLayer();
@@ -1294,7 +1331,7 @@ float2 lilCStoGrabUV(float4 positionCS)
         #if defined(_ADDITIONAL_LIGHTS) || defined(_ADDITIONAL_LIGHTS_VERTEX)
             uint lightsCount = GetAdditionalLightsCount();
             #if defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
-                ClusteredLightLoop cll = ClusteredLightLoopInit(positionSS, positionWS);
+                ClusteredLightLoop cll = ClusteredLightLoopInit(GetNormalizedScreenSpaceUV(positionCS), positionWS);
                 while(ClusteredLightLoopNextWord(cll))
                 {
                     while(ClusteredLightLoopNextLight(cll))
@@ -1324,7 +1361,7 @@ float2 lilCStoGrabUV(float4 positionCS)
         #if defined(_ADDITIONAL_LIGHTS) && defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
             for(uint lightIndex = 0; lightIndex < min(_AdditionalLightsDirectionalCount, MAX_VISIBLE_LIGHTS); lightIndex++)
             {
-                Light light = GetAdditionalLight(lightIndex, inputData, shadowMask, aoFactor);
+                Light light = GetAdditionalLight(lightIndex, positionWS);
                 #if VERSION_GREATER_EQUAL(12, 0)
                     if((light.layerMask & renderingLayers) != 0)
                 #endif
@@ -1521,7 +1558,7 @@ struct lilLightData
         lilGetLightDirectionAndColor(o.lightDirection, o.lightColor, posInput); \
         o.lightColor *= _lilDirectionalLightStrength; \
         float3 lightDirectionCopy = o.lightDirection; \
-        o.lightDirection = normalize(o.lightDirection * Luminance(o.lightColor) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + _LightDirectionOverride.xyz); \
+        o.lightDirection = normalize(o.lightDirection * Luminance(o.lightColor) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + lilGetCustomLightDirection(_LightDirectionOverride)); \
         float3 shLightColor = lilShadeSH9(float4(o.lightDirection * 0.666666, 1.0)); \
         o.lightColor += shLightColor; \
         o.indLightColor = lilShadeSH9(float4(-o.lightDirection * 0.666666, 1.0)); \
@@ -1543,7 +1580,7 @@ struct lilLightData
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
         ld = lilGetLightDirection(input.positionWS); \
-        lc = saturate(LIL_MAINLIGHT_COLOR * atten); \
+        lc = min(LIL_MAINLIGHT_COLOR * atten, _LightMaxLimit); \
         lc = lerp(lc, lilGray(lc), _MonochromeLighting); \
         lc = lerp(lc, 0.0, _AsUnlit)
 #elif defined(LIL_HDRP) && defined(LIL_USE_LIGHTMAP)
@@ -1654,7 +1691,7 @@ struct lilLightData
 
 #if defined(LIL_USE_ADDITIONALLIGHT_VS) && (defined(VERTEXLIGHT_ON) || !defined(LIL_BRP))
     #define LIL_CALC_VERTEXLIGHT(i,o) \
-        o.vlf.rgb = lilGetAdditionalLights(i.positionWS) * _VertexLightStrength; \
+        o.vlf.rgb = lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(_ScreenParams.xy,1.0,1.0)) * _VertexLightStrength; \
         o.vlf.rgb = lerp(o.vlf.rgb, lilGray(o.vlf.rgb), _MonochromeLighting); \
         o.vlf.rgb = lerp(o.vlf.rgb, 0.0, _AsUnlit)
 #elif defined(LIL_USE_ADDITIONALLIGHT_VS)
@@ -1666,7 +1703,7 @@ struct lilLightData
 // Additional Light PS
 #if defined(LIL_USE_ADDITIONALLIGHT_PS)
     #define LIL_GET_ADDITIONALLIGHT(i,o) \
-        o = lilGetAdditionalLights(i.positionWS) * _VertexLightStrength; \
+        o = lilGetAdditionalLights(i.positionWS, i.positionCS) * _VertexLightStrength; \
         o = lerp(o, lilGray(o), _MonochromeLighting); \
         o = lerp(o, 0.0, _AsUnlit)
 #elif defined(LIL_USE_ADDITIONALLIGHT_VS)

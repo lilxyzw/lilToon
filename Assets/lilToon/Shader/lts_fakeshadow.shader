@@ -46,6 +46,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
         [HideInInspector] [MainColor]                   _BaseColor          ("Color", Color) = (1,1,1,1)
         [HideInInspector] [MainTexture]                 _BaseMap            ("Texture", 2D) = "white" {}
         [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
+        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
     HLSLINCLUDE
     ENDHLSL
@@ -101,74 +102,16 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             ENDHLSL
         }
     }
+    Fallback "Unlit/Texture"
 //
 // BRP End
 
 //----------------------------------------------------------------------------------------------------------------------
 // LWRP Start
 /*
-    //----------------------------------------------------------------------------------------------------------------------
-    // Lightweight Render Pipeline SM4.5
-    SubShader
-    {
-        Tags{"ShaderModel" = "4.5" "Queue" = "AlphaTest+55"}
-        HLSLINCLUDE
-            #pragma target 4.5
-        ENDHLSL
-
-        // Forward
-        Pass
-        {
-            Name "FORWARD"
-            Tags {"LightMode" = "LightweightForward"}
-
-            Stencil
-            {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
-            }
-            Cull [_Cull]
-            ZClip [_ZClip]
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-            ColorMask [_ColorMask]
-            Offset [_OffsetFactor], [_OffsetUnits]
-            BlendOp [_BlendOp], [_BlendOpAlpha]
-            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask [_AlphaToMask]
-
-            HLSLPROGRAM
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Build Option
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
-            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-
-            //----------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #include "Includes/lil_pass_forward_fakeshadow.hlsl"
-
-            ENDHLSL
-        }
-    }
-
-    //----------------------------------------------------------------------------------------------------------------------
-    // Lightweight Render Pipeline
     SubShader
     {
         Tags{"Queue" = "AlphaTest+55"}
-        HLSLINCLUDE
-            #pragma target 3.5
-        ENDHLSL
 
         // Forward
         Pass
@@ -202,7 +145,6 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
 
@@ -213,6 +155,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             ENDHLSL
         }
     }
+    Fallback "Lightweight Render Pipeline/Unlit"
 */
 // LWRP End
 
@@ -226,6 +169,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
         Tags{"ShaderModel" = "4.5" "Queue" = "AlphaTest+55"}
         HLSLINCLUDE
             #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
         ENDHLSL
 
         // Forward
@@ -260,7 +204,6 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma exclude_renderers gles gles3 glcore
             #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #pragma multi_compile _ DOTS_INSTANCING_ON
@@ -280,6 +223,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
         Tags{"Queue" = "AlphaTest+55"}
         HLSLINCLUDE
             #pragma target 3.5
+            #pragma only_renderers gles gles3 glcore d3d11
         ENDHLSL
 
         // Forward
@@ -314,7 +258,6 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
-            #pragma only_renderers gles gles3 glcore d3d11
             #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
 
@@ -325,16 +268,16 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             ENDHLSL
         }
     }
+    Fallback "Universal Render Pipeline/Unlit"
 */
 // URP End
 
 //----------------------------------------------------------------------------------------------------------------------
 // HDRP Start
 /*
-    //----------------------------------------------------------------------------------------------------------------------
-    // High Definition Render Pipeline
     HLSLINCLUDE
         #pragma target 4.5
+        #pragma exclude_renderers gles gles3 glcore
     ENDHLSL
     SubShader
     {
@@ -380,8 +323,9 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             ENDHLSL
         }
     }
+    Fallback "HDRP/Unlit"
 */
 // HDRP End
-    Fallback "Unlit/Texture"
+
     CustomEditor "lilToon.lilToonInspector"
 }
