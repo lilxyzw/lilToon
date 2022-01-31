@@ -549,6 +549,19 @@ This is an experimental feature that smooths polygons when you get close to them
 |Mask|Deactivate the fur in the black area with the mask.|
 |AO|Degree of shading applied to fur.|
 |Layer|The amount of fur. The higher the value, the higher the density, but also the higher the load.|
+|Root Width|Thickness of the root of the fur.|
+|Touch Strength|Strength of deformation by collider using vertex light.|
+
+Point Light used for the touch function works by setting as follows.  
+Due to Unity's limits, you can only touch up to 4 lights.  
+Prefab asset that has already been set is included in the `Prefabs` folder.
+|Name|Description|
+|-|-|
+|Range|x.xx22|
+|Color|RGBA = (0.0, 0.0, 0.0, 1.0)|
+|Mode|Realtime|
+|Intensity|1|
+|Render Mode|Not Important|
 
 <br/>
 
