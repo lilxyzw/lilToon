@@ -31,7 +31,7 @@ namespace lilToon
         private const string menuPathFixLighting            = menuPathGameObject + "[GameObject] Fix lighting";
 
         private const int menuPriorityAssets = 1100;
-        private const int menuPriorityGameObject = 1100;
+        private const int menuPriorityGameObject = 21; // This must be 21 or less
         private const int menuPriorityRefreshShaders            = menuPriorityAssets + 0;
         private const int menuPriorityAutoShaderSetting         = menuPriorityAssets + 1;
         private const int menuPriorityRemoveUnusedProperties    = menuPriorityAssets + 20;
@@ -39,7 +39,7 @@ namespace lilToon
         private const int menuPriorityPixelArtReduction         = menuPriorityAssets + 22;
         private const int menuPriorityConvertGifToAtlas         = menuPriorityAssets + 23;
         private const int menuPrioritySetupFromFBX              = menuPriorityAssets + 24;
-        private const int menuPriorityFixLighting               = menuPriorityGameObject + 0;
+        private const int menuPriorityFixLighting               = menuPriorityGameObject;
 
         private const string anchorName = "AutoAnchorObject";
 

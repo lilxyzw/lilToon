@@ -430,7 +430,7 @@
 // Premultiply
 #if LIL_RENDER != 2
     #define LIL_PREMULTIPLY
-#elif defined(LIL_PASS_FORWARDADD)
+#elif defined(LIL_PASS_FORWARDADD) && !defined(LIL_REFRACTION)
     #define LIL_PREMULTIPLY fd.col.rgb *= saturate(fd.col.a * _AlphaBoostFA);
 #else
     #define LIL_PREMULTIPLY fd.col.rgb *= fd.col.a;

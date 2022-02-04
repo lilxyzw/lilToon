@@ -4,6 +4,7 @@ sEditorMode	Editor Mode	編集モード	편집 모드	编辑器模式	編輯器�
 sEditorModeSimple	Simple	簡易設定	간이 설정	简单设置	簡單設置
 sEditorModeAdvanced	Advanced	詳細設定	상세 설정	详细设置	詳細設置
 sEditorModePreset	Preset	プリセット	프리셋	预设	預設
+sEditorModeShaderSetting	Shader Setting	シェーダー設定	쉐이더 설정	着色器设置	著色器設置
 sHelpSimple	In this mode, you can easily edit the appearance.	簡単に見た目を編集するモードです。	간단하게 외형을 편집하는 모드입니다.	这种模式进行简单的设置。	這種模式進行簡單的設置。
 sHelpAdvanced	In this mode, you can make detailed settings for the material.	詳細設定を行うモードです。	상세 설정을 실시하는 모드입니다.	此模式用于进行详细设置。	此模式用於進行詳細設置。
 sHelpPreset	In this mode, you can easily set up materials from presets.	プリセットから一括で設定するモードです。	프리셋에서 일괄로 설정하는 모드입니다.	在这个模式下，你可以很容易地从预设中设置材料。	在這個模式下，你可以很容易地從預設中設置材料。
@@ -494,7 +495,7 @@ sSettingTexFurLength	Fur Length Mask	ファー長さマスク	퍼 길이 마스�
 sSettingFurCollision	Fur Collision	ファー当たり判定	퍼 충돌	毛皮碰撞	毛皮碰撞
 sSettingTessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	Tessellation (极高的负荷)	Tessellation (極高的負荷)
 sSettingDefaultValue	Default Value (used for "Fix Lighting" and lighting presets)	初期値 (Fix Lightingやライティングプリセットに使用)	초기값 (Fix Lighting이나 라이팅 프리셋에 사용)	初始值 (用于Fix Lighting或照明预设)	初始值 (用於Fix Lighting或照明預設)
-sSettingBuildSizeOptimization	Build size optimization	ビルドサイズの最適化	빌드 사이즈 최적화	优化构建大小	優化構建大小
+sSettingBuildSizeOptimization	Build size optimization (for all materials)	ビルドサイズの最適化 (全マテリアル共通)	빌드 사이즈 최적화 (전체 재료 공통)	优化构建大小（用于所有材质）	優化構建大小（用於所有材質）
 sSettingApplyShadowFA	Enable shadow in ForwardAdd	ForwardAddパスで影を有効化	ForwardAdd로 그림자 활성화	通过ForwardAdd启用阴影	通過ForwardAdd啟用陰影
 sSettingUseForwardAdd	Use ForwardAdd	ForwardAddパスを使用	ForwardAdd 사용	使用ForwardAdd	使用ForwardAdd
 sSettingUseVertexLight	Use vertex light	頂点ライトを使用	꼭지점 라이트 사용	使用顶点灯	使用頂點燈

@@ -208,6 +208,9 @@
 #if defined(TEXTURE3D)
     #undef TEXTURE3D
 #endif
+#if defined(TEXTURECUBE)
+    #undef TEXTURECUBE
+#endif
 #if defined(SAMPLER)
     #undef SAMPLER
 #endif
@@ -258,14 +261,21 @@
     #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)          tex2DArray(tex,float3(uv,index))
     #define LIL_SAMPLE_2D_ARRAY_LOD(tex,samp,uv,index,lod)  tex2DArraylod(tex,float4(uv,index,lod))
     #define LIL_SAMPLE_3D(tex,samp,uv)                      tex3D(tex,uv)
+    #define LIL_SAMPLE_CUBE_LOD(tex,samp,uv,lod)            texCUBElod(tex,float4(uv,0,lod))
     #define TEXTURE2D(tex)                                  sampler2D tex
     #define TEXTURE2D_FLOAT(tex)                            sampler2D tex
     #define TEXTURE2D_ARRAY(tex)                            sampler2DArray tex
     #define TEXTURE3D(tex)                                  sampler3D tex
+    #define TEXTURECUBE(tex)                                samplerCUBE tex
     #define SAMPLER(samp)
     #define LIL_SAMP_IN_FUNC(samp)
     #define LIL_SAMP_IN(samp)
     #define LIL_LWTEX
+
+    bool IsEmpty(TEXTURECUBE(tex))
+    {
+        return false;
+    }
 #else
     #define LIL_SAMPLE_1D(tex,samp,uv)                      tex.Sample(samp,uv)
     #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)              tex.SampleLevel(samp,uv,lod)
@@ -277,13 +287,22 @@
     #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)          tex.Sample(samp,float3(uv,index))
     #define LIL_SAMPLE_2D_ARRAY_LOD(tex,samp,uv,index,lod)  tex.SampleLevel(samp,float3(uv,index),lod)
     #define LIL_SAMPLE_3D(tex,samp,coord)                   tex.Sample(samp,coord)
+    #define LIL_SAMPLE_CUBE_LOD(tex,samp,uv,lod)            tex.SampleLevel(samp,uv,lod)
     #define TEXTURE2D(tex)                                  Texture2D tex
     #define TEXTURE2D_FLOAT(tex)                            Texture2D<float4> tex
     #define TEXTURE2D_ARRAY(tex)                            Texture2DArray tex
     #define TEXTURE3D(tex)                                  Texture3D tex
+    #define TEXTURECUBE(tex)                                TextureCube tex
     #define SAMPLER(samp)                                   SamplerState samp
     #define LIL_SAMP_IN_FUNC(samp)                          , SamplerState samp
     #define LIL_SAMP_IN(samp)                               , samp
+
+    bool IsEmpty(TEXTURECUBE(tex))
+    {
+        uint width, height, levels;
+        tex.GetDimensions(0, width, height, levels);
+        return width < 15;
+    }
 #endif
 
 #if defined(LIL_FEATURE_PARALLAX) && defined(LIL_FEATURE_POM)
@@ -321,7 +340,7 @@
 
     float3 lilTransformOStoWS(float3 positionOS)
     {
-        return mul(LIL_MATRIX_M, float4(positionOS,1.0)).xyz;
+        return mul(LIL_MATRIX_M, float4(positionOS, 1.0)).xyz;
     }
 
     float3 lilTransformWStoOS(float3 positionWS)
@@ -375,7 +394,7 @@
 
     float3 lilTransformOStoWS(float3 positionOS)
     {
-        return mul(LIL_MATRIX_M, float4(positionOS,1.0)).xyz;
+        return mul(LIL_MATRIX_M, float4(positionOS, 1.0)).xyz;
     }
 
     float3 lilTransformWStoOS(float3 positionWS)
@@ -652,7 +671,9 @@ float2 lilCStoGrabUV(float4 positionCS)
         return UnityGI_IndirectSpecular(data, 1.0, glossIn);
     }
     #define LIL_GET_ENVIRONMENT_REFLECTION(viewDirection,normalDirection,perceptualRoughness,positionWS) \
-        lilGetEnvReflection(viewDirection,normalDirection,perceptualRoughness,positionWS)
+        ((IsEmpty(unity_SpecCube0) || unity_SpecCube0_HDR.x == 0 || _ReflectionCubeOverride) ? \
+        lilCustomReflection(_ReflectionCubeTex, _ReflectionCubeTex_HDR, viewDirection, normalDirection, perceptualRoughness) * _ReflectionCubeColor.rgb * lerp(1.0, fd.lightColor, _ReflectionCubeEnableLighting) : \
+        lilGetEnvReflection(viewDirection,normalDirection,perceptualRoughness,positionWS))
 
     // Fog
     #if defined(LIL_PASS_FORWARDADD)
@@ -1226,7 +1247,9 @@ float2 lilCStoGrabUV(float4 positionCS)
 
     // Environment reflection
     #define LIL_GET_ENVIRONMENT_REFLECTION(viewDirection,normalDirection,perceptualRoughness,positionWS) \
-        lilGetReflectionSum(viewDirection,normalDirection,perceptualRoughness,posInput,fd.renderingLayers,fd.featureFlags)
+        (_ReflectionCubeOverride ? \
+        lilCustomReflection(_ReflectionCubeTex, _ReflectionCubeTex_HDR, viewDirection, normalDirection, perceptualRoughness) * _ReflectionCubeColor.rgb * lerp(1.0, fd.lightColor, _ReflectionCubeEnableLighting) : \
+        lilGetReflectionSum(viewDirection,normalDirection,perceptualRoughness,posInput,fd.renderingLayers,fd.featureFlags))
 
     // Fog
     #define LIL_APPLY_FOG_BASE(col,fogCoord)                 col = EvaluateAtmosphericScattering(posInput, fd.V, col)
@@ -1378,7 +1401,9 @@ float2 lilCStoGrabUV(float4 positionCS)
 
     // Environment reflection
     #define LIL_GET_ENVIRONMENT_REFLECTION(viewDirection,normalDirection,perceptualRoughness,positionWS) \
-        GlossyEnvironmentReflection(reflect(-viewDirection,normalDirection), perceptualRoughness, 1.0)
+        ((IsEmpty(unity_SpecCube0) || unity_SpecCube0_HDR.x == 0 || _ReflectionCubeOverride) ? \
+        lilCustomReflection(_ReflectionCubeTex, _ReflectionCubeTex_HDR, viewDirection, normalDirection, perceptualRoughness) * _ReflectionCubeColor.rgb * lerp(1.0, fd.lightColor, _ReflectionCubeEnableLighting) : \
+        GlossyEnvironmentReflection(reflect(-viewDirection,normalDirection), perceptualRoughness, 1.0))
 
     // Fog
     #define LIL_APPLY_FOG_BASE(col,fogCoord)                 col.rgb = MixFog(col.rgb,fogCoord)

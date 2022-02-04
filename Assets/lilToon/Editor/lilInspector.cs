@@ -50,7 +50,8 @@ namespace lilToon
         {
             Simple,
             Advanced,
-            Preset
+            Preset,
+            Settings
         }
 
         public enum RenderingMode
@@ -150,8 +151,8 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
         #region
-        public const string currentVersionName = "1.2.8";
-        public const int currentVersionValue = 21;
+        public const string currentVersionName = "1.2.9";
+        public const int currentVersionValue = 22;
 
         private const string boothURL = "https://lilxyzw.booth.pm/";
         private const string githubURL = "https://github.com/lilxyzw/lilToon";
@@ -424,6 +425,8 @@ namespace lilToon
             public bool isShowHelpPages                 = false;
             public bool isShowLightingSettings          = false;
             public bool isShowShaderSetting             = false;
+            public bool isShowOptimizationSetting       = false;
+            public bool isShowDefaultValueSetting       = false;
             public bool isShowVRChat                    = false;
             public bool isShaderSettingChanged          = false;
             public bool[] isShowCategorys = new bool[(int)lilPresetCategory.Other+1]{false,false,false,false,false,false,false};
@@ -717,6 +720,10 @@ namespace lilToon
             private MaterialProperty applyReflection;
             private MaterialProperty reflectionNormalStrength;
             private MaterialProperty reflectionApplyTransparency;
+            private MaterialProperty reflectionCubeTex;
+            private MaterialProperty reflectionCubeColor;
+            private MaterialProperty reflectionCubeOverride;
+            private MaterialProperty reflectionCubeEnableLighting;
         private MaterialProperty useMatCap;
             private MaterialProperty matcapTex;
             private MaterialProperty matcapColor;
@@ -2374,6 +2381,9 @@ namespace lilToon
                                     {
                                         EditorGUI.indentLevel++;
                                         m_MaterialEditor.ShaderProperty(reflectionNormalStrength, GetLoc("sNormalStrength"));
+                                        m_MaterialEditor.TexturePropertySingleLine(new GUIContent("Cubemap Fallback"), reflectionCubeTex, reflectionCubeColor);
+                                        m_MaterialEditor.ShaderProperty(reflectionCubeOverride, "Override");
+                                        m_MaterialEditor.ShaderProperty(reflectionCubeEnableLighting, GetLoc("sEnableLighting") + " (Fallback)");
                                         EditorGUI.indentLevel--;
                                     }
                                     if(isTransparent) m_MaterialEditor.ShaderProperty(reflectionApplyTransparency, GetLoc("sApplyTransparency"));
@@ -2609,6 +2619,9 @@ namespace lilToon
                             if(shaderSetting.LIL_FEATURE_TEX_REFLECTION_SMOOTHNESS) m_MaterialEditor.TexturePropertySingleLine(smoothnessContent, smoothnessTex, smoothness);
                             else                                                    m_MaterialEditor.ShaderProperty(smoothness, GetLoc("sSmoothness"));
                             m_MaterialEditor.ShaderProperty(reflectance, GetLoc("sReflectance"));
+                            m_MaterialEditor.TexturePropertySingleLine(new GUIContent("Cubemap Fallback"), reflectionCubeTex, reflectionCubeColor);
+                            m_MaterialEditor.ShaderProperty(reflectionCubeOverride, "Override");
+                            m_MaterialEditor.ShaderProperty(reflectionCubeEnableLighting, GetLoc("sEnableLighting") + " (Fallback)");
                             EditorGUILayout.EndVertical();
                             EditorGUILayout.EndVertical();
                         }
@@ -3206,29 +3219,6 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
-
-                    //------------------------------------------------------------------------------------------------------------------------------
-                    // Shader Setting
-                    if(!isMulti)
-                    {
-                        edSet.isShowShaderSetting = Foldout(GetLoc("sShaderSetting"), edSet.isShowShaderSetting);
-                        DrawHelpButton(GetLoc("sAnchorShaderSetting"));
-                        if(edSet.isShowShaderSetting)
-                        {
-                            EditorGUILayout.BeginVertical(boxOuter);
-                            EditorGUILayout.LabelField(GetLoc("sShaderSetting"), customToggleFont);
-                            EditorGUILayout.BeginVertical(boxInnerHalf);
-                            EditorGUILayout.HelpBox(GetLoc("sHelpShaderSetting"),MessageType.Info);
-                            ShaderSettingGUI();
-                            EditorGUILayout.EndVertical();
-                            EditorGUILayout.EndVertical();
-                        }
-                        else if(edSet.isShaderSettingChanged)
-                        {
-                            ApplyShaderSetting(shaderSetting);
-                            edSet.isShaderSettingChanged = false;
-                        }
-                    }
                 }
             }
 
@@ -3238,6 +3228,60 @@ namespace lilToon
             {
                 if(isLite)  EditorGUILayout.LabelField(GetLoc("sPresetsNotAvailable"), wrapLabel);
                 else        DrawPreset(material);
+            }
+
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Shader Setting
+            if(edSet.editorMode == EditorMode.Settings)
+            {
+                GUIStyle applyButton = new GUIStyle(GUI.skin.button);
+                applyButton.normal.textColor = Color.red;
+                applyButton.fontStyle = FontStyle.Bold;
+
+                EditorGUILayout.HelpBox(GetLoc("sHelpShaderSetting"),MessageType.Info);
+
+                EditorGUILayout.BeginVertical(customBox);
+                EditorGUI.BeginChangeCheck();
+                ToggleGUI(GetLoc("sSettingCancelAutoScan"), ref shaderSetting.shouldNotScan);
+                ToggleGUI(GetLoc("sSettingLock"), ref shaderSetting.isLocked);
+                if(EditorGUI.EndChangeCheck() || edSet.isShaderSettingChanged && GUILayout.Button(GetLoc("sSettingApply"), applyButton))
+                {
+                    ApplyShaderSetting(shaderSetting);
+                    edSet.isShaderSettingChanged = false;
+                }
+                EditorGUILayout.EndVertical();
+
+                GUI.enabled = !shaderSetting.isLocked;
+                edSet.isShowShaderSetting = Foldout(GetLoc("sShaderSetting"), edSet.isShowShaderSetting);
+                DrawHelpButton(GetLoc("sAnchorShaderSetting"));
+                if(edSet.isShowShaderSetting)
+                {
+                    EditorGUILayout.BeginVertical(customBox);
+                    ShaderSettingGUI();
+                    EditorGUILayout.EndVertical();
+                }
+
+                edSet.isShowOptimizationSetting = Foldout(GetLoc("sSettingBuildSizeOptimization"), edSet.isShowOptimizationSetting);
+                if(edSet.isShowOptimizationSetting)
+                {
+                    EditorGUILayout.BeginVertical(customBox);
+                    OptimizationSettingGUI();
+                    EditorGUILayout.EndVertical();
+                }
+
+                edSet.isShowDefaultValueSetting = Foldout(GetLoc("sSettingDefaultValue"), edSet.isShowDefaultValueSetting);
+                if(edSet.isShowDefaultValueSetting)
+                {
+                    EditorGUILayout.BeginVertical(customBox);
+                    DefaultValueSettingGUI();
+                    EditorGUILayout.EndVertical();
+                }
+                GUI.enabled = true;
+            }
+            else if(edSet.isShaderSettingChanged)
+            {
+                ApplyShaderSetting(shaderSetting);
+                edSet.isShaderSettingChanged = false;
             }
 
             if(EditorGUI.EndChangeCheck())
@@ -3511,6 +3555,10 @@ namespace lilToon
             applyReflection = FindProperty("_ApplyReflection", props, false);
             reflectionNormalStrength = FindProperty("_ReflectionNormalStrength", props, false);
             reflectionApplyTransparency = FindProperty("_ReflectionApplyTransparency", props, false);
+            reflectionCubeTex = FindProperty("_ReflectionCubeTex", props, false);
+            reflectionCubeColor = FindProperty("_ReflectionCubeColor", props, false);
+            reflectionCubeOverride = FindProperty("_ReflectionCubeOverride", props, false);
+            reflectionCubeEnableLighting = FindProperty("_ReflectionCubeEnableLighting", props, false);
             
             // MatCap
             useMatCap = FindProperty("_UseMatCap", props, false);
@@ -4376,23 +4424,6 @@ namespace lilToon
 
         private static void ShaderSettingGUI()
         {
-            GUIStyle applyButton = new GUIStyle(GUI.skin.button);
-            applyButton.normal.textColor = Color.red;
-            applyButton.fontStyle = FontStyle.Bold;
-            lilRenderPipeline lilRP = CheckRP();
-
-            ToggleGUI(GetLoc("sSettingCancelAutoScan"), ref shaderSetting.shouldNotScan);
-            ToggleGUI(GetLoc("sSettingLock"), ref shaderSetting.isLocked);
-            GUI.enabled = !shaderSetting.isLocked;
-
-            // Apply Button
-            if(edSet.isShaderSettingChanged && GUILayout.Button(GetLoc("sSettingApply"), applyButton))
-            {
-                ApplyShaderSetting(shaderSetting);
-                edSet.isShaderSettingChanged = false;
-            }
-            DrawLine();
-
             EditorGUI.BeginChangeCheck();
 
             ToggleGUI(GetLoc("sSettingAnimateMainUV"), ref shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV);
@@ -4576,34 +4607,44 @@ namespace lilToon
 
             ToggleGUI(GetLoc("sSettingTessellation"), ref shaderSetting.LIL_FEATURE_TEX_TESSELLATION);
 
-            DrawLine();
+            if(EditorGUI.EndChangeCheck())
+            {
+                edSet.isShaderSettingChanged = true;
+            }
+        }
 
-            EditorGUILayout.LabelField(GetLoc("sSettingBuildSizeOptimization"), boldLabel);
-            EditorGUI.indentLevel++;
-                if(lilRP == lilRenderPipeline.BRP)
-                {
-                    ToggleGUI(GetLoc("sSettingApplyShadowFA"), ref shaderSetting.LIL_OPTIMIZE_APPLY_SHADOW_FA);
-                    ToggleGUI(GetLoc("sSettingUseForwardAdd"), ref shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
-                    ToggleGUI(GetLoc("sSettingUseVertexLight"), ref shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
-                }
-                ToggleGUI(GetLoc("sSettingUseLightmap"), ref shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
-            EditorGUI.indentLevel--;
+        private static void OptimizationSettingGUI()
+        {
+            EditorGUI.BeginChangeCheck();
 
-            DrawLine();
+            lilRenderPipeline lilRP = CheckRP();
+            if(lilRP == lilRenderPipeline.BRP)
+            {
+                ToggleGUI(GetLoc("sSettingApplyShadowFA"), ref shaderSetting.LIL_OPTIMIZE_APPLY_SHADOW_FA);
+                ToggleGUI(GetLoc("sSettingUseForwardAdd"), ref shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
+                ToggleGUI(GetLoc("sSettingUseVertexLight"), ref shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
+            }
+            ToggleGUI(GetLoc("sSettingUseLightmap"), ref shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
 
-            EditorGUILayout.LabelField(GetLoc("sSettingDefaultValue"), boldLabel);
-            EditorGUI.indentLevel++;
-                shaderSetting.defaultAsUnlit                        = EditorGUILayout.Slider(GetLoc("sAsUnlit"), shaderSetting.defaultAsUnlit, 0.0f, 1.0f);
-                shaderSetting.defaultVertexLightStrength            = EditorGUILayout.Slider(GetLoc("sVertexLightStrength"), shaderSetting.defaultVertexLightStrength, 0.0f, 1.0f);
-                shaderSetting.defaultLightMinLimit                  = EditorGUILayout.Slider(GetLoc("sLightMinLimit"), shaderSetting.defaultLightMinLimit, 0.0f, 1.0f);
-                shaderSetting.defaultLightMaxLimit                  = EditorGUILayout.Slider(GetLoc("sLightMaxLimit"), shaderSetting.defaultLightMaxLimit, 0.0f, 10.0f);
-                shaderSetting.defaultMonochromeLighting             = EditorGUILayout.Slider(GetLoc("sMonochromeLighting"), shaderSetting.defaultMonochromeLighting, 0.0f, 1.0f);
-                shaderSetting.defaultLightDirectionOverride         = EditorGUILayout.Vector4Field(GetLoc("sLightDirectionOverride"), shaderSetting.defaultLightDirectionOverride);
-                shaderSetting.defaultBeforeExposureLimit            = EditorGUILayout.FloatField(GetLoc("sBeforeExposureLimit"), shaderSetting.defaultBeforeExposureLimit);
-                shaderSetting.defaultlilDirectionalLightStrength    = EditorGUILayout.Slider(GetLoc("sDirectionalLightStrength"), shaderSetting.defaultlilDirectionalLightStrength, 0.0f, 1.0f);
-            EditorGUI.indentLevel--;
+            if(EditorGUI.EndChangeCheck())
+            {
+                edSet.isShaderSettingChanged = true;
+            }
+        }
 
-            GUI.enabled = true;
+        private static void DefaultValueSettingGUI()
+        {
+            EditorGUI.BeginChangeCheck();
+
+            shaderSetting.defaultAsUnlit                        = EditorGUILayout.Slider(GetLoc("sAsUnlit"), shaderSetting.defaultAsUnlit, 0.0f, 1.0f);
+            shaderSetting.defaultVertexLightStrength            = EditorGUILayout.Slider(GetLoc("sVertexLightStrength"), shaderSetting.defaultVertexLightStrength, 0.0f, 1.0f);
+            shaderSetting.defaultLightMinLimit                  = EditorGUILayout.Slider(GetLoc("sLightMinLimit"), shaderSetting.defaultLightMinLimit, 0.0f, 1.0f);
+            shaderSetting.defaultLightMaxLimit                  = EditorGUILayout.Slider(GetLoc("sLightMaxLimit"), shaderSetting.defaultLightMaxLimit, 0.0f, 10.0f);
+            shaderSetting.defaultMonochromeLighting             = EditorGUILayout.Slider(GetLoc("sMonochromeLighting"), shaderSetting.defaultMonochromeLighting, 0.0f, 1.0f);
+            shaderSetting.defaultLightDirectionOverride         = EditorGUILayout.Vector4Field(GetLoc("sLightDirectionOverride"), shaderSetting.defaultLightDirectionOverride);
+            shaderSetting.defaultBeforeExposureLimit            = EditorGUILayout.FloatField(GetLoc("sBeforeExposureLimit"), shaderSetting.defaultBeforeExposureLimit);
+            shaderSetting.defaultlilDirectionalLightStrength    = EditorGUILayout.Slider(GetLoc("sDirectionalLightStrength"), shaderSetting.defaultlilDirectionalLightStrength, 0.0f, 1.0f);
+
             if(EditorGUI.EndChangeCheck())
             {
                 edSet.isShaderSettingChanged = true;
@@ -5088,7 +5129,7 @@ namespace lilToon
 
         private static void SelectEditorMode()
         {
-            string[] sEditorModeList = {GetLoc("sEditorModeSimple"),GetLoc("sEditorModeAdvanced"),GetLoc("sEditorModePreset")};
+            string[] sEditorModeList = {GetLoc("sEditorModeSimple"),GetLoc("sEditorModeAdvanced"),GetLoc("sEditorModePreset"),GetLoc("sEditorModeShaderSetting")};
             edSet.editorMode = (EditorMode)GUILayout.Toolbar((int)edSet.editorMode, sEditorModeList);
         }
 
@@ -5640,6 +5681,9 @@ namespace lilToon
                         CopyProperty(applyReflection);
                         CopyProperty(reflectionNormalStrength);
                         CopyProperty(reflectionApplyTransparency);
+                        CopyProperty(reflectionCubeColor);
+                        CopyProperty(reflectionCubeOverride);
+                        CopyProperty(reflectionCubeEnableLighting);
                         CopyProperty(useMatCap);
                         CopyProperty(matcapColor);
                         CopyProperty(matcapBlendUV1);
@@ -5723,6 +5767,7 @@ namespace lilToon
                         CopyProperty(metallicGlossMap);
                         CopyProperty(smoothnessTex);
                         CopyProperty(reflectionColorTex);
+                        CopyProperty(reflectionCubeTex);
                         CopyProperty(matcapTex);
                         CopyProperty(matcapBlendMask);
                         CopyProperty(matcapBumpMap);
@@ -5748,9 +5793,13 @@ namespace lilToon
                         CopyProperty(applyReflection);
                         CopyProperty(reflectionNormalStrength);
                         CopyProperty(reflectionApplyTransparency);
+                        CopyProperty(reflectionCubeColor);
+                        CopyProperty(reflectionCubeOverride);
+                        CopyProperty(reflectionCubeEnableLighting);
                         CopyProperty(metallicGlossMap);
                         CopyProperty(smoothnessTex);
                         CopyProperty(reflectionColorTex);
+                        CopyProperty(reflectionCubeTex);
                     break;
                 case lilPropertyBlock.MatCaps:
                         CopyProperty(useMatCap);
@@ -6442,6 +6491,9 @@ namespace lilToon
                         PasteProperty(ref applyReflection);
                         PasteProperty(ref reflectionNormalStrength);
                         PasteProperty(ref reflectionApplyTransparency);
+                        PasteProperty(ref reflectionCubeColor);
+                        PasteProperty(ref reflectionCubeOverride);
+                        PasteProperty(ref reflectionCubeEnableLighting);
                         PasteProperty(ref useMatCap);
                         PasteProperty(ref matcapColor);
                         PasteProperty(ref matcapBlendUV1);
@@ -6527,6 +6579,7 @@ namespace lilToon
                             PasteProperty(ref metallicGlossMap);
                             PasteProperty(ref smoothnessTex);
                             PasteProperty(ref reflectionColorTex);
+                            PasteProperty(ref reflectionCubeTex);
                             PasteProperty(ref matcapTex);
                             PasteProperty(ref matcapBlendMask);
                             PasteProperty(ref matcapBumpMap);
@@ -6553,11 +6606,15 @@ namespace lilToon
                         PasteProperty(ref applyReflection);
                         PasteProperty(ref reflectionNormalStrength);
                         PasteProperty(ref reflectionApplyTransparency);
+                        PasteProperty(ref reflectionCubeColor);
+                        PasteProperty(ref reflectionCubeOverride);
+                        PasteProperty(ref reflectionCubeEnableLighting);
                         if(shouldCopyTex)
                         {
                             PasteProperty(ref metallicGlossMap);
                             PasteProperty(ref smoothnessTex);
                             PasteProperty(ref reflectionColorTex);
+                            PasteProperty(ref reflectionCubeTex);
                         }
                     break;
                 case lilPropertyBlock.MatCaps:
@@ -7244,6 +7301,9 @@ namespace lilToon
                         ResetProperty(ref applyReflection);
                         ResetProperty(ref reflectionNormalStrength);
                         ResetProperty(ref reflectionApplyTransparency);
+                        ResetProperty(ref reflectionCubeColor);
+                        ResetProperty(ref reflectionCubeOverride);
+                        ResetProperty(ref reflectionCubeEnableLighting);
                         ResetProperty(ref useMatCap);
                         ResetProperty(ref matcapColor);
                         ResetProperty(ref matcapBlendUV1);
@@ -7327,6 +7387,7 @@ namespace lilToon
                         ResetProperty(ref metallicGlossMap);
                         ResetProperty(ref smoothnessTex);
                         ResetProperty(ref reflectionColorTex);
+                        ResetProperty(ref reflectionCubeTex);
                         ResetProperty(ref matcapTex);
                         ResetProperty(ref matcapBlendMask);
                         ResetProperty(ref matcapBumpMap);
@@ -7352,6 +7413,10 @@ namespace lilToon
                         ResetProperty(ref applyReflection);
                         ResetProperty(ref reflectionNormalStrength);
                         ResetProperty(ref reflectionApplyTransparency);
+                        ResetProperty(ref reflectionCubeTex);
+                        ResetProperty(ref reflectionCubeColor);
+                        ResetProperty(ref reflectionCubeOverride);
+                        ResetProperty(ref reflectionCubeEnableLighting);
                         ResetProperty(ref metallicGlossMap);
                         ResetProperty(ref smoothnessTex);
                         ResetProperty(ref reflectionColorTex);
@@ -9925,7 +9990,35 @@ namespace lilToon
                 m_MaterialEditor.ShaderProperty(zRotCancel, GetLoc("sMatCapZRotCancel"));
                 m_MaterialEditor.ShaderProperty(perspective, GetLoc("sFixPerspective"));
                 m_MaterialEditor.ShaderProperty(vrParallaxStrength, GetLoc("sVRParallaxStrength"));
+
+                GUILayout.BeginHorizontal();
+                Rect position2 = EditorGUILayout.GetControlRect();
+                Rect labelRect = new Rect(position2.x, position2.y, EditorGUIUtility.labelWidth, position2.height);
+                Rect buttonRect1 = new Rect(labelRect.x + labelRect.width, position2.y, (position2.width - EditorGUIUtility.labelWidth)*0.5f, position2.height);
+                Rect buttonRect2 = new Rect(buttonRect1.x + buttonRect1.width, position2.y, buttonRect1.width, position2.height);
+                EditorGUI.PrefixLabel(labelRect, new GUIContent("UV Preset"));
+                if(GUI.Button(buttonRect1, new GUIContent("MatCap"))) ApplyMatCapUVPreset(false, blendUV1, zRotCancel, perspective, vrParallaxStrength);
+                if(GUI.Button(buttonRect2, new GUIContent("AngelRing"))) ApplyMatCapUVPreset(true, blendUV1, zRotCancel, perspective, vrParallaxStrength);
+                GUILayout.EndHorizontal();
                 EditorGUI.indentLevel--;
+            }
+        }
+
+        private void ApplyMatCapUVPreset(bool isAngelRing, MaterialProperty blendUV1, MaterialProperty zRotCancel, MaterialProperty perspective, MaterialProperty vrParallaxStrength)
+        {
+            if(isAngelRing)
+            {
+                blendUV1.vectorValue = new Vector4(0.0f, 1.0f, 0.0f, 0.0f);
+                zRotCancel.floatValue = 1.0f;
+                perspective.floatValue = 0.0f;
+                vrParallaxStrength.floatValue = 0.0f;
+            }
+            else
+            {
+                blendUV1.vectorValue = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+                zRotCancel.floatValue = 1.0f;
+                perspective.floatValue = 1.0f;
+                vrParallaxStrength.floatValue = 1.0f;
             }
         }
         #endregion

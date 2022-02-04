@@ -406,6 +406,10 @@ SAMPLER(sampler_linear_clamp);
         float4  _MetallicGlossMap_ST;
         float4  _ReflectionColorTex_ST;
     #endif
+    #if defined(LIL_MULTI_INPUTS_REFLECTION) || defined(LIL_GEM)
+        float4  _ReflectionCubeColor;
+        float4  _ReflectionCubeTex_HDR;
+    #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP)
         float4  _MatCapColor;
         float4  _MatCapTex_ST;
@@ -555,6 +559,7 @@ SAMPLER(sampler_linear_clamp);
         float   _SpecularBorder;
         float   _SpecularBlur;
         float   _ReflectionNormalStrength;
+        float   _ReflectionCubeEnableLighting;
     #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION)
         float   _Metallic;
@@ -726,6 +731,9 @@ SAMPLER(sampler_linear_clamp);
         lilBool _ApplyReflection;
         lilBool _SpecularToon;
         lilBool _ReflectionApplyTransparency;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_REFLECTION) || defined(LIL_GEM)
+        lilBool _ReflectionCubeOverride;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP)
         lilBool _MatCapApplyTransparency;
@@ -906,6 +914,10 @@ SAMPLER(sampler_linear_clamp);
         float4  _SmoothnessTex_ST;
         float4  _MetallicGlossMap_ST;
         float4  _ReflectionColorTex_ST;
+    #endif
+    #if defined(LIL_FEATURE_REFLECTION) || defined(LIL_GEM)
+        float4  _ReflectionCubeColor;
+        float4  _ReflectionCubeTex_HDR;
     #endif
 
     // MatCap
@@ -1105,6 +1117,7 @@ SAMPLER(sampler_linear_clamp);
         float   _SpecularBorder;
         float   _SpecularBlur;
         float   _ReflectionNormalStrength;
+        float   _ReflectionCubeEnableLighting;
     #endif
     #if defined(LIL_FEATURE_REFLECTION)
         float   _Metallic;
@@ -1315,6 +1328,9 @@ SAMPLER(sampler_linear_clamp);
         lilBool _SpecularToon;
         lilBool _ReflectionApplyTransparency;
     #endif
+    #if defined(LIL_FEATURE_REFLECTION) || defined(LIL_GEM)
+        lilBool _ReflectionCubeOverride;
+    #endif
     #if defined(LIL_FEATURE_MATCAP)
         lilBool _UseMatCap;
         lilBool _MatCapApplyTransparency;
@@ -1430,6 +1446,7 @@ TEXTURE2D(_BacklightColorTex);
 TEXTURE2D(_SmoothnessTex);
 TEXTURE2D(_MetallicGlossMap);
 TEXTURE2D(_ReflectionColorTex);
+TEXTURECUBE(_ReflectionCubeTex);
 TEXTURE2D(_MatCapTex);
 TEXTURE2D(_MatCapBlendMask);
 TEXTURE2D(_MatCapBumpMap);

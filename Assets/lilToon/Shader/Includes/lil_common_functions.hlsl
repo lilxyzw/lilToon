@@ -362,6 +362,19 @@ float3 lilGradationMap(float3 col, TEXTURE2D(gradationMap), float strength)
     return lerp(col, outrgb, strength);
 }
 
+float3 lilDecodeHDR(float4 data, float4 hdr)
+{
+    float alpha = hdr.w * (data.a - 1.0) + 1.0;
+
+    #if defined(UNITY_COLORSPACE_GAMMA)
+        return (hdr.x * alpha) * data.rgb;
+    #elif defined(UNITY_USE_NATIVE_HDR)
+        return hdr.x * data.rgb;
+    #else
+        return (hdr.x * pow(abs(alpha), hdr.y)) * data.rgb;
+    #endif
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // UV
 
@@ -983,6 +996,15 @@ float3 lilGetAnisotropyNormalWS(float3 normalWS, float3 anisoTangentWS, float3 a
     float3 anisoDirectionWS = anisotropy > 0.0 ? anisoBitangentWS : anisoTangentWS;
     anisoDirectionWS = lilOrthoNormalize(viewDirection, anisoDirectionWS);
     return normalize(lerp(normalWS, anisoDirectionWS, abs(anisotropy)));
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Reflection
+float3 lilCustomReflection(TEXTURECUBE(tex), float4 hdr, float3 viewDirection, float3 normalDirection, float perceptualRoughness)
+{
+    float mip = perceptualRoughness * (10.2 - 4.2 * perceptualRoughness);
+    float3 refl = reflect(-viewDirection, normalDirection);
+    return lilDecodeHDR(LIL_SAMPLE_CUBE_LOD(tex, sampler_linear_repeat, refl, mip), hdr);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------

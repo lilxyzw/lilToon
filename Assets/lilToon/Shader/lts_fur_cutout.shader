@@ -191,6 +191,10 @@ Shader "Hidden/lilToonFurCutout"
         [lilHDR]        _ReflectionColor            ("Color", Color) = (1,1,1,1)
         [NoScaleOffset] _ReflectionColorTex         ("Color", 2D) = "white" {}
         [lilToggle]     _ReflectionApplyTransparency ("Apply Transparency", Int) = 1
+        [NoScaleOffset] _ReflectionCubeTex          ("Cubemap Fallback", Cube) = "black" {}
+        [lilHDR]        _ReflectionCubeColor        ("Color", Color) = (0,0,0,1)
+        [lilToggle]     _ReflectionCubeOverride     ("Override", Int) = 0
+                        _ReflectionCubeEnableLighting ("Enable Lighting", Range(0, 1)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // MatCap
