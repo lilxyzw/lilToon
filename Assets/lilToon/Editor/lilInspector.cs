@@ -5229,7 +5229,9 @@ namespace lilToon
                         foreach(var obj in m_MaterialEditor.targets.Where(obj => obj is Material))
                         {
                             ((Material)obj).SetOverrideTag("VRCFallback", tag);
+                            EditorUtility.SetDirty(obj);
                         }
+                        AssetDatabase.SaveAssets();
                     }
                     EditorGUILayout.EndVertical();
                 }

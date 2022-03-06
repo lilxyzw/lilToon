@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed the multi-editing of some properties
 - Fixed an issue where RenderQueue changed in lilToonMulti would revert back when restarting UnityEditor
 - Fixed an issue where `Custom Safety Fallback` settings were not copied in `Remove Unused Properties`
+- Fixed `VRCFallback` tag not being saved in some cases
 
 ## [1.2.9] - 2022-02-04
 ### Added
