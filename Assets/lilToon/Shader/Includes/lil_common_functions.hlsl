@@ -165,6 +165,23 @@ float3 lilOrthoNormalize(float3 tangent, float3 normal)
     return normalize(tangent - normal * dot(normal, tangent));
 }
 
+float3 lilUnpackNormalScale(float4 normalTex, float scale)
+{
+    float3 normal;
+    #if defined(UNITY_NO_DXT5nm)
+        normal = normalTex.rgb * 2.0 - 1.0;
+        normal.xy *= scale;
+    #else
+        #if !defined(UNITY_ASTC_NORMALMAP_ENCODING)
+            normalTex.a *= normalTex.r;
+        #endif
+        normal.xy = normalTex.ag * 2.0 - 1.0;
+        normal.xy *= scale;
+        normal.z = sqrt(1.0 - saturate(dot(normal.xy, normal.xy)));
+    #endif
+    return normal;
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Position Transform
 struct lilVertexPositionInputs
@@ -247,7 +264,7 @@ float lilGetOutlineWidth(float3 positionOS, float2 uv, float4 color, float outli
 
 float3 lilGetOutlineVector(float3x3 tbnOS, float2 uv, float outlineVectorScale, TEXTURE2D(outlineVectorTex) LIL_SAMP_IN_FUNC(samp))
 {
-    float3 outlineVector = UnpackNormalScale(LIL_SAMPLE_2D_LOD(outlineVectorTex, samp, uv, 0), outlineVectorScale);
+    float3 outlineVector = lilUnpackNormalScale(LIL_SAMPLE_2D_LOD(outlineVectorTex, samp, uv, 0), outlineVectorScale);
     outlineVector = mul(outlineVector, tbnOS);
     return outlineVector;
 }
@@ -762,6 +779,19 @@ float3 lilGetLightDirection(float4 lightDirectionOverride)
         return normalize(LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR) + 
                         unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + 
                         lilGetCustomLightDirection(lightDirectionOverride));
+    #endif
+}
+
+float3 lilGetFixedLightDirection(float4 lightDirectionOverride)
+{
+    #if LIL_LIGHT_DIRECTION_MODE == 0
+        return normalize(LIL_MAINLIGHT_DIRECTION + lilGetCustomLightDirection(lightDirectionOverride));
+    #else
+        float3 L = unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333;
+        L.y = abs(L.y);
+        L += LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR);
+        L += lilGetCustomLightDirection(lightDirectionOverride);
+        return normalize(L);
     #endif
 }
 

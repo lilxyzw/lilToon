@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.10] - 2022-03-06
+### 追加
+- 複数シェーダーバリエーションを同時に編集できるウィンドウを追加（`Window/_lil/[Beta] lilToon Multi-Editor`）
+
+### 変更
+- Near clipが極端に大きい場合（意図的に消している場合）に`距離クリッピングキャンセラー`を無効化するようにした
+- `UnpackNormalScale()`を`lilUnpackNormalScale()`に置き換え
+- SHライトの方向を補正するように変更
+
+### 修正
+- ファーシェーダーでノーマルマップのスケールが適用されていなかった問題を修正
+- いくつかのプロパティの同時編集の修正
+- lilToonMultiで変更したRenderQueueがUnityEditorの再起動時に元に戻る問題を修正
+- Remove Unused PropertiesでCustom Safety Fallbackの設定がコピーされない問題を修正
+
 ## [1.2.9] - 2022-02-04
 ### 追加
 - Cubemapのフォールバック・オーバーライド機能を追加

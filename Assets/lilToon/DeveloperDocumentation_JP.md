@@ -383,7 +383,7 @@ namespace lilToon
 |-|-|
 |float2 lilCalcUV(float2 uv, float4 tex_ST, float4 tex_ScrollRotate)|UVの計算|
 |float3 lilBlendColor(float3 dstCol, float3 srcCol, float srcA, uint blendMode)|ブレンドモードによる色の合成 (0: 通常 / 1: 加算 / 2: スクリーン / 3: 乗算)|
-|float3 UnpackNormalScale(float4 normalTex, float scale)|ノーマルマップの展開|
+|float3 lilUnpackNormalScale(float4 normalTex, float scale)|ノーマルマップの展開|
 |float lilTooning()|入力値をトゥーン化|
 
 # ピクセルシェーダー

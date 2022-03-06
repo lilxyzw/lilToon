@@ -383,7 +383,7 @@ Please refer to the HLSL file for more information.
 |-|-|
 |float2 lilCalcUV(float2 uv, float4 tex_ST, float4 tex_ScrollRotate)|Calculate UV|
 |float3 lilBlendColor(float3 dstCol, float3 srcCol, float srcA, uint blendMode)|Color blending with Blend mode (0: Normal / 1: Add / 2: Screen / 3: Multiply)|
-|float3 UnpackNormalScale(float4 normalTex, float scale)|Unpack normal map|
+|float3 lilUnpackNormalScale(float4 normalTex, float scale)|Unpack normal map|
 |float lilTooning()|Convert input values to toon|
 
 # Fragment shader

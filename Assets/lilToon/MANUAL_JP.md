@@ -169,7 +169,7 @@ FakeShadowを使用する場合は以下のようにステンシル設定を変�
 <br/>
 
 ## UV設定
-|Name|Description|
+|名前|説明|
 |-|-|
 |Tiling|UVのループ数です。|
 |Offset|UVのずらし量です。|

@@ -25,6 +25,11 @@
 // 1 : Blend SH light
 #define LIL_LIGHT_DIRECTION_MODE 1
 
+// SH light direction mode (Default : 1)
+// 0 : Raw
+// 1 : abs(direction.y)
+#define LIL_SHLIGHT_DIRECTION_MODE 1
+
 // Refraction blur
 #define LIL_REFRACTION_SAMPNUM 8
 #define LIL_REFRACTION_GAUSDIST(i) exp(-(float)i*(float)i/(LIL_REFRACTION_SAMPNUM*LIL_REFRACTION_SAMPNUM/2.0))
@@ -49,6 +54,9 @@
 // 0 : Off
 // 1 : In Vertex Shader
 // 2 : In Fragment Shader
+
+// Near clip threshold for clipping canceller (Default : 0.1)
+#define LIL_NEARCLIP_THRESHOLD 0.1
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Version
@@ -693,7 +701,6 @@ float2 lilCStoGrabUV(float4 positionCS)
     }
 
     // Meta
-    #define UnpackNormalScale(normal,scale)         UnpackScaleNormal(normal,scale)
     #define MetaInput                               UnityMetaInput
     #define MetaFragment(input)                     UnityMetaFragment(input)
     #define MetaVertexPosition(pos,uv1,uv2,l,d)     UnityMetaVertexPosition(pos,uv1,uv2,l,d)
@@ -755,17 +762,6 @@ float2 lilCStoGrabUV(float4 positionCS)
         {
             float3 lightToSample;
             GetPunctualLightVectors(positionWS, light, L, lightToSample, distances);
-        }
-    #endif
-
-    #if VERSION_LOWER(7, 0)
-        real3 UnpackNormalScale(real4 packedNormal, real bumpScale)
-        {
-            #if defined(UNITY_NO_DXT5nm)
-                return UnpackNormalRGB(packedNormal, bumpScale);
-            #else
-                return UnpackNormalmapRGorAG(packedNormal, bumpScale);
-            #endif
         }
     #endif
 
@@ -1575,6 +1571,12 @@ struct lilLightData
     #define LIL_CORRECT_LIGHTCOLOR_PS(lightColor)
 #endif
 
+#if LIL_SHLIGHT_DIRECTION_MODE == 1
+    #define LIL_CORRECT_LIGHTDIR(dir) dir = lilGetFixedLightDirection(_LightDirectionOverride)
+#else
+    #define LIL_CORRECT_LIGHTDIR(dir)
+#endif
+
 #if defined(LIL_PASS_FORWARDADD)
     #define LIL_CALC_MAINLIGHT(i,o)
 #elif defined(LIL_HDRP)
@@ -1596,7 +1598,8 @@ struct lilLightData
         lilLightData o; \
         o.lightDirection = lilGetLightDirection(_LightDirectionOverride); \
         LIL_CALC_TWOLIGHT(i,o); \
-        LIL_CORRECT_LIGHTCOLOR_VS(o.lightColor)
+        LIL_CORRECT_LIGHTCOLOR_VS(o.lightColor); \
+        LIL_CORRECT_LIGHTDIR(o.lightDirection)
 #endif
 
 // Main Light in PS (Color / Direction / Attenuation)
@@ -1775,5 +1778,8 @@ struct lilLightData
     #define LIL_GET_EMITEX(tex,uv)  LIL_SAMPLE_2D(tex, sampler##tex, lilCalcUV(uv, tex##_ST, tex##_ScrollRotate))
     #define LIL_GET_EMIMASK(tex,uv) LIL_SAMPLE_2D(tex, sampler_MainTex, lilCalcUV(uv, tex##_ST, tex##_ScrollRotate))
 #endif
+
+// Fallback
+#define UnpackNormalScale(normal,scale) lilUnpackNormalScale(normal,scale)
 
 #endif

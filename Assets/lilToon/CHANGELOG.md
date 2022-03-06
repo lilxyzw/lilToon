@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.10] - 2022-03-06
+### Added
+- Added an editor (`Window/_lil/[Beta] lilToon Multi-Editor`) that allows editing multiple shader variants at the same time
+
+### Changed
+- Disable the `Distance Clipping Canceller` when the near clip value is large
+- Replace `UnpackNormalScale()` to `lilUnpackNormalScale()`
+- Changed to correct the SH light direction
+
+### Fixed
+- Fixed an issue where the normal map scale was not applied in the fur shader
+- Fixed the multi-editing of some properties
+- Fixed an issue where RenderQueue changed in lilToonMulti would revert back when restarting UnityEditor
+- Fixed an issue where `Custom Safety Fallback` settings were not copied in `Remove Unused Properties`
+
 ## [1.2.9] - 2022-02-04
 ### Added
 - Added cubemap fallback / override

@@ -1,5 +1,5 @@
 # lilToon
-Version 1.2.9
+Version 1.2.10
 
 # Overview
 This shader is developed for services using avatars (VRChat, etc.) and has the following features.
@@ -32,8 +32,8 @@ Supported Shader Models
 Supported Rendering Pipelines
 - Built-in Render Pipeline
 - Lightweight Render Pipeline 4.0.0 - 6.9.1
-- Universal Render Pipeline 7.0.0 - 12.1.1
-- High Definition Render Pipeline 4.0.0 - 12.1.1
+- Universal Render Pipeline 7.0.0 - 12.1.4
+- High Definition Render Pipeline 4.0.0 - 12.1.4
 
 # Features
 - Main color x3 layers (Decal, Layer mask, Gif animation, Normal / Additive / Multiplicative / Screen blending)

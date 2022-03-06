@@ -444,7 +444,7 @@
         if(Exists_BumpMap && _UseBumpMap) \
         { \
             float4 normalTex = LIL_SAMPLE_2D_ST(_BumpMap, sampler_MainTex, fd.uvMain); \
-            normalmap = UnpackNormalScale(normalTex, _BumpScale); \
+            normalmap = lilUnpackNormalScale(normalTex, _BumpScale); \
         }
 #endif
 
@@ -456,7 +456,7 @@
             float4 normal2ndTex = LIL_SAMPLE_2D_ST(_Bump2ndMap, sampler_MainTex, fd.uvMain); \
             float bump2ndScale = _Bump2ndScale; \
             if(Exists_Bump2ndScaleMask) bump2ndScale *= LIL_SAMPLE_2D_ST(_Bump2ndScaleMask, sampler_MainTex, fd.uvMain).r; \
-            normalmap = lilBlendNormal(normalmap, UnpackNormalScale(normal2ndTex, bump2ndScale)); \
+            normalmap = lilBlendNormal(normalmap, lilUnpackNormalScale(normal2ndTex, bump2ndScale)); \
         }
 #endif
 
@@ -468,7 +468,7 @@
         if(_UseAnisotropy) \
         { \
             float4 anisoTangentMap = LIL_SAMPLE_2D_ST(_AnisotropyTangentMap, sampler_MainTex, fd.uvMain); \
-            float3 anisoTangent = UnpackNormalScale(anisoTangentMap, 1.0); \
+            float3 anisoTangent = lilUnpackNormalScale(anisoTangentMap, 1.0); \
             fd.T = lilOrthoNormalize(normalize(mul(anisoTangent, fd.TBN)), fd.N); \
             fd.B = cross(fd.N, fd.T); \
             fd.anisotropy = _AnisotropyScale; \
@@ -1171,7 +1171,7 @@
                 if(_MatCapCustomNormal)
                 {
                     float4 normalTex = LIL_SAMPLE_2D_ST(_MatCapBumpMap, samp, fd.uvMain);
-                    float3 normalmap = UnpackNormalScale(normalTex, _MatCapBumpScale);
+                    float3 normalmap = lilUnpackNormalScale(normalTex, _MatCapBumpScale);
                     N = normalize(mul(normalmap, fd.TBN));
                     N = fd.facing < (_FlipNormal-1.0) ? -N : N;
                 }
@@ -1236,7 +1236,7 @@
                 if(_MatCap2ndCustomNormal)
                 {
                     float4 normalTex = LIL_SAMPLE_2D_ST(_MatCap2ndBumpMap, samp, fd.uvMain);
-                    float3 normalmap = UnpackNormalScale(normalTex, _MatCap2ndBumpScale);
+                    float3 normalmap = lilUnpackNormalScale(normalTex, _MatCap2ndBumpScale);
                     N = normalize(mul(normalmap, fd.TBN));
                     N = fd.facing < (_FlipNormal-1.0) ? -N : N;
                 }

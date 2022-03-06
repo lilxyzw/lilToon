@@ -154,7 +154,7 @@ v2g vert(appdata input)
         float3x3 tbnOS = float3x3(input.tangentOS.xyz, bitangentOS, input.normalOS);
         output.furVector = _FurVector.xyz;
         if(_VertexColor2FurVector) output.furVector = lilBlendNormal(output.furVector, input.color.xyz);
-        if(Exists_FurVectorTex) output.furVector = lilBlendNormal(output.furVector, UnpackNormalScale(LIL_SAMPLE_2D_LOD(_FurVectorTex, sampler_linear_repeat, uvMain, 0), _FurVectorScale));
+        if(Exists_FurVectorTex) output.furVector = lilBlendNormal(output.furVector, lilUnpackNormalScale(LIL_SAMPLE_2D_LOD(_FurVectorTex, sampler_linear_repeat, uvMain, 0), _FurVectorScale));
         output.furVector = mul(normalize(output.furVector), tbnOS);
         output.furVector *= _FurVector.w;
         #if defined(LIL_FUR_PRE)
@@ -373,13 +373,13 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                 // Clipping Canceller
                 #if defined(UNITY_REVERSED_Z)
                     // DirectX
-                    if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 LIL_MULTI_SHOULD_CLIPPING)
+                    if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING)
                     {
                         output.positionCS.z = output.positionCS.z * 0.0001 + output.positionCS.w * 0.999;
                     }
                 #else
                     // OpenGL
-                    if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 LIL_MULTI_SHOULD_CLIPPING)
+                    if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING)
                     {
                         output.positionCS.z = output.positionCS.z * 0.0001 - output.positionCS.w * 0.999;
                     }
@@ -407,13 +407,13 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                 // Clipping Canceller
                 #if defined(UNITY_REVERSED_Z)
                     // DirectX
-                    if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 LIL_MULTI_SHOULD_CLIPPING)
+                    if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING)
                     {
                         output.positionCS.z = output.positionCS.z * 0.0001 + output.positionCS.w * 0.999;
                     }
                 #else
                     // OpenGL
-                    if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 LIL_MULTI_SHOULD_CLIPPING)
+                    if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING)
                     {
                         output.positionCS.z = output.positionCS.z * 0.0001 - output.positionCS.w * 0.999;
                     }
