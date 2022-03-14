@@ -1,0 +1,37 @@
+        //----------------------------------------------------------------------------------------------------------------------
+        // Advanced
+        [lilEnum]                                       _Cull               ("Cull Mode|Off|Front|Back", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlpha      ("SrcBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlpha      ("DstBlendAlpha", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOp            ("BlendOp", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlpha       ("BlendOpAlpha", Int) = 0
+        [lilToggle]                                     _ZClip              ("ZClip", Int) = 1
+        [lilToggle]                                     _ZWrite             ("ZWrite", Int) = 0
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest              ("ZTest", Int) = 4
+        [IntRange]                                      _StencilRef         ("Stencil Reference Value", Range(0, 255)) = 0
+        [IntRange]                                      _StencilReadMask    ("Stencil ReadMask Value", Range(0, 255)) = 255
+        [IntRange]                                      _StencilWriteMask   ("Stencil WriteMask Value", Range(0, 255)) = 255
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _StencilComp        ("Stencil Compare Function", Float) = 8
+        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilPass        ("Stencil Pass", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilFail        ("Stencil Fail", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilZFail       ("Stencil ZFail", Float) = 0
+                                                        _OffsetFactor       ("Offset Factor", Float) = 0
+                                                        _OffsetUnits        ("Offset Units", Float) = 0
+        [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
+        [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Refraction
+                        _RefractionStrength         ("Refraction Strength", Range(-1,1)) = 0.5
+        [PowerSlider(3.0)]_RefractionFresnelPower   ("Refraction Fresnel Power", Range(0.01, 10)) = 1.0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        //Gem
+                        _GemChromaticAberration     ("Chromatic Aberration", Range(0, 1)) = 0.02
+                        _GemEnvContrast             ("Environment Contrast", Float) = 2.0
+        [lilHDR]        _GemEnvColor                ("Environment Color", Color) = (1,1,1,1)
+                        _GemParticleLoop            ("Particle Loop", Float) = 8
+        [lilHDR]        _GemParticleColor           ("Particle Color", Color) = (4,4,4,1)
+                        _GemVRParallaxStrength      ("VR Parallax Strength", Range(0, 1)) = 1

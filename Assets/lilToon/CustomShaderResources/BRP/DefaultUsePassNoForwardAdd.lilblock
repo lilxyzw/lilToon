@@ -1,0 +1,8 @@
+    SubShader
+    {
+        Tags {*LIL_SUBSHADER_TAGS*}
+        UsePass "*LIL_PASS_SHADER_NAME*/FORWARD"
+        UsePass "*LIL_PASS_SHADER_NAME*/SHADOW_CASTER"
+        UsePass "*LIL_PASS_SHADER_NAME*/META"
+    }
+    Fallback "Unlit/Texture"

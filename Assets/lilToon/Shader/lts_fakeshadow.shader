@@ -49,6 +49,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
         [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
     HLSLINCLUDE
+        #include "../../lilToonSetting/lil_setting.hlsl"
     ENDHLSL
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -281,7 +282,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
+        Tags {"RenderType" = "HDLitShader" "Queue" = "Transparent"}
         Pass
         {
             Name "FORWARD"

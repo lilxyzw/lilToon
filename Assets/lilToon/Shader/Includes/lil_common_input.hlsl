@@ -716,6 +716,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_SHADOW)
         lilBool _ShadowReceive;
+        lilBool _ShadowPostAO;
     #endif
     #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
         lilBool _BacklightReceiveShadow;
@@ -1300,6 +1301,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FEATURE_SHADOW)
         lilBool _UseShadow;
+        lilBool _ShadowPostAO;
         #if defined(LIL_FEATURE_RECEIVE_SHADOW)
             lilBool _ShadowReceive;
         #endif

@@ -1008,7 +1008,7 @@ Shader "Hidden/ltspass_lite_transparent"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
+        Tags {"RenderType" = "HDLitShader"}
         // Forward
         Pass
         {

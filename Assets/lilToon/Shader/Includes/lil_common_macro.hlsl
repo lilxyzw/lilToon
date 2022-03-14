@@ -331,6 +331,11 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Macro to absorb pipeline differences
+#if defined(LIL_URP)
+    #define LIL_SCREENPARAMS    _ScaledScreenParams
+#else
+    #define LIL_SCREENPARAMS    _ScreenParams
+#endif
 
 // Transform
 #if defined(LIL_BRP)
@@ -379,7 +384,7 @@
     float4 lilTransformCStoSSFrag(float4 positionCS)
     {
         float4 positionSS = float4(positionCS.xyz * positionCS.w, positionCS.w);
-        positionSS.xy = positionSS.xy / _ScreenParams.xy;
+        positionSS.xy = positionSS.xy / LIL_SCREENPARAMS.xy;
         return positionSS;
     }
 #else
@@ -436,7 +441,7 @@
     float4 lilTransformCStoSSFrag(float4 positionCS)
     {
         float4 positionSS = float4(positionCS.xyz * positionCS.w, positionCS.w);
-        positionSS.xy = positionSS.xy / _ScreenParams.xy;
+        positionSS.xy = positionSS.xy / LIL_SCREENPARAMS.xy;
         return positionSS;
     }
 #endif
@@ -479,8 +484,10 @@ float3 lilViewDirection(float3 positionWS)
 
 float3 lilHeadDirection(float3 positionWS)
 {
-    #if defined(USING_STEREO_MATRICES)
-        return (unity_StereoWorldSpaceCameraPos[0] + unity_StereoWorldSpaceCameraPos[1]) * 0.5 - positionWS;
+    #if defined(USING_STEREO_MATRICES) && defined(LIL_HDRP)
+        return (_XRWorldSpaceCameraPos[0].xyz + _XRWorldSpaceCameraPos[1].xyz) * 0.5 - positionWS;
+    #elif defined(USING_STEREO_MATRICES)
+        return (unity_StereoWorldSpaceCameraPos[0].xyz + unity_StereoWorldSpaceCameraPos[1].xyz) * 0.5 - positionWS;
     #else
         return lilViewDirection(positionWS);
     #endif
@@ -488,7 +495,7 @@ float3 lilHeadDirection(float3 positionWS)
 
 float2 lilCStoGrabUV(float4 positionCS)
 {
-    float2 uvScn = positionCS.xy / _ScreenParams.xy;
+    float2 uvScn = positionCS.xy / LIL_SCREENPARAMS.xy;
     #if defined(UNITY_SINGLE_PASS_STEREO)
         uvScn.xy = TransformStereoScreenSpaceTex(uvScn.xy, 1.0);
     #endif
@@ -1423,7 +1430,7 @@ float2 lilCStoGrabUV(float4 positionCS)
     #define LIL_IS_MIRROR           false
     #define LIL_LIGHTDIRECTION_ORIG lightDirection
 #else
-    #define LIL_IS_MIRROR           unity_CameraProjection._m20 != 0.0 || unity_CameraProjection._m21 != 0.0
+    #define LIL_IS_MIRROR           (dot(cross(LIL_MATRIX_V[0].xyz, LIL_MATRIX_V[1].xyz), LIL_MATRIX_V[2].xyz) > 0)
     #define LIL_LIGHTDIRECTION_ORIG LIL_MAINLIGHT_DIRECTION
 #endif
 
@@ -1719,7 +1726,7 @@ struct lilLightData
 
 #if defined(LIL_USE_ADDITIONALLIGHT_VS) && (defined(VERTEXLIGHT_ON) || !defined(LIL_BRP))
     #define LIL_CALC_VERTEXLIGHT(i,o) \
-        o.vlf.rgb = lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(_ScreenParams.xy,1.0,1.0)) * _VertexLightStrength; \
+        o.vlf.rgb = lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(LIL_SCREENPARAMS.xy,1.0,1.0)) * _VertexLightStrength; \
         o.vlf.rgb = lerp(o.vlf.rgb, lilGray(o.vlf.rgb), _MonochromeLighting); \
         o.vlf.rgb = lerp(o.vlf.rgb, 0.0, _AsUnlit)
 #elif defined(LIL_USE_ADDITIONALLIGHT_VS)

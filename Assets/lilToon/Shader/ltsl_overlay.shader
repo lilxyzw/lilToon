@@ -148,7 +148,7 @@ Shader "_lil/[Optional] lilToonLiteOverlay"
 /*
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
+        Tags {"RenderType" = "HDLitShader" "Queue" = "Transparent"}
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
     }
     Fallback "HDRP/Unlit"

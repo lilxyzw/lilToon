@@ -95,11 +95,11 @@ LIL_V2F_TYPE vert(appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Vertex Modification
-    #include "Includes/lil_vert_encryption.hlsl"
+    #include "lil_vert_encryption.hlsl"
     lilCustomVertexOS(input, uvMain, input.positionOS);
-    #include "Includes/lil_vert_audiolink.hlsl"
+    #include "lil_vert_audiolink.hlsl"
     #if !defined(LIL_ONEPASS_OUTLINE)
-        #include "Includes/lil_vert_outline.hlsl"
+        #include "lil_vert_outline.hlsl"
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -113,9 +113,9 @@ LIL_V2F_TYPE vert(appdata input)
         //------------------------------------------------------------------------------------------------------------------------------
         // Vertex Modification
         #define LIL_MODIFY_PREVPOS
-        #include "Includes/lil_vert_encryption.hlsl"
+        #include "lil_vert_encryption.hlsl"
         lilCustomVertexOS(input, uvMain, input.previousPositionOS);
-        #include "Includes/lil_vert_audiolink.hlsl"
+        #include "lil_vert_audiolink.hlsl"
         #undef LIL_MODIFY_PREVPOS
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -134,7 +134,7 @@ LIL_V2F_TYPE vert(appdata input)
 
         #if defined(LIL_ONEPASS_OUTLINE)
             #define LIL_MODIFY_PREVPOS
-            #include "Includes/lil_vert_outline.hlsl"
+            #include "lil_vert_outline.hlsl"
             #undef LIL_MODIFY_PREVPOS
             LIL_VERTEX_POSITION_INPUTS(input.previousPositionOS, previousOLVertexInput);
             previousOLVertexInput.positionWS = TransformPreviousObjectToWorld(input.previousPositionOS);
@@ -223,7 +223,7 @@ LIL_V2F_TYPE vert(appdata input)
             else if (unity_VisualizationMode == EDITORVIZ_SHOWLIGHTMASK)
             {
                 LIL_V2F_OUT_BASE.vizUV = input.uv1 * unity_LightmapST.xy + unity_LightmapST.zw;
-                LIL_V2F_OUT_BASE.lightCoord = mul(unity_EditorViz_WorldToLight, LIL_TRANSFORM_POS_OS_TO_WS(input.positionOS.xyz));
+                LIL_V2F_OUT_BASE.lightCoord = mul(unity_EditorViz_WorldToLight, float4(lilTransformOStoWS(input.positionOS.xyz), 1.0));
             }
         #endif
     #endif
@@ -276,7 +276,7 @@ LIL_V2F_TYPE vert(appdata input)
     //------------------------------------------------------------------------------------------------------------------------------
     // One Pass Outline (for HDRP)
     #if defined(LIL_ONEPASS_OUTLINE)
-        #include "Includes/lil_vert_outline.hlsl"
+        #include "lil_vert_outline.hlsl"
         vertexInput = lilGetVertexPositionInputs(input.positionOS);
         lilCustomVertexWS(input, uvMain, vertexInput, vertexNormalInput);
         #if defined(LIL_CUSTOM_VERTEX_WS)
@@ -349,13 +349,15 @@ LIL_V2F_TYPE vert(appdata input)
         LIL_INITIALIZE_STRUCT(v2f, output[1]);
         LIL_INITIALIZE_STRUCT(v2f, output[2]);
 
+        LIL_SETUP_INSTANCE_ID(input[0].base);
+        LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input[0].base);
+
         //------------------------------------------------------------------------------------------------------------------------------
         // Copy
         for(uint i = 0; i < 3; i++)
         {
             output[i] = input[i].base;
         }
-        LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input[0].base);
 
         // Front
         LIL_BRANCH

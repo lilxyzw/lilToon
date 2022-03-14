@@ -1,0 +1,23 @@
+Shader "Hidden/*LIL_SHADER_NAME*/ltspass_tess_cutout"
+{
+    HLSLINCLUDE
+        //----------------------------------------------------------------------------------------------------------------------
+        // Macro
+
+        // Rendering mode
+        // 0 : Opaque
+        // 1 : Cutout
+        // 2 : Transparent
+        #define LIL_RENDER 1
+
+        #include "custom.hlsl"
+    ENDHLSL
+
+    //lilSubShaderInsert "SubShaderInsert.lilblock"
+
+    lilSubShaderBRP "DefaultTessellation"
+    lilSubShaderURP "DefaultTessellation"
+    lilSubShaderHDRP "DefaultTessellation"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

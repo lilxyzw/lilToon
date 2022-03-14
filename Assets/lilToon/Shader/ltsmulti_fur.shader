@@ -152,6 +152,7 @@ Shader "Hidden/lilToonMultiFur"
         [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
         [lilFFFF]       _ShadowAOShift              ("1st Scale|1st Offset|2nd Scale|2nd Offset", Vector) = (1,0,1,0)
         [lilFF]         _ShadowAOShift2             ("3rd Scale|3rd Offset", Vector) = (1,0,1,0)
+        [lilToggle]     _ShadowPostAO               ("Post AO", Int) = 0
                         _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
         [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
                         _ShadowNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
@@ -734,6 +735,7 @@ Shader "Hidden/lilToonMultiFur"
             #pragma shader_feature_local _COLORCOLOR_ON
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
+            #pragma shader_feature_local _REQUIRE_UV2
             #pragma shader_feature_local _NORMALMAP
             #pragma shader_feature_local EFFECT_BUMP
             #pragma shader_feature_local SOURCE_GBUFFER
@@ -803,6 +805,7 @@ Shader "Hidden/lilToonMultiFur"
             #pragma shader_feature_local UNITY_UI_CLIP_RECT
 
             // Main
+            #pragma shader_feature_local _REQUIRE_UV2
             #pragma shader_feature_local _FADING_ON
 
             // Replace keywords
@@ -1043,15 +1046,15 @@ Shader "Hidden/lilToonMultiFur"
             #pragma fragment frag
             #pragma multi_compile_instancing
 
-            //----------------------------------------------------------------------------------------------------------------------
-            // Pass
-            #include "Includes/lil_pass_shadowcaster.hlsl"
-
             // Transparent mode
             #pragma shader_feature_local UNITY_UI_CLIP_RECT
 
             // Replace keywords
             #include "Includes/lil_replace_keywords.hlsl"
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
         }
@@ -1828,7 +1831,7 @@ Shader "Hidden/lilToonMultiFur"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
+        Tags {"RenderType" = "HDLitShader" "Queue" = "Transparent"}
 
         // Forward
         Pass

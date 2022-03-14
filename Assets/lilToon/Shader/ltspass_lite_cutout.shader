@@ -957,7 +957,7 @@ Shader "Hidden/ltspass_lite_cutout"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
+        Tags {"RenderType" = "HDLitShader"}
         // Forward
         Pass
         {

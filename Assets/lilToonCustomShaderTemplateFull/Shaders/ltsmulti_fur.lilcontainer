@@ -1,0 +1,22 @@
+Shader "Hidden/*LIL_SHADER_NAME*/MultiFur"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultFurTransparent"
+        lilProperties "lilCustomShaderProperties.lilblock"
+    }
+
+    HLSLINCLUDE
+        #include "custom.hlsl"
+    ENDHLSL
+
+    lilSubShaderTags {"RenderType" = "Transparent" "Queue" = "Transparent"}
+    //lilSubShaderInsert "SubShaderInsert.lilblock"
+
+    lilSubShaderBRP "DefaultMultiFur"
+    lilSubShaderURP "DefaultMultiFur"
+    lilSubShaderHDRP "DefaultMultiFur"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

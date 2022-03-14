@@ -1,5 +1,5 @@
 # lilToon
-Version 1.2.10
+Version 1.2.11
 
 # Overview
 This shader is developed for services using avatars (VRChat, etc.) and has the following features.

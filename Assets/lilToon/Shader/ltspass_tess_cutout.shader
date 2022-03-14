@@ -1,6 +1,7 @@
 Shader "Hidden/ltspass_tess_cutout"
 {
     HLSLINCLUDE
+        #include "../../lilToonSetting/lil_setting.hlsl"
         #pragma target 5.0
         #define LIL_RENDER 1
         #define LIL_TESSELLATION
@@ -1003,7 +1004,7 @@ Shader "Hidden/ltspass_tess_cutout"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
+        Tags {"RenderType" = "HDLitShader"}
         // Forward
         Pass
         {

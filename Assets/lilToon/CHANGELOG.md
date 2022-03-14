@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.11] - 2022-xx-xx
+### Added
+- `Post AO` property for AO Map (blend AO Map after toon processing)
+- New format for custom shaders
+
+### Fixed
+- Fixed shadows not being applied in the ForwardAdd pass of lilToonMulti
+- Fixed an issue where polygons might disappear at the edge of the field of view in the tessellation shader
+- Fixed behavior in VR (URP / HDRP)
+
 ## [1.2.10] - 2022-03-06
 ### Added
 - Added an editor (`Window/_lil/[Beta] lilToon Multi-Editor`) that allows editing multiple shader variants at the same time
@@ -35,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.8] - 2022-01-30
 ### Added
 - 3rd shadow
-- `Randomize` property for  fur
+- `Randomize` property for fur
 - Add the same properties to the fur as a normal shader
 - `Optimize for submission to the event` button and the function to automatically optimize shader settings before build (only available when VRCSDK for world is imported)
 - Reduce the build size of shaders that use shader keywords

@@ -148,6 +148,7 @@ Shader "Hidden/lilToonRefractionBlur"
         [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
         [lilFFFF]       _ShadowAOShift              ("1st Scale|1st Offset|2nd Scale|2nd Offset", Vector) = (1,0,1,0)
         [lilFF]         _ShadowAOShift2             ("3rd Scale|3rd Offset", Vector) = (1,0,1,0)
+        [lilToggle]     _ShadowPostAO               ("Post AO", Int) = 0
                         _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
         [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
                         _ShadowNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
@@ -444,6 +445,7 @@ Shader "Hidden/lilToonRefractionBlur"
         [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
     HLSLINCLUDE
+        #include "../../lilToonSetting/lil_setting.hlsl"
         #define LIL_RENDER 2
         #define LIL_REFRACTION
         #define LIL_REFRACTION_BLUR2
@@ -491,8 +493,8 @@ Shader "Hidden/lilToonRefractionBlur"
             #pragma multi_compile_instancing
             #pragma fragmentoption ARB_precision_hint_fastest
 
-            //------------------------------------------------------------------------------------------------------------------------------
-            // Shader
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
             #include "Includes/lil_pass_forward_refblur.hlsl"
 
             ENDHLSL
@@ -1160,7 +1162,7 @@ Shader "Hidden/lilToonRefractionBlur"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Transparent"}
+        Tags {"RenderType" = "HDLitShader" "Queue" = "Transparent"}
         // Forward
         Pass
         {

@@ -1,6 +1,7 @@
 Shader "Hidden/ltspass_transparent"
 {
     HLSLINCLUDE
+        #include "../../lilToonSetting/lil_setting.hlsl"
         #define LIL_RENDER 2
     ENDHLSL
 
@@ -1033,7 +1034,7 @@ Shader "Hidden/ltspass_transparent"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
+        Tags {"RenderType" = "HDLitShader"}
         // Forward
         Pass
         {

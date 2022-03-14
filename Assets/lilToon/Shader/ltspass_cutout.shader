@@ -1,6 +1,7 @@
 Shader "Hidden/ltspass_cutout"
 {
     HLSLINCLUDE
+        #include "../../lilToonSetting/lil_setting.hlsl"
         #define LIL_RENDER 1
     ENDHLSL
 
@@ -979,7 +980,7 @@ Shader "Hidden/ltspass_cutout"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
+        Tags {"RenderType" = "HDLitShader"}
         // Forward
         Pass
         {

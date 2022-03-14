@@ -1,8 +1,8 @@
 #ifndef LIL_PASS_FORWARD_FAKESHADOW_INCLUDED
 #define LIL_PASS_FORWARD_FAKESHADOW_INCLUDED
 
-#include "Includes/lil_pipeline.hlsl"
-#include "Includes/lil_common_appdata.hlsl"
+#include "lil_pipeline.hlsl"
+#include "lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Structure
@@ -69,14 +69,14 @@ v2f vert(appdata input)
 
 float4 frag(v2f input) : SV_Target
 {
+    LIL_SETUP_INSTANCE_ID(input);
+    LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
     lilFragData fd = lilInitFragData();
 
     fd.uv0 = input.uv0;
     #if defined(LIL_HDRP) || defined(LIL_V2F_FORCE_POSITION_WS)
         fd.positionWS = input.positionWS;
     #endif
-    LIL_SETUP_INSTANCE_ID(input);
-    LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
     LIL_GET_HDRPDATA(input,fd);
     #if defined(LIL_HDRP)
         fd.V = normalize(lilViewDirection(fd.positionWS));

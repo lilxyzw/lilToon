@@ -65,23 +65,38 @@ float lilAtan(float x, float y)
         return saturate(f) == f;
     }
 
-    float lilTooning(float value, float border)
+    float lilTooningNoSaturate(float value, float border)
     {
         return step(border, value);
     }
 
-    float lilTooning(float value, float border, float blur)
+    float lilTooningNoSaturate(float value, float border, float blur)
     {
         float borderMin = saturate(border - blur * 0.5);
         float borderMax = saturate(border + blur * 0.5);
-        return saturate((value - borderMin) / saturate(borderMax - borderMin));
+        return (value - borderMin) / saturate(borderMax - borderMin);
+    }
+
+    float lilTooningNoSaturate(float value, float border, float blur, float borderRange)
+    {
+        float borderMin = saturate(border - blur * 0.5 - borderRange);
+        float borderMax = saturate(border + blur * 0.5);
+        return (value - borderMin) / saturate(borderMax - borderMin);
+    }
+
+    float lilTooning(float value, float border)
+    {
+        return lilTooningNoSaturate(value, border);
+    }
+
+    float lilTooning(float value, float border, float blur)
+    {
+        return saturate(lilTooningNoSaturate(value, border, blur));
     }
 
     float lilTooning(float value, float border, float blur, float borderRange)
     {
-        float borderMin = saturate(border - blur * 0.5 - borderRange);
-        float borderMax = saturate(border + blur * 0.5);
-        return saturate((value - borderMin) / saturate(borderMax - borderMin));
+        return saturate(lilTooningNoSaturate(value, border, blur, borderRange));
     }
 #else
     float lilIsIn0to1(float f)
@@ -96,23 +111,38 @@ float lilAtan(float x, float y)
         return saturate(value / clamp(fwidth(value), 0.0001, nv));
     }
 
+    float lilTooningNoSaturate(float value, float border)
+    {
+        return (value - border) / clamp(fwidth(value), 0.0001, 1.0);
+    }
+
+    float lilTooningNoSaturate(float value, float border, float blur)
+    {
+        float borderMin = saturate(border - blur * 0.5);
+        float borderMax = saturate(border + blur * 0.5);
+        return (value - borderMin) / saturate(borderMax - borderMin + fwidth(value));
+    }
+
+    float lilTooningNoSaturate(float value, float border, float blur, float borderRange)
+    {
+        float borderMin = saturate(border - blur * 0.5 - borderRange);
+        float borderMax = saturate(border + blur * 0.5);
+        return (value - borderMin) / saturate(borderMax - borderMin + fwidth(value));
+    }
+
     float lilTooning(float value, float border)
     {
-        return saturate((value - border) / clamp(fwidth(value), 0.0001, 1.0));
+        return saturate(lilTooningNoSaturate(value, border));
     }
 
     float lilTooning(float value, float border, float blur)
     {
-        float borderMin = saturate(border - blur * 0.5);
-        float borderMax = saturate(border + blur * 0.5);
-        return saturate((value - borderMin) / saturate(borderMax - borderMin + fwidth(value)));
+        return saturate(lilTooningNoSaturate(value, border, blur));
     }
 
     float lilTooning(float value, float border, float blur, float borderRange)
     {
-        float borderMin = saturate(border - blur * 0.5 - borderRange);
-        float borderMax = saturate(border + blur * 0.5);
-        return saturate((value - borderMin) / saturate(borderMax - borderMin + fwidth(value)));
+        return saturate(lilTooningNoSaturate(value, border, blur, borderRange));
     }
 #endif
 
@@ -1115,8 +1145,8 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
 // Tessellation
 float lilCalcEdgeTessFactor(float3 wpos0, float3 wpos1, float edgeLen)
 {
-    float dist = distance(0.5 * (wpos0+wpos1), _WorldSpaceCameraPos);
-    return max(distance(wpos0, wpos1) * _ScreenParams.y / (edgeLen * dist), 1.0);
+    float dist = distance(0.5 * (wpos0+wpos1), _WorldSpaceCameraPos.xyz);
+    return max(distance(wpos0, wpos1) * LIL_SCREENPARAMS.y / (edgeLen * dist), 1.0);
 }
 
 #endif

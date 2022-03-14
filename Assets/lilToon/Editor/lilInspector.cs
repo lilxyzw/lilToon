@@ -151,8 +151,8 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
         #region
-        public const string currentVersionName = "1.2.10";
-        public const int currentVersionValue = 23;
+        public const string currentVersionName = "1.2.11";
+        public const int currentVersionValue = 24;
 
         private const string boothURL = "https://lilxyzw.booth.pm/";
         private const string githubURL = "https://github.com/lilxyzw/lilToon";
@@ -650,6 +650,7 @@ namespace lilToon
             private MaterialProperty shadowBlurMask;
             private MaterialProperty shadowAOShift;
             private MaterialProperty shadowAOShift2;
+            private MaterialProperty shadowPostAO;
             private MaterialProperty shadowColor;
             private MaterialProperty shadowColorTex;
             private MaterialProperty shadowNormalStrength;
@@ -1009,7 +1010,7 @@ namespace lilToon
             isFakeShadow    = !isMultiVariants && material.shader.name.Contains("FakeShadow");
             isOnePass       = material.shader.name.Contains("OnePass");
             isTwoPass       = material.shader.name.Contains("TwoPass");
-            isMulti         = material.shader.name.Contains("lilToonMulti");
+            isMulti         = material.shader.name.Contains("Multi");
             isCustomShader  = material.shader.name.Contains("Optional");
             isShowRenderMode = !isCustomShader;
             isStWr          = stencilPass.floatValue == (float)UnityEngine.Rendering.StencilOp.Replace;
@@ -2619,7 +2620,7 @@ namespace lilToon
 
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Outline
-                    if((!isRefr && !isFur && !isGem && !isCustomShader) || (isCustomShader && isOutl))
+                    if(!isRefr && !isFur && !isGem && (!isCustomShader || isCustomShader && (isOutl || isMulti)))
                     {
                         DrawOutlineSettings(material);
                     }
@@ -3422,6 +3423,7 @@ namespace lilToon
             shadowBlurMask = FindProperty("_ShadowBlurMask", props, false);
             shadowAOShift = FindProperty("_ShadowAOShift", props, false);
             shadowAOShift2 = FindProperty("_ShadowAOShift2", props, false);
+            shadowPostAO = FindProperty("_ShadowPostAO", props, false);
             shadowColor = FindProperty("_ShadowColor", props, false);
             shadowColorTex = FindProperty("_ShadowColorTex", props, false);
             shadowNormalStrength = FindProperty("_ShadowNormalStrength", props, false);
@@ -4241,8 +4243,49 @@ namespace lilToon
             EditorUtility.SetDirty(shaderSetting);
             AssetDatabase.SaveAssets();
 
+            string shaderSettingString = BuildShaderSettingString(shaderSetting, true);
+            string shaderSettingStringBuf = "";
+            string shaderSettingHLSLPath = GetShaderSettingHLSLPath();
+            if(File.Exists(shaderSettingHLSLPath))
+            {
+                StreamReader sr = new StreamReader(shaderSettingHLSLPath);
+                shaderSettingStringBuf = sr.ReadToEnd();
+                sr.Close();
+            }
+
+            if(shaderSettingString != shaderSettingStringBuf)
+            {
+                StreamWriter sw = new StreamWriter(shaderSettingHLSLPath,false);
+                sw.Write(shaderSettingString);
+                sw.Close();
+                lilToonInspector.isUPM = lilToonInspector.GetEditorPath().Contains("Packages");
+                string[] shaderFolderPaths = GetShaderFolderPaths();
+                bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;
+                foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
+                {
+                    string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
+                    RewriteSettingPath(shaderPath);
+                    RewriteReceiveShadow(shaderPath, isShadowReceive);
+                    RewriteForwardAdd(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
+                    RewriteVertexLight(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
+                    RewriteLightmap(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
+                }
+                foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader"))
+                {
+                    string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
+                    if(!shaderPath.Contains(".lilcontainer")) continue;
+                    AssetDatabase.ImportAsset(shaderPath);
+                }
+                AssetDatabase.SaveAssets();
+                AssetDatabase.ImportAsset(shaderSettingHLSLPath);
+                AssetDatabase.Refresh();
+            }
+        }
+
+        public static string BuildShaderSettingString(lilToonSetting shaderSetting, bool isFile)
+        {
             StringBuilder sb = new StringBuilder();
-            sb.Append("#ifndef LIL_SETTING_INCLUDED\r\n#define LIL_SETTING_INCLUDED\r\n\r\n");
+            if(isFile) sb.Append("#ifndef LIL_SETTING_INCLUDED\r\n#define LIL_SETTING_INCLUDED\r\n\r\n");
             if(shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV) sb.Append("#define LIL_FEATURE_ANIMATE_MAIN_UV\r\n");
             if(shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION) sb.Append("#define LIL_FEATURE_MAIN_TONE_CORRECTION\r\n");
             if(shaderSetting.LIL_FEATURE_MAIN_GRADATION_MAP) sb.Append("#define LIL_FEATURE_MAIN_GRADATION_MAP\r\n");
@@ -4354,37 +4397,25 @@ namespace lilToon
             if(shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD) sb.Append("#define LIL_OPTIMIZE_USE_FORWARDADD\r\n");
             if(shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT) sb.Append("#define LIL_OPTIMIZE_USE_VERTEXLIGHT\r\n");
             if(shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP) sb.Append("#define LIL_OPTIMIZE_USE_LIGHTMAP\r\n");
-            sb.Append("\r\n#endif");
-            string shaderSettingString = sb.ToString();
+            if(isFile) sb.Append("\r\n#endif");
 
-            string shaderSettingStringBuf = "";
-            string shaderSettingHLSLPath = GetShaderSettingHLSLPath();
-            if(File.Exists(shaderSettingHLSLPath))
+            if(!isFile)
             {
-                StreamReader sr = new StreamReader(shaderSettingHLSLPath);
-                shaderSettingStringBuf = sr.ReadToEnd();
-                sr.Close();
-            }
-
-            if(shaderSettingString != shaderSettingStringBuf)
-            {
-                StreamWriter sw = new StreamWriter(shaderSettingHLSLPath,false);
-                sw.Write(shaderSettingString);
-                sw.Close();
-                string[] shaderFolderPaths = GetShaderFolderPaths();
-                bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;
-                foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
+                if(!(shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) && !shaderSetting.LIL_FEATURE_BACKLIGHT)
                 {
-                    string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
-                    RewriteReceiveShadow(shaderPath, isShadowReceive);
-                    RewriteForwardAdd(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
-                    RewriteVertexLight(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
-                    RewriteLightmap(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
+                    sb.Append("#pragma lil_skip_variants_shadows\r\n");
                 }
-                AssetDatabase.SaveAssets();
-                AssetDatabase.ImportAsset(shaderSettingHLSLPath);
-                AssetDatabase.Refresh();
+                if(!shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT) sb.Append("#pragma lil_skip_variants_addlight\r\n");
+                if(!shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP) sb.Append("#pragma lil_skip_variants_lightmaps\r\n");
             }
+            return sb.ToString();
+        }
+
+        public static string BuildShaderSettingString(bool isFile)
+        {
+            lilToonSetting shaderSetting = null;
+            InitializeShaderSetting(ref shaderSetting);
+            return BuildShaderSettingString(shaderSetting, isFile);
         }
 
         public static bool EqualsShaderSetting(lilToonSetting ssA, lilToonSetting ssB)
@@ -4732,6 +4763,32 @@ namespace lilToon
                 {
                     AssetDatabase.ImportAsset(shaderPath);
                 }
+            }
+        }
+
+        public static void RewriteSettingPath(string path)
+        {
+            if(string.IsNullOrEmpty(path) || !File.Exists(path)) return;
+            StreamReader sr = new StreamReader(path);
+            string s = sr.ReadToEnd();
+            sr.Close();
+            if(lilToonInspector.isUPM && s.Contains("#include \"../../lilToonSetting/lil_setting.hlsl\""))
+            {
+                s = s.Replace(
+                    "#include \"../../lilToonSetting/lil_setting.hlsl\"",
+                    "#include \"Assets/lilToonSetting/lil_setting.hlsl\"");
+                StreamWriter sw = new StreamWriter(path,false);
+                sw.Write(s);
+                sw.Close();
+            }
+            else if(!lilToonInspector.isUPM && s.Contains("#include \"Assets/lilToonSetting/lil_setting.hlsl\""))
+            {
+                s = s.Replace(
+                    "#include \"Assets/lilToonSetting/lil_setting.hlsl\"",
+                    "#include \"../../lilToonSetting/lil_setting.hlsl\"");
+                StreamWriter sw = new StreamWriter(path,false);
+                sw.Write(s);
+                sw.Close();
             }
         }
 
@@ -5531,6 +5588,9 @@ namespace lilToon
                         CopyProperty(shadowBorder);
                         CopyProperty(shadowBlur);
                         CopyProperty(shadowStrength);
+                        CopyProperty(shadowAOShift);
+                        CopyProperty(shadowAOShift2);
+                        CopyProperty(shadowPostAO);
                         CopyProperty(shadow2ndColor);
                         CopyProperty(shadow2ndNormalStrength);
                         CopyProperty(shadow2ndBorder);
@@ -6317,6 +6377,9 @@ namespace lilToon
                         PasteProperty(ref shadowBorder);
                         PasteProperty(ref shadowBlur);
                         PasteProperty(ref shadowStrength);
+                        PasteProperty(ref shadowAOShift);
+                        PasteProperty(ref shadowAOShift2);
+                        PasteProperty(ref shadowPostAO);
                         PasteProperty(ref shadow2ndColor);
                         PasteProperty(ref shadow2ndNormalStrength);
                         PasteProperty(ref shadow2ndBorder);
@@ -7151,6 +7214,9 @@ namespace lilToon
                         ResetProperty(ref shadowBorder);
                         ResetProperty(ref shadowBlur);
                         ResetProperty(ref shadowStrength);
+                        ResetProperty(ref shadowAOShift);
+                        ResetProperty(ref shadowAOShift2);
+                        ResetProperty(ref shadowPostAO);
                         ResetProperty(ref shadow2ndColor);
                         ResetProperty(ref shadow2ndNormalStrength);
                         ResetProperty(ref shadow2ndBorder);
@@ -9384,6 +9450,7 @@ namespace lilToon
                         EditorGUI.indentLevel++;
                         m_MaterialEditor.ShaderProperty(shadowAOShift, "1st Scale|1st Offset|2nd Scale|2nd Offset");
                         if(CheckFeature(shaderSetting.LIL_FEATURE_SHADOW_3RD)) m_MaterialEditor.ShaderProperty(shadowAOShift2, "3rd Scale|3rd Offset");
+                        m_MaterialEditor.ShaderProperty(shadowPostAO, "Post AO");
                         EditorGUI.indentLevel--;
                     }
                     DrawLine();
@@ -9492,9 +9559,12 @@ namespace lilToon
             if(edSet.isShowOutline)
             {
                 EditorGUILayout.BeginVertical(boxOuter);
-                if(isShowRenderMode && isOutl != EditorGUILayout.ToggleLeft(GetLoc("sOutline"), isOutl, customToggleFont))
+                if(isShowRenderMode)
                 {
-                    SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, !isOutl, isLite, isStWr, isTess);
+                    if(isOutl != EditorGUILayout.ToggleLeft(GetLoc("sOutline"), isOutl, customToggleFont))
+                    {
+                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, !isOutl, isLite, isStWr, isTess);
+                    }
                 }
                 else if(isCustomShader)
                 {

@@ -203,7 +203,7 @@ Shader "Hidden/lilToonLiteOutline"
 /*
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Geometry"}
+        Tags {"RenderType" = "HDLitShader" "Queue" = "Geometry"}
         UsePass "Hidden/ltspass_lite_opaque/FORWARD"
         UsePass "Hidden/ltspass_lite_opaque/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_lite_opaque/SHADOW_CASTER"

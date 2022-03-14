@@ -1,0 +1,22 @@
+Shader "*LIL_SHADER_NAME*/Multi"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultOpaque"
+        lilProperties "lilCustomShaderProperties.lilblock"
+    }
+
+    HLSLINCLUDE
+        #include "custom.hlsl"
+    ENDHLSL
+
+    lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Geometry"}
+    //lilSubShaderInsert "SubShaderInsert.lilblock"
+
+    lilSubShaderBRP "DefaultMulti"
+    lilSubShaderURP "DefaultMulti"
+    lilSubShaderHDRP "DefaultMulti"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

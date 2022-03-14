@@ -1,0 +1,22 @@
+Shader "Hidden/*LIL_SHADER_NAME*/MultiRefraction"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultRefraction"
+        lilProperties "lilCustomShaderProperties.lilblock"
+    }
+
+    HLSLINCLUDE
+        #include "custom.hlsl"
+    ENDHLSL
+
+    lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
+    //lilSubShaderInsert "SubShaderInsert.lilblock"
+
+    lilSubShaderBRP "DefaultMultiRefraction"
+    lilSubShaderURP "DefaultMultiRefraction"
+    lilSubShaderHDRP "DefaultMultiRefraction"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

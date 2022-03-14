@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.11] - 2022-xx-xx
+### 追加
+- AO Mapに`Post AO`を追加（影のトゥーン処理後にAO Mapを合成）
+- カスタムシェーダー用に独自フォーマットを追加
+
+### 修正
+- lilToonMultiのForwardAddパスで影が適用されていなかったのを修正
+- テッセレーションシェーダーが視界端でポリゴンが消える場合があるのを修正
+- URP、HDRPのVR環境での挙動を修正
+
 ## [1.2.10] - 2022-03-06
 ### 追加
 - 複数シェーダーバリエーションを同時に編集できるウィンドウを追加（`Window/_lil/[Beta] lilToon Multi-Editor`）

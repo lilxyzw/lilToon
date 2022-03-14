@@ -203,7 +203,7 @@ Shader "Hidden/lilToonLiteCutoutOutline"
 /*
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "AlphaTest"}
+        Tags {"RenderType" = "HDLitShader" "Queue" = "AlphaTest"}
         UsePass "Hidden/ltspass_lite_cutout/FORWARD"
         UsePass "Hidden/ltspass_lite_cutout/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_lite_cutout/SHADOW_CASTER"

@@ -1,0 +1,61 @@
+    SubShader
+    {
+        Tags {*LIL_DOTS_SM_TAGS*}
+        HLSLINCLUDE
+            *LIL_SHADER_SETTING*
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+
+            #pragma lil_skip_variants_shadows
+            #pragma lil_skip_variants_lightmaps
+            #pragma lil_skip_variants_decals
+            #pragma lil_skip_variants_addlight
+            #pragma lil_skip_variants_addlightshadows
+            #pragma lil_skip_variants_probevolumes
+            #pragma lil_skip_variants_ao
+            #pragma lil_skip_variants_lightlists
+            #pragma lil_skip_variants_reflections
+        ENDHLSL
+
+        Pass
+        {
+            Name "FORWARD"
+            Tags {"LightMode" = "ForwardOnly"}
+
+            Stencil
+            {
+                WriteMask 6
+                Ref 0
+                Comp Always
+                Pass Replace
+            }
+            Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma lil_multi_compile_forward
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pipeline.hlsl"
+            // Insert functions and includes that depend on Unity here
+            *LIL_SUBSHADER_INSERT*
+
+            #include "Includes/lil_pass_forward_fakeshadow.hlsl"
+
+            ENDHLSL
+        }
+    }
+    Fallback "HDRP/Unlit"

@@ -148,6 +148,7 @@ Shader "lilToon"
         [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
         [lilFFFF]       _ShadowAOShift              ("1st Scale|1st Offset|2nd Scale|2nd Offset", Vector) = (1,0,1,0)
         [lilFF]         _ShadowAOShift2             ("3rd Scale|3rd Offset", Vector) = (1,0,1,0)
+        [lilToggle]     _ShadowPostAO               ("Post AO", Int) = 0
                         _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
         [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
                         _ShadowNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
@@ -489,7 +490,7 @@ Shader "lilToon"
 /*
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader" "Queue" = "Geometry"}
+        Tags {"RenderType" = "HDLitShader" "Queue" = "Geometry"}
         UsePass "Hidden/ltspass_opaque/FORWARD"
         UsePass "Hidden/ltspass_opaque/SHADOW_CASTER"
         UsePass "Hidden/ltspass_opaque/DEPTHONLY"

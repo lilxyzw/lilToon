@@ -1,0 +1,11 @@
+    SubShader
+    {
+        Tags {*LIL_SUBSHADER_TAGS*}
+        UsePass "*LIL_PASS_SHADER_NAME*/FORWARD"
+        UsePass "*LIL_PASS_SHADER_NAME*/SHADOW_CASTER"
+        UsePass "*LIL_PASS_SHADER_NAME*/DEPTHONLY"
+        UsePass "*LIL_PASS_SHADER_NAME*/DEPTHNORMALS"
+        UsePass "*LIL_PASS_SHADER_NAME*/UNIVERSAL2D"
+        UsePass "*LIL_PASS_SHADER_NAME*/META"
+    }
+    Fallback "Universal Render Pipeline/Unlit"

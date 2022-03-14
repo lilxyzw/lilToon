@@ -1,14 +1,14 @@
 #ifndef LIL_PASS_MOTIONVECTOR_INCLUDED
 #define LIL_PASS_MOTIONVECTOR_INCLUDED
 
-#include "Includes/lil_pipeline.hlsl"
-#include "Includes/lil_common_appdata.hlsl"
+#include "lil_pipeline.hlsl"
+#include "lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Motion Vector
 float2 lilCalculateMotionVector(float4 positionCS, float4 previousPositionCS)
 {
-    positionCS.xy = positionCS.xy / _ScreenParams.xy * 2.0 - 1.0;
+    positionCS.xy = positionCS.xy / LIL_SCREENPARAMS.xy * 2.0 - 1.0;
     #if UNITY_UV_STARTS_AT_TOP
         positionCS.y = -positionCS.y;
     #endif
@@ -104,11 +104,11 @@ struct v2f
 //------------------------------------------------------------------------------------------------------------------------------
 // Shader
 #if defined(LIL_FUR)
-    #include "Includes/lil_common_vert_fur.hlsl"
+    #include "lil_common_vert_fur.hlsl"
 #else
-    #include "Includes/lil_common_vert.hlsl"
+    #include "lil_common_vert.hlsl"
 #endif
-#include "Includes/lil_common_frag.hlsl"
+#include "lil_common_frag.hlsl"
 
 #if defined(WRITE_MSAA_DEPTH)
 #define SV_TARGET_NORMAL SV_Target2
@@ -130,15 +130,15 @@ void frag(v2f input
     #endif
 )
 {
+    LIL_SETUP_INSTANCE_ID(input);
+    LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
     lilFragData fd = lilInitFragData();
 
     BEFORE_UNPACK_V2F
     OVERRIDE_UNPACK_V2F
     LIL_COPY_VFACE(fd.facing);
-    LIL_SETUP_INSTANCE_ID(input);
-    LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
-    #include "Includes/lil_common_frag_alpha.hlsl"
+    #include "lil_common_frag_alpha.hlsl"
 
     float2 motionVector = lilCalculateMotionVector(input.positionCS, input.previousPositionCS);
     outMotionVector = float4(motionVector * 0.5, 0.0, 0.0);
@@ -170,7 +170,7 @@ void frag(v2f input
 }
 
 #if defined(LIL_TESSELLATION)
-    #include "Includes/lil_tessellation.hlsl"
+    #include "lil_tessellation.hlsl"
 #endif
 
 #endif

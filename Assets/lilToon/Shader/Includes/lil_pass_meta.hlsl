@@ -2,8 +2,8 @@
 #define LIL_PASS_META_INCLUDED
 
 #define LIL_WITHOUT_ANIMATION
-#include "Includes/lil_pipeline.hlsl"
-#include "Includes/lil_common_appdata.hlsl"
+#include "lil_pipeline.hlsl"
+#include "lil_common_appdata.hlsl"
 
 #if defined(LIL_HDRP)
     CBUFFER_START(UnityMetaPass)
@@ -45,14 +45,16 @@ struct v2f
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Shader
-#include "Includes/lil_common_vert.hlsl"
-#include "Includes/lil_common_frag.hlsl"
+#include "lil_common_vert.hlsl"
+#include "lil_common_frag.hlsl"
 
 float4 frag(v2f input) : SV_Target
 {
     float facing = 1.0;
     //------------------------------------------------------------------------------------------------------------------------------
     // Initialize
+    LIL_SETUP_INSTANCE_ID(input);
+    LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
     lilFragData fd = lilInitFragData();
 
     BEFORE_UNPACK_V2F

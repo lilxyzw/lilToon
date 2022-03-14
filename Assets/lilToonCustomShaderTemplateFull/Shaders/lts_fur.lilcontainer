@@ -1,0 +1,31 @@
+Shader "Hidden/*LIL_SHADER_NAME*/Fur"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultFurTransparent"
+        lilProperties "lilCustomShaderProperties.lilblock"
+    }
+
+    HLSLINCLUDE
+        //----------------------------------------------------------------------------------------------------------------------
+        // Macro
+
+        // Rendering mode
+        // 0 : Opaque
+        // 1 : Cutout
+        // 2 : Transparent
+        #define LIL_RENDER 2
+
+        #include "custom.hlsl"
+    ENDHLSL
+
+    lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "Transparent"}
+    //lilSubShaderInsert "SubShaderInsert.lilblock"
+
+    lilSubShaderBRP "DefaultFur"
+    lilSubShaderURP "DefaultFur"
+    lilSubShaderHDRP "DefaultFur"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

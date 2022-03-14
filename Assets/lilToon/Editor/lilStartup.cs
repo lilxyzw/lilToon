@@ -26,26 +26,11 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Fix for UPM
-            StreamReader csr = new StreamReader(shaderCommonPath);
-            string cs = csr.ReadToEnd();
-            csr.Close();
-            if(lilToonInspector.isUPM && cs.Contains("#include \"../../../lilToonSetting/lil_setting.hlsl\""))
+            string[] shaderFolderPaths = lilToonInspector.GetShaderFolderPaths();
+            foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
             {
-                cs = cs.Replace(
-                    "#include \"../../../lilToonSetting/lil_setting.hlsl\"",
-                    "#include \"Assets/lilToonSetting/lil_setting.hlsl\"");
-                StreamWriter csw = new StreamWriter(shaderCommonPath,false);
-                csw.Write(cs);
-                csw.Close();
-            }
-            else if(!lilToonInspector.isUPM && cs.Contains("#include \"Assets/lilToonSetting/lil_setting.hlsl\""))
-            {
-                cs = cs.Replace(
-                    "#include \"Assets/lilToonSetting/lil_setting.hlsl\"",
-                    "#include \"../../../lilToonSetting/lil_setting.hlsl\"");
-                StreamWriter csw = new StreamWriter(shaderCommonPath,false);
-                csw.Write(cs);
-                csw.Close();
+                string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
+                lilToonInspector.RewriteSettingPath(shaderPath);
             }
 
             //------------------------------------------------------------------------------------------------------------------------------

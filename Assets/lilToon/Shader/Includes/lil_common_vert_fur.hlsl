@@ -50,7 +50,7 @@ v2g vert(appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Vertex Modification
-    #include "Includes/lil_vert_encryption.hlsl"
+    #include "lil_vert_encryption.hlsl"
     lilCustomVertexOS(input, uvMain, input.positionOS);
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ v2g vert(appdata input)
             input.previousPositionOS -= input.precomputedVelocity;
         #endif
         #define LIL_MODIFY_PREVPOS
-        #include "Includes/lil_vert_encryption.hlsl"
+        #include "lil_vert_encryption.hlsl"
         lilCustomVertexOS(input, uvMain, input.previousPositionOS);
         #undef LIL_MODIFY_PREVPOS
 
@@ -202,6 +202,9 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
     LIL_BRANCH
     if(_Invisible) return;
 
+    LIL_SETUP_INSTANCE_ID(input[0]);
+    LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input[0]);
+
     //------------------------------------------------------------------------------------------------------------------------------
     // Copy
     #if defined(LIL_ONEPASS_FUR)
@@ -230,7 +233,6 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                 outputBase[i].furLayer = -2;
             #endif
         }
-        LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input[0]);
 
         // Front
         LIL_BRANCH
@@ -257,7 +259,6 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
     LIL_INITIALIZE_STRUCT(v2f, output);
     LIL_TRANSFER_INSTANCE_ID(input[0], output);
     LIL_TRANSFER_VERTEX_OUTPUT_STEREO(input[0], output);
-    LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input[0]);
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Mid

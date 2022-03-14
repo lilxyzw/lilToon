@@ -1,6 +1,7 @@
 Shader "Hidden/ltspass_tess_transparent"
 {
     HLSLINCLUDE
+        #include "../../lilToonSetting/lil_setting.hlsl"
         #pragma target 5.0
         #define LIL_RENDER 2
         #define LIL_TESSELLATION
@@ -14,7 +15,7 @@ Shader "Hidden/ltspass_tess_transparent"
         // Forward Back
         Pass
         {
-            Name "FORWARD"
+            Name "FORWARD_BACK"
             Tags {"LightMode" = "ForwardBase"}
 
             Stencil
@@ -1061,7 +1062,7 @@ Shader "Hidden/ltspass_tess_transparent"
     ENDHLSL
     SubShader
     {
-        Tags {"RenderPipeline"="HDRenderPipeline" "RenderType" = "HDLitShader"}
+        Tags {"RenderType" = "HDLitShader"}
         // Forward
         Pass
         {

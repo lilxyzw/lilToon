@@ -62,6 +62,11 @@ Shader "Hidden/ltsother_baker"
                         _PackingChannel3            ("Channel", Int) = 0
                         _PackingChannel4            ("Channel", Int) = 0
     }
+
+    HLSLINCLUDE
+        #include "../../lilToonSetting/lil_setting.hlsl"
+    ENDHLSL
+
     SubShader
     {
         Cull Off ZWrite Off ZTest Always

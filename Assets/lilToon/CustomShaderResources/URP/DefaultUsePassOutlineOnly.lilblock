@@ -1,0 +1,6 @@
+    SubShader
+    {
+        Tags {*LIL_SUBSHADER_TAGS*}
+        UsePass "*LIL_PASS_SHADER_NAME*/FORWARD_OUTLINE"
+    }
+    Fallback "Universal Render Pipeline/Unlit"

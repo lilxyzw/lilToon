@@ -187,7 +187,7 @@
     #define LIL_UNPACK_POSITION_CS(i,o) \
         o.positionCS = i.positionCS; \
         o.positionSS = lilTransformCStoSSFrag(i.positionCS); \
-        o.uvScn = i.positionCS.xy / _ScreenParams.xy; \
+        o.uvScn = i.positionCS.xy / LIL_SCREENPARAMS.xy; \
         LIL_SCREEN_UV_STEREO_FIX(i,o)
 #else
     #define LIL_UNPACK_POSITION_CS(i,o)
@@ -713,29 +713,19 @@
             #endif
 
             // Shade
-            float ln1 = saturate(dot(fd.L,N1)*0.5+0.5);
-            float ln2 = saturate(dot(fd.L,N2)*0.5+0.5);
+            float4 lns = 1.0;
+            lns.x = saturate(dot(fd.L,N1)*0.5+0.5);
+            lns.y = saturate(dot(fd.L,N2)*0.5+0.5);
             #if defined(LIL_FEATURE_SHADOW_3RD)
-                float ln3 = saturate(dot(fd.L,N3)*0.5+0.5);
+                lns.z = saturate(dot(fd.L,N3)*0.5+0.5);
             #endif
-            if(Exists_ShadowBorderMask)
-            {
-                float4 shadowBorderMask = LIL_SAMPLE_2D(_ShadowBorderMask, samp, fd.uvMain);
-                ln1 *= saturate(shadowBorderMask.r * _ShadowAOShift.x + _ShadowAOShift.y);
-                ln2 *= saturate(shadowBorderMask.g * _ShadowAOShift.z + _ShadowAOShift.w);
-                #if defined(LIL_FEATURE_SHADOW_3RD)
-                    ln3 *= saturate(shadowBorderMask.b * _ShadowAOShift2.x + _ShadowAOShift2.y);
-                #endif
-            }
 
             // Shadow
             #if (defined(LIL_USE_SHADOW) || defined(LIL_LIGHTMODE_SHADOWMASK)) && defined(LIL_FEATURE_RECEIVE_SHADOW)
-                if(_ShadowReceive) ln1 *= saturate(fd.attenuation + distance(fd.L, fd.origL));
+                if(_ShadowReceive) lns.x *= saturate(fd.attenuation + distance(fd.L, fd.origL));
             #endif
 
-            float lnB = ln1;
-
-            // Toon
+            // Blur Scale
             float shadowBlur = _ShadowBlur;
             float shadow2ndBlur = _Shadow2ndBlur;
             #if defined(LIL_FEATURE_SHADOW_3RD)
@@ -750,24 +740,50 @@
                     shadow3rdBlur *= shadowBlurMask.b;
                 #endif
             }
-            ln1 = lilTooning(ln1, _ShadowBorder, shadowBlur);
-            ln2 = lilTooning(ln2, _Shadow2ndBorder, shadow2ndBlur);
-            lnB = lilTooning(lnB, _ShadowBorder, shadowBlur, _ShadowBorderRange);
-            #if defined(LIL_FEATURE_SHADOW_3RD)
-                ln3 = lilTooning(ln3, _Shadow3rdBorder, shadow3rdBlur);
-            #endif
+
+            // AO Map & Toon
+            if(Exists_ShadowBorderMask)
+            {
+                float4 shadowBorderMask = LIL_SAMPLE_2D(_ShadowBorderMask, samp, fd.uvMain);
+                shadowBorderMask.r = saturate(shadowBorderMask.r * _ShadowAOShift.x + _ShadowAOShift.y);
+                shadowBorderMask.g = saturate(shadowBorderMask.g * _ShadowAOShift.z + _ShadowAOShift.w);
+                #if defined(LIL_FEATURE_SHADOW_3RD)
+                    shadowBorderMask.b = saturate(shadowBorderMask.b * _ShadowAOShift2.x + _ShadowAOShift2.y);
+                #endif
+                lns.xyz = _ShadowPostAO ? lns.xyz : lns.xyz * shadowBorderMask.rgb;
+
+                lns.w = lns.x;
+                lns.x = lilTooningNoSaturate(lns.x, _ShadowBorder, shadowBlur);
+                lns.y = lilTooningNoSaturate(lns.y, _Shadow2ndBorder, shadow2ndBlur);
+                lns.w = lilTooningNoSaturate(lns.w, _ShadowBorder, shadowBlur, _ShadowBorderRange);
+                #if defined(LIL_FEATURE_SHADOW_3RD)
+                    lns.z = lilTooningNoSaturate(lns.z, _Shadow3rdBorder, shadow3rdBlur);
+                #endif
+                lns = _ShadowPostAO ? lns * shadowBorderMask.rgbr : lns;
+                lns = saturate(lns);
+            }
+            else
+            {
+                lns.w = lns.x;
+                lns.x = lilTooning(lns.x, _ShadowBorder, shadowBlur);
+                lns.y = lilTooning(lns.y, _Shadow2ndBorder, shadow2ndBlur);
+                lns.w = lilTooning(lns.w, _ShadowBorder, shadowBlur, _ShadowBorderRange);
+                #if defined(LIL_FEATURE_SHADOW_3RD)
+                    lns.z = lilTooning(lns.z, _Shadow3rdBorder, shadow3rdBlur);
+                #endif
+            }
 
             // Force shadow on back face
             float bfshadow = (fd.facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
-            ln1 *= bfshadow;
-            ln2 *= bfshadow;
-            lnB *= bfshadow;
+            lns.x *= bfshadow;
+            lns.y *= bfshadow;
+            lns.w *= bfshadow;
             #if defined(LIL_FEATURE_SHADOW_3RD)
-                ln3 *= bfshadow;
+                lns.z *= bfshadow;
             #endif
 
             // Copy
-            fd.shadowmix = ln1;
+            fd.shadowmix = lns.x;
 
             // Strength
             float shadowStrength = _ShadowStrength;
@@ -775,7 +791,7 @@
                 shadowStrength = lilSRGBToLinear(shadowStrength);
             #endif
             if(Exists_ShadowStrengthMask) shadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, samp, fd.uvMain).r;
-            ln1 = lerp(1.0, ln1, shadowStrength);
+            lns.x = lerp(1.0, lns.x, shadowStrength);
 
             // Shadow Color 1
             float4 shadowColorTex = 0.0;
@@ -786,16 +802,16 @@
             float4 shadow2ndColorTex = 0.0;
             if(Exists_Shadow2ndColorTex) shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, fd.uvMain);
             shadow2ndColorTex.rgb = lerp(fd.albedo, shadow2ndColorTex.rgb, shadow2ndColorTex.a) * _Shadow2ndColor.rgb;
-            ln2 = _Shadow2ndColor.a - ln2 * _Shadow2ndColor.a;
-            indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, ln2);
+            lns.y = _Shadow2ndColor.a - lns.y * _Shadow2ndColor.a;
+            indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, lns.y);
 
             #if defined(LIL_FEATURE_SHADOW_3RD)
                 // Shadow Color 3
                 float4 shadow3rdColorTex = 0.0;
                 if(Exists_Shadow3rdColorTex) shadow3rdColorTex = LIL_SAMPLE_2D(_Shadow3rdColorTex, samp, fd.uvMain);
                 shadow3rdColorTex.rgb = lerp(fd.albedo, shadow3rdColorTex.rgb, shadow3rdColorTex.a) * _Shadow3rdColor.rgb;
-                ln3 = _Shadow3rdColor.a - ln3 * _Shadow3rdColor.a;
-                indirectCol = lerp(indirectCol, shadow3rdColorTex.rgb, ln3);
+                lns.z = _Shadow3rdColor.a - lns.z * _Shadow3rdColor.a;
+                indirectCol = lerp(indirectCol, shadow3rdColorTex.rgb, lns.z);
             #endif
 
             // Multiply Main Color
@@ -805,15 +821,17 @@
             float3 directCol = fd.albedo * fd.lightColor;
             indirectCol = indirectCol * fd.lightColor;
 
-            // Environment Light
-            indirectCol = lerp(indirectCol, fd.albedo, fd.indLightColor);
+            #if !defined(LIL_PASS_FORWARDADD)
+                // Environment Light
+                indirectCol = lerp(indirectCol, fd.albedo, fd.indLightColor);
+            #endif
             // Fix
             indirectCol = min(indirectCol, directCol);
             // Gradation
-            indirectCol = lerp(indirectCol, directCol, lnB * _ShadowBorderColor.rgb);
+            indirectCol = lerp(indirectCol, directCol, lns.w * _ShadowBorderColor.rgb);
 
             // Mix
-            fd.col.rgb = lerp(indirectCol, directCol, ln1);
+            fd.col.rgb = lerp(indirectCol, directCol, lns.x);
         }
         else
         {

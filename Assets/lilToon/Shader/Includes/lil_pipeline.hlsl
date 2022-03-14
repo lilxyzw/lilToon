@@ -8,7 +8,6 @@
 #include "UnityCG.cginc"
 #include "AutoLight.cginc"
 #include "Lighting.cginc"
-#include "Includes/lil_common.hlsl"
 #include "UnityMetaPass.cginc"
 //
 // BRP End
@@ -19,7 +18,6 @@
 #define LIL_LWRP
 #include "Packages/com.unity.render-pipelines.lightweight/ShaderLibrary/Core.hlsl"
 #include "Packages/com.unity.render-pipelines.lightweight/ShaderLibrary/Lighting.hlsl"
-#include "Includes/lil_common.hlsl"
 #include "Packages/com.unity.render-pipelines.lightweight/ShaderLibrary/MetaInput.hlsl"
 */
 // LWRP End
@@ -30,7 +28,6 @@
 #define LIL_URP
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-#include "Includes/lil_common.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/MetaInput.hlsl"
 */
 // URP End
@@ -63,9 +60,9 @@
 #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/LightLoop/LightLoopDef.hlsl"
 #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Lighting/LightEvaluation.hlsl"
 #include "Packages/com.unity.render-pipelines.high-definition/Runtime/Material/MaterialEvaluation.hlsl"
-
-#include "Includes/lil_common.hlsl"
 */
 // HDRP End
+
+#include "lil_common.hlsl"
 
 #endif

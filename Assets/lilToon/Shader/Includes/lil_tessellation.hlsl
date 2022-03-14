@@ -34,6 +34,7 @@ lilTessellationFactors hullConst(InputPatch<appdata, 3> input)
 {
     lilTessellationFactors output;
     LIL_INITIALIZE_STRUCT(lilTessellationFactors, output);
+    LIL_SETUP_INSTANCE_ID(input[0]);
 
     if(_Invisible) return output;
 
