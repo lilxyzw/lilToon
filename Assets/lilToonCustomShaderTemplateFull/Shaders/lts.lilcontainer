@@ -9,7 +9,6 @@ Shader "*LIL_SHADER_NAME*/Opaque"
 
     lilPassShaderName "Hidden/*LIL_SHADER_NAME*/ltspass_opaque"
     lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Geometry"}
-
     lilSubShaderBRP "DefaultUsePass"
     lilSubShaderURP "DefaultUsePass"
     lilSubShaderHDRP "DefaultUsePass"

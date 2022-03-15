@@ -11,8 +11,7 @@ Shader "*LIL_SHADER_NAME*/[Optional] FakeShadow"
     ENDHLSL
 
     lilSubShaderTags {"RenderType" = "Transparent" "Queue" = "AlphaTest+55"}
-    //lilSubShaderInsert "SubShaderInsert.lilblock"
-
+    lilSubShaderInsert "lilCustomShaderInsert.lilblock"
     lilSubShaderBRP "DefaultFakeShadow"
     lilSubShaderURP "DefaultFakeShadow"
     lilSubShaderHDRP "DefaultFakeShadow"

@@ -12,8 +12,7 @@ Shader "Hidden/*LIL_SHADER_NAME*/MultiGem"
     ENDHLSL
 
     lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
-    //lilSubShaderInsert "SubShaderInsert.lilblock"
-
+    lilSubShaderInsert "lilCustomShaderInsert.lilblock"
     lilSubShaderBRP "DefaultMultiGem"
     lilSubShaderURP "DefaultMultiGem"
     lilSubShaderHDRP "DefaultMultiGem"

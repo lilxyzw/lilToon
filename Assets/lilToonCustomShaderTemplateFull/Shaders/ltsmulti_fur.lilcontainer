@@ -12,8 +12,7 @@ Shader "Hidden/*LIL_SHADER_NAME*/MultiFur"
     ENDHLSL
 
     lilSubShaderTags {"RenderType" = "Transparent" "Queue" = "Transparent"}
-    //lilSubShaderInsert "SubShaderInsert.lilblock"
-
+    lilSubShaderInsert "lilCustomShaderInsert.lilblock"
     lilSubShaderBRP "DefaultMultiFur"
     lilSubShaderURP "DefaultMultiFur"
     lilSubShaderHDRP "DefaultMultiFur"

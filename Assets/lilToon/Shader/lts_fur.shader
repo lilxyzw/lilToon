@@ -544,6 +544,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -596,6 +597,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
@@ -645,6 +647,7 @@ Shader "Hidden/lilToonFur"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_PASS_FORWARDADD
+            #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -691,6 +694,7 @@ Shader "Hidden/lilToonFur"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_PASS_FORWARDADD
+            #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
@@ -718,6 +722,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }
@@ -773,6 +778,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_lwrp.hlsl"
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -819,6 +825,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_lwrp.hlsl"
             #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
@@ -841,6 +848,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_lwrp.hlsl"
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -866,6 +874,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_lwrp.hlsl"
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -887,6 +896,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_lwrp.hlsl"
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }
@@ -949,6 +959,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -1004,6 +1015,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
@@ -1028,6 +1040,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -1054,6 +1067,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -1080,6 +1094,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_depthnormals.hlsl"
 
             ENDHLSL
@@ -1119,6 +1134,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_universal2d.hlsl"
             ENDHLSL
         }
@@ -1139,6 +1155,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }
@@ -1193,6 +1210,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -1247,6 +1265,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
@@ -1270,6 +1289,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
             ENDHLSL
@@ -1295,6 +1315,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -1320,6 +1341,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_depthnormals.hlsl"
 
             ENDHLSL
@@ -1359,6 +1381,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_universal2d.hlsl"
             ENDHLSL
         }
@@ -1379,6 +1402,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }
@@ -1438,6 +1462,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_hdrp.hlsl"
             #include "Includes/lil_pass_forward.hlsl"
 
             ENDHLSL
@@ -1484,6 +1509,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_hdrp.hlsl"
             #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
@@ -1516,6 +1542,7 @@ Shader "Hidden/lilToonFur"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_ONEPASS_FUR
+            #include "Includes/lil_pipeline_hdrp.hlsl"
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -1559,6 +1586,7 @@ Shader "Hidden/lilToonFur"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_ONEPASS_FUR
+            #include "Includes/lil_pipeline_hdrp.hlsl"
             #include "Includes/lil_pass_depthonly.hlsl"
 
             ENDHLSL
@@ -1602,6 +1630,7 @@ Shader "Hidden/lilToonFur"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_ONEPASS_FUR
+            #include "Includes/lil_pipeline_hdrp.hlsl"
             #include "Includes/lil_pass_motionvectors.hlsl"
 
             ENDHLSL
@@ -1628,6 +1657,7 @@ Shader "Hidden/lilToonFur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_hdrp.hlsl"
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }

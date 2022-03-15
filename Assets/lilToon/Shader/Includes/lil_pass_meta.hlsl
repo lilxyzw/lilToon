@@ -2,7 +2,7 @@
 #define LIL_PASS_META_INCLUDED
 
 #define LIL_WITHOUT_ANIMATION
-#include "lil_pipeline.hlsl"
+#include "lil_common.hlsl"
 #include "lil_common_appdata.hlsl"
 
 #if defined(LIL_HDRP)

@@ -21,8 +21,7 @@ Shader "Hidden/*LIL_SHADER_NAME*/RefractionBlur"
     ENDHLSL
 
     lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
-    //lilSubShaderInsert "SubShaderInsert.lilblock"
-
+    lilSubShaderInsert "lilCustomShaderInsert.lilblock"
     lilSubShaderBRP "DefaultRefractionBlur"
     lilSubShaderURP "DefaultRefractionBlur"
     lilSubShaderHDRP "DefaultRefractionBlur"

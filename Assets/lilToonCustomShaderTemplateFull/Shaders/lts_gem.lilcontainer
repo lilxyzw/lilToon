@@ -21,8 +21,7 @@ Shader "Hidden/*LIL_SHADER_NAME*/Gem"
     ENDHLSL
 
     lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
-    //lilSubShaderInsert "SubShaderInsert.lilblock"
-
+    lilSubShaderInsert "lilCustomShaderInsert.lilblock"
     lilSubShaderBRP "DefaultGem"
     lilSubShaderURP "DefaultGem"
     lilSubShaderHDRP "DefaultGem"

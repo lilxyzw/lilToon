@@ -9,7 +9,6 @@ Shader "*LIL_SHADER_NAME*/[Optional] FurOnly/TwoPass"
 
     lilPassShaderName "Hidden/*LIL_SHADER_NAME*/FurTwoPass"
     lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "Transparent"}
-
     lilSubShaderBRP "DefaultUsePassFurOnlyTwoPass"
     lilSubShaderURP "DefaultUsePassFurOnly"
     lilSubShaderHDRP "DefaultUsePassFurOnly"

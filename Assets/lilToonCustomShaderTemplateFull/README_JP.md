@@ -2,6 +2,7 @@
 カスタムシェーダー用のテンプレートです。基本的には以下の4つのファイルのみを編集するだけで完結するようになっています。
 
 - Shaders/custom.hlsl
+- Shaders/custom_insert.hlsl
 - Shaders/lilCustomShaderDatas.lilblock
 - Shaders/lilCustomShaderProperties.lilblock
 - Editor/CustomInspector.cs
@@ -10,6 +11,9 @@
 
 ## custom.hlsl
 改変用のマクロが含まれたものです。マクロは旧仕様から変更はありません。
+
+## custom_insert.hlsl
+各パスでUnityのライブラリがincludeされた後に挿入されます。Unityの変数依存の関数などはこちらに記述します。
 
 ## lilCustomShaderDatas.lilblock
 1行目はシェーダー名、2行目はカスタムエディタ名になっています。

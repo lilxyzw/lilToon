@@ -9,7 +9,6 @@ Shader "Hidden/*LIL_SHADER_NAME*/Lite/TwoPassTransparent"
 
     lilPassShaderName "Hidden/*LIL_SHADER_NAME*/ltspass_lite_transparent"
     lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
-
     lilSubShaderBRP "DefaultUsePassNoForwardAddTwo"
     lilSubShaderURP "DefaultUsePass"
     lilSubShaderHDRP "DefaultUsePass"

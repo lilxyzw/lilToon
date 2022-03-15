@@ -12,8 +12,7 @@ Shader "Hidden/*LIL_SHADER_NAME*/MultiRefraction"
     ENDHLSL
 
     lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
-    //lilSubShaderInsert "SubShaderInsert.lilblock"
-
+    lilSubShaderInsert "lilCustomShaderInsert.lilblock"
     lilSubShaderBRP "DefaultMultiRefraction"
     lilSubShaderURP "DefaultMultiRefraction"
     lilSubShaderHDRP "DefaultMultiRefraction"

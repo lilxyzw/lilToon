@@ -4,6 +4,7 @@
         HLSLINCLUDE
             *LIL_SHADER_SETTING*
             #pragma target 3.5
+            #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_REFRACTION
 
             #pragma lil_skip_variants_decals
@@ -52,7 +53,8 @@
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pipeline.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             *LIL_SUBSHADER_INSERT*
 
@@ -100,7 +102,8 @@
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pipeline.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             *LIL_SUBSHADER_INSERT*
 
@@ -130,7 +133,8 @@
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pipeline.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             *LIL_SUBSHADER_INSERT*
 
@@ -156,7 +160,8 @@
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Includes/lil_pipeline.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             *LIL_SUBSHADER_INSERT*
 

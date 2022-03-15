@@ -286,7 +286,7 @@ namespace lilToon
             if(rpname == "URP" && !subpath.Contains("UsePass"))
             {
                 StringBuilder sb1 = new StringBuilder(ReadTextFile(subpath));
-                StringBuilder sb2 = sb1;
+                StringBuilder sb2 = new StringBuilder(sb1.ToString());
 
                 sb1.Replace(dotsSMTagsInsert, " \"ShaderModel\" = \"4.5\"");
                 sb1.Replace(dotsSMPragmaInsert, "#pragma target 4.5\r\n            #pragma exclude_renderers gles gles3 glcore");
@@ -296,7 +296,7 @@ namespace lilToon
                 sb.AppendLine();
 
                 sb2.Replace(dotsSMTagsInsert, "");
-                sb1.Replace(dotsSMPragmaInsert, "#pragma only_renderers gles gles3 glcore d3d11");
+                sb2.Replace(dotsSMPragmaInsert, "#pragma only_renderers gles gles3 glcore d3d11");
                 sb2.Replace(dotsSMPragmaInsert35, "#pragma target 3.5\r\n            #pragma only_renderers gles gles3 glcore d3d11");
                 ReplaceMultiCompiles(ref sb2, version, indent, false);
                 sb.AppendLine(sb2.ToString());

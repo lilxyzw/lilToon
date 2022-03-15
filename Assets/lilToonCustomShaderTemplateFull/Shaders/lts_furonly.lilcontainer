@@ -9,7 +9,6 @@ Shader "*LIL_SHADER_NAME*/[Optional] FurOnly/Transparent"
 
     lilPassShaderName "Hidden/*LIL_SHADER_NAME*/Fur"
     lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "Transparent"}
-
     lilSubShaderBRP "DefaultUsePassFurOnly"
     lilSubShaderURP "DefaultUsePassFurOnly"
     lilSubShaderHDRP "DefaultUsePassFurOnly"

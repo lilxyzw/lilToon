@@ -12,8 +12,7 @@ Shader "*LIL_SHADER_NAME*/Multi"
     ENDHLSL
 
     lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Geometry"}
-    //lilSubShaderInsert "SubShaderInsert.lilblock"
-
+    lilSubShaderInsert "lilCustomShaderInsert.lilblock"
     lilSubShaderBRP "DefaultMulti"
     lilSubShaderURP "DefaultMulti"
     lilSubShaderHDRP "DefaultMulti"

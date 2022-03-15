@@ -99,6 +99,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_pass_forward_fakeshadow.hlsl"
             ENDHLSL
         }
@@ -151,6 +152,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_lwrp.hlsl"
             #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
             ENDHLSL
@@ -211,6 +213,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
             ENDHLSL
@@ -264,6 +267,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
             ENDHLSL
@@ -319,6 +323,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #include "Includes/lil_pipeline_hdrp.hlsl"
             #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
             ENDHLSL

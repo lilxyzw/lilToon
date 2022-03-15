@@ -1,7 +1,7 @@
 #ifndef LIL_PASS_FORWARD_FUR_INCLUDED
 #define LIL_PASS_FORWARD_FUR_INCLUDED
 
-#include "lil_pipeline.hlsl"
+#include "lil_common.hlsl"
 #include "lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------

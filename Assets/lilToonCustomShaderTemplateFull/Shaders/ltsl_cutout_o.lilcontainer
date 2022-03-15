@@ -9,7 +9,6 @@ Shader "Hidden/*LIL_SHADER_NAME*/Lite/CutoutOutline"
 
     lilPassShaderName "Hidden/*LIL_SHADER_NAME*/ltspass_lite_cutout"
     lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
-
     lilSubShaderBRP "DefaultUsePassOutline"
     lilSubShaderURP "DefaultUsePassOutline"
     lilSubShaderHDRP "DefaultUsePassOutline"

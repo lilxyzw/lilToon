@@ -9,7 +9,6 @@ Shader "Hidden/*LIL_SHADER_NAME*/Tessellation/Opaque"
 
     lilPassShaderName "Hidden/*LIL_SHADER_NAME*/ltspass_tess_opaque"
     lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Geometry"}
-
     lilSubShaderBRP "DefaultUsePass"
     lilSubShaderURP "DefaultUsePass"
     lilSubShaderHDRP "DefaultUsePass"

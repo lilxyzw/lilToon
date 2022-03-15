@@ -548,6 +548,7 @@ Shader "Hidden/lilToonFurTwoPass"
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_FUR_PRE
+            #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL
@@ -602,6 +603,7 @@ Shader "Hidden/lilToonFurTwoPass"
             // Pass
             #define LIL_FUR_PRE
             #define LIL_PASS_FORWARDADD
+            #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_pass_forward_fur.hlsl"
 
             ENDHLSL

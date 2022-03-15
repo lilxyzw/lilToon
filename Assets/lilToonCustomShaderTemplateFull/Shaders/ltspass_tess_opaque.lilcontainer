@@ -13,8 +13,7 @@ Shader "Hidden/*LIL_SHADER_NAME*/ltspass_tess_opaque"
         #include "custom.hlsl"
     ENDHLSL
 
-    //lilSubShaderInsert "SubShaderInsert.lilblock"
-
+    lilSubShaderInsert "lilCustomShaderInsert.lilblock"
     lilSubShaderBRP "DefaultTessellation"
     lilSubShaderURP "DefaultTessellation"
     lilSubShaderHDRP "DefaultTessellation"

@@ -9,7 +9,6 @@ Shader "Hidden/*LIL_SHADER_NAME*/Tessellation/OnePassTransparent"
 
     lilPassShaderName "Hidden/*LIL_SHADER_NAME*/ltspass_tess_transparent"
     lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
-
     lilSubShaderBRP "DefaultUsePassNoForwardAdd"
     lilSubShaderURP "DefaultUsePass"
     lilSubShaderHDRP "DefaultUsePass"
