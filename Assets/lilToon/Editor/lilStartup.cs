@@ -142,10 +142,10 @@ namespace lilToon
                 }
 
                 // Refresh
-                string[] shaderFolderPaths = lilToonInspector.GetShaderFolderPaths();
+                string[] shaderFolderPaths2 = lilToonInspector.GetShaderFolderPaths();
                 bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;
                 Array.ForEach(
-                    AssetDatabase.FindAssets("t:shader", shaderFolderPaths),
+                    AssetDatabase.FindAssets("t:shader", shaderFolderPaths2),
                     shaderGuid => lilToonInspector.RewriteReceiveShadow(AssetDatabase.GUIDToAssetPath(shaderGuid), isShadowReceive)
                 );
                 AssetDatabase.SaveAssets();

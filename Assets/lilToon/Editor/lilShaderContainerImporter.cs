@@ -47,7 +47,7 @@ namespace lilToon
         {
             foreach(string path in importedAssets)
             {
-                if(!path.EndsWith("excontainer", StringComparison.InvariantCultureIgnoreCase)) continue;
+                if(!path.EndsWith("lilcontainer", StringComparison.InvariantCultureIgnoreCase)) continue;
 
                 var mainobj = AssetDatabase.LoadMainAssetAtPath(path);
                 if(mainobj is Shader) ShaderUtil.RegisterShader((Shader)mainobj);
