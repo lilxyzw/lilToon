@@ -1,4 +1,4 @@
-Shader "*LIL_SHADER_NAME*/Multi"
+Shader "*LIL_SHADER_NAME*/lilToonMulti"
 {
     Properties
     {

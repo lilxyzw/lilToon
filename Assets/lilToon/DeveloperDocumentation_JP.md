@@ -2,6 +2,11 @@
 
 # ファイル構成
 - lilToon
+    - CustomShaderResources : カスタムシェーダー用リソース
+        - BRP : BRP用SubShader
+        - HDRP : HDRP用SubShader
+        - Properties : シェーダープロパティ
+        - URP : URP用SubShader
     - Editor : エディタ関係のアセット
         - Resources : エディタ用アセット
             - gui_xx : GUI用のアセット
@@ -40,6 +45,10 @@
             - lil_pass_shadowcaster.hlsl : ShadowCasterのパス
             - lil_pass_universal2d.hlsl : Universal2Dパス
             - lil_pipeline.hlsl : パイプラインごとの分岐
+            - lil_pipeline_brp.hlsl : Built-in RP用
+            - lil_pipeline_hdrp.hlsl : HDRP用
+            - lil_pipeline_lwrp.hlsl : LWRP用
+            - lil_pipeline_urp.hlsl : URP用
             - lil_replace_keywords.hlsl : シェーダーキーワードをシェーダー設定として置き換え
             - lil_tessellation.hlsl : テッセレーション用のシェーダー
             - lil_vert_audiolink.hlsl : AudioLink用の頂点シェーダーの処理
@@ -98,13 +107,11 @@
 ## includeについて
 各パスで`#include "Includes/lil_pass_xx.hlsl"`を呼び出していますが、このパスごとのhlslファイルは基本的に以下の構造で統一されています。
 - lil_pass_xx.hlsl
-    - lil_pipeline.hlsl
-        - Unityのライブラリ
-        - lil_common.hlsl
-            - lil_setting.hlsl
-            - lil_common_macro.hlsl
-            - lil_common_input.hlsl
-            - lil_common_functions.hlsl
+    - lil_common.hlsl
+        - lil_setting.hlsl
+        - lil_common_macro.hlsl
+        - lil_common_input.hlsl
+        - lil_common_functions.hlsl
     - lil_common_appdata.hlsl
     - 各パスごとのv2f構造体の宣言
     - lil_common_vert.hlsl

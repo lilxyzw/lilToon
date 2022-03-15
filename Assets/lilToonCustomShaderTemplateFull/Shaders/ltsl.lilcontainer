@@ -1,4 +1,4 @@
-Shader "*LIL_SHADER_NAME*/Lite"
+Shader "*LIL_SHADER_NAME*/lilToonLite"
 {
     Properties
     {

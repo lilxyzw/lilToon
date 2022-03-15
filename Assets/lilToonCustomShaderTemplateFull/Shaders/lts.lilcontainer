@@ -1,4 +1,4 @@
-Shader "*LIL_SHADER_NAME*/Opaque"
+Shader "*LIL_SHADER_NAME*/lilToon"
 {
     Properties
     {

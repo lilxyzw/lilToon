@@ -2,6 +2,11 @@
 
 # Files
 - lilToon
+    - CustomShaderResources : Resources for custom shaders
+        - BRP : SubShader for BRP
+        - HDRP : SubShader for HDRP
+        - Properties : Shader properties
+        - URP : SubShader for URP
     - Editor : Editor assets
         - Resources : Editor assets
             - gui_xx : GUI assets
@@ -40,6 +45,10 @@
             - lil_pass_shadowcaster.hlsl : ShadowCaster path
             - lil_pass_universal2d.hlsl : Universal2D path (for URP)
             - lil_pipeline.hlsl : Branching by pipeline
+            - lil_pipeline_brp.hlsl : for Built-in RP
+            - lil_pipeline_hdrp.hlsl : for HDRP
+            - lil_pipeline_lwrp.hlsl : for LWRP
+            - lil_pipeline_urp.hlsl : for URP
             - lil_replace_keywords.hlsl : Replace shader keywords as shader settings
             - lil_tessellation.hlsl : Shader for tessellation
             - lil_vert_audiolink.hlsl : Vertex shader processing for AudioLink
@@ -98,13 +107,11 @@ Also, although the shaders for Built-in RP / LWRP / URP / HDRP are in a common f
 ## About include
 In each path, `#include "Includes/lil_pass_xx.hlsl"` is called, and the hlsl file for each path is basically unified with the following structure.
 - lil_pass_xx.hlsl
-    - lil_pipeline.hlsl
-        - Unity library
-        - lil_common.hlsl
-            - lil_setting.hlsl
-            - lil_common_macro.hlsl
-            - lil_common_input.hlsl
-            - lil_common_functions.hlsl
+    - lil_common.hlsl
+        - lil_setting.hlsl
+        - lil_common_macro.hlsl
+        - lil_common_input.hlsl
+        - lil_common_functions.hlsl
     - lil_common_appdata.hlsl
     - Declare a v2f structure for each path
     - lil_common_vert.hlsl
