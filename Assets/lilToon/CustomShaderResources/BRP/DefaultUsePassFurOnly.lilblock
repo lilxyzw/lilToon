@@ -1,7 +1,9 @@
     SubShader
     {
         Tags {*LIL_SUBSHADER_TAGS*}
+        *LIL_INSERT_USEPASS_PRE*
         UsePass "*LIL_PASS_SHADER_NAME*/FORWARD_FUR"
         UsePass "*LIL_PASS_SHADER_NAME*/FORWARD_ADD_FUR"
+        *LIL_INSERT_USEPASS_POST*
     }
     Fallback "Unlit/Texture"

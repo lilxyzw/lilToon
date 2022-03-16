@@ -17,6 +17,8 @@
             #pragma lil_skip_variants_reflections
         ENDHLSL
 
+        *LIL_INSERT_PASS_PRE*
+
         Pass
         {
             Name "FORWARD"
@@ -60,5 +62,7 @@
             #include "Includes/lil_pass_forward_fakeshadow.hlsl"
             ENDHLSL
         }
+
+        *LIL_INSERT_PASS_POST*
     }
     Fallback "Unlit/Texture"

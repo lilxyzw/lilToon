@@ -1,5 +1,6 @@
 #if UNITY_EDITOR && UNITY_2019_4_OR_NEWER
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -81,17 +82,34 @@ namespace lilToon
         private const string SKIP_VARIANTS_LIGHTLISTS       = "#pragma lil_skip_variants_lightlists";
         private const string SKIP_VARIANTS_REFLECTIONS      = "#pragma lil_skip_variants_reflections";
 
-        private const string shaderNameInsert                   = "*LIL_SHADER_NAME*";
-        private const string editorNameInsert                   = "*LIL_EDITOR_NAME*";
-        private const string subShaderInsert                    = "*LIL_SUBSHADER_INSERT*";
-        private const string settingInsert                      = "*LIL_SHADER_SETTING*";
-        private const string passShaderInsert                   = "*LIL_PASS_SHADER_NAME*";
-        private const string subShaderTagsInsert                = "*LIL_SUBSHADER_TAGS*";
-        private const string dotsSMTagsInsert                   = "*LIL_DOTS_SM_TAGS*";
-        private const string dotsSMPragmaInsert                 = "*LIL_DOTS_SM_4_5*";
-        private const string dotsSMPragmaInsert35               = "*LIL_DOTS_SM_4_5_OR_3_5*";
+        private const string LIL_SHADER_NAME                = "*LIL_SHADER_NAME*";
+        private const string LIL_EDITOR_NAME                = "*LIL_EDITOR_NAME*";
+        private const string LIL_SUBSHADER_INSERT           = "*LIL_SUBSHADER_INSERT*";
+        private const string LIL_SHADER_SETTING             = "*LIL_SHADER_SETTING*";
+        private const string LIL_PASS_SHADER_NAME           = "*LIL_PASS_SHADER_NAME*";
+        private const string LIL_SUBSHADER_TAGS             = "*LIL_SUBSHADER_TAGS*";
+        private const string LIL_DOTS_SM_TAGS               = "*LIL_DOTS_SM_TAGS*";
+        private const string LIL_DOTS_SM_4_5                = "*LIL_DOTS_SM_4_5*";
+        private const string LIL_DOTS_SM_4_5_OR_3_5         = "*LIL_DOTS_SM_4_5_OR_3_5*";
+        private const string LIL_INSERT_PASS_PRE            = "*LIL_INSERT_PASS_PRE*";
+        private const string LIL_INSERT_PASS_POST           = "*LIL_INSERT_PASS_POST*";
+        private const string LIL_INSERT_USEPASS_PRE         = "*LIL_INSERT_USEPASS_PRE*";
+        private const string LIL_INSERT_USEPASS_POST        = "*LIL_INSERT_USEPASS_POST*";
+
+        private const string csdShaderNameTag                   = "ShaderName";
+        private const string csdEditorNameTag                   = "EditorName";
+        private const string csdReplaceTag                      = "Replace";
+        private const string csdInsertPassPreTag                = "InsertPassPre";
+        private const string csdInsertPassPostTag               = "InsertPassPost";
+        private const string csdInsertUsePassPreTag             = "InsertUsePassPre";
+        private const string csdInsertUsePassPostTag            = "InsertUsePassPost";
+
+        private static Dictionary<string, string> replaces      = new Dictionary<string, string>();
+
         private const string customShaderDataFile               = "lilCustomShaderDatas.lilblock";
         private const string customShaderResourcesFolderGUID    = "1acd4e79a7d2c6c44aa8b97a1e33f20b"; // "Assets/lilToon/CustomShaderResources"
+        private static string GetCustomShaderResourcesFolderPath() { return AssetDatabase.GUIDToAssetPath(customShaderResourcesFolderGUID); }
+
         private static string passShaderName = "";
         private static string subShaderTags = "";
         private static string insertText = "";
@@ -102,7 +120,13 @@ namespace lilToon
         private static string assetName = "";
         private static string shaderName = "";
         private static string editorName = "";
-        private static string GetCustomShaderResourcesFolderPath() { return AssetDatabase.GUIDToAssetPath(customShaderResourcesFolderGUID); }
+        private static string origShaderName = "";
+        private static bool isOrigShaderNameLoaded = false;
+
+        private static string insertPassPre = "";
+        private static string insertPassPost = "";
+        private static string insertUsePassPre = "";
+        private static string insertUsePassPost = "";
 
         private static PackageVersionInfos version = new PackageVersionInfos();
         private static int indent = 12;
@@ -117,7 +141,15 @@ namespace lilToon
             shaderLibsPath = lilToonInspector.GetShaderFolderPath() + "/Includes";
             assetName = Path.GetFileName(assetPath);
             shaderSettingText = lilToonInspector.BuildShaderSettingString(false).Replace("\r\n", "\r\n            ");
-            ReadDataFile(ctx);
+            shaderName = "";
+            editorName = "";
+            origShaderName = "";
+            insertPassPre = "";
+            insertPassPost = "";
+            insertUsePassPre = "";
+            insertUsePassPost = "";
+            isOrigShaderNameLoaded = false;
+            replaces = new Dictionary<string, string>();
 
             StringBuilder sb;
 
@@ -164,24 +196,39 @@ namespace lilToon
                     break;
             }
 
-            sb.Replace("\"Includes", "\"" + shaderLibsPath);
-            sb.Replace(subShaderInsert, insertText);
-            sb.Replace(settingInsert, shaderSettingText);
-            sb.Replace(passShaderInsert, passShaderName);
-            sb.Replace(subShaderTagsInsert, subShaderTags);
+            ReadDataFile(ctx);
+            ReplaceMultiCompiles(ref insertPassPre, version, indent, false);
+            ReplaceMultiCompiles(ref insertPassPost, version, indent, false);
+            ReplaceMultiCompiles(ref insertUsePassPre, version, indent, false);
+            ReplaceMultiCompiles(ref insertUsePassPost, version, indent, false);
+            sb.Replace(LIL_INSERT_PASS_PRE,     insertPassPre);
+            sb.Replace(LIL_INSERT_PASS_POST,    insertPassPost);
+            sb.Replace(LIL_INSERT_USEPASS_PRE,  insertUsePassPre);
+            sb.Replace(LIL_INSERT_USEPASS_POST, insertUsePassPost);
 
-            sb.Replace(shaderNameInsert, shaderName);
-            sb.Replace(editorNameInsert, editorName);
+            sb.Replace("\"Includes",            "\"" + shaderLibsPath);
+            sb.Replace(LIL_SUBSHADER_INSERT,    insertText);
+            sb.Replace(LIL_SHADER_SETTING,      shaderSettingText);
+            sb.Replace(LIL_PASS_SHADER_NAME,    passShaderName);
+            sb.Replace(LIL_SUBSHADER_TAGS,      subShaderTags);
 
-            sb.Replace(SKIP_VARIANTS_SHADOWS, GetSkipVariantsShadows());
-            sb.Replace(SKIP_VARIANTS_LIGHTMAPS, GetSkipVariantsLightmaps());
-            sb.Replace(SKIP_VARIANTS_DECALS, GetSkipVariantsDecals());
-            sb.Replace(SKIP_VARIANTS_ADDLIGHT, GetSkipVariantsAddLight());
-            sb.Replace(SKIP_VARIANTS_ADDLIGHTSHADOWS, GetSkipVariantsAddLightShadows());
-            sb.Replace(SKIP_VARIANTS_PROBEVOLUMES, GetSkipVariantsProbeVolumes());
-            sb.Replace(SKIP_VARIANTS_AO, GetSkipVariantsAO());
-            sb.Replace(SKIP_VARIANTS_LIGHTLISTS, GetSkipVariantsLightLists());
-            sb.Replace(SKIP_VARIANTS_REFLECTIONS, GetSkipVariantsReflections());
+            sb.Replace(LIL_SHADER_NAME,         shaderName);
+            sb.Replace(LIL_EDITOR_NAME,         editorName);
+
+            sb.Replace(SKIP_VARIANTS_SHADOWS,           GetSkipVariantsShadows());
+            sb.Replace(SKIP_VARIANTS_LIGHTMAPS,         GetSkipVariantsLightmaps());
+            sb.Replace(SKIP_VARIANTS_DECALS,            GetSkipVariantsDecals());
+            sb.Replace(SKIP_VARIANTS_ADDLIGHT,          GetSkipVariantsAddLight());
+            sb.Replace(SKIP_VARIANTS_ADDLIGHTSHADOWS,   GetSkipVariantsAddLightShadows());
+            sb.Replace(SKIP_VARIANTS_PROBEVOLUMES,      GetSkipVariantsProbeVolumes());
+            sb.Replace(SKIP_VARIANTS_AO,                GetSkipVariantsAO());
+            sb.Replace(SKIP_VARIANTS_LIGHTLISTS,        GetSkipVariantsLightLists());
+            sb.Replace(SKIP_VARIANTS_REFLECTIONS,       GetSkipVariantsReflections());
+
+            foreach(KeyValuePair<string,string> replace in replaces)
+            {
+                sb.Replace(replace.Key, replace.Value);
+            }
 
             return sb.ToString();
         }
@@ -197,11 +244,127 @@ namespace lilToon
             }
             ctx?.DependsOnSourceAsset(path);
             StreamReader sr = new StreamReader(path);
-            shaderName = sr.ReadLine();
-            editorName = sr.ReadLine();
+            string line = "";
+
+            while((line = sr.ReadLine()) != null)
+            {
+                if(line.Contains(csdShaderNameTag))
+                {
+                    shaderName = GetTags(line);
+                    origShaderName = origShaderName.Replace(LIL_SHADER_NAME, shaderName);
+                    continue;
+                }
+                if(line.Contains(csdEditorNameTag))
+                {
+                    editorName = GetTags(line);
+                    continue;
+                }
+                if(line.Contains(csdReplaceTag))
+                {
+                    GetRelaces(line);
+                    continue;
+                }
+                if(line.Contains("Insert"))
+                {
+                    GetInsert(line, ctx);
+                    continue;
+                }
+            }
+
+            sr.Close();
         }
 
-        public static StringBuilder ReadContainerFile(string path, string rpname, AssetImportContext ctx)
+        private static string GetTags(string line)
+        {
+            int first = line.IndexOf('"') + 1;
+            int second = line.IndexOf('"', first);
+            return line.Substring(first, second - first);
+        }
+
+        private static void GetRelaces(string line)
+        {
+            int first = line.IndexOf('"') + 1;
+            int second = line.IndexOf('"', first);
+            int third = line.IndexOf('"', second + 1) + 1;
+            int fourth = line.IndexOf('"', third);
+            string from = line.Substring(first, second - first);
+            string to = line.Substring(third, fourth - third);
+            replaces[from] = to;
+        }
+
+        private static void GetInsert(string line, AssetImportContext ctx)
+        {
+            string rpname = "BRP";
+            if(version.RP == RenderPipeline.URP) rpname = "URP";
+            if(version.RP == RenderPipeline.HDRP) rpname = "HDRP";
+            if(line.Contains(csdInsertPassPreTag))
+            {
+                GetInsert(ref insertPassPre, line, rpname, ctx);
+            }
+            if(line.Contains(csdInsertPassPostTag))
+            {
+                GetInsert(ref insertPassPost, line, rpname, ctx);
+            }
+            if(line.Contains(csdInsertUsePassPreTag))
+            {
+                GetInsert(ref insertUsePassPre, line, rpname, ctx);
+            }
+            if(line.Contains(csdInsertUsePassPostTag))
+            {
+                GetInsert(ref insertUsePassPost, line, rpname, ctx);
+            }
+        }
+
+        private static void GetInsert(ref string insertPass, string line, string rpname, AssetImportContext ctx)
+        {
+            string subpath = "";
+            int first = line.IndexOf('"') + 1;
+            int second = line.IndexOf('"', first);
+            int third = line.IndexOf('"', second + 1) + 1;
+            if(third > 1)
+            {
+                int fourth = line.IndexOf('"', third);
+                string name = line.Substring(first, second - first);
+                if(name.StartsWith("!"))
+                {
+                    if(origShaderName.Contains(name.Substring(1)))
+                    {
+                        return;
+                    }
+                }
+                else if(!origShaderName.Contains(name))
+                {
+                    return;
+                }
+                subpath = line.Substring(third, fourth - third);
+            }
+            else
+            {
+                subpath = line.Substring(first, second - first);
+            }
+
+            // for render pipeline
+            string pathForRP = assetFolderPath + Path.GetFileNameWithoutExtension(subpath) + rpname + Path.GetExtension(subpath);
+            if(File.Exists(pathForRP))
+            {
+                ctx?.DependsOnSourceAsset(pathForRP);
+                insertPass = ReadTextFile(pathForRP);
+                return;
+            }
+
+            // normal
+            subpath = assetFolderPath + subpath;
+            if(!File.Exists(subpath))
+            {
+                Debug.LogWarning("[" + assetName + "] " + "File not found: " + subpath);
+                return;
+            }
+
+            ctx?.DependsOnSourceAsset(subpath);
+            insertPass = ReadTextFile(subpath);
+        }
+
+        private static StringBuilder ReadContainerFile(string path, string rpname, AssetImportContext ctx)
         {
             StringBuilder sb = new StringBuilder();
             StreamReader sr = new StreamReader(path);
@@ -209,6 +372,19 @@ namespace lilToon
 
             while((line = sr.ReadLine()) != null)
             {
+                if(!isOrigShaderNameLoaded && line.StartsWith("Shader"))
+                {
+                    int first = line.IndexOf('"') + 1;
+                    int second = line.IndexOf('"', first);
+                    if(line.Substring(0, first).Contains("//"))
+                    {
+                        sb.AppendLine(line);
+                        continue;
+                    }
+
+                    origShaderName = line.Substring(first, second - first);
+                    isOrigShaderNameLoaded = true;
+                }
                 if(line.Contains("lil"))
                 {
                     if(line.Contains("lilSkipSettings"))
@@ -267,7 +443,7 @@ namespace lilToon
             }
 
             string subpath = line.Substring(first, second - first);
-            if(subpath.Contains("Default"))
+            if(subpath.Contains("Default") && !subpath.Contains(".lilblock"))
             {
                 subpath = resourcesFolderPath + rpname + "/" + subpath + ".lilblock";
             }
@@ -288,16 +464,16 @@ namespace lilToon
                 StringBuilder sb1 = new StringBuilder(ReadTextFile(subpath));
                 StringBuilder sb2 = new StringBuilder(sb1.ToString());
 
-                sb1.Replace(dotsSMTagsInsert, " \"ShaderModel\" = \"4.5\"");
-                sb1.Replace(dotsSMPragmaInsert, "#pragma target 4.5\r\n            #pragma exclude_renderers gles gles3 glcore");
-                sb1.Replace(dotsSMPragmaInsert35, "#pragma target 4.5\r\n            #pragma exclude_renderers gles gles3 glcore");
+                sb1.Replace(LIL_DOTS_SM_TAGS, " \"ShaderModel\" = \"4.5\"");
+                sb1.Replace(LIL_DOTS_SM_4_5, "#pragma target 4.5\r\n            #pragma exclude_renderers gles gles3 glcore");
+                sb1.Replace(LIL_DOTS_SM_4_5_OR_3_5, "#pragma target 4.5\r\n            #pragma exclude_renderers gles gles3 glcore");
                 ReplaceMultiCompiles(ref sb1, version, indent, true);
                 sb.AppendLine(sb1.ToString());
                 sb.AppendLine();
 
-                sb2.Replace(dotsSMTagsInsert, "");
-                sb2.Replace(dotsSMPragmaInsert, "#pragma only_renderers gles gles3 glcore d3d11");
-                sb2.Replace(dotsSMPragmaInsert35, "#pragma target 3.5\r\n            #pragma only_renderers gles gles3 glcore d3d11");
+                sb2.Replace(LIL_DOTS_SM_TAGS, "");
+                sb2.Replace(LIL_DOTS_SM_4_5, "#pragma only_renderers gles gles3 glcore d3d11");
+                sb2.Replace(LIL_DOTS_SM_4_5_OR_3_5, "#pragma target 3.5\r\n            #pragma only_renderers gles gles3 glcore d3d11");
                 ReplaceMultiCompiles(ref sb2, version, indent, false);
                 sb.AppendLine(sb2.ToString());
             }
@@ -338,7 +514,7 @@ namespace lilToon
             }
 
             string subpath = line.Substring(first, second - first);
-            if(subpath.Contains("Default"))
+            if(subpath.Contains("Default") && !subpath.Contains(".lilblock"))
             {
                 subpath = resourcesFolderPath + "Properties/" + subpath + ".lilblock";
             }
@@ -382,7 +558,7 @@ namespace lilToon
             subShaderTags = line.Substring(first, second - first);
         }
 
-        public static string ReadTextFile(string path)
+        private static string ReadTextFile(string path)
         {
             StreamReader sr = new StreamReader(path);
             string text = sr.ReadToEnd();
@@ -482,8 +658,8 @@ namespace lilToon
         // Multi Compile
         private static void ReplaceMultiCompiles(ref StringBuilder sb, PackageVersionInfos version, int indent, bool isDots)
         {
-            sb.Replace(MULTI_COMPILE_FORWARDADD, GetMultiCompileForwardAdd(version, indent));
             sb.Replace(MULTI_COMPILE_FORWARD, GetMultiCompileForward(version, indent));
+            sb.Replace(MULTI_COMPILE_FORWARDADD, GetMultiCompileForwardAdd(version, indent));
             sb.Replace(MULTI_COMPILE_SHADOWCASTER, GetMultiCompileShadowCaster(version, indent));
             sb.Replace(MULTI_COMPILE_DEPTHONLY, GetMultiCompileDepthOnly(version, indent));
             sb.Replace(MULTI_COMPILE_DEPTHNORMALS, GetMultiCompileDepthNormals(version, indent));
@@ -491,6 +667,19 @@ namespace lilToon
             sb.Replace(MULTI_COMPILE_SCENESELECTION, GetMultiCompileSceneSelection(version, indent));
             sb.Replace(MULTI_COMPILE_META, GetMultiCompileMeta(version, indent));
             sb.Replace(MULTI_COMPILE_INSTANCING, GetMultiCompileInstancingLayer(version, indent, isDots));
+        }
+
+        private static void ReplaceMultiCompiles(ref string sb, PackageVersionInfos version, int indent, bool isDots)
+        {
+            sb = sb.Replace(MULTI_COMPILE_FORWARD, GetMultiCompileForward(version, indent))
+                   .Replace(MULTI_COMPILE_FORWARDADD, GetMultiCompileForwardAdd(version, indent))
+                   .Replace(MULTI_COMPILE_SHADOWCASTER, GetMultiCompileShadowCaster(version, indent))
+                   .Replace(MULTI_COMPILE_DEPTHONLY, GetMultiCompileDepthOnly(version, indent))
+                   .Replace(MULTI_COMPILE_DEPTHNORMALS, GetMultiCompileDepthNormals(version, indent))
+                   .Replace(MULTI_COMPILE_MOTIONVECTORS, GetMultiCompileMotionVectors(version, indent))
+                   .Replace(MULTI_COMPILE_SCENESELECTION, GetMultiCompileSceneSelection(version, indent))
+                   .Replace(MULTI_COMPILE_META, GetMultiCompileMeta(version, indent))
+                   .Replace(MULTI_COMPILE_INSTANCING, GetMultiCompileInstancingLayer(version, indent, isDots));
         }
 
         private static string GetMultiCompileForward(PackageVersionInfos version, int indent)

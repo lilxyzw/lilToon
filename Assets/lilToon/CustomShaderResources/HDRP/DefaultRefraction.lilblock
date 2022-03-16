@@ -15,6 +15,8 @@
             #pragma lil_skip_variants_lightlists
         ENDHLSL
 
+        *LIL_INSERT_PASS_PRE*
+
         // Forward
         Pass
         {
@@ -192,5 +194,7 @@
             #include "Includes/lil_pass_meta.hlsl"
             ENDHLSL
         }
+
+        *LIL_INSERT_PASS_POST*
     }
     Fallback "HDRP/Unlit"

@@ -37,6 +37,8 @@
         // GrabPass
         GrabPass {"_lilBackgroundTexture"}
 
+        *LIL_INSERT_PASS_PRE*
+
         // Forward
         Pass
         {
@@ -270,5 +272,7 @@
 
             ENDHLSL
         }
+
+        *LIL_INSERT_PASS_POST*
     }
     Fallback "Unlit/Texture"

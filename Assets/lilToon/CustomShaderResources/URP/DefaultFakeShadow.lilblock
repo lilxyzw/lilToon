@@ -17,6 +17,8 @@
             #pragma lil_skip_variants_reflections
         ENDHLSL
 
+        *LIL_INSERT_PASS_PRE*
+
         // Forward
         Pass
         {
@@ -62,5 +64,7 @@
 
             ENDHLSL
         }
+
+        *LIL_INSERT_PASS_POST*
     }
     Fallback "Universal Render Pipeline/Unlit"

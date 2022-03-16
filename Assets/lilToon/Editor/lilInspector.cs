@@ -330,10 +330,18 @@ namespace lilToon
         protected static Shader ltsfur      = Shader.Find("Hidden/lilToonFur");
         protected static Shader ltsfurc     = Shader.Find("Hidden/lilToonFurCutout");
         protected static Shader ltsfurtwo   = Shader.Find("Hidden/lilToonFurTwoPass");
+        protected static Shader ltsfuro     = Shader.Find("_lil/[Optional] lilToonFurOnly");
+        protected static Shader ltsfuroc    = Shader.Find("_lil/[Optional] lilToonFurOnlyCutout");
+        protected static Shader ltsfurotwo  = Shader.Find("_lil/[Optional] lilToonFurOnlyTwoPass");
 
         protected static Shader ltsgem      = Shader.Find("Hidden/lilToonGem");
 
         protected static Shader ltsfs       = Shader.Find("_lil/lilToonFakeShadow");
+
+        protected static Shader ltsover     = Shader.Find("_lil/[Optional] lilToonOverlay");
+        protected static Shader ltsoover    = Shader.Find("_lil/[Optional] lilToonOverlayOnePass");
+        protected static Shader ltslover    = Shader.Find("_lil/[Optional] lilToonLiteOverlay");
+        protected static Shader ltsloover   = Shader.Find("_lil/[Optional] lilToonLiteOverlayOnePass");
 
         protected static Shader ltsbaker    = Shader.Find("Hidden/ltsother_baker");
         protected static Shader ltspo       = Shader.Find("Hidden/ltspass_opaque");
@@ -9204,6 +9212,75 @@ namespace lilToon
 
             SetupMaterialWithRenderingMode(material, renderingModeBuf, TransparentMode.Normal, isOutl, false, isStWr, false);
             SetupMultiMaterial(material);
+        }
+
+        protected virtual void ReplaceToCustomShaders()
+        {
+        }
+
+        protected void ConvertMaterialToCustomShader(Material material)
+        {
+            InitializeShaders();
+            Shader shader = material.shader;
+                 if(shader == lts)           { ReplaceToCustomShaders(); shader = lts       ;}
+            else if(shader == ltsc)          { ReplaceToCustomShaders(); shader = ltsc      ;}
+            else if(shader == ltst)          { ReplaceToCustomShaders(); shader = ltst      ;}
+            else if(shader == ltsot)         { ReplaceToCustomShaders(); shader = ltsot     ;}
+            else if(shader == ltstt)         { ReplaceToCustomShaders(); shader = ltstt     ;}
+            else if(shader == ltso)          { ReplaceToCustomShaders(); shader = ltso      ;}
+            else if(shader == ltsco)         { ReplaceToCustomShaders(); shader = ltsco     ;}
+            else if(shader == ltsto)         { ReplaceToCustomShaders(); shader = ltsto     ;}
+            else if(shader == ltsoto)        { ReplaceToCustomShaders(); shader = ltsoto    ;}
+            else if(shader == ltstto)        { ReplaceToCustomShaders(); shader = ltstto    ;}
+            else if(shader == ltsoo)         { ReplaceToCustomShaders(); shader = ltsoo     ;}
+            else if(shader == ltscoo)        { ReplaceToCustomShaders(); shader = ltscoo    ;}
+            else if(shader == ltstoo)        { ReplaceToCustomShaders(); shader = ltstoo    ;}
+            else if(shader == ltstess)       { ReplaceToCustomShaders(); shader = ltstess   ;}
+            else if(shader == ltstessc)      { ReplaceToCustomShaders(); shader = ltstessc  ;}
+            else if(shader == ltstesst)      { ReplaceToCustomShaders(); shader = ltstesst  ;}
+            else if(shader == ltstessot)     { ReplaceToCustomShaders(); shader = ltstessot ;}
+            else if(shader == ltstesstt)     { ReplaceToCustomShaders(); shader = ltstesstt ;}
+            else if(shader == ltstesso)      { ReplaceToCustomShaders(); shader = ltstesso  ;}
+            else if(shader == ltstessco)     { ReplaceToCustomShaders(); shader = ltstessco ;}
+            else if(shader == ltstessto)     { ReplaceToCustomShaders(); shader = ltstessto ;}
+            else if(shader == ltstessoto)    { ReplaceToCustomShaders(); shader = ltstessoto;}
+            else if(shader == ltstesstto)    { ReplaceToCustomShaders(); shader = ltstesstto;}
+            else if(shader == ltsl)          { ReplaceToCustomShaders(); shader = ltsl      ;}
+            else if(shader == ltslc)         { ReplaceToCustomShaders(); shader = ltslc     ;}
+            else if(shader == ltslt)         { ReplaceToCustomShaders(); shader = ltslt     ;}
+            else if(shader == ltslot)        { ReplaceToCustomShaders(); shader = ltslot    ;}
+            else if(shader == ltsltt)        { ReplaceToCustomShaders(); shader = ltsltt    ;}
+            else if(shader == ltslo)         { ReplaceToCustomShaders(); shader = ltslo     ;}
+            else if(shader == ltslco)        { ReplaceToCustomShaders(); shader = ltslco    ;}
+            else if(shader == ltslto)        { ReplaceToCustomShaders(); shader = ltslto    ;}
+            else if(shader == ltsloto)       { ReplaceToCustomShaders(); shader = ltsloto   ;}
+            else if(shader == ltsltto)       { ReplaceToCustomShaders(); shader = ltsltto   ;}
+            else if(shader == ltsref)        { ReplaceToCustomShaders(); shader = ltsref    ;}
+            else if(shader == ltsrefb)       { ReplaceToCustomShaders(); shader = ltsrefb   ;}
+            else if(shader == ltsfur)        { ReplaceToCustomShaders(); shader = ltsfur    ;}
+            else if(shader == ltsfurc)       { ReplaceToCustomShaders(); shader = ltsfurc   ;}
+            else if(shader == ltsfurtwo)     { ReplaceToCustomShaders(); shader = ltsfurtwo ;}
+            else if(shader == ltsfuro)       { ReplaceToCustomShaders(); shader = ltsfuro   ;}
+            else if(shader == ltsfuroc)      { ReplaceToCustomShaders(); shader = ltsfuroc  ;}
+            else if(shader == ltsfurotwo)    { ReplaceToCustomShaders(); shader = ltsfurotwo;}
+            else if(shader == ltsgem)        { ReplaceToCustomShaders(); shader = ltsgem    ;}
+            else if(shader == ltsfs)         { ReplaceToCustomShaders(); shader = ltsfs     ;}
+            else if(shader == ltsover)       { ReplaceToCustomShaders(); shader = ltsover   ;}
+            else if(shader == ltsoover)      { ReplaceToCustomShaders(); shader = ltsoover  ;}
+            else if(shader == ltslover)      { ReplaceToCustomShaders(); shader = ltslover  ;}
+            else if(shader == ltsloover)     { ReplaceToCustomShaders(); shader = ltsloover ;}
+            else if(shader == ltsm)          { ReplaceToCustomShaders(); shader = ltsm      ;}
+            else if(shader == ltsmo)         { ReplaceToCustomShaders(); shader = ltsmo     ;}
+            else if(shader == ltsmref)       { ReplaceToCustomShaders(); shader = ltsmref   ;}
+            else if(shader == ltsmfur)       { ReplaceToCustomShaders(); shader = ltsmfur   ;}
+            else if(shader == ltsmgem)       { ReplaceToCustomShaders(); shader = ltsmgem   ;}
+
+            if(material.shader != shader && shader != null)
+            {
+                int renderQueue = material.renderQueue == material.shader.renderQueue ? -1 : material.renderQueue;
+                material.shader = shader;
+                material.renderQueue = renderQueue;
+            }
         }
         #endregion
 

@@ -18,6 +18,8 @@
             #pragma lil_skip_variants_reflections
         ENDHLSL
 
+        *LIL_INSERT_PASS_PRE*
+
         Pass
         {
             Name "FORWARD"
@@ -59,5 +61,7 @@
 
             ENDHLSL
         }
+
+        *LIL_INSERT_PASS_POST*
     }
     Fallback "HDRP/Unlit"

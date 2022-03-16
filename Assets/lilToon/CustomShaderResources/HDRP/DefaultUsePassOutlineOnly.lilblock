@@ -1,8 +1,10 @@
     SubShader
     {
         Tags {*LIL_SUBSHADER_TAGS*}
+        *LIL_INSERT_USEPASS_PRE*
         UsePass "*LIL_PASS_SHADER_NAME*/FORWARD_OUTLINE"
         UsePass "*LIL_PASS_SHADER_NAME*/DEPTHONLY_OUTLINE"
         UsePass "*LIL_PASS_SHADER_NAME*/MOTIONVECTORS_OUTLINE"
+        *LIL_INSERT_USEPASS_POST*
     }
     Fallback "HDRP/Unlit"
