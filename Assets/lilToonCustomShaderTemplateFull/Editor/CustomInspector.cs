@@ -21,7 +21,7 @@ namespace lilToon
 
             // If you want to change rendering modes in the editor, specify the shader here
             ReplaceToCustomShaders();
-            isShowRenderMode = !material.shader.name.Contains("OutlineOnly") && !material.shader.name.Contains("FurOnly");
+            isShowRenderMode = !material.shader.name.Contains("Optional");
 
             // If not, set isShowRenderMode to false
             //isShowRenderMode = false;

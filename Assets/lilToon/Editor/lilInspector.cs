@@ -492,6 +492,7 @@ namespace lilToon
         protected static string sGlitterParams1;
         protected static string sGlitterParams2;
         protected static string sTransparentMode;
+        protected static string sOutlineVertexColorUsages;
         protected static string[] sRenderingModeList;
         protected static string[] sRenderingModeListLite;
         protected static string[] sTransparentModeList;
@@ -1272,10 +1273,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Outline
-                if(isLite || (!isRefr && !isFur && !isGem && !isFakeShadow))
-                {
-                    DrawOutlineSettingsSimple(material);
-                }
+                DrawOutlineSettingsSimple(material);
 
                 if(mtoon != null && GUILayout.Button(GetLoc("sConvertMToon"))) CreateMToonMaterial(material);
             }
@@ -2628,10 +2626,7 @@ namespace lilToon
 
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Outline
-                    if(!isRefr && !isFur && !isGem && (!isCustomShader || isCustomShader && (isOutl || isMulti)))
-                    {
-                        DrawOutlineSettings(material);
-                    }
+                    DrawOutlineSettings(material);
 
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Parallax
@@ -3883,6 +3878,7 @@ namespace lilToon
             sRenderingModeList = new[]{GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeRefractionBlur"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout"), GetLoc("sRenderingModeFurTwoPass"), GetLoc("sRenderingModeGem")};
             sRenderingModeListLite = new[]{GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent")};
             sTransparentModeList = new[]{GetLoc("sTransparentModeNormal"), GetLoc("sTransparentModeOnePass"), GetLoc("sTransparentModeTwoPass")};
+            sOutlineVertexColorUsages = BuildParams(GetLoc("sVertexColor"), GetLoc("sNone"), GetLoc("sVertexR2Width"), GetLoc("sVertexRGBA2Normal"));
             colorRGBAContent = new GUIContent(GetLoc("sColor"), GetLoc("sTextureRGBA"));
             colorAlphaRGBAContent = new GUIContent(GetLoc("sColorAlpha"), GetLoc("sTextureRGBA"));
             maskBlendContent = new GUIContent(GetLoc("sMask"), GetLoc("sBlendR"));
@@ -9525,9 +9521,9 @@ namespace lilToon
                         DrawLine();
                         m_MaterialEditor.TexturePropertySingleLine(new GUIContent("AO Map", GetLoc("sBorderR")), shadowBorderMask);
                         EditorGUI.indentLevel++;
+                        m_MaterialEditor.ShaderProperty(shadowPostAO, GetLoc("sIgnoreBorderProperties"));
                         m_MaterialEditor.ShaderProperty(shadowAOShift, "1st Scale|1st Offset|2nd Scale|2nd Offset");
                         if(CheckFeature(shaderSetting.LIL_FEATURE_SHADOW_3RD)) m_MaterialEditor.ShaderProperty(shadowAOShift2, "3rd Scale|3rd Offset");
-                        m_MaterialEditor.ShaderProperty(shadowPostAO, "Post AO");
                         EditorGUI.indentLevel--;
                     }
                     DrawLine();
@@ -9630,7 +9626,7 @@ namespace lilToon
 
         private void DrawOutlineSettings(Material material)
         {
-            if(isMultiVariants) return;
+            if(isMultiVariants || isRefr || isFur || isGem || isFakeShadow || material.shader.name.Contains("Overlay")) return;
             edSet.isShowOutline = Foldout(GetLoc("sOutlineSetting"), edSet.isShowOutline);
             DrawMenuButton(GetLoc("sAnchorOutline"), lilPropertyBlock.Outline);
             if(edSet.isShowOutline)
@@ -9667,7 +9663,7 @@ namespace lilToon
                     if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH))   m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sWidth"), GetLoc("sWidthR")), outlineWidthMask, outlineWidth);
                     else                                                            m_MaterialEditor.ShaderProperty(outlineWidth, GetLoc("sWidth"));
                     m_MaterialEditor.ShaderProperty(outlineFixWidth, GetLoc("sFixWidth"));
-                    m_MaterialEditor.ShaderProperty(outlineVertexR2Width, GetLoc("sVertexR2Width"));
+                    m_MaterialEditor.ShaderProperty(outlineVertexR2Width, sOutlineVertexColorUsages);
                     if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_OUTLINE_NORMAL))
                     {
                         DrawLine();
@@ -9683,7 +9679,7 @@ namespace lilToon
                     DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sWidth"), GetLoc("sWidthR")), outlineWidthMask, outlineWidth);
                     m_MaterialEditor.ShaderProperty(outlineFixWidth, GetLoc("sFixWidth"));
-                    m_MaterialEditor.ShaderProperty(outlineVertexR2Width, GetLoc("sVertexR2Width"));
+                    m_MaterialEditor.ShaderProperty(outlineVertexR2Width, sOutlineVertexColorUsages);
                     EditorGUILayout.EndVertical();
                 }
                 EditorGUILayout.EndVertical();
@@ -9692,15 +9688,18 @@ namespace lilToon
 
         private void DrawOutlineSettingsSimple(Material material)
         {
-            if(isMultiVariants) return;
+            if(isMultiVariants || isRefr || isFur || isGem || isFakeShadow || material.shader.name.Contains("Overlay")) return;
             edSet.isShowOutline = Foldout(GetLoc("sOutlineSetting"), edSet.isShowOutline);
             DrawMenuButton(GetLoc("sAnchorOutline"), lilPropertyBlock.Outline);
             if(edSet.isShowOutline)
             {
                 EditorGUILayout.BeginVertical(boxOuter);
-                if(isShowRenderMode && isOutl != EditorGUILayout.ToggleLeft(GetLoc("sOutline"), isOutl, customToggleFont))
+                if(isShowRenderMode)
                 {
-                    SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, !isOutl, isLite, isStWr, isTess);
+                    if(isOutl != EditorGUILayout.ToggleLeft(GetLoc("sOutline"), isOutl, customToggleFont))
+                    {
+                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, !isOutl, isLite, isStWr, isTess);
+                    }
                 }
                 else if(isCustomShader)
                 {

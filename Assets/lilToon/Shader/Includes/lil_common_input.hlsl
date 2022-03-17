@@ -277,6 +277,7 @@ SAMPLER(sampler_linear_clamp);
     uint    _Cull;
     uint    _OutlineCull;
     uint    _EmissionMap_UVMode;
+    uint    _OutlineVertexR2Width;
     lilBool _Invisible;
     lilBool _UseShadow;
     lilBool _UseMatCap;
@@ -286,7 +287,6 @@ SAMPLER(sampler_linear_clamp);
     lilBool _UseRim;
     lilBool _UseEmission;
     lilBool _OutlineFixWidth;
-    lilBool _OutlineVertexR2Width;
     #if defined(LIL_CUSTOM_PROPERTIES)
         LIL_CUSTOM_PROPERTIES
     #endif
@@ -691,6 +691,9 @@ SAMPLER(sampler_linear_clamp);
         uint    _AudioLinkUVMode;
         uint    _AudioLinkVertexUVMode;
     #endif
+    #if defined(LIL_MULTI_INPUTS_OUTLINE)
+        uint    _OutlineVertexR2Width;
+    #endif
     #if defined(LIL_FUR)
         uint    _FurLayerNum;
     #endif
@@ -772,7 +775,6 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
         lilBool _OutlineFixWidth;
-        lilBool _OutlineVertexR2Width;
     #endif
     #if defined(LIL_FUR)
         lilBool _VertexColor2FurVector;
@@ -1268,6 +1270,7 @@ SAMPLER(sampler_linear_clamp);
             uint    _AudioLinkVertexUVMode;
         #endif
     #endif
+    uint    _OutlineVertexR2Width;
     #if defined(LIL_FUR)
         uint    _FurLayerNum;
     #endif
@@ -1400,7 +1403,6 @@ SAMPLER(sampler_linear_clamp);
     #endif
 
     lilBool _OutlineFixWidth;
-    lilBool _OutlineVertexR2Width;
 
     #if defined(LIL_FUR)
         lilBool _VertexColor2FurVector;

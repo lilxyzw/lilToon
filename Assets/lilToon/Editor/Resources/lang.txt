@@ -72,6 +72,7 @@ sScaleY	Scale Y	Y軸サイズ	Y축 크기	Y尺度	Y尺度
 sVector	Vector	向き	방향	向量	向量
 sLength	Length	長さ	길이	长度	長度
 sVertex	Vertex	頂点	꼭짓점	顶点	頂點
+sVertexColor	Vertex Color	頂点カラー	Vertex Color	Vertex Color	Vertex Color
 sThreshold	Threshold	閾値	임계값	阈值	閾值
 sNormalStrength	Normal Map Strength	ノーマルマップ強度	노멀 맵 강도	法线贴图强度	法線貼圖強度
 sColorAlphaZeroWarn	To enable the property, increase the alpha value.	プロパティを有効にするには透明度の値を上げて下さい。	속성을 유효하게 하려면 알파 값을 올려 주십시오.	增加 Alpha 值以启用该属性。	增加 Alpha 值以啟用該屬性。
@@ -119,8 +120,8 @@ sVertexLightStrength	Vertex Light Strength	頂点ライトの強度	꼭지점 �
 sLightMinLimit	Lower brightness limit	明るさの下限	밝기의 하한	亮度下限	亮度下限
 sLightMaxLimit	Upper brightness limit	明るさの上限	밝기의 상한	亮度上限	亮度上限
 sMonochromeLighting	Monochrome Lighting	ライトのモノクロ化	라이트의 흑백화	光的单色化	光的單色化
-sLightDirectionOverride	Light Direction Override	ライト方向のオーバーライド	Light Direction Override	Light Direction Override	Light Direction Override
-sObjectFollowing	Object following	オブジェクトに追従	오브젝트 추종	跟随对象	跟隨對象
+sLightDirectionOverride	Light Direction Override	ライト方向のオーバーライド	라이트 방향의 오버라이드	灯光方向超控	燈光方向超控
+sObjectFollowing	Object direction following	オブジェクトの向きに追従	오브젝트의 방향 추종	跟随对象方向	跟隨對象方向
 sDirectionalLightStrength	[HDRP] Directional Light Strength	[HDRP] Directional Lightの強さ	[HDRP] Directional Light Strength	[HDRP] Directional Light Strength	[HDRP] Directional Light Strength
 sBeforeExposureLimit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit	[HDRP] Before exposure limit
 sLightingPreset	Apply Preset	プリセットを適用	프리셋 적용	应用预设	應用預設
@@ -171,6 +172,7 @@ sShadow3rdColor	3rd Color	影色3	그림자 색 3	颜色3	顏色3
 sShadowEnvStrength	Environment strength on shadow color	影色への環境光影響度	그림자 색에 환경 광의 영향	阴影颜色的环境强度	陰影顏色的環境強度
 sShadowBorderColor	Border Color	境界の色	경계의 색	边界颜色	邊界顏色
 sShadowBorderRange	Border Range	境界の幅	경계의 폭	边界范围	邊界範圍
+sIgnoreBorderProperties	Ignore border properties	影範囲設定を無視して適用	범위 설정 무시	忽略边界设置	忽略邊界設置
 sBacklightSetting	Backlight	逆光ライト	Backlight 설정	Backlight设置	Backlight設置
 sBacklight	Backlight	逆光ライト	Backlight	Backlight	Backlight
 sBacklightTips	Add a backlight when the light is behind the model.	逆光時に光を乗せる表現ができます	라이트가 모델 뒤에 있을 때 백라이트를 추가하다	当照明在模型后面时添加背光灯	當照明在模型後面時添加背光燈
@@ -182,7 +184,8 @@ sOutline	Outline	輪郭線	윤곽선	轮廓	輪廓
 sWidth	Mask & Width	マスクと太さ	마스크와 굵기	蒙版 & 宽度	蒙版 & 寬度
 sWidthR	Width (R)	太さ (R)	굵기 (R)	宽度 (R)	寬度 (R)
 sFixWidth	Fix width by distance	距離に応じた太さ補正	거리에 따른 굵기 보정	按距离正确宽度	按距離正確寬度
-sVertexR2Width	Vertex R -> Width	Vertex R -> Width	Vertex R -> Width	Vertex R -> Width	Vertex R -> Width
+sVertexR2Width	R -> Width	R -> Width	R -> Width	R -> Width	R -> Width
+sVertexRGBA2Normal	RGBA -> Normal & Width	RGBA -> Normal & Width	RGBA -> Normal & Width	RGBA -> Normal & Width	RGBA -> Normal & Width
 sRefractionSetting	Refraction	屈折設定	굴절 설정	折射设置	折射設置
 sRefractionTips	You can set the refraction strength and color.	屈折の強さや色の設定ができます	굴절의 강도나 색을 설정할 수 있습니다	你可以设置折射强度和颜色。	你可以設置折射強度和顏色。
 sRefraction	Refraction	屈折	굴절	折射	折射
@@ -348,6 +351,7 @@ sYes	Yes	はい	Yes	Yes	Yes
 sNo	No	いいえ	No	No	No
 sOK	OK	OK	OK	OK	OK
 sCancel	Cancel	キャンセル	Cancel	Cancel	Cancel
+sNone	None	None	None	None	None
 sComplete	Complete!	完了しました。	완료 되었습니다.	完成了。	完成了。
 sCopy	Copy	コピー	복사	复制	複製
 sPaste	Paste	貼り付け	붙여넣기	贴上	貼上

@@ -283,11 +283,12 @@ lilVertexNormalInputs lilGetVertexNormalInputs(float3 normalOS, float4 tangentOS
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Outline
-float lilGetOutlineWidth(float3 positionOS, float2 uv, float4 color, float outlineWidth, TEXTURE2D(outlineWidthMask), lilBool outlineVertexR2Width, lilBool outlineFixWidth LIL_SAMP_IN_FUNC(samp))
+float lilGetOutlineWidth(float3 positionOS, float2 uv, float4 color, float outlineWidth, TEXTURE2D(outlineWidthMask), uint outlineVertexR2Width, lilBool outlineFixWidth LIL_SAMP_IN_FUNC(samp))
 {
     outlineWidth *= 0.01;
     if(Exists_OutlineWidthMask) outlineWidth *= LIL_SAMPLE_2D_LOD(outlineWidthMask, samp, uv, 0).r;
-    if(outlineVertexR2Width) outlineWidth *= color.r;
+    if(outlineVertexR2Width == 1) outlineWidth *= color.r;
+    if(outlineVertexR2Width == 2) outlineWidth *= color.a;
     if(outlineFixWidth) outlineWidth *= saturate(length(lilHeadDirection(lilToAbsolutePositionWS(lilOptMul(LIL_MATRIX_M, positionOS).xyz))));
     return outlineWidth;
 }
@@ -299,11 +300,20 @@ float3 lilGetOutlineVector(float3x3 tbnOS, float2 uv, float outlineVectorScale, 
     return outlineVector;
 }
 
-void lilCalcOutlinePosition(inout float3 positionOS, float2 uv, float4 color, float3 normalOS, float3x3 tbnOS, float outlineWidth, TEXTURE2D(outlineWidthMask), lilBool outlineVertexR2Width, lilBool outlineFixWidth, float outlineVectorScale, TEXTURE2D(outlineVectorTex) LIL_SAMP_IN_FUNC(samp))
+void lilCalcOutlinePosition(inout float3 positionOS, float2 uv, float4 color, float3 normalOS, float3x3 tbnOS, float outlineWidth, TEXTURE2D(outlineWidthMask), uint outlineVertexR2Width, lilBool outlineFixWidth, float outlineVectorScale, TEXTURE2D(outlineVectorTex) LIL_SAMP_IN_FUNC(samp))
 {
     float width = lilGetOutlineWidth(positionOS, uv, color, outlineWidth, outlineWidthMask, outlineVertexR2Width, outlineFixWidth LIL_SAMP_IN(samp));
     float3 outlineN = normalOS;
     if(Exists_OutlineVectorTex) outlineN = lilGetOutlineVector(tbnOS, uv, outlineVectorScale, outlineVectorTex LIL_SAMP_IN(samp));
+    if(outlineVertexR2Width == 2) outlineN = mul(color.rgb, tbnOS);
+    positionOS += outlineN * width;
+}
+
+void lilCalcOutlinePositionLite(inout float3 positionOS, float2 uv, float4 color, float3 normalOS, float3x3 tbnOS, float outlineWidth, TEXTURE2D(outlineWidthMask), uint outlineVertexR2Width, lilBool outlineFixWidth LIL_SAMP_IN_FUNC(samp))
+{
+    float width = lilGetOutlineWidth(positionOS, uv, color, outlineWidth, outlineWidthMask, outlineVertexR2Width, outlineFixWidth LIL_SAMP_IN(samp));
+    float3 outlineN = normalOS;
+    if(outlineVertexR2Width == 2) outlineN = mul(color.rgb, tbnOS);
     positionOS += outlineN * width;
 }
 
