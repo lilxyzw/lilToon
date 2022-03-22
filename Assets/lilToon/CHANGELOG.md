@@ -6,11 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.11] - 2022-xx-xx
 ### Added
-- `Post AO` property for AO Map (blend AO Map after toon processing)
+- `Ignore border properties` property for AO Map (blend AO Map after toon processing)
+- An option to determine the normal direction using vertex color for outline
 - New format for custom shaders
 
 ### Fixed
 - Fixed shadows not being applied in the ForwardAdd pass of lilToonMulti
+- Fixed the appearance of fur in ForwardAdd
+- Fixed Z-fighting for 2 pass fur
 - Fixed an issue where polygons might disappear at the edge of the field of view in the tessellation shader
 - Fixed behavior in VR (URP / HDRP)
 

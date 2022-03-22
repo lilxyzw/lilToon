@@ -172,7 +172,7 @@ float4 frag(v2f input) : SV_Target
         #endif
 
         #if LIL_RENDER == 2 && !defined(LIL_FUR_PRE)
-            fd.col.rgb *= sqrt(sqrt(fd.col.a));
+            fd.col.rgb *= saturate(fd.col.a * _AlphaBoostFA);
         #endif
     #endif
 

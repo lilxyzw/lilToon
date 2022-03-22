@@ -305,7 +305,7 @@ void lilCalcOutlinePosition(inout float3 positionOS, float2 uv, float4 color, fl
     float width = lilGetOutlineWidth(positionOS, uv, color, outlineWidth, outlineWidthMask, outlineVertexR2Width, outlineFixWidth LIL_SAMP_IN(samp));
     float3 outlineN = normalOS;
     if(Exists_OutlineVectorTex) outlineN = lilGetOutlineVector(tbnOS, uv, outlineVectorScale, outlineVectorTex LIL_SAMP_IN(samp));
-    if(outlineVertexR2Width == 2) outlineN = mul(color.rgb, tbnOS);
+    if(outlineVertexR2Width == 2) outlineN = mul(color.rgb * 2.0 - 1.0, tbnOS);
     positionOS += outlineN * width;
 }
 
@@ -313,7 +313,7 @@ void lilCalcOutlinePositionLite(inout float3 positionOS, float2 uv, float4 color
 {
     float width = lilGetOutlineWidth(positionOS, uv, color, outlineWidth, outlineWidthMask, outlineVertexR2Width, outlineFixWidth LIL_SAMP_IN(samp));
     float3 outlineN = normalOS;
-    if(outlineVertexR2Width == 2) outlineN = mul(color.rgb, tbnOS);
+    if(outlineVertexR2Width == 2) outlineN = mul(color.rgb * 2.0 - 1.0, tbnOS);
     positionOS += outlineN * width;
 }
 

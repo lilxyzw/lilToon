@@ -150,7 +150,7 @@ v2g vert(appdata input)
     //------------------------------------------------------------------------------------------------------------------------------
     // Vector
     #if defined(LIL_V2G_FURVECTOR)
-        float3 bitangentOS = cross(input.normalOS, input.tangentOS.xyz) * (input.tangentOS.w * LIL_NEGATIVE_SCALE);
+        float3 bitangentOS = normalize(cross(input.normalOS, input.tangentOS.xyz)) * (input.tangentOS.w * length(input.normalOS));
         float3x3 tbnOS = float3x3(input.tangentOS.xyz, bitangentOS, input.normalOS);
         output.furVector = _FurVector.xyz;
         if(_VertexColor2FurVector) output.furVector = lilBlendNormal(output.furVector, input.color.xyz);
@@ -386,6 +386,15 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                     }
                 #endif
             #endif
+            #if defined(LIL_FUR_PRE)
+                #if defined(UNITY_REVERSED_Z)
+                    // DirectX
+                    output.positionCS.z -= 0.0000001;
+                #else
+                    // OpenGL
+                    output.positionCS.z += 0.0000001;
+                #endif
+            #endif
             outStream.Append(output);
 
             // Out
@@ -418,6 +427,15 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                     {
                         output.positionCS.z = output.positionCS.z * 0.0001 - output.positionCS.w * 0.999;
                     }
+                #endif
+            #endif
+            #if defined(LIL_FUR_PRE)
+                #if defined(UNITY_REVERSED_Z)
+                    // DirectX
+                    output.positionCS.z -= 0.0000001;
+                #else
+                    // OpenGL
+                    output.positionCS.z += 0.0000001;
                 #endif
             #endif
             outStream.Append(output);

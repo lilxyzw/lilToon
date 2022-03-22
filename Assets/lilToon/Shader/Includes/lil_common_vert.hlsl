@@ -86,7 +86,7 @@ LIL_V2F_TYPE vert(appdata input)
     //------------------------------------------------------------------------------------------------------------------------------
     // Object space direction
     #if defined(LIL_APP_NORMAL) && defined(LIL_APP_TANGENT)
-        float3 bitangentOS = cross(input.normalOS, input.tangentOS.xyz) * (input.tangentOS.w * LIL_NEGATIVE_SCALE);
+        float3 bitangentOS = normalize(cross(input.normalOS, input.tangentOS.xyz)) * (input.tangentOS.w * length(input.normalOS));
         float3x3 tbnOS = float3x3(input.tangentOS.xyz, bitangentOS, input.normalOS);
     #else
         float3 bitangentOS = 0.0;

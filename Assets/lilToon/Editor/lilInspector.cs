@@ -9419,9 +9419,13 @@ namespace lilToon
                 EditorGUILayout.LabelField(GetLoc("sAdvanced"));
                 EditorGUILayout.BeginVertical(customBox);
                     m_MaterialEditor.ShaderProperty(asUnlit, GetLoc("sAsUnlit"));
+                    if(asUnlit.floatValue != 0 && AutoFixHelpBox(GetLoc("sAsUnlitWarn")))
+                    {
+                        asUnlit.floatValue = 0.0f;
+                    }
                     m_MaterialEditor.ShaderProperty(vertexLightStrength, GetLoc("sVertexLightStrength"));
                     m_MaterialEditor.ShaderProperty(lightDirectionOverride, BuildParams(GetLoc("sLightDirectionOverride"), GetLoc("sObjectFollowing")));
-                    if(isTransparent) m_MaterialEditor.ShaderProperty(alphaBoostFA, GetLoc("sAlphaBoostFA"));
+                    if(isTransparent || (isFur && !isCutout)) m_MaterialEditor.ShaderProperty(alphaBoostFA, GetLoc("sAlphaBoostFA"));
                     BlendOpFASetting();
                     m_MaterialEditor.ShaderProperty(beforeExposureLimit, GetLoc("sBeforeExposureLimit"));
                     m_MaterialEditor.ShaderProperty(lilDirectionalLightStrength, GetLoc("sDirectionalLightStrength"));
