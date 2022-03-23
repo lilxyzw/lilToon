@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.11] - 2022-xx-xx
 ### 追加
 - AO Mapに`影範囲設定を無視して適用`を追加（影のトゥーン処理後にAO Mapを合成）
+- ラメに`コントラスト（後処理）`を追加
+- メインカラー2nd・3rdに`UV Mode`を追加
 - 輪郭線に頂点カラーを利用して法線方向を決める機能を追加
 - カスタムシェーダー用に独自フォーマットを追加
 

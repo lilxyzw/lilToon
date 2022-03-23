@@ -306,7 +306,9 @@ SAMPLER(sampler_linear_clamp);
     float   _AlphaMaskScale;
     float   _AlphaMaskValue;
     uint    _Main2ndTexBlendMode;
+    uint    _Main2ndTex_UVMode;
     uint    _Main3rdTexBlendMode;
+    uint    _Main3rdTex_UVMode;
     uint    _AlphaMaskMode;
     lilBool _UseMain2ndTex;
     lilBool _Main2ndTexIsDecal;
@@ -666,9 +668,11 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_MAIN2ND)
         uint    _Main2ndTexBlendMode;
+        uint    _Main2ndTex_UVMode;
     #endif
     #if defined(LIL_MULTI_INPUTS_MAIN3RD)
         uint    _Main3rdTexBlendMode;
+        uint    _Main3rdTex_UVMode;
     #endif
     #if defined(LIL_MULTI_INPUTS_ALPHAMASK)
         uint    _AlphaMaskMode;
@@ -1244,9 +1248,11 @@ SAMPLER(sampler_linear_clamp);
     uint    _OutlineCull;
     #if defined(LIL_FEATURE_MAIN2ND)
         uint    _Main2ndTexBlendMode;
+        uint    _Main2ndTex_UVMode;
     #endif
     #if defined(LIL_FEATURE_MAIN3RD)
         uint    _Main3rdTexBlendMode;
+        uint    _Main3rdTex_UVMode;
     #endif
     #if defined(LIL_FEATURE_ALPHAMASK)
         uint    _AlphaMaskMode;

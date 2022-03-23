@@ -603,6 +603,7 @@ namespace lilToon
         private MaterialProperty useMain2ndTex;
             private MaterialProperty mainColor2nd;
             private MaterialProperty main2ndTex;
+            private MaterialProperty main2ndTex_UVMode;
             private MaterialProperty main2ndTexAngle;
             private MaterialProperty main2ndTexDecalAnimation;
             private MaterialProperty main2ndTexDecalSubParam;
@@ -627,6 +628,7 @@ namespace lilToon
         private MaterialProperty useMain3rdTex;
             private MaterialProperty mainColor3rd;
             private MaterialProperty main3rdTex;
+            private MaterialProperty main3rdTex_UVMode;
             private MaterialProperty main3rdTexAngle;
             private MaterialProperty main3rdTexDecalAnimation;
             private MaterialProperty main3rdTexDecalSubParam;
@@ -2003,7 +2005,7 @@ namespace lilToon
                                     m_MaterialEditor.TexturePropertySingleLine(colorRGBAContent, main2ndTex, mainColor2nd);
                                     m_MaterialEditor.ShaderProperty(main2ndTexIsMSDF, GetLoc("sAsMSDF"));
                                     DrawLine();
-                                    UV4Decal(main2ndTexIsDecal, main2ndTexIsLeftOnly, main2ndTexIsRightOnly, main2ndTexShouldCopy, main2ndTexShouldFlipMirror, main2ndTexShouldFlipCopy, main2ndTex, main2ndTexAngle, main2ndTexDecalAnimation, main2ndTexDecalSubParam);
+                                    UV4Decal(main2ndTexIsDecal, main2ndTexIsLeftOnly, main2ndTexIsRightOnly, main2ndTexShouldCopy, main2ndTexShouldFlipMirror, main2ndTexShouldFlipCopy, main2ndTex, main2ndTexAngle, main2ndTexDecalAnimation, main2ndTexDecalSubParam, main2ndTex_UVMode);
                                     DrawLine();
                                     if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_LAYER_MASK)) m_MaterialEditor.TexturePropertySingleLine(maskBlendContent, main2ndBlendMask);
                                     EditorGUILayout.LabelField(GetLoc("sDistanceFade"));
@@ -2047,7 +2049,7 @@ namespace lilToon
                                     m_MaterialEditor.TexturePropertySingleLine(colorRGBAContent, main3rdTex, mainColor3rd);
                                     m_MaterialEditor.ShaderProperty(main3rdTexIsMSDF, GetLoc("sAsMSDF"));
                                     DrawLine();
-                                    UV4Decal(main3rdTexIsDecal, main3rdTexIsLeftOnly, main3rdTexIsRightOnly, main3rdTexShouldCopy, main3rdTexShouldFlipMirror, main3rdTexShouldFlipCopy, main3rdTex, main3rdTexAngle, main3rdTexDecalAnimation, main3rdTexDecalSubParam);
+                                    UV4Decal(main3rdTexIsDecal, main3rdTexIsLeftOnly, main3rdTexIsRightOnly, main3rdTexShouldCopy, main3rdTexShouldFlipMirror, main3rdTexShouldFlipCopy, main3rdTex, main3rdTexAngle, main3rdTexDecalAnimation, main3rdTexDecalSubParam, main3rdTex_UVMode);
                                     DrawLine();
                                     if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_LAYER_MASK)) m_MaterialEditor.TexturePropertySingleLine(maskBlendContent, main3rdBlendMask);
                                     EditorGUILayout.LabelField(GetLoc("sDistanceFade"));
@@ -3366,6 +3368,7 @@ namespace lilToon
             useMain2ndTex = FindProperty("_UseMain2ndTex", props, false);
             mainColor2nd = FindProperty("_Color2nd", props, false);
             main2ndTex = FindProperty("_Main2ndTex", props, false);
+            main2ndTex_UVMode = FindProperty("_Main2ndTex_UVMode", props, false);
             main2ndTexAngle = FindProperty("_Main2ndTexAngle", props, false);
             main2ndTexDecalAnimation = FindProperty("_Main2ndTexDecalAnimation", props, false);
             main2ndTexDecalSubParam = FindProperty("_Main2ndTexDecalSubParam", props, false);
@@ -3392,6 +3395,7 @@ namespace lilToon
             useMain3rdTex = FindProperty("_UseMain3rdTex", props, false);
             mainColor3rd = FindProperty("_Color3rd", props, false);
             main3rdTex = FindProperty("_Main3rdTex", props, false);
+            main3rdTex_UVMode = FindProperty("_Main3rdTex_UVMode", props, false);
             main3rdTexAngle = FindProperty("_Main3rdTexAngle", props, false);
             main3rdTexIsDecal = FindProperty("_Main3rdTexIsDecal", props, false);
             main3rdTexDecalAnimation = FindProperty("_Main3rdTexDecalAnimation", props, false);
@@ -5465,6 +5469,7 @@ namespace lilToon
                         CopyProperty(mainGradationTex);
                         CopyProperty(useMain2ndTex);
                         CopyProperty(mainColor2nd);
+                        CopyProperty(main2ndTex_UVMode);
                         CopyProperty(main2ndTexAngle);
                         CopyProperty(main2ndTexDecalAnimation);
                         CopyProperty(main2ndTexDecalSubParam);
@@ -5485,6 +5490,7 @@ namespace lilToon
                         CopyProperty(main2ndDistanceFade);
                         CopyProperty(useMain3rdTex);
                         CopyProperty(mainColor3rd);
+                        CopyProperty(main3rdTex_UVMode);
                         CopyProperty(main3rdTexAngle);
                         CopyProperty(main3rdTexDecalAnimation);
                         CopyProperty(main3rdTexDecalSubParam);
@@ -5531,6 +5537,7 @@ namespace lilToon
                 case lilPropertyBlock.MainColor2nd:
                         CopyProperty(useMain2ndTex);
                         CopyProperty(mainColor2nd);
+                        CopyProperty(main2ndTex_UVMode);
                         CopyProperty(main2ndTexAngle);
                         CopyProperty(main2ndTexDecalAnimation);
                         CopyProperty(main2ndTexDecalSubParam);
@@ -5557,6 +5564,7 @@ namespace lilToon
                 case lilPropertyBlock.MainColor3rd:
                         CopyProperty(useMain3rdTex);
                         CopyProperty(mainColor3rd);
+                        CopyProperty(main3rdTex_UVMode);
                         CopyProperty(main3rdTexAngle);
                         CopyProperty(main3rdTexDecalAnimation);
                         CopyProperty(main3rdTexDecalSubParam);
@@ -6241,6 +6249,7 @@ namespace lilToon
                         PasteProperty(ref mainGradationTex);
                         PasteProperty(ref useMain2ndTex);
                         PasteProperty(ref mainColor2nd);
+                        PasteProperty(ref main2ndTex_UVMode);
                         PasteProperty(ref main2ndTexAngle);
                         PasteProperty(ref main2ndTexDecalAnimation);
                         PasteProperty(ref main2ndTexDecalSubParam);
@@ -6261,6 +6270,7 @@ namespace lilToon
                         PasteProperty(ref main2ndDistanceFade);
                         PasteProperty(ref useMain3rdTex);
                         PasteProperty(ref mainColor3rd);
+                        PasteProperty(ref main3rdTex_UVMode);
                         PasteProperty(ref main3rdTexAngle);
                         PasteProperty(ref main3rdTexDecalAnimation);
                         PasteProperty(ref main3rdTexDecalSubParam);
@@ -6313,6 +6323,7 @@ namespace lilToon
                 case lilPropertyBlock.MainColor2nd:
                         PasteProperty(ref useMain2ndTex);
                         PasteProperty(ref mainColor2nd);
+                        PasteProperty(ref main2ndTex_UVMode);
                         PasteProperty(ref main2ndTexAngle);
                         PasteProperty(ref main2ndTexDecalAnimation);
                         PasteProperty(ref main2ndTexDecalSubParam);
@@ -6342,6 +6353,7 @@ namespace lilToon
                 case lilPropertyBlock.MainColor3rd:
                         PasteProperty(ref useMain3rdTex);
                         PasteProperty(ref mainColor3rd);
+                        PasteProperty(ref main3rdTex_UVMode);
                         PasteProperty(ref main3rdTexAngle);
                         PasteProperty(ref main3rdTexDecalAnimation);
                         PasteProperty(ref main3rdTexDecalSubParam);
@@ -7095,6 +7107,7 @@ namespace lilToon
                         ResetProperty(ref mainGradationTex);
                         ResetProperty(ref useMain2ndTex);
                         ResetProperty(ref mainColor2nd);
+                        ResetProperty(ref main2ndTex_UVMode);
                         ResetProperty(ref main2ndTexAngle);
                         ResetProperty(ref main2ndTexDecalAnimation);
                         ResetProperty(ref main2ndTexDecalSubParam);
@@ -7115,6 +7128,7 @@ namespace lilToon
                         ResetProperty(ref main2ndDistanceFade);
                         ResetProperty(ref useMain3rdTex);
                         ResetProperty(ref mainColor3rd);
+                        ResetProperty(ref main3rdTex_UVMode);
                         ResetProperty(ref main3rdTexAngle);
                         ResetProperty(ref main3rdTexDecalAnimation);
                         ResetProperty(ref main3rdTexDecalSubParam);
@@ -7161,6 +7175,7 @@ namespace lilToon
                 case lilPropertyBlock.MainColor2nd:
                         ResetProperty(ref useMain2ndTex);
                         ResetProperty(ref mainColor2nd);
+                        ResetProperty(ref main2ndTex_UVMode);
                         ResetProperty(ref main2ndTexAngle);
                         ResetProperty(ref main2ndTexDecalAnimation);
                         ResetProperty(ref main2ndTexDecalSubParam);
@@ -7187,6 +7202,7 @@ namespace lilToon
                 case lilPropertyBlock.MainColor3rd:
                         ResetProperty(ref useMain3rdTex);
                         ResetProperty(ref mainColor3rd);
+                        ResetProperty(ref main3rdTex_UVMode);
                         ResetProperty(ref main3rdTexAngle);
                         ResetProperty(ref main3rdTexDecalAnimation);
                         ResetProperty(ref main3rdTexDecalSubParam);
@@ -9808,8 +9824,9 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Property drawer
         #region
-        private void UV4Decal(MaterialProperty isDecal, MaterialProperty isLeftOnly, MaterialProperty isRightOnly, MaterialProperty shouldCopy, MaterialProperty shouldFlipMirror, MaterialProperty shouldFlipCopy, MaterialProperty tex, MaterialProperty angle, MaterialProperty decalAnimation, MaterialProperty decalSubParam)
+        private void UV4Decal(MaterialProperty isDecal, MaterialProperty isLeftOnly, MaterialProperty isRightOnly, MaterialProperty shouldCopy, MaterialProperty shouldFlipMirror, MaterialProperty shouldFlipCopy, MaterialProperty tex, MaterialProperty angle, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty uvMode)
         {
+            m_MaterialEditor.ShaderProperty(uvMode, "UV Mode|UV0|UV1|UV2|UV3");
             if(CheckFeature(shaderSetting.LIL_FEATURE_DECAL))
             {
                 #if SYSTEM_DRAWING
@@ -9982,6 +9999,7 @@ namespace lilToon
 
             if(GUILayout.Button(GetLoc("sReset")) && EditorUtility.DisplayDialog(GetLoc("sDialogResetUV"),GetLoc("sDialogResetUVMes"),GetLoc("sYes"),GetLoc("sNo")))
             {
+                uvMode.floatValue = 0.0f;
                 isDecal.floatValue = 0.0f;
                 isLeftOnly.floatValue = 0.0f;
                 isRightOnly.floatValue = 0.0f;
