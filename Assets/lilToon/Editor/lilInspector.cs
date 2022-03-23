@@ -801,6 +801,7 @@ namespace lilToon
             private MaterialProperty glitterMainStrength;
             private MaterialProperty glitterParams1;
             private MaterialProperty glitterParams2;
+            private MaterialProperty glitterPostContrast;
             private MaterialProperty glitterEnableLighting;
             private MaterialProperty glitterShadowMask;
             private MaterialProperty glitterBackfaceMask;
@@ -2572,6 +2573,7 @@ namespace lilToon
                                 m_MaterialEditor.ShaderProperty(glitterParams2, sGlitterParams2);
                                 m_MaterialEditor.ShaderProperty(glitterVRParallaxStrength, GetLoc("sVRParallaxStrength"));
                                 m_MaterialEditor.ShaderProperty(glitterNormalStrength, GetLoc("sNormalStrength"));
+                                m_MaterialEditor.ShaderProperty(glitterPostContrast, GetLoc("sPostContrast"));
                                 EditorGUILayout.EndVertical();
                             }
                             EditorGUILayout.EndVertical();
@@ -3628,6 +3630,7 @@ namespace lilToon
             glitterApplyTransparency = FindProperty("_GlitterApplyTransparency", props, false);
             glitterParams1 = FindProperty("_GlitterParams1", props, false);
             glitterParams2 = FindProperty("_GlitterParams2", props, false);
+            glitterPostContrast = FindProperty("_GlitterPostContrast", props, false);
             glitterVRParallaxStrength = FindProperty("_GlitterVRParallaxStrength", props, false);
             glitterNormalStrength = FindProperty("_GlitterNormalStrength", props, false);
 
@@ -5810,6 +5813,7 @@ namespace lilToon
                         CopyProperty(glitterMainStrength);
                         CopyProperty(glitterParams1);
                         CopyProperty(glitterParams2);
+                        CopyProperty(glitterPostContrast);
                         CopyProperty(glitterEnableLighting);
                         CopyProperty(glitterShadowMask);
                         CopyProperty(glitterBackfaceMask);
@@ -5983,6 +5987,7 @@ namespace lilToon
                         CopyProperty(glitterMainStrength);
                         CopyProperty(glitterParams1);
                         CopyProperty(glitterParams2);
+                        CopyProperty(glitterPostContrast);
                         CopyProperty(glitterEnableLighting);
                         CopyProperty(glitterShadowMask);
                         CopyProperty(glitterBackfaceMask);
@@ -6623,6 +6628,7 @@ namespace lilToon
                         PasteProperty(ref glitterMainStrength);
                         PasteProperty(ref glitterParams1);
                         PasteProperty(ref glitterParams2);
+                        PasteProperty(ref glitterPostContrast);
                         PasteProperty(ref glitterEnableLighting);
                         PasteProperty(ref glitterShadowMask);
                         PasteProperty(ref glitterBackfaceMask);
@@ -6814,6 +6820,7 @@ namespace lilToon
                         PasteProperty(ref glitterMainStrength);
                         PasteProperty(ref glitterParams1);
                         PasteProperty(ref glitterParams2);
+                        PasteProperty(ref glitterPostContrast);
                         PasteProperty(ref glitterEnableLighting);
                         PasteProperty(ref glitterShadowMask);
                         PasteProperty(ref glitterBackfaceMask);
@@ -7436,6 +7443,7 @@ namespace lilToon
                         ResetProperty(ref glitterMainStrength);
                         ResetProperty(ref glitterParams1);
                         ResetProperty(ref glitterParams2);
+                        ResetProperty(ref glitterPostContrast);
                         ResetProperty(ref glitterEnableLighting);
                         ResetProperty(ref glitterShadowMask);
                         ResetProperty(ref glitterBackfaceMask);
@@ -7609,6 +7617,7 @@ namespace lilToon
                         ResetProperty(ref glitterMainStrength);
                         ResetProperty(ref glitterParams1);
                         ResetProperty(ref glitterParams2);
+                        ResetProperty(ref glitterPostContrast);
                         ResetProperty(ref glitterEnableLighting);
                         ResetProperty(ref glitterShadowMask);
                         ResetProperty(ref glitterBackfaceMask);

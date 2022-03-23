@@ -601,6 +601,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         float   _GlitterMainStrength;
+        float   _GlitterPostContrast;
         float   _GlitterNormalStrength;
         float   _GlitterEnableLighting;
         float   _GlitterShadowMask;
@@ -1168,6 +1169,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FEATURE_GLITTER)
         float   _GlitterMainStrength;
+        float   _GlitterPostContrast;
         float   _GlitterNormalStrength;
         float   _GlitterEnableLighting;
         float   _GlitterShadowMask;

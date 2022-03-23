@@ -276,6 +276,7 @@ Shader "Hidden/lilToonMultiRefraction"
                         _GlitterNormalStrength      ("Normal Strength", Range(0, 1)) = 1.0
         [lilGlitParam1] _GlitterParams1             ("Tiling|Particle Size|Contrast", Vector) = (256,256,0.16,50)
         [lilGlitParam2] _GlitterParams2             ("Blink Speed|Angle|Blend Light Direction|Color Randomness", Vector) = (0.25,0,0,0)
+                        _GlitterPostContrast        ("Post Contrast", Float) = 1
                         _GlitterEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
                         _GlitterShadowMask          ("Shadow Mask", Range(0, 1)) = 0
         [lilToggle]     _GlitterBackfaceMask        ("Backface Mask", Int) = 0

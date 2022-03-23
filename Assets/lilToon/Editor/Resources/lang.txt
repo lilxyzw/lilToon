@@ -304,6 +304,7 @@ sGlitterSetting	Glitter	ラメ設定	Glitter 설정	Glitter设置	Glitter設置
 sGlitter	Glitter	ラメ	Glitter	Glitter	Glitter
 sParticleSize	Particle Size	パーティクルサイズ	파티클 사이즈	粒子大小	粒子大小
 sContrast	Contrast	コントラスト	콘트라스트	对比度	對比度
+sPostContrast	Post Contrast	コントラスト（後処理）	콘트라스트(후처리)	对比度（后处理）	對比度（後處理）
 sAngleLimit	Angle limit	角度制限	각도 제한	角度限制	角度限制
 sColorRandomness	Color Randomness	ランダムカラー	랜덤 컬러	随机颜色	隨機顏色
 sGemSetting	Gem	宝石設定	보석 설정	宝石设置	寶石設置

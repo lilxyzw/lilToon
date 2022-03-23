@@ -1079,7 +1079,7 @@ float3 lilCustomReflection(TEXTURECUBE(tex), float4 hdr, float3 viewDirection, f
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Glitter
-float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, float3 lightDirection, float4 glitterParams1, float4 glitterParams2)
+float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, float3 lightDirection, float4 glitterParams1, float4 glitterParams2, float glitterPostContrast)
 {
     // glitterParams1
     // x: Scale, y: Scale, z: Size, w: Contrast
@@ -1135,6 +1135,7 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
         glitterNormal = normalize(glitterNormal * 2.0 - 1.0);
         float glitter = dot(glitterNormal, viewDirection);
         glitter = saturate(1.0 - (glitter * glitterParams1.w + glitterParams1.w));
+        glitter = pow(glitter, glitterPostContrast);
         // Circle
         #if GLITTER_ANTIALIAS == 1
             glitter *= saturate((glitterParams1.z-near.w) / fwidth(near.w));
