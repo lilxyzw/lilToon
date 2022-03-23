@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fixed shadows not being applied in the ForwardAdd pass of lilToonMulti
+- Fixed the `Normal Map Strength` of rim light and MatCap not working well in gem
 - Fixed the appearance of fur in ForwardAdd
 - Fixed Z-fighting for 2 pass fur
 - Fixed an issue where polygons might disappear at the edge of the field of view in the tessellation shader

@@ -579,6 +579,7 @@
             if(_Main2ndTex_UVMode == 1) uv2nd = fd.uv1;
             if(_Main2ndTex_UVMode == 2) uv2nd = fd.uv2;
             if(_Main2ndTex_UVMode == 3) uv2nd = fd.uv3;
+            if(_Main2ndTex_UVMode == 4) uv2nd = fd.uvMat;
             if(Exists_Main2ndTex) color2nd *= LIL_GET_SUBTEX(_Main2ndTex, uv2nd);
             if(Exists_Main2ndBlendMask) color2nd.a *= LIL_SAMPLE_2D(_Main2ndBlendMask, samp, fd.uvMain).r;
             #if defined(LIL_FEATURE_LAYER_DISSOLVE)
@@ -651,6 +652,7 @@
             if(_Main3rdTex_UVMode == 1) uv3rd = fd.uv1;
             if(_Main3rdTex_UVMode == 2) uv3rd = fd.uv2;
             if(_Main3rdTex_UVMode == 3) uv3rd = fd.uv3;
+            if(_Main3rdTex_UVMode == 4) uv3rd = fd.uvMat;
             if(Exists_Main3rdTex) color3rd *= LIL_GET_SUBTEX(_Main3rdTex, uv3rd);
             if(Exists_Main3rdBlendMask) color3rd.a *= LIL_SAMPLE_2D(_Main3rdBlendMask, samp, fd.uvMain).r;
             #if defined(LIL_FEATURE_LAYER_DISSOLVE)

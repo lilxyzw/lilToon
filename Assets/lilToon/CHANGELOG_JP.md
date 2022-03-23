@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 修正
 - lilToonMultiのForwardAddパスで影が適用されていなかったのを修正
+- 宝石シェーダーでリムライトやマットキャップの`ノーマルマップ強度`がうまく動いていなかったのを修正
 - ポイントライト・スポットライト環境下のファーの見た目を修正
 - 2パスファーのZファイティングを修正
 - テッセレーションシェーダーが視界端でポリゴンが消える場合があるのを修正

@@ -160,6 +160,8 @@
             fd.N = fd.facing < 0.0 ? -fd.N - fd.V * 0.2 : fd.N;
             fd.N = normalize(fd.N);
         #endif
+        fd.origN = normalize(input.normalWS);
+        fd.uvMat = mul((float3x3)LIL_MATRIX_V, fd.N).xy * 0.5 + 0.5;
         fd.reflectionN = fd.N;
         fd.matcapN = fd.N;
         fd.matcap2ndN = fd.N;

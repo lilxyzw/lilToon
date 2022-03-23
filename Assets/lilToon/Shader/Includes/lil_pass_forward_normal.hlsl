@@ -274,6 +274,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
                 fd.uvRim = float2(fd.nvabs,fd.nvabs);
             #endif
             fd.origN = normalize(input.normalWS);
+            fd.uvMat = mul((float3x3)LIL_MATRIX_V, fd.N).xy * 0.5 + 0.5;
         #endif
         fd.reflectionN = fd.N;
         fd.matcapN = fd.N;
