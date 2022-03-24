@@ -33,4 +33,8 @@
     - [- テッセレーション](ja-jp/advanced/tessellation.md "テッセレーション - lilToon")
     - [- 屈折設定](ja-jp/advanced/refraction.md "屈折設定 - lilToon")
     - [- ファー設定](ja-jp/advanced/fur.md "ファー設定 - lilToon")
-- [その他](ja-jp/other.md "その他 - lilToon")
+- **その他**
+    - [- 最適化](ja-jp/other/optimization.md "最適化 - lilToon")
+    - [- シェーダー設定](ja-jp/other/settings.md "シェーダー設定 - lilToon")
+    - [- メニューの追加項目](ja-jp/other/menuitem.md "メニューの追加項目 - lilToon")
+    - [- Q&A](ja-jp/other/qa.md "Q&A - lilToon")

@@ -88,31 +88,31 @@
 </div>
 
 ## 主な機能
-- [UVスクロール＆回転](/ja-jp/base/uv) - タイリングやアニメーションさせたり、ポリゴンの表・裏で異なるUVにしたりなど様々な変更を加えることができます。
-- [メインカラー](/ja-jp/color/maincolor) - アバター改変を想定し色調補正による色替え＆テクスチャ書き出しに対応しています。
-- [メインカラー2nd/3rd](/ja-jp/color/maincolor_layer) - デカール・ディテール、レイヤーマスク、Gifアニメーション、距離フェード、様々な合成モードに対応しています。
-- [アルファマスク](/ja-jp/color/alphamask) - メインテクスチャのアルファチャンネルに焼き込んで書き出すこともできます。
-- [3影](/ja-jp/color/shadow) - テクスチャによる色指定、影の境界の色指定、AOマスクによって影の付きやすさを調整可能です。
-- [発光x2](/ja-jp/color/emission) - アニメーション、マスク、点滅、色の時間変化、視差対応で多彩な表現ができます。
-- [ノーマルマップx2](/ja-jp/reflections/normal) - 個別にUV・強度を調整可能で、1枚目で大まかな影の付き方の調整し、2枚目で細かいディテールを加えるような使い方ができます。
-- [異方性反射](/ja-jp/reflections/anisotropy) - 反射・マットキャップそれぞれに適用可能です。髪の毛やヘアライン仕上げのような複雑な質感の表現ができます。
-- [逆光ライト](/ja-jp/reflections/backlight) - イラストでよく使われる後ろから光が差し込む表現ができます。
-- [鏡面反射](/ja-jp/reflections/reflection) - イラスト調のハイライトからフォトリアルな反射まで表現できます。CubeMapのフォールバック・オーバーライドにも対応しているため環境に影響されない表現もできます。
-- [マットキャップx2](/ja-jp/reflections/matcap) - Z軸回転キャンセル、パースの補正、UV1のブレンドによるエンジェルリング表現、様々な合成モードに対応しています。
-- [リムライト](/ja-jp/reflections/rimlight) - ライト方向に応じて日向部分・影部分個別に色やぼかし量・範囲を調節することができます。
-- [ラメ](/ja-jp/reflections/glitter) - ラメのような複雑に輝く質感の表現ができます。
-- [宝石](/ja-jp/reflections/gem) - 通常のシェーダーでは表現が困難な宝石のキラキラした質感を表現できます。
-- [輪郭線](/ja-jp/advanced/outline) - テクスチャによる色指定、マスク、距離に応じた太さ補正に対応しています。また、ハードエッジのモデルでも頂点カラーを用いた滑らかな描画が可能です。
-- [視差マップ](/ja-jp/advanced/parallax) - 視線方向に応じてUVをずらすことで擬似的に立体感を出すことができます。
-- [距離フェード](/ja-jp/advanced/distancefade) - 近づいたときに暗くすることで臨場感を出すような使い方や、フェードのかかり方を逆にしてフォグのように利用することもできます。
-- [AudioLink](/ja-jp/advanced/audiolink) - 対応VRChatワールドで音に同期してマテリアルをアニメーション可能です。
-- [Dissolve](/ja-jp/advanced?id=dissolve) - 出現・退場アニメーションや変身エフェクト、部分的に溶ける表現など様々な使い方ができます。
-- [AvatarEncryption](/ja-jp/advanced/encryption) - 4つのキーを用いてメッシュを暗号化することでリッピングを防止します。
-- [テッセレーション](/ja-jp/advanced/tessellationン) - 近づいた際にモデルをなめらかにする、主に映像制作向けの機能です。
-- [屈折](/ja-jp/advanced/refraction) - ガラスのような屈折表現を行えます。
-- [ファー](/ja-jp/advanced/fur) - 毛のような複雑な質感を表現できます。
+- [UVスクロール＆回転](/ja-jp/base/uv.md) - タイリングやアニメーションさせたり、ポリゴンの表・裏で異なるUVにしたりなど様々な変更を加えることができます。
+- [メインカラー](/ja-jp/color/maincolor.md) - アバター改変を想定し色調補正による色替え＆テクスチャ書き出しに対応しています。
+- [メインカラー2nd/3rd](/ja-jp/color/maincolor_layer.md) - デカール・ディテール、レイヤーマスク、Gifアニメーション、距離フェード、様々な合成モードに対応しています。
+- [アルファマスク](/ja-jp/color/alphamask.md) - メインテクスチャのアルファチャンネルに焼き込んで書き出すこともできます。
+- [3影](/ja-jp/color/shadow.md) - テクスチャによる色指定、影の境界の色指定、AOマスクによって影の付きやすさを調整可能です。
+- [発光x2](/ja-jp/color/emission.md) - アニメーション、マスク、点滅、色の時間変化、視差対応で多彩な表現ができます。
+- [ノーマルマップx2](/ja-jp/reflections/normal.md) - 個別にUV・強度を調整可能で、1枚目で大まかな影の付き方の調整し、2枚目で細かいディテールを加えるような使い方ができます。
+- [異方性反射](/ja-jp/reflections/anisotropy.md) - 反射・マットキャップそれぞれに適用可能です。髪の毛やヘアライン仕上げのような複雑な質感の表現ができます。
+- [逆光ライト](/ja-jp/reflections/backlight.md) - イラストでよく使われる後ろから光が差し込む表現ができます。
+- [鏡面反射](/ja-jp/reflections/reflection.md) - イラスト調のハイライトからフォトリアルな反射まで表現できます。CubeMapのフォールバック・オーバーライドにも対応しているため環境に影響されない表現もできます。
+- [マットキャップx2](/ja-jp/reflections/matcap.md) - Z軸回転キャンセル、パースの補正、UV1のブレンドによるエンジェルリング表現、様々な合成モードに対応しています。
+- [リムライト](/ja-jp/reflections/rimlight.md) - ライト方向に応じて日向部分・影部分個別に色やぼかし量・範囲を調節することができます。
+- [ラメ](/ja-jp/reflections/glitter.md) - ラメのような複雑に輝く質感の表現ができます。
+- [宝石](/ja-jp/reflections/gem.md) - 通常のシェーダーでは表現が困難な宝石のキラキラした質感を表現できます。
+- [輪郭線](/ja-jp/advanced/outline.md) - テクスチャによる色指定、マスク、距離に応じた太さ補正に対応しています。また、ハードエッジのモデルでも頂点カラーを用いた滑らかな描画が可能です。
+- [視差マップ](/ja-jp/advanced/parallax.md) - 視線方向に応じてUVをずらすことで擬似的に立体感を出すことができます。
+- [距離フェード](/ja-jp/advanced/distancefade.md) - 近づいたときに暗くすることで臨場感を出すような使い方や、フェードのかかり方を逆にしてフォグのように利用することもできます。
+- [AudioLink](/ja-jp/advanced/audiolink.md) - 対応VRChatワールドで音に同期してマテリアルをアニメーション可能です。
+- [Dissolve](/ja-jp/advanced?id=dissolve.md) - 出現・退場アニメーションや変身エフェクト、部分的に溶ける表現など様々な使い方ができます。
+- [AvatarEncryption](/ja-jp/advanced/encryption.md) - 4つのキーを用いてメッシュを暗号化することでリッピングを防止します。
+- [テッセレーション](/ja-jp/advanced/tessellation.md) - 近づいた際にモデルをなめらかにする、主に映像制作向けの機能です。
+- [屈折](/ja-jp/advanced/refraction.md) - ガラスのような屈折表現を行えます。
+- [ファー](/ja-jp/advanced/fur.md) - 毛のような複雑な質感を表現できます。
 - 距離クリッピングキャンセラー - 近づきすぎても消えなくすることができます。VR等で特に効果を発揮します。シェーダー設定からオンにすることで利用できます。
-- [VRChat向け機能](/ja-jp/base/vrchat) - シェーダーブロック時のフォールバック先のシェーダー選択機能です。
+- [VRChat向け機能](/ja-jp/base/vrchat.md) - シェーダーブロック時のフォールバック先のシェーダー選択機能です。
 
 ## ライセンス
 本シェーダーは[MIT License](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/LICENSE)で公開しています。日本語参考訳は[こちら](https://licenses.opensource.jp/MIT/MIT.html)で確認いただけます。サードパーティーのライセンスについては[Third Party Notices.md](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/Third%20Party%20Notices.md)をご確認ください。
