@@ -29,6 +29,7 @@
 /* Font */
 body {
     font-family: "Roboto", "SF Pro Text", "Helvetica", "Arial", "Kosugi", "源ノ角ゴシック", "源ノ角ゴシック Regular", "Noto Sans CJK JP", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "Meiryo", sans-serif;
+    color: var(--main-font-color);
 }
 
 /* twemoji */
@@ -77,6 +78,10 @@ section.cover .cover-main img {
 .markdown-section h2 span {
     font-size: 33px;
     font-weight: 700;
+    color: var(--main-font-color);
+}
+
+.markdown-section h3 span {
     color: var(--main-font-color);
 }
 
