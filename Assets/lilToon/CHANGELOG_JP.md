@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.11] - 2022-xx-xx
+## [1.2.11] - 2022-03-26
 ### 追加
 - AO Mapに`影範囲設定を無視して適用`を追加（影のトゥーン処理後にAO Mapを合成）
 - ラメに`コントラスト（後処理）`を追加

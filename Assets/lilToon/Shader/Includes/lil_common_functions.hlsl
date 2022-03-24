@@ -1146,7 +1146,6 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
         float3 halfDirection = normalize(viewDirection + lightDirection * glitterParams2.z);
         float nh = saturate(dot(normalDirection, halfDirection));
         glitter = saturate(glitter * saturate(nh * glitterParams2.y + 1.0 - glitterParams2.y));
-        glitter *= saturate(1.0 - max(fwidth(pos.x), fwidth(pos.y)));
         // Random Color
         float3 glitterColor = glitter - glitter * frac(near.xyz*278.436) * glitterParams2.w;
         return glitterColor;

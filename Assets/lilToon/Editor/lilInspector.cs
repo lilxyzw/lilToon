@@ -2342,7 +2342,7 @@ namespace lilToon
                     if(!isGem && CheckFeature(shaderSetting.LIL_FEATURE_REFLECTION))
                     {
                         edSet.isShowReflections = Foldout(GetLoc("sReflectionsSetting"), edSet.isShowReflections);
-                        DrawMenuButton(GetLoc("sAnchorReflections"), lilPropertyBlock.Reflections);
+                        DrawMenuButton(GetLoc("sAnchorReflection"), lilPropertyBlock.Reflections);
                         if(edSet.isShowReflections)
                         {
                             //------------------------------------------------------------------------------------------------------------------------------
@@ -11621,7 +11621,7 @@ namespace lilToon
                 materialEditor = (MaterialEditor)Editor.CreateEditor(objects, typeof(MaterialEditor));
                 lilToonInspector inspector = new lilToonInspector();
 
-                EditorGUILayout.LabelField("Selected Materials", string.Join(", ", objects.Select(obj => obj.name)), EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Selected Materials", string.Join(", ", objects.Select(obj => obj.name).ToArray()), EditorStyles.boldLabel);
                 DrawLine();
                 scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
                 EditorGUILayout.BeginVertical(InitializeMarginBox(20, 4, 4));

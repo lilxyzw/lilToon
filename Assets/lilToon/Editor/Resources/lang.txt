@@ -506,42 +506,38 @@ sSettingApplyShadowFA	Enable shadow in ForwardAdd	ForwardAddパスで影を有�
 sSettingUseForwardAdd	Use ForwardAdd	ForwardAddパスを使用	ForwardAdd 사용	使用ForwardAdd	使用ForwardAdd
 sSettingUseVertexLight	Use vertex light	頂点ライトを使用	꼭지점 라이트 사용	使用顶点灯	使用頂點燈
 sSettingUseLightmap	Use lightmap	ライトマップを使用	라이트 맵 사용	使用照明图	使用照明圖
-sManualURL	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md
-sAnchorTerms	#terms	#登場する用語	#terms	#terms	#terms
-sAnchorBaseSetting	#base-setting	#基本設定	#base-setting	#base-setting	#base-setting
-sAnchorLighting	#lighting	#ライティング設定	#lighting	#lighting	#lighting
-sAnchorUVSetting	#uv-setting	#uv設定	#uv-setting	#uv-setting	#uv-setting
-sAnchorColor	#color	#色設定	#color	#color	#color
-sAnchorMainColor	#main-color-/-alpha	#メインカラー-/-透過設定	#main-color-/-alpha	#main-color-/-alpha	#main-color-/-alpha
-sAnchorMainColor1	#main-color-/-alpha-1	#メインカラー-/-透過	#main-color-/-alpha-1	#main-color-/-alpha-1	#main-color-/-alpha-1
-sAnchorMainColor2	#main-color-2nd--3rd	#メインカラー2nd3rd	#main-color-2nd--3rd	#main-color-2nd--3rd	#main-color-2nd--3rd
-sAnchorAlphaMask	#alpha-mask	#アルファマスク	#alpha-mask	#alpha-mask	#alpha-mask
-sAnchorShadow	#shadow	#影設定	#shadow	#shadow	#shadow
-sAnchorEmission	#emission	#発光設定	#emission	#emission	#emission
-sAnchorNormalReflection	#normal-map--reflection	#ノーマルマップ光沢設定	#normal-map--reflection	#normal-map--reflection	#normal-map--reflection
-sAnchorNormalMap	#normal-map	#ノーマルマップ設定	#normal-map	#normal-map	#normal-map
-sAnchorAnisotropy	#anisotropy	#異方性反射	#anisotropy	#anisotropy	#anisotropy
-sAnchorReflections	#reflections	#光沢設定	#reflections	#reflections	#reflections
-sAnchorReflection	#reflection	#反射	#reflection	#reflection	#reflection
-sAnchorMatCap	#matcap	#マットキャップ	#matcap	#matcap	#matcap
-sAnchorRimLight	#rim-light	#リムライト	#rim-light	#rim-light	#rim-light
-sAnchorGlitter	#glitter	#ラメ	#glitter	#glitter	#glitter
-sAnchorBacklight	#backlight	#逆光ライト	#backlight	#backlight	#backlight
-sAnchorGem	#gem	#宝石	#gem	#gem	#gem
-sAnchorAdvanced	#advanced	#拡張設定	#advanced	#advanced	#advanced
-sAnchorOutline	#outline	#輪郭線設定	#outline	#outline	#outline
-sAnchorParallax	#parallax	#視差マップ	#parallax	#parallax	#parallax
-sAnchorDistanceFade	#distance-fade	#距離フェード	#distance-fade	#distance-fade	#distance-fade
-sAnchorAudioLink	#audiolink	#audiolink	#audiolink	#audiolink	#audiolink
-sAnchorDissolve	#dissolve	#dissolve	#dissolve	#dissolve	#dissolve
-sAnchorEncryption	#encryption	#暗号化	#encryption	#encryption	#encryption
-sAnchorStencil	#stencil	#ステンシル設定	#stencil	#stencil	#stencil
-sAnchorRendering	#rendering	#レンダリング設定	#rendering	#rendering	#rendering
-sAnchorTessellation	#tessellation	#テッセレーション	#tessellation	#tessellation	#tessellation
-sAnchorRefraction	#refraction	#屈折設定	#refraction	#refraction	#refraction
-sAnchorFur	#fur	#ファー設定	#fur	#fur	#fur
-sAnchorOptimization	#optimization	#最適化	#optimization	#optimization	#optimization
-sAnchorShaderSetting	#shader-setting	#シェーダー設定	#shader-setting	#shader-setting	#shader-setting
+sManualURL	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://lilxyzw.github.io/lilToon/#/ja-jp/	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md
+sAnchorTerms	#terms	first?id=登場する用語	#terms	#terms	#terms
+sAnchorBaseSetting	#base-setting	base/base	#base-setting	#base-setting	#base-setting
+sAnchorLighting	#lighting	base/lighting	#lighting	#lighting	#lighting
+sAnchorUVSetting	#uv-setting	base/uv	#uv-setting	#uv-setting	#uv-setting
+sAnchorMainColor	#main-color-/-alpha	color/maincolor	#main-color-/-alpha	#main-color-/-alpha	#main-color-/-alpha
+sAnchorMainColor1	#main-color-/-alpha-1	color/maincolor	#main-color-/-alpha-1	#main-color-/-alpha-1	#main-color-/-alpha-1
+sAnchorMainColor2	#main-color-2nd--3rd	color/maincolor_layer	#main-color-2nd--3rd	#main-color-2nd--3rd	#main-color-2nd--3rd
+sAnchorAlphaMask	#alpha-mask	color/alphamask	#alpha-mask	#alpha-mask	#alpha-mask
+sAnchorShadow	#shadow	color/shadow	#shadow	#shadow	#shadow
+sAnchorEmission	#emission	color/emission	#emission	#emission	#emission
+sAnchorNormalMap	#normal-map	reflections/normal	#normal-map	#normal-map	#normal-map
+sAnchorAnisotropy	#anisotropy	reflections/anisotropy	#anisotropy	#anisotropy	#anisotropy
+sAnchorBacklight	#backlight	reflections/backlight	#backlight	#backlight	#backlight
+sAnchorReflection	#reflection	reflections/reflection	#reflection	#reflection	#reflection
+sAnchorMatCap	#matcap	reflections/matcap	#matcap	#matcap	#matcap
+sAnchorRimLight	#rim-light	reflections/rimlight	#rim-light	#rim-light	#rim-light
+sAnchorGlitter	#glitter	reflections/glitter	#glitter	#glitter	#glitter
+sAnchorGem	#gem	reflections/gem	#gem	#gem	#gem
+sAnchorOutline	#outline	advanced/outline	#outline	#outline	#outline
+sAnchorParallax	#parallax	advanced/parallax	#parallax	#parallax	#parallax
+sAnchorDistanceFade	#distance-fade	advanced/distancefade	#distance-fade	#distance-fade	#distance-fade
+sAnchorAudioLink	#audiolink	advanced/audiolink	#audiolink	#audiolink	#audiolink
+sAnchorDissolve	#dissolve	advanced/dissolve	#dissolve	#dissolve	#dissolve
+sAnchorEncryption	#encryption	advanced/encryption	#encryption	#encryption	#encryption
+sAnchorStencil	#stencil	advanced/stencil	#stencil	#stencil	#stencil
+sAnchorRendering	#rendering	advanced/rendering	#rendering	#rendering	#rendering
+sAnchorTessellation	#tessellation	advanced/tessellation	#tessellation	#tessellation	#tessellation
+sAnchorRefraction	#refraction	advanced/refraction	#refraction	#refraction	#refraction
+sAnchorFur	#fur	advanced/fur	#fur	#fur	#fur
+sAnchorOptimization	#optimization	other?id=最適化	#optimization	#optimization	#optimization
+sAnchorShaderSetting	#shader-setting	other?id=シェーダー設定	#shader-setting	#shader-setting	#shader-setting
 sReadmeURL	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README_JP.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md
 sReadmeAnchorProblem	#common-problems	#よくあるトラブル	#common-problems	#common-problems	#common-problems
 sWhenInTrouble	When in trouble...	困ったときは…	곤란할 때는...	遇到麻烦时...	遇到麻煩時...
