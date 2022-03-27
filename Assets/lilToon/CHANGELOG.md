@@ -4,13 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.11] - 2022-03-26
+## [1.2.11] - 2022-03-28
 ### Added
 - `Ignore border properties` property for AO Map (blend AO Map after toon processing)
 - `Post Contrast` property for glitter
 - `UV Mode` property for main color 2nd / 3rd
 - An option to determine the normal direction using vertex color for outline
 - New format for custom shaders
+
+### Changed
+- Migrated the contents of developer documentation to online
+- Removed template for legacy custom shaders
 
 ### Fixed
 - Fixed shadows not being applied in the ForwardAdd pass of lilToonMulti
@@ -19,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed Z-fighting for 2 pass fur
 - Fixed an issue where polygons might disappear at the edge of the field of view in the tessellation shader
 - Fixed behavior in VR (URP / HDRP)
+- Changed the method of`Remove unused properties` to via SerializedObject
 
 ## [1.2.10] - 2022-03-06
 ### Added

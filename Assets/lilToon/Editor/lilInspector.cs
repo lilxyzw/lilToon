@@ -8749,35 +8749,32 @@ namespace lilToon
 
         private static void RemoveUnusedProperties(Material material)
         {
-            Material newMaterial = new Material(material.shader)
+            // https://light11.hatenadiary.com/entry/2018/12/04/224253
+            var so = new SerializedObject(material);
+            so.Update();
+            var savedProps = so.FindProperty("m_SavedProperties");
+
+            var texs = savedProps.FindPropertyRelative("m_TexEnvs");
+            DeleteUnused(ref texs, material);
+
+            var floats = savedProps.FindPropertyRelative("m_Floats");
+            DeleteUnused(ref floats, material);
+
+            var colors = savedProps.FindPropertyRelative("m_Colors");
+            DeleteUnused(ref colors, material);
+
+            so.ApplyModifiedProperties();
+        }
+
+        private static void DeleteUnused(ref SerializedProperty props, Material material)
+        {
+            for(int i = props.arraySize - 1; i >= 0; i--)
             {
-                name                    = material.name,
-                doubleSidedGI           = material.doubleSidedGI,
-                globalIlluminationFlags = material.globalIlluminationFlags,
-                renderQueue             = material.renderQueue
-            };
-            newMaterial.SetOverrideTag("VRCFallback", material.GetTag("VRCFallback", false));
-            int propCount = ShaderUtil.GetPropertyCount(material.shader);
-            for(int i = 0; i < propCount; i++)
-            {
-                string propName = ShaderUtil.GetPropertyName(material.shader, i);
-                ShaderUtil.ShaderPropertyType propType = ShaderUtil.GetPropertyType(material.shader, i);
-                if(propType == ShaderUtil.ShaderPropertyType.Color)    newMaterial.SetColor(propName,  material.GetColor(propName));
-                if(propType == ShaderUtil.ShaderPropertyType.Vector)   newMaterial.SetVector(propName, material.GetVector(propName));
-                if(propType == ShaderUtil.ShaderPropertyType.Float)    newMaterial.SetFloat(propName,  material.GetFloat(propName));
-                if(propType == ShaderUtil.ShaderPropertyType.Range)    newMaterial.SetFloat(propName,  material.GetFloat(propName));
-                if(propType == ShaderUtil.ShaderPropertyType.TexEnv)
+                if(!material.HasProperty(props.GetArrayElementAtIndex(i).FindPropertyRelative("first").stringValue))
                 {
-                    newMaterial.SetTexture(propName, material.GetTexture(propName));
-                    newMaterial.SetTextureOffset(propName, material.GetTextureOffset(propName));
-                    newMaterial.SetTextureScale(propName, material.GetTextureScale(propName));
+                    props.DeleteArrayElementAtIndex(i);
                 }
             }
-            string matPath = AssetDatabase.GetAssetPath(material);
-            string newMatPath = Path.GetDirectoryName(matPath) + "/" + Path.GetFileNameWithoutExtension(matPath) + ".asset";
-            AssetDatabase.CreateAsset(newMaterial, newMatPath);
-            FileUtil.ReplaceFile(newMatPath, matPath);
-            AssetDatabase.DeleteAsset(newMatPath);
         }
         #endregion
 

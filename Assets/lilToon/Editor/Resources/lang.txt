@@ -507,7 +507,6 @@ sSettingUseForwardAdd	Use ForwardAdd	ForwardAddパスを使用	ForwardAdd 사용
 sSettingUseVertexLight	Use vertex light	頂点ライトを使用	꼭지점 라이트 사용	使用顶点灯	使用頂點燈
 sSettingUseLightmap	Use lightmap	ライトマップを使用	라이트 맵 사용	使用照明图	使用照明圖
 sManualURL	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://lilxyzw.github.io/lilToon/#/ja-jp/	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL.md
-sAnchorTerms	#terms	first?id=登場する用語	#terms	#terms	#terms
 sAnchorBaseSetting	#base-setting	base/base	#base-setting	#base-setting	#base-setting
 sAnchorLighting	#lighting	base/lighting	#lighting	#lighting	#lighting
 sAnchorUVSetting	#uv-setting	base/uv	#uv-setting	#uv-setting	#uv-setting
@@ -538,10 +537,10 @@ sAnchorRefraction	#refraction	advanced/refraction	#refraction	#refraction	#refra
 sAnchorFur	#fur	advanced/fur	#fur	#fur	#fur
 sAnchorOptimization	#optimization	other?id=最適化	#optimization	#optimization	#optimization
 sAnchorShaderSetting	#shader-setting	other?id=シェーダー設定	#shader-setting	#shader-setting	#shader-setting
-sReadmeURL	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README_JP.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md
-sReadmeAnchorProblem	#common-problems	#よくあるトラブル	#common-problems	#common-problems	#common-problems
+sReadmeURL	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://lilxyzw.github.io/lilToon/#/ja-jp/	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md
+sReadmeAnchorProblem	#common-problems	other/qa	#common-problems	#common-problems	#common-problems
 sWhenInTrouble	When in trouble...	困ったときは…	곤란할 때는...	遇到麻烦时...	遇到麻煩時...
-sCommonProblems	Common Problems	よくあるトラブル	일반적인 문제	常见问题	常見問題
+sCommonProblems	Common Problems	Q&A	일반적인 문제	常见问题	常見問題
 sUtilGif2AtlasPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャの解像度を2の累乗に合わせますか？	텍스처의 해상도를 2의 거듭 제곱에 맞게 싶으십니까?	您想将纹理分辨率匹配到 2 的幂吗？	您想將紋理分辨率匹配到 2 的冪嗎？
 sUtilDotTexRedRatio	Select a reduction ratio	縮小率を選択してください。	축소 비율을 선택하십시오.	请选择一个缩小比例。	請選擇一個縮小比例。
 sUtilShaderNotFound	Shader is not found.	シェーダーが見つかりません。	쉐이더가 없습니다.	未找到着色器。	未找到著色器。

@@ -1,3 +1,5 @@
+**This document may be out of date. Please check the [Document Site](https://lilxyzw.github.io/lilToon/) for the latest information.**
+
 # Developer Documentation
 
 # Files

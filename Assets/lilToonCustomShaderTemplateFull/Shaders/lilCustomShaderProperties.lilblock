@@ -1,7 +1,0 @@
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Custom Properties
-        [lilVec3]       _CustomVertexWaveScale      ("Vertex Wave Scale", Vector) = (10.0,10.0,10.0,0.0)
-        [lilVec3]       _CustomVertexWaveStrength   ("Vertex Wave Strength", Vector) = (0.0,0.1,0.0,0.0)
-                        _CustomVertexWaveSpeed      ("Vertex Wave Speed", float) = 10.0
-        [NoScaleOffset] _CustomVertexWaveMask       ("Vertex Wave Mask", 2D) = "white" {}

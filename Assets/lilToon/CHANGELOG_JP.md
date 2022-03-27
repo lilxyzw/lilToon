@@ -4,13 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.11] - 2022-03-26
+## [1.2.11] - 2022-03-28
 ### 追加
 - AO Mapに`影範囲設定を無視して適用`を追加（影のトゥーン処理後にAO Mapを合成）
 - ラメに`コントラスト（後処理）`を追加
 - メインカラー2nd・3rdに`UV Mode`を追加
 - 輪郭線に頂点カラーを利用して法線方向を決める機能を追加
 - カスタムシェーダー用に独自フォーマットを追加
+
+### 変更
+- 開発者向けドキュメントの内容をドキュメントサイトに移行
+- 古いカスタムシェーダー用テンプレートを削除
 
 ### 修正
 - lilToonMultiのForwardAddパスで影が適用されていなかったのを修正
@@ -19,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 2パスファーのZファイティングを修正
 - テッセレーションシェーダーが視界端でポリゴンが消える場合があるのを修正
 - URP、HDRPのVR環境での挙動を修正
+- `Remove unused properties`の方式をSerializedObject経由に変更
 
 ## [1.2.10] - 2022-03-06
 ### 追加
