@@ -1,7 +1,7 @@
 # カスタムシェーダーの作り方
 
 ## 基本的な流れ
-[カスタムシェーダー用テンプレート（Template.zip）](#)を元に作成していきます。基本的には以下の5つのファイルのみを編集するだけで完結するようになっています。
+[カスタムシェーダー用テンプレート（Template.zip）](https://github.com/lilxyzw/lilToon/raw/Document/files/Template.zip)を元に作成していきます。基本的には以下の5つのファイルのみを編集するだけで完結するようになっています。
 
 - Shaders/custom.hlsl
 - Shaders/custom_insert.hlsl
