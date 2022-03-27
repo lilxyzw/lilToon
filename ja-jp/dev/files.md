@@ -1,0 +1,84 @@
+# ファイル構成
+- lilToon
+    - CustomShaderResources : カスタムシェーダー用リソース
+        - BRP : BRP用SubShader
+        - HDRP : HDRP用SubShader
+        - Properties : シェーダープロパティ
+        - URP : URP用SubShader
+    - Editor : エディタ関係のアセット
+        - Resources : エディタ用アセット
+            - gui_xx : GUI用のアセット
+            - lang.txt : 言語ファイル (tsv形式)
+        - lilInspector.cs : ShaderGUIの拡張
+        - lilStartup.cs : スタートアップ (シェーダー設定生成、バージョンチェック等)
+        - lilToonAssetPostprocessor.cs : アセットに使われているシェーダー設定を分析して自動設定するAssetPostprocessor
+        - lilToonEditorUtils.cs : MenuItemの追加
+        - lilToonPreset.cs : プリセットのScriptableObject
+        - lilToonPropertyDrawer.cs : MaterialPropertyDrawer
+        - lilToonSetting.cs : シェーダー設定のScriptableObject
+    - Presets : プリセット
+    - Shader : シェーダー
+        - Includes : hlslファイル (シェーダー本体)
+            - lil_common.hlsl : 共通ファイル
+            - lil_common_appdata.hlsl : appdata構造体の宣言 (頂点シェーダーのinput)
+            - lil_common_frag.hlsl : ピクセルシェーダーの共通ファイル
+            - lil_common_frag_alpha.hlsl : 透過のみ処理するピクセルシェーダーの共通ファイル
+            - lil_common_functions.hlsl : 関数
+            - lil_common_input.hlsl : マテリアル変数の宣言
+            - lil_common_macro.hlsl : Unityのマクロを変換、パイプラインの差の吸収
+            - lil_common_vert.hlsl : 頂点シェーダーの共通ファイル
+            - lil_common_vert_fur.hlsl : ファーの頂点シェーダーの共通ファイル
+            - lil_hdrp.hlsl : HDRP対応用
+            - lil_pass_depthnormals.hlsl : DepthNormalsパス (URP用)
+            - lil_pass_depthonly.hlsl : DepthOnlyパス (SRP用)
+            - lil_pass_forward.hlsl : Forwardパス
+            - lil_pass_forward_fur.hlsl : ファーシェーダーのForwardパス
+            - lil_pass_forward_lite.hlsl : lilToonLiteのForwardパス
+            - lil_pass_forward_normal.hlsl : 通常シェーダーのForwardパス
+            - lil_pass_forward_gem.hlsl : 宝石シェーダーのForwardパス
+            - lil_pass_forward_refblur : 屈折シェーダーのぼかしパス
+            - lil_pass_forward_fakeshadow.hlsl : FakeShadow用のパス
+            - lil_pass_meta.hlsl : ライトベイク用のパス
+            - lil_pass_motionvectors.hlsl : MotionVectorsパス (HDRP用)
+            - lil_pass_shadowcaster.hlsl : ShadowCasterのパス
+            - lil_pass_universal2d.hlsl : Universal2Dパス
+            - lil_pipeline.hlsl : パイプラインごとの分岐
+            - lil_pipeline_brp.hlsl : Built-in RP用
+            - lil_pipeline_hdrp.hlsl : HDRP用
+            - lil_pipeline_lwrp.hlsl : LWRP用
+            - lil_pipeline_urp.hlsl : URP用
+            - lil_replace_keywords.hlsl : シェーダーキーワードをシェーダー設定として置き換え
+            - lil_tessellation.hlsl : テッセレーション用のシェーダー
+            - lil_vert_audiolink.hlsl : AudioLink用の頂点シェーダーの処理
+            - lil_vert_encryption.hlsl : AvaterEncryption用の頂点シェーダーの処理
+            - lil_vert_outline.hlsl : 輪郭線用の頂点シェーダーの処理
+        - lts_xx.shader : 通常のシェーダー
+        - ltsl.shader : lilToonLite
+        - ltsmulti.shader : シェーダー設定の代わりにシェーダーキーワードを使ったもの
+        - ltspass_baker.shader : テクスチャ焼き込み用のシェーダー
+        - ltspass_xx.shader : 各バリエーションからUsePassされるシェーダー本体
+            - _o : 輪郭線
+            - _cutout : カットアウト
+            - _trans : 透過
+            - _fur : ファー
+            - _ref : 屈折
+            - _gem : 宝石
+            - _tess : テッセレーション
+            - _overlay : オーバーレイ (Forwardパス以外を省略した透過シェーダー)
+            - _fakeshadow : メッシュをずらして擬似的に影を生成するシェーダー
+            - _one : 1パス（ForwardAddを頂点シェーダーで計算)
+            - _two : 2パス（ForwardAddを頂点シェーダーで計算かつ追加パスで背面を描画)
+    - Texture
+        - lil_emission_rainbow.png : 虹色のグラデーションテクスチャ
+        - lil_noise_1d.png : 1Dノイズ
+        - lil_noise_fur.png : ファーのノイズ
+    - CHANGELOG.md : 変更履歴
+    - DeveloperDocumentation.md : 開発者ドキュメント
+    - LICENSE : ライセンス
+    - MANUAL.md : マニュアル
+    - package.json : UPM用のデータ
+    - README.md : 説明書
+    - Third Party Notices.md : 参考文献やサードパーティのライセンスとURL
+- lilToonSetting : プロジェクトごとに自動生成されるシェーダー設定
+    - lil_setting.hlsl : シェーダー設定から自動生成されるシェーダー用マクロ
+    - ShaderSetting.asset : シェーダー設定保存用アセット
