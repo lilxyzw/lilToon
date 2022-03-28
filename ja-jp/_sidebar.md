@@ -38,6 +38,7 @@
     - [- シェーダー設定](ja-jp/other/settings.md "シェーダー設定 - lilToon")
     - [- メニューの追加項目](ja-jp/other/menuitem.md "メニューの追加項目 - lilToon")
     - [- Q&A](ja-jp/other/qa.md "Q&A - lilToon")
+    - [- 変更履歴](ja-jp/other/changelog.md "変更履歴 - lilToon")
 - **開発者向けドキュメント**
     - [- ファイル構成](ja-jp/dev/files.md "ファイル構成 - lilToon")
     - [- シェーダーの構造](ja-jp/dev/shader_structure.md "シェーダーの構造 - lilToon")
