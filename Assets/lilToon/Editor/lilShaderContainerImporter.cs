@@ -18,7 +18,11 @@ namespace lilToon
     {
         public override void OnImportAsset(AssetImportContext ctx)
         {
-            Shader shader = ShaderUtil.CreateShaderAsset(ctx, lilShaderContainer.UnpackContainer(ctx.assetPath, ctx), false);
+            #if UNITY_2019_4_1 || UNITY_2019_4_2 || UNITY_2019_4_3 || UNITY_2019_4_4 || UNITY_2019_4_5 || UNITY_2019_4_6 || UNITY_2019_4_7 || UNITY_2019_4_8 || UNITY_2019_4_9 || UNITY_2019_4_10
+                Shader shader = ShaderUtil.CreateShaderAsset(lilShaderContainer.UnpackContainer(ctx.assetPath, ctx), false);
+            #else
+                Shader shader = ShaderUtil.CreateShaderAsset(ctx, lilShaderContainer.UnpackContainer(ctx.assetPath, ctx), false);
+            #endif
 
             ctx.AddObjectToAsset("main obj", shader);
             ctx.SetMainObject(shader);
