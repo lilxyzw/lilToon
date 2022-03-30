@@ -151,8 +151,8 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
         #region
-        public const string currentVersionName = "1.2.11";
-        public const int currentVersionValue = 24;
+        public const string currentVersionName = "1.2.12";
+        public const int currentVersionValue = 25;
 
         private const string boothURL = "https://lilxyzw.booth.pm/";
         private const string githubURL = "https://github.com/lilxyzw/lilToon";

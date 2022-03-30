@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.12] - 2022-03-31
+### Fixed
+- Fixed an issue where custom shaders would give an error in `Unity 2019.4.10f1` and earlier
+- Fixed an issue where the ForwardAdd path did not work well in custom shaders
+
 ## [1.2.11] - 2022-03-28
 ### Added
 - `Ignore border properties` property for AO Map (blend AO Map after toon processing)

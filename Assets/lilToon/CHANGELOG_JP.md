@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.12] - 2022-03-31
+### 修正
+- `Unity 2019.4.10f1`以前でカスタムシェーダーがエラーになる問題を修正
+- カスタムシェーダーでForwardAddパスがうまく動作しない問題を修正
+
 ## [1.2.11] - 2022-03-28
 ### 追加
 - AO Mapに`影範囲設定を無視して適用`を追加（影のトゥーン処理後にAO Mapを合成）
