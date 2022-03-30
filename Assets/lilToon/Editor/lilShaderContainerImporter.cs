@@ -594,7 +594,7 @@ namespace lilToon
 
                 foreach(string line in text)
                 {
-                    if(line.Contains("#include \"") && !line.Contains("\"Assets/"))
+                    if(line.Contains("#include \"") && !line.Contains("\"Assets/") && !line.Contains("\"Packages/"))
                     {
                         sb.AppendLine(line.Replace("#include \"", "#include \"" + additionalPath));
                     }
