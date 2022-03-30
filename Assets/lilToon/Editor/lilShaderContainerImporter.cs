@@ -662,8 +662,8 @@ namespace lilToon
         // Multi Compile
         private static void ReplaceMultiCompiles(ref StringBuilder sb, PackageVersionInfos version, int indent, bool isDots)
         {
-            sb.Replace(MULTI_COMPILE_FORWARD, GetMultiCompileForward(version, indent));
             sb.Replace(MULTI_COMPILE_FORWARDADD, GetMultiCompileForwardAdd(version, indent));
+            sb.Replace(MULTI_COMPILE_FORWARD, GetMultiCompileForward(version, indent));
             sb.Replace(MULTI_COMPILE_SHADOWCASTER, GetMultiCompileShadowCaster(version, indent));
             sb.Replace(MULTI_COMPILE_DEPTHONLY, GetMultiCompileDepthOnly(version, indent));
             sb.Replace(MULTI_COMPILE_DEPTHNORMALS, GetMultiCompileDepthNormals(version, indent));
@@ -675,8 +675,8 @@ namespace lilToon
 
         private static void ReplaceMultiCompiles(ref string sb, PackageVersionInfos version, int indent, bool isDots)
         {
-            sb = sb.Replace(MULTI_COMPILE_FORWARD, GetMultiCompileForward(version, indent))
-                   .Replace(MULTI_COMPILE_FORWARDADD, GetMultiCompileForwardAdd(version, indent))
+            sb = sb.Replace(MULTI_COMPILE_FORWARDADD, GetMultiCompileForwardAdd(version, indent))
+                   .Replace(MULTI_COMPILE_FORWARD, GetMultiCompileForward(version, indent))
                    .Replace(MULTI_COMPILE_SHADOWCASTER, GetMultiCompileShadowCaster(version, indent))
                    .Replace(MULTI_COMPILE_DEPTHONLY, GetMultiCompileDepthOnly(version, indent))
                    .Replace(MULTI_COMPILE_DEPTHNORMALS, GetMultiCompileDepthNormals(version, indent))
