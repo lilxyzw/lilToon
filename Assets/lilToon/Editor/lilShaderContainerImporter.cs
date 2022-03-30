@@ -234,6 +234,8 @@ namespace lilToon
                 sb.Replace(replace.Key, replace.Value);
             }
 
+            FixIncludeForOldUnity(ref sb);
+
             return sb.ToString();
         }
 
@@ -265,7 +267,7 @@ namespace lilToon
                 }
                 if(line.Contains(csdReplaceTag))
                 {
-                    GetRelaces(line);
+                    GetReplaces(line);
                     continue;
                 }
                 if(line.Contains("Insert"))
@@ -285,7 +287,7 @@ namespace lilToon
             return line.Substring(first, second - first);
         }
 
-        private static void GetRelaces(string line)
+        private static void GetReplaces(string line)
         {
             int first = line.IndexOf('"') + 1;
             int second = line.IndexOf('"', first);
@@ -568,6 +570,40 @@ namespace lilToon
             string text = sr.ReadToEnd();
             sr.Close();
             return text;
+        }
+
+        private static void FixIncludeForOldUnity(ref StringBuilder sb)
+        {
+            #if UNITY_2019_4_0 || UNITY_2019_4_1 || UNITY_2019_4_2 || UNITY_2019_4_3 || UNITY_2019_4_4 || UNITY_2019_4_5 || UNITY_2019_4_6 || UNITY_2019_4_7 || UNITY_2019_4_8 || UNITY_2019_4_9 || UNITY_2019_4_10
+                string additionalPath = assetFolderPath.Replace("\\", "/");
+                char[] escapes = Environment.NewLine.ToCharArray();
+                string[] text = sb.ToString().Split(escapes[0]);
+                sb.Clear();
+
+                if(escapes.Length >= 1)
+                {
+                    foreach(char escape in escapes)
+                    {
+                        string escapeStr = escape.ToString();
+                        for(int i = 0; i < text.Length; i++)
+                        {
+                            text[i] = text[i].Replace(escapeStr, "");
+                        }
+                    }
+                }
+
+                foreach(string line in text)
+                {
+                    if(line.Contains("#include \"") && !line.Contains("\"Assets/"))
+                    {
+                        sb.AppendLine(line.Replace("#include \"", "#include \"" + additionalPath));
+                    }
+                    else
+                    {
+                        sb.AppendLine(line);
+                    }
+                }
+            #endif
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
