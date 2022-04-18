@@ -32,7 +32,7 @@
 
 続いて`custom.hlsl`を編集します。変数は`#define LIL_CUSTOM_PROPERTIES`、Texture2DやSamplerStateは`#define LIL_CUSTOM_TEXTURES`というマクロで挿入できます。
 
-```HLSL
+```hlsl
 #define LIL_CUSTOM_PROPERTIES \
     float4  _CustomVertexWaveScale; \
     float4  _CustomVertexWaveStrength; \
@@ -79,7 +79,7 @@
 
 ## 頂点シェーダーに処理を挿入する
 以下のようなマクロで処理を挿入できます。
-```HLSL
+```hlsl
 #define LIL_CUSTOM_VERTEX_OS \
     float3 customWaveStrength = LIL_SAMPLE_2D_LOD(_CustomVertexWaveMask, sampler_linear_repeat, input.uv0, 0).r * _CustomVertexWaveStrength.xyz; \
     positionOS.xyz += sin(LIL_TIME * _CustomVertexWaveSpeed + dot(positionOS.xyz, _CustomVertexWaveScale.xyz)) * customWaveStrength;
@@ -104,7 +104,7 @@
 
 ## ピクセルシェーダーに処理を挿入する
 `BEFORE_(キーワード)`や`OVERRIDE_(キーワード)`で処理を挟んだり上書きしたりできます。
-```HLSL
+```hlsl
 #define BEFORE_UNPACK_V2F \
     fd.uv0 = input.uv0;
 ```

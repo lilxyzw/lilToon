@@ -18,3 +18,19 @@
 |[Built-in RP] ライトの合成|ポイントライトやスポットライトなどの追加のリアルタイムライトの合成方法です。<br>加算: 光学的に正しいが白飛びしやすい<br>比較（明）: 光学的に正しくないが白飛びしにくい|
 |[HDRP] Before exposure limit|Exposure前に適用する明るさ制限です。|
 |[HDRP] Directional Lightの強さ|マテリアルに適用するDirectional Lightの強さです。|
+
+## ライトの計算式（開発者向け）
+```hlsl
+// 色の計算
+RGB = clamp(RGB, _LightMinLimit, _LightMaxLimit);   // "明るさの下限" から "明るさの上限" の範囲内に抑える
+Mono = (RGB.r + RGB.g + RGB.b) / 3.0;               // RGBの平均値をとって単色化
+RGB = lerp(RGB, Mono, _MonochromeLighting);         // "ライトのモノクロ化" の分だけ単色に近づける
+RGB = lerp(RGB, 1.0, _AsUnlit);                     // "Unlit化" の分だけ1.0（白）に近づける
+
+// 方向の計算
+if(_FollowObject) // "オブジェクトの向きに追従" する場合だけ行列計算を行う
+{
+    _LightDirectionOverride = length(_LightDirectionOverride) * normalize(mul((float3x3)UNITY_MATRIX_M, _LightDirectionOverride));
+}
+Direction = normalize(Direction + _LightDirectionOverride); // 元のライト方向と "ライト方向のオーバーライド" を合成
+```
