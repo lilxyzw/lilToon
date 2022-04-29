@@ -3,6 +3,7 @@
 ## VRCSDK・エディタエラー等のトラブル
 - エディタのエラーが発生した  
   → Consoleからエラー内容をご確認ください。こちらの画像は意図的にエラーを引き起こした例です。
+
   <a href="images/ja-jp/qa-errorlog.webp" data-lightbox="qa-errorlog"><img src="images/ja-jp/qa-errorlog.webp" width="50%" alt="コンソールログの画像"></a>
 
   lilToonでエラーが発生している場合は以下の手順で修正できる場合がほとんどです。
