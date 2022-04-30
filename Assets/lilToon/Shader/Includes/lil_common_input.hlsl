@@ -274,6 +274,7 @@ SAMPLER(sampler_linear_clamp);
     float   _RimShadowMask;
     float   _OutlineWidth;
     float   _OutlineEnableLighting;
+    float   _OutlineFixWidth;
     uint    _Cull;
     uint    _OutlineCull;
     uint    _EmissionMap_UVMode;
@@ -286,7 +287,6 @@ SAMPLER(sampler_linear_clamp);
     lilBool _MatCapZRotCancel;
     lilBool _UseRim;
     lilBool _UseEmission;
-    lilBool _OutlineFixWidth;
     #if defined(LIL_CUSTOM_PROPERTIES)
         LIL_CUSTOM_PROPERTIES
     #endif
@@ -526,6 +526,9 @@ SAMPLER(sampler_linear_clamp);
         float   _ShadowMainStrength;
         float   _ShadowEnvStrength;
         float   _ShadowBorderRange;
+        float   _ShadowReceive;
+        float   _Shadow2ndReceive;
+        float   _Shadow3rdReceive;
     #endif
     #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
         float   _BacklightNormalStrength;
@@ -637,6 +640,7 @@ SAMPLER(sampler_linear_clamp);
         float   _OutlineWidth;
         float   _OutlineEnableLighting;
         float   _OutlineVectorScale;
+        float   _OutlineFixWidth;
     #endif
     #if defined(LIL_FUR)
         float   _FurVectorScale;
@@ -723,7 +727,6 @@ SAMPLER(sampler_linear_clamp);
         lilBool _Main3rdTexShouldFlipCopy;
     #endif
     #if defined(LIL_MULTI_INPUTS_SHADOW)
-        lilBool _ShadowReceive;
         lilBool _ShadowPostAO;
     #endif
     #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
@@ -777,9 +780,6 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FEATURE_ENCRYPTION)
         lilBool _IgnoreEncryption;
-    #endif
-    #if defined(LIL_MULTI_INPUTS_OUTLINE)
-        lilBool _OutlineFixWidth;
     #endif
     #if defined(LIL_FUR)
         lilBool _VertexColor2FurVector;
@@ -1090,6 +1090,11 @@ SAMPLER(sampler_linear_clamp);
         float   _ShadowMainStrength;
         float   _ShadowEnvStrength;
         float   _ShadowBorderRange;
+        #if defined(LIL_FEATURE_RECEIVE_SHADOW)
+            float   _ShadowReceive;
+            float   _Shadow2ndReceive;
+            float   _Shadow3rdReceive;
+        #endif
     #endif
     #if defined(LIL_FEATURE_BACKLIGHT)
         float   _BacklightNormalStrength;
@@ -1211,6 +1216,7 @@ SAMPLER(sampler_linear_clamp);
     float   _OutlineWidth;
     float   _OutlineEnableLighting;
     float   _OutlineVectorScale;
+    float   _OutlineFixWidth;
 
     #if defined(LIL_FUR)
         float   _FurVectorScale;
@@ -1313,9 +1319,6 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_SHADOW)
         lilBool _UseShadow;
         lilBool _ShadowPostAO;
-        #if defined(LIL_FEATURE_RECEIVE_SHADOW)
-            lilBool _ShadowReceive;
-        #endif
     #endif
     #if defined(LIL_FEATURE_BACKLIGHT)
         lilBool _UseBacklight;
@@ -1409,8 +1412,6 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_ENCRYPTION)
         lilBool _IgnoreEncryption;
     #endif
-
-    lilBool _OutlineFixWidth;
 
     #if defined(LIL_FUR)
         lilBool _VertexColor2FurVector;

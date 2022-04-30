@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.13] - 2022-xx-xx
+### Added
+- `Receive Shadow` to 2nd / 3rd shadows
+
+### Changed
+- Improved alpha mask GUI
+- Changed the `Fix width by distance` of the outline to be adjustable steplessly
+
+### Fixed
+- Fixed an issue where fog wasn't working well in URP
+
 ## [1.2.12] - 2022-03-31
 ### Fixed
 - Fixed an issue where custom shaders would give an error in `Unity 2019.4.10f1` and earlier

@@ -732,7 +732,12 @@
 
             // Shadow
             #if (defined(LIL_USE_SHADOW) || defined(LIL_LIGHTMODE_SHADOWMASK)) && defined(LIL_FEATURE_RECEIVE_SHADOW)
-                if(_ShadowReceive) lns.x *= saturate(fd.attenuation + distance(fd.L, fd.origL));
+                float calculatedShadow = saturate(fd.attenuation + distance(fd.L, fd.origL));
+                lns.x *= lerp(1.0, calculatedShadow, _ShadowReceive);
+                lns.y *= lerp(1.0, calculatedShadow, _Shadow2ndReceive);
+                #if defined(LIL_FEATURE_SHADOW_3RD)
+                    lns.z *= lerp(1.0, calculatedShadow, _Shadow3rdReceive);
+                #endif
             #endif
 
             // Blur Scale

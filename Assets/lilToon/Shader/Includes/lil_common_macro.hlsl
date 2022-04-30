@@ -692,11 +692,17 @@ float2 lilCStoGrabUV(float4 positionCS)
 
     // Fog
     #if defined(LIL_PASS_FORWARDADD)
-        #define LIL_APPLY_FOG_BASE(col,fogCoord)                 UNITY_FOG_LERP_COLOR(col,float4(0,0,0,0),fogCoord)
+        #define LIL_FOG_COLOR   float4(0,0,0,0)
     #else
-        #define LIL_APPLY_FOG_BASE(col,fogCoord)                 UNITY_FOG_LERP_COLOR(col,unity_FogColor,fogCoord)
+        #define LIL_FOG_COLOR   unity_FogColor
     #endif
-    #define LIL_APPLY_FOG_COLOR_BASE(col,fogCoord,fogColor)  UNITY_FOG_LERP_COLOR(col,fogColor,fogCoord)
+    #if LIL_RENDER == 2
+        #define LIL_APPLY_FOG_BASE(col,fogCoord)                 UNITY_FOG_LERP_COLOR(col,LIL_FOG_COLOR*col.a,fogCoord)
+        #define LIL_APPLY_FOG_COLOR_BASE(col,fogCoord,fogColor)  UNITY_FOG_LERP_COLOR(col,fogColor*col.a,fogCoord)
+    #else
+        #define LIL_APPLY_FOG_BASE(col,fogCoord)                 UNITY_FOG_LERP_COLOR(col,LIL_FOG_COLOR,fogCoord)
+        #define LIL_APPLY_FOG_COLOR_BASE(col,fogCoord,fogColor)  UNITY_FOG_LERP_COLOR(col,fogColor,fogCoord)
+    #endif
     float lilCalcFogFactor(float depth)
     {
         #if defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)
@@ -1409,11 +1415,16 @@ float2 lilCStoGrabUV(float4 positionCS)
         GlossyEnvironmentReflection(reflect(-viewDirection,normalDirection), perceptualRoughness, 1.0))
 
     // Fog
-    #define LIL_APPLY_FOG_BASE(col,fogCoord)                 col.rgb = MixFog(col.rgb,fogCoord)
-    #define LIL_APPLY_FOG_COLOR_BASE(col,fogCoord,fogColor)  col.rgb = MixFogColor(col.rgb,fogColor.rgb,fogCoord)
+    #if LIL_RENDER == 2
+        #define LIL_APPLY_FOG_BASE(col,fogCoord)                 col.rgb = lerp(unity_FogColor.rgb*col.a,col.rgb,fogCoord)
+        #define LIL_APPLY_FOG_COLOR_BASE(col,fogCoord,fogColor)  col.rgb = lerp(fogColor.rgb*col.a,col.rgb,fogCoord)
+    #else
+        #define LIL_APPLY_FOG_BASE(col,fogCoord)                 col.rgb = lerp(unity_FogColor.rgb,col.rgb,fogCoord)
+        #define LIL_APPLY_FOG_COLOR_BASE(col,fogCoord,fogColor)  col.rgb = lerp(fogColor.rgb,col.rgb,fogCoord)
+    #endif
     float lilCalcFogFactor(float depth)
     {
-        return ComputeFogFactor(depth);
+        return ComputeFogIntensity(ComputeFogFactor(depth));
     }
 #endif
 

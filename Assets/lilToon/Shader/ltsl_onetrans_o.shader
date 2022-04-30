@@ -105,7 +105,7 @@ Shader "Hidden/lilToonLiteOnePassTransparentOutline"
         [lilUVAnim]     _OutlineTex_ScrollRotate    ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
         [lilOLWidth]    _OutlineWidth               ("Width", Range(0,1)) = 0.05
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
-        [lilToggle]     _OutlineFixWidth            ("Fix Width", Int) = 1
+                        _OutlineFixWidth            ("Fix Width", Range(0,1)) = 1
         [lilEnum]       _OutlineVertexR2Width       ("Vertex Color|None|R|RGBA", Int) = 0
                         _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
 

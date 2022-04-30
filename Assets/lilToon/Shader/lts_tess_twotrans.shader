@@ -143,7 +143,6 @@ Shader "Hidden/lilToonTessellationTwoPassTransparent"
         //----------------------------------------------------------------------------------------------------------------------
         // Shadow
         [lilToggleLeft] _UseShadow                  ("Use Shadow", Int) = 0
-        [lilToggle]     _ShadowReceive              ("Receive Shadow", Int) = 0
                         _ShadowStrength             ("Strength", Range(0, 1)) = 1
         [NoScaleOffset] _ShadowStrengthMask         ("Strength", 2D) = "white" {}
         [NoScaleOffset] _ShadowBorderMask           ("Border", 2D) = "white" {}
@@ -156,16 +155,19 @@ Shader "Hidden/lilToonTessellationTwoPassTransparent"
                         _ShadowNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
                         _ShadowBorder               ("Border", Range(0, 1)) = 0.5
                         _ShadowBlur                 ("Blur", Range(0, 1)) = 0.1
+                        _ShadowReceive              ("Receive Shadow", Range(0, 1)) = 0
                         _Shadow2ndColor             ("2nd Color", Color) = (0,0,0,0)
         [NoScaleOffset] _Shadow2ndColorTex          ("2nd Color", 2D) = "black" {}
                         _Shadow2ndNormalStrength    ("2nd Normal Strength", Range(0, 1)) = 1.0
                         _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
                         _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
+                        _Shadow2ndReceive           ("Receive Shadow", Range(0, 1)) = 0
                         _Shadow3rdColor             ("3rd Color", Color) = (0,0,0,0)
         [NoScaleOffset] _Shadow3rdColorTex          ("3rd Color", 2D) = "black" {}
                         _Shadow3rdNormalStrength    ("3rd Normal Strength", Range(0, 1)) = 1.0
                         _Shadow3rdBorder            ("3rd Border", Range(0, 1)) = 0.25
                         _Shadow3rdBlur              ("3rd Blur", Range(0, 1)) = 0.1
+                        _Shadow3rdReceive           ("Receive Shadow", Range(0, 1)) = 0
                         _ShadowBorderColor          ("Border Color", Color) = (1,0,0,1)
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
                         _ShadowMainStrength         ("Contrast", Range(0, 1)) = 1
