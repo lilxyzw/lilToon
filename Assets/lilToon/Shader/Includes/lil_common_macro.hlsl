@@ -1424,7 +1424,11 @@ float2 lilCStoGrabUV(float4 positionCS)
     #endif
     float lilCalcFogFactor(float depth)
     {
-        return ComputeFogIntensity(ComputeFogFactor(depth));
+        #if defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)
+            return ComputeFogIntensity(ComputeFogFactor(depth));
+        #else
+            return 1.0;
+        #endif
     }
 #endif
 
