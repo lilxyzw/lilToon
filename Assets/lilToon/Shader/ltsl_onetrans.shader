@@ -24,7 +24,7 @@ Shader "Hidden/lilToonLiteOnePassTransparent"
         //----------------------------------------------------------------------------------------------------------------------
         // Main
         [lilHDR]        _Color                      ("Color", Color) = (1,1,1,1)
-                        _MainTex                    ("Texture", 2D) = "white" {}
+        [MainTexture]   _MainTex                    ("Texture", 2D) = "white" {}
         [lilUVAnim]     _MainTex_ScrollRotate       ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------

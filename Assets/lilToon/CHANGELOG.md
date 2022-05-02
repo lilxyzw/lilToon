@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed an issue where fog wasn't working well in URP
 - Fixed baking process when using other than PNG / JPG format for texture
+- Added `[MainTexture]` to the `_MainTex` property
 
 ## [1.2.12] - 2022-03-31
 ### Fixed

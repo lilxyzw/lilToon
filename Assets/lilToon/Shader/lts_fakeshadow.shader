@@ -9,7 +9,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
         //----------------------------------------------------------------------------------------------------------------------
         // Main
         [lilHDR]        _Color                      ("Color", Color) = (0.925,0.7,0.74,1)
-                        _MainTex                    ("Texture", 2D) = "white" {}
+        [MainTexture]   _MainTex                    ("Texture", 2D) = "white" {}
         [lilVec3Float]  _FakeShadowVector           ("Offset|Vector", Vector) = (0,0,0,0.05)
 
         //----------------------------------------------------------------------------------------------------------------------
