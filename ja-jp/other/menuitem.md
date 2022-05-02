@@ -7,7 +7,7 @@
 
 |名前|説明|
 |-|-|
-|GameObject/[lilToon] Fix lighting|複数メッシュを持つオブジェクト向け。MeshRendererの設定の統一、マテリアルの頂点ライティングの無効化を行うことでメッシュごとの明るさの違いを緩和します。|
+|GameObject/lilToon/[GameObject] Fix lighting|複数メッシュを持つオブジェクト向け。MeshRendererの設定の統一、マテリアルの頂点ライティングの無効化を行うことでメッシュごとの明るさの違いを緩和します。|
 |Assets/lilToon/[Shader] Refresh shaders|レンダーパイプラインとシェーダー設定の再適用を行いエラーの自動修復を試みます。|
 |Assets/lilToon/[Shader] Full scan and auto shader setting|プロジェクト内の全マテリアル・アニメーションをスキャンし自動でシェーダー設定を最適化します。|
 |Assets/lilToon/[Material] Remove unused properties|不要なプロパティを削除しビルドサイズを削減しつつ、シェーダー設定を追加でオンにしても見た目に影響が出ないようにマテリアルを最適化します。|
