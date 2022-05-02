@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 修正
 - URPでフォグがうまく動作していなかった問題を修正
+- テクスチャにPNG/JPGフォーマット以外を使用していた場合のテクスチャベイク処理を修正
 
 ## [1.2.12] - 2022-03-31
 ### 修正
