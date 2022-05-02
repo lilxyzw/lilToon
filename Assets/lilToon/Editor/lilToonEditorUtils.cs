@@ -146,18 +146,12 @@ namespace lilToon
             Texture2D srcTexture = new Texture2D(2, 2, TextureFormat.ARGB32, true, true);
             Material hsvgMaterial = new Material(Shader.Find("Hidden/ltsother_baker"));
             string path = AssetDatabase.GetAssetPath(Selection.activeObject);
-            byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
-            srcTexture.LoadImage(bytes);
+            lilToonInspector.LoadTexture(ref srcTexture, path);
             hsvgMaterial.SetTexture("_MainTex", srcTexture);
             hsvgMaterial.EnableKeyword("_NORMAL_DXGL");
 
-            RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
-
-            Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
-
-            Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height, TextureFormat.ARGB32, true, true);
-            outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
-            outTexture.Apply();
+            Texture2D outTexture = null;
+            lilToonInspector.RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
             // Save
             lilToonInspector.SavePng(path, "_conv", outTexture);
@@ -165,7 +159,6 @@ namespace lilToon
 
             UnityEngine.Object.DestroyImmediate(hsvgMaterial);
             UnityEngine.Object.DestroyImmediate(srcTexture);
-            UnityEngine.Object.DestroyImmediate(dstTexture);
         }
 
         [MenuItem(menuPathConvertNormal, true, menuPriorityConvertNormal)]
@@ -200,6 +193,7 @@ namespace lilToon
             string path = AssetDatabase.GetAssetPath(Selection.activeObject);
             byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
             srcTexture.LoadImage(bytes);
+            lilToonInspector.LoadTexture(ref srcTexture, path);
             int finalWidth;
             int finalHeight;
             int scale;

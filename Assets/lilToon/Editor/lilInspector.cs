@@ -10389,7 +10389,6 @@ namespace lilToon
                 Material hsvgMaterial = new Material(ltsbaker);
 
                 string path;
-                byte[] bytes;
 
                 Texture2D srcTexture = new Texture2D(2, 2);
                 Texture2D srcMain2 = new Texture2D(2, 2);
@@ -10410,9 +10409,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(material.GetTexture(mainTex.name));
                 if(!string.IsNullOrEmpty(path))
                 {
-                    bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                    srcTexture.LoadImage(bytes);
-                    srcTexture.filterMode = FilterMode.Bilinear;
+                    LoadTexture(ref srcTexture, path);
                     hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                 }
                 else
@@ -10441,9 +10438,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main2ndTex.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                        srcMain2.LoadImage(bytes);
-                        srcMain2.filterMode = FilterMode.Bilinear;
+                        LoadTexture(ref srcMain2, path);
                         hsvgMaterial.SetTexture(main2ndTex.name, srcMain2);
                     }
                     else
@@ -10454,9 +10449,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main2ndBlendMask.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                        srcMask2.LoadImage(bytes);
-                        srcMask2.filterMode = FilterMode.Bilinear;
+                        LoadTexture(ref srcMask2, path);
                         hsvgMaterial.SetTexture(main2ndBlendMask.name, srcMask2);
                     }
                     else
@@ -10486,9 +10479,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main3rdTex.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                        srcMain3.LoadImage(bytes);
-                        srcMain3.filterMode = FilterMode.Bilinear;
+                        LoadTexture(ref srcMain3, path);
                         hsvgMaterial.SetTexture(main3rdTex.name, srcMain3);
                     }
                     else
@@ -10499,9 +10490,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main3rdBlendMask.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                        srcMask3.LoadImage(bytes);
-                        srcMask3.filterMode = FilterMode.Bilinear;
+                        LoadTexture(ref srcMask3, path);
                         hsvgMaterial.SetTexture(main3rdBlendMask.name, srcMask3);
                     }
                     else
@@ -10510,13 +10499,8 @@ namespace lilToon
                     }
                 }
 
-                RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32);
-
-                Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
-
-                Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height);
-                outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
-                outTexture.Apply();
+                Texture2D outTexture = null;
+                RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
                 outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
                 if(outTexture != mainTex.textureValue)
@@ -10549,7 +10533,6 @@ namespace lilToon
                 UnityEngine.Object.DestroyImmediate(srcMain3);
                 UnityEngine.Object.DestroyImmediate(srcMask2);
                 UnityEngine.Object.DestroyImmediate(srcMask3);
-                UnityEngine.Object.DestroyImmediate(dstTexture);
             }
         }
 
@@ -10565,7 +10548,6 @@ namespace lilToon
                 Material hsvgMaterial = new Material(ltsbaker);
 
                 string path;
-                byte[] bytes;
 
                 Texture2D srcTexture = new Texture2D(2, 2);
                 Texture2D srcMain2 = new Texture2D(2, 2);
@@ -10587,9 +10569,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(material.GetTexture(mainTex.name));
                 if(!string.IsNullOrEmpty(path))
                 {
-                    bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                    srcTexture.LoadImage(bytes);
-                    srcTexture.filterMode = FilterMode.Bilinear;
+                    LoadTexture(ref srcTexture, path);
                     hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                 }
                 else
@@ -10618,9 +10598,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main2ndTex.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                        srcMain2.LoadImage(bytes);
-                        srcMain2.filterMode = FilterMode.Bilinear;
+                        LoadTexture(ref srcMain2, path);
                         hsvgMaterial.SetTexture(main2ndTex.name, srcMain2);
                     }
                     else
@@ -10631,9 +10609,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main2ndBlendMask.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                        srcMask2.LoadImage(bytes);
-                        srcMask2.filterMode = FilterMode.Bilinear;
+                        LoadTexture(ref srcMask2, path);
                         hsvgMaterial.SetTexture(main2ndBlendMask.name, srcMask2);
                     }
                     else
@@ -10663,9 +10639,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main3rdTex.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                        srcMain3.LoadImage(bytes);
-                        srcMain3.filterMode = FilterMode.Bilinear;
+                        LoadTexture(ref srcMain3, path);
                         hsvgMaterial.SetTexture(main3rdTex.name, srcMain3);
                     }
                     else
@@ -10676,9 +10650,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main3rdBlendMask.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                        srcMask3.LoadImage(bytes);
-                        srcMask3.filterMode = FilterMode.Bilinear;
+                        LoadTexture(ref srcMask3, path);
                         hsvgMaterial.SetTexture(main3rdBlendMask.name, srcMask3);
                     }
                     else
@@ -10687,13 +10659,8 @@ namespace lilToon
                     }
                 }
 
-                RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32);
-
-                Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
-
-                Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height);
-                outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
-                outTexture.Apply();
+                Texture2D outTexture = null;
+                RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
                 outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
                 if(outTexture != mainTex.textureValue)
@@ -10707,7 +10674,6 @@ namespace lilToon
                 UnityEngine.Object.DestroyImmediate(srcMain3);
                 UnityEngine.Object.DestroyImmediate(srcMask2);
                 UnityEngine.Object.DestroyImmediate(srcMask3);
-                UnityEngine.Object.DestroyImmediate(dstTexture);
 
                 return outTexture;
             }
@@ -10729,7 +10695,6 @@ namespace lilToon
                 Material hsvgMaterial = new Material(ltsbaker);
 
                 string path;
-                byte[] bytes;
 
                 Texture2D srcTexture = new Texture2D(2, 2);
                 Texture2D srcMain2 = new Texture2D(2, 2);
@@ -10763,18 +10728,14 @@ namespace lilToon
                 bool existsShadowTex = !string.IsNullOrEmpty(path);
                 if(existsShadowTex)
                 {
-                    bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                    srcMain2.LoadImage(bytes);
-                    srcMain2.filterMode = FilterMode.Bilinear;
+                    LoadTexture(ref srcMain2, path);
                     hsvgMaterial.SetTexture(main2ndTex.name, srcMain2);
                 }
 
                 path = AssetDatabase.GetAssetPath(bakedMainTex);
                 if(!string.IsNullOrEmpty(path))
                 {
-                    bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                    srcTexture.LoadImage(bytes);
-                    srcTexture.filterMode = FilterMode.Bilinear;
+                    LoadTexture(ref srcTexture, path);
                     hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                     hsvgMaterial.SetTexture(main3rdTex.name, srcTexture);
                     if(!existsShadowTex) hsvgMaterial.SetTexture(main2ndTex.name, srcTexture);
@@ -10789,9 +10750,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(material.GetTexture(shadowStrengthMask.name));
                 if(!string.IsNullOrEmpty(path))
                 {
-                    bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                    srcMask2.LoadImage(bytes);
-                    srcMask2.filterMode = FilterMode.Bilinear;
+                    LoadTexture(ref srcMask2, path);
                     hsvgMaterial.SetTexture(main2ndBlendMask.name, srcMask2);
                     hsvgMaterial.SetTexture(main3rdBlendMask.name, srcMask2);
                 }
@@ -10801,13 +10760,8 @@ namespace lilToon
                     hsvgMaterial.SetTexture(main3rdBlendMask.name, Texture2D.whiteTexture);
                 }
 
-                RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32);
-
-                Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
-
-                Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height);
-                outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
-                outTexture.Apply();
+                Texture2D outTexture = null;
+                RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
                 if(shadowType == 0) outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
                 if(shadowType == 1) outTexture = SaveTextureToPng(material, outTexture, mainTex.name, "_shadow_1st");
@@ -10821,7 +10775,6 @@ namespace lilToon
                 UnityEngine.Object.DestroyImmediate(srcTexture);
                 UnityEngine.Object.DestroyImmediate(srcMain2);
                 UnityEngine.Object.DestroyImmediate(srcMask2);
-                UnityEngine.Object.DestroyImmediate(dstTexture);
 
                 return outTexture;
             }
@@ -10841,7 +10794,6 @@ namespace lilToon
                 Material hsvgMaterial = new Material(ltsbaker);
 
                 string path;
-                byte[] bytes;
 
                 Texture2D srcTexture = new Texture2D(2, 2);
 
@@ -10851,9 +10803,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(material.GetTexture(matcapTex.name));
                 if(!string.IsNullOrEmpty(path))
                 {
-                    bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                    srcTexture.LoadImage(bytes);
-                    srcTexture.filterMode = FilterMode.Bilinear;
+                    LoadTexture(ref srcTexture, path);
                     hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                 }
                 else
@@ -10861,13 +10811,8 @@ namespace lilToon
                     hsvgMaterial.SetTexture(mainTex.name, Texture2D.whiteTexture);
                 }
 
-                RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32);
-
-                Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
-
-                Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height);
-                outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
-                outTexture.Apply();
+                Texture2D outTexture = null;
+                RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
                 outTexture = SaveTextureToPng(material, outTexture, matcapTex.name);
                 if(outTexture != matcapTex.textureValue)
@@ -10877,7 +10822,6 @@ namespace lilToon
 
                 UnityEngine.Object.DestroyImmediate(hsvgMaterial);
                 UnityEngine.Object.DestroyImmediate(srcTexture);
-                UnityEngine.Object.DestroyImmediate(dstTexture);
 
                 return outTexture;
             }
@@ -10897,7 +10841,6 @@ namespace lilToon
                 Material hsvgMaterial = new Material(ltsbaker);
 
                 string path;
-                byte[] bytes;
 
                 Texture2D srcTexture = new Texture2D(2, 2);
                 Texture2D srcMain2 = new Texture2D(2, 2);
@@ -10908,9 +10851,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(matcapBlendMask.textureValue);
                 if(!string.IsNullOrEmpty(path))
                 {
-                    bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                    srcTexture.LoadImage(bytes);
-                    srcTexture.filterMode = FilterMode.Bilinear;
+                    LoadTexture(ref srcTexture, path);
                     hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                 }
                 else
@@ -10921,9 +10862,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(rimColorTex.textureValue);
                 if(!string.IsNullOrEmpty(path))
                 {
-                    bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                    srcMain2.LoadImage(bytes);
-                    srcMain2.filterMode = FilterMode.Bilinear;
+                    LoadTexture(ref srcMain2, path);
                     hsvgMaterial.SetTexture(main2ndTex.name, srcMain2);
                 }
                 else
@@ -10934,9 +10873,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(emissionBlendMask.textureValue);
                 if(!string.IsNullOrEmpty(path))
                 {
-                    bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                    srcMain3.LoadImage(bytes);
-                    srcMain3.filterMode = FilterMode.Bilinear;
+                    LoadTexture(ref srcMain3, path);
                     hsvgMaterial.SetTexture(main3rdTex.name, srcMain3);
                 }
                 else
@@ -10944,17 +10881,8 @@ namespace lilToon
                     hsvgMaterial.SetTexture(main3rdTex.name, Texture2D.whiteTexture);
                 }
 
-                RenderTexture dstTexture;
-                if(bufMainTexture != null) dstTexture = new RenderTexture(bufMainTexture.width, bufMainTexture.height, 0, RenderTextureFormat.ARGB32);
-                else                       dstTexture = new RenderTexture(4096, 4096, 0, RenderTextureFormat.ARGB32);
-
-                Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
-
-                Texture2D outTexture;
-                if(bufMainTexture != null) outTexture = new Texture2D(bufMainTexture.width, bufMainTexture.height);
-                else                       outTexture = new Texture2D(4096, 4096);
-                outTexture.ReadPixels(new Rect(0, 0, bufMainTexture.width, bufMainTexture.height), 0, 0);
-                outTexture.Apply();
+                Texture2D outTexture = null;
+                RunBake(ref outTexture, srcTexture, hsvgMaterial, bufMainTexture);
 
                 outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
                 if(outTexture != mainTex.textureValue && mainTex.textureValue != null)
@@ -10964,7 +10892,6 @@ namespace lilToon
 
                 UnityEngine.Object.DestroyImmediate(hsvgMaterial);
                 UnityEngine.Object.DestroyImmediate(srcTexture);
-                UnityEngine.Object.DestroyImmediate(dstTexture);
 
                 return outTexture;
             }
@@ -10981,7 +10908,6 @@ namespace lilToon
             Material hsvgMaterial = new Material(ltsbaker);
 
             string path;
-            byte[] bytes;
 
             Texture2D srcTexture = new Texture2D(2, 2);
             Texture2D srcAlphaMask = new Texture2D(2, 2);
@@ -10996,9 +10922,7 @@ namespace lilToon
             path = AssetDatabase.GetAssetPath(bufMainTexture);
             if(!string.IsNullOrEmpty(path))
             {
-                bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                srcTexture.LoadImage(bytes);
-                srcTexture.filterMode = FilterMode.Bilinear;
+                LoadTexture(ref srcTexture, path);
                 hsvgMaterial.SetTexture(mainTex.name, srcTexture);
             }
             else
@@ -11009,9 +10933,7 @@ namespace lilToon
             path = AssetDatabase.GetAssetPath(material.GetTexture(alphaMask.name));
             if(!string.IsNullOrEmpty(path))
             {
-                bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                srcAlphaMask.LoadImage(bytes);
-                srcAlphaMask.filterMode = FilterMode.Bilinear;
+                LoadTexture(ref srcAlphaMask, path);
                 hsvgMaterial.SetTexture(alphaMask.name, srcAlphaMask);
             }
             else
@@ -11019,17 +10941,8 @@ namespace lilToon
                 return (Texture2D)mainTex.textureValue;
             }
 
-            RenderTexture dstTexture;
-            if(srcTexture != null)      dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32);
-            else                        dstTexture = new RenderTexture(4096, 4096, 0, RenderTextureFormat.ARGB32);
-
-            Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
-
-            Texture2D outTexture;
-            if(srcTexture != null)      outTexture = new Texture2D(srcTexture.width, srcTexture.height);
-            else                        outTexture = new Texture2D(4096, 4096);
-            outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
-            outTexture.Apply();
+            Texture2D outTexture = null;
+            RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
             outTexture = SaveTextureToPng(outTexture, bufMainTexture);
             if(outTexture != bufMainTexture)
@@ -11043,7 +10956,6 @@ namespace lilToon
 
             UnityEngine.Object.DestroyImmediate(hsvgMaterial);
             UnityEngine.Object.DestroyImmediate(srcTexture);
-            UnityEngine.Object.DestroyImmediate(dstTexture);
 
             return outTexture;
         }
@@ -11058,7 +10970,6 @@ namespace lilToon
                 Material hsvgMaterial = new Material(ltsbaker);
 
                 string path;
-                byte[] bytes;
 
                 Texture2D srcTexture = new Texture2D(2, 2);
 
@@ -11068,9 +10979,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(material.GetTexture(outlineTex.name));
                 if(!string.IsNullOrEmpty(path))
                 {
-                    bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                    srcTexture.LoadImage(bytes);
-                    srcTexture.filterMode = FilterMode.Bilinear;
+                    LoadTexture(ref srcTexture, path);
                     hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                 }
                 else
@@ -11078,13 +10987,8 @@ namespace lilToon
                     hsvgMaterial.SetTexture(mainTex.name, Texture2D.whiteTexture);
                 }
 
-                RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32);
-
-                Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
-
-                Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height);
-                outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
-                outTexture.Apply();
+                Texture2D outTexture = null;
+                RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
                 outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
                 if(outTexture != mainTex.textureValue)
@@ -11094,7 +10998,6 @@ namespace lilToon
 
                 UnityEngine.Object.DestroyImmediate(hsvgMaterial);
                 UnityEngine.Object.DestroyImmediate(srcTexture);
-                UnityEngine.Object.DestroyImmediate(dstTexture);
 
                 return outTexture;
             }
@@ -11120,16 +11023,13 @@ namespace lilToon
             Texture2D bufMainTexture = Texture2D.whiteTexture;
             if(masktex != null && masktex.textureValue != null) bufMainTexture = (Texture2D)masktex.textureValue;
             string path = "";
-            byte[] bytes;
 
             Texture2D srcTexture = new Texture2D(2, 2);
 
             if(masktex != null) path = AssetDatabase.GetAssetPath(bufMainTexture);
             if(!string.IsNullOrEmpty(path))
             {
-                bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                srcTexture.LoadImage(bytes);
-                srcTexture.filterMode = FilterMode.Bilinear;
+                LoadTexture(ref srcTexture, path);
                 hsvgMaterial.SetTexture(mainTex.name, srcTexture);
             }
             else
@@ -11137,13 +11037,8 @@ namespace lilToon
                 hsvgMaterial.SetTexture(mainTex.name, Texture2D.whiteTexture);
             }
 
-            RenderTexture dstTexture = new RenderTexture(srcTexture.width, srcTexture.height, 0, RenderTextureFormat.ARGB32);
-
-            Graphics.Blit(srcTexture, dstTexture, hsvgMaterial);
-
-            Texture2D outTexture = new Texture2D(srcTexture.width, srcTexture.height);
-            outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
-            outTexture.Apply();
+            Texture2D outTexture = null;
+            RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
             if(!string.IsNullOrEmpty(path)) path = Path.GetDirectoryName(path) + "/Baked_" + material.name + "_" + propName;
             else                            path = "Assets/Baked_" + material.name + "_" + propName;
@@ -11155,8 +11050,34 @@ namespace lilToon
 
             UnityEngine.Object.DestroyImmediate(hsvgMaterial);
             UnityEngine.Object.DestroyImmediate(srcTexture);
-            UnityEngine.Object.DestroyImmediate(dstTexture);
         }
+
+        public static void RunBake(ref Texture2D outTexture, Texture2D srcTexture, Material material, Texture2D referenceTexture = null)
+        {
+            int width = 4096;
+            int height = 4096;
+            if(referenceTexture != null)
+            {
+                width = referenceTexture.width;
+                height = referenceTexture.height;
+            }
+            else if(srcTexture != null)
+            {
+                width = srcTexture.width;
+                height = srcTexture.height;
+            }
+            outTexture = new Texture2D(width, height);
+
+            RenderTexture bufRT = RenderTexture.active;
+            RenderTexture dstTexture = RenderTexture.GetTemporary(width, height);
+            Graphics.Blit(srcTexture, dstTexture, material);
+            RenderTexture.active = dstTexture;
+            outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
+            outTexture.Apply();
+            RenderTexture.active = bufRT;
+            RenderTexture.ReleaseTemporary(dstTexture);
+        }
+
 
         private void CopyTextureSetting(Texture2D fromTexture, Texture2D toTexture)
         {
@@ -11299,6 +11220,47 @@ namespace lilToon
 
             tex.Apply();
             return tex;
+        }
+        #endregion
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Load Texture
+        #region
+        private static void GetReadableTexture(ref Texture2D tex)
+        {
+            if(tex == null) return;
+
+            #if UNITY_2018_3_OR_NEWER
+            if(!tex.isReadable)
+            #endif
+            {
+                RenderTexture bufRT = RenderTexture.active;
+                RenderTexture texR = RenderTexture.GetTemporary(tex.width, tex.height);
+                Graphics.Blit(tex, texR);
+                RenderTexture.active = texR;
+                tex = new Texture2D(texR.width, texR.height);
+                tex.ReadPixels(new Rect(0, 0, texR.width, texR.height), 0, 0);
+                tex.Apply();
+                RenderTexture.active = bufRT;
+                RenderTexture.ReleaseTemporary(texR);
+            }
+        }
+
+        public static void LoadTexture(ref Texture2D tex, string path)
+        {
+            if(string.IsNullOrEmpty(path)) return;
+
+            tex = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+            GetReadableTexture(ref tex);
+            if(path.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
+               path.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+               path.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase))
+            {
+                byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
+                tex.LoadImage(bytes);
+            }
+
+            if(tex != null) tex.filterMode = FilterMode.Bilinear;
         }
         #endregion
 
