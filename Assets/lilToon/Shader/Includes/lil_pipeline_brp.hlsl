@@ -3,3 +3,4 @@
 #include "AutoLight.cginc"
 #include "Lighting.cginc"
 #include "UnityMetaPass.cginc"
+#include "openlit_core.hlsl"

@@ -1,5 +1,7 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Build;
+using UnityEditor.Callbacks;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -9,7 +11,7 @@ using System.IO;
 #if !UNITY_2018_1_OR_NEWER
     using System.Reflection;
 #endif
-#if VRC_SDK_VRCSDK3 && UDON
+#if VRC_SDK_VRCSDK3
     using VRC.SDKBase.Editor.BuildPipeline;
 #endif
 
@@ -590,7 +592,7 @@ namespace lilToon
 #if UNITY_2019_3_OR_NEWER
     //------------------------------------------------------------------------------------------------------------------------------
     // Build size optimization
-    public class lilToonPreprocessShaders : UnityEditor.Build.IPreprocessShaders
+    public class lilToonPreprocessShaders : IPreprocessShaders
     {
         public int callbackOrder { get { return default(int); } }
 
@@ -708,6 +710,7 @@ namespace lilToon
     }
 #endif
 
+//#if VRC_SDK_VRCSDK3
 #if VRC_SDK_VRCSDK3 && UDON
     //------------------------------------------------------------------------------------------------------------------------------
     // VRChat
@@ -720,9 +723,15 @@ namespace lilToon
             // Load shader setting
             lilToonSetting shaderSetting = null;
             lilToonInspector.InitializeShaderSetting(ref shaderSetting);
+            Debug.Log("[lilToon] Do preprocess");
 
-            if(shaderSetting == null || shaderSetting.isLocked) return true;
+            #if UDON
+                if(shaderSetting == null || shaderSetting.isLocked) return true;
+            #else
+                if(shaderSetting == null || shaderSetting.isLocked || !shaderSetting.autoSetting) return true;
+            #endif
 
+            Debug.Log("[lilToon] Excute preprocess");
             lilToonInspector.TurnOffAllShaderSetting(ref shaderSetting);
 
             // Get materials
@@ -742,11 +751,44 @@ namespace lilToon
             // Apply
             EditorUtility.SetDirty(shaderSetting);
             AssetDatabase.SaveAssets();
-            lilToonInspector.ApplyShaderSetting(shaderSetting);
+            /*if(shaderSetting.autoSetting)
+            {
+                lilToonSetting shaderSettingCopy = UnityEngine.Object.Instantiate(shaderSetting);
+                shaderSettingCopy.autoSetting = false;
+                lilToonInspector.ApplyShaderSetting(shaderSettingCopy, "[lilToon] PreprocessBuild");
+            }
+            else*/
+            {
+                lilToonInspector.ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
+            }
             AssetDatabase.Refresh();
             return true;
         }
     }
+
+    /*
+    //public class lilToonPostprocessBuild : IPostprocessBuildWithReport
+    public class lilToonPostprocessBuild
+    {
+        //public int callbackOrder => 0;
+
+        //public void OnPostprocessBuild(BuildReport report)
+        [PostProcessBuildAttribute(1)]
+        public void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
+        {
+            lilToonSetting shaderSetting = null;
+            lilToonInspector.InitializeShaderSetting(ref shaderSetting);
+
+            #if UDON
+                if(shaderSetting == null || shaderSetting.isLocked) return;
+            #else
+                if(shaderSetting == null || shaderSetting.isLocked || !shaderSetting.autoSetting) return;
+            #endif
+
+            lilToonInspector.ApplyShaderSetting(shaderSetting, "[lilToon] PostprocessBuild");
+        }
+    }
+    */
 #endif
 }
 #endif

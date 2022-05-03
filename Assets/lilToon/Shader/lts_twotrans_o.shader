@@ -18,7 +18,7 @@ Shader "Hidden/lilToonTwoPassTransparentOutline"
                         _MonochromeLighting         ("Monochrome lighting", Range(0,1)) = 0
                         _AlphaBoostFA               ("Alpha Boost", Range(1,100)) = 10
                         _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
-        [lilVec3B]      _LightDirectionOverride     ("Light Direction Override", Vector) = (0,0.001,0,0)
+        [lilVec3B]      _LightDirectionOverride     ("Light Direction Override", Vector) = (0.001,0.002,0.001,0)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main

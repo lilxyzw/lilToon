@@ -1615,6 +1615,15 @@ struct lilLightData
         o.lightColor = min(o.lightColor, _BeforeExposureLimit); \
         o.lightColor *= GetCurrentExposureMultiplier(); \
         LIL_CORRECT_LIGHTCOLOR_VS(o.lightColor)
+#elif defined(LIL_BRP)
+    #define LIL_CALC_MAINLIGHT(i,o) \
+        OpenLitLightDatas lightDatas; \
+        ComputeLights(lightDatas, _LightDirectionOverride); \
+        lilLightData o; \
+        o.lightDirection    = lightDatas.lightDirection; \
+        o.lightColor        = lightDatas.directLight; \
+        o.indLightColor     = lightDatas.indirectLight; \
+        LIL_CORRECT_LIGHTCOLOR_VS(o.lightColor)
 #else
     #define LIL_CALC_MAINLIGHT(i,o) \
         lilLightData o; \

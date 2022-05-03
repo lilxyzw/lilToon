@@ -98,6 +98,17 @@ namespace lilToon
             }
 
             //------------------------------------------------------------------------------------------------------------------------------
+            // Turn on all settings when auto
+            /*#if VRC_SDK_VRCSDK3
+                lilToonSetting shaderSettingPost = null;
+                lilToonInspector.InitializeShaderSetting(ref shaderSettingPost);
+                if(shaderSettingPost != null && !shaderSettingPost.isLocked && shaderSettingPost.autoSetting)
+                {
+                    lilToonInspector.ApplyShaderSetting(shaderSettingPost, "[lilToon] PostprocessBuild");
+                }
+            #endif*/
+
+            //------------------------------------------------------------------------------------------------------------------------------
             // Scan imported assets
             AssetDatabase.importPackageCompleted += _ =>
             {

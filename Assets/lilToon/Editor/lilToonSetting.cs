@@ -68,6 +68,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_TEX_TESSELLATION;
     public bool isLocked = false;
     public bool shouldNotScan = false;
+    public bool autoSetting = false;
 
     public bool LIL_OPTIMIZE_APPLY_SHADOW_FA = true;
     public bool LIL_OPTIMIZE_USE_FORWARDADD = true;
@@ -81,6 +82,6 @@ public class lilToonSetting : ScriptableObject
     public float defaultBeforeExposureLimit = 10000.0f;
     public float defaultMonochromeLighting = 0.0f;
     public float defaultlilDirectionalLightStrength = 1.0f;
-    public Vector4 defaultLightDirectionOverride = new Vector4(0.0f, 0.001f, 0.0f, 0.0f);
+    public Vector4 defaultLightDirectionOverride = new Vector4(0.001f, 0.002f, 0.001f, 0.0f);
 }
 #endif

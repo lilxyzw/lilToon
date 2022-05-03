@@ -3261,6 +3261,7 @@ namespace lilToon
 
                 EditorGUILayout.BeginVertical(customBox);
                 EditorGUI.BeginChangeCheck();
+                //ToggleGUI("完全自動設定", ref shaderSetting.autoSetting);
                 ToggleGUI(GetLoc("sSettingCancelAutoScan"), ref shaderSetting.shouldNotScan);
                 ToggleGUI(GetLoc("sSettingLock"), ref shaderSetting.isLocked);
                 if(EditorGUI.EndChangeCheck() || edSet.isShaderSettingChanged && GUILayout.Button(GetLoc("sSettingApply"), applyButton))
@@ -3270,7 +3271,7 @@ namespace lilToon
                 }
                 EditorGUILayout.EndVertical();
 
-                GUI.enabled = !shaderSetting.isLocked;
+                GUI.enabled = !shaderSetting.isLocked;// && !shaderSetting.autoSetting;
                 edSet.isShowShaderSetting = Foldout(GetLoc("sShaderSetting"), edSet.isShowShaderSetting);
                 DrawHelpButton(GetLoc("sAnchorShaderSetting"));
                 if(edSet.isShowShaderSetting)
@@ -3280,6 +3281,7 @@ namespace lilToon
                     EditorGUILayout.EndVertical();
                 }
 
+                GUI.enabled = !shaderSetting.isLocked;
                 edSet.isShowOptimizationSetting = Foldout(GetLoc("sSettingBuildSizeOptimization"), edSet.isShowOptimizationSetting);
                 if(edSet.isShowOptimizationSetting)
                 {
@@ -4158,6 +4160,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_TEX_TESSELLATION = false;
                 shaderSetting.isLocked = false;
                 shaderSetting.shouldNotScan = false;
+                shaderSetting.autoSetting = true;
                 EditorUtility.SetDirty(shaderSetting);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
@@ -4235,6 +4238,78 @@ namespace lilToon
             AssetDatabase.Refresh();
         }
 
+        public static lilToonSetting GetAllOnShaderSetting()
+        {
+            lilToonSetting shaderSetting = ScriptableObject.CreateInstance<lilToonSetting>();
+            shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV = true;
+            shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION = true;
+            shaderSetting.LIL_FEATURE_MAIN_GRADATION_MAP = true;
+            shaderSetting.LIL_FEATURE_MAIN2ND = true;
+            shaderSetting.LIL_FEATURE_MAIN3RD = true;
+            shaderSetting.LIL_FEATURE_DECAL = true;
+            shaderSetting.LIL_FEATURE_ANIMATE_DECAL = true;
+            shaderSetting.LIL_FEATURE_LAYER_DISSOLVE = true;
+            shaderSetting.LIL_FEATURE_ALPHAMASK = true;
+            shaderSetting.LIL_FEATURE_SHADOW = true;
+            shaderSetting.LIL_FEATURE_SHADOW_3RD = true;
+            shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = true;
+            shaderSetting.LIL_FEATURE_EMISSION_1ST = true;
+            shaderSetting.LIL_FEATURE_EMISSION_2ND = true;
+            shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV = true;
+            shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_MASK_UV = true;
+            shaderSetting.LIL_FEATURE_EMISSION_GRADATION = true;
+            shaderSetting.LIL_FEATURE_NORMAL_1ST = true;
+            shaderSetting.LIL_FEATURE_NORMAL_2ND = true;
+            shaderSetting.LIL_FEATURE_ANISOTROPY = true;
+            shaderSetting.LIL_FEATURE_REFLECTION = true;
+            shaderSetting.LIL_FEATURE_MATCAP = true;
+            shaderSetting.LIL_FEATURE_MATCAP_2ND = true;
+            shaderSetting.LIL_FEATURE_RIMLIGHT = true;
+            shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION = true;
+            shaderSetting.LIL_FEATURE_GLITTER = true;
+            shaderSetting.LIL_FEATURE_BACKLIGHT = true;
+            shaderSetting.LIL_FEATURE_PARALLAX = true;
+            shaderSetting.LIL_FEATURE_POM = true;
+            //shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = true;
+            shaderSetting.LIL_FEATURE_DISTANCE_FADE = true;
+            shaderSetting.LIL_FEATURE_AUDIOLINK = true;
+            shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX = true;
+            shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL = true;
+            shaderSetting.LIL_FEATURE_DISSOLVE = true;
+            shaderSetting.LIL_FEATURE_ENCRYPTION = true;
+            shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = true;
+            shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = true;
+            shaderSetting.LIL_FEATURE_FUR_COLLISION = true;
+            shaderSetting.LIL_FEATURE_TEX_LAYER_MASK = true;
+            shaderSetting.LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE = true;
+            shaderSetting.LIL_FEATURE_TEX_SHADOW_BLUR = true;
+            shaderSetting.LIL_FEATURE_TEX_SHADOW_BORDER = true;
+            shaderSetting.LIL_FEATURE_TEX_SHADOW_STRENGTH = true;
+            shaderSetting.LIL_FEATURE_TEX_SHADOW_1ST = true;
+            shaderSetting.LIL_FEATURE_TEX_SHADOW_2ND = true;
+            shaderSetting.LIL_FEATURE_TEX_SHADOW_3RD = true;
+            shaderSetting.LIL_FEATURE_TEX_EMISSION_MASK = true;
+            shaderSetting.LIL_FEATURE_TEX_NORMAL_MASK = true;
+            shaderSetting.LIL_FEATURE_TEX_REFLECTION_SMOOTHNESS = true;
+            shaderSetting.LIL_FEATURE_TEX_REFLECTION_METALLIC = true;
+            shaderSetting.LIL_FEATURE_TEX_REFLECTION_COLOR = true;
+            shaderSetting.LIL_FEATURE_TEX_MATCAP_MASK = true;
+            shaderSetting.LIL_FEATURE_TEX_MATCAP_NORMALMAP = true;
+            shaderSetting.LIL_FEATURE_TEX_RIMLIGHT_COLOR = true;
+            shaderSetting.LIL_FEATURE_TEX_DISSOLVE_NOISE = true;
+            shaderSetting.LIL_FEATURE_TEX_OUTLINE_COLOR = true;
+            shaderSetting.LIL_FEATURE_TEX_OUTLINE_WIDTH = true;
+            shaderSetting.LIL_FEATURE_TEX_OUTLINE_NORMAL = true;
+            shaderSetting.LIL_FEATURE_TEX_FUR_NORMAL = true;
+            shaderSetting.LIL_FEATURE_TEX_FUR_MASK = true;
+            shaderSetting.LIL_FEATURE_TEX_FUR_LENGTH = true;
+            shaderSetting.LIL_FEATURE_TEX_TESSELLATION = true;
+            shaderSetting.isLocked = false;
+            shaderSetting.shouldNotScan = false;
+            shaderSetting.autoSetting = false;
+            return shaderSetting;
+        }
+
         public static void InitializeSettingHLSL(ref lilToonSetting shaderSetting)
         {
             string shaderSettingHLSLPath = GetShaderSettingHLSLPath();
@@ -4276,12 +4351,20 @@ namespace lilToon
             }
         }
 
-        public static void ApplyShaderSetting(lilToonSetting shaderSetting)
+        public static void ApplyShaderSetting(lilToonSetting shaderSetting, string reportTitle)
         {
             EditorUtility.SetDirty(shaderSetting);
             AssetDatabase.SaveAssets();
 
-            string shaderSettingString = BuildShaderSettingString(shaderSetting, true);
+            string shaderSettingString = "";
+            /*if(shaderSetting.autoSetting)
+            {
+                shaderSettingString = BuildShaderSettingString(GetAllOnShaderSetting(), true);
+            }
+            else*/
+            {
+                shaderSettingString = BuildShaderSettingString(shaderSetting, true);
+            }
             string shaderSettingStringBuf = "";
             string shaderSettingHLSLPath = GetShaderSettingHLSLPath();
             if(File.Exists(shaderSettingHLSLPath))
@@ -4298,7 +4381,7 @@ namespace lilToon
                 sw.Close();
                 lilToonInspector.isUPM = lilToonInspector.GetEditorPath().Contains("Packages");
                 string[] shaderFolderPaths = GetShaderFolderPaths();
-                bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;
+                bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;// || shaderSetting.autoSetting;
                 foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
                 {
                     string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
@@ -4318,6 +4401,16 @@ namespace lilToon
                 AssetDatabase.ImportAsset(shaderSettingHLSLPath);
                 AssetDatabase.Refresh();
             }
+
+            if(!string.IsNullOrEmpty(reportTitle))
+            {
+                Debug.Log(reportTitle + "\r\n" + shaderSettingString);
+            }
+        }
+
+        public static void ApplyShaderSetting(lilToonSetting shaderSetting)
+        {
+            ApplyShaderSetting(shaderSetting, null);
         }
 
         public static string BuildShaderSettingString(lilToonSetting shaderSetting, bool isFile)
@@ -4453,6 +4546,9 @@ namespace lilToon
         {
             lilToonSetting shaderSetting = null;
             InitializeShaderSetting(ref shaderSetting);
+
+            //if(shaderSetting.autoSetting) return BuildShaderSettingString(GetAllOnShaderSetting(), isFile);
+            //else                          return BuildShaderSettingString(shaderSetting, isFile);
             return BuildShaderSettingString(shaderSetting, isFile);
         }
 
@@ -5108,7 +5204,7 @@ namespace lilToon
 
         public static bool CheckFeature(bool feature)
         {
-            return isMulti || feature;
+            return isMulti || feature;// || shaderSetting.autoSetting;
         }
 
         private static void InitializeGUIStyles()
@@ -7899,7 +7995,7 @@ namespace lilToon
                     if(monochromeLighting != null) monochromeLighting.floatValue = 0.5f;
                     if(shadowEnvStrength != null) shadowEnvStrength.floatValue = 0.0f;
                     if(lilDirectionalLightStrength != null) lilDirectionalLightStrength.floatValue = 1.0f;
-                    if(lightDirectionOverride != null) lightDirectionOverride.vectorValue = new Vector4(0.0f, 0.001f, 0.0f, 0.0f);
+                    if(lightDirectionOverride != null) lightDirectionOverride.vectorValue = new Vector4(0.001f, 0.002f, 0.001f, 0.0f);
                     break;
             }
         }
