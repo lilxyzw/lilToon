@@ -20,6 +20,7 @@
 |[HDRP] Directional Lightの強さ|マテリアルに適用するDirectional Lightの強さです。|
 
 ## ライトの計算式（開発者向け）
+ライティング部分についてはCC0ライセンスで[OpenLit](https://github.com/lilxyzw/OpenLit)というライブラリとして公開しています。自作シェーダー作成時に明るさを合わせたい場合は適宜ご利用ください。ここではパラメーターの挙動だけ理解できるように簡略化して記述しています。
 ```hlsl
 // 色の計算
 RGB = clamp(RGB, _LightMinLimit, _LightMaxLimit);   // "明るさの下限" から "明るさの上限" の範囲内に抑える
