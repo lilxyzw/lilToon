@@ -619,8 +619,45 @@ float2 lilCStoGrabUV(float4 positionCS)
             o.vec = mul(unity_ObjectToWorld, v.positionOS).xyz - _LightPositionRange.xyz; \
             o.positionCS = UnityObjectToClipPos(v.positionOS)
     #else
+        float4 lilClipSpaceShadowCasterPos(float4 positionOS, float3 normalOS, float bias)
+        {
+            #if defined(SHADOWS_DEPTH)
+                if(LIL_MATRIX_P._m33 == 0.0) bias = 0;
+            #endif
+            float4 positionWS = mul(unity_ObjectToWorld, float4(positionOS.xyz, 1));
+            float3 L = normalize(UnityWorldSpaceLightDir(positionWS.xyz));
+            positionWS.xyz -= L * bias;
+
+            if(unity_LightShadowBias.z != 0.0)
+            {
+                float3 normalWS = UnityObjectToWorldNormal(normalOS);
+                float shadowCos = dot(normalWS, L);
+                float shadowSine = sqrt(1-shadowCos*shadowCos);
+                float normalBias = unity_LightShadowBias.z * shadowSine;
+
+                positionWS.xyz -= normalWS * normalBias;
+            }
+
+            return mul(UNITY_MATRIX_VP, positionWS);
+        }
+        /*void lilApplyLinearShadowBias(inout float4 positionCS, float bias)
+        {
+            #if defined(SHADOWS_DEPTH)
+                if(LIL_MATRIX_P._m33 == 0.0) bias = 0;
+            #endif
+            #if defined(UNITY_REVERSED_Z)
+                #if !(defined(SHADOWS_CUBE) && defined(SHADOWS_CUBE_IN_DEPTH_TEX))
+                    positionCS.z += max(-1, min((unity_LightShadowBias.x - bias * 0.01) / positionCS.w, 0));
+                #endif
+                float clamped = min(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
+            #else
+                positionCS.z += saturate((unity_LightShadowBias.x + bias * 0.01)/positionCS.w);
+                float clamped = max(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
+            #endif
+            positionCS.z = lerp(positionCS.z, clamped, unity_LightShadowBias.y);
+        }*/
         #define LIL_TRANSFER_SHADOW_CASTER(v,o) \
-            o.positionCS = UnityClipSpaceShadowCasterPos(v.positionOS, v.normalOS); \
+            o.positionCS = lilClipSpaceShadowCasterPos(v.positionOS, v.normalOS, _lilShadowCasterBias); \
             o.positionCS = UnityApplyLinearShadowBias(o.positionCS)
     #endif
     #define LIL_SHADOW_CASTER_FRAGMENT(i)           SHADOW_CASTER_FRAGMENT(i)
@@ -880,7 +917,7 @@ float2 lilCStoGrabUV(float4 positionCS)
         dst.direction += src.direction * Luminance(src.color);
     }
 
-    float lilGetDirectionalShadow(PositionInputs posInput, float3 normalWS, uint featureFlags)
+    float lilGetDirectionalShadow(PositionInputs posInput, float3 normalWS, uint featureFlags, float bias)
     {
         float attenuation = 1.0;
         if(featureFlags & LIGHTFEATUREFLAGS_DIRECTIONAL)
@@ -902,12 +939,18 @@ float2 lilCStoGrabUV(float4 positionCS)
                     if((light.lightDimmer > 0) && (light.shadowDimmer > 0))
                     #endif
                     {
-                        attenuation = GetDirectionalShadowAttenuation(shadowContext, posInput.positionSS, posInput.positionWS, normalWS, light.shadowIndex, L);
+                        float3 positionWS = posInput.positionWS + L * bias;
+                        attenuation = GetDirectionalShadowAttenuation(shadowContext, posInput.positionSS, positionWS, normalWS, light.shadowIndex, L);
                     }
                 }
             }
         }
         return attenuation;
+    }
+
+    float lilGetDirectionalShadow(PositionInputs posInput, float3 normalWS, uint featureFlags)
+    {
+        return lilGetDirectionalShadow(posInput, normalWS, featureFlags, 0.0);
     }
 
     lilNPRLightingData lilGetDirectionalLightSum(PositionInputs posInput, uint renderingLayers, uint featureFlags)
@@ -1226,7 +1269,7 @@ float2 lilCStoGrabUV(float4 positionCS)
     #define LIL_SHADOW_COORDS(idx)
     #define LIL_TRANSFER_SHADOW(vi,uv,o)
     #if defined(LIL_USE_SHADOW)
-        #define LIL_LIGHT_ATTENUATION(atten,i)      atten = lilGetDirectionalShadow(posInput, i.normalWS, fd.featureFlags)
+        #define LIL_LIGHT_ATTENUATION(atten,i)      atten = lilGetDirectionalShadow(posInput, i.normalWS, fd.featureFlags, _lilShadowCasterBias)
     #else
         #define LIL_LIGHT_ATTENUATION(atten,i)
     #endif
@@ -1325,7 +1368,7 @@ float2 lilCStoGrabUV(float4 positionCS)
     // Shadow caster
     float3 _LightDirection;
     float3 _LightPosition;
-    float4 URPShadowPos(float4 positionOS, float3 normalOS)
+    float4 URPShadowPos(float4 positionOS, float3 normalOS, float bias)
     {
         float3 positionWS = TransformObjectToWorld(positionOS.xyz);
         float3 normalWS = TransformObjectToWorldNormal(normalOS);
@@ -1335,6 +1378,8 @@ float2 lilCStoGrabUV(float4 positionCS)
         #else
             float3 lightDirectionWS = _LightDirection;
         #endif
+
+        positionWS -= lightDirectionWS * bias;
 
         #if VERSION_GREATER_EQUAL(5, 1)
             float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, lightDirectionWS));
@@ -1351,7 +1396,7 @@ float2 lilCStoGrabUV(float4 positionCS)
         return positionCS;
     }
     #define LIL_V2F_SHADOW_CASTER_OUTPUT        float4 positionCS : SV_POSITION;
-    #define LIL_TRANSFER_SHADOW_CASTER(v,o)     o.positionCS = URPShadowPos(v.positionOS, v.normalOS)
+    #define LIL_TRANSFER_SHADOW_CASTER(v,o)     o.positionCS = URPShadowPos(v.positionOS, v.normalOS, _lilShadowCasterBias)
     #define LIL_SHADOW_CASTER_FRAGMENT(i)       return 0
 
     // Additional Light

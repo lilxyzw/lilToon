@@ -96,7 +96,8 @@ Shader "Hidden/lilToonLiteCutoutOutline"
                                                         _OffsetFactor       ("Offset Factor", Float) = 0
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
-        [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 1
+        [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
+                                                        _lilShadowCasterBias ("Shadow Caster Bias", Float) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Outline
@@ -108,6 +109,7 @@ Shader "Hidden/lilToonLiteCutoutOutline"
                         _OutlineFixWidth            ("Fix Width", Range(0,1)) = 1
         [lilEnum]       _OutlineVertexR2Width       ("Vertex Color|None|R|RGBA", Int) = 0
                         _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
+                        _OutlineZBias               ("Z Bias", Float) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Outline Advanced

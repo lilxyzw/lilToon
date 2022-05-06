@@ -805,7 +805,21 @@
             #ifdef LIL_COLORSPACE_GAMMA
                 shadowStrength = lilSRGBToLinear(shadowStrength);
             #endif
-            if(Exists_ShadowStrengthMask) shadowStrength *= LIL_SAMPLE_2D(_ShadowStrengthMask, samp, fd.uvMain).r;
+            float shadowStrengthMask = 1;
+            if(Exists_ShadowStrengthMask) shadowStrengthMask = LIL_SAMPLE_2D(_ShadowStrengthMask, samp, fd.uvMain).r;
+            if(_ShadowMaskType)
+            {
+                float3 flatN = normalize(mul((float3x3)LIL_MATRIX_M, float3(0.0,0.25,1.0)));//normalize(LIL_MATRIX_M._m02_m12_m22);
+                float lnFlat = saturate((dot(flatN, fd.L) + _ShadowFlatBorder) / _ShadowFlatBlur);
+                #if (defined(LIL_USE_SHADOW) || defined(LIL_LIGHTMODE_SHADOWMASK)) && defined(LIL_FEATURE_RECEIVE_SHADOW)
+                    lnFlat *= lerp(1.0, calculatedShadow, _ShadowReceive);
+                #endif
+                lns = lerp(lnFlat, lns, shadowStrengthMask);
+            }
+            else
+            {
+                shadowStrength *= shadowStrengthMask;
+            }
             lns.x = lerp(1.0, lns.x, shadowStrength);
 
             // Shadow Color 1

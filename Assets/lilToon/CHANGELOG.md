@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.13] - 2022-xx-xx
 ### Added
 - `Receive Shadow` to 2nd / 3rd shadows
+- `Flat` to shadow mask type
+- `Z Bias` to outline
+- `Shadow Caster Bias` to rendering settings
 - Added `Fully automatic setting` to shader setting (WIP)
 
 ### Changed
@@ -19,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed baking process when using other than PNG / JPG format for texture
 - Added `[MainTexture]` to the `_MainTex` property
 - Fixed an issue where `Light Direction Override` was affecting ShadeSH9 calculations
+- Fixed an issue where lilToonMulti shader variants were being reduced too much at build
 
 ## [1.2.12] - 2022-03-31
 ### Fixed

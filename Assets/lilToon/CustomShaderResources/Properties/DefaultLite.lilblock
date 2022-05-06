@@ -74,6 +74,7 @@
                         _OutlineFixWidth            ("Fix Width", Range(0,1)) = 1
         [lilEnum]       _OutlineVertexR2Width       ("Vertex Color|None|R|RGBA", Int) = 0
                         _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
+                        _OutlineZBias               ("Z Bias", Float) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Save (Unused)

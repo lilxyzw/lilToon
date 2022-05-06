@@ -12,9 +12,9 @@
     #endif
 
     #if defined(LIL_LITE)
-        lilCalcOutlinePositionLite(LIL_MODIFY_TARGET.xyz, uvMain, input.color, input.normalOS, tbnOS, _OutlineWidth, _OutlineWidthMask, _OutlineVertexR2Width, _OutlineFixWidth LIL_SAMP_IN(sampler_linear_repeat));
+        lilCalcOutlinePositionLite(LIL_MODIFY_TARGET.xyz, uvMain, input.color, input.normalOS, tbnOS, _OutlineWidth, _OutlineWidthMask, _OutlineVertexR2Width, _OutlineFixWidth, _OutlineZBias LIL_SAMP_IN(sampler_linear_repeat));
     #else
-        lilCalcOutlinePosition(LIL_MODIFY_TARGET.xyz, uvMain, input.color, input.normalOS, tbnOS, _OutlineWidth, _OutlineWidthMask, _OutlineVertexR2Width, _OutlineFixWidth, _OutlineVectorScale, _OutlineVectorTex LIL_SAMP_IN(sampler_linear_repeat));
+        lilCalcOutlinePosition(LIL_MODIFY_TARGET.xyz, uvMain, input.color, input.normalOS, tbnOS, _OutlineWidth, _OutlineWidthMask, _OutlineVertexR2Width, _OutlineFixWidth, _OutlineZBias, _OutlineVectorScale, _OutlineVectorTex LIL_SAMP_IN(sampler_linear_repeat));
     #endif
 
     #undef LIL_MODIFY_TARGET

@@ -172,6 +172,9 @@ Shader "Hidden/lilToonOnePassTransparent"
                         _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
                         _ShadowMainStrength         ("Contrast", Range(0, 1)) = 1
                         _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 0
+        [lilEnum]       _ShadowMaskType             ("Mask Type|Strength|Flat", Int) = 0
+                        _ShadowFlatBorder           ("Border", Range(-2, 2)) = 1
+                        _ShadowFlatBlur             ("Blur", Range(0.001, 2)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Reflection
@@ -434,6 +437,7 @@ Shader "Hidden/lilToonOnePassTransparent"
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
         [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
+                                                        _lilShadowCasterBias ("Shadow Caster Bias", Float) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Save (Unused)

@@ -609,22 +609,22 @@ namespace lilToon
 
                 for(int i = data.Count - 1; i >= 0; i--)
                 {
-                    bool isMatch = false;
+                    //bool isMatch = false;
                     if(ShouldRemoveShadowsScreen(shader, data[i].shaderKeywordSet, lilRP))
                     {
                         data.RemoveAt(i);
                         continue;
                     }
-                    foreach(Material material in materials)
-                    {
-                        if(IsMatchKeywords(material, data[i].shaderKeywordSet, shader, keywords))
-                        {
-                            isMatch = true;
-                            break;
-                        }
-                    }
-                    if(isMatch) continue;
-                    data.RemoveAt(i);
+                    //foreach(Material material in materials)
+                    //{
+                    //    if(IsMatchKeywords(material, data[i].shaderKeywordSet, shader, keywords))
+                    //    {
+                    //        isMatch = true;
+                    //        break;
+                    //    }
+                    //}
+                    //if(isMatch) continue;
+                    //data.RemoveAt(i);
                 }
             }
         }

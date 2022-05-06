@@ -272,9 +272,11 @@ SAMPLER(sampler_linear_clamp);
     float   _RimBlur;
     float   _RimFresnelPower;
     float   _RimShadowMask;
+    float   _lilShadowCasterBias;
     float   _OutlineWidth;
     float   _OutlineEnableLighting;
     float   _OutlineFixWidth;
+    float   _OutlineZBias;
     uint    _Cull;
     uint    _OutlineCull;
     uint    _EmissionMap_UVMode;
@@ -529,6 +531,8 @@ SAMPLER(sampler_linear_clamp);
         float   _ShadowReceive;
         float   _Shadow2ndReceive;
         float   _Shadow3rdReceive;
+        float   _ShadowFlatBlur;
+        float   _ShadowFlatBorder;
     #endif
     #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
         float   _BacklightNormalStrength;
@@ -636,11 +640,13 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_MULTI_INPUTS_DISSOLVE)
         float   _DissolveNoiseStrength;
     #endif
+    float   _lilShadowCasterBias;
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
         float   _OutlineWidth;
         float   _OutlineEnableLighting;
         float   _OutlineVectorScale;
         float   _OutlineFixWidth;
+        float   _OutlineZBias;
     #endif
     #if defined(LIL_FUR)
         float   _FurVectorScale;
@@ -680,6 +686,9 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_ALPHAMASK)
         uint    _AlphaMaskMode;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_SHADOW)
+        uint    _ShadowMaskType;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP)
         uint    _MatCapBlendMode;
@@ -1095,6 +1104,8 @@ SAMPLER(sampler_linear_clamp);
             float   _Shadow2ndReceive;
             float   _Shadow3rdReceive;
         #endif
+        float   _ShadowFlatBlur;
+        float   _ShadowFlatBorder;
     #endif
     #if defined(LIL_FEATURE_BACKLIGHT)
         float   _BacklightNormalStrength;
@@ -1212,11 +1223,13 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_DISSOLVE) &&  defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
         float   _DissolveNoiseStrength;
     #endif
+    float   _lilShadowCasterBias;
 
     float   _OutlineWidth;
     float   _OutlineEnableLighting;
     float   _OutlineVectorScale;
     float   _OutlineFixWidth;
+    float   _OutlineZBias;
 
     #if defined(LIL_FUR)
         float   _FurVectorScale;
@@ -1262,6 +1275,9 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FEATURE_ALPHAMASK)
         uint    _AlphaMaskMode;
+    #endif
+    #if defined(LIL_FEATURE_SHADOW)
+        uint    _ShadowMaskType;
     #endif
     #if defined(LIL_FEATURE_MATCAP)
         uint    _MatCapBlendMode;

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.13] - 2022-xx-xx
 ### 追加
 - 2影・3影に`影を受け取る`を追加
+- 影のマスク方法に`Flat`を追加
+- 輪郭線に`Z Bias`を追加
+- レンダリング設定に`Shadow Caster Bias`を追加
 - シェーダー設定に`完全自動設定`を追加 (WIP)
 
 ### 変更
@@ -19,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - テクスチャにPNG/JPGフォーマット以外を使用していた場合のテクスチャベイク処理を修正
 - `_MainTex`プロパティに`[MainTexture]`を追加
 - `ライト方向のオーバーライド`がShadeSH9の計算に影響していた問題を修正
+- lilToonMultiでビルドサイズ削減が適用されすぎていた部分を修正
 
 ## [1.2.12] - 2022-03-31
 ### 修正

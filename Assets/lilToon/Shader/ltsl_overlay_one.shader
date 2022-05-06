@@ -97,6 +97,7 @@ Shader "_lil/[Optional] lilToonLiteOverlayOnePass"
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
         [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
+                                                        _lilShadowCasterBias ("Shadow Caster Bias", Float) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Save (Unused)
