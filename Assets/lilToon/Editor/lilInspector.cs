@@ -494,6 +494,7 @@ namespace lilToon
         protected static string sGlitterParams2;
         protected static string sTransparentMode;
         protected static string sOutlineVertexColorUsages;
+        protected static string sShadowMaskTypes;
         protected static string[] sRenderingModeList;
         protected static string[] sRenderingModeListLite;
         protected static string[] sTransparentModeList;
@@ -3928,6 +3929,7 @@ namespace lilToon
             sRenderingModeListLite = new[]{GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent")};
             sTransparentModeList = new[]{GetLoc("sTransparentModeNormal"), GetLoc("sTransparentModeOnePass"), GetLoc("sTransparentModeTwoPass")};
             sOutlineVertexColorUsages = BuildParams(GetLoc("sVertexColor"), GetLoc("sNone"), GetLoc("sVertexR2Width"), GetLoc("sVertexRGBA2Normal"));
+            sShadowMaskTypes = BuildParams(GetLoc("sMaskType"), GetLoc("sStrength"), GetLoc("sFlat"));
             colorRGBAContent = new GUIContent(GetLoc("sColor"), GetLoc("sTextureRGBA"));
             colorAlphaRGBAContent = new GUIContent(GetLoc("sColorAlpha"), GetLoc("sTextureRGBA"));
             maskBlendContent = new GUIContent(GetLoc("sMask"), GetLoc("sBlendR"));
@@ -9677,7 +9679,7 @@ namespace lilToon
                     EditorGUILayout.BeginVertical(boxInnerHalf);
                     if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_SHADOW_STRENGTH))
                     {
-                        m_MaterialEditor.ShaderProperty(shadowMaskType, "Mask Type|Strength|Flat");
+                        m_MaterialEditor.ShaderProperty(shadowMaskType, sShadowMaskTypes);
                         if(shadowMaskType.floatValue == 1.0f)
                         {
                             m_MaterialEditor.TexturePropertySingleLine(maskBlendContent, shadowStrengthMask);
