@@ -188,6 +188,7 @@ Shader "Hidden/lilToonTessellationCutoutOutline"
         // Reflectance
         [Gamma]         _Reflectance                ("Reflectance", Range(0, 1)) = 0.04
         // Reflection
+                        _GSAAStrength               ("GSAA", Range(0, 1)) = 0
         [lilToggle]     _ApplySpecular              ("Apply Specular", Int) = 1
         [lilToggle]     _ApplySpecularFA            ("Apply Specular in ForwardAdd", Int) = 1
         [lilToggle]     _SpecularToon               ("Specular Toon", Int) = 1

@@ -734,6 +734,7 @@ namespace lilToon
             private MaterialProperty reflectance;
             private MaterialProperty reflectionColor;
             private MaterialProperty reflectionColorTex;
+            private MaterialProperty gsaaStrength;
             private MaterialProperty applySpecular;
             private MaterialProperty applySpecularFA;
             private MaterialProperty specularNormalStrength;
@@ -2400,6 +2401,7 @@ namespace lilToon
                                     else                                                                    m_MaterialEditor.ShaderProperty(reflectionColor, GetLoc("sColor"));
                                     DrawLine();
                                     m_MaterialEditor.ShaderProperty(reflectance, GetLoc("sReflectance"));
+                                    m_MaterialEditor.ShaderProperty(gsaaStrength, "GSAA");
                                     if(reflectionColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
                                     {
                                         reflectionColor.colorValue = new Color(reflectionColor.colorValue.r, reflectionColor.colorValue.g, reflectionColor.colorValue.b, 1.0f);
@@ -3608,6 +3610,7 @@ namespace lilToon
             reflectance = FindProperty("_Reflectance", props, false);
             reflectionColor = FindProperty("_ReflectionColor", props, false);
             reflectionColorTex = FindProperty("_ReflectionColorTex", props, false);
+            gsaaStrength = FindProperty("_GSAAStrength", props, false);
             applySpecular = FindProperty("_ApplySpecular", props, false);
             applySpecularFA = FindProperty("_ApplySpecularFA", props, false);
             specularNormalStrength = FindProperty("_SpecularNormalStrength", props, false);
@@ -5915,6 +5918,7 @@ namespace lilToon
                         CopyProperty(smoothness);
                         CopyProperty(reflectance);
                         CopyProperty(reflectionColor);
+                        CopyProperty(gsaaStrength);
                         CopyProperty(applySpecular);
                         CopyProperty(applySpecularFA);
                         CopyProperty(specularNormalStrength);
@@ -6028,6 +6032,7 @@ namespace lilToon
                         CopyProperty(smoothness);
                         CopyProperty(reflectance);
                         CopyProperty(reflectionColor);
+                        CopyProperty(gsaaStrength);
                         CopyProperty(applySpecular);
                         CopyProperty(applySpecularFA);
                         CopyProperty(specularNormalStrength);
@@ -6743,6 +6748,7 @@ namespace lilToon
                         PasteProperty(ref smoothness);
                         PasteProperty(ref reflectance);
                         PasteProperty(ref reflectionColor);
+                        PasteProperty(ref gsaaStrength);
                         PasteProperty(ref applySpecular);
                         PasteProperty(ref applySpecularFA);
                         PasteProperty(ref specularNormalStrength);
@@ -6859,6 +6865,7 @@ namespace lilToon
                         PasteProperty(ref smoothness);
                         PasteProperty(ref reflectance);
                         PasteProperty(ref reflectionColor);
+                        PasteProperty(ref gsaaStrength);
                         PasteProperty(ref applySpecular);
                         PasteProperty(ref applySpecularFA);
                         PasteProperty(ref specularNormalStrength);
@@ -7571,6 +7578,7 @@ namespace lilToon
                         ResetProperty(ref smoothness);
                         ResetProperty(ref reflectance);
                         ResetProperty(ref reflectionColor);
+                        ResetProperty(ref gsaaStrength);
                         ResetProperty(ref applySpecular);
                         ResetProperty(ref applySpecularFA);
                         ResetProperty(ref specularNormalStrength);
@@ -7684,6 +7692,7 @@ namespace lilToon
                         ResetProperty(ref smoothness);
                         ResetProperty(ref reflectance);
                         ResetProperty(ref reflectionColor);
+                        ResetProperty(ref gsaaStrength);
                         ResetProperty(ref applySpecular);
                         ResetProperty(ref applySpecularFA);
                         ResetProperty(ref specularNormalStrength);

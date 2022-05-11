@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Z Bias` to outline
 - `Shadow Caster Bias` to rendering settings
 - Fur mesh division type
+- `GSAA` to reflection
 - `Fully automatic setting` to shader setting
 
 ### Changed

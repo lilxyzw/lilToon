@@ -1126,7 +1126,7 @@
             #if !defined(LIL_REFRACTION_BLUR2) || defined(LIL_PASS_FORWARDADD)
                 fd.smoothness = _Smoothness;
                 if(Exists_SmoothnessTex) fd.smoothness *= LIL_SAMPLE_2D_ST(_SmoothnessTex, samp, fd.uvMain).r;
-                GSAAForSmoothness(fd.smoothness, fd.N, 0.5);
+                GSAAForSmoothness(fd.smoothness, fd.N, _GSAAStrength);
                 fd.perceptualRoughness = fd.perceptualRoughness - fd.smoothness * fd.perceptualRoughness;
                 fd.roughness = fd.perceptualRoughness * fd.perceptualRoughness;
             #endif

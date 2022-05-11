@@ -572,6 +572,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION)
         float   _Metallic;
+        float   _GSAAStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP)
         float   _MatCapBlend;
@@ -1146,6 +1147,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FEATURE_REFLECTION)
         float   _Metallic;
+        float   _GSAAStrength;
     #endif
     #if defined(LIL_FEATURE_MATCAP)
         float   _MatCapBlend;
