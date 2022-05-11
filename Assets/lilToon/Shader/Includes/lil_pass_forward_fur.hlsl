@@ -78,7 +78,7 @@ struct v2f
         float3 positionWS   : TEXCOORD1;
     #endif
     #if defined(LIL_V2F_NORMAL_WS)
-        float3 normalWS     : TEXCOORD2;
+        LIL_VECTOR_INTERPOLATION float3 normalWS     : TEXCOORD2;
     #endif
     float furLayer      : TEXCOORD3;
     LIL_LIGHTCOLOR_COORDS(4)

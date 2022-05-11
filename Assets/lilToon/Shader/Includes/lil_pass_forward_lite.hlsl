@@ -34,7 +34,7 @@
             float3 positionWS   : TEXCOORD2;
         #endif
         #if defined(LIL_V2F_NORMAL_WS)
-            float3 normalWS     : TEXCOORD3;
+            LIL_VECTOR_INTERPOLATION float3 normalWS     : TEXCOORD3;
         #endif
         LIL_LIGHTCOLOR_COORDS(4)
         LIL_VERTEXLIGHT_FOG_COORDS(5)
@@ -62,7 +62,7 @@
         float4 uv01         : TEXCOORD0;
         float4 uv23         : TEXCOORD1;
         float2 uvMat        : TEXCOORD2;
-        float3 normalWS     : TEXCOORD3;
+        LIL_VECTOR_INTERPOLATION float3 normalWS     : TEXCOORD3;
         float3 positionWS   : TEXCOORD4;
         LIL_LIGHTCOLOR_COORDS(5)
         LIL_LIGHTDIRECTION_COORDS(6)

@@ -714,6 +714,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FUR)
         uint    _FurLayerNum;
+        uint    _FurMeshType;
     #endif
     lilBool _Invisible;
     lilBool _UseClippingCanceller;
@@ -1303,6 +1304,7 @@ SAMPLER(sampler_linear_clamp);
     uint    _OutlineVertexR2Width;
     #if defined(LIL_FUR)
         uint    _FurLayerNum;
+        uint    _FurMeshType;
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------

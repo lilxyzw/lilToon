@@ -177,6 +177,7 @@ namespace lilToon
         private const string editorSettingTempPath          = "Temp/lilToonEditorSetting";
         public const string versionInfoTempPath             = "Temp/lilToonVersion";
         public const string packageListTempPath             = "Temp/lilToonPackageList";
+        public const string postBuildTempPath               = "Temp/lilToonPostBuild";
         private static readonly string[] mainTexCheckWords = new[] {"mask", "shadow", "shade", "outline", "normal", "bumpmap", "matcap", "rimlight", "emittion", "reflection", "specular", "roughness", "smoothness", "metallic", "metalness", "opacity", "parallax", "displacement", "height", "ambient", "occlusion"};
 
         #if NET_4_6
@@ -942,6 +943,7 @@ namespace lilToon
             private MaterialProperty furRandomize;
             private MaterialProperty furAO;
             private MaterialProperty vertexColor2FurVector;
+            private MaterialProperty furMeshType;
             private MaterialProperty furLayerNum;
             private MaterialProperty furRootOffset;
             private MaterialProperty furCutoutLength;
@@ -2895,7 +2897,24 @@ namespace lilToon
                             m_MaterialEditor.TextureScaleOffsetProperty(furNoiseMask);
                             if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_FUR_MASK))    m_MaterialEditor.TexturePropertySingleLine(customMaskContent, furMask);
                             m_MaterialEditor.ShaderProperty(furAO, GetLoc("sAO"));
-                            m_MaterialEditor.ShaderProperty(furLayerNum, GetLoc("sLayerNum"));
+                            DrawLine();
+                            m_MaterialEditor.ShaderProperty(furMeshType, "Mesh Type|Subdivision|Shrink");
+                            if(furMeshType.floatValue == 0)
+                            {
+                                int furLayerNum2 = (int)furLayerNum.floatValue;
+                                EditorGUI.BeginChangeCheck();
+                                EditorGUI.showMixedValue = furLayerNum.hasMixedValue;
+                                furLayerNum2 = EditorGUILayout.IntSlider(GetLoc("sLayerNum"), furLayerNum2, 1, 3);
+                                EditorGUI.showMixedValue = false;
+                                if(EditorGUI.EndChangeCheck())
+                                {
+                                    furLayerNum.floatValue = furLayerNum2;
+                                }
+                            }
+                            else
+                            {
+                                m_MaterialEditor.ShaderProperty(furLayerNum, GetLoc("sLayerNum"));
+                            }
                             MinusRangeGUI(furRootOffset, GetLoc("sRootWidth"));
                             if(CheckFeature(shaderSetting.LIL_FEATURE_FUR_COLLISION)) m_MaterialEditor.ShaderProperty(furTouchStrength, GetLoc("sTouchStrength"));
                             EditorGUILayout.EndVertical();
@@ -3270,7 +3289,7 @@ namespace lilToon
 
                 EditorGUILayout.BeginVertical(customBox);
                 EditorGUI.BeginChangeCheck();
-                //ToggleGUI("完全自動設定", ref shaderSetting.autoSetting);
+                ToggleGUI(GetLoc("sSettingFullAuto"), ref shaderSetting.autoSetting);
                 ToggleGUI(GetLoc("sSettingCancelAutoScan"), ref shaderSetting.shouldNotScan);
                 ToggleGUI(GetLoc("sSettingLock"), ref shaderSetting.isLocked);
                 if(EditorGUI.EndChangeCheck() || edSet.isShaderSettingChanged && GUILayout.Button(GetLoc("sSettingApply"), applyButton))
@@ -3280,7 +3299,7 @@ namespace lilToon
                 }
                 EditorGUILayout.EndVertical();
 
-                GUI.enabled = !shaderSetting.isLocked;// && !shaderSetting.autoSetting;
+                GUI.enabled = !shaderSetting.isLocked && !shaderSetting.autoSetting;
                 edSet.isShowShaderSetting = Foldout(GetLoc("sShaderSetting"), edSet.isShowShaderSetting);
                 DrawHelpButton(GetLoc("sAnchorShaderSetting"));
                 if(edSet.isShowShaderSetting)
@@ -3769,6 +3788,7 @@ namespace lilToon
             furRandomize = FindProperty("_FurRandomize", props, false);
             furAO = FindProperty("_FurAO", props, false);
             vertexColor2FurVector = FindProperty("_VertexColor2FurVector", props, false);
+            furMeshType = FindProperty("_FurMeshType", props, false);
             furLayerNum = FindProperty("_FurLayerNum", props, false);
             furRootOffset = FindProperty("_FurRootOffset", props, false);
             furCutoutLength = FindProperty("_FurCutoutLength", props, false);
@@ -4372,11 +4392,11 @@ namespace lilToon
             AssetDatabase.SaveAssets();
 
             string shaderSettingString = "";
-            /*if(shaderSetting.autoSetting)
+            if(shaderSetting.autoSetting)
             {
                 shaderSettingString = BuildShaderSettingString(GetAllOnShaderSetting(), true);
             }
-            else*/
+            else
             {
                 shaderSettingString = BuildShaderSettingString(shaderSetting, true);
             }
@@ -4396,7 +4416,7 @@ namespace lilToon
                 sw.Close();
                 lilToonInspector.isUPM = lilToonInspector.GetEditorPath().Contains("Packages");
                 string[] shaderFolderPaths = GetShaderFolderPaths();
-                bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;// || shaderSetting.autoSetting;
+                bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT || shaderSetting.autoSetting;
                 foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
                 {
                     string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
@@ -4562,9 +4582,8 @@ namespace lilToon
             lilToonSetting shaderSetting = null;
             InitializeShaderSetting(ref shaderSetting);
 
-            //if(shaderSetting.autoSetting) return BuildShaderSettingString(GetAllOnShaderSetting(), isFile);
-            //else                          return BuildShaderSettingString(shaderSetting, isFile);
-            return BuildShaderSettingString(shaderSetting, isFile);
+            if(shaderSetting.autoSetting) return BuildShaderSettingString(GetAllOnShaderSetting(), isFile);
+            else                          return BuildShaderSettingString(shaderSetting, isFile);
         }
 
         public static bool EqualsShaderSetting(lilToonSetting ssA, lilToonSetting ssB)
@@ -5219,7 +5238,7 @@ namespace lilToon
 
         public static bool CheckFeature(bool feature)
         {
-            return isMulti || feature;// || shaderSetting.autoSetting;
+            return isMulti || feature || shaderSetting.autoSetting;
         }
 
         private static void InitializeGUIStyles()
@@ -6240,6 +6259,7 @@ namespace lilToon
                         CopyProperty(furRandomize);
                         CopyProperty(furAO);
                         CopyProperty(vertexColor2FurVector);
+                        CopyProperty(furMeshType);
                         CopyProperty(furLayerNum);
                         CopyProperty(furRootOffset);
                         CopyProperty(furCutoutLength);
@@ -7106,6 +7126,7 @@ namespace lilToon
                         PasteProperty(ref furRandomize);
                         PasteProperty(ref furAO);
                         PasteProperty(ref vertexColor2FurVector);
+                        PasteProperty(ref furMeshType);
                         PasteProperty(ref furLayerNum);
                         PasteProperty(ref furRootOffset);
                         PasteProperty(ref furCutoutLength);
@@ -7894,6 +7915,7 @@ namespace lilToon
                         ResetProperty(ref furRandomize);
                         ResetProperty(ref furAO);
                         ResetProperty(ref vertexColor2FurVector);
+                        ResetProperty(ref furMeshType);
                         ResetProperty(ref furLayerNum);
                         ResetProperty(ref furRootOffset);
                         ResetProperty(ref furCutoutLength);
@@ -9784,7 +9806,7 @@ namespace lilToon
                     EditorGUILayout.BeginVertical(boxInnerHalf);
                     if(CheckFeature(shaderSetting.LIL_FEATURE_TEX_SHADOW_STRENGTH))
                     {
-                        m_MaterialEditor.ShaderProperty(shadowMaskType, "Mask Type|Strength|Flat");
+                        m_MaterialEditor.ShaderProperty(shadowMaskType, sShadowMaskTypes);
                         if(shadowMaskType.floatValue == 1.0f)
                         {
                             m_MaterialEditor.TexturePropertySingleLine(maskBlendContent, shadowStrengthMask);

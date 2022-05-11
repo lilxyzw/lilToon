@@ -51,10 +51,10 @@
         float4 positionCS   : SV_POSITION;
         float4 uv01         : TEXCOORD0;
         float4 uv23         : TEXCOORD1;
-        float3 normalWS     : TEXCOORD2;
-        float3 positionWS   : TEXCOORD3;
+        float3 positionWS   : TEXCOORD2;
+        LIL_VECTOR_INTERPOLATION float3 normalWS     : TEXCOORD3;
         #if defined(LIL_V2F_TANGENT_WS)
-            float4 tangentWS    : TEXCOORD4;
+            LIL_VECTOR_INTERPOLATION float4 tangentWS    : TEXCOORD4;
         #endif
         #if defined(LIL_V2F_POSITION_OS)
             float3 positionOS   : TEXCOORD5;

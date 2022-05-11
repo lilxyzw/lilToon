@@ -309,8 +309,7 @@ void lilCalcOutlinePosition(inout float3 positionOS, float2 uv, float4 color, fl
     if(outlineVertexR2Width == 2) outlineN = mul(color.rgb * 2.0 - 1.0, tbnOS);
     positionOS += outlineN * width;
     #if !defined(LIL_PASS_SHADOWCASTER_INCLUDED) && !(defined(LIL_URP) && defined(LIL_PASS_DEPTHONLY_INCLUDED))
-        float3 V = normalize(lilViewDirection(positionWS)) * outlineZBias;
-        positionOS -= mul((float3x3)LIL_MATRIX_I_M, V);
+        positionOS -= normalize(lilViewDirectionOS(positionOS)) * outlineZBias;
     #endif
 }
 
@@ -322,8 +321,7 @@ void lilCalcOutlinePositionLite(inout float3 positionOS, float2 uv, float4 color
     if(outlineVertexR2Width == 2) outlineN = mul(color.rgb * 2.0 - 1.0, tbnOS);
     positionOS += outlineN * width;
     #if !defined(LIL_PASS_SHADOWCASTER_INCLUDED) && !(defined(LIL_URP) && defined(LIL_PASS_DEPTHONLY_INCLUDED))
-        float3 V = normalize(lilViewDirection(positionWS)) * outlineZBias;
-        positionOS -= mul((float3x3)LIL_MATRIX_I_M, V);
+        positionOS -= normalize(lilViewDirectionOS(positionOS)) * outlineZBias;
     #endif
 }
 
@@ -1066,6 +1064,24 @@ void lilGetLightColorDouble(float3 lightDirection, out float3 lightColor, out fl
     lilGetToonSHDouble(lightDirection, shMax, shMin);
     lightColor = LIL_MAINLIGHT_COLOR + shMax;
     indLightColor = saturate(shMin);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Geometric Specular Antialiasing
+void GSAA(inout float roughness, float3 N, float strength)
+{
+    float3 dx = ddx(N);
+    float3 dy = ddy(N);
+    float dxy = max(dot(dx,dx), dot(dy,dy));
+    float roughnessGSAA = dxy / (dxy * 5 + 0.002) * strength;
+    roughness = max(roughness, roughnessGSAA);
+}
+
+void GSAAForSmoothness(inout float smoothness, float3 N, float strength)
+{
+    float roughness = 0;
+    GSAA(roughness, N, strength);
+    smoothness = min(smoothness, saturate(1-roughness));
 }
 
 //------------------------------------------------------------------------------------------------------------------------------

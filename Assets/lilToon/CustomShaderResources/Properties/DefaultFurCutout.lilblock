@@ -31,20 +31,21 @@
 
         //----------------------------------------------------------------------------------------------------------------------
         // Fur
-                        _FurNoiseMask               ("Fur Noise", 2D) = "white" {}
-        [NoScaleOffset] _FurMask                    ("Fur Mask", 2D) = "white" {}
-        [NoScaleOffset] _FurLengthMask              ("Fur Length Mask", 2D) = "white" {}
-        [NoScaleOffset][Normal] _FurVectorTex       ("Fur Vector", 2D) = "bump" {}
-                        _FurVectorScale             ("Fur Vector scale", Range(-10,10)) = 1
-        [lilVec3Float]  _FurVector                  ("Fur Vector|Fur Length", Vector) = (0.0,0.0,1.0,0.2)
+                        _FurNoiseMask               ("Noise", 2D) = "white" {}
+        [NoScaleOffset] _FurMask                    ("Mask", 2D) = "white" {}
+        [NoScaleOffset] _FurLengthMask              ("Length Mask", 2D) = "white" {}
+        [NoScaleOffset][Normal] _FurVectorTex       ("Vector", 2D) = "bump" {}
+                        _FurVectorScale             ("Vector scale", Range(-10,10)) = 1
+        [lilVec3Float]  _FurVector                  ("Vector|Length", Vector) = (0.0,0.0,1.0,0.02)
         [lilToggle]     _VertexColor2FurVector      ("VertexColor->Vector", Int) = 0
-                        _FurGravity                 ("Fur Gravity", Range(0,1)) = 0.25
-                        _FurRandomize               ("Fur Randomize", Float) = 0
-                        _FurAO                      ("Fur AO", Range(0,1)) = 0
-        [IntRange]      _FurLayerNum                ("Fur Layer Num", Range(1, 6)) = 2
-                        _FurRootOffset              ("Fur Root Offset", Range(-1,0)) = 0
-                        _FurCutoutLength            ("Fur Cutout Length", Float) = 0.8
-                        _FurTouchStrength           ("Fur Touch Strength", Range(0, 1)) = 0
+                        _FurGravity                 ("Gravity", Range(0,1)) = 0.25
+                        _FurRandomize               ("Randomize", Float) = 0
+                        _FurAO                      ("AO", Range(0,1)) = 0
+        [lilEnum]       _FurMeshType                ("Mesh Type|Subdivision|Shrink", Int) = 1
+        [IntRange]      _FurLayerNum                ("Layer Num", Range(1, 6)) = 2
+                        _FurRootOffset              ("Root Offset", Range(-1,0)) = 0
+                        _FurCutoutLength            ("Cutout Length", Float) = 0.8
+                        _FurTouchStrength           ("Touch Strength", Range(0, 1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Fur Advanced

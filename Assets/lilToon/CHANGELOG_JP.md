@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 影のマスク方法に`Flat`を追加
 - 輪郭線に`Z Bias`を追加
 - レンダリング設定に`Shadow Caster Bias`を追加
-- シェーダー設定に`完全自動設定`を追加 (WIP)
+- ファーのメッシュ分割方法を追加
+- シェーダー設定に`完全自動設定`を追加
 
 ### 変更
 - アルファマスクのGUIを向上

@@ -435,6 +435,7 @@ sShaderSetting	Shader Setting (for all materials)	シェーダー設定 (全マ�
 sShaderSettingTips	You can toggle unused functions.	不要な機能を無効化できます	불필요한 기능을 비활성화 할 수 있습니다	你可以切换不使用的功能。	你可以切換不使用的功能。
 sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	在这里关闭的功能将从着色器中删除。通过关闭不使用的功能，你可以减少你的头像的大小，同时也可以减少负载。	在這里關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的頭像的大小，同時也可以減少負載。​​
 sSettingApply	Apply	シェーダー設定を適用	Apply	Apply	Apply
+sSettingFullAuto	Fully automatic setting	完全自動設定	완전 자동 설정	完全自动设置	完全自動設置
 sSettingCancelAutoScan	Do not auto-scan on import	インポート時に自動スキャンしない	임포트시에 자동 스캔하지 않음	导入时不自动扫描	導入時不自動掃描
 sSettingLock	Lock	ロック	Lock	Lock	Lock
 sSettingAnimateMainUV	UV Animation & Angle	UVアニメーション&角度	UV 애니메이션 & 각도	UV动画和角度	UV動畫和角度

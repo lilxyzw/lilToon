@@ -232,9 +232,12 @@
 
 #if defined(SHADER_API_D3D11_9X) || (UNITY_VERSION < 201800 && defined(SHADER_API_GLES))
     #define LIL_NOPERSPECTIVE
+    #define LIL_CENTROID
 #else
     #define LIL_NOPERSPECTIVE noperspective
+    #define LIL_CENTROID centroid
 #endif
+#define LIL_VECTOR_INTERPOLATION
 
 #if defined(SHADER_API_D3D9)
     #undef LIL_ANTIALIAS_MODE
@@ -249,9 +252,12 @@
     #undef LIL_USE_LIGHTMAP
     #undef LIL_BRANCH
     #define LIL_BRANCH
-#else
+#elif defined(SHADER_API_GLCORE) || defined(SHADER_API_GLES) || defined(SHADER_API_D3D9)
     #define LIL_VFACE(facing) , float facing : VFACE
     #define LIL_COPY_VFACE(o) o = facing
+#else
+    #define LIL_VFACE(facing) , bool isFrontFace : SV_IsFrontFace
+    #define LIL_COPY_VFACE(o) o = isFrontFace ? 1 : -1
 #endif
 
 #if defined(SHADER_API_MOBILE)
@@ -490,6 +496,22 @@ float3 lilHeadDirection(float3 positionWS)
         return (unity_StereoWorldSpaceCameraPos[0].xyz + unity_StereoWorldSpaceCameraPos[1].xyz) * 0.5 - positionWS;
     #else
         return lilViewDirection(positionWS);
+    #endif
+}
+
+float3 lilViewDirectionOS(float3 positionOS)
+{
+    return lilTransformWStoOS(_WorldSpaceCameraPos.xyz) - positionOS;
+}
+
+float3 lilHeadDirectionOS(float3 positionOS)
+{
+    #if defined(USING_STEREO_MATRICES) && defined(LIL_HDRP)
+        return lilTransformWStoOS((_XRWorldSpaceCameraPos[0].xyz + _XRWorldSpaceCameraPos[1].xyz) * 0.5) - positionOS;
+    #elif defined(USING_STEREO_MATRICES)
+        return lilTransformWStoOS((unity_StereoWorldSpaceCameraPos[0].xyz + unity_StereoWorldSpaceCameraPos[1].xyz) * 0.5) - positionOS;
+    #else
+        return lilViewDirectionOS(positionOS);
     #endif
 }
 

@@ -99,14 +99,21 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Turn on all settings when auto
-            /*#if VRC_SDK_VRCSDK3
-                lilToonSetting shaderSettingPost = null;
-                lilToonInspector.InitializeShaderSetting(ref shaderSettingPost);
-                if(shaderSettingPost != null && !shaderSettingPost.isLocked && shaderSettingPost.autoSetting)
+            #if VRC_SDK_VRCSDK3
+                if(File.Exists(lilToonInspector.postBuildTempPath)) 
                 {
-                    lilToonInspector.ApplyShaderSetting(shaderSettingPost, "[lilToon] PostprocessBuild");
+                    EditorApplication.delayCall += () =>
+                    {
+                        File.Delete(lilToonInspector.postBuildTempPath);
+                        lilToonSetting shaderSettingPost = null;
+                        lilToonInspector.InitializeShaderSetting(ref shaderSettingPost);
+                        if(shaderSettingPost != null && !shaderSettingPost.isLocked && shaderSettingPost.autoSetting)
+                        {
+                            lilToonInspector.ApplyShaderSetting(shaderSettingPost, "[lilToon] PostprocessBuild");
+                        }
+                    };
                 }
-            #endif*/
+            #endif
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Scan imported assets

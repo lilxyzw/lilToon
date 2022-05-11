@@ -40,7 +40,7 @@
             float3 positionWS   : TEXCOORD3;
         #endif
         #if defined(LIL_V2F_NORMAL_WS)
-            float3 normalWS     : TEXCOORD4;
+            LIL_VECTOR_INTERPOLATION float3 normalWS     : TEXCOORD4;
         #endif
         LIL_LIGHTCOLOR_COORDS(5)
         LIL_VERTEXLIGHT_FOG_COORDS(6)
@@ -88,10 +88,10 @@
             float3 positionWS   : TEXCOORD3;
         #endif
         #if defined(LIL_V2F_NORMAL_WS)
-            float3 normalWS     : TEXCOORD4;
+            LIL_VECTOR_INTERPOLATION float3 normalWS     : TEXCOORD4;
         #endif
         #if defined(LIL_V2F_TANGENT_WS)
-            float4 tangentWS    : TEXCOORD5;
+            LIL_VECTOR_INTERPOLATION float4 tangentWS    : TEXCOORD5;
         #endif
         LIL_LIGHTCOLOR_COORDS(6)
         LIL_LIGHTDIRECTION_COORDS(7)

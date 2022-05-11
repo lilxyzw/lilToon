@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Flat` to shadow mask type
 - `Z Bias` to outline
 - `Shadow Caster Bias` to rendering settings
-- Added `Fully automatic setting` to shader setting (WIP)
+- Fur mesh division type
+- `Fully automatic setting` to shader setting
 
 ### Changed
 - Improved alpha mask GUI
