@@ -710,51 +710,18 @@ namespace lilToon
         }
     }
 
-    public class lilToonBuildProcessor : IPostprocessBuildWithReport
+    public class lilToonBuildProcessor : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
         public int callbackOrder => 0;
+
+        public void OnPreprocessBuild(BuildReport report)
+        {
+            lilToonInspector.SetShaderSettingBeforeBuild();
+        }
+
         public void OnPostprocessBuild(BuildReport report)
         {
-            // Load shader setting
-            lilToonSetting shaderSetting = null;
-            lilToonInspector.InitializeShaderSetting(ref shaderSetting);
-
-            if(shaderSetting == null || shaderSetting.isLocked || !shaderSetting.autoSetting) return;
-
-            lilToonInspector.TurnOffAllShaderSetting(ref shaderSetting);
-
-            // Get materials
-            foreach(string guid in AssetDatabase.FindAssets("t:material"))
-            {
-                Material material = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(guid));
-                lilToonInspector.SetupShaderSettingFromMaterial(material, ref shaderSetting);
-            }
-
-            // Get animations
-            foreach(string guid in AssetDatabase.FindAssets("t:animationclip"))
-            {
-                AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(AssetDatabase.GUIDToAssetPath(guid));
-                lilToonInspector.SetupShaderSettingFromAnimationClip(clip, ref shaderSetting);
-            }
-
-            // Apply
-            EditorUtility.SetDirty(shaderSetting);
-            AssetDatabase.SaveAssets();
-            if(shaderSetting.autoSetting)
-            {
-                lilToonSetting shaderSettingCopy = UnityEngine.Object.Instantiate(shaderSetting);
-                shaderSettingCopy.autoSetting = false;
-                lilToonInspector.ApplyShaderSetting(shaderSettingCopy, "[lilToon] PreprocessBuild");
-            }
-            else
-            {
-                lilToonInspector.ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
-            }
-            if(!File.Exists(lilToonInspector.postBuildTempPath))
-            {
-                File.Create(lilToonInspector.postBuildTempPath);
-            }
-            AssetDatabase.Refresh();
+            lilToonInspector.SetShaderSettingAfterBuild();
         }
     }
 #endif
@@ -762,57 +729,26 @@ namespace lilToon
 #if VRC_SDK_VRCSDK3
     //------------------------------------------------------------------------------------------------------------------------------
     // VRChat
-    public class lilToonVRCBuildPreprocess : IVRCSDKBuildRequestedCallback
+    public class lilToonVRCBuildCallback : IVRCSDKBuildRequestedCallback, IVRCSDKPreprocessAvatarCallback, IVRCSDKPostprocessAvatarCallback
     {
         public int callbackOrder => 0;
 
         public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
         {
-            // Load shader setting
-            lilToonSetting shaderSetting = null;
-            lilToonInspector.InitializeShaderSetting(ref shaderSetting);
-
-            #if UDON
-                if(shaderSetting == null || shaderSetting.isLocked) return true;
-            #else
-                if(shaderSetting == null || shaderSetting.isLocked || !shaderSetting.autoSetting) return true;
-            #endif
-
-            lilToonInspector.TurnOffAllShaderSetting(ref shaderSetting);
-
-            // Get materials
-            foreach(string guid in AssetDatabase.FindAssets("t:material"))
-            {
-                Material material = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(guid));
-                lilToonInspector.SetupShaderSettingFromMaterial(material, ref shaderSetting);
-            }
-
-            // Get animations
-            foreach(string guid in AssetDatabase.FindAssets("t:animationclip"))
-            {
-                AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(AssetDatabase.GUIDToAssetPath(guid));
-                lilToonInspector.SetupShaderSettingFromAnimationClip(clip, ref shaderSetting);
-            }
-
-            // Apply
-            EditorUtility.SetDirty(shaderSetting);
-            AssetDatabase.SaveAssets();
-            if(shaderSetting.autoSetting)
-            {
-                lilToonSetting shaderSettingCopy = UnityEngine.Object.Instantiate(shaderSetting);
-                shaderSettingCopy.autoSetting = false;
-                lilToonInspector.ApplyShaderSetting(shaderSettingCopy, "[lilToon] PreprocessBuild");
-            }
-            else
-            {
-                lilToonInspector.ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
-            }
-            if(!File.Exists(lilToonInspector.postBuildTempPath))
-            {
-                File.Create(lilToonInspector.postBuildTempPath);
-            }
-            AssetDatabase.Refresh();
+            lilToonInspector.SetShaderSettingBeforeBuild();
             return true;
+        }
+
+        public bool OnPreprocessAvatar(GameObject avatarGameObject)
+        {
+            string assetList = lilToonInspector.SetShaderSettingBeforeBuild(avatarGameObject);
+            Debug.Log(assetList);
+            return true;
+        }
+
+        public void OnPostprocessAvatar()
+        {
+            lilToonInspector.SetShaderSettingAfterBuild();
         }
     }
 #endif
