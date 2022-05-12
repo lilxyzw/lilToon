@@ -66,9 +66,6 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_TEX_FUR_MASK;
     public bool LIL_FEATURE_TEX_FUR_LENGTH;
     public bool LIL_FEATURE_TEX_TESSELLATION;
-    public bool isLocked = false;
-    public bool shouldNotScan = false;
-    public bool autoSetting = false;
 
     public bool LIL_OPTIMIZE_APPLY_SHADOW_FA = true;
     public bool LIL_OPTIMIZE_USE_FORWARDADD = true;

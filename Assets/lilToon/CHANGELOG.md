@@ -12,12 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Shadow Caster Bias` to rendering settings
 - Fur mesh division type
 - `GSAA` to reflection
-- `Fully automatic setting` to shader setting
 
 ### Changed
 - Improved alpha mask GUI
 - Changed the `Fix width by distance` of the outline to be adjustable steplessly
 - Adjusted the initial value of `Light Direction Override`
+- Changed to set shader settings automatically
 
 ### Fixed
 - Fixed an issue where fog wasn't working well in URP
@@ -25,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `[MainTexture]` to the `_MainTex` property
 - Fixed an issue where `Light Direction Override` was affecting ShadeSH9 calculations
 - Fixed an issue where lilToonMulti shader variants were being reduced too much at build
+
+### Removed
+- Support for Unity 2017
 
 ## [1.2.12] - 2022-03-31
 ### Fixed

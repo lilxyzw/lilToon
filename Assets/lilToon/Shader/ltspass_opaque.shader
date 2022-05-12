@@ -1,7 +1,7 @@
 Shader "Hidden/ltspass_opaque"
 {
     HLSLINCLUDE
-        #include "../../lilToonSetting/lil_setting.hlsl"
+        #include "Includes/lil_setting.hlsl"
         #define LIL_RENDER 0
     ENDHLSL
 

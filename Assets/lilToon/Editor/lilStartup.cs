@@ -16,40 +16,17 @@ namespace lilToon
             //------------------------------------------------------------------------------------------------------------------------------
             // Variables
             string editorPath = lilToonInspector.GetEditorPath();
-            lilToonInspector.isUPM = editorPath.Contains("Packages");
-            string settingFolderPath = lilToonInspector.GetSettingFolderPath();
-            string shaderSettingHLSLPath = lilToonInspector.GetShaderSettingHLSLPath();
-            string shaderCommonPath = lilToonInspector.GetShaderCommonPath();
 
             lilToonInspector.ApplyEditorSettingTemp();
             lilToonInspector.InitializeLanguage();
 
             //------------------------------------------------------------------------------------------------------------------------------
-            // Fix for UPM
-            string[] shaderFolderPaths = lilToonInspector.GetShaderFolderPaths();
-            foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
-            {
-                string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
-                lilToonInspector.RewriteSettingPath(shaderPath);
-            }
-
-            //------------------------------------------------------------------------------------------------------------------------------
             // Create files
-            if(!Directory.Exists(settingFolderPath))
+            if(!File.Exists(lilToonInspector.startupTempPath))
             {
-                // Setting Folder
-                Directory.CreateDirectory(settingFolderPath);
+                File.Create(lilToonInspector.startupTempPath);
 
-                if(!File.Exists(shaderSettingHLSLPath))
-                {
-                    StreamWriter sw = new StreamWriter(shaderSettingHLSLPath,false);
-                    sw.Write("//INITIALIZE\r\n#ifndef LIL_SETTING_INCLUDED\r\n#define LIL_SETTING_INCLUDED\r\n\r\n#define LIL_FEATURE_MAIN_TONE_CORRECTION\r\n#define LIL_FEATURE_SHADOW\r\n#define LIL_FEATURE_TEX_SHADOW_STRENGTH\r\n#define LIL_FEATURE_EMISSION_1ST\r\n#define LIL_FEATURE_NORMAL_1ST\r\n#define LIL_FEATURE_MATCAP\r\n#define LIL_FEATURE_TEX_MATCAP_MASK\r\n#define LIL_FEATURE_RIMLIGHT\r\n#define LIL_FEATURE_TEX_RIMLIGHT_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_COLOR\r\n#define LIL_FEATURE_TEX_OUTLINE_WIDTH\r\n\r\n#endif");
-                    sw.Close();
-                    AssetDatabase.ImportAsset(shaderSettingHLSLPath);
-                    Debug.Log("Generate setting hlsl file");
-                }
-
-                // Editor
+                // RSP
                 if(!File.Exists(lilToonInspector.rspPath))
                 {
                     StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
@@ -96,62 +73,6 @@ namespace lilToon
                 lilToonInspector.edSet.currentVersionValue = lilToonInspector.currentVersionValue;
                 lilToonInspector.SaveEditorSettingTemp();
             }
-
-            //------------------------------------------------------------------------------------------------------------------------------
-            // Scan imported assets
-            AssetDatabase.importPackageCompleted += _ =>
-            {
-                lilToonSetting shaderSetting = null;
-                lilToonInspector.InitializeShaderSetting(ref shaderSetting);
-                lilToonInspector.InitializeSettingHLSL(ref shaderSetting);
-
-                if(!shaderSetting.isLocked && !shaderSetting.shouldNotScan && File.Exists(lilToonInspector.packageListTempPath))
-                {
-                    lilToonSetting shaderSettingNew = UnityEngine.Object.Instantiate(shaderSetting);
-                    StreamReader srPackage = new StreamReader(lilToonInspector.packageListTempPath);
-                    string str;
-                    while((str = srPackage.ReadLine()) != null)
-                    {
-                        if(str.EndsWith(".mat") && AssetDatabase.GetMainAssetTypeAtPath(str) == typeof(Material))
-                        {
-                            Material material = AssetDatabase.LoadAssetAtPath<Material>(str);
-                            if(!material.shader.name.Contains("lilToon")) continue;
-                            lilToonInspector.MigrateMaterial(material);
-                            if(material.shader.name.Contains("Lite")) continue;
-                            lilToonInspector.SetupShaderSettingFromMaterial(material, ref shaderSettingNew);
-                        }
-                        if(str.EndsWith(".anim") && AssetDatabase.GetMainAssetTypeAtPath(str) == typeof(AnimationClip))
-                        {
-                            AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(str);
-                            lilToonInspector.SetupShaderSettingFromAnimationClip(clip, ref shaderSettingNew);
-                        }
-                    }
-                    srPackage.Close();
-
-                    if(!lilToonInspector.EqualsShaderSetting(shaderSettingNew, shaderSetting) && EditorUtility.DisplayDialog("lilToon",lilToonInspector.GetLoc("sUtilNewFeatureFound"),lilToonInspector.GetLoc("sYes"),lilToonInspector.GetLoc("sNo")))
-                    {
-                        // Apply
-                        lilToonInspector.CopyShaderSetting(ref shaderSetting, shaderSettingNew);
-                        EditorUtility.SetDirty(shaderSetting);
-                        AssetDatabase.SaveAssets();
-                        lilToonInspector.ApplyShaderSetting(shaderSetting);
-                        AssetDatabase.Refresh();
-                        Debug.Log("Finish scanning assets");
-                    }
-                    File.Delete(lilToonInspector.packageListTempPath);
-                }
-
-                // Refresh
-                string[] shaderFolderPaths2 = lilToonInspector.GetShaderFolderPaths();
-                bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;
-                Array.ForEach(
-                    AssetDatabase.FindAssets("t:shader", shaderFolderPaths2),
-                    shaderGuid => lilToonInspector.RewriteReceiveShadow(AssetDatabase.GUIDToAssetPath(shaderGuid), isShadowReceive)
-                );
-                AssetDatabase.SaveAssets();
-                AssetDatabase.ImportAsset(shaderSettingHLSLPath);
-                AssetDatabase.Refresh();
-            };
         }
 
         private static IEnumerator GetLatestVersionInfo()

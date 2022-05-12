@@ -78,6 +78,8 @@ struct lilFragData
     float2 uvRim;
     float2 uvPanorama;
     float2 uvScn;
+    float2 ddxMain;
+    float2 ddyMain;
     bool isRightHand;
 
     // Position
@@ -149,6 +151,8 @@ lilFragData lilInitFragData()
     fd.uvRim = 0.0;
     fd.uvPanorama = 0.0;
     fd.uvScn = 0.0;
+    fd.ddxMain = 0.0;
+    fd.ddyMain = 0.0;
     fd.isRightHand = true;
 
     fd.positionOS = 0.0;

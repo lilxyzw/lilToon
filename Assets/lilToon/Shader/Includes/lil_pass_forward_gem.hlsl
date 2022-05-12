@@ -121,6 +121,8 @@
         // UV
         BEFORE_ANIMATE_MAIN_UV
         OVERRIDE_ANIMATE_MAIN_UV
+        BEFORE_CALC_DDX_DDY
+        OVERRIDE_CALC_DDX_DDY
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Gem View Direction

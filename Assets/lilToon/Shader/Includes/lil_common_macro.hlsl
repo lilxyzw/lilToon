@@ -271,7 +271,7 @@
     #define LIL_SAMPLE_2D_ST(tex,samp,uv)                   tex2D(tex,uv*tex##_ST.xy+tex##_ST.zw)
     #define LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)              tex2Dlod(tex,float4(uv,0,lod))
     #define LIL_SAMPLE_2D_BIAS(tex,samp,uv,bias)            tex2Dbias(tex,float4(uv,0,bias))
-    #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)           tex2Dgrad(tex,float4(uv,dx,dy))
+    #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)           tex2Dgrad(tex,uv,dx,dy)
     #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)          tex2DArray(tex,float3(uv,index))
     #define LIL_SAMPLE_2D_ARRAY_LOD(tex,samp,uv,index,lod)  tex2DArraylod(tex,float4(uv,index,lod))
     #define LIL_SAMPLE_3D(tex,samp,uv)                      tex3D(tex,uv)

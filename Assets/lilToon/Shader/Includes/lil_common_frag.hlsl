@@ -14,6 +14,10 @@
     #define BEFORE_ANIMATE_OUTLINE_UV
 #endif
 
+#if !defined(BEFORE_CALC_DDX_DDY)
+    #define BEFORE_CALC_DDX_DDY
+#endif
+
 #if !defined(BEFORE_PARALLAX)
     #define BEFORE_PARALLAX
 #endif
@@ -257,6 +261,12 @@
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
+// DDX and DDY
+#define OVERRIDE_CALC_DDX_DDY \
+    fd.ddxMain = ddx(fd.uvMain); \
+    fd.ddyMain = ddy(fd.uvMain);
+
+//------------------------------------------------------------------------------------------------------------------------------
 // Parallax
 #if !defined(OVERRIDE_PARALLAX)
     #if defined(LIL_FEATURE_POM)
@@ -272,7 +282,7 @@
 // Main Texture
 #if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED)
     #define LIL_GET_MAIN_TEX \
-        fd.col = LIL_SAMPLE_2D_POM(_MainTex, sampler_MainTex, fd.uvMain, ddxMain, ddyMain);
+        fd.col = LIL_SAMPLE_2D_POM(_MainTex, sampler_MainTex, fd.uvMain, fd.ddxMain, fd.ddyMain);
 
     // Tone correction
     #if defined(LIL_FEATURE_MAIN_TONE_CORRECTION)

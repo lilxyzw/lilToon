@@ -1,7 +1,7 @@
 Shader "Hidden/ltspass_cutout"
 {
     HLSLINCLUDE
-        #include "../../lilToonSetting/lil_setting.hlsl"
+        #include "Includes/lil_setting.hlsl"
         #define LIL_RENDER 1
     ENDHLSL
 

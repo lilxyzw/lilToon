@@ -455,7 +455,7 @@ Shader "Hidden/lilToonRefractionBlur"
         [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
     HLSLINCLUDE
-        #include "../../lilToonSetting/lil_setting.hlsl"
+        #include "Includes/lil_setting.hlsl"
         #define LIL_RENDER 2
         #define LIL_REFRACTION
         #define LIL_REFRACTION_BLUR2

@@ -443,7 +443,7 @@ Shader "Hidden/lilToonGem"
         [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
     HLSLINCLUDE
-        #include "../../lilToonSetting/lil_setting.hlsl"
+        #include "Includes/lil_setting.hlsl"
         #define LIL_RENDER 2
         #define LIL_GEM
     ENDHLSL

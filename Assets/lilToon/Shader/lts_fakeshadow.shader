@@ -50,7 +50,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
         [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
     HLSLINCLUDE
-        #include "../../lilToonSetting/lil_setting.hlsl"
+        #include "Includes/lil_setting.hlsl"
     ENDHLSL
 
 //----------------------------------------------------------------------------------------------------------------------

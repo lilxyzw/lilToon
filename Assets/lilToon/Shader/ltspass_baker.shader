@@ -64,7 +64,7 @@ Shader "Hidden/ltsother_baker"
     }
 
     HLSLINCLUDE
-        #include "../../lilToonSetting/lil_setting.hlsl"
+        #include "Includes/lil_setting.hlsl"
     ENDHLSL
 
     SubShader

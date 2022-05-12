@@ -142,6 +142,8 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         // UV
         BEFORE_ANIMATE_OUTLINE_UV
         OVERRIDE_ANIMATE_OUTLINE_UV
+        BEFORE_CALC_DDX_DDY
+        OVERRIDE_CALC_DDX_DDY
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Main Color
@@ -195,13 +197,13 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         // UV
         BEFORE_ANIMATE_MAIN_UV
         OVERRIDE_ANIMATE_MAIN_UV
+        BEFORE_CALC_DDX_DDY
+        OVERRIDE_CALC_DDX_DDY
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Parallax
         BEFORE_PARALLAX
         #if defined(LIL_FEATURE_PARALLAX)
-            float2 ddxMain = ddx(fd.uvMain);
-            float2 ddyMain = ddy(fd.uvMain);
             OVERRIDE_PARALLAX
         #endif
 

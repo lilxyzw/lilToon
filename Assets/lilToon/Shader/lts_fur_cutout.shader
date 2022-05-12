@@ -496,7 +496,7 @@ Shader "Hidden/lilToonFurCutout"
         [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
     HLSLINCLUDE
-        #include "../../lilToonSetting/lil_setting.hlsl"
+        #include "Includes/lil_setting.hlsl"
         #pragma require geometry
         #define LIL_RENDER 1
         #define LIL_FUR

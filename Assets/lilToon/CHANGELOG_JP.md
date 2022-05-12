@@ -12,12 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - レンダリング設定に`Shadow Caster Bias`を追加
 - ファーのメッシュ分割方法を追加
 - 反射に`GSAA`を追加
-- シェーダー設定に`完全自動設定`を追加
 
 ### 変更
 - アルファマスクのGUIを向上
 - 輪郭線の`距離に応じた太さ補正`を無段階で調整可能に
 - `ライト方向のオーバーライド`の初期値を調整
+- シェーダー設定を自動化
 
 ### 修正
 - URPでフォグがうまく動作していなかった問題を修正
@@ -25,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `_MainTex`プロパティに`[MainTexture]`を追加
 - `ライト方向のオーバーライド`がShadeSH9の計算に影響していた問題を修正
 - lilToonMultiでビルドサイズ削減が適用されすぎていた部分を修正
+
+### 削除
+- Unity 2017のサポートを削除
 
 ## [1.2.12] - 2022-03-31
 ### 修正
