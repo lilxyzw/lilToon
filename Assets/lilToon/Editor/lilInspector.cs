@@ -4049,13 +4049,14 @@ namespace lilToon
             shaderSetting.LIL_FEATURE_TEX_FUR_MASK = false;
             shaderSetting.LIL_FEATURE_TEX_FUR_LENGTH = false;
             shaderSetting.LIL_FEATURE_TEX_TESSELLATION = false;
+            EditorUtility.SetDirty(shaderSetting);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
 
-        public static lilToonSetting GetAllOnShaderSetting()
+        public static void TurnOnAllShaderSetting(ref lilToonSetting shaderSetting)
         {
-            lilToonSetting shaderSetting = ScriptableObject.CreateInstance<lilToonSetting>();
+            if(shaderSetting == null) return;
             shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV = true;
             shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION = true;
             shaderSetting.LIL_FEATURE_MAIN_GRADATION_MAP = true;
@@ -4119,7 +4120,6 @@ namespace lilToon
             shaderSetting.LIL_FEATURE_TEX_FUR_MASK = true;
             shaderSetting.LIL_FEATURE_TEX_FUR_LENGTH = true;
             shaderSetting.LIL_FEATURE_TEX_TESSELLATION = true;
-            return shaderSetting;
         }
 
         public static void InitializeSettingHLSL(ref lilToonSetting shaderSetting)
@@ -4163,7 +4163,9 @@ namespace lilToon
 
         public static void ApplyShaderSetting(lilToonSetting shaderSetting, string reportTitle)
         {
-            string shaderSettingString = BuildShaderSettingString(GetAllOnShaderSetting(), true);
+            EditorUtility.SetDirty(shaderSetting);
+            AssetDatabase.SaveAssets();
+            string shaderSettingString = BuildShaderSettingString(shaderSetting, true);
             string shaderSettingStringBuf = "";
             string shaderSettingHLSLPath = GetShaderSettingHLSLPath();
             if(File.Exists(shaderSettingHLSLPath))
@@ -4341,7 +4343,10 @@ namespace lilToon
 
         public static string BuildShaderSettingString(bool isFile)
         {
-            return BuildShaderSettingString(GetAllOnShaderSetting(), isFile);
+            lilToonSetting shaderSetting = null;
+            InitializeShaderSetting(ref shaderSetting);
+            if(shaderSetting == null) return "";
+            return BuildShaderSettingString(shaderSetting, isFile);
         }
 
         [Obsolete("This may be deleted in the future.")]
@@ -4466,6 +4471,7 @@ namespace lilToon
             lilToonSetting shaderSetting = null;
             InitializeShaderSetting(ref shaderSetting);
             if(shaderSetting == null) return;
+            TurnOnAllShaderSetting(ref shaderSetting);
             ApplyShaderSetting(shaderSetting, "[lilToon] PostprocessBuild");
         }
 
