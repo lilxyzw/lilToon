@@ -72,6 +72,8 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_OPTIMIZE_USE_VERTEXLIGHT = true;
     public bool LIL_OPTIMIZE_USE_LIGHTMAP = false;
 
+    public bool isLocked = false;
+
     public float defaultAsUnlit = 0.0f;
     public float defaultVertexLightStrength = 0.0f;
     public float defaultLightMinLimit = 0.05f;
