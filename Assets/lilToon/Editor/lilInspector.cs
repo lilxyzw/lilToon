@@ -665,6 +665,9 @@ namespace lilToon
             private MaterialProperty shadowStrengthMask;
             private MaterialProperty shadowBorderMask;
             private MaterialProperty shadowBlurMask;
+            private MaterialProperty shadowStrengthMaskLOD;
+            private MaterialProperty shadowBorderMaskLOD;
+            private MaterialProperty shadowBlurMaskLOD;
             private MaterialProperty shadowAOShift;
             private MaterialProperty shadowAOShift2;
             private MaterialProperty shadowPostAO;
@@ -750,6 +753,7 @@ namespace lilToon
             private MaterialProperty reflectionCubeColor;
             private MaterialProperty reflectionCubeOverride;
             private MaterialProperty reflectionCubeEnableLighting;
+            private MaterialProperty reflectionBlendMode;
         private MaterialProperty useMatCap;
             private MaterialProperty matcapTex;
             private MaterialProperty matcapColor;
@@ -2332,6 +2336,7 @@ namespace lilToon
                                         EditorGUI.indentLevel--;
                                     }
                                     if(isTransparent) m_MaterialEditor.ShaderProperty(reflectionApplyTransparency, GetLoc("sApplyTransparency"));
+                                    m_MaterialEditor.ShaderProperty(reflectionBlendMode, sBlendModes);
                                     EditorGUILayout.EndVertical();
                                 }
                                 EditorGUILayout.EndVertical();
@@ -3327,6 +3332,9 @@ namespace lilToon
             shadowStrengthMask = FindProperty("_ShadowStrengthMask", props, false);
             shadowBorderMask = FindProperty("_ShadowBorderMask", props, false);
             shadowBlurMask = FindProperty("_ShadowBlurMask", props, false);
+            shadowStrengthMaskLOD = FindProperty("_ShadowStrengthMaskLOD", props, false);
+            shadowBorderMaskLOD = FindProperty("_ShadowBorderMaskLOD", props, false);
+            shadowBlurMaskLOD = FindProperty("_ShadowBlurMaskLOD", props, false);
             shadowAOShift = FindProperty("_ShadowAOShift", props, false);
             shadowAOShift2 = FindProperty("_ShadowAOShift2", props, false);
             shadowPostAO = FindProperty("_ShadowPostAO", props, false);
@@ -3457,6 +3465,7 @@ namespace lilToon
             specularBorder = FindProperty("_SpecularBorder", props, false);
             specularBlur = FindProperty("_SpecularBlur", props, false);
             applyReflection = FindProperty("_ApplyReflection", props, false);
+            reflectionBlendMode = FindProperty("_ReflectionBlendMode", props, false);
             reflectionNormalStrength = FindProperty("_ReflectionNormalStrength", props, false);
             reflectionApplyTransparency = FindProperty("_ReflectionApplyTransparency", props, false);
             reflectionCubeTex = FindProperty("_ReflectionCubeTex", props, false);
@@ -5370,6 +5379,9 @@ namespace lilToon
                         CopyProperty(shadowFlatBorder);
                         CopyProperty(shadowFlatBlur);
                         CopyProperty(lilShadowCasterBias);
+                        CopyProperty(shadowBorderMaskLOD);
+                        CopyProperty(shadowBlurMaskLOD);
+                        CopyProperty(shadowStrengthMaskLOD);
                         CopyProperty(shadowBorderMask);
                         CopyProperty(shadowBlurMask);
                         CopyProperty(shadowStrengthMask);
@@ -5516,6 +5528,7 @@ namespace lilToon
                         CopyProperty(reflectionCubeColor);
                         CopyProperty(reflectionCubeOverride);
                         CopyProperty(reflectionCubeEnableLighting);
+                        CopyProperty(reflectionBlendMode);
                         CopyProperty(useMatCap);
                         CopyProperty(matcapColor);
                         CopyProperty(matcapBlendUV1);
@@ -5630,6 +5643,7 @@ namespace lilToon
                         CopyProperty(reflectionCubeColor);
                         CopyProperty(reflectionCubeOverride);
                         CopyProperty(reflectionCubeEnableLighting);
+                        CopyProperty(reflectionBlendMode);
                         CopyProperty(metallicGlossMap);
                         CopyProperty(smoothnessTex);
                         CopyProperty(reflectionColorTex);
@@ -6176,6 +6190,9 @@ namespace lilToon
                         PasteProperty(ref shadowFlatBorder);
                         PasteProperty(ref shadowFlatBlur);
                         PasteProperty(ref lilShadowCasterBias);
+                        PasteProperty(ref shadowBorderMaskLOD);
+                        PasteProperty(ref shadowBlurMaskLOD);
+                        PasteProperty(ref shadowStrengthMaskLOD);
                         if(shouldCopyTex)
                         {
                             PasteProperty(ref shadowBorderMask);
@@ -6346,6 +6363,7 @@ namespace lilToon
                         PasteProperty(ref reflectionCubeColor);
                         PasteProperty(ref reflectionCubeOverride);
                         PasteProperty(ref reflectionCubeEnableLighting);
+                        PasteProperty(ref reflectionBlendMode);
                         PasteProperty(ref useMatCap);
                         PasteProperty(ref matcapColor);
                         PasteProperty(ref matcapBlendUV1);
@@ -6463,6 +6481,7 @@ namespace lilToon
                         PasteProperty(ref reflectionCubeColor);
                         PasteProperty(ref reflectionCubeOverride);
                         PasteProperty(ref reflectionCubeEnableLighting);
+                        PasteProperty(ref reflectionBlendMode);
                         if(shouldCopyTex)
                         {
                             PasteProperty(ref metallicGlossMap);
@@ -7030,6 +7049,9 @@ namespace lilToon
                         ResetProperty(ref shadowFlatBorder);
                         ResetProperty(ref shadowFlatBlur);
                         ResetProperty(ref lilShadowCasterBias);
+                        ResetProperty(ref shadowBorderMaskLOD);
+                        ResetProperty(ref shadowBlurMaskLOD);
+                        ResetProperty(ref shadowStrengthMaskLOD);
                         ResetProperty(ref shadowBorderMask);
                         ResetProperty(ref shadowBlurMask);
                         ResetProperty(ref shadowStrengthMask);
@@ -7176,6 +7198,7 @@ namespace lilToon
                         ResetProperty(ref reflectionCubeColor);
                         ResetProperty(ref reflectionCubeOverride);
                         ResetProperty(ref reflectionCubeEnableLighting);
+                        ResetProperty(ref reflectionBlendMode);
                         ResetProperty(ref useMatCap);
                         ResetProperty(ref matcapColor);
                         ResetProperty(ref matcapBlendUV1);
@@ -7294,6 +7317,7 @@ namespace lilToon
                         ResetProperty(ref metallicGlossMap);
                         ResetProperty(ref smoothnessTex);
                         ResetProperty(ref reflectionColorTex);
+                        ResetProperty(ref reflectionBlendMode);
                     break;
                 case lilPropertyBlock.MatCaps:
                         ResetProperty(ref useMatCap);
@@ -9434,6 +9458,7 @@ namespace lilToon
                     if(shadowMaskType.floatValue == 1.0f)
                     {
                         m_MaterialEditor.TexturePropertySingleLine(maskBlendContent, shadowStrengthMask);
+                        m_MaterialEditor.ShaderProperty(shadowStrengthMaskLOD, "LOD");
                         EditorGUI.indentLevel++;
                         m_MaterialEditor.ShaderProperty(shadowFlatBorder, GetLoc("sBorder"));
                         m_MaterialEditor.ShaderProperty(shadowFlatBlur, GetLoc("sBlur"));
@@ -9443,8 +9468,11 @@ namespace lilToon
                     else
                     {
                         m_MaterialEditor.TexturePropertySingleLine(maskStrengthContent, shadowStrengthMask, shadowStrength);
+                        m_MaterialEditor.ShaderProperty(shadowStrengthMaskLOD, "LOD");
                     }
+                    DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sBlurMask"), GetLoc("sBlurR")), shadowBlurMask);
+                    m_MaterialEditor.ShaderProperty(shadowBlurMaskLOD, "LOD");
                     DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(shadow1stColorRGBAContent, shadowColorTex, shadowColor);
                     m_MaterialEditor.ShaderProperty(shadowBorder, GetLoc("sBorder"));
@@ -9476,6 +9504,7 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(shadowBorderRange, GetLoc("sShadowBorderRange"));
                     DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(new GUIContent("AO Map", GetLoc("sBorderR")), shadowBorderMask);
+                    m_MaterialEditor.ShaderProperty(shadowBorderMaskLOD, "LOD");
                     EditorGUI.indentLevel++;
                     m_MaterialEditor.ShaderProperty(shadowPostAO, GetLoc("sIgnoreBorderProperties"));
                     m_MaterialEditor.ShaderProperty(shadowAOShift, "1st Scale|1st Offset|2nd Scale|2nd Offset");
@@ -9523,6 +9552,7 @@ namespace lilToon
                     if(shadowMaskType.floatValue == 1.0f)
                     {
                         m_MaterialEditor.TexturePropertySingleLine(maskBlendContent, shadowStrengthMask);
+                        m_MaterialEditor.ShaderProperty(shadowStrengthMaskLOD, "LOD");
                         EditorGUI.indentLevel++;
                         m_MaterialEditor.ShaderProperty(shadowFlatBorder, GetLoc("sBorder"));
                         m_MaterialEditor.ShaderProperty(shadowFlatBlur, GetLoc("sBlur"));
@@ -9532,6 +9562,7 @@ namespace lilToon
                     else
                     {
                         m_MaterialEditor.TexturePropertySingleLine(maskStrengthContent, shadowStrengthMask, shadowStrength);
+                        m_MaterialEditor.ShaderProperty(shadowStrengthMaskLOD, "LOD");
                     }
                     DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(shadow1stColorRGBAContent, shadowColorTex, shadowColor);

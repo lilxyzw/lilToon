@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 輪郭線に`Z Bias`を追加
 - レンダリング設定に`Shadow Caster Bias`を追加
 - ファーのメッシュ分割方法を追加
-- 反射に`GSAA`を追加
+- 反射に`GSAA`と`合成モード`を追加
+- 影の強度、ぼかし、AOテクスチャに`LOD`を追加
 
 ### 変更
 - アルファマスクのGUIを向上

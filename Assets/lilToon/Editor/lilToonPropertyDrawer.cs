@@ -155,6 +155,25 @@ namespace lilToon
         }
     }
 
+    public class lilLODDrawer : MaterialPropertyDrawer
+    {
+        // [lilLOD]
+        public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
+        {
+            float val = Mathf.Pow(prop.floatValue, 0.25f);
+
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.showMixedValue = prop.hasMixedValue;
+            val = EditorGUI.Slider(position, label, val, 0.0f, 1.0f);
+            EditorGUI.showMixedValue = false;
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.floatValue = Mathf.Pow(val, 4.0f);
+            }
+        }
+    }
+
     public class lilBlinkDrawer : MaterialPropertyDrawer
     {
         // [lilBlink]

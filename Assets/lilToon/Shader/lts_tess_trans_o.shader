@@ -145,8 +145,11 @@ Shader "Hidden/lilToonTessellationTransparentOutline"
         [lilToggleLeft] _UseShadow                  ("Use Shadow", Int) = 0
                         _ShadowStrength             ("Strength", Range(0, 1)) = 1
         [NoScaleOffset] _ShadowStrengthMask         ("Strength", 2D) = "white" {}
+        [lilLOD]        _ShadowStrengthMaskLOD      ("LOD", Range(0, 1)) = 0
         [NoScaleOffset] _ShadowBorderMask           ("Border", 2D) = "white" {}
+        [lilLOD]        _ShadowBorderMaskLOD        ("LOD", Range(0, 1)) = 0
         [NoScaleOffset] _ShadowBlurMask             ("Blur", 2D) = "white" {}
+        [lilLOD]        _ShadowBlurMaskLOD          ("LOD", Range(0, 1)) = 0
         [lilFFFF]       _ShadowAOShift              ("1st Scale|1st Offset|2nd Scale|2nd Offset", Vector) = (1,0,1,0)
         [lilFF]         _ShadowAOShift2             ("3rd Scale|3rd Offset", Vector) = (1,0,1,0)
         [lilToggle]     _ShadowPostAO               ("Post AO", Int) = 0
@@ -204,6 +207,7 @@ Shader "Hidden/lilToonTessellationTransparentOutline"
         [lilHDR]        _ReflectionCubeColor        ("Color", Color) = (0,0,0,1)
         [lilToggle]     _ReflectionCubeOverride     ("Override", Int) = 0
                         _ReflectionCubeEnableLighting ("Enable Lighting", Range(0, 1)) = 1
+        [lilEnum]       _ReflectionBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // MatCap

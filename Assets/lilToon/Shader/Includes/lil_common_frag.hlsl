@@ -758,7 +758,7 @@
             #endif
             if(Exists_ShadowBlurMask)
             {
-                float4 shadowBlurMask = LIL_SAMPLE_2D(_ShadowBlurMask, samp, fd.uvMain);
+                float4 shadowBlurMask = LIL_SAMPLE_2D_GRAD(_ShadowBlurMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBlurMaskLOD), max(fd.ddyMain, _ShadowBlurMaskLOD));
                 shadowBlur *= shadowBlurMask.r;
                 shadow2ndBlur *= shadowBlurMask.g;
                 #if defined(LIL_FEATURE_SHADOW_3RD)
@@ -769,7 +769,7 @@
             // AO Map & Toon
             if(Exists_ShadowBorderMask)
             {
-                float4 shadowBorderMask = LIL_SAMPLE_2D(_ShadowBorderMask, samp, fd.uvMain);
+                float4 shadowBorderMask = LIL_SAMPLE_2D_GRAD(_ShadowBorderMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBorderMaskLOD), max(fd.ddyMain, _ShadowBorderMaskLOD));
                 shadowBorderMask.r = saturate(shadowBorderMask.r * _ShadowAOShift.x + _ShadowAOShift.y);
                 shadowBorderMask.g = saturate(shadowBorderMask.g * _ShadowAOShift.z + _ShadowAOShift.w);
                 #if defined(LIL_FEATURE_SHADOW_3RD)
@@ -816,7 +816,7 @@
                 shadowStrength = lilSRGBToLinear(shadowStrength);
             #endif
             float shadowStrengthMask = 1;
-            if(Exists_ShadowStrengthMask) shadowStrengthMask = LIL_SAMPLE_2D(_ShadowStrengthMask, samp, fd.uvMain).r;
+            if(Exists_ShadowStrengthMask) shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).r;
             if(_ShadowMaskType)
             {
                 float3 flatN = normalize(mul((float3x3)LIL_MATRIX_M, float3(0.0,0.25,1.0)));//normalize(LIL_MATRIX_M._m02_m12_m22);
@@ -1145,6 +1145,12 @@
             if(Exists_MetallicGlossMap) metallic *= LIL_SAMPLE_2D_ST(_MetallicGlossMap, samp, fd.uvMain).r;
             fd.col.rgb = fd.col.rgb - metallic * fd.col.rgb;
             float3 specular = lerp(_Reflectance, fd.albedo, metallic);
+            // Color
+            float4 reflectionColor = _ReflectionColor;
+            if(Exists_ReflectionColorTex) reflectionColor *= LIL_SAMPLE_2D_ST(_ReflectionColorTex, samp, fd.uvMain);
+            #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+                if(_ReflectionApplyTransparency) reflectionColor.a *= fd.col.a;
+            #endif
             // Specular
             #if !defined(LIL_PASS_FORWARDADD)
                 LIL_BRANCH
@@ -1159,12 +1165,13 @@
                     float3 lightColorSpc = LIL_MAINLIGHT_COLOR;
                 #endif
                 #if defined(LIL_PASS_FORWARDADD)
-                    reflectCol = lilCalcSpecular(fd, lightDirectionSpc, specular, fd.shadowmix * fd.attenuation LIL_SAMP_IN(samp)) * lightColorSpc;
+                    reflectCol = lilCalcSpecular(fd, lightDirectionSpc, specular, fd.shadowmix * fd.attenuation LIL_SAMP_IN(samp));
                 #elif defined(SHADOWS_SCREEN)
-                    reflectCol = lilCalcSpecular(fd, lightDirectionSpc, specular, fd.shadowmix LIL_SAMP_IN(samp)) * lightColorSpc;
+                    reflectCol = lilCalcSpecular(fd, lightDirectionSpc, specular, fd.shadowmix LIL_SAMP_IN(samp));
                 #else
-                    reflectCol = lilCalcSpecular(fd, lightDirectionSpc, specular, 1.0 LIL_SAMP_IN(samp)) * lightColorSpc;
+                    reflectCol = lilCalcSpecular(fd, lightDirectionSpc, specular, 1.0 LIL_SAMP_IN(samp));
                 #endif
+                fd.col.rgb = lilBlendColor(fd.col.rgb, reflectionColor.rgb * lightColorSpc, reflectCol * reflectionColor.a, _ReflectionBlendMode);
             }
             // Reflection
             #if !defined(LIL_PASS_FORWARDADD)
@@ -1188,20 +1195,14 @@
 
                     #ifdef LIL_REFRACTION
                         fd.col.rgb = lerp(envReflectionColor, fd.col.rgb, fd.col.a+(1.0-fd.col.a)*pow(fd.nvabs,abs(_RefractionStrength)*0.5+0.25));
-                        reflectCol += fd.col.a * surfaceReduction * envReflectionColor * lilFresnelLerp(specular, grazingTerm, fd.nv);
+                        reflectCol = fd.col.a * surfaceReduction * envReflectionColor * lilFresnelLerp(specular, grazingTerm, fd.nv);
                         fd.col.a = 1.0;
                     #else
-                        reflectCol += surfaceReduction * envReflectionColor * lilFresnelLerp(specular, grazingTerm, fd.nv);
+                        reflectCol = surfaceReduction * envReflectionColor * lilFresnelLerp(specular, grazingTerm, fd.nv);
                     #endif
+                    fd.col.rgb = lilBlendColor(fd.col.rgb, reflectionColor.rgb, reflectCol * reflectionColor.a, _ReflectionBlendMode);
                 }
             #endif
-            // Mix
-            float4 reflectionColor = _ReflectionColor;
-            if(Exists_ReflectionColorTex) reflectionColor *= LIL_SAMPLE_2D_ST(_ReflectionColorTex, samp, fd.uvMain);
-            #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
-                if(_ReflectionApplyTransparency) reflectionColor.a *= fd.col.a;
-            #endif
-            fd.col.rgb += reflectionColor.rgb * reflectionColor.a * reflectCol;
         }
     }
 #endif

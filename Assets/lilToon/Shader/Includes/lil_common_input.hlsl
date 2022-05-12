@@ -525,6 +525,9 @@ SAMPLER(sampler_linear_clamp);
         float   _Shadow3rdNormalStrength;
         float   _Shadow3rdBorder;
         float   _Shadow3rdBlur;
+        float   _ShadowStrengthMaskLOD;
+        float   _ShadowBorderMaskLOD;
+        float   _ShadowBlurMaskLOD;
         float   _ShadowMainStrength;
         float   _ShadowEnvStrength;
         float   _ShadowBorderRange;
@@ -690,6 +693,9 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_SHADOW)
         uint    _ShadowMaskType;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_REFLECTION)
+        uint    _ReflectionBlendMode;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP)
         uint    _MatCapBlendMode;
@@ -1090,6 +1096,9 @@ SAMPLER(sampler_linear_clamp);
         float   _ShadowNormalStrength;
         float   _ShadowBorder;
         float   _ShadowBlur;
+        float   _ShadowStrengthMaskLOD;
+        float   _ShadowBorderMaskLOD;
+        float   _ShadowBlurMaskLOD;
         float   _Shadow2ndNormalStrength;
         float   _Shadow2ndBorder;
         float   _Shadow2ndBlur;
@@ -1281,6 +1290,9 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FEATURE_SHADOW)
         uint    _ShadowMaskType;
+    #endif
+    #if defined(LIL_FEATURE_REFLECTION)
+        uint    _ReflectionBlendMode;
     #endif
     #if defined(LIL_FEATURE_MATCAP)
         uint    _MatCapBlendMode;
