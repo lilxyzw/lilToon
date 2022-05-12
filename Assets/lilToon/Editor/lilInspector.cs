@@ -9506,9 +9506,43 @@ namespace lilToon
                     m_MaterialEditor.TexturePropertySingleLine(new GUIContent("AO Map", GetLoc("sBorderR")), shadowBorderMask);
                     m_MaterialEditor.ShaderProperty(shadowBorderMaskLOD, "LOD");
                     EditorGUI.indentLevel++;
-                    m_MaterialEditor.ShaderProperty(shadowPostAO, GetLoc("sIgnoreBorderProperties"));
-                    m_MaterialEditor.ShaderProperty(shadowAOShift, "1st Scale|1st Offset|2nd Scale|2nd Offset");
-                    m_MaterialEditor.ShaderProperty(shadowAOShift2, "3rd Scale|3rd Offset");
+                        m_MaterialEditor.ShaderProperty(shadowPostAO, GetLoc("sIgnoreBorderProperties"));
+                        //m_MaterialEditor.ShaderProperty(shadowAOShift, "1st Scale|1st Offset|2nd Scale|2nd Offset");
+                        //m_MaterialEditor.ShaderProperty(shadowAOShift2, "3rd Scale|3rd Offset");
+                        float min1 = GetRemapMinValue(shadowAOShift.vectorValue.x, shadowAOShift.vectorValue.y);
+                        float max1 = GetRemapMaxValue(shadowAOShift.vectorValue.x, shadowAOShift.vectorValue.y);
+                        float min2 = GetRemapMinValue(shadowAOShift.vectorValue.z, shadowAOShift.vectorValue.w);
+                        float max2 = GetRemapMaxValue(shadowAOShift.vectorValue.z, shadowAOShift.vectorValue.w);
+                        float min3 = GetRemapMinValue(shadowAOShift2.vectorValue.x, shadowAOShift2.vectorValue.y);
+                        float max3 = GetRemapMaxValue(shadowAOShift2.vectorValue.x, shadowAOShift2.vectorValue.y);
+                        EditorGUI.BeginChangeCheck();
+                        EditorGUI.showMixedValue = alphaMaskScale.hasMixedValue || alphaMaskValue.hasMixedValue;
+                        min1 = EditorGUILayout.Slider("1st Min", min1, -0.01f, 1.01f);
+                        max1 = EditorGUILayout.Slider("1st Max", max1, -0.01f, 1.01f);
+                        min2 = EditorGUILayout.Slider("2nd Min", min2, -0.01f, 1.01f);
+                        max2 = EditorGUILayout.Slider("2nd Max", max2, -0.01f, 1.01f);
+                        min3 = EditorGUILayout.Slider("3rd Min", min3, -0.01f, 1.01f);
+                        max3 = EditorGUILayout.Slider("3rd Max", max3, -0.01f, 1.01f);
+                        EditorGUI.showMixedValue = false;
+
+                        if(EditorGUI.EndChangeCheck())
+                        {
+                            if(min1 == max1) max1 += 0.001f;
+                            if(min2 == max2) max2 += 0.001f;
+                            if(min3 == max3) max3 += 0.001f;
+                            shadowAOShift.vectorValue = new Vector4(
+                                GetRemapScaleValue(min1, max1),
+                                GetRemapOffsetValue(min1, max1),
+                                GetRemapScaleValue(min2, max2),
+                                GetRemapOffsetValue(min2, max2)
+                            );
+                            shadowAOShift2.vectorValue = new Vector4(
+                                GetRemapScaleValue(min3, max3),
+                                GetRemapOffsetValue(min3, max3),
+                                0.0f,
+                                0.0f
+                            );
+                        }
                     EditorGUI.indentLevel--;
                     DrawLine();
                     m_MaterialEditor.ShaderProperty(shadowMainStrength, GetLoc("sContrast"));
@@ -10252,6 +10286,26 @@ namespace lilToon
                 perspective.floatValue = 1.0f;
                 vrParallaxStrength.floatValue = 1.0f;
             }
+        }
+
+        private float GetRemapMinValue(float scale, float offset)
+        {
+            return Mathf.Clamp(-offset / scale, -0.01f, 1.01f);
+        }
+
+        private float GetRemapMaxValue(float scale, float offset)
+        {
+            return Mathf.Clamp((1.0f - offset) / scale, -0.01f, 1.01f);
+        }
+
+        private float GetRemapScaleValue(float min, float max)
+        {
+            return 1.0f / (max - min);
+        }
+
+        private float GetRemapOffsetValue(float min, float max)
+        {
+            return min / (min - max);
         }
         #endregion
 
