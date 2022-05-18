@@ -53,7 +53,7 @@ Shader "Hidden/ltspass_transparent"
             #pragma skip_variants DIRLIGHTMAP_COMBINED
 
             // Skip receiving shadow
-            #pragma skip_variants SHADOWS_SCREEN
+            //#pragma skip_variants SHADOWS_SCREEN
 
             // Skip vertex light
             //#pragma skip_variants VERTEXLIGHT_ON
@@ -108,7 +108,7 @@ Shader "Hidden/ltspass_transparent"
             #pragma skip_variants DIRLIGHTMAP_COMBINED
 
             // Skip receiving shadow
-            #pragma skip_variants SHADOWS_SCREEN
+            //#pragma skip_variants SHADOWS_SCREEN
 
             // Skip vertex light
             //#pragma skip_variants VERTEXLIGHT_ON
@@ -402,8 +402,8 @@ Shader "Hidden/ltspass_transparent"
             #pragma multi_compile_instancing
 
             // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -594,8 +594,8 @@ Shader "Hidden/ltspass_transparent"
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
             // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -852,8 +852,8 @@ Shader "Hidden/ltspass_transparent"
             #pragma instancing_options renderinglayer
 
             // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass

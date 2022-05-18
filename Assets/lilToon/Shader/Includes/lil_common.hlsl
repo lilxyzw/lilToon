@@ -90,6 +90,10 @@ struct lilFragData
     float depth;
 
     // Vector
+    float3 cameraFront;
+    float3 cameraUp;
+    float3 cameraRight;
+    float3x3 cameraMatrix;
     float3x3 TBN;
     float3 T;
     float3 B;
@@ -161,6 +165,16 @@ lilFragData lilInitFragData()
     fd.positionSS = 0.0;
     fd.depth = 0.0;
 
+    #if defined(USING_STEREO_MATRICES)
+        fd.cameraFront = lilCameraDirection();
+        fd.cameraUp = LIL_MATRIX_V._m10_m11_m12;
+        fd.cameraRight = cross(fd.cameraFront, fd.cameraUp);
+    #else
+        fd.cameraFront = LIL_MATRIX_V._m20_m21_m22;
+        fd.cameraUp = LIL_MATRIX_V._m10_m11_m12;
+        fd.cameraRight = LIL_MATRIX_V._m00_m01_m02;
+    #endif
+    fd.cameraMatrix = float3x3(fd.cameraRight, fd.cameraUp, fd.cameraFront);
     fd.TBN = float3x3(
         1.0,0.0,0.0,
         0.0,1.0,0.0,

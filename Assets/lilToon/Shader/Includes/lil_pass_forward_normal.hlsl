@@ -27,6 +27,7 @@
         #define LIL_V2F_LIGHTCOLOR
     #endif
     #define LIL_V2F_VERTEXLIGHT_FOG
+    #define LIL_V2F_NDOTL
 
     struct v2f
     {
@@ -42,9 +43,10 @@
         #if defined(LIL_V2F_NORMAL_WS)
             LIL_VECTOR_INTERPOLATION float3 normalWS     : TEXCOORD4;
         #endif
-        LIL_LIGHTCOLOR_COORDS(5)
-        LIL_VERTEXLIGHT_FOG_COORDS(6)
-        LIL_CUSTOM_V2F_MEMBER(7,8,9,10,11,12,13,14)
+        float NdotL         : TEXCOORD5;
+        LIL_LIGHTCOLOR_COORDS(6)
+        LIL_VERTEXLIGHT_FOG_COORDS(7)
+        LIL_CUSTOM_V2F_MEMBER(8,9,10,11,12,13,14,15)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
@@ -276,7 +278,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
                 fd.uvRim = float2(fd.nvabs,fd.nvabs);
             #endif
             fd.origN = normalize(input.normalWS);
-            fd.uvMat = mul((float3x3)LIL_MATRIX_V, fd.N).xy * 0.5 + 0.5;
+            fd.uvMat = mul(fd.cameraMatrix, fd.N).xy * 0.5 + 0.5;
         #endif
         fd.reflectionN = fd.N;
         fd.matcapN = fd.N;

@@ -3,10 +3,6 @@ using UnityEditor;
 using UnityEngine;
 using System;
 
-#if !UNITY_2018_1_OR_NEWER
-    using System.Reflection;
-#endif
-
 namespace lilToon
 {
     //------------------------------------------------------------------------------------------------------------------------------
@@ -23,11 +19,7 @@ namespace lilToon
                 Color value = prop.colorValue;
                 EditorGUI.BeginChangeCheck();
                 EditorGUI.showMixedValue = prop.hasMixedValue;
-                #if UNITY_2018_1_OR_NEWER
-                    value = EditorGUI.ColorField(position, new GUIContent(label), value, true, true, true);
-                #else
-                    value = EditorGUI.ColorField(position, new GUIContent(label), value, true, true, true, null);
-                #endif
+                value = EditorGUI.ColorField(position, new GUIContent(label), value, true, true, true);
                 EditorGUI.showMixedValue = false;
 
                 if(EditorGUI.EndChangeCheck())
@@ -70,11 +62,7 @@ namespace lilToon
                 Color value = prop.colorValue;
                 EditorGUI.BeginChangeCheck();
                 EditorGUI.showMixedValue = prop.hasMixedValue;
-                #if UNITY_2018_1_OR_NEWER
-                    value = EditorGUI.ColorField(position, new GUIContent(label), value, true, true, true);
-                #else
-                    value = EditorGUI.ColorField(position, new GUIContent(label), value, true, true, true, null);
-                #endif
+                value = EditorGUI.ColorField(position, new GUIContent(label), value, true, true, true);
                 EditorGUI.showMixedValue = false;
 
                 if(EditorGUI.EndChangeCheck())

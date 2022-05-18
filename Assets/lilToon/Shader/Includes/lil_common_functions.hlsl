@@ -309,7 +309,8 @@ void lilCalcOutlinePosition(inout float3 positionOS, float2 uv, float4 color, fl
     if(outlineVertexR2Width == 2) outlineN = mul(color.rgb * 2.0 - 1.0, tbnOS);
     positionOS += outlineN * width;
     #if !defined(LIL_PASS_SHADOWCASTER_INCLUDED) && !(defined(LIL_URP) && defined(LIL_PASS_DEPTHONLY_INCLUDED))
-        positionOS -= normalize(lilViewDirectionOS(positionOS)) * outlineZBias;
+        float3 V = lilIsPerspective() ? lilViewDirectionOS(positionOS) : mul((float3x3)LIL_MATRIX_I_M, LIL_MATRIX_V._m20_m21_m22);
+        positionOS -= normalize(V) * outlineZBias;
     #endif
 }
 
@@ -321,18 +322,8 @@ void lilCalcOutlinePositionLite(inout float3 positionOS, float2 uv, float4 color
     if(outlineVertexR2Width == 2) outlineN = mul(color.rgb * 2.0 - 1.0, tbnOS);
     positionOS += outlineN * width;
     #if !defined(LIL_PASS_SHADOWCASTER_INCLUDED) && !(defined(LIL_URP) && defined(LIL_PASS_DEPTHONLY_INCLUDED))
-        positionOS -= normalize(lilViewDirectionOS(positionOS)) * outlineZBias;
-    #endif
-}
-
-//------------------------------------------------------------------------------------------------------------------------------
-// Bias
-void lilApplyOutlineBias(inout float4 positionCS, float bias)
-{
-    #if defined(UNITY_REVERSED_Z)
-        positionCS.z -= bias * 0.01;
-    #else
-        positionCS.z += bias * 0.01;
+        float3 V = lilIsPerspective() ? lilViewDirectionOS(positionOS) : mul((float3x3)LIL_MATRIX_I_M, LIL_MATRIX_V._m20_m21_m22);
+        positionOS -= normalize(V) * outlineZBias;
     #endif
 }
 
@@ -567,7 +558,7 @@ float2 lilCalcMatCapUV(float2 uv1, float3 normalWS, float3 viewDirection, float3
         #else
             float3 normalVD = viewDirection;
         #endif
-        normalVD = matcapPerspective ? normalVD : LIL_MATRIX_V._m20_m21_m22;
+        normalVD = lilIsPerspective() && matcapPerspective ? normalVD : lilCameraDirection();
         float3 bitangentVD = zRotCancel ? float3(0,1,0) : LIL_MATRIX_V._m10_m11_m12;
         bitangentVD = lilOrthoNormalize(bitangentVD, normalVD);
         float3 tangentVD = cross(normalVD, bitangentVD);
@@ -1116,15 +1107,8 @@ float3 lilCustomReflection(TEXTURECUBE(tex), float4 hdr, float3 viewDirection, f
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Glitter
-float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, float3 lightDirection, float4 glitterParams1, float4 glitterParams2, float glitterPostContrast)
+float4 lilVoronoi(float2 pos)
 {
-    // glitterParams1
-    // x: Scale, y: Scale, z: Size, w: Contrast
-    // glitterParams2
-    // x: Speed, y: Angle, z: Light Direction, w: 
-
-    float2 pos = abs(uv * glitterParams1.xy + glitterParams1.xy);
-
     #if defined(SHADER_API_D3D9) || defined(SHADER_API_D3D11_9X)
         #define M1 46203.4357
         #define M2 21091.5327
@@ -1158,10 +1142,30 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
     float4 dist4 = float4(lilNsqDistance(fracpos.xy,noise0.xy), lilNsqDistance(fracpos.zy,noise1.xy), lilNsqDistance(fracpos.xw,noise2.xy), lilNsqDistance(fracpos.zw,noise3.xy));
     float4 near0 = dist4.x < dist4.y ? float4(noise0,dist4.x) : float4(noise1,dist4.y);
     float4 near1 = dist4.z < dist4.w ? float4(noise2,dist4.z) : float4(noise3,dist4.w);
-    float4 near = near0.w < near1.w ? near0 : near1;
+    return near0.w < near1.w ? near0 : near1;
+}
+
+float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, float3 cameraDirection, float3 lightDirection, float4 glitterParams1, float4 glitterParams2, float glitterPostContrast, float glitterSensitivity)
+{
+    // glitterParams1
+    // x: Scale, y: Scale, z: Size, w: Contrast
+    // glitterParams2
+    // x: Speed, y: Angle, z: Light Direction, w:
 
     #define GLITTER_DEBUG_MODE 0
+    #define GLITTER_MIPMAP 1
     #define GLITTER_ANTIALIAS 1
+
+    #if GLITTER_MIPMAP == 1
+        float2 pos = uv * glitterParams1.xy;
+        float2 dd = fwidth(pos);
+        float factor = frac(sin(dot(floor(pos/floor(dd + 3.0)),float2(12.9898,78.233))) * 46203.4357) + 0.5;
+        float2 factor2 = floor(dd + factor * 0.5);
+        float4 near = lilVoronoi(pos/max(1.0,factor2) + glitterParams1.xy * factor2);
+    #else
+        float2 pos = uv * glitterParams1.xy + glitterParams1.xy;
+        float4 near = lilVoronoi(pos);
+    #endif
 
     #if GLITTER_DEBUG_MODE == 1
         // Voronoi
@@ -1170,15 +1174,16 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
         // Glitter
         float3 glitterNormal = abs(frac(near.xyz*14.274 + _Time.x * glitterParams2.x) * 2.0 - 1.0);
         glitterNormal = normalize(glitterNormal * 2.0 - 1.0);
-        float glitter = dot(glitterNormal, viewDirection);
+        float glitter = dot(glitterNormal, cameraDirection);
+        glitter = abs(frac(glitter * glitterSensitivity + glitterSensitivity) - 0.5) * 4.0 - 1.0;
         glitter = saturate(1.0 - (glitter * glitterParams1.w + glitterParams1.w));
-        glitter = pow(glitter, glitterPostContrast);
         // Circle
         #if GLITTER_ANTIALIAS == 1
             glitter *= saturate((glitterParams1.z-near.w) / fwidth(near.w));
         #else
             glitter = near.w < glitterParams1.z ? glitter : 0.0;
         #endif
+        glitter = pow(glitter, glitterPostContrast);
         // Angle
         float3 halfDirection = normalize(viewDirection + lightDirection * glitterParams2.z);
         float nh = saturate(dot(normalDirection, halfDirection));

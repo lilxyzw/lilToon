@@ -285,11 +285,12 @@ Shader "_lil/[Optional] lilToonOutlineOnlyTransparent"
         [lilGlitParam1] _GlitterParams1             ("Tiling|Particle Size|Contrast", Vector) = (256,256,0.16,50)
         [lilGlitParam2] _GlitterParams2             ("Blink Speed|Angle|Blend Light Direction|Color Randomness", Vector) = (0.25,0,0,0)
                         _GlitterPostContrast        ("Post Contrast", Float) = 1
+                        _GlitterSensitivity         ("Sensitivity", Float) = 0.25
                         _GlitterEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
                         _GlitterShadowMask          ("Shadow Mask", Range(0, 1)) = 0
         [lilToggle]     _GlitterBackfaceMask        ("Backface Mask", Int) = 0
         [lilToggle]     _GlitterApplyTransparency   ("Apply Transparency", Int) = 1
-                        _GlitterVRParallaxStrength  ("VR Parallax Strength", Range(0, 1)) = 1
+                        _GlitterVRParallaxStrength  ("VR Parallax Strength", Range(0, 1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision
@@ -450,6 +451,10 @@ Shader "_lil/[Optional] lilToonOutlineOnlyTransparent"
                         _OutlineTex                 ("Texture", 2D) = "white" {}
         [lilUVAnim]     _OutlineTex_ScrollRotate    ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
         [lilHSVG]       _OutlineTexHSVG             ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
+        [lilHDR]        _OutlineLitColor            ("Lit Color", Color) = (1.0,0.2,0,0)
+        [lilToggle]     _OutlineLitApplyTex         ("Apply Tex", Int) = 0
+                        _OutlineLitScale            ("Scale", Float) = 10
+                        _OutlineLitOffset           ("Offset", Float) = -8
         [lilOLWidth]    _OutlineWidth               ("Width", Range(0,1)) = 0.05
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
                         _OutlineFixWidth            ("Fix Width", Range(0,1)) = 1

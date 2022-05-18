@@ -820,6 +820,7 @@ namespace lilToon
             private MaterialProperty glitterParams1;
             private MaterialProperty glitterParams2;
             private MaterialProperty glitterPostContrast;
+            private MaterialProperty glitterSensitivity;
             private MaterialProperty glitterEnableLighting;
             private MaterialProperty glitterShadowMask;
             private MaterialProperty glitterBackfaceMask;
@@ -859,6 +860,10 @@ namespace lilToon
             private MaterialProperty outlineTex;
             private MaterialProperty outlineTex_ScrollRotate;
             private MaterialProperty outlineTexHSVG;
+            private MaterialProperty outlineLitColor;
+            private MaterialProperty outlineLitApplyTex;
+            private MaterialProperty outlineLitScale;
+            private MaterialProperty outlineLitOffset;
             private MaterialProperty outlineWidth;
             private MaterialProperty outlineWidthMask;
             private MaterialProperty outlineFixWidth;
@@ -1132,7 +1137,7 @@ namespace lilToon
                 // Colors
                 GUILayout.Label(GetLoc("sColors"), boldLabel);
 
-                edSet.isShowMain = Foldout(GetLoc("sMainColorSetting"), edSet.isShowMain);
+                edSet.isShowMain = Foldout(GetLoc("sMainColorSettingSimple"), edSet.isShowMain);
                 if(edSet.isShowMain)
                 {
                     if(isLite || isGem || isFakeShadow)
@@ -1729,7 +1734,7 @@ namespace lilToon
 
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Encryption
-                    if(string.IsNullOrEmpty(GetAvatarEncryptionPath()))
+                    if(ExistsEncryption())
                     {
                         edSet.isShowEncryption = Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
                         DrawMenuButton(GetLoc("sAnchorEncryption"), lilPropertyBlock.Encryption);
@@ -2475,36 +2480,7 @@ namespace lilToon
 
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Glitter
-                    edSet.isShowGlitter = Foldout(GetLoc("sGlitterSetting"), edSet.isShowGlitter);
-                    DrawMenuButton(GetLoc("sAnchorGlitter"), lilPropertyBlock.Glitter);
-                    if(edSet.isShowGlitter)
-                    {
-                        EditorGUILayout.BeginVertical(boxOuter);
-                        m_MaterialEditor.ShaderProperty(useGlitter, GetLoc("sGlitter"));
-                        if(useGlitter.floatValue == 1)
-                        {
-                            EditorGUILayout.BeginVertical(boxInnerHalf);
-                            m_MaterialEditor.ShaderProperty(glitterUVMode, "UV Mode|UV0|UV1");
-                            TextureGUI(ref edSet.isShowGlitterColorTex, colorMaskRGBAContent, glitterColorTex, glitterColor);
-                            if(glitterColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
-                            {
-                                glitterColor.colorValue = new Color(glitterColor.colorValue.r, glitterColor.colorValue.g, glitterColor.colorValue.b, 1.0f);
-                            }
-                            m_MaterialEditor.ShaderProperty(glitterMainStrength, GetLoc("sMainColorPower"));
-                            m_MaterialEditor.ShaderProperty(glitterEnableLighting, GetLoc("sEnableLighting"));
-                            m_MaterialEditor.ShaderProperty(glitterShadowMask, GetLoc("sShadowMask"));
-                            m_MaterialEditor.ShaderProperty(glitterBackfaceMask, GetLoc("sBackfaceMask"));
-                            if(isTransparent) m_MaterialEditor.ShaderProperty(glitterApplyTransparency, GetLoc("sApplyTransparency"));
-                            DrawLine();
-                            m_MaterialEditor.ShaderProperty(glitterParams1, sGlitterParams1);
-                            m_MaterialEditor.ShaderProperty(glitterParams2, sGlitterParams2);
-                            m_MaterialEditor.ShaderProperty(glitterVRParallaxStrength, GetLoc("sVRParallaxStrength"));
-                            m_MaterialEditor.ShaderProperty(glitterNormalStrength, GetLoc("sNormalStrength"));
-                            m_MaterialEditor.ShaderProperty(glitterPostContrast, GetLoc("sPostContrast"));
-                            EditorGUILayout.EndVertical();
-                        }
-                        EditorGUILayout.EndVertical();
-                    }
+                    DrawGlitterSettings();
 
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Gem
@@ -2697,7 +2673,7 @@ namespace lilToon
 
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Encryption
-                    if(string.IsNullOrEmpty(GetAvatarEncryptionPath()))
+                    if(ExistsEncryption())
                     {
                         edSet.isShowEncryption = Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
                         DrawMenuButton(GetLoc("sAnchorEncryption"), lilPropertyBlock.Encryption);
@@ -2748,7 +2724,7 @@ namespace lilToon
                             DrawMenuButton(GetLoc("sAnchorFur"), lilPropertyBlock.Fur);
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             m_MaterialEditor.TexturePropertySingleLine(normalMapContent, furVectorTex, furVectorScale);
-                            m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sLength"), GetLoc("sStrengthR")), furLengthMask);
+                            m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sLengthMask"), GetLoc("sStrengthR")), furLengthMask);
                             m_MaterialEditor.ShaderProperty(furVector, BuildParams(GetLoc("sVector"), GetLoc("sLength")));
                             if(isTwoPass) m_MaterialEditor.ShaderProperty(furCutoutLength, GetLoc("sLength") + " (Cutout)");
                             m_MaterialEditor.ShaderProperty(vertexColor2FurVector, GetLoc("sVertexColor2Vector"));
@@ -2757,7 +2733,7 @@ namespace lilToon
                             DrawLine();
                             m_MaterialEditor.TexturePropertySingleLine(noiseMaskContent, furNoiseMask);
                             m_MaterialEditor.TextureScaleOffsetProperty(furNoiseMask);
-                            m_MaterialEditor.TexturePropertySingleLine(customMaskContent, furMask);
+                            m_MaterialEditor.TexturePropertySingleLine(alphaMaskContent, furMask);
                             m_MaterialEditor.ShaderProperty(furAO, GetLoc("sAO"));
                             DrawLine();
                             m_MaterialEditor.ShaderProperty(furMeshType, "Mesh Type|Subdivision|Shrink");
@@ -3144,9 +3120,8 @@ namespace lilToon
                 applyButton.normal.textColor = Color.red;
                 applyButton.fontStyle = FontStyle.Bold;
 
-                EditorGUILayout.HelpBox(GetLoc("sHelpShaderSetting"),MessageType.Info);
-
                 EditorGUI.BeginChangeCheck();
+                ToggleGUI("[Debug] Apply optimization on the editor", ref shaderSetting.isDebugOptimize);
                 edSet.isShowShaderSetting = Foldout(GetLoc("sShaderSetting"), edSet.isShowShaderSetting);
                 DrawHelpButton(GetLoc("sAnchorShaderSetting"));
                 if(edSet.isShowShaderSetting)
@@ -3161,6 +3136,7 @@ namespace lilToon
                 if(edSet.isShowOptimizationSetting)
                 {
                     EditorGUILayout.BeginVertical(customBox);
+                    EditorGUILayout.HelpBox(GetLoc("sHelpShaderSetting"),MessageType.Info);
                     OptimizationSettingGUI();
                     EditorGUILayout.EndVertical();
                 }
@@ -3174,8 +3150,19 @@ namespace lilToon
                 }
                 if(EditorGUI.EndChangeCheck())
                 {
-                    EditorUtility.SetDirty(shaderSetting);
-                    AssetDatabase.SaveAssets();
+                    if(shaderSetting.isDebugOptimize)
+                    {
+                        EditorUtility.SetDirty(shaderSetting);
+                        AssetDatabase.SaveAssets();
+                        ApplyShaderSettingOptimized();
+                    }
+                    else
+                    {
+                        TurnOnAllShaderSetting(ref shaderSetting);
+                        EditorUtility.SetDirty(shaderSetting);
+                        AssetDatabase.SaveAssets();
+                        ApplyShaderSetting(shaderSetting);
+                    }
                 }
             }
 
@@ -3381,6 +3368,10 @@ namespace lilToon
             outlineTex = FindProperty("_OutlineTex", props, false);
             outlineTex_ScrollRotate = FindProperty("_OutlineTex_ScrollRotate", props, false);
             outlineTexHSVG = FindProperty("_OutlineTexHSVG", props, false);
+            outlineLitColor = FindProperty("_OutlineLitColor", props, false);
+            outlineLitApplyTex = FindProperty("_OutlineLitApplyTex", props, false);
+            outlineLitScale = FindProperty("_OutlineLitScale", props, false);
+            outlineLitOffset = FindProperty("_OutlineLitOffset", props, false);
             outlineWidth = FindProperty("_OutlineWidth", props, false);
             outlineWidthMask = FindProperty("_OutlineWidthMask", props, false);
             outlineFixWidth = FindProperty("_OutlineFixWidth", props, false);
@@ -3548,6 +3539,7 @@ namespace lilToon
             glitterParams1 = FindProperty("_GlitterParams1", props, false);
             glitterParams2 = FindProperty("_GlitterParams2", props, false);
             glitterPostContrast = FindProperty("_GlitterPostContrast", props, false);
+            glitterSensitivity = FindProperty("_GlitterSensitivity", props, false);
             glitterVRParallaxStrength = FindProperty("_GlitterVRParallaxStrength", props, false);
             glitterNormalStrength = FindProperty("_GlitterNormalStrength", props, false);
 
@@ -4021,7 +4013,7 @@ namespace lilToon
             shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX = false;
             shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL = false;
             shaderSetting.LIL_FEATURE_DISSOLVE = false;
-            shaderSetting.LIL_FEATURE_ENCRYPTION = false;
+            shaderSetting.LIL_FEATURE_ENCRYPTION = ExistsEncryption();
             shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = false;
             shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = false;
             shaderSetting.LIL_FEATURE_FUR_COLLISION = false;
@@ -4085,14 +4077,14 @@ namespace lilToon
             shaderSetting.LIL_FEATURE_GLITTER = true;
             shaderSetting.LIL_FEATURE_BACKLIGHT = true;
             shaderSetting.LIL_FEATURE_PARALLAX = true;
-            shaderSetting.LIL_FEATURE_POM = true;
+            //shaderSetting.LIL_FEATURE_POM = true;
             //shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = true;
             shaderSetting.LIL_FEATURE_DISTANCE_FADE = true;
             shaderSetting.LIL_FEATURE_AUDIOLINK = true;
             shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX = true;
             shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL = true;
             shaderSetting.LIL_FEATURE_DISSOLVE = true;
-            shaderSetting.LIL_FEATURE_ENCRYPTION = true;
+            shaderSetting.LIL_FEATURE_ENCRYPTION = ExistsEncryption();
             shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = true;
             shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = true;
             shaderSetting.LIL_FEATURE_FUR_COLLISION = true;
@@ -4155,8 +4147,7 @@ namespace lilToon
                     ApplyShaderSetting(shaderSetting);
                 }
 
-                AssetDatabase.ImportAsset(shaderSettingHLSLPath);
-                ReimportPassShaders();
+                AssetDatabase.ImportAsset(GetShaderFolderPath(), ImportAssetOptions.ImportRecursive);
                 AssetDatabase.Refresh();
             }
         }
@@ -4182,6 +4173,8 @@ namespace lilToon
                 sw.Close();
                 string[] shaderFolderPaths = GetShaderFolderPaths();
                 bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;
+                var folders = new List<string>();
+                folders.Add(GetShaderFolderPath());
                 foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
                 {
                     string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
@@ -4194,10 +4187,14 @@ namespace lilToon
                 {
                     string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
                     if(!shaderPath.Contains(".lilcontainer")) continue;
-                    AssetDatabase.ImportAsset(shaderPath);
+                    string folder = Path.GetDirectoryName(shaderPath);
+                    if(!folders.Contains(folder)) folders.Add(folder);
+                }
+                foreach(string folder in folders)
+                {
+                    AssetDatabase.ImportAsset(folder, ImportAssetOptions.ImportRecursive);
                 }
                 AssetDatabase.SaveAssets();
-                AssetDatabase.ImportAsset(shaderSettingHLSLPath);
                 AssetDatabase.Refresh();
             }
 
@@ -4434,11 +4431,8 @@ namespace lilToon
             AssetDatabase.Refresh();
         }
 
-        public static void SetShaderSettingBeforeBuild()
+        public static void ApplyShaderSettingOptimized()
         {
-            if(File.Exists(postBuildTempPath)) return;
-            File.Create(postBuildTempPath);
-
             lilToonSetting shaderSetting = null;
             InitializeShaderSetting(ref shaderSetting);
             if(shaderSetting == null) return;
@@ -4462,6 +4456,13 @@ namespace lilToon
             // Apply
             ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
             AssetDatabase.Refresh();
+        }
+
+        public static void SetShaderSettingBeforeBuild()
+        {
+            if(File.Exists(postBuildTempPath)) return;
+            File.Create(postBuildTempPath);
+            ApplyShaderSettingOptimized();
         }
 
         public static void SetShaderSettingAfterBuild()
@@ -4576,24 +4577,6 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Shader Rewriter
         #region
-        public static void ReimportPassShaders()
-        {
-            string[] shaderFolderPaths = GetShaderFolderPaths();
-            foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
-            {
-                string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
-                if(shaderPath.Contains("ltsmulti") ||
-                    shaderPath.Contains("ltspass") ||
-                    shaderPath.Contains("fur") ||
-                    shaderPath.Contains("ref") ||
-                    shaderPath.Contains("gem") ||
-                    shaderPath.Contains("fakeshadow"))
-                {
-                    AssetDatabase.ImportAsset(shaderPath);
-                }
-            }
-        }
-
         public static void RewriteReceiveShadow(string path, bool enable)
         {
             if(string.IsNullOrEmpty(path) || !File.Exists(path)) return;
@@ -4850,11 +4833,7 @@ namespace lilToon
             boldLabel = new GUIStyle(GUI.skin.label){fontStyle = FontStyle.Bold};
             foldout = new GUIStyle("ShurikenModuleTitle")
             {
-                #if UNITY_2019_1_OR_NEWER
-                    fontSize = 12,
-                #else
-                    fontSize = 11,
-                #endif
+                fontSize = EditorStyles.label.fontSize,
                 border = new RectOffset(15, 7, 4, 4),
                 contentOffset = new Vector2(20f, -2f),
                 fixedHeight = 22
@@ -4919,7 +4898,7 @@ namespace lilToon
         {
             EditorGUI.indentLevel++;
             Rect position = EditorGUILayout.GetControlRect();
-            EditorGUI.LabelField(position, GetLoc("sWhenInTrouble"), boldLabel);
+            EditorGUI.LabelField(position, GetLoc("sHelp"), boldLabel);
             EditorGUI.indentLevel--;
 
             position.x += isCustomEditor ? 0 : 10;
@@ -5593,6 +5572,7 @@ namespace lilToon
                         CopyProperty(glitterParams1);
                         CopyProperty(glitterParams2);
                         CopyProperty(glitterPostContrast);
+                        CopyProperty(glitterSensitivity);
                         CopyProperty(glitterEnableLighting);
                         CopyProperty(glitterShadowMask);
                         CopyProperty(glitterBackfaceMask);
@@ -5769,6 +5749,7 @@ namespace lilToon
                         CopyProperty(glitterParams1);
                         CopyProperty(glitterParams2);
                         CopyProperty(glitterPostContrast);
+                        CopyProperty(glitterSensitivity);
                         CopyProperty(glitterEnableLighting);
                         CopyProperty(glitterShadowMask);
                         CopyProperty(glitterBackfaceMask);
@@ -5805,6 +5786,10 @@ namespace lilToon
                         CopyProperty(outlineColor);
                         CopyProperty(outlineTex_ScrollRotate);
                         CopyProperty(outlineTexHSVG);
+                        CopyProperty(outlineLitColor);
+                        CopyProperty(outlineLitApplyTex);
+                        CopyProperty(outlineLitScale);
+                        CopyProperty(outlineLitOffset);
                         CopyProperty(outlineWidth);
                         CopyProperty(outlineFixWidth);
                         CopyProperty(outlineVertexR2Width);
@@ -6428,6 +6413,7 @@ namespace lilToon
                         PasteProperty(ref glitterParams1);
                         PasteProperty(ref glitterParams2);
                         PasteProperty(ref glitterPostContrast);
+                        PasteProperty(ref glitterSensitivity);
                         PasteProperty(ref glitterEnableLighting);
                         PasteProperty(ref glitterShadowMask);
                         PasteProperty(ref glitterBackfaceMask);
@@ -6622,6 +6608,7 @@ namespace lilToon
                         PasteProperty(ref glitterParams1);
                         PasteProperty(ref glitterParams2);
                         PasteProperty(ref glitterPostContrast);
+                        PasteProperty(ref glitterSensitivity);
                         PasteProperty(ref glitterEnableLighting);
                         PasteProperty(ref glitterShadowMask);
                         PasteProperty(ref glitterBackfaceMask);
@@ -6667,6 +6654,10 @@ namespace lilToon
                         PasteProperty(ref outlineColor);
                         PasteProperty(ref outlineTex_ScrollRotate);
                         PasteProperty(ref outlineTexHSVG);
+                        PasteProperty(ref outlineLitColor);
+                        PasteProperty(ref outlineLitApplyTex);
+                        PasteProperty(ref outlineLitScale);
+                        PasteProperty(ref outlineLitOffset);
                         PasteProperty(ref outlineWidth);
                         PasteProperty(ref outlineFixWidth);
                         PasteProperty(ref outlineVertexR2Width);
@@ -7263,6 +7254,7 @@ namespace lilToon
                         ResetProperty(ref glitterParams1);
                         ResetProperty(ref glitterParams2);
                         ResetProperty(ref glitterPostContrast);
+                        ResetProperty(ref glitterSensitivity);
                         ResetProperty(ref glitterEnableLighting);
                         ResetProperty(ref glitterShadowMask);
                         ResetProperty(ref glitterBackfaceMask);
@@ -7439,6 +7431,7 @@ namespace lilToon
                         ResetProperty(ref glitterParams1);
                         ResetProperty(ref glitterParams2);
                         ResetProperty(ref glitterPostContrast);
+                        ResetProperty(ref glitterSensitivity);
                         ResetProperty(ref glitterEnableLighting);
                         ResetProperty(ref glitterShadowMask);
                         ResetProperty(ref glitterBackfaceMask);
@@ -7475,6 +7468,10 @@ namespace lilToon
                         ResetProperty(ref outlineColor);
                         ResetProperty(ref outlineTex_ScrollRotate);
                         ResetProperty(ref outlineTexHSVG);
+                        ResetProperty(ref outlineLitColor);
+                        ResetProperty(ref outlineLitApplyTex);
+                        ResetProperty(ref outlineLitScale);
+                        ResetProperty(ref outlineLitOffset);
                         ResetProperty(ref outlineWidth);
                         ResetProperty(ref outlineFixWidth);
                         ResetProperty(ref outlineVertexR2Width);
@@ -7677,6 +7674,11 @@ namespace lilToon
                     if(lightDirectionOverride != null) lightDirectionOverride.vectorValue = new Vector4(0.001f, 0.002f, 0.001f, 0.0f);
                     break;
             }
+        }
+
+        private static bool ExistsEncryption()
+        {
+            return !string.IsNullOrEmpty(GetAvatarEncryptionPath());
         }
         #endregion
 
@@ -8085,11 +8087,6 @@ namespace lilToon
                 Debug.Log("[lilToon] LIL_FEATURE_DISTANCE_FADE : " + AssetDatabase.GetAssetPath(material));
                 shaderSetting.LIL_FEATURE_DISTANCE_FADE = true;
             }
-            if(!shaderSetting.LIL_FEATURE_ENCRYPTION && material.HasProperty("_Keys") && material.GetVector("_Keys") != defaultKeys)
-            {
-                Debug.Log("[lilToon] LIL_FEATURE_ENCRYPTION : " + AssetDatabase.GetAssetPath(material));
-                shaderSetting.LIL_FEATURE_ENCRYPTION = true;
-            }
             if(!shaderSetting.LIL_FEATURE_TEX_SHADOW_BLUR && material.HasProperty("_ShadowBlurMask") && material.GetTexture("_ShadowBlurMask") != null)
             {
                 Debug.Log("[lilToon] LIL_FEATURE_TEX_SHADOW_BLUR : " + AssetDatabase.GetAssetPath(material));
@@ -8436,9 +8433,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV = shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV || propname.Contains("_MainTex_ScrollRotate");
                 shaderSetting.LIL_FEATURE_SHADOW = shaderSetting.LIL_FEATURE_SHADOW || propname.Contains("_UseShadow");
                 shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = shaderSetting.LIL_FEATURE_RECEIVE_SHADOW || propname.Contains("_ShadowReceive") || propname.Contains("_Shadow2ndReceive") || propname.Contains("_Shadow3rdReceive");
-                //shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER;
-                //shaderSetting.LIL_FEATURE_DISTANCE_FADE = shaderSetting.LIL_FEATURE_DISTANCE_FADE || propname.Contains("_DistanceFade");
-                //shaderSetting.LIL_FEATURE_ENCRYPTION = shaderSetting.LIL_FEATURE_ENCRYPTION || propname.Contains("_Keys");
+                shaderSetting.LIL_FEATURE_DISTANCE_FADE = shaderSetting.LIL_FEATURE_DISTANCE_FADE || propname.Contains("_DistanceFade");
                 shaderSetting.LIL_FEATURE_TEX_SHADOW_BLUR = shaderSetting.LIL_FEATURE_TEX_SHADOW_BLUR || propname.Contains("_ShadowBlurMask");
                 shaderSetting.LIL_FEATURE_TEX_SHADOW_BORDER = shaderSetting.LIL_FEATURE_TEX_SHADOW_BORDER || propname.Contains("_ShadowBorderMask");
                 shaderSetting.LIL_FEATURE_TEX_SHADOW_STRENGTH = shaderSetting.LIL_FEATURE_TEX_SHADOW_STRENGTH || propname.Contains("_ShadowStrengthMask");
@@ -9658,6 +9653,64 @@ namespace lilToon
             }
         }
 
+        private void DrawGlitterSettings()
+        {
+            edSet.isShowGlitter = Foldout(GetLoc("sGlitterSetting"), edSet.isShowGlitter);
+            DrawMenuButton(GetLoc("sAnchorGlitter"), lilPropertyBlock.Glitter);
+            if(edSet.isShowGlitter)
+            {
+                EditorGUILayout.BeginVertical(boxOuter);
+                m_MaterialEditor.ShaderProperty(useGlitter, GetLoc("sGlitter"));
+                if(useGlitter.floatValue == 1)
+                {
+                    EditorGUILayout.BeginVertical(boxInnerHalf);
+                    m_MaterialEditor.ShaderProperty(glitterUVMode, "UV Mode|UV0|UV1");
+                    TextureGUI(ref edSet.isShowGlitterColorTex, colorMaskRGBAContent, glitterColorTex, glitterColor);
+                    if(glitterColor.colorValue.a == 0 && AutoFixHelpBox(GetLoc("sColorAlphaZeroWarn")))
+                    {
+                        glitterColor.colorValue = new Color(glitterColor.colorValue.r, glitterColor.colorValue.g, glitterColor.colorValue.b, 1.0f);
+                    }
+                    m_MaterialEditor.ShaderProperty(glitterMainStrength, GetLoc("sMainColorPower"));
+                    m_MaterialEditor.ShaderProperty(glitterEnableLighting, GetLoc("sEnableLighting"));
+                    m_MaterialEditor.ShaderProperty(glitterShadowMask, GetLoc("sShadowMask"));
+                    m_MaterialEditor.ShaderProperty(glitterBackfaceMask, GetLoc("sBackfaceMask"));
+                    if(isTransparent) m_MaterialEditor.ShaderProperty(glitterApplyTransparency, GetLoc("sApplyTransparency"));
+                    DrawLine();
+
+                    // Param1
+                    Vector2 scale = new Vector2(256.0f/glitterParams1.vectorValue.x, 256.0f/glitterParams1.vectorValue.y);
+                    float size = glitterParams1.vectorValue.z == 0.0f ? 0.0f : Mathf.Sqrt(glitterParams1.vectorValue.z);
+                    float density = Mathf.Sqrt(1.0f / glitterParams1.vectorValue.w) / 1.5f;
+                    float sensitivity = RoundFloat1000000(glitterSensitivity.floatValue / density);
+                    EditorGUIUtility.wideMode = true;
+
+                    EditorGUI.BeginChangeCheck();
+                    EditorGUI.showMixedValue = glitterParams1.hasMixedValue || glitterSensitivity.hasMixedValue;
+                    scale = EditorGUILayout.Vector2Field(GetLoc("sScale"), scale);
+                    size = EditorGUILayout.Slider(GetLoc("sParticleSize"), size, 0.0f, 2.0f);
+                    density = EditorGUILayout.Slider(GetLoc("sDensity"), density, 0.001f, 1.0f);
+                    sensitivity = EditorGUILayout.FloatField(GetLoc("sSensitivity"), sensitivity);
+                    EditorGUI.showMixedValue = false;
+
+                    if(EditorGUI.EndChangeCheck())
+                    {
+                        scale.x = Mathf.Max(scale.x, 0.0000001f);
+                        scale.y = Mathf.Max(scale.y, 0.0000001f);
+                        glitterParams1.vectorValue = new Vector4(256.0f/scale.x, 256.0f/scale.y, size * size, 1.0f / (density * density * 1.5f * 1.5f));
+                        glitterSensitivity.floatValue = Mathf.Max(sensitivity * density, 0.25f);
+                    }
+
+                    // Other
+                    m_MaterialEditor.ShaderProperty(glitterParams2, sGlitterParams2);
+                    m_MaterialEditor.ShaderProperty(glitterVRParallaxStrength, GetLoc("sVRParallaxStrength"));
+                    m_MaterialEditor.ShaderProperty(glitterNormalStrength, GetLoc("sNormalStrength"));
+                    m_MaterialEditor.ShaderProperty(glitterPostContrast, GetLoc("sPostContrast"));
+                    EditorGUILayout.EndVertical();
+                }
+                EditorGUILayout.EndVertical();
+            }
+        }
+
         private void DrawOutlineSettings(Material material)
         {
             if(isMultiVariants || isRefr || isFur || isGem || isFakeShadow || material.shader.name.Contains("Overlay")) return;
@@ -9680,13 +9733,32 @@ namespace lilToon
                 if(isOutl)
                 {
                     EditorGUILayout.BeginVertical(boxInnerHalf);
-                    TextureGUI(ref edSet.isShowOutlineMap, colorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
+                    TextureGUI(ref edSet.isShowOutlineMap, mainColorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
                     ToneCorrectionGUI(outlineTexHSVG);
                     if(GUILayout.Button(GetLoc("sBake")))
                     {
                         outlineTex.textureValue = AutoBakeOutlineTexture(material);
                         outlineTexHSVG.vectorValue = defaultHSVG;
                     }
+                    DrawLine();
+                    GUILayout.Label(GetLoc("sHighlight"), boldLabel);
+                    EditorGUI.indentLevel++;
+                    m_MaterialEditor.ShaderProperty(outlineLitColor, GetLoc("sColor"));
+                    m_MaterialEditor.ShaderProperty(outlineLitApplyTex, GetLoc("sColorFromMain"));
+                    float min = GetRemapMinValue(outlineLitScale.floatValue, outlineLitOffset.floatValue);
+                    float max = GetRemapMaxValue(outlineLitScale.floatValue, outlineLitOffset.floatValue);
+                    EditorGUI.BeginChangeCheck();
+                    EditorGUI.showMixedValue = alphaMaskScale.hasMixedValue || alphaMaskValue.hasMixedValue;
+                    min = EditorGUILayout.Slider("Min", min, -0.01f, 1.01f);
+                    max = EditorGUILayout.Slider("Max", max, -0.01f, 1.01f);
+                    EditorGUI.showMixedValue = false;
+                    if(EditorGUI.EndChangeCheck())
+                    {
+                        if(min == max) max += 0.001f;
+                        outlineLitScale.floatValue = GetRemapScaleValue(min, max);
+                        outlineLitOffset.floatValue = GetRemapOffsetValue(min, max);
+                    }
+                    EditorGUI.indentLevel--;
                     DrawLine();
                     m_MaterialEditor.ShaderProperty(outlineEnableLighting, GetLoc("sEnableLighting"));
                     DrawLine();
@@ -9701,7 +9773,7 @@ namespace lilToon
                 else if(isLite && isOutl)
                 {
                     EditorGUILayout.BeginVertical(boxInnerHalf);
-                    TextureGUI(ref edSet.isShowOutlineMap, colorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
+                    TextureGUI(ref edSet.isShowOutlineMap, mainColorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
                     m_MaterialEditor.ShaderProperty(outlineEnableLighting, GetLoc("sEnableLighting"));
                     DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sWidth"), GetLoc("sWidthR")), outlineWidthMask, outlineWidth);
@@ -9736,7 +9808,7 @@ namespace lilToon
                 if(isOutl)
                 {
                     EditorGUILayout.BeginVertical(boxInnerHalf);
-                    TextureGUI(ref edSet.isShowOutlineMap, colorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
+                    TextureGUI(ref edSet.isShowOutlineMap, mainColorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
                     ToneCorrectionGUI(outlineTexHSVG);
                     if(GUILayout.Button(GetLoc("sBake")))
                     {
@@ -9749,7 +9821,7 @@ namespace lilToon
                 else if(isLite && isOutl)
                 {
                     EditorGUILayout.BeginVertical(boxInnerHalf);
-                    TextureGUI(ref edSet.isShowOutlineMap, colorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
+                    TextureGUI(ref edSet.isShowOutlineMap, mainColorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
                     m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sWidth"), GetLoc("sWidthR")), outlineWidthMask, outlineWidth);
                     EditorGUILayout.EndVertical();
                 }
@@ -9942,6 +10014,10 @@ namespace lilToon
                     posY = (0.5f - posY) / scaleY;
                     scaleY = 1.0f / scaleY;
                 }
+                scaleX = RoundFloat1000000(scaleX);
+                scaleY = RoundFloat1000000(scaleY);
+                posX = RoundFloat1000000(posX);
+                posY = RoundFloat1000000(posY);
 
                 // If uv copy enables, fix position
                 EditorGUI.BeginChangeCheck();
@@ -10296,12 +10372,12 @@ namespace lilToon
 
         private float GetRemapMinValue(float scale, float offset)
         {
-            return Mathf.Clamp(-offset / scale, -0.01f, 1.01f);
+            return RoundFloat1000000(Mathf.Clamp(-offset / scale, -0.01f, 1.01f));
         }
 
         private float GetRemapMaxValue(float scale, float offset)
         {
-            return Mathf.Clamp((1.0f - offset) / scale, -0.01f, 1.01f);
+            return RoundFloat1000000(Mathf.Clamp((1.0f - offset) / scale, -0.01f, 1.01f));
         }
 
         private float GetRemapScaleValue(float min, float max)
@@ -10312,6 +10388,11 @@ namespace lilToon
         private float GetRemapOffsetValue(float min, float max)
         {
             return min / (min - max);
+        }
+
+        private float RoundFloat1000000(float val)
+        {
+            return Mathf.Floor(val * 1000000.0f + 0.5f) * 0.000001f;
         }
         #endregion
 

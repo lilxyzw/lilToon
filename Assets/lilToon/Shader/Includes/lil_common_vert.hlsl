@@ -232,7 +232,7 @@ LIL_V2F_TYPE vert(appdata input)
     // Fog & Lighting
     lilFragData fd = lilInitFragData();
     LIL_GET_HDRPDATA(vertexInput,fd);
-    #if defined(LIL_V2F_LIGHTCOLOR) || defined(LIL_V2F_LIGHTDIRECTION) || defined(LIL_V2F_INDLIGHTCOLOR)
+    #if defined(LIL_V2F_LIGHTCOLOR) || defined(LIL_V2F_LIGHTDIRECTION) || defined(LIL_V2F_INDLIGHTCOLOR) || defined(LIL_V2F_NDOTL)
         LIL_CALC_MAINLIGHT(vertexInput, lightdataInput);
     #endif
     #if defined(LIL_V2F_LIGHTCOLOR)
@@ -243,6 +243,15 @@ LIL_V2F_TYPE vert(appdata input)
     #endif
     #if defined(LIL_V2F_INDLIGHTCOLOR)
         LIL_V2F_OUT_BASE.indLightColor  = lightdataInput.indLightColor * _ShadowEnvStrength;
+    #endif
+    #if defined(LIL_V2F_NDOTL)
+        float2 outlineNormalVS = normalize(mul((float3x3)LIL_MATRIX_V, vertexNormalInput.normalWS).xy);
+        #if defined(LIL_PASS_FORWARDADD)
+            float2 outlineLightVS = normalize(mul((float3x3)LIL_MATRIX_V, normalize(_WorldSpaceLightPos0.xyz - vertexInput.positionWS * _WorldSpaceLightPos0.w)).xy);
+        #else
+            float2 outlineLightVS = normalize(mul((float3x3)LIL_MATRIX_V, lightdataInput.lightDirection).xy);
+        #endif
+        LIL_V2F_OUT_BASE.NdotL      = dot(outlineNormalVS, outlineLightVS) * 0.5 + 0.5;
     #endif
     #if defined(LIL_V2F_SHADOW)
         LIL_TRANSFER_SHADOW(vertexInput, input.uv1, LIL_V2F_OUT_BASE);

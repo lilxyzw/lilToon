@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.13] - 2022-xx-xx
+## [1.3.0] - 2022-xx-xx
 ### Added
 - `Receive Shadow` to 2nd / 3rd shadows
 - `Flat` to shadow mask type
-- `Z Bias` to outline
+- `Z Bias` and `Highlight` to outline
 - `Shadow Caster Bias` to rendering settings
 - Fur mesh division type
 - `GSAA` and `Blending Mode` to reflection
@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the `Fix width by distance` of the outline to be adjustable steplessly
 - Adjusted the initial value of `Light Direction Override`
 - Changed to set shader settings automatically
+- Split `Contrast` into `Density` and `Sensitivity`
 
 ### Fixed
 - Fixed an issue where fog wasn't working well in URP

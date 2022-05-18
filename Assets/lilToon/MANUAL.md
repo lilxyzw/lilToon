@@ -38,7 +38,6 @@
     - [Fur](#fur)
 - [Optimization](#optimization)
     - [Optimization](#optimization-1)
-    - [Shader Setting](#shader-setting)
 - [Additional menu items](#additional-menu-items)
 
 <br/>
@@ -579,19 +578,13 @@ Prefab asset that has already been set is included in the `Prefabs` folder.
 
 <br/>
 
-## Shader Setting
-Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.
-
-<br/>
-
 # Additional menu items
 Several utilities are added to the top menu bar and right-click menu.
 |Name|Description|
 |-|-|
 |[lilToon] Fix lighting|For objects with multiple meshes. Fix the differences in lighting between meshes by unifying the MeshRenderer settings and disabling vertex lighting for materials.|
-|Refresh shaders|Reapply the render pipeline and shader settings to try to automatically fix the error.|
-|Auto shader setting|Scans all materials and animations in the project and automatically optimizes Shader Setting.|
-|Remove unused properties|Remove unused properties to reduce the build size, while allowing additional shader settings to be turned on without affecting the appearance.|
+|Refresh shaders|Reapply the render pipeline to try to automatically fix the error.|
+|Remove unused properties|Remove unused properties to reduce the build size.|
 |Setup from FBX|Automatically generate materials from FBX files, apply presets, outline mask, and shadow mask. Rendering mode will be changed to Cutout if the material or texture name contains `cutout`, or to Transparent if it contains `alpha` or `fade` or `transparent`. See the list below for texture search naming conventions.|
 |Convert normal map (DirectX <-> OpenGL)|Convert normal maps between DirectX and OpenGL.|
 |Convert Gif to Atlas|Generates an atlas texture from a Gif. The process is the same as `Convert Gif` in the material settings.|

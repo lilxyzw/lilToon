@@ -5,9 +5,6 @@ sEditorModeSimple	Simple	簡易設定	간이 설정	简单设置	簡單設置
 sEditorModeAdvanced	Advanced	詳細設定	상세 설정	详细设置	詳細設置
 sEditorModePreset	Preset	プリセット	프리셋	预设	預設
 sEditorModeShaderSetting	Shader Setting	シェーダー設定	쉐이더 설정	着色器设置	著色器設置
-sHelpSimple	In this mode, you can easily edit the appearance.	簡単に見た目を編集するモードです。	간단하게 외형을 편집하는 모드입니다.	这种模式进行简单的设置。	這種模式進行簡單的設置。
-sHelpAdvanced	In this mode, you can make detailed settings for the material.	詳細設定を行うモードです。	상세 설정을 실시하는 모드입니다.	此模式用于进行详细设置。	此模式用於進行詳細設置。
-sHelpPreset	In this mode, you can easily set up materials from presets.	プリセットから一括で設定するモードです。	프리셋에서 일괄로 설정하는 모드입니다.	在这个模式下，你可以很容易地从预设中设置材料。	在這個模式下，你可以很容易地從預設中設置材料。
 sHelpSelectOverlay	Currently lilToonOverray is selected. Change to lilToon for normal use.	現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。	현재 lilToonOverray가 선택되어있습니다.일반 용도에서는 lilToon으로 변경해주세요.	目前正在选择lilToonOverray。如果是通常的用途的话请变更为lilToon。	目前正在選擇lilToonOverray。如果是通常的用途的話請變更為lilToon。
 sColor	Color	色	색	颜色	顏色
 sColorAlpha	Color / Alpha	色 / 透明度	색 / 투명도	颜色 / 透明度	顏色 / 透明度
@@ -18,6 +15,8 @@ sValue	Value	明度	명도	亮度	亮度
 sStrength	Strength	強度	강도	强度	強度
 sStrengthMask	Mask & Strength	マスクと強度	마스크와 강도	蒙版 & 强度	蒙版 & 強度
 sStrengthR	Strength (R)	強度 (R)	강도 (R)	强度 (R)	強度 (R)
+sLength	Length	長さ	길이	长度	長度
+sLengthMask	Length Mask	長さマスク	길이 마스크	长度蒙版	長度蒙版
 sTexture	Texture	テクスチャ	텍스처	纹理	紋理
 sTextureRGBA	Color (RGB) and Transparency (A)	色(RGB)と透明度(A)	색 (RGB) 과 투명도 (A)	颜色 (RGB) & 透明度 (A)	顏色 (RGB) & 透明度 (A)
 sMask	Mask	マスク	마스크	蒙版	蒙版
@@ -36,7 +35,7 @@ sBlurR	Blur (R)	ぼかし (R)	흐리게 (R)	模糊 (R)	模糊 (R)
 sBlurMask	Blur Mask	ぼかし量マスク	흐림 효과 마스크	模糊掩码	模糊掩碼
 sAlphaR	Alpha (R)	透明度 (R)	투명도 (R)	透明度 (R)	透明度 (R)
 sMainColorPower	Main Color Power	メインカラーの強度	메인 컬러의 강도	主色功率	主色功率
-sEnableLighting	Enable Lighting	ライティングを適用	라이팅을 적용	启用照明	啟用照明
+sEnableLighting	Enable Lighting	ライトの明るさを反映	라이팅을 적용	启用照明	啟用照明
 sUVSetting	UV Setting	UV設定	UV 설정	UV设置	UV設置
 sUVAnimation	UV Animation	UVアニメーション	UV 애니메이션	UV动画	UV動畫
 sOffset	Offset	Offset	Offset	Offset	Offset
@@ -71,10 +70,11 @@ sScale	Scale	サイズ	크기	尺度	尺度
 sScaleX	Scale X	X軸サイズ	X축 크기	X尺度	X尺度
 sScaleY	Scale Y	Y軸サイズ	Y축 크기	Y尺度	Y尺度
 sVector	Vector	向き	방향	向量	向量
-sLength	Length	長さ	길이	长度	長度
 sVertex	Vertex	頂点	꼭짓점	顶点	頂點
 sVertexColor	Vertex Color	頂点カラー	Vertex Color	Vertex Color	Vertex Color
 sThreshold	Threshold	閾値	임계값	阈值	閾值
+sDensity	Density	密度	밀도	密集	密集
+sSensitivity	Sensitivity	感度	감도	灵敏度	靈敏度
 sNormalStrength	Normal Map Strength	ノーマルマップ強度	노멀 맵 강도	法线贴图强度	法線貼圖強度
 sColorAlphaZeroWarn	To enable the property, increase the alpha value.	プロパティを有効にするには透明度の値を上げて下さい。	속성을 유효하게 하려면 알파 값을 올려 주십시오.	增加 Alpha 值以启用该属性。	增加 Alpha 值以啟用該屬性。
 sApplyTransparency	Apply Transparency	透明度を適用	투명도 적용	应用透明度	應用透明度
@@ -150,6 +150,7 @@ sMainUV	UV Setting	UV設定	UV 설정	UV设置	UV設置
 sMainUVTips	You can set the UV position, scale and animation.	UVの位置やサイズ、アニメーションの設定ができます	UV의 위치 나 크기, 애니메이션을 설정할 수 있습니다	你可以设置UV位置、比例和动画。	你可以設置UV位置、比例和動畫。
 sColors	Color	色設定	색상 설정	颜色设置	顏色設置
 sMainColorSetting	Main Color / Alpha	メインカラー / 透過設定	메인 컬러 / 알파 설정	主色 / Alpha设置	主色 / Alpha設置
+sMainColorSettingSimple	Main Color / Alpha	メインカラー / 透過設定 (色替え)	메인 컬러 / 알파 설정	主色 / Alpha设置	主色 / Alpha設置
 sMainColorTips	You can set the color and transparency.	色や透明度の設定ができます	색상과 투명도를 설정할 수 있습니다	你可以设置颜色和透明度。	你可以設置顏色和透明度。
 sMainColorAlpha	Main Color / Alpha	メインカラー / 透過	메인 컬러 / 알파	主色 / Alpha	主色 / Alpha
 sMainColor	Main Color	メインカラー	메인 컬러	主色	主色
@@ -184,6 +185,7 @@ sViewDirectionStrength	View direction strength	視線方向の影響度	뷰 방�
 sOutlineSetting	Outline	輪郭線設定	윤곽선 설정	轮廓设置	輪廓設置
 sOutlineTips	You can set the color and thickness of the outline.	輪郭線の色や太さの設定ができます	윤곽선의 색과 굵기를 설정할 수 있습니다	你可以设置轮廓的颜色和厚度。	你可以設置輪廓的顏色和厚度。
 sOutline	Outline	輪郭線	윤곽선	轮廓	輪廓
+sHighlight	Highlight	ハイライト	하이라이트	高亮颜色	高亮顏色
 sWidth	Mask & Width	マスクと太さ	마스크와 굵기	蒙版 & 宽度	蒙版 & 寬度
 sWidthR	Width (R)	太さ (R)	굵기 (R)	宽度 (R)	寬度 (R)
 sFixWidth	Fix width by distance	距離に応じた太さ補正	거리에 따른 굵기 보정	按距离正确宽度	按距離正確寬度
@@ -203,7 +205,7 @@ sVertexColor2Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> V
 sLayerNum	Layer Counts	レイヤー数	레이어 수	层数	層數
 sRootWidth	Root Width	根本の太さ	근본 굵기	根厚度	根厚度
 sTouchStrength	Touch strength	接触強度	접촉 강도	接触强度	接觸強度
-sTessellation	Tessellation	テッセレーション	텟세레이션	Tessellation	Tessellation
+sTessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	Tessellation (极高的负荷)	Tessellation (極高的負荷)
 sTessellationTips	You can set the tessellation.	テッセレーションのかかり方を設定できます	텟세레이션을 설정할 수 있습니다.	你可以设置Tessellation。	你可以設置Tessellation。
 sTessellationEdge	Threshold length	閾値	길이의 한계	阈值长度	閾值長度
 sTessellationShrink	Shrink	縮小補正	축소	缩减	縮減
@@ -432,77 +434,10 @@ sPresetFurNormal	Fur Normal	ファーノーマルマップ	퍼 노멀 맵	毛皮
 sPresetFurNoise	Fur Noise	ファーノイズ	파 노이즈	毛皮噪声	毛皮噪聲
 sPresetFurMask	Fur Mask	ファーマスク	퍼 마스크	毛皮蒙版	毛皮蒙版
 sShaderSetting	Shader Setting (for all materials)	シェーダー設定 (全マテリアル共通)	쉐이더 설정 (전체 재료 공통)	着色器设置（用于所有材质）	著色器設置（用於所有材質）
-sShaderSettingTips	You can toggle unused functions.	不要な機能を無効化できます	불필요한 기능을 비활성화 할 수 있습니다	你可以切换不使用的功能。	你可以切換不使用的功能。
 sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	在这里关闭的功能将从着色器中删除。通过关闭不使用的功能，你可以减少你的头像的大小，同时也可以减少负载。	在這里關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的頭像的大小，同時也可以減少負載。​​
-sSettingApply	Apply	シェーダー設定を適用	Apply	Apply	Apply
-sSettingFullAuto	Fully automatic setting	完全自動設定	완전 자동 설정	完全自动设置	完全自動設置
-sSettingCancelAutoScan	Do not auto-scan on import	インポート時に自動スキャンしない	임포트시에 자동 스캔하지 않음	导入时不自动扫描	導入時不自動掃描
-sSettingLock	Lock	ロック	Lock	Lock	Lock
-sSettingAnimateMainUV	UV Animation & Angle	UVアニメーション&角度	UV 애니메이션 & 각도	UV动画和角度	UV動畫和角度
-sSettingMainToneCorrection	Tone Correction	色調補正	색상 보정	色调校正	色調校正
-sSettingMainGradationMap	Gradation Map	グラデーションマップ	그라디언트 맵	渐变映射	漸變映射
-sSettingMain2nd	Main Color 2nd	メインカラー2nd	메인 컬러 2nd	主色2nd	主色2nd
-sSettingMain3rd	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	主色3rd	主色3rd
-sSettingDecal	Decal	デカール	데칼	Decal	Decal
-sSettingAnimateDecal	Decal Animation	デカールアニメーション	데칼 애니메이션	Decal动画	Decal動畫
-sSettingTexLayerMask	Layer Mask	レイヤーマスク	레이어 마스크	图层蒙版	圖層蒙版
-sSettingLayerDissolve	Layer Dissolve	レイヤーDissolve	Layer Dissolve	Layer Dissolve	Layer Dissolve
-sSettingAlphaMask	Alpha Mask	アルファマスク	알파 마스크	Alpha蒙版	Alpha蒙版
-sSettingShadow	Shadow	影	그림자	阴影	陰影
-sSettingReceiveShadow	Receive Shadow	影の受け取り	그림자 받고	接收阴影	接收陰影
-sSettingTexShadowBlur	Shadow Blur Mask	ぼかし量マスク	흐림 효과 마스크	阴影模糊掩码	陰影模糊掩碼
-sSettingTexShadowBorder	AO Mask	AOマスク	AO 마스크	AO蒙版	AO蒙版
-sSettingTexShadowStrength	Shadow Strength Mask	強度マスク	강도 마스크	阴影强度掩码	陰影強度掩碼
-sSettingTexShadow1st	Shadow Color 1st Texture	影色1テクスチャ	그림자 색 1 텍스처	阴影颜色1纹理	陰影顏色1紋理
-sSettingTexShadow2nd	Shadow Color 2nd Texture	影色2テクスチャ	그림자 색 2 텍스처	阴影颜色2纹理	陰影顏色2紋理
-sSettingShadow3rd	Shadow Color 3rd	影色3	그림자 색 3	阴影颜色3	陰影顏色3
-sSettingTexShadow3rd	Shadow Color 3rd Texture	影色3テクスチャ	그림자 색 3 텍스처	阴影颜色3纹理	陰影顏色3紋理
-sSettingEmission1st	Emission	発光テクスチャ	발광 텍스처	发光	發光
-sSettingEmission2nd	Emission 2nd	発光テクスチャ2nd	발광 텍스처 2nd	发光2nd	發光2nd
-sSettingEmissionUV	Emission UV	発光テクスチャUV	발광 텍스처 UV	发光UV	發光UV
-sSettingAnimateEmissionUV	EmissionUV Animation	発光テクスチャUVアニメーション	발광 텍스처 UV 애니메이션	发光UV动画	發光UV動畫
-sSettingTexEmissionMask	Emission Mask	発光マスク	발광 마스크	发光蒙版	發光蒙版
-sSettingEmissionMaskUV	Emission Mask UV	発光マスクUV	발광 마스크 UV	发光蒙版UV	發光蒙版UV
-sSettingAnimateEmissionMaskUV	Emission Mask UV Animation	発光マスクUVアニメーション	발광 마스크 UV 애니메이션	发光蒙版UV动画	發光蒙版UV動畫
-sSettingEmissionGradation	Emission Gradation	発光グラデーション	발광 그라데이션	发光Gradation	發光Gradation
-sSettingNormal1st	Normal Map	ノーマルマップ	노멀 맵	法线贴图	法線貼圖
-sSettingNormal2nd	Normal Map 2nd	ノーマルマップ2nd	노멀 맵 2nd	法线贴图2nd	法線貼圖2nd
-sSettingTexNormalMask	Normal Map 2nd Mask	ノーマルマップ2ndマスク	노멀 맵 2nd 마스크	法线贴图2nd蒙版	法線貼圖2nd蒙版
-sSettingAnisotropy	Anisotropy	異方性反射	애니소트로픽	各向异性反射	各向異性反射
-sSettingReflection	Reflection	反射	반사	反射	反射
-sSettingTexReflectionSmoothness	Reflection Smoothness Mask	滑らかさマスク	부드러운 마스크	反射平滑度蒙版	反射平滑度蒙版
-sSettingTexReflectionMetallic	Reflection Metallic Mask	金属度マスク	금속도 마스크	反射金属程度蒙版	反射金屬程度蒙版
-sSettingTexReflectionColor	Reflection Color Texture	反射色テクスチャ	반사 색상 질감	反射颜色纹理	反射顏色紋理
-sSettingMatCap	MatCap	マットキャップ	매트 캡	MatCap	MatCap
-sSettingMatCap2nd	MatCap 2nd	マットキャップ2nd	매트 캡 2nd	MatCap 2nd	MatCap 2nd
-sSettingTexMatCapMask	MatCap Mask	マットキャップマスク	매트 캡 마스크	MatCap蒙版	MatCap蒙版
-sSettingTexMatCapNormal	Custom normal map	カスタムノーマルマップ	맞춤 노멀 맵	自定义法线贴图	自定義法線貼圖
-sSettingRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
-sSettingTexRimLightColor	Rim Light Color Texture	リムライト色テクスチャ	림 라이트 색상 질감	Rim Light颜色纹理	Rim Light顏色紋理
-sSettingTexRimLightDirection	Light Direction Customize	ライト方向によるカスタマイズ	라이트 방향 의한 맞춤형	定制由光方向	定制由光方向
-sSettingGlitter	Glitter	ラメ	Glitter	Glitter	Glitter
-sSettingBacklight	Backlight	逆光ライト	Backlight	Backlight	Backlight
-sSettingParallax	Parallax	視差マップ	시차 맵	视差	視差
 sSettingPOM	[high-load] POM	[高負荷] POM	[과부하] POM	[高负荷] POM	[高負荷] POM
 sSettingClippingCanceller	Distance Clipping Canceller	距離クリッピングキャンセラー	거리 클리핑 취소 기	距离剪裁取消器	距離剪裁取消器
-sSettingDistanceFade	Distance Fade	距離フェード	거리 페이드	距离淡化	距離淡化
-sSettingAudioLink	AudioLink	AudioLink	AudioLink	AudioLink	AudioLink
-sSettingAudioLinkVertex	Vertex	頂点	정점	顶点	頂點
-sSettingAudioLinkMask	Mask (R:Delay G:Band B:Strength)	マスク (R:Delay G:Band B:Strength)	Mask (R:Delay G:Band B:Strength)	Mask (R:Delay G:Band B:Strength)	Mask (R:Delay G:Band B:Strength)
-sSettingAudioLinkLocal	Local	ローカル	Local	Local	Local
-sSettingDissolve	Dissolve	Dissolve	Dissolve	Dissolve	Dissolve
-sSettingTexDissolveNoise	Noise	ノイズ	Noise	Noise	Noise
-sSettingEncryption	Encryption	暗号化	암호화	加密	加密
-sSettingAnimateOutlineUV	Animate Outline UV	輪郭線UVアニメーション	윤곽선 UV 애니메이션	轮廓UV动画和角度	輪廓UV動畫和角度
 sSettingTexOutlineColor	Outline Color Texture	輪郭線色テクスチャ	윤곽선 색상 질감	轮廓颜色纹理	輪廓顏色紋理
-sSettingOutlineToneCorrection	Outline Tone Correction	色調補正	색상 보정	轮廓色调校正	輪廓色調校正
-sSettingTexOutlineWidth	Outline Width Mask	輪郭線太さマスク	윤곽선 두께 마스크	轮廓宽度掩码	輪廓寬度掩碼
-sSettingTexOutlineNormal	Outline Normal Map	輪郭線ノーマルマップ	윤곽선 노멀 맵	轮廓法线贴图	輪廓法線貼圖
-sSettingTexFurNormal	Fur Normal Map	ファーノーマルマップ	퍼 노멀 맵	毛皮法线贴图	毛皮法線貼圖
-sSettingTexFurMask	Fur Mask	ファーマスク	퍼 마스크	毛皮蒙版	毛皮蒙版
-sSettingTexFurLength	Fur Length Mask	ファー長さマスク	퍼 길이 마스크	毛皮长度蒙版	毛皮長度蒙版
-sSettingFurCollision	Fur Collision	ファー当たり判定	퍼 충돌	毛皮碰撞	毛皮碰撞
-sSettingTessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	Tessellation (极高的负荷)	Tessellation (極高的負荷)
 sSettingDefaultValue	Default Value (used for "Fix Lighting" and lighting presets)	初期値 (Fix Lightingやライティングプリセットに使用)	초기값 (Fix Lighting이나 라이팅 프리셋에 사용)	初始值 (用于Fix Lighting或照明预设)	初始值 (用於Fix Lighting或照明預設)
 sSettingBuildSizeOptimization	Build size optimization (for all materials)	ビルドサイズの最適化 (全マテリアル共通)	빌드 사이즈 최적화 (전체 재료 공통)	优化构建大小（用于所有材质）	優化構建大小（用於所有材質）
 sSettingApplyShadowFA	Enable shadow in ForwardAdd	ForwardAddパスで影を有効化	ForwardAdd로 그림자 활성화	通过ForwardAdd启用阴影	通過ForwardAdd啟用陰影
@@ -542,15 +477,10 @@ sAnchorOptimization	#optimization	other?id=最適化	#optimization	#optimization
 sAnchorShaderSetting	#shader-setting	other?id=シェーダー設定	#shader-setting	#shader-setting	#shader-setting
 sReadmeURL	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://lilxyzw.github.io/lilToon/#/ja-jp/	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md	https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/README.md
 sReadmeAnchorProblem	#common-problems	other/qa	#common-problems	#common-problems	#common-problems
-sWhenInTrouble	When in trouble...	困ったときは…	곤란할 때는...	遇到麻烦时...	遇到麻煩時...
+sHelp	Help	ヘルプ	헬프	帮助	幫助
 sCommonProblems	Common Problems	Q&A	일반적인 문제	常见问题	常見問題
 sUtilGif2AtlasPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャの解像度を2の累乗に合わせますか？	텍스처의 해상도를 2의 거듭 제곱에 맞게 싶으십니까?	您想将纹理分辨率匹配到 2 的幂吗？	您想將紋理分辨率匹配到 2 的冪嗎？
 sUtilDotTexRedRatio	Select a reduction ratio	縮小率を選択してください。	축소 비율을 선택하십시오.	请选择一个缩小比例。	請選擇一個縮小比例。
 sUtilShaderNotFound	Shader is not found.	シェーダーが見つかりません。	쉐이더가 없습니다.	未找到着色器。	未找到著色器。
-sUtilShaderSettingLocked	ShaderSetting is locked.	シェーダー設定がロックされています。	쉐이더 설정이 잠겨 있습니다.	着色器设置被锁定。	著色器設置被鎖定。
-sUtilShaderSettingNotFound	ShaderSetting is not found.	シェーダー設定が見つかりません。	쉐이더 설정을 찾을 수 없습니다.	未找到着色器设置。	未找到著色器設置。
-sUtilSelectGameObject	Select gameobject before run.	実行前にオブジェクトを選択してください。	실행 전에 개체를 선택하십시오.	请在执行前选择对象。	請在執行前選擇對象。
 sUtilSelectPresets	Select presets	プリセットを選択してください。	사전 설정을 선택하십시오.	请选择一个预设。	請選擇一個預設。
 sUtilMaterialAlreadyExist	Materials may already exist. Are you sure you want to overwrite it?	マテリアルが既に存在している可能性があります。上書きしてもよろしいですか？	재료가 이미있을 수 있습니다. 덮어 하시겠습니까?	该材料可能已经存在。 您确定要覆盖它吗？	該材料可能已經存在。 您確定要覆蓋它嗎？
-sUtilImportTargetFound	Material or animation found. Do you want to scan it?	マテリアルまたはアニメーションが見つかりました。スキャンしますか？	Material 나 Animation이 발견되었습니다. 스캔 하시겠습니까?	找到了Material或Animation。 您要扫描吗？	找到了Material或Animation。 您要掃描嗎？
-sUtilNewFeatureFound	A shader setting feature that is currently turned off has been founded in an imported material or animation. Do you want to enable the missing features?	インポートしたマテリアルやアニメーションから現在オフになっているシェーダー設定の項目が見つかりました。不足している項目を有効化しますか？	임포트된 머티리얼이나 애니메이션에서 현재 꺼져 있는 셰이더 설정 항목을 발견했습니다.부족한 기능을 활성화 하시겠습니까?	从导入的Material和Animation中发现了当前关闭的Shader设定项目。启用不足的功能吗？	從導入的Material和Animation中發現了當前關閉的Shader設定項目。啟用不足的功能嗎？

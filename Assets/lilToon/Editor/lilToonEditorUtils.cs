@@ -7,9 +7,6 @@ using UnityEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using System.IO;
-#if !UNITY_2018_1_OR_NEWER
-    using System.Reflection;
-#endif
 #if VRC_SDK_VRCSDK3
     using VRC.SDKBase.Editor.BuildPipeline;
 #endif
@@ -49,14 +46,17 @@ namespace lilToon
         {
             lilToonInspector.RewriteShaderRP();
 
-            string[] shaderFolderPaths = lilToonInspector.GetShaderFolderPaths();
-            foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
+            if(File.Exists(lilToonInspector.postBuildTempPath)) File.Delete(lilToonInspector.postBuildTempPath);
+            lilToonSetting shaderSetting = null;
+            lilToonInspector.InitializeShaderSetting(ref shaderSetting);
+            if(shaderSetting != null)
             {
-                string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
-                lilToonInspector.RewriteReceiveShadow(shaderPath, true);
+                lilToonInspector.TurnOnAllShaderSetting(ref shaderSetting);
+                EditorUtility.SetDirty(shaderSetting);
+                AssetDatabase.SaveAssets();
+                lilToonInspector.ApplyShaderSetting(shaderSetting);
             }
 
-            lilToonInspector.ReimportPassShaders();
             AssetDatabase.Refresh();
         }
 
@@ -239,9 +239,7 @@ namespace lilToon
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
 
-                #if UNITY_2017_3_OR_NEWER
-                    importer.SearchAndRemapMaterials(ModelImporterMaterialName.BasedOnMaterialName, ModelImporterMaterialSearch.Local);
-                #endif
+                importer.SearchAndRemapMaterials(ModelImporterMaterialName.BasedOnMaterialName, ModelImporterMaterialSearch.Local);
                 AssetDatabase.ImportAsset(path);
                 AssetDatabase.Refresh();
             }
@@ -370,11 +368,6 @@ namespace lilToon
         private static void FixLighting()
         {
             GameObject gameObject = Selection.activeGameObject;
-            /*if(gameObject == null)
-            {
-                EditorUtility.DisplayDialog("[lilToon] Fix lighting",lilToonInspector.GetLoc("sUtilSelectGameObject"),lilToonInspector.GetLoc("sOK"));
-                return;
-            }*/
 
             // Create Anchor
             if(gameObject.transform.Find(anchorName) != null)
@@ -651,37 +644,20 @@ namespace lilToon
     }
 #endif
 
-#if UNITY_2018_1_OR_NEWER
-    public class lilToonBuildProcessor : IPreprocessBuildWithReport, IPostprocessBuildWithReport
+public class lilToonBuildProcessor : IPreprocessBuildWithReport, IPostprocessBuildWithReport
+{
+    public int callbackOrder { get { return 0; } }
+
+    public void OnPreprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
     {
-        public int callbackOrder { get { return 0; } }
-
-        public void OnPreprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
-        {
-            lilToonInspector.SetShaderSettingBeforeBuild();
-        }
-
-        public void OnPostprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
-        {
-            lilToonInspector.SetShaderSettingAfterBuild();
-        }
+        lilToonInspector.SetShaderSettingBeforeBuild();
     }
-#else
-    public class lilToonBuildProcessor : IPreprocessBuild, IPostprocessBuild
+
+    public void OnPostprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
     {
-        public int callbackOrder { get { return 0; } }
-
-        public void OnPreprocessBuild(BuildTarget target, string path)
-        {
-            lilToonInspector.SetShaderSettingBeforeBuild();
-        }
-
-        public void OnPostprocessBuild(BuildTarget target, string path)
-        {
-            lilToonInspector.SetShaderSettingAfterBuild();
-        }
+        lilToonInspector.SetShaderSettingAfterBuild();
     }
-#endif
+}
 
 #if VRC_SDK_VRCSDK3
     //------------------------------------------------------------------------------------------------------------------------------

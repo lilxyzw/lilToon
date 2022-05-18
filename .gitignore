@@ -48,9 +48,5 @@ sysinfo.txt
 crashlytics-build.properties
 
 # lilToon Settings
-setting.asset
-setting.asset.meta
-EditorSetting.asset
-EditorSetting.asset.meta
-lil_setting.hlsl
-lil_setting.hlsl.meta
+ShaderSetting.asset
+ShaderSetting.asset.meta

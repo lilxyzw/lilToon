@@ -285,11 +285,12 @@ Shader "Hidden/lilToonRefractionBlur"
         [lilGlitParam1] _GlitterParams1             ("Tiling|Particle Size|Contrast", Vector) = (256,256,0.16,50)
         [lilGlitParam2] _GlitterParams2             ("Blink Speed|Angle|Blend Light Direction|Color Randomness", Vector) = (0.25,0,0,0)
                         _GlitterPostContrast        ("Post Contrast", Float) = 1
+                        _GlitterSensitivity         ("Sensitivity", Float) = 0.25
                         _GlitterEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
                         _GlitterShadowMask          ("Shadow Mask", Range(0, 1)) = 0
         [lilToggle]     _GlitterBackfaceMask        ("Backface Mask", Int) = 0
         [lilToggle]     _GlitterApplyTransparency   ("Apply Transparency", Int) = 1
-                        _GlitterVRParallaxStrength  ("VR Parallax Strength", Range(0, 1)) = 1
+                        _GlitterVRParallaxStrength  ("VR Parallax Strength", Range(0, 1)) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Emmision
@@ -557,7 +558,7 @@ Shader "Hidden/lilToonRefractionBlur"
             #pragma skip_variants DIRLIGHTMAP_COMBINED
 
             // Skip receiving shadow
-            #pragma skip_variants SHADOWS_SCREEN
+            //#pragma skip_variants SHADOWS_SCREEN
 
             // Skip vertex light
             //#pragma skip_variants VERTEXLIGHT_ON
@@ -681,8 +682,8 @@ Shader "Hidden/lilToonRefractionBlur"
             #pragma multi_compile_instancing
 
             // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -827,8 +828,8 @@ Shader "Hidden/lilToonRefractionBlur"
             #pragma multi_compile _ DOTS_INSTANCING_ON
 
             // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -1035,8 +1036,8 @@ Shader "Hidden/lilToonRefractionBlur"
             #pragma instancing_options renderinglayer
 
             // Skip receiving shadow
-            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            //#pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass

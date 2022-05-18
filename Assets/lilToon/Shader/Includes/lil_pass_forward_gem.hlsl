@@ -163,7 +163,7 @@
             fd.N = normalize(fd.N);
         #endif
         fd.origN = normalize(input.normalWS);
-        fd.uvMat = mul((float3x3)LIL_MATRIX_V, fd.N).xy * 0.5 + 0.5;
+        fd.uvMat = mul(fd.cameraMatrix, fd.N).xy * 0.5 + 0.5;
         fd.reflectionN = fd.N;
         fd.matcapN = fd.N;
         fd.matcap2ndN = fd.N;

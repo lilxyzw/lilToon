@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Networking;
-using System;
 using System.IO;
 using System.Collections;
 
@@ -73,17 +72,23 @@ namespace lilToon
                 lilToonInspector.edSet.currentVersionValue = lilToonInspector.currentVersionValue;
                 lilToonInspector.SaveEditorSettingTemp();
             }
+
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Turn on all settings when auto
+            if(File.Exists(lilToonInspector.postBuildTempPath)) 
+            {
+                EditorApplication.delayCall += () =>
+                {
+                    lilToonInspector.SetShaderSettingAfterBuild();
+                };
+            }
         }
 
         private static IEnumerator GetLatestVersionInfo()
         {
             using(UnityWebRequest webRequest = UnityWebRequest.Get(lilToonInspector.versionInfoURL))
             {
-                #if UNITY_2017_2_OR_NEWER
-                    yield return webRequest.SendWebRequest();
-                #else
-                    yield return webRequest.Send();
-                #endif
+                yield return webRequest.SendWebRequest();
                 #if UNITY_2020_2_OR_NEWER
                     if(webRequest.result != UnityWebRequest.Result.ConnectionError)
                 #else

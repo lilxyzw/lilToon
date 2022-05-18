@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.13] - 2022-xx-xx
+## [1.3.0] - 2022-xx-xx
 ### 追加
 - 2影・3影に`影を受け取る`を追加
 - 影のマスク方法に`Flat`を追加
-- 輪郭線に`Z Bias`を追加
+- 輪郭線に`Z Bias`と`ハイライト`を追加
 - レンダリング設定に`Shadow Caster Bias`を追加
 - ファーのメッシュ分割方法を追加
 - 反射に`GSAA`と`合成モード`を追加
@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 輪郭線の`距離に応じた太さ補正`を無段階で調整可能に
 - `ライト方向のオーバーライド`の初期値を調整
 - シェーダー設定を自動化
+- `ライティングを適用`を`ライトの明るさを反映`に名前変更
+- ラメの`コントラスト`を`密度`と`感度`に分割
 
 ### 修正
 - URPでフォグがうまく動作していなかった問題を修正

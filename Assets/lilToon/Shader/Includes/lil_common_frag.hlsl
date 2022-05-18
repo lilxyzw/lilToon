@@ -339,11 +339,20 @@
     #define LIL_APPLY_OUTLINE_TONECORRECTION
 #endif
 
+#if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_V2F_NDOTL)
+    #define LIL_APPLY_OUTLINE_COLOR \
+        float3 outlineLitColor = false ? fd.col.rgb * _OutlineLitColor.rgb : _OutlineLitColor.rgb; \
+        fd.col.rgb = lerp(fd.col.rgb * _OutlineColor.rgb, outlineLitColor, saturate(input.NdotL * _OutlineLitScale + _OutlineLitOffset) * _OutlineLitColor.a); \
+        fd.col.a *= _OutlineColor.a;
+#else
+    #define LIL_APPLY_OUTLINE_COLOR fd.col *= _OutlineColor;
+#endif
+
 #if !defined(OVERRIDE_OUTLINE_COLOR)
     #define OVERRIDE_OUTLINE_COLOR \
         LIL_GET_OUTLINE_TEX \
         LIL_APPLY_OUTLINE_TONECORRECTION \
-        fd.col *= _OutlineColor;
+        LIL_APPLY_OUTLINE_COLOR
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -1462,8 +1471,10 @@
             // View direction
             #if defined(USING_STEREO_MATRICES)
                 float3 glitterViewDirection = lerp(fd.headV, fd.V, _GlitterVRParallaxStrength);
+                float3 glitterCameraDirection = lerp(fd.cameraFront, fd.V, _GlitterVRParallaxStrength);
             #else
                 float3 glitterViewDirection = fd.V;
+                float3 glitterCameraDirection = lerp(fd.cameraFront, fd.V, _GlitterVRParallaxStrength);
             #endif
 
             // Normal
@@ -1476,7 +1487,7 @@
             float4 glitterColor = _GlitterColor;
             if(Exists_GlitterColorTex) glitterColor *= LIL_SAMPLE_2D_ST(_GlitterColorTex, samp, fd.uvMain);
             float2 glitterPos = _GlitterUVMode ? fd.uv1 : fd.uv0;
-            glitterColor.rgb *= lilCalcGlitter(glitterPos, N, glitterViewDirection, fd.L, _GlitterParams1, _GlitterParams2, _GlitterPostContrast);
+            glitterColor.rgb *= lilCalcGlitter(glitterPos, N, glitterViewDirection, glitterCameraDirection, fd.L, _GlitterParams1, _GlitterParams2, _GlitterPostContrast, _GlitterSensitivity);
             glitterColor.rgb = lerp(glitterColor.rgb, glitterColor.rgb * fd.albedo, _GlitterMainStrength);
             #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                 if(_GlitterApplyTransparency) glitterColor.a *= fd.col.a;

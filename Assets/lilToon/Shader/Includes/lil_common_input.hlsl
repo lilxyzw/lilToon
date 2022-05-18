@@ -465,6 +465,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
         float4  _OutlineColor;
+        float4  _OutlineLitColor;
         float4  _OutlineTex_ST;
         float4  _OutlineTex_ScrollRotate;
         float4  _OutlineTexHSVG;
@@ -615,6 +616,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         float   _GlitterMainStrength;
         float   _GlitterPostContrast;
+        float   _GlitterSensitivity;
         float   _GlitterNormalStrength;
         float   _GlitterEnableLighting;
         float   _GlitterShadowMask;
@@ -646,6 +648,8 @@ SAMPLER(sampler_linear_clamp);
     #endif
     float   _lilShadowCasterBias;
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
+        float   _OutlineLitScale;
+        float   _OutlineLitOffset;
         float   _OutlineWidth;
         float   _OutlineEnableLighting;
         float   _OutlineVectorScale;
@@ -797,6 +801,9 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FEATURE_ENCRYPTION)
         lilBool _IgnoreEncryption;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_OUTLINE)
+        lilBool _OutlineLitApplyTex;
     #endif
     #if defined(LIL_FUR)
         lilBool _VertexColor2FurVector;
@@ -1024,6 +1031,7 @@ SAMPLER(sampler_linear_clamp);
 
     // Outline
     float4  _OutlineColor;
+    float4  _OutlineLitColor;
     float4  _OutlineTex_ST;
     #if defined(LIL_FEATURE_ANIMATE_OUTLINE_UV)
         float4  _OutlineTex_ScrollRotate;
@@ -1202,6 +1210,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_GLITTER)
         float   _GlitterMainStrength;
         float   _GlitterPostContrast;
+        float   _GlitterSensitivity;
         float   _GlitterNormalStrength;
         float   _GlitterEnableLighting;
         float   _GlitterShadowMask;
@@ -1237,6 +1246,8 @@ SAMPLER(sampler_linear_clamp);
     #endif
     float   _lilShadowCasterBias;
 
+    float   _OutlineLitScale;
+    float   _OutlineLitOffset;
     float   _OutlineWidth;
     float   _OutlineEnableLighting;
     float   _OutlineVectorScale;
@@ -1444,6 +1455,8 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_ENCRYPTION)
         lilBool _IgnoreEncryption;
     #endif
+
+    lilBool _OutlineLitApplyTex;
 
     #if defined(LIL_FUR)
         lilBool _VertexColor2FurVector;

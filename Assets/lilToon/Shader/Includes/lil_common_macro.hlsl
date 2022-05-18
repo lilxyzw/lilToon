@@ -454,10 +454,19 @@
 
 float3 lilToAbsolutePositionWS(float3 positionRWS)
 {
-    #if defined(LIL_HDRP)
-        return GetAbsolutePositionWS(positionRWS);
+    #if (SHADEROPTIONS_CAMERA_RELATIVE_RENDERING != 0)
+        return positionRWS + _WorldSpaceCameraPos.xyz;
     #else
         return positionRWS;
+    #endif
+}
+
+float3 lilToRelativePositionWS(float3 positionWS)
+{
+    #if (SHADEROPTIONS_CAMERA_RELATIVE_RENDERING != 0)
+        return positionWS - _WorldSpaceCameraPos.xyz;
+    #else
+        return positionWS;
     #endif
 }
 
@@ -483,6 +492,15 @@ float3 lilTransformNormalOStoWS(float3 normalOS, bool doNormalize)
     #endif
 }
 
+bool lilIsPerspective()
+{
+    #if defined(LIL_HDRP) && defined(SHADERPASS) && (SHADERPASS == SHADERPASS_SHADOWS)
+        return LIL_MATRIX_P._m33 == 0;
+    #else
+        return unity_OrthoParams.w == 0;
+    #endif
+}
+
 float3 lilViewDirection(float3 positionWS)
 {
     return _WorldSpaceCameraPos.xyz - positionWS;
@@ -499,15 +517,30 @@ float3 lilHeadDirection(float3 positionWS)
     #endif
 }
 
+float3 lilCameraDirection()
+{
+    #if defined(USING_STEREO_MATRICES) && defined(LIL_HDRP)
+        return normalize(_XRViewMatrix[0]._m20_m21_m22 + _XRViewMatrix[0]._m20_m21_m22);
+    #elif defined(USING_STEREO_MATRICES)
+        return normalize(unity_StereoMatrixV[0]._m20_m21_m22 + unity_StereoMatrixV[0]._m20_m21_m22);
+    #else
+        return LIL_MATRIX_V._m20_m21_m22;
+    #endif
+}
+
 float3 lilViewDirectionOS(float3 positionOS)
 {
-    return lilTransformWStoOS(_WorldSpaceCameraPos.xyz) - positionOS;
+    #if defined(LIL_HDRP)
+        return lilTransformWStoOS(lilToRelativePositionWS(_WorldSpaceCameraPos.xyz)) - positionOS;
+    #else
+        return lilTransformWStoOS(_WorldSpaceCameraPos.xyz) - positionOS;
+    #endif
 }
 
 float3 lilHeadDirectionOS(float3 positionOS)
 {
     #if defined(USING_STEREO_MATRICES) && defined(LIL_HDRP)
-        return lilTransformWStoOS((_XRWorldSpaceCameraPos[0].xyz + _XRWorldSpaceCameraPos[1].xyz) * 0.5) - positionOS;
+        return lilTransformWStoOS(lilToRelativePositionWS((_XRWorldSpaceCameraPos[0].xyz + _XRWorldSpaceCameraPos[1].xyz) * 0.5)) - positionOS;
     #elif defined(USING_STEREO_MATRICES)
         return lilTransformWStoOS((unity_StereoWorldSpaceCameraPos[0].xyz + unity_StereoWorldSpaceCameraPos[1].xyz) * 0.5) - positionOS;
     #else
