@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `Receive Shadow` to 2nd / 3rd shadows
 - `Flat` to shadow mask type
-- `Z Bias` and `Highlight` to outline
+- `Z Bias` and `Highlight` and `Remove 0 width vertices` to outline
 - `Shadow Caster Bias` to rendering settings
 - Fur mesh division type
 - `GSAA` and `Blending Mode` to reflection

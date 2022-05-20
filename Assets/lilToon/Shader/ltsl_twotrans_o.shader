@@ -108,6 +108,7 @@ Shader "Hidden/lilToonLiteTwoPassTransparentOutline"
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
                         _OutlineFixWidth            ("Fix Width", Range(0,1)) = 1
         [lilEnum]       _OutlineVertexR2Width       ("Vertex Color|None|R|RGBA", Int) = 0
+        [lilToggle]     _OutlineDeleteMesh          ("Delete Mesh", Int) = 0
                         _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
                         _OutlineZBias               ("Z Bias", Float) = 0
 

@@ -289,6 +289,7 @@ SAMPLER(sampler_linear_clamp);
     lilBool _MatCapZRotCancel;
     lilBool _UseRim;
     lilBool _UseEmission;
+    lilBool _OutlineDeleteMesh;
     #if defined(LIL_CUSTOM_PROPERTIES)
         LIL_CUSTOM_PROPERTIES
     #endif
@@ -804,6 +805,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
         lilBool _OutlineLitApplyTex;
+        lilBool _OutlineDeleteMesh;
     #endif
     #if defined(LIL_FUR)
         lilBool _VertexColor2FurVector;
@@ -1457,6 +1459,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
 
     lilBool _OutlineLitApplyTex;
+    lilBool _OutlineDeleteMesh;
 
     #if defined(LIL_FUR)
         lilBool _VertexColor2FurVector;

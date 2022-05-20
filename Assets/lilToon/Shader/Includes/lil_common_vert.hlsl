@@ -334,6 +334,16 @@ LIL_V2F_TYPE vert(appdata input)
         #endif
     #endif
 
+    //------------------------------------------------------------------------------------------------------------------------------
+    // Remove Outline
+    #if defined(LIL_ONEPASS_OUTLINE)
+        float width = lilGetOutlineWidth(uvMain, input.color, _OutlineWidth, _OutlineWidthMask, _OutlineVertexR2Width LIL_SAMP_IN(sampler_linear_repeat));
+        if(width > -0.000001 && width < 0.000001 && _OutlineDeleteMesh) LIL_V2F_OUT.positionCSOL = 0.0/0.0;
+    #elif defined(LIL_OUTLINE)
+        float width = lilGetOutlineWidth(uvMain, input.color, _OutlineWidth, _OutlineWidthMask, _OutlineVertexR2Width LIL_SAMP_IN(sampler_linear_repeat));
+        if(width > -0.000001 && width < 0.000001 && _OutlineDeleteMesh) LIL_V2F_OUT.positionCS = 0.0/0.0;
+    #endif
+
     #if defined(LIL_TESSELLATION)
         }
     #endif

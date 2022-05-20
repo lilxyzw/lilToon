@@ -466,6 +466,7 @@ Shader "Hidden/lilToonTessellationTransparentOutline"
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
                         _OutlineFixWidth            ("Fix Width", Range(0,1)) = 1
         [lilEnum]       _OutlineVertexR2Width       ("Vertex Color|None|R|RGBA", Int) = 0
+        [lilToggle]     _OutlineDeleteMesh          ("Delete Mesh", Int) = 0
         [NoScaleOffset][Normal] _OutlineVectorTex   ("Vector", 2D) = "bump" {}
                         _OutlineVectorScale         ("Vector scale", Range(-10,10)) = 1
                         _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1

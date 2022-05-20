@@ -7,6 +7,7 @@ sEditorModePreset	Preset	プリセット	프리셋	预设	預設
 sEditorModeShaderSetting	Shader Setting	シェーダー設定	쉐이더 설정	着色器设置	著色器設置
 sHelpSelectOverlay	Currently lilToonOverray is selected. Change to lilToon for normal use.	現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。	현재 lilToonOverray가 선택되어있습니다.일반 용도에서는 lilToon으로 변경해주세요.	目前正在选择lilToonOverray。如果是通常的用途的话请变更为lilToon。	目前正在選擇lilToonOverray。如果是通常的用途的話請變更為lilToon。
 sColor	Color	色	색	颜色	顏色
+sAlpha	Alpha	透明度	투명도	透明度	透明度
 sColorAlpha	Color / Alpha	色 / 透明度	색 / 투명도	颜色 / 透明度	顏色 / 透明度
 sGamma	Gamma	ガンマ	감마	伽玛	伽瑪
 sHue	Hue	色相	색상	色相	色相
@@ -191,6 +192,7 @@ sWidthR	Width (R)	太さ (R)	굵기 (R)	宽度 (R)	寬度 (R)
 sFixWidth	Fix width by distance	距離に応じた太さ補正	거리에 따른 굵기 보정	按距离正确宽度	按距離正確寬度
 sVertexR2Width	R -> Width	R -> Width	R -> Width	R -> Width	R -> Width
 sVertexRGBA2Normal	RGBA -> Normal & Width	RGBA -> Normal & Width	RGBA -> Normal & Width	RGBA -> Normal & Width	RGBA -> Normal & Width
+sDeleteMesh0	Remove zero width vertices	太さ0の頂点を削除	굵기 0의 꼭짓점 삭제	删除宽度0的顶点	刪除寬度0的頂點
 sRefractionSetting	Refraction	屈折設定	굴절 설정	折射设置	折射設置
 sRefractionTips	You can set the refraction strength and color.	屈折の強さや色の設定ができます	굴절의 강도나 색을 설정할 수 있습니다	你可以设置折射强度和颜色。	你可以設置折射強度和顏色。
 sRefraction	Refraction	屈折	굴절	折射	折射

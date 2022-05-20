@@ -12,7 +12,8 @@
 //#pragma warning(default: 4700 4701 4702 4703 4704 4705 4706 4707 4708 4710 4711 4712 4713 4714 4715 4716 4717)
 //#pragma warning(disable: 3571)
 
-// Ignore unknown pragma (for old Unity version)
+// Ignore warning
+#pragma warning(disable: 3033 4001 4008 4009 4010 4116 4117)
 #pragma warning(disable: 3568)
 
 //------------------------------------------------------------------------------------------------------------------------------
