@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - シェーダー設定を自動化
 - `ライティングを適用`を`ライトの明るさを反映`に名前変更
 - ラメの`コントラスト`を`密度`と`感度`に分割
+- POMをパラメーター化
 
 ### 修正
 - URPでフォグがうまく動作していなかった問題を修正

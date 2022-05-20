@@ -901,10 +901,10 @@ namespace lilToon
             private MaterialProperty outlineColorMask;
             private MaterialProperty outlineAlphaToMask;
         private MaterialProperty useParallax;
+            private MaterialProperty usePOM;
             private MaterialProperty parallaxMap;
             private MaterialProperty parallax;
             private MaterialProperty parallaxOffset;
-            private MaterialProperty usePOM;
         //private MaterialProperty useDistanceFade;
             private MaterialProperty distanceFadeColor;
             private MaterialProperty distanceFade;
@@ -2537,7 +2537,7 @@ namespace lilToon
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             m_MaterialEditor.TexturePropertySingleLine(parallaxContent, parallaxMap, parallax);
                             m_MaterialEditor.ShaderProperty(parallaxOffset, GetLoc("sParallaxOffset"));
-                            if(isMulti) m_MaterialEditor.ShaderProperty(usePOM, "POM");
+                            m_MaterialEditor.ShaderProperty(usePOM, GetLoc("sPOM"));
                             EditorGUILayout.EndVertical();
                         }
                         EditorGUILayout.EndVertical();
@@ -3119,7 +3119,6 @@ namespace lilToon
                 {
                     EditorGUILayout.BeginVertical(customBox);
                     ToggleGUI(GetLoc("sSettingClippingCanceller"), ref shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER);
-                    ToggleGUI(GetLoc("sSettingPOM"), ref shaderSetting.LIL_FEATURE_POM);
                     EditorGUILayout.EndVertical();
                 }
 
@@ -3569,6 +3568,7 @@ namespace lilToon
             
             // Parallax
             useParallax = FindProperty("_UseParallax", props, false);
+            usePOM = FindProperty("_UsePOM", props, false);
             parallaxMap = FindProperty("_ParallaxMap", props, false);
             parallax = FindProperty("_Parallax", props, false);
             parallaxOffset = FindProperty("_ParallaxOffset", props, false);
@@ -3681,7 +3681,6 @@ namespace lilToon
 
             // Multi
             transparentModeMat = FindProperty("_TransparentMode", props, false);
-            usePOM = FindProperty("_UsePOM", props, false);
             useClippingCanceller = FindProperty("_UseClippingCanceller", props, false);
             asOverlay = FindProperty("_AsOverlay", props, false);
 
@@ -4013,7 +4012,7 @@ namespace lilToon
             shaderSetting.LIL_FEATURE_GLITTER = false;
             shaderSetting.LIL_FEATURE_BACKLIGHT = false;
             shaderSetting.LIL_FEATURE_PARALLAX = false;
-            //shaderSetting.LIL_FEATURE_POM = false;
+            shaderSetting.LIL_FEATURE_POM = false;
             //shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = false;
             shaderSetting.LIL_FEATURE_DISTANCE_FADE = false;
             shaderSetting.LIL_FEATURE_AUDIOLINK = false;
@@ -4084,7 +4083,7 @@ namespace lilToon
             shaderSetting.LIL_FEATURE_GLITTER = true;
             shaderSetting.LIL_FEATURE_BACKLIGHT = true;
             shaderSetting.LIL_FEATURE_PARALLAX = true;
-            //shaderSetting.LIL_FEATURE_POM = true;
+            shaderSetting.LIL_FEATURE_POM = true;
             //shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER = true;
             shaderSetting.LIL_FEATURE_DISTANCE_FADE = true;
             shaderSetting.LIL_FEATURE_AUDIOLINK = true;
@@ -5772,6 +5771,7 @@ namespace lilToon
                     break;
                 case lilPropertyBlock.Parallax:
                         CopyProperty(useParallax);
+                        CopyProperty(usePOM);
                         CopyProperty(parallax);
                         CopyProperty(parallaxOffset);
                         CopyProperty(parallaxMap);
@@ -6644,6 +6644,7 @@ namespace lilToon
                     break;
                 case lilPropertyBlock.Parallax:
                         PasteProperty(ref useParallax);
+                        PasteProperty(ref usePOM);
                         PasteProperty(ref parallax);
                         PasteProperty(ref parallaxOffset);
                         if(shouldCopyTex)
@@ -7456,6 +7457,7 @@ namespace lilToon
                     break;
                 case lilPropertyBlock.Parallax:
                         ResetProperty(ref useParallax);
+                        ResetProperty(ref usePOM);
                         ResetProperty(ref parallax);
                         ResetProperty(ref parallaxOffset);
                         ResetProperty(ref parallaxMap);
@@ -8252,10 +8254,15 @@ namespace lilToon
                 Debug.Log("[lilToon] LIL_FEATURE_BACKLIGHT : " + AssetDatabase.GetAssetPath(material));
                 shaderSetting.LIL_FEATURE_BACKLIGHT = true;
             }
-            if(!shaderSetting.LIL_FEATURE_PARALLAX && material.HasProperty("_UseParalla") && material.GetFloat("_UseParallax") != 0.0f)
+            if(!shaderSetting.LIL_FEATURE_PARALLAX && material.HasProperty("_UseParallax") && material.GetFloat("_UseParallax") != 0.0f)
             {
                 Debug.Log("[lilToon] LIL_FEATURE_PARALLAX : " + AssetDatabase.GetAssetPath(material));
                 shaderSetting.LIL_FEATURE_PARALLAX = true;
+                if(!shaderSetting.LIL_FEATURE_POM && material.HasProperty("_UsePOM") && material.GetFloat("_UsePOM") != 0.0f)
+                {
+                    Debug.Log("[lilToon] LIL_FEATURE_POM : " + AssetDatabase.GetAssetPath(material));
+                    shaderSetting.LIL_FEATURE_POM = true;
+                }
             }
             if(!shaderSetting.LIL_FEATURE_AUDIOLINK && material.HasProperty("_UseAudioLink") && material.GetFloat("_UseAudioLink") != 0.0f)
             {
@@ -8443,7 +8450,7 @@ namespace lilToon
                 shaderSetting.LIL_FEATURE_BACKLIGHT = shaderSetting.LIL_FEATURE_BACKLIGHT || propname.Contains("_UseBacklight");
                 shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION = shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION || propname.Contains("_RimDirStrength");
                 shaderSetting.LIL_FEATURE_PARALLAX = shaderSetting.LIL_FEATURE_PARALLAX || propname.Contains("_UseParallax");
-                //shaderSetting.LIL_FEATURE_POM = shaderSetting.LIL_FEATURE_POM;
+                shaderSetting.LIL_FEATURE_POM = shaderSetting.LIL_FEATURE_POM || propname.Contains("_UsePOM");
                 shaderSetting.LIL_FEATURE_AUDIOLINK = shaderSetting.LIL_FEATURE_AUDIOLINK || propname.Contains("_UseAudioLink");
                 shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX = shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX || propname.Contains("_AudioLink2Vertex");
                 shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL = shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL || propname.Contains("_AudioLinkAsLocal");
@@ -8545,7 +8552,7 @@ namespace lilToon
                 SetShaderKeywords(material, "_COLOROVERLAY_ON",                     material.GetFloat("_TransparentMode") != 0.0f && alphaMaskMode.floatValue != 0.0f);
                 SetShaderKeywords(material, "ANTI_FLICKER",                         useBacklight.floatValue != 0.0f);
                 SetShaderKeywords(material, "_PARALLAXMAP",                         useParallax.floatValue != 0.0f);
-                SetShaderKeywords(material, "PIXELSNAP_ON",                         useParallax.floatValue != 0.0f && material.GetFloat("_UsePOM") != 0.0f);
+                SetShaderKeywords(material, "PIXELSNAP_ON",                         useParallax.floatValue != 0.0f && usePOM.floatValue != 0.0f);
                 SetShaderKeywords(material, "_GLOSSYREFLECTIONS_OFF",               useReflection.floatValue != 0.0f);
             }
 
@@ -9143,10 +9150,8 @@ namespace lilToon
             if(renderingModeBuf == RenderingMode.Cutout)            material.SetFloat("_TransparentMode", 1.0f);
             else if(renderingModeBuf == RenderingMode.Transparent)  material.SetFloat("_TransparentMode", 2.0f);
             else                                                    material.SetFloat("_TransparentMode", 0.0f);
-            material.SetFloat("_UsePOM", 0.0f);
             material.SetFloat("_UseClippingCanceller", 0.0f);
 
-            if(shaderSetting.LIL_FEATURE_POM) material.SetFloat("_UsePOM", 1.0f);
             if(shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER) material.SetFloat("_UseClippingCanceller", 1.0f);
 
             SetupMaterialWithRenderingMode(material, renderingModeBuf, TransparentMode.Normal, isOutl, false, isStWr, false);

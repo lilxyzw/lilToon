@@ -269,9 +269,13 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // Parallax
 #if !defined(OVERRIDE_PARALLAX)
-    #if defined(LIL_FEATURE_POM)
+    #if defined(LIL_MULTI) && defined(LIL_FEATURE_POM)
         #define OVERRIDE_PARALLAX \
             lilPOM(fd.uvMain, fd.uv0, _UseParallax, _MainTex_ST, fd.parallaxViewDirection, _ParallaxMap, _Parallax, _ParallaxOffset);
+    #elif defined(LIL_FEATURE_POM)
+        #define OVERRIDE_PARALLAX \
+            if(_UsePOM) lilPOM(fd.uvMain, fd.uv0, _UseParallax, _MainTex_ST, fd.parallaxViewDirection, _ParallaxMap, _Parallax, _ParallaxOffset); \
+            else        lilParallax(fd.uvMain, fd.uv0, _UseParallax, fd.parallaxOffset, _ParallaxMap, _Parallax, _ParallaxOffset);
     #else
         #define OVERRIDE_PARALLAX \
             lilParallax(fd.uvMain, fd.uv0, _UseParallax, fd.parallaxOffset, _ParallaxMap, _Parallax, _ParallaxOffset);

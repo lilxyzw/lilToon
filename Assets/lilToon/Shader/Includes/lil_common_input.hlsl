@@ -1432,6 +1432,9 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FEATURE_PARALLAX)
         lilBool _UseParallax;
+        #if defined(LIL_FEATURE_POM)
+            lilBool _UsePOM;
+        #endif
     #endif
     #if defined(LIL_FEATURE_AUDIOLINK)
         lilBool _UseAudioLink;

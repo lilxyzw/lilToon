@@ -229,6 +229,7 @@ sParallax	Parallax	視差マップ	시차	视差	視差
 sParallaxTips	You can set the parallax.	視差マップに関する設定ができます	시차에 대한 설정을 할 수 있습니다	你可以设置视差。	你可以設置視差。
 sParallaxR	Parallax (R)	Parallax (R)	시차 (R)	视差 (R)	視差 (R)
 sParallaxOffset	Offset	オフセット	오프셋	偏移	偏移
+sPOM	[high-load] POM	[高負荷] POM	[과부하] POM	[高负荷] POM	[高負荷] POM
 sDistanceFade	Distance Fade	距離フェード	거리 페이드	距离淡化	距離淡化
 sDistanceFadeTips	You can set the color change depending on the distance.	距離に応じて色の変更ができます	거리에 따라 색상을 변경할 수 있습니다	你可以根据距离来设置颜色的变化。	你可以根據距離來設置顏色的變化。
 sStartDistance	Start Distance	開始距離	시작 거리	开始距离	開始距離
@@ -437,7 +438,6 @@ sPresetFurNoise	Fur Noise	ファーノイズ	파 노이즈	毛皮噪声	毛皮�
 sPresetFurMask	Fur Mask	ファーマスク	퍼 마스크	毛皮蒙版	毛皮蒙版
 sShaderSetting	Shader Setting (for all materials)	シェーダー設定 (全マテリアル共通)	쉐이더 설정 (전체 재료 공통)	着色器设置（用于所有材质）	著色器設置（用於所有材質）
 sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	在这里关闭的功能将从着色器中删除。通过关闭不使用的功能，你可以减少你的头像的大小，同时也可以减少负载。	在這里關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的頭像的大小，同時也可以減少負載。​​
-sSettingPOM	[high-load] POM	[高負荷] POM	[과부하] POM	[高负荷] POM	[高負荷] POM
 sSettingClippingCanceller	Distance Clipping Canceller	距離クリッピングキャンセラー	거리 클리핑 취소 기	距离剪裁取消器	距離剪裁取消器
 sSettingTexOutlineColor	Outline Color Texture	輪郭線色テクスチャ	윤곽선 색상 질감	轮廓颜色纹理	輪廓顏色紋理
 sSettingDefaultValue	Default Value (used for "Fix Lighting" and lighting presets)	初期値 (Fix Lightingやライティングプリセットに使用)	초기값 (Fix Lighting이나 라이팅 프리셋에 사용)	初始值 (用于Fix Lighting或照明预设)	初始值 (用於Fix Lighting或照明預設)

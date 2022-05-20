@@ -371,6 +371,7 @@ Shader "Hidden/lilToonMultiRefraction"
         //----------------------------------------------------------------------------------------------------------------------
         // Parallax
         [lilToggleLeft] _UseParallax                ("Use Parallax", Int) = 0
+        [lilToggle]     _UsePOM                     ("Use POM", Int) = 0
         [NoScaleOffset] _ParallaxMap                ("Parallax Map", 2D) = "gray" {}
                         _Parallax                   ("Parallax Scale", float) = 0.02
                         _ParallaxOffset             ("Parallax Offset", float) = 0.5
@@ -460,7 +461,6 @@ Shader "Hidden/lilToonMultiRefraction"
         // For Multi
         [lilToggleLeft] _UseOutline                 ("Use Outline", Int) = 0
         [lilEnum]       _TransparentMode            ("Rendering Mode|Opaque|Cutout|Transparent|Refraction|Fur|FurCutout|Gem", Int) = 0
-        [lilToggle]     _UsePOM                     ("Use POM", Int) = 0
         [lilToggle]     _UseClippingCanceller       ("Use Clipping Canceller", Int) = 0
         [lilToggle]     _AsOverlay                  ("As Overlay", Int) = 0
 
