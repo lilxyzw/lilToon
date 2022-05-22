@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fur mesh division type
 - `GSAA` and `Blending Mode` to reflection
 - `LOD` to strength / blur / AO mask of shadows
+- Metal MatCap and preset
+- Added circular tangent map
+- Avoid errors when overwriting with an older version
 
 ### Changed
 - Improved alpha mask GUI

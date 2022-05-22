@@ -345,7 +345,7 @@
 
 #if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_V2F_NDOTL)
     #define LIL_APPLY_OUTLINE_COLOR \
-        float3 outlineLitColor = false ? fd.col.rgb * _OutlineLitColor.rgb : _OutlineLitColor.rgb; \
+        float3 outlineLitColor = _OutlineLitApplyTex ? fd.col.rgb * _OutlineLitColor.rgb : _OutlineLitColor.rgb; \
         fd.col.rgb = lerp(fd.col.rgb * _OutlineColor.rgb, outlineLitColor, saturate(input.NdotL * _OutlineLitScale + _OutlineLitOffset) * _OutlineLitColor.a); \
         fd.col.a *= _OutlineColor.a;
 #else

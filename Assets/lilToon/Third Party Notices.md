@@ -150,3 +150,6 @@ SOFTWARE.
 - [sRGB Approximations for HLSL](http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html?m=1)
 - [『崩壊3rd』開発者が語るアニメ風レンダリングの極意](https://learning.unity3d.jp/570/)
 - [【Unity】【シェーダ】使っていないけどシリアライズされてしまっているシェーダプロパティを削除する](https://light11.hatenadiary.com/entry/2018/12/04/224253)
+
+## Assets
+- [Wooden Lounge HDRI • Poly Haven](https://polyhaven.com/a/wooden_lounge)

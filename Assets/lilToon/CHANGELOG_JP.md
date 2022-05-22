@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ファーのメッシュ分割方法を追加
 - 反射に`GSAA`と`合成モード`を追加
 - 影の強度、ぼかし、AOテクスチャに`LOD`を追加
+- 金属のMatCap素材、プリセットを追加
+- CircularのTangent Map素材を追加
+- 古いバージョンで上書きした場合のエラーを回避
 
 ### 変更
 - アルファマスクのGUIを向上
