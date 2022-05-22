@@ -31,6 +31,12 @@ MonoBehaviour:
     value: {r: 0, g: 0, b: 0, a: 0}
   - name: _ShadowBorderColor
     value: {r: 1, g: 0.05490192, b: 0, a: 1}
+  - name: _ReflectionColor
+    value: {r: 1, g: 1, b: 1, a: 1}
+  - name: _ReflectionCubeColor
+    value: {r: 0, g: 0, b: 0, a: 1}
+  - name: _MatCapColor
+    value: {r: 1, g: 1, b: 1, a: 1}
   - name: _RimColor
     value: {r: 0.27634388, g: 0.37768736, b: 0.509434, a: 1}
   - name: _RimIndirColor
@@ -44,6 +50,8 @@ MonoBehaviour:
     value: {x: 1, y: 0, z: 1, w: 0}
   - name: _ShadowAOShift2
     value: {x: 1, y: 0, z: 1, w: 0}
+  - name: _MatCapBlendUV1
+    value: {x: 0, y: 0, z: 0, w: 0}
   - name: _OutlineTex_ScrollRotate
     value: {x: 0, y: 0, z: 0, w: 0}
   - name: _OutlineTexHSVG
@@ -112,6 +120,68 @@ MonoBehaviour:
   - name: _ShadowFlatBorder
     value: 1
   - name: _ShadowFlatBlur
+    value: 1
+  - name: _UseReflection
+    value: 0
+  - name: _Smoothness
+    value: 1
+  - name: _Metallic
+    value: 0
+  - name: _Reflectance
+    value: 0.04
+  - name: _GSAAStrength
+    value: 0
+  - name: _ApplySpecular
+    value: 1
+  - name: _ApplySpecularFA
+    value: 1
+  - name: _SpecularToon
+    value: 1
+  - name: _SpecularNormalStrength
+    value: 1
+  - name: _SpecularBorder
+    value: 0.5
+  - name: _SpecularBlur
+    value: 0
+  - name: _ApplyReflection
+    value: 0
+  - name: _ReflectionNormalStrength
+    value: 1
+  - name: _ReflectionApplyTransparency
+    value: 1
+  - name: _ReflectionCubeOverride
+    value: 0
+  - name: _ReflectionCubeEnableLighting
+    value: 1
+  - name: _ReflectionBlendMode
+    value: 1
+  - name: _UseMatCap
+    value: 0
+  - name: _MatCapZRotCancel
+    value: 1
+  - name: _MatCapPerspective
+    value: 1
+  - name: _MatCapVRParallaxStrength
+    value: 1
+  - name: _MatCapBlend
+    value: 1
+  - name: _MatCapEnableLighting
+    value: 1
+  - name: _MatCapShadowMask
+    value: 0
+  - name: _MatCapBackfaceMask
+    value: 0
+  - name: _MatCapLod
+    value: 0
+  - name: _MatCapBlendMode
+    value: 1
+  - name: _MatCapApplyTransparency
+    value: 1
+  - name: _MatCapNormalStrength
+    value: 1
+  - name: _MatCapCustomNormal
+    value: 0
+  - name: _MatCapBumpScale
     value: 1
   - name: _UseRim
     value: 1
