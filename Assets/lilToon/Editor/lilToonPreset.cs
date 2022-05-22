@@ -5,15 +5,16 @@ public class lilToonPreset : ScriptableObject
 {
     public lilPresetBase[] bases;
     public lilToon.lilToonInspector.lilPresetCategory category;
+    public string renderingMode;
     public Shader shader;
     public lilPresetColor[] colors;
     public lilPresetVector4[] vectors;
     public lilPresetFloat[] floats;
     public lilPresetTexture[] textures;
     public int renderQueue;
-    public bool outline;
+    public int outline;
     public bool outlineMainTex;
-    public bool tessellation;
+    public int tessellation;
 
     [System.Serializable]
     public struct lilPresetBase

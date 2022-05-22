@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 330d117753a947947bf5a4f237b9a9f3, type: 3}
+  m_Name: Skin-Illust
+  m_EditorClassIdentifier: 
+  bases:
+  - language: English
+    name: Illust
+  - language: Japanese
+    name: "\u30A4\u30E9\u30B9\u30C8"
+  category: 0
+  renderingMode: 
+  shader: {fileID: 0}
+  colors:
+  - name: _ShadowColor
+    value: {r: 0.93333334, g: 0.7413907, b: 0.70980394, a: 1}
+  - name: _Shadow2ndColor
+    value: {r: 1, g: 0.95711833, b: 0.95283014, a: 0}
+  - name: _Shadow3rdColor
+    value: {r: 0, g: 0, b: 0, a: 0}
+  - name: _ShadowBorderColor
+    value: {r: 0, g: 0, b: 0, a: 1}
+  - name: _OutlineColor
+    value: {r: 0.6039216, g: 0.38039207, b: 0.40855336, a: 1}
+  - name: _OutlineLitColor
+    value: {r: 1, g: 0.19999906, b: 0, a: 1}
+  vectors:
+  - name: _ShadowAOShift
+    value: {x: 1, y: 0, z: 1, w: 0}
+  - name: _ShadowAOShift2
+    value: {x: 1, y: 0, z: 1, w: 0}
+  - name: _OutlineTex_ScrollRotate
+    value: {x: 0, y: 0, z: 0, w: 0}
+  - name: _OutlineTexHSVG
+    value: {x: 0, y: 1, z: 1, w: 1}
+  floats:
+  - name: _UseShadow
+    value: 1
+  - name: _ShadowStrength
+    value: 0.75
+  - name: _ShadowStrengthMaskLOD
+    value: 0
+  - name: _ShadowBorderMaskLOD
+    value: 0
+  - name: _ShadowBlurMaskLOD
+    value: 0
+  - name: _ShadowPostAO
+    value: 0
+  - name: _ShadowNormalStrength
+    value: 1
+  - name: _ShadowBorder
+    value: 0.25
+  - name: _ShadowBlur
+    value: 0.2
+  - name: _ShadowReceive
+    value: 0
+  - name: _Shadow2ndNormalStrength
+    value: 1
+  - name: _Shadow2ndBorder
+    value: 0
+  - name: _Shadow2ndBlur
+    value: 0
+  - name: _Shadow2ndReceive
+    value: 0
+  - name: _Shadow3rdNormalStrength
+    value: 1
+  - name: _Shadow3rdBorder
+    value: 0.25
+  - name: _Shadow3rdBlur
+    value: 0.1
+  - name: _Shadow3rdReceive
+    value: 0
+  - name: _ShadowBorderRange
+    value: 0
+  - name: _ShadowMainStrength
+    value: 0
+  - name: _ShadowEnvStrength
+    value: 0
+  - name: _ShadowMaskType
+    value: 0
+  - name: _ShadowFlatBorder
+    value: 1
+  - name: _ShadowFlatBlur
+    value: 1
+  - name: _lilShadowCasterBias
+    value: 0
+  - name: _OutlineLitApplyTex
+    value: 0
+  - name: _OutlineLitScale
+    value: 10
+  - name: _OutlineLitOffset
+    value: -8
+  - name: _OutlineWidth
+    value: 0.08
+  - name: _OutlineFixWidth
+    value: 0.5
+  - name: _OutlineVertexR2Width
+    value: 2
+  - name: _OutlineDeleteMesh
+    value: 0
+  - name: _OutlineVectorScale
+    value: 1
+  - name: _OutlineEnableLighting
+    value: 1
+  - name: _OutlineZBias
+    value: 0
+  textures: []
+  renderQueue: -2
+  outline: 1
+  outlineMainTex: 1
+  tessellation: -1

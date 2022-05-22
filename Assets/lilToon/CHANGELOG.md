@@ -20,7 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Adjusted the initial value of `Light Direction Override`
 - Changed to set shader settings automatically
 - Split `Contrast` into `Density` and `Sensitivity`
-- Change POM to parameter
+- Changed POM to parameter
+- Expanded preset
 
 ### Fixed
 - Fixed an issue where fog wasn't working well in URP
