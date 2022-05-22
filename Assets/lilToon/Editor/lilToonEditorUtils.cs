@@ -184,7 +184,6 @@ namespace lilToon
             if(Selection.objects.Length == 0) return;
             Shader lts = Shader.Find("lilToon");
             if(lts == null) EditorUtility.DisplayDialog("Setup From FBX",lilToonInspector.GetLoc("sUtilShaderNotFound"),lilToonInspector.GetLoc("sCancel"));
-            bool isStandardPreset = EditorUtility.DisplayDialog("Setup From FBX",lilToonInspector.GetLoc("sUtilSelectPresets"),"Standard", "Anime");
             foreach(UnityEngine.Object selectionObj in Selection.objects)
             {
                 string path = AssetDatabase.GetAssetPath(selectionObj);
@@ -208,6 +207,9 @@ namespace lilToon
                     if(!EditorUtility.DisplayDialog("Setup From FBX",lilToonInspector.GetLoc("sUtilMaterialAlreadyExist"),lilToonInspector.GetLoc("sYes"), lilToonInspector.GetLoc("sNo"))) return;
                 }
 
+                lilToonSetting shaderSetting = null;
+                lilToonInspector.InitializeShaderSetting(ref shaderSetting);
+
                 // Materials in SerializedObject
                 SerializedObject serializedObject = new SerializedObject(importer);
                 SerializedProperty serializedObjects = serializedObject.FindProperty("m_ExternalObjects");
@@ -225,7 +227,7 @@ namespace lilToon
                             name = serializedMaterial.FindPropertyRelative("first.name").stringValue
                         };
                     }
-                    SetUpMaterial(ref material, materialFolder, isStandardPreset);
+                    SetUpMaterial(ref material, materialFolder, shaderSetting);
                 }
 
                 // Materials in model
@@ -233,7 +235,7 @@ namespace lilToon
                 {
                     if(obj == null || !(obj is Material)) continue;
                     Material material = new Material((Material)obj);
-                    SetUpMaterial(ref material, materialFolder, isStandardPreset);
+                    SetUpMaterial(ref material, materialFolder, shaderSetting);
                 }
 
                 AssetDatabase.SaveAssets();
@@ -251,7 +253,7 @@ namespace lilToon
             return CheckExtension(".fbx");
         }
 
-        private static void SetUpMaterial(ref Material material, string materialFolder, bool isStandardPreset)
+        private static void SetUpMaterial(ref Material material, string materialFolder, lilToonSetting shaderSetting)
         {
             if(string.IsNullOrEmpty(material.name)) return;
             string materialFileName = material.name;
@@ -269,29 +271,18 @@ namespace lilToon
             Shader lts = Shader.Find("lilToon");
             if(lts != null) material.shader = lts;
 
-            lilToonPreset presetSkin        = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("dbec582958af3f340988b3ff86a12633"));
-            lilToonPreset presetSkinAnime   = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("322c901472f2b9a4d98da370ea954214"));
-            lilToonPreset presetSkinFlat    = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("125301c732c00f84091ef099d83833b7"));
-            lilToonPreset presetHair        = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("2357e878227675d4bade1cc9e4c2f8ca"));
-            lilToonPreset presetHairAnime   = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("13a5da17b9b512c45a20e627ef499e01"));
-            lilToonPreset presetCloth       = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("5132cf0fbee6ea540831dc73b68c8c25"));
-            lilToonPreset presetClothAnime  = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("72377412f6a548c459a5e79549f29dff"));
-            if(isStandardPreset)
-            {
-                if(materialLowerName.Contains("face"))                                              lilToonInspector.ApplyPreset(material, presetSkinFlat);
-                else if(materialLowerName.Contains("body") || materialLowerName.Contains("skin"))   lilToonInspector.ApplyPreset(material, presetSkin);
-                else if(materialLowerName.Contains("hair"))                                         lilToonInspector.ApplyPreset(material, presetHair);
-                else                                                                                lilToonInspector.ApplyPreset(material, presetCloth);
-            }
-            else
-            {
-                if(materialLowerName.Contains("face"))                                              lilToonInspector.ApplyPreset(material, presetSkinFlat);
-                else if(materialLowerName.Contains("body") || materialLowerName.Contains("skin"))   lilToonInspector.ApplyPreset(material, presetSkinAnime);
-                else if(materialLowerName.Contains("hair"))                                         lilToonInspector.ApplyPreset(material, presetHairAnime);
-                else                                                                                lilToonInspector.ApplyPreset(material, presetClothAnime);
-            }
+            lilToonPreset presetSkin = null;
+            lilToonPreset presetFace = null;
+            lilToonPreset presetHair = null;
+            lilToonPreset presetCloth = null;
 
-            bool isOutl = material.shader.name.Contains("Outline");
+            if(shaderSetting != null)
+            {
+                presetSkin    = shaderSetting.presetSkin;
+                presetFace    = shaderSetting.presetFace;
+                presetHair    = shaderSetting.presetHair;
+                presetCloth   = shaderSetting.presetCloth;
+            }
 
             if(material.GetTexture("_MainTex") == null)
             {
@@ -308,6 +299,17 @@ namespace lilToon
                     }
                 }
             }
+
+            if(presetSkin  == null) presetSkin  = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("44e146d270da72d4cb21a0a3b8658d1a"));
+            if(presetFace  == null) presetFace  = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("125301c732c00f84091ef099d83833b7"));
+            if(presetHair  == null) presetHair  = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("b66bf1309c6d60847ae978e0a54ac5fa"));
+            if(presetCloth == null) presetCloth = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("193de7d9d533d4841842d8c5ed740259"));
+            if(materialLowerName.Contains("face"))                                              lilToonInspector.ApplyPreset(material, presetFace, false);
+            else if(materialLowerName.Contains("body") || materialLowerName.Contains("skin"))   lilToonInspector.ApplyPreset(material, presetSkin, false);
+            else if(materialLowerName.Contains("hair"))                                         lilToonInspector.ApplyPreset(material, presetHair, false);
+            else                                                                                lilToonInspector.ApplyPreset(material, presetCloth, false);
+
+            bool isOutl = material.shader.name.Contains("Outline");
 
             if(!material.HasProperty("_ShadowStrengthMask") || material.GetTexture("_ShadowStrengthMask") == null)
             {
@@ -344,20 +346,16 @@ namespace lilToon
 
             if(materialLowerName.Contains("cutout") || mainTexLowerName.Contains("cutout"))
             {
-                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Cutout, lilToonInspector.TransparentMode.Normal, isOutl, false, false, false);
+                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Cutout, lilToonInspector.TransparentMode.Normal, isOutl, false, false, false, false);
             }
-            else if(materialLowerName.Contains("alpha") || mainTexLowerName.Contains("alpha"))
+            else if(materialLowerName.Contains("alpha") || mainTexLowerName.Contains("alpha") || materialLowerName.Contains("fade") || mainTexLowerName.Contains("fade") || materialLowerName.Contains("transparent") || mainTexLowerName.Contains("transparent"))
             {
-                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Transparent, lilToonInspector.TransparentMode.Normal, isOutl, false, false, false);
+                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Transparent, lilToonInspector.TransparentMode.Normal, isOutl, false, false, false, false);
             }
-            else if(materialLowerName.Contains("fade") || mainTexLowerName.Contains("fade"))
-            {
-                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Transparent, lilToonInspector.TransparentMode.Normal, isOutl, false, false, false);
-            }
-            else if(materialLowerName.Contains("transparent") || mainTexLowerName.Contains("transparent"))
-            {
-                lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Transparent, lilToonInspector.TransparentMode.Normal, isOutl, false, false, false);
-            }
+            //else
+            //{
+            //    lilToonInspector.SetupMaterialWithRenderingMode(material, lilToonInspector.RenderingMode.Opaque, lilToonInspector.TransparentMode.Normal, isOutl, false, false, false, false);
+            //}
 
             EditorUtility.SetDirty(material);
         }

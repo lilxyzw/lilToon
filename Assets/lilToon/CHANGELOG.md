@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Split `Contrast` into `Density` and `Sensitivity`
 - Changed POM to parameter
 - Expanded preset
+- Changed to save `Setup from FBX` presets in shader settings
 
 ### Fixed
 - Fixed an issue where fog wasn't working well in URP

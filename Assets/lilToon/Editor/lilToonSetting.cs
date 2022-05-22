@@ -83,5 +83,10 @@ public class lilToonSetting : ScriptableObject
     public float defaultMonochromeLighting = 0.0f;
     public float defaultlilDirectionalLightStrength = 1.0f;
     public Vector4 defaultLightDirectionOverride = new Vector4(0.001f, 0.002f, 0.001f, 0.0f);
+
+    public lilToonPreset presetSkin;
+    public lilToonPreset presetFace;
+    public lilToonPreset presetHair;
+    public lilToonPreset presetCloth;
 }
 #endif

@@ -36,7 +36,7 @@ MonoBehaviour:
   - name: _RimIndirColor
     value: {r: 0, g: 0, b: 0, a: 1}
   - name: _OutlineColor
-    value: {r: 0.6509434, g: 0.35310605, b: 0.51637566, a: 1}
+    value: {r: 0.41568628, g: 0.38039216, b: 0.5294118, a: 1}
   - name: _OutlineLitColor
     value: {r: 1, g: 0.19999987, b: 0, a: 0.5}
   vectors:

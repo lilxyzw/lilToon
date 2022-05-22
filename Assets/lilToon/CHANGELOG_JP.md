@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ラメの`コントラスト`を`密度`と`感度`に分割
 - POMをパラメーター化
 - プリセット機能を拡張
+- `Setup from FBX`で使用するプリセットをシェーダー設定内に保存するように変更
 
 ### 修正
 - URPでフォグがうまく動作していなかった問題を修正

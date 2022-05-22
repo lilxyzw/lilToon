@@ -4458,6 +4458,8 @@ namespace lilToon
 
         private static void DefaultValueSettingGUI()
         {
+            EditorGUILayout.LabelField("[GameObject] Fix lighting", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
             shaderSetting.defaultAsUnlit                        = EditorGUILayout.Slider(GetLoc("sAsUnlit"), shaderSetting.defaultAsUnlit, 0.0f, 1.0f);
             shaderSetting.defaultVertexLightStrength            = EditorGUILayout.Slider(GetLoc("sVertexLightStrength"), shaderSetting.defaultVertexLightStrength, 0.0f, 1.0f);
             shaderSetting.defaultLightMinLimit                  = EditorGUILayout.Slider(GetLoc("sLightMinLimit"), shaderSetting.defaultLightMinLimit, 0.0f, 1.0f);
@@ -4466,6 +4468,14 @@ namespace lilToon
             shaderSetting.defaultLightDirectionOverride         = EditorGUILayout.Vector4Field(GetLoc("sLightDirectionOverride"), shaderSetting.defaultLightDirectionOverride);
             shaderSetting.defaultBeforeExposureLimit            = EditorGUILayout.FloatField(GetLoc("sBeforeExposureLimit"), shaderSetting.defaultBeforeExposureLimit);
             shaderSetting.defaultlilDirectionalLightStrength    = EditorGUILayout.Slider(GetLoc("sDirectionalLightStrength"), shaderSetting.defaultlilDirectionalLightStrength, 0.0f, 1.0f);
+            EditorGUI.indentLevel--;
+            EditorGUILayout.LabelField("[Model] Setup from FBX", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            shaderSetting.presetFace = (lilToonPreset)EditorGUILayout.ObjectField("Face", shaderSetting.presetFace, typeof(lilToonPreset), false);
+            shaderSetting.presetSkin = (lilToonPreset)EditorGUILayout.ObjectField("Skin", shaderSetting.presetSkin, typeof(lilToonPreset), false);
+            shaderSetting.presetHair = (lilToonPreset)EditorGUILayout.ObjectField("Hair", shaderSetting.presetHair, typeof(lilToonPreset), false);
+            shaderSetting.presetCloth = (lilToonPreset)EditorGUILayout.ObjectField("Cloth", shaderSetting.presetCloth, typeof(lilToonPreset), false);
+            EditorGUI.indentLevel--;
         }
         #endregion
 
@@ -7684,10 +7694,10 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Material Setup
         #region
-        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess)
+        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess, bool ismulti)
         {
             if(isMultiVariants) return;
-            if(isMulti)
+            if(ismulti)
             {
                 lilRenderPipeline lilRP = CheckRP();
                 float tpmode = material.GetFloat("_TransparentMode");
@@ -8055,6 +8065,10 @@ namespace lilToon
                 material.SetInt("_FurBlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
                 material.SetInt("_FurBlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
             }
+        }
+        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess)
+        {
+            SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess, isMulti);
         }
 
         public static void SetupShaderSettingFromMaterial(Material material, ref lilToonSetting shaderSetting)
@@ -8732,7 +8746,7 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Presets
         #region
-        public static void ApplyPreset(Material material, lilToonPreset preset)
+        public static void ApplyPreset(Material material, lilToonPreset preset, bool ismulti)
         {
             if(material == null || preset == null) return;
             for(int i = 0; i < preset.floats.Length; i++)
@@ -8770,7 +8784,7 @@ namespace lilToon
             if(isonepass)           transparentMode = TransparentMode.OnePass;
             if(!isfur && istwopass) transparentMode = TransparentMode.TwoPass;
 
-            SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess);
+            SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess, ismulti);
             if(preset.renderQueue != -2) material.renderQueue = preset.renderQueue;
 
             for(int i = 0; i < preset.colors.Length;   i++) material.SetColor(preset.colors[i].name, preset.colors[i].value);
@@ -8784,6 +8798,11 @@ namespace lilToon
             }
 
             if(preset.outlineMainTex) material.SetTexture("_OutlineTex", material.GetTexture("_MainTex"));
+        }
+
+        public static void ApplyPreset(Material material, lilToonPreset preset)
+        {
+            ApplyPreset(material, preset, isMulti);
         }
 
         private static void DrawPreset()
