@@ -153,17 +153,17 @@ Shader "_lil/[Optional] lilToonOverlay"
         [lilFFFF]       _ShadowAOShift              ("1st Scale|1st Offset|2nd Scale|2nd Offset", Vector) = (1,0,1,0)
         [lilFF]         _ShadowAOShift2             ("3rd Scale|3rd Offset", Vector) = (1,0,1,0)
         [lilToggle]     _ShadowPostAO               ("Post AO", Int) = 0
-                        _ShadowColor                ("Shadow Color", Color) = (0.7,0.75,0.85,1.0)
+                        _ShadowColor                ("Shadow Color", Color) = (0.82,0.76,0.85,1.0)
         [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
                         _ShadowNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0
                         _ShadowBorder               ("Border", Range(0, 1)) = 0.5
                         _ShadowBlur                 ("Blur", Range(0, 1)) = 0.1
                         _ShadowReceive              ("Receive Shadow", Range(0, 1)) = 0
-                        _Shadow2ndColor             ("2nd Color", Color) = (0,0,0,0)
+                        _Shadow2ndColor             ("2nd Color", Color) = (0.68,0.66,0.79,1)
         [NoScaleOffset] _Shadow2ndColorTex          ("2nd Color", 2D) = "black" {}
                         _Shadow2ndNormalStrength    ("2nd Normal Strength", Range(0, 1)) = 1.0
-                        _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.5
-                        _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.3
+                        _Shadow2ndBorder            ("2nd Border", Range(0, 1)) = 0.15
+                        _Shadow2ndBlur              ("2nd Blur", Range(0, 1)) = 0.1
                         _Shadow2ndReceive           ("Receive Shadow", Range(0, 1)) = 0
                         _Shadow3rdColor             ("3rd Color", Color) = (0,0,0,0)
         [NoScaleOffset] _Shadow3rdColorTex          ("3rd Color", 2D) = "black" {}
@@ -171,9 +171,9 @@ Shader "_lil/[Optional] lilToonOverlay"
                         _Shadow3rdBorder            ("3rd Border", Range(0, 1)) = 0.25
                         _Shadow3rdBlur              ("3rd Blur", Range(0, 1)) = 0.1
                         _Shadow3rdReceive           ("Receive Shadow", Range(0, 1)) = 0
-                        _ShadowBorderColor          ("Border Color", Color) = (1,0,0,1)
-                        _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0
-                        _ShadowMainStrength         ("Contrast", Range(0, 1)) = 1
+                        _ShadowBorderColor          ("Border Color", Color) = (1,0.1,0,1)
+                        _ShadowBorderRange          ("Border Range", Range(0, 1)) = 0.08
+                        _ShadowMainStrength         ("Contrast", Range(0, 1)) = 0
                         _ShadowEnvStrength          ("Environment Strength", Range(0, 1)) = 0
         [lilEnum]       _ShadowMaskType             ("Mask Type|Strength|Flat", Int) = 0
                         _ShadowFlatBorder           ("Border", Range(-2, 2)) = 1
@@ -256,15 +256,15 @@ Shader "_lil/[Optional] lilToonOverlay"
         //----------------------------------------------------------------------------------------------------------------------
         // Rim
         [lilToggleLeft] _UseRim                     ("Use Rim", Int) = 0
-        [lilHDR]        _RimColor                   ("Color", Color) = (1,1,1,1)
+        [lilHDR]        _RimColor                   ("Color", Color) = (0.66,0.5,0.48,1)
         [NoScaleOffset] _RimColorTex                ("Texture", 2D) = "white" {}
                         _RimNormalStrength          ("Normal Strength", Range(0, 1)) = 1.0
                         _RimBorder                  ("Border", Range(0, 1)) = 0.5
-                        _RimBlur                    ("Blur", Range(0, 1)) = 0.1
-        [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.0
+                        _RimBlur                    ("Blur", Range(0, 1)) = 0.65
+        [PowerSlider(3.0)]_RimFresnelPower          ("Fresnel Power", Range(0.01, 50)) = 3.5
                         _RimEnableLighting          ("Enable Lighting", Range(0, 1)) = 1
-                        _RimShadowMask              ("Shadow Mask", Range(0, 1)) = 0
-        [lilToggle]     _RimBackfaceMask            ("Backface Mask", Int) = 0
+                        _RimShadowMask              ("Shadow Mask", Range(0, 1)) = 0.5
+        [lilToggle]     _RimBackfaceMask            ("Backface Mask", Int) = 1
                         _RimVRParallaxStrength      ("VR Parallax Strength", Range(0, 1)) = 1
         [lilToggle]     _RimApplyTransparency       ("Apply Transparency", Int) = 1
                         _RimDirStrength             ("Light direction strength", Range(0, 1)) = 0

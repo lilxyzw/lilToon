@@ -44,7 +44,7 @@ MonoBehaviour:
   - name: _OutlineColor
     value: {r: 0.41568625, g: 0.3803921, b: 0.5294118, a: 1}
   - name: _OutlineLitColor
-    value: {r: 1, g: 0.19999832, b: 0, a: 0.5}
+    value: {r: 1, g: 0.2805821, b: 0, a: 0.2509804}
   vectors:
   - name: _ShadowAOShift
     value: {x: 1, y: 0, z: 1, w: 0}

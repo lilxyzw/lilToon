@@ -342,7 +342,8 @@ namespace lilToon
                 }
             }
 
-            string mainTexLowerName = material.GetTexture("_MainTex").name.ToLower();
+            string mainTexLowerName = "";
+            if(material.GetTexture("_MainTex") != null) mainTexLowerName = material.GetTexture("_MainTex").name.ToLower();
 
             if(materialLowerName.Contains("cutout") || mainTexLowerName.Contains("cutout"))
             {
@@ -433,7 +434,6 @@ namespace lilToon
                             material.SetFloat("_BeforeExposureLimit", shaderSetting.defaultBeforeExposureLimit);
                             material.SetFloat("_MonochromeLighting", shaderSetting.defaultMonochromeLighting);
                             material.SetFloat("_lilDirectionalLightStrength", shaderSetting.defaultlilDirectionalLightStrength);
-                            material.SetVector("_LightDirectionOverride", shaderSetting.defaultLightDirectionOverride);
                             EditorUtility.SetDirty(material);
                         }
                     }
@@ -469,7 +469,6 @@ namespace lilToon
                             material.SetFloat("_BeforeExposureLimit", shaderSetting.defaultBeforeExposureLimit);
                             material.SetFloat("_MonochromeLighting", shaderSetting.defaultMonochromeLighting);
                             material.SetFloat("_lilDirectionalLightStrength", shaderSetting.defaultlilDirectionalLightStrength);
-                            material.SetVector("_LightDirectionOverride", shaderSetting.defaultLightDirectionOverride);
                             EditorUtility.SetDirty(material);
                         }
                     }

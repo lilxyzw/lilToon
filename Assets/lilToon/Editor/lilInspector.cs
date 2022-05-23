@@ -4465,7 +4465,6 @@ namespace lilToon
             shaderSetting.defaultLightMinLimit                  = EditorGUILayout.Slider(GetLoc("sLightMinLimit"), shaderSetting.defaultLightMinLimit, 0.0f, 1.0f);
             shaderSetting.defaultLightMaxLimit                  = EditorGUILayout.Slider(GetLoc("sLightMaxLimit"), shaderSetting.defaultLightMaxLimit, 0.0f, 10.0f);
             shaderSetting.defaultMonochromeLighting             = EditorGUILayout.Slider(GetLoc("sMonochromeLighting"), shaderSetting.defaultMonochromeLighting, 0.0f, 1.0f);
-            shaderSetting.defaultLightDirectionOverride         = EditorGUILayout.Vector4Field(GetLoc("sLightDirectionOverride"), shaderSetting.defaultLightDirectionOverride);
             shaderSetting.defaultBeforeExposureLimit            = EditorGUILayout.FloatField(GetLoc("sBeforeExposureLimit"), shaderSetting.defaultBeforeExposureLimit);
             shaderSetting.defaultlilDirectionalLightStrength    = EditorGUILayout.Slider(GetLoc("sDirectionalLightStrength"), shaderSetting.defaultlilDirectionalLightStrength, 0.0f, 1.0f);
             EditorGUI.indentLevel--;
@@ -7669,7 +7668,6 @@ namespace lilToon
                     if(monochromeLighting != null) monochromeLighting.floatValue = shaderSetting.defaultMonochromeLighting;
                     if(shadowEnvStrength != null) shadowEnvStrength.floatValue = 0.0f;
                     if(lilDirectionalLightStrength != null) lilDirectionalLightStrength.floatValue = shaderSetting.defaultlilDirectionalLightStrength;
-                    if(lightDirectionOverride != null) lightDirectionOverride.vectorValue = shaderSetting.defaultLightDirectionOverride;
                     break;
                 case lilLightingPreset.SemiMonochrome:
                     if(asUnlit != null) asUnlit.floatValue = 0.0f;
@@ -7680,7 +7678,6 @@ namespace lilToon
                     if(monochromeLighting != null) monochromeLighting.floatValue = 0.5f;
                     if(shadowEnvStrength != null) shadowEnvStrength.floatValue = 0.0f;
                     if(lilDirectionalLightStrength != null) lilDirectionalLightStrength.floatValue = 1.0f;
-                    if(lightDirectionOverride != null) lightDirectionOverride.vectorValue = new Vector4(0.001f, 0.002f, 0.001f, 0.0f);
                     break;
             }
         }
