@@ -154,8 +154,8 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Constant
         #region
-        public const string currentVersionName = "1.2.12";
-        public const int currentVersionValue = 25;
+        public const string currentVersionName = "1.3.0";
+        public const int currentVersionValue = 26;
 
         private const string boothURL = "https://lilxyzw.booth.pm/";
         private const string githubURL = "https://github.com/lilxyzw/lilToon";
@@ -1464,7 +1464,7 @@ namespace lilToon
                                 outlineStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                                 outlineStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             }
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                             if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                         }
                         if(EditorButton("Set Reader"))
@@ -1489,7 +1489,7 @@ namespace lilToon
                                 outlineStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                                 outlineStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             }
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                             if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                         }
                         if(EditorButton("Reset"))
@@ -1514,7 +1514,7 @@ namespace lilToon
                                 outlineStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                                 outlineStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             }
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                         }
 
                         //------------------------------------------------------------------------------------------------------------------------------
@@ -1559,7 +1559,7 @@ namespace lilToon
                         if(EditorButton(GetLoc("sRenderingReset")))
                         {
                             material.enableInstancing = false;
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                         }
 
                         //------------------------------------------------------------------------------------------------------------------------------
@@ -1577,7 +1577,7 @@ namespace lilToon
                             {
                                 if(shaderType==0) isLite = false;
                                 if(shaderType==1) isLite = true;
-                                SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                                SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                             }
 
                             //------------------------------------------------------------------------------------------------------------------------------
@@ -1646,7 +1646,7 @@ namespace lilToon
                             EditorGUILayout.LabelField(GetLoc("sOptimization"), customToggleFont);
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             DrawOptimizationButton(material, !(isLite && isMulti));
-                            if(EditorButton(GetLoc("sRemoveUnused"))) RemoveUnusedTexture(material, isLite);
+                            RemoveUnusedPropertiesGUI(material);
                             EditorGUILayout.EndVertical();
                             EditorGUILayout.EndVertical();
                         }
@@ -1881,7 +1881,7 @@ namespace lilToon
                             EditorGUILayout.LabelField(GetLoc("sOptimization"), customToggleFont);
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             DrawOptimizationButton(material, !(isLite && isMulti));
-                            if(EditorButton(GetLoc("sRemoveUnused"))) RemoveUnusedTexture(material, isLite);
+                            RemoveUnusedPropertiesGUI(material);
                             EditorGUILayout.EndVertical();
                             EditorGUILayout.EndVertical();
                         }
@@ -2797,7 +2797,7 @@ namespace lilToon
                                 furStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                                 furStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             }
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                             if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                         }
                         if(EditorButton("Set Reader"))
@@ -2834,7 +2834,7 @@ namespace lilToon
                                 furStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                                 furStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             }
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                             if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                         }
                         if(EditorButton("Reset"))
@@ -2871,7 +2871,7 @@ namespace lilToon
                                 furStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                                 furStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                             }
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                         }
 
                         //------------------------------------------------------------------------------------------------------------------------------
@@ -2931,7 +2931,7 @@ namespace lilToon
                         if(EditorButton(GetLoc("sRenderingReset")))
                         {
                             material.enableInstancing = false;
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                         }
 
                         //------------------------------------------------------------------------------------------------------------------------------
@@ -2949,7 +2949,7 @@ namespace lilToon
                             {
                                 if(shaderType==0) isLite = false;
                                 if(shaderType==1) isLite = true;
-                                SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                                SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                             }
 
                             //------------------------------------------------------------------------------------------------------------------------------
@@ -3035,7 +3035,8 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxOuter);
                         if(isTess != EditorGUILayout.ToggleLeft(GetLoc("sTessellation"), isTess, customToggleFont))
                         {
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, !isTess);
+                            isTess = !isTess;
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                         }
                         if(isTess)
                         {
@@ -3065,7 +3066,7 @@ namespace lilToon
                             EditorGUILayout.LabelField(GetLoc("sOptimization"), customToggleFont);
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             DrawOptimizationButton(material, !(isLite && isMulti));
-                            if(EditorButton(GetLoc("sRemoveUnused"))) RemoveUnusedTexture(material, isLite);
+                            RemoveUnusedPropertiesGUI(material);
                             TextureBakeGUI(material, 0);
                             TextureBakeGUI(material, 1);
                             TextureBakeGUI(material, 2);
@@ -5175,29 +5176,25 @@ namespace lilToon
                 case lilPropertyBlock.Base:
                         CopyProperty(invisible);
                         CopyProperty(cutoff);
-                        CopyProperty(subpassCutoff);
                         CopyProperty(cull);
                         CopyProperty(flipNormal);
                         CopyProperty(backfaceForceShadow);
                         CopyProperty(zwrite);
-                        CopyProperty(asUnlit);
-                        CopyProperty(vertexLightStrength);
-                        CopyProperty(lightMinLimit);
-                        CopyProperty(lightMaxLimit);
-                        CopyProperty(monochromeLighting);
-                        CopyProperty(alphaBoostFA);
-                        CopyProperty(shadowEnvStrength);
                         CopyProperty(fakeShadowVector);
                         CopyProperty(triMask);
                     break;
                 case lilPropertyBlock.Lighting:
-                        CopyProperty(asUnlit);
-                        CopyProperty(vertexLightStrength);
                         CopyProperty(lightMinLimit);
                         CopyProperty(lightMaxLimit);
                         CopyProperty(monochromeLighting);
-                        CopyProperty(alphaBoostFA);
                         CopyProperty(shadowEnvStrength);
+                        CopyProperty(asUnlit);
+                        CopyProperty(vertexLightStrength);
+                        CopyProperty(lightDirectionOverride);
+                        CopyProperty(alphaBoostFA);
+                        CopyProperty(blendOpFA);
+                        CopyProperty(beforeExposureLimit);
+                        CopyProperty(lilDirectionalLightStrength);
                     break;
                 case lilPropertyBlock.UV:
                         CopyProperty(mainTex_ScrollRotate);
@@ -5898,6 +5895,7 @@ namespace lilToon
                 case lilPropertyBlock.Rendering:
                         CopyProperty(beforeExposureLimit);
                         CopyProperty(lilDirectionalLightStrength);
+                        CopyProperty(subpassCutoff);
                         CopyProperty(cull);
                         CopyProperty(srcBlend);
                         CopyProperty(dstBlend);
@@ -5976,18 +5974,10 @@ namespace lilToon
                 case lilPropertyBlock.Base:
                         PasteProperty(ref invisible);
                         PasteProperty(ref cutoff);
-                        PasteProperty(ref subpassCutoff);
                         PasteProperty(ref cull);
                         PasteProperty(ref flipNormal);
                         PasteProperty(ref backfaceForceShadow);
                         PasteProperty(ref zwrite);
-                        PasteProperty(ref asUnlit);
-                        PasteProperty(ref vertexLightStrength);
-                        PasteProperty(ref lightMinLimit);
-                        PasteProperty(ref lightMaxLimit);
-                        PasteProperty(ref monochromeLighting);
-                        PasteProperty(ref alphaBoostFA);
-                        PasteProperty(ref shadowEnvStrength);
                         PasteProperty(ref fakeShadowVector);
                         if(shouldCopyTex)
                         {
@@ -5995,13 +5985,17 @@ namespace lilToon
                         }
                     break;
                 case lilPropertyBlock.Lighting:
-                        PasteProperty(ref asUnlit);
-                        PasteProperty(ref vertexLightStrength);
                         PasteProperty(ref lightMinLimit);
                         PasteProperty(ref lightMaxLimit);
                         PasteProperty(ref monochromeLighting);
-                        PasteProperty(ref alphaBoostFA);
                         PasteProperty(ref shadowEnvStrength);
+                        PasteProperty(ref asUnlit);
+                        PasteProperty(ref vertexLightStrength);
+                        PasteProperty(ref lightDirectionOverride);
+                        PasteProperty(ref alphaBoostFA);
+                        PasteProperty(ref blendOpFA);
+                        PasteProperty(ref beforeExposureLimit);
+                        PasteProperty(ref lilDirectionalLightStrength);
                     break;
                 case lilPropertyBlock.UV:
                         PasteProperty(ref mainTex_ScrollRotate);
@@ -6783,6 +6777,7 @@ namespace lilToon
                 case lilPropertyBlock.Rendering:
                         PasteProperty(ref beforeExposureLimit);
                         PasteProperty(ref lilDirectionalLightStrength);
+                        PasteProperty(ref subpassCutoff);
                         PasteProperty(ref cull);
                         PasteProperty(ref srcBlend);
                         PasteProperty(ref dstBlend);
@@ -6861,29 +6856,25 @@ namespace lilToon
                 case lilPropertyBlock.Base:
                         ResetProperty(ref invisible);
                         ResetProperty(ref cutoff);
-                        ResetProperty(ref subpassCutoff);
                         ResetProperty(ref cull);
                         ResetProperty(ref flipNormal);
                         ResetProperty(ref backfaceForceShadow);
                         ResetProperty(ref zwrite);
-                        ResetProperty(ref asUnlit);
-                        ResetProperty(ref vertexLightStrength);
-                        ResetProperty(ref lightMinLimit);
-                        ResetProperty(ref lightMaxLimit);
-                        ResetProperty(ref monochromeLighting);
-                        ResetProperty(ref alphaBoostFA);
-                        ResetProperty(ref shadowEnvStrength);
                         ResetProperty(ref fakeShadowVector);
                         ResetProperty(ref triMask);
                     break;
                 case lilPropertyBlock.Lighting:
-                        ResetProperty(ref asUnlit);
-                        ResetProperty(ref vertexLightStrength);
                         ResetProperty(ref lightMinLimit);
                         ResetProperty(ref lightMaxLimit);
                         ResetProperty(ref monochromeLighting);
-                        ResetProperty(ref alphaBoostFA);
                         ResetProperty(ref shadowEnvStrength);
+                        ResetProperty(ref asUnlit);
+                        ResetProperty(ref vertexLightStrength);
+                        ResetProperty(ref lightDirectionOverride);
+                        ResetProperty(ref alphaBoostFA);
+                        ResetProperty(ref blendOpFA);
+                        ResetProperty(ref beforeExposureLimit);
+                        ResetProperty(ref lilDirectionalLightStrength);
                     break;
                 case lilPropertyBlock.UV:
                         ResetProperty(ref mainTex_ScrollRotate);
@@ -7584,6 +7575,7 @@ namespace lilToon
                 case lilPropertyBlock.Rendering:
                         ResetProperty(ref beforeExposureLimit);
                         ResetProperty(ref lilDirectionalLightStrength);
+                        ResetProperty(ref subpassCutoff);
                         ResetProperty(ref cull);
                         ResetProperty(ref srcBlend);
                         ResetProperty(ref dstBlend);
@@ -8063,9 +8055,15 @@ namespace lilToon
                 material.SetInt("_FurBlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
             }
         }
+
         public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess)
         {
             SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess, isMulti);
+        }
+
+        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode)
+        {
+            SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isOutl, isLite, isStWr, isTess);
         }
 
         public static void SetupShaderSettingFromMaterial(Material material, ref lilToonSetting shaderSetting)
@@ -8746,13 +8744,14 @@ namespace lilToon
         public static void ApplyPreset(Material material, lilToonPreset preset, bool ismulti)
         {
             if(material == null || preset == null) return;
+            Undo.RecordObject(material, "Apply Preset");
             for(int i = 0; i < preset.floats.Length; i++)
             {
                 if(preset.floats[i].name == "_StencilPass") material.SetFloat(preset.floats[i].name, preset.floats[i].value);
             }
             if(preset.shader != null) material.shader = preset.shader;
-            bool isoutl         = preset.outline == -1 ? material.shader.name.Contains("Outline") : (preset.outline == 1 ? true : false);
-            bool istess         = preset.tessellation == -1 ? material.shader.name.Contains("Tessellation") : (preset.tessellation == 1 ? true : false);
+            bool isoutl         = preset.outline == -1 ? material.shader.name.Contains("Outline") : (preset.outline == 1);
+            bool istess         = preset.tessellation == -1 ? material.shader.name.Contains("Tessellation") : (preset.tessellation == 1);
             bool isstencil      = material.GetFloat("_StencilPass") == (float)UnityEngine.Rendering.StencilOp.Replace;
 
             bool islite         = material.shader.name.Contains("Lite");
@@ -9295,7 +9294,7 @@ namespace lilToon
                     else        renderingMode = (RenderingMode)EditorGUILayout.Popup(GetLoc("sRenderingMode"), (int)renderingModeBuf, sRenderingModeList);
                     if(renderingModeBuf != renderingMode)
                     {
-                        SetupMaterialWithRenderingMode(material, renderingMode, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                        SetupMaterialWithRenderingMode(material, renderingMode, transparentModeBuf);
                         if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.FurCutout) cutoff.floatValue = 0.5f;
                         if(renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur || renderingMode == RenderingMode.FurTwoPass) cutoff.floatValue = 0.001f;
                     }
@@ -9306,7 +9305,7 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(transparentModeMat, sTransparentMode);
                     if(transparentModeMatBuf != transparentModeMat.floatValue)
                     {
-                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, isOutl, isLite, isStWr, isTess);
+                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                         if(transparentModeMat.floatValue == 1.0f || transparentModeMat.floatValue == 5.0f) cutoff.floatValue = 0.5f;
                         if(transparentModeMat.floatValue == 2.0f || transparentModeMat.floatValue == 4.0f) cutoff.floatValue = 0.001f;
                     }
@@ -9335,7 +9334,7 @@ namespace lilToon
                         TransparentMode transparentMode = (TransparentMode)EditorGUILayout.Popup(GetLoc("sTransparentMode"), (int)transparentModeBuf, sTransparentModeList);
                         if(transparentModeBuf != transparentMode)
                         {
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentMode, isOutl, isLite, isStWr, isTess);
+                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentMode);
                         }
                         if(transparentModeBuf >= TransparentMode.OnePass && vertexLightStrength.floatValue != 1.0f && AutoFixHelpBox(GetLoc("sHelpOnePassVertexLight")))
                         {
@@ -9751,7 +9750,8 @@ namespace lilToon
                 {
                     if(isOutl != EditorGUILayout.ToggleLeft(GetLoc("sOutline"), isOutl, customToggleFont))
                     {
-                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, !isOutl, isLite, isStWr, isTess);
+                        isOutl = !isOutl;
+                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                     }
                 }
                 else if(isCustomShader)
@@ -9834,7 +9834,8 @@ namespace lilToon
                 {
                     if(isOutl != EditorGUILayout.ToggleLeft(GetLoc("sOutline"), isOutl, customToggleFont))
                     {
-                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf, !isOutl, isLite, isStWr, isTess);
+                        isOutl = !isOutl;
+                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                     }
                 }
                 else if(isCustomShader)
@@ -10178,6 +10179,15 @@ namespace lilToon
             DrawColorAsAlpha(prop, GetLoc("sStrength"));
         }
 
+        private void RemoveUnusedPropertiesGUI(Material material)
+        {
+            if(EditorButton(GetLoc("sRemoveUnused")))
+            {
+                Undo.RecordObject(material, "Remove unused properties");
+                RemoveUnusedTexture(material, isLite);
+            }
+        }
+
         private void TextureBakeGUI(Material material, int bakeType)
         {
             // bakeType
@@ -10191,6 +10201,7 @@ namespace lilToon
             string[] sBake = {GetLoc("sBakeAll"), GetLoc("sBake1st"), GetLoc("sBake2nd"), GetLoc("sBake3rd"), GetLoc("sBake"), GetLoc("sBake"), GetLoc("sBake")};
             if(EditorButton(sBake[bakeType]))
             {
+                Undo.RecordObject(material, "Bake");
                 TextureBake(material, bakeType);
             }
         }

@@ -18,170 +18,225 @@ MonoBehaviour:
   - language: Japanese
     name: "[\u9AD8\u8CA0\u8377]\u30D5\u30A1\u30FC"
   category: 3
-  shader: {fileID: 4800000, guid: 55706696b2bdb5d4d8541b89e17085c8, type: 3}
+  renderingMode: FurTwoPass
+  shader: {fileID: 0}
   colors:
-  - name: _Color
-    value: {r: 1, g: 1, b: 1, a: 1}
+  - name: _BacklightColor
+    value: {r: 0.85, g: 0.8, b: 0.7, a: 1}
   - name: _ShadowColor
-    value: {r: 0.7, g: 0.75, b: 0.85, a: 1}
+    value: {r: 0.82, g: 0.76, b: 0.85, a: 1}
   - name: _Shadow2ndColor
+    value: {r: 0.68, g: 0.65999997, b: 0.78999996, a: 1}
+  - name: _Shadow3rdColor
     value: {r: 0, g: 0, b: 0, a: 0}
   - name: _ShadowBorderColor
-    value: {r: 1, g: 0, b: 0, a: 1}
+    value: {r: 1, g: 0.09999991, b: 0, a: 1}
+  - name: _ReflectionColor
+    value: {r: 1, g: 1, b: 1, a: 1}
+  - name: _ReflectionCubeColor
+    value: {r: 0, g: 0, b: 0, a: 1}
+  - name: _MatCapColor
+    value: {r: 1, g: 1, b: 1, a: 1}
+  - name: _RimColor
+    value: {r: 0.65999997, g: 0.5, b: 0.47999996, a: 1}
+  - name: _RimIndirColor
+    value: {r: 1, g: 1, b: 1, a: 1}
   vectors:
-  - name: _MainTex_ScrollRotate
+  - name: _ShadowAOShift
+    value: {x: 1, y: 0, z: 1, w: 0}
+  - name: _ShadowAOShift2
+    value: {x: 1, y: 0, z: 1, w: 0}
+  - name: _MatCapBlendUV1
     value: {x: 0, y: 0, z: 0, w: 0}
-  - name: _MainTexHSVG
-    value: {x: 0, y: 1, z: 1, w: 1}
   - name: _FurVector
-    value: {x: 0, y: 0, z: 1, w: 0.2}
+    value: {x: 0, y: 0, z: 1, w: 0.02}
   floats:
-  - name: _Invisible
+  - name: _UseBacklight
     value: 0
-  - name: _AsUnlit
-    value: 0
-  - name: _Cutoff
-    value: 0.01
-  - name: _FlipNormal
-    value: 0
-  - name: _BackfaceForceShadow
-    value: 0
+  - name: _BacklightNormalStrength
+    value: 1
+  - name: _BacklightBorder
+    value: 0.35
+  - name: _BacklightBlur
+    value: 0.05
+  - name: _BacklightDirectivity
+    value: 5
+  - name: _BacklightViewStrength
+    value: 1
+  - name: _BacklightReceiveShadow
+    value: 1
+  - name: _BacklightBackfaceMask
+    value: 1
   - name: _UseShadow
+    value: 1
+  - name: _ShadowStrength
+    value: 1
+  - name: _ShadowStrengthMaskLOD
     value: 0
-  - name: _ShadowReceive
+  - name: _ShadowBorderMaskLOD
     value: 0
+  - name: _ShadowBlurMaskLOD
+    value: 0
+  - name: _ShadowPostAO
+    value: 0
+  - name: _ShadowNormalStrength
+    value: 1
   - name: _ShadowBorder
     value: 0.5
   - name: _ShadowBlur
     value: 0.1
-  - name: _ShadowStrength
+  - name: _ShadowReceive
+    value: 0
+  - name: _Shadow2ndNormalStrength
     value: 1
   - name: _Shadow2ndBorder
-    value: 0.5
+    value: 0.15
   - name: _Shadow2ndBlur
-    value: 0.3
-  - name: _ShadowMainStrength
+    value: 0.1
+  - name: _Shadow2ndReceive
+    value: 0
+  - name: _Shadow3rdNormalStrength
     value: 1
-  - name: _ShadowEnvStrength
+  - name: _Shadow3rdBorder
+    value: 0.25
+  - name: _Shadow3rdBlur
+    value: 0.1
+  - name: _Shadow3rdReceive
     value: 0
   - name: _ShadowBorderRange
+    value: 0.08
+  - name: _ShadowMainStrength
     value: 0
-  - name: _Cull
-    value: 2
-  - name: _SrcBlend
-    value: 5
-  - name: _DstBlend
-    value: 10
-  - name: _SrcBlendAlpha
+  - name: _ShadowEnvStrength
+    value: 0
+  - name: _ShadowMaskType
+    value: 0
+  - name: _ShadowFlatBorder
     value: 1
-  - name: _DstBlendAlpha
-    value: 10
-  - name: _BlendOp
-    value: 0
-  - name: _BlendOpAlpha
-    value: 0
-  - name: _SrcBlendFA
+  - name: _ShadowFlatBlur
     value: 1
-  - name: _DstBlendFA
+  - name: _UseReflection
+    value: 0
+  - name: _Smoothness
     value: 1
-  - name: _SrcBlendAlphaFA
+  - name: _Metallic
     value: 0
-  - name: _DstBlendAlphaFA
+  - name: _Reflectance
+    value: 0.04
+  - name: _GSAAStrength
+    value: 0
+  - name: _ApplySpecular
     value: 1
-  - name: _BlendOpFA
-    value: 4
-  - name: _BlendOpAlphaFA
-    value: 4
-  - name: _ZWrite
+  - name: _ApplySpecularFA
     value: 1
-  - name: _ZTest
-    value: 4
-  - name: _StencilRef
+  - name: _SpecularToon
+    value: 1
+  - name: _SpecularNormalStrength
+    value: 1
+  - name: _SpecularBorder
+    value: 0.5
+  - name: _SpecularBlur
     value: 0
-  - name: _StencilReadMask
-    value: 255
-  - name: _StencilWriteMask
-    value: 255
-  - name: _StencilComp
-    value: 8
-  - name: _StencilPass
+  - name: _ApplyReflection
     value: 0
-  - name: _StencilFail
+  - name: _ReflectionNormalStrength
+    value: 1
+  - name: _ReflectionApplyTransparency
+    value: 1
+  - name: _ReflectionCubeOverride
     value: 0
-  - name: _StencilZFail
+  - name: _ReflectionCubeEnableLighting
+    value: 1
+  - name: _ReflectionBlendMode
+    value: 1
+  - name: _UseMatCap
     value: 0
-  - name: _OffsetFactor
+  - name: _MatCapZRotCancel
+    value: 1
+  - name: _MatCapPerspective
+    value: 1
+  - name: _MatCapVRParallaxStrength
+    value: 1
+  - name: _MatCapBlend
+    value: 1
+  - name: _MatCapEnableLighting
+    value: 1
+  - name: _MatCapShadowMask
     value: 0
-  - name: _OffsetUnits
+  - name: _MatCapBackfaceMask
     value: 0
-  - name: _ColorMask
-    value: 15
+  - name: _MatCapLod
+    value: 0
+  - name: _MatCapBlendMode
+    value: 1
+  - name: _MatCapApplyTransparency
+    value: 1
+  - name: _MatCapNormalStrength
+    value: 1
+  - name: _MatCapCustomNormal
+    value: 0
+  - name: _MatCapBumpScale
+    value: 1
+  - name: _UseRim
+    value: 0
+  - name: _RimNormalStrength
+    value: 1
+  - name: _RimBorder
+    value: 0.5
+  - name: _RimBlur
+    value: 0.65
+  - name: _RimFresnelPower
+    value: 3.5
+  - name: _RimEnableLighting
+    value: 1
+  - name: _RimShadowMask
+    value: 0.5
+  - name: _RimBackfaceMask
+    value: 1
+  - name: _RimVRParallaxStrength
+    value: 1
+  - name: _RimApplyTransparency
+    value: 1
+  - name: _RimDirStrength
+    value: 0
+  - name: _RimDirRange
+    value: 0
+  - name: _RimIndirRange
+    value: 0
+  - name: _RimIndirBorder
+    value: 0.5
+  - name: _RimIndirBlur
+    value: 0.1
+  - name: _lilShadowCasterBias
+    value: 0
   - name: _FurVectorScale
     value: 1
   - name: _VertexColor2FurVector
     value: 0
   - name: _FurGravity
     value: 0.25
+  - name: _FurRandomize
+    value: 0
   - name: _FurAO
     value: 0
+  - name: _FurMeshType
+    value: 0
   - name: _FurLayerNum
-    value: 4
-  - name: _FurCull
+    value: 3
+  - name: _FurRootOffset
+    value: -1
+  - name: _FurCutoutLength
+    value: 0.8
+  - name: _FurTouchStrength
     value: 0
-  - name: _FurSrcBlend
-    value: 5
-  - name: _FurDstBlend
-    value: 10
-  - name: _FurSrcBlendAlpha
-    value: 1
-  - name: _FurDstBlendAlpha
-    value: 10
-  - name: _FurBlendOp
-    value: 0
-  - name: _FurBlendOpAlpha
-    value: 0
-  - name: _FurSrcBlendFA
-    value: 1
-  - name: _FurDstBlendFA
-    value: 1
-  - name: _FurSrcBlendAlphaFA
-    value: 0
-  - name: _FurDstBlendAlphaFA
-    value: 1
-  - name: _FurBlendOpFA
-    value: 4
-  - name: _FurBlendOpAlphaFA
-    value: 4
-  - name: _FurZWrite
-    value: 0
-  - name: _FurZTest
-    value: 4
-  - name: _FurStencilRef
-    value: 0
-  - name: _FurStencilReadMask
-    value: 255
-  - name: _FurStencilWriteMask
-    value: 255
-  - name: _FurStencilComp
-    value: 8
-  - name: _FurStencilPass
-    value: 0
-  - name: _FurStencilFail
-    value: 0
-  - name: _FurStencilZFail
-    value: 0
-  - name: _FurOffsetFactor
-    value: 0
-  - name: _FurOffsetUnits
-    value: 0
-  - name: _FurColorMask
-    value: 15
+  - name: _Cutoff
+    value: 0.001
   textures:
   - name: _FurNoiseMask
     value: {fileID: 2800000, guid: 3d421fc7bc8924f4985df741bf8d70ed, type: 3}
     offset: {x: 0, y: 0}
-    scale: {x: 8, y: 8}
+    scale: {x: 256, y: 256}
   renderQueue: -2
-  outline: 0
+  outline: -1
   outlineMainTex: 0
-  tessellation: 0
+  tessellation: -1

@@ -66,6 +66,7 @@ namespace lilToon
         private static void RemoveUnusedProperties()
         {
             if(Selection.objects.Length == 0) return;
+            Undo.RecordObjects(Selection.objects, "Remove unused properties");
             for(int i = 0; i < Selection.objects.Length; i++)
             {
                 if(Selection.objects[i] is Material)
@@ -184,6 +185,7 @@ namespace lilToon
             if(Selection.objects.Length == 0) return;
             Shader lts = Shader.Find("lilToon");
             if(lts == null) EditorUtility.DisplayDialog("Setup From FBX",lilToonInspector.GetLoc("sUtilShaderNotFound"),lilToonInspector.GetLoc("sCancel"));
+            Undo.RecordObjects(Selection.objects, "Setup From FBX");
             foreach(UnityEngine.Object selectionObj in Selection.objects)
             {
                 string path = AssetDatabase.GetAssetPath(selectionObj);
@@ -367,13 +369,23 @@ namespace lilToon
         private static void FixLighting()
         {
             GameObject gameObject = Selection.activeGameObject;
+            Transform anchorTransform = gameObject.transform.Find(anchorName);
+            GameObject anchorObject = anchorTransform != null ? anchorTransform.gameObject : null;
+            MeshRenderer[] meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>(true);
+            SkinnedMeshRenderer[] skinnedMeshRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+
+            List<UnityEngine.Object> recordObjects = new List<UnityEngine.Object>();
+            recordObjects.Add(gameObject);
+            recordObjects.AddRange(meshRenderers);
+            recordObjects.AddRange(skinnedMeshRenderers);
 
             // Create Anchor
-            if(gameObject.transform.Find(anchorName) != null)
+            if(anchorObject == null)
             {
-                UnityEngine.Object.DestroyImmediate(gameObject.transform.Find(anchorName).gameObject);
+                anchorObject = new GameObject(anchorName);
             }
-            GameObject anchorObject = new GameObject(anchorName);
+            recordObjects.Add(anchorObject);
+            Undo.RecordObjects(recordObjects.ToArray(), "[lilToon] Fix lighting");
 
             // Calculate avatar size
             float minX =  10000.0f;
@@ -417,7 +429,6 @@ namespace lilToon
             lilToonSetting shaderSetting = AssetDatabase.LoadAssetAtPath<lilToonSetting>(shaderSettingPath);
 
             // MeshRenderer
-            MeshRenderer[] meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>(true);
             if(meshRenderers.Length != 0)
             {
                 foreach(MeshRenderer meshRenderer in meshRenderers)
@@ -427,6 +438,7 @@ namespace lilToon
                     {
                         if(material.shader.name.Contains("lilToon") && shaderSetting != null)
                         {
+                            Undo.RecordObject(material, "[lilToon] Fix lighting");
                             material.SetFloat("_AsUnlit", shaderSetting.defaultAsUnlit);
                             material.SetFloat("_VertexLightStrength", shaderSetting.defaultVertexLightStrength);
                             material.SetFloat("_LightMinLimit", shaderSetting.defaultLightMinLimit);
@@ -437,8 +449,6 @@ namespace lilToon
                             EditorUtility.SetDirty(material);
                         }
                     }
-                    AssetDatabase.SaveAssets();
-                    AssetDatabase.Refresh();
 
                     // Fix renderer settings
                     meshRenderer.probeAnchor = anchorObject.transform;
@@ -452,7 +462,6 @@ namespace lilToon
             }
 
             // SkinnedMeshRenderer
-            SkinnedMeshRenderer[] skinnedMeshRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>(true);
             if(skinnedMeshRenderers.Length != 0)
             {
                 foreach(SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
@@ -462,6 +471,7 @@ namespace lilToon
                     {
                         if(material != null && material.shader != null && material.shader.name.Contains("lilToon") && shaderSetting != null)
                         {
+                            Undo.RecordObject(material, "[lilToon] Fix lighting");
                             material.SetFloat("_AsUnlit", shaderSetting.defaultAsUnlit);
                             material.SetFloat("_VertexLightStrength", shaderSetting.defaultVertexLightStrength);
                             material.SetFloat("_LightMinLimit", shaderSetting.defaultLightMinLimit);
@@ -472,8 +482,6 @@ namespace lilToon
                             EditorUtility.SetDirty(material);
                         }
                     }
-                    AssetDatabase.SaveAssets();
-                    AssetDatabase.Refresh();
 
                     // Fix renderer settings
                     skinnedMeshRenderer.probeAnchor = anchorObject.transform;
@@ -493,6 +501,8 @@ namespace lilToon
                 }
             }
 
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
             EditorUtility.DisplayDialog("[lilToon] Fix Lighting",lilToonInspector.GetLoc("sComplete"),lilToonInspector.GetLoc("sOK"));
         }
 

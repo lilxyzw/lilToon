@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - プリセット機能を拡張
 - `Setup from FBX`で使用するプリセットをシェーダー設定内に保存するように変更
 - `Fix lighting`で`ライト方向のオーバーライド`のマテリアルの設定が保持されるように変更
+- ファーのプリセットを再調整
 
 ### 修正
 - URPでフォグがうまく動作していなかった問題を修正

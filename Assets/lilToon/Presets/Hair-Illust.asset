@@ -214,7 +214,7 @@ MonoBehaviour:
   - name: _RimIndirBlur
     value: 0.1
   - name: _lilShadowCasterBias
-    value: 1
+    value: 0
   - name: _OutlineLitApplyTex
     value: 0
   - name: _OutlineLitScale
