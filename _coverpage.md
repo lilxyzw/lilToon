@@ -4,4 +4,4 @@
 
 [GitHub](https://github.com/lilxyzw/lilToon/releases)
 [BOOTH](https://lilxyzw.booth.pm/items/3087170)
-[lilToonについて](#lilToonについて)
+[Overview](#Overview)

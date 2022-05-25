@@ -1,4 +1,4 @@
-- [lilToonについて](ja-jp/ "lilToon")
+- [概要](ja-jp/ "lilToon")
 - [はじめに](ja-jp/first.md "はじめに - lilToon")
 - **基本設定**
     - [- 基本設定](ja-jp/base/base.md "基本設定 - lilToon")

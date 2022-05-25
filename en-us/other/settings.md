@@ -28,7 +28,7 @@
 
 ### [GameObject] Fix lighting
 
-`GameObject/lilToon/[GameObject] Fix lighting`やライティングプリセットに使用される値です。各パラメータの詳細については[ライティング設定](/ja-jp/base/lighting)を参照してください。
+`GameObject/lilToon/[GameObject] Fix lighting`やライティングプリセットに使用される値です。各パラメータの詳細については[ライティング設定](/en-us/base/lighting)を参照してください。
 
 |名前|デフォルト|
 |-|-|
