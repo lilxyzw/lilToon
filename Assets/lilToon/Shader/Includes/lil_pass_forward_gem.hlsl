@@ -126,11 +126,7 @@
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Gem View Direction
-        #if defined(USING_STEREO_MATRICES)
-            float3 gemViewDirection = lerp(fd.headV, fd.V, _GemVRParallaxStrength);
-        #else
-            float3 gemViewDirection = fd.V;
-        #endif
+        float3 gemViewDirection = lilBlendVRParallax(fd.headV, fd.V, _GemVRParallaxStrength);
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Main Color

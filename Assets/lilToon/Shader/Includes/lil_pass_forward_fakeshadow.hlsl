@@ -56,7 +56,7 @@ v2f vert(appdata input)
         lightDirection = normalize(lightDirection * Luminance(lightColor) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + float3(0.0,0.001,0.0));
         output.positionWS = vertexInput.positionWS;
     #else
-        float3 lightDirection = normalize(lilGetLightDirection() + _FakeShadowVector.xyz);
+        float3 lightDirection = normalize(lilGetLightDirection() + length(_FakeShadowVector.xyz) * normalize(mul((float3x3)LIL_MATRIX_M, _FakeShadowVector.xyz)));
     #endif
     float2 lightShift = mul((float3x3)LIL_MATRIX_VP, lightDirection * _FakeShadowVector.w).xy;
     output.positionCS = vertexInput.positionCS;

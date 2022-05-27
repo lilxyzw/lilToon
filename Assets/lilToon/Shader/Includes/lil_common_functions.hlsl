@@ -306,12 +306,12 @@ float3 lilGetOutlineVector(float3x3 tbnOS, float2 uv, float outlineVectorScale, 
     return outlineVector;
 }
 
-void lilCalcOutlinePosition(inout float3 positionOS, float2 uv, float4 color, float3 normalOS, float3x3 tbnOS, float outlineWidth, TEXTURE2D(outlineWidthMask), uint outlineVertexR2Width, float outlineFixWidth, float outlineZBias, float outlineVectorScale, TEXTURE2D(outlineVectorTex) LIL_SAMP_IN_FUNC(samp))
+void lilCalcOutlinePosition(inout float3 positionOS, float2 uvs[4], float4 color, float3 normalOS, float3x3 tbnOS, float outlineWidth, TEXTURE2D(outlineWidthMask), uint outlineVertexR2Width, float outlineFixWidth, float outlineZBias, float outlineVectorScale, uint outlineVectorUVMode, TEXTURE2D(outlineVectorTex) LIL_SAMP_IN_FUNC(samp))
 {
     float3 positionWS = lilToAbsolutePositionWS(lilOptMul(LIL_MATRIX_M, positionOS).xyz);
-    float width = lilGetOutlineWidth(positionOS, positionWS, uv, color, outlineWidth, outlineWidthMask, outlineVertexR2Width, outlineFixWidth LIL_SAMP_IN(samp));
+    float width = lilGetOutlineWidth(positionOS, positionWS, uvs[0], color, outlineWidth, outlineWidthMask, outlineVertexR2Width, outlineFixWidth LIL_SAMP_IN(samp));
     float3 outlineN = normalOS;
-    if(Exists_OutlineVectorTex) outlineN = lilGetOutlineVector(tbnOS, uv, outlineVectorScale, outlineVectorTex LIL_SAMP_IN(samp));
+    if(Exists_OutlineVectorTex) outlineN = lilGetOutlineVector(tbnOS, uvs[outlineVectorUVMode], outlineVectorScale, outlineVectorTex LIL_SAMP_IN(samp));
     if(outlineVertexR2Width == 2) outlineN = mul(color.rgb * 2.0 - 1.0, tbnOS);
     positionOS += outlineN * width;
     #if !defined(LIL_PASS_SHADOWCASTER_INCLUDED) && !(defined(LIL_URP) && defined(LIL_PASS_DEPTHONLY_INCLUDED))
@@ -559,11 +559,7 @@ float2 lilCalcMatCapUV(float2 uv1, float3 normalWS, float3 viewDirection, float3
         // Simple
         return mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5 + 0.5;
     #elif LIL_MATCAP_MODE == 1
-        #if defined(USING_STEREO_MATRICES)
-            float3 normalVD = lerp(headDirection, viewDirection, matcapVRParallaxStrength);
-        #else
-            float3 normalVD = viewDirection;
-        #endif
+        float3 normalVD = lilBlendVRParallax(headDirection, viewDirection, matcapVRParallaxStrength);
         normalVD = lilIsPerspective() && matcapPerspective ? normalVD : lilCameraDirection();
         float3 bitangentVD = zRotCancel ? float3(0,1,0) : LIL_MATRIX_V._m10_m11_m12;
         bitangentVD = lilOrthoNormalize(bitangentVD, normalVD);

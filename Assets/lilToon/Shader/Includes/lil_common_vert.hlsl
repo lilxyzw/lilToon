@@ -82,6 +82,7 @@ LIL_V2F_TYPE vert(appdata input)
     //------------------------------------------------------------------------------------------------------------------------------
     // UV
     float2 uvMain = lilCalcUV(input.uv0, _MainTex_ST);
+    float2 uvs[4] = {uvMain,input.uv1,input.uv2,input.uv3};
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Object space direction
@@ -245,13 +246,13 @@ LIL_V2F_TYPE vert(appdata input)
         LIL_V2F_OUT_BASE.indLightColor  = lightdataInput.indLightColor * _ShadowEnvStrength;
     #endif
     #if defined(LIL_V2F_NDOTL)
-        float2 outlineNormalVS = normalize(mul((float3x3)LIL_MATRIX_V, vertexNormalInput.normalWS).xy);
+        float2 outlineNormalVS = normalize(lilTransformDirWStoVSCenter(vertexNormalInput.normalWS).xy);
         #if defined(LIL_PASS_FORWARDADD)
-            float2 outlineLightVS = normalize(mul((float3x3)LIL_MATRIX_V, normalize(_WorldSpaceLightPos0.xyz - vertexInput.positionWS * _WorldSpaceLightPos0.w)).xy);
+            float2 outlineLightVS = normalize(lilTransformDirWStoVSCenter(normalize(_WorldSpaceLightPos0.xyz - vertexInput.positionWS * _WorldSpaceLightPos0.w)).xy);
         #else
-            float2 outlineLightVS = normalize(mul((float3x3)LIL_MATRIX_V, lightdataInput.lightDirection).xy);
+            float2 outlineLightVS = normalize(lilTransformDirWStoVSCenter(lightdataInput.lightDirection).xy);
         #endif
-        LIL_V2F_OUT_BASE.NdotL      = dot(outlineNormalVS, outlineLightVS) * 0.5 + 0.5;
+        LIL_V2F_OUT_BASE.NdotL          = dot(outlineNormalVS, outlineLightVS) * 0.5 + 0.5;
     #endif
     #if defined(LIL_V2F_SHADOW)
         LIL_TRANSFER_SHADOW(vertexInput, input.uv1, LIL_V2F_OUT_BASE);

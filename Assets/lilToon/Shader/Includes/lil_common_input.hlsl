@@ -723,6 +723,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
         uint    _OutlineVertexR2Width;
+        uint    _OutlineVectorUVMode;
     #endif
     #if defined(LIL_FUR)
         uint    _FurLayerNum;
@@ -1329,6 +1330,7 @@ SAMPLER(sampler_linear_clamp);
         #endif
     #endif
     uint    _OutlineVertexR2Width;
+    uint    _OutlineVectorUVMode;
     #if defined(LIL_FUR)
         uint    _FurLayerNum;
         uint    _FurMeshType;

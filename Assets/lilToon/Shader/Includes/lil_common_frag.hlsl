@@ -1365,11 +1365,7 @@
                 }
 
                 // View direction
-                #if defined(USING_STEREO_MATRICES)
-                    float3 V = lerp(fd.headV, fd.V, _RimVRParallaxStrength);
-                #else
-                    float3 V = fd.V;
-                #endif
+                float3 V = lilBlendVRParallax(fd.headV, fd.V, _RimVRParallaxStrength);
 
                 // Normal
                 float3 N = fd.N;
@@ -1473,13 +1469,8 @@
         if(_UseGlitter)
         {
             // View direction
-            #if defined(USING_STEREO_MATRICES)
-                float3 glitterViewDirection = lerp(fd.headV, fd.V, _GlitterVRParallaxStrength);
-                float3 glitterCameraDirection = lerp(fd.cameraFront, fd.V, _GlitterVRParallaxStrength);
-            #else
-                float3 glitterViewDirection = fd.V;
-                float3 glitterCameraDirection = lerp(fd.cameraFront, fd.V, _GlitterVRParallaxStrength);
-            #endif
+            float3 glitterViewDirection = lilBlendVRParallax(fd.headV, fd.V, _GlitterVRParallaxStrength);
+            float3 glitterCameraDirection = lerp(fd.cameraFront, fd.V, _GlitterVRParallaxStrength);
 
             // Normal
             float3 N = fd.N;

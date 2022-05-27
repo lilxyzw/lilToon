@@ -452,6 +452,15 @@
     }
 #endif
 
+// Stereo
+#if defined(LIL_HDRP)
+    #define LIL_STEREO_MATRIX_V        _XRViewMatrix
+    #define LIL_STEREO_CAMERA_POS      _XRWorldSpaceCameraPos
+#else
+    #define LIL_STEREO_MATRIX_V        unity_StereoMatrixV
+    #define LIL_STEREO_CAMERA_POS      unity_StereoWorldSpaceCameraPos
+#endif
+
 float3 lilToAbsolutePositionWS(float3 positionRWS)
 {
     #if (SHADEROPTIONS_CAMERA_RELATIVE_RENDERING != 0)
@@ -508,10 +517,8 @@ float3 lilViewDirection(float3 positionWS)
 
 float3 lilHeadDirection(float3 positionWS)
 {
-    #if defined(USING_STEREO_MATRICES) && defined(LIL_HDRP)
-        return (_XRWorldSpaceCameraPos[0].xyz + _XRWorldSpaceCameraPos[1].xyz) * 0.5 - positionWS;
-    #elif defined(USING_STEREO_MATRICES)
-        return (unity_StereoWorldSpaceCameraPos[0].xyz + unity_StereoWorldSpaceCameraPos[1].xyz) * 0.5 - positionWS;
+    #if defined(USING_STEREO_MATRICES)
+        return (LIL_STEREO_CAMERA_POS[0].xyz + LIL_STEREO_CAMERA_POS[1].xyz) * 0.5 - positionWS;
     #else
         return lilViewDirection(positionWS);
     #endif
@@ -519,12 +526,24 @@ float3 lilHeadDirection(float3 positionWS)
 
 float3 lilCameraDirection()
 {
-    #if defined(USING_STEREO_MATRICES) && defined(LIL_HDRP)
-        return normalize(_XRViewMatrix[0]._m20_m21_m22 + _XRViewMatrix[0]._m20_m21_m22);
-    #elif defined(USING_STEREO_MATRICES)
-        return normalize(unity_StereoMatrixV[0]._m20_m21_m22 + unity_StereoMatrixV[0]._m20_m21_m22);
+    #if defined(USING_STEREO_MATRICES)
+        return normalize(LIL_STEREO_MATRIX_V[0]._m20_m21_m22 + LIL_STEREO_MATRIX_V[1]._m20_m21_m22);
     #else
         return LIL_MATRIX_V._m20_m21_m22;
+    #endif
+}
+
+float3 lilCameraUp()
+{
+    return LIL_MATRIX_V._m10_m11_m12;
+}
+
+float3 lilCameraRight()
+{
+    #if defined(USING_STEREO_MATRICES)
+        return cross(lilCameraDirection(), lilCameraUp());
+    #else
+        return LIL_MATRIX_V._m00_m01_m02;
     #endif
 }
 
@@ -539,10 +558,8 @@ float3 lilViewDirectionOS(float3 positionOS)
 
 float3 lilHeadDirectionOS(float3 positionOS)
 {
-    #if defined(USING_STEREO_MATRICES) && defined(LIL_HDRP)
-        return lilTransformWStoOS(lilToRelativePositionWS((_XRWorldSpaceCameraPos[0].xyz + _XRWorldSpaceCameraPos[1].xyz) * 0.5)) - positionOS;
-    #elif defined(USING_STEREO_MATRICES)
-        return lilTransformWStoOS((unity_StereoWorldSpaceCameraPos[0].xyz + unity_StereoWorldSpaceCameraPos[1].xyz) * 0.5) - positionOS;
+    #if defined(USING_STEREO_MATRICES)
+        return lilTransformWStoOS((LIL_STEREO_CAMERA_POS[0].xyz + LIL_STEREO_CAMERA_POS[1].xyz) * 0.5) - positionOS;
     #else
         return lilViewDirectionOS(positionOS);
     #endif
@@ -555,6 +572,31 @@ float2 lilCStoGrabUV(float4 positionCS)
         uvScn.xy = TransformStereoScreenSpaceTex(uvScn.xy, 1.0);
     #endif
     return uvScn;
+}
+
+float3 lilTransformDirWStoVSCenter(float3 directionWS, bool doNormalize)
+{
+    #if defined(USING_STEREO_MATRICES)
+        if(doNormalize) return normalize(mul((float3x3)LIL_STEREO_MATRIX_V[0], directionWS) + mul((float3x3)LIL_STEREO_MATRIX_V[1], directionWS));
+        else            return mul((float3x3)LIL_STEREO_MATRIX_V[0], directionWS) + mul((float3x3)LIL_STEREO_MATRIX_V[1], directionWS);
+    #else
+        if(doNormalize) return normalize(mul((float3x3)LIL_MATRIX_V, directionWS));
+        else            return mul((float3x3)LIL_MATRIX_V, directionWS);
+    #endif
+}
+
+float3 lilTransformDirWStoVSCenter(float3 directionWS)
+{
+    return lilTransformDirWStoVSCenter(directionWS, false);
+}
+
+float3 lilBlendVRParallax(float3 a, float3 b, float c)
+{
+    #if defined(USING_STEREO_MATRICES)
+        return lerp(a, b, c);
+    #else
+        return b;
+    #endif
 }
 
 /*
@@ -611,6 +653,7 @@ float2 lilCStoGrabUV(float4 positionCS)
             DummyStructure v; \
             v.vertex = input.positionOS; \
             BRPShadowCoords brpShadowCoords; \
+            LIL_INITIALIZE_STRUCT(BRPShadowCoords, brpShadowCoords); \
             brpShadowCoords.pos = vi.positionCS; \
             UNITY_TRANSFER_LIGHTING(brpShadowCoords, uv) \
             o._ShadowCoord = brpShadowCoords._ShadowCoord

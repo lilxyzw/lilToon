@@ -1312,7 +1312,6 @@ namespace lilToon
                 if(!LIL_OPTIMIZE_USE_VERTEXLIGHT) sb.Append("#pragma lil_skip_variants_addlight\r\n");
                 if(!LIL_OPTIMIZE_USE_LIGHTMAP) sb.Append("#pragma lil_skip_variants_lightmaps\r\n");
             }
-            Debug.Log(sb.ToString());
             return sb.ToString();
         }
 

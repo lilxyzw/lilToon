@@ -462,6 +462,7 @@ Shader "_lil/[Optional] lilToonOutlineOnly"
         [lilEnum]       _OutlineVertexR2Width       ("Vertex Color|None|R|RGBA", Int) = 0
         [lilToggle]     _OutlineDeleteMesh          ("Delete Mesh", Int) = 0
         [NoScaleOffset][Normal] _OutlineVectorTex   ("Vector", 2D) = "bump" {}
+        [lilEnum]       _OutlineVectorUVMode        ("UV Mode|UV0|UV1|UV2|UV3", Int) = 0
                         _OutlineVectorScale         ("Vector scale", Range(-10,10)) = 1
                         _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
                         _OutlineZBias               ("Z Bias", Float) = 0
