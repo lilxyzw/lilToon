@@ -63,7 +63,7 @@ LIL_V2F_TYPE vert(appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Invisible
-    #if defined(LIL_TESSELLATION)
+    #if defined(LIL_TESSELLATION) || defined(LIL_CUSTOM_SAFEVERT)
         LIL_BRANCH
         if(!_Invisible)
         {
@@ -345,13 +345,12 @@ LIL_V2F_TYPE vert(appdata input)
         if(width > -0.000001 && width < 0.000001 && _OutlineDeleteMesh) LIL_V2F_OUT.positionCS = 0.0/0.0;
     #endif
 
-    #if defined(LIL_TESSELLATION)
+    #if defined(LIL_TESSELLATION) || defined(LIL_CUSTOM_SAFEVERT)
         }
     #endif
 
     return LIL_V2F_OUT;
 }
-
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Geometry shader (for HDRP)

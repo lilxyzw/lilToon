@@ -6,6 +6,7 @@
             #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma fragmentoption ARB_precision_hint_fastest
+            #define LIL_FAKESHADOW
 
             #pragma lil_skip_variants_shadows
             #pragma lil_skip_variants_lightmaps
@@ -59,6 +60,7 @@
 
             #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 

@@ -53,7 +53,9 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     #include "lil_common_frag_alpha.hlsl"
 
     #if VERSION_GREATER_EQUAL(10, 1)
-        return float4(PackNormalOctRectEncode(normalize(mul((float3x3)LIL_MATRIX_V, input.normalWS))), 0.0, 0.0);
+        float3 normalDirection = normalize(input.normalWS);
+        normalDirection = fd.facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
+        return float4(PackNormalOctRectEncode(normalize(mul((float3x3)LIL_MATRIX_V, normalDirection))), 0.0, 0.0);
     #else
         return 0;
     #endif

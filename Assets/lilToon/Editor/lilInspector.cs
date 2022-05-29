@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using lilToon.lilRenderPipelineReader;
 #if VRC_SDK_VRCSDK3 && !UDON
     using VRC.SDK3.Avatars.Components;
 #endif
@@ -94,14 +95,6 @@ namespace lilToon
             Inorganic,
             Effect,
             Other
-        }
-
-        public enum lilRenderPipeline
-        {
-            BRP,
-            LWRP,
-            URP,
-            HDRP
         }
 
         public enum lilPropertyBlock
@@ -3763,49 +3756,21 @@ namespace lilToon
         {
             string[] shaderFolderPaths = GetShaderFolderPaths();
             string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
-            // Render Pipeline
-            // BRP : null
-            // LWRP : LightweightPipeline.LightweightRenderPipelineAsset
-            // URP : Universal.UniversalRenderPipelineAsset
-            // HDRP : HighDefinition.HDRenderPipelineAsset
-            lilRenderPipeline lilRP = CheckRP();
-            Array.ForEach(shaderGuids, shaderGuid => RewriteShaderRP(AssetDatabase.GUIDToAssetPath(shaderGuid), lilRP));
-            RewriteShaderRP(GetShaderPipelinePath(), lilRP);
+            lilRenderPipeline RP = RPReader.GetRP();
+            Array.ForEach(shaderGuids, shaderGuid => RewriteShaderRP(AssetDatabase.GUIDToAssetPath(shaderGuid), RP));
+            RewriteShaderRP(GetShaderPipelinePath(), RP);
         }
 
-        public static lilRenderPipeline CheckRP()
-        {
-            // Render Pipeline
-            // BRP : null
-            // LWRP : LightweightPipeline.LightweightRenderPipelineAsset
-            // URP : Universal.UniversalRenderPipelineAsset
-            // HDRP : HighDefinition.HDRenderPipelineAsset
-            lilRenderPipeline lilRP = lilRenderPipeline.BRP;
-            if(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset != null)
-            {
-                string renderPipelineName = UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.ToString();
-                if(string.IsNullOrEmpty(renderPipelineName))            lilRP = lilRenderPipeline.BRP;
-                else if(renderPipelineName.Contains("Lightweight"))     lilRP = lilRenderPipeline.LWRP;
-                else if(renderPipelineName.Contains("Universal"))       lilRP = lilRenderPipeline.URP;
-                else if(renderPipelineName.Contains("HDRenderPipeline"))  lilRP = lilRenderPipeline.HDRP;
-            }
-            else
-            {
-                lilRP = lilRenderPipeline.BRP;
-            }
-            return lilRP;
-        }
-
-        private static void RewriteShaderRP(string shaderPath, lilRenderPipeline lilRP)
+        private static void RewriteShaderRP(string shaderPath, lilRenderPipeline RP)
         {
             string path = shaderPath;
             StreamReader sr = new StreamReader(path);
             string s = sr.ReadToEnd();
             sr.Close();
-            RewriteBRP(ref s, lilRP == lilRenderPipeline.BRP);
-            RewriteLWRP(ref s, lilRP == lilRenderPipeline.LWRP);
-            RewriteURP(ref s, lilRP == lilRenderPipeline.URP);
-            RewriteHDRP(ref s, lilRP == lilRenderPipeline.HDRP);
+            RewriteBRP(ref s, RP == lilRenderPipeline.BRP);
+            RewriteLWRP(ref s, RP == lilRenderPipeline.LWRP);
+            RewriteURP(ref s, RP == lilRenderPipeline.URP);
+            RewriteHDRP(ref s, RP == lilRenderPipeline.HDRP);
             StreamWriter sw = new StreamWriter(path,false);
             sw.Write(s);
             sw.Close();
@@ -4086,6 +4051,7 @@ namespace lilToon
 
             if(shaderSettingString != shaderSettingStringBuf)
             {
+                PackageVersionInfos version = RPReader.GetRPInfos();
                 StreamWriter sw = new StreamWriter(shaderSettingHLSLPath,false);
                 sw.Write(shaderSettingString);
                 sw.Close();
@@ -4098,10 +4064,11 @@ namespace lilToon
                 foreach (string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
                 {
                     string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
-                    RewriteReceiveShadow(shaderPath, isShadowReceive);
-                    RewriteForwardAdd(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
-                    RewriteVertexLight(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
-                    RewriteLightmap(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
+                    lilShaderRewriter.RewriteReceiveShadow(shaderPath, isShadowReceive);
+                    lilShaderRewriter.RewriteForwardAdd(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
+                    lilShaderRewriter.RewriteVertexLight(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
+                    lilShaderRewriter.RewriteLightmap(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
+                    lilShaderRewriter.RewriteRPPass(shaderPath, version);
                 }
                 foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader"))
                 {
@@ -4398,13 +4365,13 @@ namespace lilToon
 
         private static void OptimizationSettingGUI()
         {
-            lilRenderPipeline lilRP = CheckRP();
-            if(lilRP == lilRenderPipeline.BRP)
+            lilRenderPipeline RP = RPReader.GetRP();
+            if(RP == lilRenderPipeline.BRP)
             {
                 ToggleGUI(GetLoc("sSettingApplyShadowFA"), ref shaderSetting.LIL_OPTIMIZE_APPLY_SHADOW_FA);
                 ToggleGUI(GetLoc("sSettingUseForwardAdd"), ref shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
-                ToggleGUI(GetLoc("sSettingUseVertexLight"), ref shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
             }
+            ToggleGUI(GetLoc("sSettingUseVertexLight"), ref shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
             ToggleGUI(GetLoc("sSettingUseLightmap"), ref shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
         }
 
@@ -4500,161 +4467,6 @@ namespace lilToon
             ltsmgem     = Shader.Find("Hidden/lilToonMultiGem");
 
             mtoon       = Shader.Find("VRM/MToon");
-        }
-        #endregion
-
-        //------------------------------------------------------------------------------------------------------------------------------
-        // Shader Rewriter
-        #region
-        public static void RewriteReceiveShadow(string path, bool enable)
-        {
-            if(string.IsNullOrEmpty(path) || !File.Exists(path)) return;
-            StreamReader sr = new StreamReader(path);
-            string s = sr.ReadToEnd();
-            sr.Close();
-            if(enable)
-            {
-                // BRP
-                s = s.Replace(
-                    "            // Skip receiving shadow\r\n            #pragma skip_variants SHADOWS_SCREEN",
-                    "            // Skip receiving shadow\r\n            //#pragma skip_variants SHADOWS_SCREEN");
-                // LWRP & URP
-                s = s.Replace(
-                    "            // Skip receiving shadow\r\n            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN\r\n            //#pragma multi_compile_fragment _ _SHADOWS_SOFT",
-                    "            // Skip receiving shadow\r\n            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN\r\n            #pragma multi_compile_fragment _ _SHADOWS_SOFT");
-                // HDRP
-                s = s.Replace(
-                    "            // Skip receiving shadow\r\n            //#pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON\r\n            //#pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH",
-                    "            // Skip receiving shadow\r\n            #pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON\r\n            #pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH");
-            }
-            else
-            {
-                // BRP
-                s = s.Replace(
-                    "            // Skip receiving shadow\r\n            //#pragma skip_variants SHADOWS_SCREEN",
-                    "            // Skip receiving shadow\r\n            #pragma skip_variants SHADOWS_SCREEN");
-                // LWRP & URP
-                s = s.Replace(
-                    "            // Skip receiving shadow\r\n            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN\r\n            #pragma multi_compile_fragment _ _SHADOWS_SOFT",
-                    "            // Skip receiving shadow\r\n            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN\r\n            //#pragma multi_compile_fragment _ _SHADOWS_SOFT");
-                // HDRP
-                s = s.Replace(
-                    "            // Skip receiving shadow\r\n            #pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON\r\n            #pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH",
-                    "            // Skip receiving shadow\r\n            //#pragma multi_compile SCREEN_SPACE_SHADOWS_OFF SCREEN_SPACE_SHADOWS_ON\r\n            //#pragma multi_compile SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH");
-            }
-            StreamWriter sw = new StreamWriter(path,false);
-            sw.Write(s);
-            sw.Close();
-        }
-
-        public static void RewriteForwardAdd(string path, bool enable)
-        {
-            if(string.IsNullOrEmpty(path) || !File.Exists(path)) return;
-            StreamReader sr = new StreamReader(path);
-            string s = sr.ReadToEnd();
-            sr.Close();
-            if(enable)
-            {
-                s = s.Replace(
-                    "        // ForwardAdd Start\r\n        /*",
-                    "        // ForwardAdd Start\r\n        //");
-                s = s.Replace(
-                    "        */\r\n        // ForwardAdd End",
-                    "        //\r\n        // ForwardAdd End");
-            }
-            else
-            {
-                s = s.Replace(
-                    "        // ForwardAdd Start\r\n        //",
-                    "        // ForwardAdd Start\r\n        /*");
-                s = s.Replace(
-                    "        //\r\n        // ForwardAdd End",
-                    "        */\r\n        // ForwardAdd End");
-            }
-
-            StreamWriter sw = new StreamWriter(path,false);
-            string[] lines = s.Split('\n');
-            for(int i = 0; i < lines.Length; i++)
-            {
-                string line = lines[i];
-                line = line.Replace("\r", "");
-
-                if(line.Contains("UsePass") && line.Contains("FORWARD_ADD"))
-                {
-                    if(enable)
-                    {
-                        line = line.Replace(
-                            "        //UsePass",
-                            "        UsePass");
-                    }
-                    else
-                    {
-                        line = line.Replace(
-                            "        UsePass",
-                            "        //UsePass");
-                    }
-                }
-                if(i != lines.Length - 1) sw.WriteLine(line);
-                else                      sw.Write(line);
-                
-            }
-            sw.Close();
-        }
-
-        public static void RewriteVertexLight(string path, bool enable)
-        {
-            if(string.IsNullOrEmpty(path) || !File.Exists(path)) return;
-            StreamReader sr = new StreamReader(path);
-            string s = sr.ReadToEnd();
-            sr.Close();
-            if(enable)
-            {
-                // BRP
-                s = s.Replace(
-                    "            // Skip vertex light\r\n            #pragma skip_variants VERTEXLIGHT_ON",
-                    "            // Skip vertex light\r\n            //#pragma skip_variants VERTEXLIGHT_ON");
-            }
-            else
-            {
-                // BRP
-                s = s.Replace(
-                    "            // Skip vertex light\r\n            //#pragma skip_variants VERTEXLIGHT_ON",
-                    "            // Skip vertex light\r\n            #pragma skip_variants VERTEXLIGHT_ON");
-            }
-            StreamWriter sw = new StreamWriter(path,false);
-            sw.Write(s);
-            sw.Close();
-        }
-
-        public static void RewriteLightmap(string path, bool enable)
-        {
-            if(string.IsNullOrEmpty(path) || !File.Exists(path)) return;
-            StreamReader sr = new StreamReader(path);
-            string s = sr.ReadToEnd();
-            sr.Close();
-            if(enable)
-            {
-                // BRP
-                s = s.Replace(
-                    "            // Skip lightmap\r\n            #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK",
-                    "            // Skip lightmap\r\n            //#pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK");
-            }
-            else
-            {
-                // BRP
-                s = s.Replace(
-                    "            // Skip lightmap\r\n            //#pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK",
-                    "            // Skip lightmap\r\n            #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK");
-            }
-            StreamWriter sw = new StreamWriter(path,false);
-            sw.Write(s);
-            sw.Close();
-        }
-
-        public static void RewriteReceiveShadow(Shader shader, bool enable)
-        {
-            string path = AssetDatabase.GetAssetPath(shader);
-            RewriteReceiveShadow(path, enable);
         }
         #endregion
 
@@ -7698,7 +7510,7 @@ namespace lilToon
             if(isMultiVariants) return;
             if(ismulti)
             {
-                lilRenderPipeline lilRP = CheckRP();
+                lilRenderPipeline RP = RPReader.GetRP();
                 float tpmode = material.GetFloat("_TransparentMode");
                 if(tpmode == 1.0f)
                 {
@@ -7724,7 +7536,7 @@ namespace lilToon
                     material.SetInt("_AlphaToMask", 0);
                     material.SetInt("_OutlineAlphaToMask", 0);
                     material.SetOverrideTag("RenderType", "TransparentCutout");
-                    material.renderQueue = lilRP == lilRenderPipeline.HDRP ? 3000 : 2460;
+                    material.renderQueue = RP == lilRenderPipeline.HDRP ? 3000 : 2460;
                 }
                 else if(tpmode == 3.0f)
                 {

@@ -65,6 +65,8 @@
             *LIL_SUBSHADER_INSERT*
 
             #include "Includes/lil_pass_forward_gem.hlsl"
+
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 
@@ -135,6 +137,7 @@
 
             #include "Includes/lil_pass_forward_gem.hlsl"
 
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 
@@ -169,6 +172,7 @@
 
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 
@@ -204,6 +208,7 @@
 
             #include "Includes/lil_pass_meta.hlsl"
 
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 

@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Metal MatCap and preset
 - Added circular tangent map
 - Avoid errors when overwriting with an older version
+- Extension of custom shader function
 
 ### Changed
 - Improved alpha mask GUI

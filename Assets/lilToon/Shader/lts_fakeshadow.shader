@@ -50,7 +50,18 @@ Shader "_lil/[Optional] lilToonFakeShadow"
         [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
     HLSLINCLUDE
+        //#pragma skip_variants SHADOWS_SCREEN _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN _ADDITIONAL_LIGHT_SHADOWS SCREEN_SPACE_SHADOWS_ON SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH SHADOW_VERY_HIGH
+        #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK DIRLIGHTMAP_COMBINED _MIXED_LIGHTING_SUBTRACTIVE
+        #pragma skip_variants DECALS_OFF DECALS_3RT DECALS_4RT DECAL_SURFACE_GRADIENT _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
+        //#pragma skip_variants VERTEXLIGHT_ON _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+        #pragma skip_variants _ADDITIONAL_LIGHT_SHADOWS
+        #pragma skip_variants PROBE_VOLUMES_OFF PROBE_VOLUMES_L1 PROBE_VOLUMES_L2
+        #pragma skip_variants _SCREEN_SPACE_OCCLUSION
+        //#pragma skip_variants USE_FPTL_LIGHTLIST USE_CLUSTERED_LIGHTLIST
+        //#pragma skip_variants _REFLECTION_PROBE_BLENDING _REFLECTION_PROBE_BOX_PROJECTION
+
         #include "Includes/lil_setting.hlsl"
+        #define LIL_FAKESHADOW
     ENDHLSL
 
 //----------------------------------------------------------------------------------------------------------------------

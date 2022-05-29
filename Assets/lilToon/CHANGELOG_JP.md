@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 金属のMatCap素材、プリセットを追加
 - CircularのTangent Map素材を追加
 - 古いバージョンで上書きした場合のエラーを回避
+- カスタムシェーダー機能の拡張
 
 ### 変更
 - アルファマスクのGUIを向上

@@ -6,8 +6,9 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using UnityEditor;
+using lilToon.lilRenderPipelineReader;
 #if UNITY_2020_2_OR_NEWER
-    using UnityEditor.AssetImporters;
+using UnityEditor.AssetImporters;
 #else
     using UnityEditor.Experimental.AssetImporters;
 #endif
@@ -90,6 +91,7 @@ namespace lilToon
         private const string LIL_SHADER_NAME                = "*LIL_SHADER_NAME*";
         private const string LIL_EDITOR_NAME                = "*LIL_EDITOR_NAME*";
         private const string LIL_SUBSHADER_INSERT           = "*LIL_SUBSHADER_INSERT*";
+        private const string LIL_SUBSHADER_INSERT_POST      = "*LIL_SUBSHADER_INSERT_POST*";
         private const string LIL_SHADER_SETTING             = "*LIL_SHADER_SETTING*";
         private const string LIL_PASS_SHADER_NAME           = "*LIL_PASS_SHADER_NAME*";
         private const string LIL_SUBSHADER_TAGS             = "*LIL_SUBSHADER_TAGS*";
@@ -118,6 +120,7 @@ namespace lilToon
         private static string passShaderName = "";
         private static string subShaderTags = "";
         private static string insertText = "";
+        private static string insertPostText = "";
         private static string shaderSettingText = "";
         private static string resourcesFolderPath = "";
         private static string assetFolderPath = "";
@@ -141,6 +144,7 @@ namespace lilToon
             passShaderName = "";
             subShaderTags = "";
             insertText = "";
+            insertPostText = "";
             resourcesFolderPath = GetCustomShaderResourcesFolderPath() + "/";
             assetFolderPath = Path.GetDirectoryName(assetPath) + "/";
             shaderLibsPath = lilToonInspector.GetShaderFolderPath() + "/Includes";
@@ -159,34 +163,18 @@ namespace lilToon
 
             StringBuilder sb;
 
-            version = new PackageVersionInfos()
-            {
-                RP = RenderPipeline.BRP,
-                Major = 12,
-                Minor = 0,
-                Patch = 0
-            };
-
-            string renderPipelineName = UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset?.ToString() ?? "";
-            if(renderPipelineName.Contains("Universal"))
-            {
-                version = GetURPVersion();
-            }
-            else if(renderPipelineName.Contains("HDRenderPipeline"))
-            {
-                version = GetHDRPVersion();
-            }
+            version = RPReader.GetRPInfos();
 
             switch(version.RP)
             {
-                case RenderPipeline.BRP:
+                case lilRenderPipeline.BRP:
                     sb = ReadContainerFile(assetPath, "BRP", ctx);
                     ReplaceMultiCompiles(ref sb, version, indent, false);
                     break;
-                case RenderPipeline.URP:
+                case lilRenderPipeline.URP:
                     sb = ReadContainerFile(assetPath, "URP", ctx);
                     break;
-                case RenderPipeline.HDRP:
+                case lilRenderPipeline.HDRP:
                     sb = ReadContainerFile(assetPath, "HDRP", ctx);
                     ReplaceMultiCompiles(ref sb, version, indent, false);
                     subShaderTags.Replace("\"RenderType\" = \"Opaque\"",            "\"RenderType\" = \"HDLitShader\"");
@@ -207,19 +195,20 @@ namespace lilToon
             ReplaceMultiCompiles(ref insertPassPost, version, indent, false);
             ReplaceMultiCompiles(ref insertUsePassPre, version, indent, false);
             ReplaceMultiCompiles(ref insertUsePassPost, version, indent, false);
-            sb.Replace(LIL_INSERT_PASS_PRE,     insertPassPre);
-            sb.Replace(LIL_INSERT_PASS_POST,    insertPassPost);
-            sb.Replace(LIL_INSERT_USEPASS_PRE,  insertUsePassPre);
-            sb.Replace(LIL_INSERT_USEPASS_POST, insertUsePassPost);
+            sb.Replace(LIL_INSERT_PASS_PRE,         insertPassPre);
+            sb.Replace(LIL_INSERT_PASS_POST,        insertPassPost);
+            sb.Replace(LIL_INSERT_USEPASS_PRE,      insertUsePassPre);
+            sb.Replace(LIL_INSERT_USEPASS_POST,     insertUsePassPost);
 
-            sb.Replace("\"Includes",            "\"" + shaderLibsPath);
-            sb.Replace(LIL_SUBSHADER_INSERT,    insertText);
-            sb.Replace(LIL_SHADER_SETTING,      shaderSettingText);
-            sb.Replace(LIL_PASS_SHADER_NAME,    passShaderName);
-            sb.Replace(LIL_SUBSHADER_TAGS,      subShaderTags);
+            sb.Replace("\"Includes",                "\"" + shaderLibsPath);
+            sb.Replace(LIL_SUBSHADER_INSERT,        insertText);
+            sb.Replace(LIL_SUBSHADER_INSERT_POST,   insertPostText);
+            sb.Replace(LIL_SHADER_SETTING,          shaderSettingText);
+            sb.Replace(LIL_PASS_SHADER_NAME,        passShaderName);
+            sb.Replace(LIL_SUBSHADER_TAGS,          subShaderTags);
 
-            sb.Replace(LIL_SHADER_NAME,         shaderName);
-            sb.Replace(LIL_EDITOR_NAME,         editorName);
+            sb.Replace(LIL_SHADER_NAME,             shaderName);
+            sb.Replace(LIL_EDITOR_NAME,             editorName);
 
             sb.Replace(SKIP_VARIANTS_SHADOWS,           GetSkipVariantsShadows());
             sb.Replace(SKIP_VARIANTS_LIGHTMAPS,         GetSkipVariantsLightmaps());
@@ -233,7 +222,7 @@ namespace lilToon
 
             foreach(KeyValuePair<string,string> replace in replaces)
             {
-                sb.Replace(replace.Key, replace.Value);
+                sb.Replace(FixNewlineCode(replace.Key), FixNewlineCode(replace.Value));
             }
 
             FixIncludeForOldUnity(ref sb);
@@ -295,16 +284,39 @@ namespace lilToon
             int second = line.IndexOf('"', first);
             int third = line.IndexOf('"', second + 1) + 1;
             int fourth = line.IndexOf('"', third);
-            string from = line.Substring(first, second - first);
-            string to = line.Substring(third, fourth - third);
-            replaces[from] = to;
+            int fifth = line.IndexOf('"', fourth + 1) + 1;
+            if(fifth > 1)
+            {
+                int sixth = line.IndexOf('"', fifth);
+                string name = line.Substring(first, second - first);
+                if(name.StartsWith("!"))
+                {
+                    if(origShaderName.Contains(name.Substring(1)))
+                    {
+                        return;
+                    }
+                }
+                else if(!origShaderName.Contains(name))
+                {
+                    return;
+                }
+                string from = line.Substring(third, fourth - third);
+                string to = line.Substring(fifth, sixth - fifth);
+                replaces[from] = to;
+            }
+            else
+            {
+                string from = line.Substring(first, second - first);
+                string to = line.Substring(third, fourth - third);
+                replaces[from] = to;
+            }
         }
 
         private static void GetInsert(string line, AssetImportContext ctx)
         {
             string rpname = "BRP";
-            if(version.RP == RenderPipeline.URP) rpname = "URP";
-            if(version.RP == RenderPipeline.HDRP) rpname = "HDRP";
+            if(version.RP == lilRenderPipeline.URP) rpname = "URP";
+            if(version.RP == lilRenderPipeline.HDRP) rpname = "HDRP";
             if(line.Contains(csdInsertPassPreTag))
             {
                 GetInsert(ref insertPassPre, line, rpname, ctx);
@@ -417,11 +429,15 @@ namespace lilToon
                         {
                             GetSubShader(path, rpname, ctx, sb, line);
                         }
-                        if(line.Contains("lilSubShaderInsert"))
+                        else if(line.Contains("lilSubShaderInsertPost"))
+                        {
+                            GetSubShaderInsertPost(path, rpname, ctx, sb, line);
+                        }
+                        else if(line.Contains("lilSubShaderInsert"))
                         {
                             GetSubShaderInsert(path, rpname, ctx, sb, line);
                         }
-                        if(line.Contains("lilSubShaderTags"))
+                        else if(line.Contains("lilSubShaderTags"))
                         {
                             GetSubShaderTags(path, rpname, ctx, sb, line);
                         }
@@ -439,7 +455,7 @@ namespace lilToon
             sr.Close();
             return sb;
         }
-    
+
         private static void GetSubShader(string path, string rpname, AssetImportContext ctx, StringBuilder sb, string line)
         {
             int first = line.IndexOf('"') + 1;
@@ -490,7 +506,7 @@ namespace lilToon
                 sb.AppendLine(ReadTextFile(subpath));
             }
         }
-    
+
         private static void GetSubShaderInsert(string path, string rpname, AssetImportContext ctx, StringBuilder sb, string line)
         {
             int first = line.IndexOf('"') + 1;
@@ -510,7 +526,27 @@ namespace lilToon
             ctx?.DependsOnSourceAsset(subpath);
             insertText = ReadTextFile(subpath);
         }
-    
+
+        private static void GetSubShaderInsertPost(string path, string rpname, AssetImportContext ctx, StringBuilder sb, string line)
+        {
+            int first = line.IndexOf('"') + 1;
+            int second = line.IndexOf('"', first);
+            if(line.Substring(0, first).Contains("//"))
+            {
+                sb.AppendLine(line);
+                return;
+            }
+
+            string subpath = assetFolderPath + line.Substring(first, second - first);
+            if(!File.Exists(subpath))
+            {
+                Debug.LogWarning("[" + assetName + "] " + "File not found: " + subpath);
+                return;
+            }
+            ctx?.DependsOnSourceAsset(subpath);
+            insertPostText = ReadTextFile(subpath);
+        }
+
         private static void GetProperties(string path, string rpname, AssetImportContext ctx, StringBuilder sb, string line)
         {
             int first = line.IndexOf('"') + 1;
@@ -574,6 +610,11 @@ namespace lilToon
             return text;
         }
 
+        private static string FixNewlineCode(string text)
+        {
+            return text.Replace("\\r\\n", "\r\n");
+        }
+
         private static void FixIncludeForOldUnity(ref StringBuilder sb)
         {
             #if UNITY_2019_4_0 || UNITY_2019_4_1 || UNITY_2019_4_2 || UNITY_2019_4_3 || UNITY_2019_4_4 || UNITY_2019_4_5 || UNITY_2019_4_6 || UNITY_2019_4_7 || UNITY_2019_4_8 || UNITY_2019_4_9 || UNITY_2019_4_10
@@ -633,70 +674,6 @@ namespace lilToon
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
-        // Render Pipeline
-        private static PackageVersionInfos GetURPVersion()
-        {
-            PackageVersionInfos version = ReadVersion("30648b8d550465f4bb77f1e1afd0b37d");
-            version.RP = RenderPipeline.URP;
-            return version;
-        }
-
-        private static PackageVersionInfos GetHDRPVersion()
-        {
-            PackageVersionInfos version = ReadVersion("6f54db4299717fc4ca37866c6afa0905");
-            version.RP = RenderPipeline.HDRP;
-            return version;
-        }
-
-        private static PackageVersionInfos ReadVersion(string guid)
-        {
-            string version = "";
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            if(!string.IsNullOrEmpty(path))
-            {
-                PackageInfos package = JsonUtility.FromJson<PackageInfos>(File.ReadAllText(path));
-                version = package.version;
-            }
-
-            PackageVersionInfos infos;
-            infos.RP = RenderPipeline.BRP;
-            if(string.IsNullOrEmpty(version))
-            {
-                infos.Major = 12;
-                infos.Minor = 0;
-                infos.Patch = 0;
-            }
-            else
-            {
-                string[] parts = version.Split('.');
-                infos.Major = int.Parse(parts[0]);
-                infos.Minor = int.Parse(parts[1]);
-                infos.Patch = int.Parse(parts[2]);
-            }
-            return infos;
-        }
-
-        private enum RenderPipeline
-        {
-            BRP,
-            URP,
-            HDRP
-        }
-
-        private struct PackageVersionInfos
-        {
-            public RenderPipeline RP;
-            public int Major;
-            public int Minor;
-            public int Patch;
-        }
-
-        private class PackageInfos
-        {
-            public string version;
-        }
-
-        //------------------------------------------------------------------------------------------------------------------------------
         // Multi Compile
         private static void ReplaceMultiCompiles(ref StringBuilder sb, PackageVersionInfos version, int indent, bool isDots)
         {
@@ -726,7 +703,7 @@ namespace lilToon
 
         private static string GetMultiCompileForward(PackageVersionInfos version, int indent)
         {
-            if(version.RP == RenderPipeline.URP)
+            if(version.RP == lilRenderPipeline.URP)
             {
                 if(version.Major >= 12)
                 {
@@ -739,7 +716,7 @@ namespace lilToon
                         "#pragma multi_compile_fragment _ _SHADOWS_SOFT",
                         "#pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION",
                         "#pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3",
-                        "#pragma multi_compile_fragment _ _LIGHT_LAYERS",
+                        "#pragma multi_compile _ _LIGHT_LAYERS",
                         "#pragma multi_compile_fragment _ _LIGHT_COOKIES",
                         "#pragma multi_compile _ _CLUSTERED_RENDERING",
                         "#pragma multi_compile _ LIGHTMAP_SHADOW_MIXING",
@@ -798,7 +775,7 @@ namespace lilToon
                         "#define LIL_PASS_FORWARD");
                 }
             }
-            else if(version.RP == RenderPipeline.HDRP)
+            else if(version.RP == lilRenderPipeline.HDRP)
             {
                 if(version.Major >= 12)
                 {
@@ -862,13 +839,13 @@ namespace lilToon
 
         private static string GetMultiCompileForwardAdd(PackageVersionInfos version, int indent)
         {
-            if(version.RP == RenderPipeline.URP)
+            if(version.RP == lilRenderPipeline.URP)
             {
                 return GenerateIndentText(indent,
                     "#pragma multi_compile_instancing",
                     "#define LIL_PASS_FORWARDADD");
             }
-            else if(version.RP == RenderPipeline.HDRP)
+            else if(version.RP == lilRenderPipeline.HDRP)
             {
                 return GenerateIndentText(indent,
                     "#pragma multi_compile_instancing",
@@ -886,7 +863,7 @@ namespace lilToon
 
         private static string GetMultiCompileShadowCaster(PackageVersionInfos version, int indent)
         {
-            if(version.RP == RenderPipeline.URP)
+            if(version.RP == lilRenderPipeline.URP)
             {
                 if(version.Major >= 11)
                 {
@@ -902,7 +879,7 @@ namespace lilToon
                         "#define LIL_PASS_SHADOWCASTER");
                 }
             }
-            else if(version.RP == RenderPipeline.HDRP)
+            else if(version.RP == lilRenderPipeline.HDRP)
             {
                 return GenerateIndentText(indent,
                     "#pragma multi_compile_instancing",
@@ -920,13 +897,13 @@ namespace lilToon
 
         private static string GetMultiCompileDepthOnly(PackageVersionInfos version, int indent)
         {
-            if(version.RP == RenderPipeline.URP)
+            if(version.RP == lilRenderPipeline.URP)
             {
                 return GenerateIndentText(indent,
                     "#pragma multi_compile_instancing",
                     "#define LIL_PASS_DEPTHONLY");
             }
-            else if(version.RP == RenderPipeline.HDRP)
+            else if(version.RP == lilRenderPipeline.HDRP)
             {
                 if(version.Major >= 10)
                 {
@@ -958,13 +935,13 @@ namespace lilToon
 
         private static string GetMultiCompileDepthNormals(PackageVersionInfos version, int indent)
         {
-            if(version.RP == RenderPipeline.URP)
+            if(version.RP == lilRenderPipeline.URP)
             {
                 return GenerateIndentText(indent,
                     "#pragma multi_compile_instancing",
                     "#define LIL_PASS_DEPTHNORMALS");
             }
-            else if(version.RP == RenderPipeline.HDRP)
+            else if(version.RP == lilRenderPipeline.HDRP)
             {
                 return GenerateIndentText(indent,
                     "#pragma multi_compile_instancing",
@@ -980,13 +957,13 @@ namespace lilToon
 
         private static string GetMultiCompileMotionVectors(PackageVersionInfos version, int indent)
         {
-            if(version.RP == RenderPipeline.URP)
+            if(version.RP == lilRenderPipeline.URP)
             {
                 return GenerateIndentText(indent,
                     "#pragma multi_compile_instancing",
                     "#define LIL_PASS_MOTIONVECTORS");
             }
-            else if(version.RP == RenderPipeline.HDRP)
+            else if(version.RP == lilRenderPipeline.HDRP)
             {
                 if(version.Major >= 10)
                 {
@@ -1018,13 +995,13 @@ namespace lilToon
 
         private static string GetMultiCompileSceneSelection(PackageVersionInfos version, int indent)
         {
-            if(version.RP == RenderPipeline.URP)
+            if(version.RP == lilRenderPipeline.URP)
             {
                 return GenerateIndentText(indent,
                     "#pragma multi_compile_instancing",
                     "#define LIL_PASS_SCENESELECTION");
             }
-            else if(version.RP == RenderPipeline.HDRP)
+            else if(version.RP == lilRenderPipeline.HDRP)
             {
                 return GenerateIndentText(indent,
                     "#pragma multi_compile_instancing",
@@ -1043,13 +1020,13 @@ namespace lilToon
 
         private static string GetMultiCompileMeta(PackageVersionInfos version, int indent)
         {
-            if(version.RP == RenderPipeline.URP)
+            if(version.RP == lilRenderPipeline.URP)
             {
                 return GenerateIndentText(indent,
                     "#pragma shader_feature EDITOR_VISUALIZATION",
                     "#define LIL_PASS_META");
             }
-            else if(version.RP == RenderPipeline.HDRP)
+            else if(version.RP == lilRenderPipeline.HDRP)
             {
                 return GenerateIndentText(indent,
                     "#pragma multi_compile_instancing",
@@ -1067,7 +1044,7 @@ namespace lilToon
 
         private static string GetMultiCompileInstancingLayer(PackageVersionInfos version, int indent, bool isDots = false)
         {
-            if(version.RP == RenderPipeline.URP)
+            if(version.RP == lilRenderPipeline.URP)
             {
                 if(version.Major >= 12)
                 {
@@ -1099,7 +1076,7 @@ namespace lilToon
                         "#pragma multi_compile_instancing");
                 }
             }
-            else if(version.RP == RenderPipeline.HDRP)
+            else if(version.RP == lilRenderPipeline.HDRP)
             {
                 if(version.Major >= 9 && isDots)
                 {

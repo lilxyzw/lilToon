@@ -5,6 +5,7 @@
             *LIL_SHADER_SETTING*
             *LIL_DOTS_SM_4_5_OR_3_5*
             #pragma fragmentoption ARB_precision_hint_fastest
+            #define LIL_FAKESHADOW
 
             #pragma lil_skip_variants_shadows
             #pragma lil_skip_variants_lightmaps
@@ -62,6 +63,7 @@
 
             #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 

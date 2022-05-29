@@ -190,6 +190,7 @@
             *LIL_SUBSHADER_INSERT*
 
             #include "Includes/lil_pass_universal2d.hlsl"
+
             ENDHLSL
         }
 
@@ -216,6 +217,7 @@
             *LIL_SUBSHADER_INSERT*
 
             #include "Includes/lil_pass_meta.hlsl"
+
             ENDHLSL
         }
 

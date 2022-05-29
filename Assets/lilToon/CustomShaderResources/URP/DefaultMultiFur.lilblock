@@ -119,6 +119,7 @@
 
             #include "Includes/lil_pass_forward.hlsl"
 
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 
@@ -177,6 +178,7 @@
 
             #include "Includes/lil_pass_forward_fur.hlsl"
 
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 
@@ -215,6 +217,7 @@
 
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 
@@ -256,6 +259,7 @@
 
             #include "Includes/lil_pass_depthonly.hlsl"
 
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 
@@ -297,6 +301,7 @@
 
             #include "Includes/lil_pass_depthnormals.hlsl"
 
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 
@@ -340,6 +345,8 @@
             *LIL_SUBSHADER_INSERT*
 
             #include "Includes/lil_pass_universal2d.hlsl"
+
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 
@@ -375,6 +382,8 @@
             *LIL_SUBSHADER_INSERT*
 
             #include "Includes/lil_pass_meta.hlsl"
+
+            *LIL_SUBSHADER_INSERT_POST*
             ENDHLSL
         }
 

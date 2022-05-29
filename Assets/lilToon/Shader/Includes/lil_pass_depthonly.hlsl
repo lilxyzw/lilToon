@@ -130,7 +130,7 @@ void frag(v2f input
 
         #if defined(WRITE_NORMAL_BUFFER)
             float3 normalDirection = normalize(input.normalWS);
-            normalDirection = facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
+            normalDirection = fd.facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
 
             const float seamThreshold = 1.0 / 1024.0;
             normalDirection.z = CopySign(max(seamThreshold, abs(normalDirection.z)), normalDirection.z);

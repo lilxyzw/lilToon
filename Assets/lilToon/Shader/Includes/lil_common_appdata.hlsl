@@ -116,4 +116,158 @@ struct appdata
     LIL_VERTEX_INPUT_INSTANCE_ID
 };
 
+struct appdataCopy
+{
+    #if defined(LIL_APP_POSITION)
+        float4 positionOS   : POSITION;
+    #endif
+    #if defined(LIL_APP_TEXCOORD0)
+        float2 uv0          : TEXCOORD0;
+    #endif
+    #if defined(LIL_APP_TEXCOORD1)
+        float2 uv1          : TEXCOORD1;
+    #endif
+    #if defined(LIL_APP_TEXCOORD2)
+        float2 uv2          : TEXCOORD2;
+    #endif
+    #if defined(LIL_APP_TEXCOORD3)
+        float2 uv3          : TEXCOORD3;
+    #endif
+    #if defined(LIL_APP_TEXCOORD4)
+        float2 uv4          : TEXCOORD4;
+    #endif
+    #if defined(LIL_APP_TEXCOORD5)
+        float2 uv5          : TEXCOORD5;
+    #endif
+    #if defined(LIL_APP_TEXCOORD6)
+        float2 uv6          : TEXCOORD6;
+    #endif
+    #if defined(LIL_APP_TEXCOORD7)
+        float2 uv7          : TEXCOORD7;
+    #endif
+    #if defined(LIL_APP_COLOR)
+        float4 color        : COLOR;
+    #endif
+    #if defined(LIL_APP_NORMAL)
+        float3 normalOS     : NORMAL;
+    #endif
+    #if defined(LIL_APP_TANGENT)
+        float4 tangentOS    : TANGENT;
+    #endif
+    #if defined(LIL_APP_VERTEXID)
+		uint vertexID       : TEXCOORD8; // avoid error
+    #endif
+    #if defined(LIL_APP_PREVPOS)
+        float3 previousPositionOS : TEXCOORD4;
+    #endif
+    #if defined(LIL_APP_PREVEL)
+        float3 precomputedVelocity : TEXCOORD5;
+    #endif
+    LIL_VERTEX_INPUT_INSTANCE_ID
+};
+
+appdataCopy appdataOriginalToCopy(appdata i)
+{
+    appdataCopy o;
+    #if defined(LIL_APP_POSITION)
+        o.positionOS = i.positionOS;
+    #endif
+    #if defined(LIL_APP_TEXCOORD0)
+        o.uv0 = i.uv0;
+    #endif
+    #if defined(LIL_APP_TEXCOORD1)
+        o.uv1 = i.uv1;
+    #endif
+    #if defined(LIL_APP_TEXCOORD2)
+        o.uv2 = i.uv2;
+    #endif
+    #if defined(LIL_APP_TEXCOORD3)
+        o.uv3 = i.uv3;
+    #endif
+    #if defined(LIL_APP_TEXCOORD4)
+        o.uv4 = i.uv4;
+    #endif
+    #if defined(LIL_APP_TEXCOORD5)
+        o.uv5 = i.uv5;
+    #endif
+    #if defined(LIL_APP_TEXCOORD6)
+        o.uv6 = i.uv6;
+    #endif
+    #if defined(LIL_APP_TEXCOORD7)
+        o.uv7 = i.uv7;
+    #endif
+    #if defined(LIL_APP_COLOR)
+        o.color = i.color;
+    #endif
+    #if defined(LIL_APP_NORMAL)
+        o.normalOS = i.normalOS;
+    #endif
+    #if defined(LIL_APP_TANGENT)
+        o.tangentOS = i.tangentOS;
+    #endif
+    #if defined(LIL_APP_VERTEXID)
+		o.vertexID = i.vertexID;
+    #endif
+    #if defined(LIL_APP_PREVPOS)
+        o.previousPositionOS = i.previousPositionOS;
+    #endif
+    #if defined(LIL_APP_PREVEL)
+        o.precomputedVelocity = i.precomputedVelocity;
+    #endif
+    LIL_TRANSFER_INSTANCE_ID(i, o);
+    return o;
+}
+
+appdata appdataCopyToOriginal(appdataCopy i)
+{
+    appdata o;
+    #if defined(LIL_APP_POSITION)
+        o.positionOS = i.positionOS;
+    #endif
+    #if defined(LIL_APP_TEXCOORD0)
+        o.uv0 = i.uv0;
+    #endif
+    #if defined(LIL_APP_TEXCOORD1)
+        o.uv1 = i.uv1;
+    #endif
+    #if defined(LIL_APP_TEXCOORD2)
+        o.uv2 = i.uv2;
+    #endif
+    #if defined(LIL_APP_TEXCOORD3)
+        o.uv3 = i.uv3;
+    #endif
+    #if defined(LIL_APP_TEXCOORD4)
+        o.uv4 = i.uv4;
+    #endif
+    #if defined(LIL_APP_TEXCOORD5)
+        o.uv5 = i.uv5;
+    #endif
+    #if defined(LIL_APP_TEXCOORD6)
+        o.uv6 = i.uv6;
+    #endif
+    #if defined(LIL_APP_TEXCOORD7)
+        o.uv7 = i.uv7;
+    #endif
+    #if defined(LIL_APP_COLOR)
+        o.color = i.color;
+    #endif
+    #if defined(LIL_APP_NORMAL)
+        o.normalOS = i.normalOS;
+    #endif
+    #if defined(LIL_APP_TANGENT)
+        o.tangentOS = i.tangentOS;
+    #endif
+    #if defined(LIL_APP_VERTEXID)
+		o.vertexID = i.vertexID;
+    #endif
+    #if defined(LIL_APP_PREVPOS)
+        o.previousPositionOS = i.previousPositionOS;
+    #endif
+    #if defined(LIL_APP_PREVEL)
+        o.precomputedVelocity = i.precomputedVelocity;
+    #endif
+    LIL_TRANSFER_INSTANCE_ID(i, o);
+    return o;
+}
+
 #endif

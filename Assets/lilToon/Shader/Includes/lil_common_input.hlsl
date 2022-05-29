@@ -294,6 +294,22 @@ SAMPLER(sampler_linear_clamp);
         LIL_CUSTOM_PROPERTIES
     #endif
     CBUFFER_END
+#elif defined(LIL_FAKESHADOW)
+    CBUFFER_START(UnityPerMaterial)
+    float4  _Color;
+    float4  _MainTex_ST;
+    float4  _FakeShadowVector;
+    #if defined(LIL_FEATURE_ENCRYPTION)
+        float4  _Keys;
+    #endif
+    lilBool _Invisible;
+    #if defined(LIL_FEATURE_ENCRYPTION)
+        lilBool _IgnoreEncryption;
+    #endif
+    #if defined(LIL_CUSTOM_PROPERTIES)
+        LIL_CUSTOM_PROPERTIES
+    #endif
+    CBUFFER_END
 #elif defined(LIL_BAKER)
     CBUFFER_START(UnityPerMaterial)
     float4  _Color;

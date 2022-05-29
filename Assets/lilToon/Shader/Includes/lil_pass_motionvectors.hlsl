@@ -159,7 +159,7 @@ void frag(v2f input
 
     #if defined(WRITE_NORMAL_BUFFER)
         fd.N = normalize(input.normalWS);
-        fd.N = facing < (_FlipNormal-1.0) ? -fd.N : fd.N;
+        fd.N = fd.facing < (_FlipNormal-1.0) ? -fd.N : fd.N;
 
         const float seamThreshold = 1.0 / 1024.0;
         fd.N.z = CopySign(max(seamThreshold, abs(fd.N.z)), fd.N.z);

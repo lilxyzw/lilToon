@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using lilToon.lilRenderPipelineReader;
 #if VRC_SDK_VRCSDK3
     using VRC.SDKBase.Editor.BuildPipeline;
 #endif
@@ -541,7 +542,7 @@ namespace lilToon
         {
             if(!shader.name.Contains("lilToon") && !shader.name.Contains("ltspass")) return;
 
-            lilToonInspector.lilRenderPipeline lilRP = lilToonInspector.CheckRP();
+            lilRenderPipeline lilRP = RPReader.GetRP();
 
             if(shader.name.Contains("lilToonMulti"))
             {
@@ -600,17 +601,17 @@ namespace lilToon
             return true;
         }
 
-        private bool ShouldRemoveShadowsScreen(Shader shader, ShaderKeywordSet shaderKeywordSet, lilToonInspector.lilRenderPipeline lilRP)
+        private bool ShouldRemoveShadowsScreen(Shader shader, ShaderKeywordSet shaderKeywordSet, lilRenderPipeline RP)
         {
             ShaderKeyword _REQUIRE_UV2 = new ShaderKeyword(shader, "_REQUIRE_UV2");
             ShaderKeyword ANTI_FLICKER = new ShaderKeyword(shader, "ANTI_FLICKER");
             if(shaderKeywordSet.IsEnabled(_REQUIRE_UV2) || shaderKeywordSet.IsEnabled(ANTI_FLICKER)) return false;
-            if(lilRP == lilToonInspector.lilRenderPipeline.BRP)
+            if(RP == lilRenderPipeline.BRP)
             {
                 ShaderKeyword SHADOWS_SCREEN                = new ShaderKeyword(shader, "SHADOWS_SCREEN");
                 return shaderKeywordSet.IsEnabled(SHADOWS_SCREEN);
             }
-            else if(lilRP == lilToonInspector.lilRenderPipeline.LWRP || lilRP == lilToonInspector.lilRenderPipeline.URP)
+            else if(RP == lilRenderPipeline.LWRP || RP == lilRenderPipeline.URP)
             {
                 ShaderKeyword _MAIN_LIGHT_SHADOWS           = new ShaderKeyword(shader, "_MAIN_LIGHT_SHADOWS");
                 ShaderKeyword _MAIN_LIGHT_SHADOWS_CASCADE   = new ShaderKeyword(shader, "_MAIN_LIGHT_SHADOWS_CASCADE");
@@ -618,7 +619,7 @@ namespace lilToon
                 ShaderKeyword _SHADOWS_SOFT                 = new ShaderKeyword(shader, "_SHADOWS_SOFT");
                 return shaderKeywordSet.IsEnabled(_MAIN_LIGHT_SHADOWS) || shaderKeywordSet.IsEnabled(_MAIN_LIGHT_SHADOWS_CASCADE) || shaderKeywordSet.IsEnabled(_MAIN_LIGHT_SHADOWS_SCREEN) || shaderKeywordSet.IsEnabled(_SHADOWS_SOFT);
             }
-            else if(lilRP == lilToonInspector.lilRenderPipeline.HDRP)
+            else if(RP == lilRenderPipeline.HDRP)
             {
                 ShaderKeyword SCREEN_SPACE_SHADOWS_OFF      = new ShaderKeyword(shader, "SCREEN_SPACE_SHADOWS_OFF");
                 ShaderKeyword SCREEN_SPACE_SHADOWS_ON       = new ShaderKeyword(shader, "SCREEN_SPACE_SHADOWS_ON");
