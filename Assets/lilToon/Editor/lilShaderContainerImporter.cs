@@ -1356,6 +1356,7 @@ namespace lilToon
                 {
                     sb.Append("#pragma lil_skip_variants_shadows\r\n");
                 }
+                if(!shaderSetting.LIL_FEATURE_REFLECTION) sb.Append("#pragma lil_skip_variants_reflections\r\n");
                 if(!LIL_OPTIMIZE_USE_VERTEXLIGHT) sb.Append("#pragma lil_skip_variants_addlight\r\n");
                 if(!LIL_OPTIMIZE_USE_LIGHTMAP) sb.Append("#pragma lil_skip_variants_lightmaps\r\n");
             }
