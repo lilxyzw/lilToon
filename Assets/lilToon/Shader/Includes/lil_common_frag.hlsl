@@ -975,6 +975,7 @@
             backlight = fd.facing < (_BacklightBackfaceMask-1.0) ? 0.0 : backlight;
 
             // Blend
+            backlightColor = lerp(backlightColor, backlightColor * fd.albedo, _BacklightMainStrength);
             fd.col.rgb += backlight * backlightColor * fd.lightColor;
         }
     }
@@ -1270,6 +1271,7 @@
             if(Exists_MatCapBlendMask) matCapMask = LIL_SAMPLE_2D_ST(_MatCapBlendMask, samp, fd.uvMain).rgb;
 
             // Blend
+            matCapColor.rgb = lerp(matCapColor.rgb, matCapColor.rgb * fd.albedo, _MatCapMainStrength);
             fd.col.rgb = lilBlendColor(fd.col.rgb, matCapColor.rgb, _MatCapBlend * matCapColor.a * matCapMask, _MatCapBlendMode);
         }
     }
@@ -1335,6 +1337,7 @@
             if(Exists_MatCap2ndBlendMask) matCapMask = LIL_SAMPLE_2D_ST(_MatCap2ndBlendMask, samp, fd.uvMain).r;
 
             // Blend
+            matCap2ndColor.rgb = lerp(matCap2ndColor.rgb, matCap2ndColor.rgb * fd.albedo, _MatCap2ndMainStrength);
             fd.col.rgb = lilBlendColor(fd.col.rgb, matCap2ndColor.rgb, _MatCap2ndBlend * matCap2ndColor.a * matCapMask, _MatCap2ndBlendMode);
         }
     }
@@ -1363,6 +1366,7 @@
                     rimColor *= rimColorTex;
                     rimIndirColor *= rimColorTex;
                 }
+                rimColor.rgb = lerp(rimColor.rgb, rimColor.rgb * fd.albedo, _RimMainStrength);
 
                 // View direction
                 float3 V = lilBlendVRParallax(fd.headV, fd.V, _RimVRParallaxStrength);
@@ -1408,6 +1412,7 @@
                 // Color
                 float4 rimColor = _RimColor;
                 if(Exists_RimColorTex) rimColor *= LIL_SAMPLE_2D_ST(_RimColorTex, samp, fd.uvMain);
+                rimColor.rgb = lerp(rimColor.rgb, rimColor.rgb * fd.albedo, _RimMainStrength);
 
                 // Normal
                 float3 N = fd.N;
@@ -1555,6 +1560,7 @@
                 if(_AudioLink2Emission) emissionColor.a *= fd.audioLinkValue;
             #endif
             emissionColor.rgb = lerp(emissionColor.rgb, emissionColor.rgb * fd.invLighting, _EmissionFluorescence);
+            emissionColor.rgb = lerp(emissionColor.rgb, emissionColor.rgb * fd.albedo, _EmissionMainStrength);
             fd.emissionColor += _EmissionBlend * lilCalcBlink(_EmissionBlink) * emissionColor.a * emissionColor.rgb;
         }
     }
@@ -1633,6 +1639,7 @@
                 if(_AudioLink2Emission2nd) emission2ndColor.a *= fd.audioLinkValue;
             #endif
             emission2ndColor.rgb = lerp(emission2ndColor.rgb, emission2ndColor.rgb * fd.invLighting, _Emission2ndFluorescence);
+            emission2ndColor.rgb = lerp(emission2ndColor.rgb, emission2ndColor.rgb * fd.albedo, _Emission2ndMainStrength);
             fd.emissionColor += _Emission2ndBlend * lilCalcBlink(_Emission2ndBlink) * emission2ndColor.a * emission2ndColor.rgb;
         }
     }

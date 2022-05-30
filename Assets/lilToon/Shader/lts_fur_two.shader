@@ -132,6 +132,7 @@ Shader "Hidden/lilToonFurTwoPass"
         [lilToggleLeft] _UseBacklight               ("Use Backlight", Int) = 0
         [lilHDR]        _BacklightColor             ("Color", Color) = (0.85,0.8,0.7,1.0)
         [NoScaleOffset] _BacklightColorTex          ("Texture", 2D) = "white" {}
+                        _BacklightMainStrength      ("Blend Main", Range(0, 1)) = 0
                         _BacklightNormalStrength    ("Normal Strength", Range(0, 1)) = 1.0
                         _BacklightBorder            ("Border", Range(0, 1)) = 0.35
                         _BacklightBlur              ("Blur", Range(0, 1)) = 0.05
@@ -214,6 +215,7 @@ Shader "Hidden/lilToonFurTwoPass"
         [lilToggleLeft] _UseMatCap                  ("Use MatCap", Int) = 0
         [lilHDR]        _MatCapColor                ("Color", Color) = (1,1,1,1)
                         _MatCapTex                  ("Texture", 2D) = "white" {}
+                        _MatCapMainStrength         ("Blend Main", Range(0, 1)) = 0
         [lilVec2R]      _MatCapBlendUV1             ("Blend UV1", Vector) = (0,0,0,0)
         [lilToggle]     _MatCapZRotCancel           ("Z-axis rotation cancellation", Int) = 1
         [lilToggle]     _MatCapPerspective          ("Fix Perspective", Int) = 1
@@ -236,6 +238,7 @@ Shader "Hidden/lilToonFurTwoPass"
         [lilToggleLeft] _UseMatCap2nd               ("Use MatCap 2nd", Int) = 0
         [lilHDR]        _MatCap2ndColor             ("Color", Color) = (1,1,1,1)
                         _MatCap2ndTex               ("Texture", 2D) = "white" {}
+                        _MatCap2ndMainStrength      ("Blend Main", Range(0, 1)) = 0
         [lilVec2R]      _MatCap2ndBlendUV1          ("Blend UV1", Vector) = (0,0,0,0)
         [lilToggle]     _MatCap2ndZRotCancel        ("Z-axis rotation cancellation", Int) = 1
         [lilToggle]     _MatCap2ndPerspective       ("Fix Perspective", Int) = 1
@@ -258,6 +261,7 @@ Shader "Hidden/lilToonFurTwoPass"
         [lilToggleLeft] _UseRim                     ("Use Rim", Int) = 0
         [lilHDR]        _RimColor                   ("Color", Color) = (0.66,0.5,0.48,1)
         [NoScaleOffset] _RimColorTex                ("Texture", 2D) = "white" {}
+                        _RimMainStrength            ("Blend Main", Range(0, 1)) = 0
                         _RimNormalStrength          ("Normal Strength", Range(0, 1)) = 1.0
                         _RimBorder                  ("Border", Range(0, 1)) = 0.5
                         _RimBlur                    ("Blur", Range(0, 1)) = 0.65
@@ -299,6 +303,7 @@ Shader "Hidden/lilToonFurTwoPass"
                         _EmissionMap                ("Texture", 2D) = "white" {}
         [lilUVAnim]     _EmissionMap_ScrollRotate   ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
         [lilEnum]       _EmissionMap_UVMode         ("UV Mode|UV0|UV1|UV2|UV3|Rim", Int) = 0
+                        _EmissionMainStrength       ("Main Color Strength", Range(0, 1)) = 0
                         _EmissionBlend              ("Blend", Range(0,1)) = 1
                         _EmissionBlendMask          ("Mask", 2D) = "white" {}
         [lilUVAnim]     _EmissionBlendMask_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
@@ -335,6 +340,7 @@ Shader "Hidden/lilToonFurTwoPass"
                         _Emission2ndMap             ("Texture", 2D) = "white" {}
         [lilUVAnim]     _Emission2ndMap_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
         [lilEnum]       _Emission2ndMap_UVMode      ("UV Mode|UV0|UV1|UV2|UV3|Rim", Int) = 0
+                        _Emission2ndMainStrength    ("Main Color Strength", Range(0, 1)) = 0
                         _Emission2ndBlend           ("Blend", Range(0,1)) = 1
                         _Emission2ndBlendMask       ("Mask", 2D) = "white" {}
         [lilUVAnim]     _Emission2ndBlendMask_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
@@ -661,10 +667,186 @@ Shader "Hidden/lilToonFurTwoPass"
 //----------------------------------------------------------------------------------------------------------------------
 // URP Start
 /*
+    //----------------------------------------------------------------------------------------------------------------------
+    // Universal Render Pipeline SM4.5
+    SubShader
+    {
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "Transparent" "ShaderModel" = "4.5"}
+        HLSLINCLUDE
+            #pragma target 4.5
+            #pragma exclude_renderers gles gles3 glcore
+        ENDHLSL
+
+        UsePass "Hidden/lilToonFur/FORWARD"
+
+        // Forward Fur Pre
+        Pass
+        {
+            Name "FORWARD_FUR_PRE"
+            Tags {"LightMode" = "UniversalForward"}
+
+            Stencil
+            {
+                Ref [_FurStencilRef]
+                ReadMask [_FurStencilReadMask]
+                WriteMask [_FurStencilWriteMask]
+                Comp [_FurStencilComp]
+                Pass [_FurStencilPass]
+                Fail [_FurStencilFail]
+                ZFail [_FurStencilZFail]
+            }
+            Cull [_FurCull]
+            ZClip [_FurZClip]
+            ZWrite On
+            ZTest [_FurZTest]
+            ColorMask [_FurColorMask]
+            Offset [_FurOffsetFactor], [_FurOffsetUnits]
+            BlendOp Add, Add
+            Blend One Zero, One OneMinusSrcAlpha
+            AlphaToMask On
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma geometry geom
+            #pragma fragment frag
+
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+
+            //URP12U
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
+            #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
+            #pragma multi_compile _ _LIGHT_LAYERS
+            #pragma multi_compile_fragment _ _LIGHT_COOKIES
+            #pragma multi_compile _ _CLUSTERED_RENDERING
+            #pragma multi_compile _ DYNAMICLIGHTMAP_ON
+            //URP11U
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            //URP10U
+            #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            //URP10D
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
+            //URP9D
+            //#pragma multi_compile _ _MIXED_LIGHTING_SUBTRACTIVE
+
+            #pragma skip_variants _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN _ADDITIONAL_LIGHT_SHADOWS SHADOWS_SHADOWMASK _REFLECTION_PROBE_BLENDING _REFLECTION_PROBE_BOX_PROJECTION
+
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_FUR_PRE
+            #include "Includes/lil_pipeline_urp.hlsl"
+            #include "Includes/lil_pass_forward_fur.hlsl"
+
+            ENDHLSL
+        }
+
+        UsePass "Hidden/lilToonFur/FORWARD_FUR"
+        UsePass "Hidden/lilToonFur/SHADOW_CASTER"
+        UsePass "Hidden/lilToonFur/DEPTHONLY"
+        UsePass "Hidden/lilToonFur/DEPTHNORMALS"
+        UsePass "Hidden/lilToonFur/UNIVERSAL2D"
+        UsePass "Hidden/lilToonFur/META"
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------
+    // Universal Render Pipeline
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "Transparent"}
+        HLSLINCLUDE
+            #pragma only_renderers gles gles3 glcore d3d11
+        ENDHLSL
+
         UsePass "Hidden/lilToonFur/FORWARD"
+
+        // Forward Fur Pre
+        Pass
+        {
+            Name "FORWARD_FUR_PRE"
+            Tags {"LightMode" = "UniversalForward"}
+
+            Stencil
+            {
+                Ref [_FurStencilRef]
+                ReadMask [_FurStencilReadMask]
+                WriteMask [_FurStencilWriteMask]
+                Comp [_FurStencilComp]
+                Pass [_FurStencilPass]
+                Fail [_FurStencilFail]
+                ZFail [_FurStencilZFail]
+            }
+            Cull [_FurCull]
+            ZClip [_FurZClip]
+            ZWrite On
+            ZTest [_FurZTest]
+            ColorMask [_FurColorMask]
+            Offset [_FurOffsetFactor], [_FurOffsetUnits]
+            BlendOp Add, Add
+            Blend One Zero, One OneMinusSrcAlpha
+            AlphaToMask On
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma geometry geom
+            #pragma fragment frag
+
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile _ DIRLIGHTMAP_COMBINED
+            #pragma multi_compile _ LIGHTMAP_ON
+
+            //URP12U
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
+            #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
+            #pragma multi_compile _ _LIGHT_LAYERS
+            #pragma multi_compile_fragment _ _LIGHT_COOKIES
+            #pragma multi_compile _ _CLUSTERED_RENDERING
+            #pragma multi_compile _ DYNAMICLIGHTMAP_ON
+            //URP11U
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            //URP10U
+            #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
+            #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
+            #pragma multi_compile _ SHADOWS_SHADOWMASK
+            //URP10D
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
+            //URP9D
+            //#pragma multi_compile _ _MIXED_LIGHTING_SUBTRACTIVE
+
+            #pragma skip_variants _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN _ADDITIONAL_LIGHT_SHADOWS SHADOWS_SHADOWMASK _REFLECTION_PROBE_BLENDING _REFLECTION_PROBE_BOX_PROJECTION
+
+            #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_FUR_PRE
+            #include "Includes/lil_pipeline_urp.hlsl"
+            #include "Includes/lil_pass_forward_fur.hlsl"
+
+            ENDHLSL
+        }
+
         UsePass "Hidden/lilToonFur/FORWARD_FUR"
         UsePass "Hidden/lilToonFur/SHADOW_CASTER"
         UsePass "Hidden/lilToonFur/DEPTHONLY"
@@ -683,6 +865,55 @@ Shader "Hidden/lilToonFurTwoPass"
     {
         Tags {"RenderType" = "HDLitShader" "Queue" = "Transparent"}
         UsePass "Hidden/lilToonFur/FORWARD"
+
+        // Forward Fur Pre
+        Pass
+        {
+            Name "FORWARD_FUR_PRE"
+            Tags {"LightMode" = "Forward"}
+
+            Stencil
+            {
+                WriteMask 6
+                Ref 0
+                Comp Always
+                Pass Replace
+            }
+            Cull [_FurCull]
+            ZClip [_FurZClip]
+            ZWrite On
+            ZTest [_FurZTest]
+            ColorMask [_FurColorMask]
+            Offset [_FurOffsetFactor], [_FurOffsetUnits]
+            BlendOp Add, Add
+            Blend One Zero, One OneMinusSrcAlpha
+            AlphaToMask On
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma geometry geom
+            #pragma fragment frag
+            #pragma multi_compile_instancing
+            #pragma instancing_options renderinglayer
+            #pragma multi_compile _ DOTS_INSTANCING_ON
+            #pragma multi_compile_fragment _ LIGHTMAP_ON
+            #pragma multi_compile_fragment _ DYNAMICLIGHTMAP_ON
+            #pragma multi_compile_fragment _ SHADOWS_SHADOWMASK
+
+            #define SHADERPASS SHADERPASS_FORWARD
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_FUR_PRE
+            #include "Includes/lil_pipeline_hdrp.hlsl"
+            #include "Includes/lil_pass_forward_fur.hlsl"
+
+            ENDHLSL
+        }
+
         UsePass "Hidden/lilToonFur/FORWARD_FUR"
         UsePass "Hidden/lilToonFur/SHADOW_CASTER"
         UsePass "Hidden/lilToonFur/DEPTHONLY"

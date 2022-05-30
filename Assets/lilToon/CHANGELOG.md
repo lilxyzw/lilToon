@@ -13,10 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fur mesh division type
 - `GSAA` and `Blending Mode` to reflection
 - `LOD` to strength / blur / AO mask of shadows
+- `Main Color Power` to backlight, MatCaps, rim light, emissions
 - Metal MatCap and preset
 - Added circular tangent map
 - Avoid errors when overwriting with an older version
 - Extension of custom shader function
+- URP and HDRP compatible 2 pass fur shader
 
 ### Changed
 - Improved alpha mask GUI

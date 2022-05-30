@@ -4,7 +4,7 @@ using UnityEngine;
 public class lilToonPreset : ScriptableObject
 {
     public lilPresetBase[] bases;
-    public lilToon.lilToonInspector.lilPresetCategory category;
+    public lilToon.lilPresetCategory category;
     public string renderingMode;
     public Shader shader;
     public lilPresetColor[] colors;

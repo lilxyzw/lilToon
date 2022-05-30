@@ -102,6 +102,29 @@ namespace lilToon
         private const string LIL_INSERT_PASS_POST           = "*LIL_INSERT_PASS_POST*";
         private const string LIL_INSERT_USEPASS_PRE         = "*LIL_INSERT_USEPASS_PRE*";
         private const string LIL_INSERT_USEPASS_POST        = "*LIL_INSERT_USEPASS_POST*";
+        private const string LIL_LIGHTMODE_FORWARD_0        = "*LIL_LIGHTMODE_FORWARD_0*";
+        private const string LIL_LIGHTMODE_FORWARD_1        = "*LIL_LIGHTMODE_FORWARD_1*";
+        private const string LIL_LIGHTMODE_FORWARD_2        = "*LIL_LIGHTMODE_FORWARD_2*";
+
+        private const string LIL_LIGHTMODE_BRP_FORWARD_0    = "ForwardBase";
+        private const string LIL_LIGHTMODE_BRP_FORWARD_1    = "ForwardBase";
+        private const string LIL_LIGHTMODE_BRP_FORWARD_2    = "ForwardBase";
+
+        private const string LIL_LIGHTMODE_HDRP_FORWARD_0   = "ForwardOnly";
+        private const string LIL_LIGHTMODE_HDRP_FORWARD_1   = "Forward";
+        private const string LIL_LIGHTMODE_HDRP_FORWARD_2   = "SRPDefaultUnlit";
+
+        private const string LIL_LIGHTMODE_URP_7_FORWARD_0  = "UniversalForward";
+        private const string LIL_LIGHTMODE_URP_7_FORWARD_1  = "LightweightForward";
+        private const string LIL_LIGHTMODE_URP_7_FORWARD_2  = "SRPDefaultUnlit";
+
+        private const string LIL_LIGHTMODE_URP_8_FORWARD_0  = "SRPDefaultUnlit";
+        private const string LIL_LIGHTMODE_URP_8_FORWARD_1  = "UniversalForward";
+        private const string LIL_LIGHTMODE_URP_8_FORWARD_2  = "LightweightForward";
+
+        private const string LIL_LIGHTMODE_URP_9_FORWARD_0  = "SRPDefaultUnlit";
+        private const string LIL_LIGHTMODE_URP_9_FORWARD_1  = "UniversalForward";
+        private const string LIL_LIGHTMODE_URP_9_FORWARD_2  = "UniversalForwardOnly";
 
         private const string csdShaderNameTag                   = "ShaderName";
         private const string csdEditorNameTag                   = "EditorName";
@@ -177,12 +200,6 @@ namespace lilToon
                 case lilRenderPipeline.HDRP:
                     sb = ReadContainerFile(assetPath, "HDRP", ctx);
                     ReplaceMultiCompiles(ref sb, version, indent, false);
-                    subShaderTags.Replace("\"RenderType\" = \"Opaque\"",            "\"RenderType\" = \"HDLitShader\"");
-                    subShaderTags.Replace("\"RenderType\" = \"Transparent\"",       "\"RenderType\" = \"HDLitShader\"");
-                    subShaderTags.Replace("\"RenderType\" = \"TransparentCutout\"", "\"RenderType\" = \"HDLitShader\"");
-                    subShaderTags.Replace("\"Queue\" = \"AlphaTest+10\"",           "\"Queue\" = \"Transparent\"");
-                    subShaderTags.Replace("\"Queue\" = \"AlphaTest+55\"",           "\"Queue\" = \"Transparent\"");
-                    subShaderTags.Replace("\"Queue\" = \"Transparent-100\"",        "\"Queue\" = \"Transparent\"");
                     break;
                 default:
                     sb = ReadContainerFile(assetPath, "BRP", ctx);
@@ -213,12 +230,65 @@ namespace lilToon
             sb.Replace(SKIP_VARIANTS_SHADOWS,           GetSkipVariantsShadows());
             sb.Replace(SKIP_VARIANTS_LIGHTMAPS,         GetSkipVariantsLightmaps());
             sb.Replace(SKIP_VARIANTS_DECALS,            GetSkipVariantsDecals());
-            sb.Replace(SKIP_VARIANTS_ADDLIGHT,          GetSkipVariantsAddLight());
             sb.Replace(SKIP_VARIANTS_ADDLIGHTSHADOWS,   GetSkipVariantsAddLightShadows());
+            sb.Replace(SKIP_VARIANTS_ADDLIGHT,          GetSkipVariantsAddLight());
             sb.Replace(SKIP_VARIANTS_PROBEVOLUMES,      GetSkipVariantsProbeVolumes());
             sb.Replace(SKIP_VARIANTS_AO,                GetSkipVariantsAO());
             sb.Replace(SKIP_VARIANTS_LIGHTLISTS,        GetSkipVariantsLightLists());
             sb.Replace(SKIP_VARIANTS_REFLECTIONS,       GetSkipVariantsReflections());
+
+            switch(version.RP)
+            {
+                case lilRenderPipeline.BRP:
+                    sb.Replace(LIL_LIGHTMODE_FORWARD_0, LIL_LIGHTMODE_BRP_FORWARD_0);
+                    sb.Replace(LIL_LIGHTMODE_FORWARD_1, LIL_LIGHTMODE_BRP_FORWARD_1);
+                    sb.Replace(LIL_LIGHTMODE_FORWARD_2, LIL_LIGHTMODE_BRP_FORWARD_2);
+                    break;
+                case lilRenderPipeline.URP:
+                    if(version.Major == 8)
+                    {
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_0, LIL_LIGHTMODE_URP_8_FORWARD_0);
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_1, LIL_LIGHTMODE_URP_8_FORWARD_1);
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_2, LIL_LIGHTMODE_URP_8_FORWARD_2);
+                    }
+                    else if(version.Major == 7)
+                    {
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_0, LIL_LIGHTMODE_URP_7_FORWARD_0);
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_1, LIL_LIGHTMODE_URP_7_FORWARD_1);
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_2, LIL_LIGHTMODE_URP_7_FORWARD_2);
+                    }
+                    else
+                    {
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_0, LIL_LIGHTMODE_URP_9_FORWARD_0);
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_1, LIL_LIGHTMODE_URP_9_FORWARD_1);
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_2, LIL_LIGHTMODE_URP_9_FORWARD_2);
+                    }
+                    break;
+                case lilRenderPipeline.HDRP:
+                    if(sb.ToString().Contains(LIL_LIGHTMODE_FORWARD_2))
+                    {
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_0, LIL_LIGHTMODE_HDRP_FORWARD_0);
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_1, LIL_LIGHTMODE_HDRP_FORWARD_1);
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_2, LIL_LIGHTMODE_HDRP_FORWARD_2);
+                    }
+                    else
+                    {
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_0, LIL_LIGHTMODE_HDRP_FORWARD_0);
+                        sb.Replace(LIL_LIGHTMODE_FORWARD_1, LIL_LIGHTMODE_HDRP_FORWARD_2);
+                    }
+                    sb.Replace("\"RenderType\" = \"Opaque\"",            "\"RenderType\" = \"HDLitShader\"");
+                    sb.Replace("\"RenderType\" = \"Transparent\"",       "\"RenderType\" = \"HDLitShader\"");
+                    sb.Replace("\"RenderType\" = \"TransparentCutout\"", "\"RenderType\" = \"HDLitShader\"");
+                    sb.Replace("\"Queue\" = \"AlphaTest+10\"",           "\"Queue\" = \"Transparent\"");
+                    sb.Replace("\"Queue\" = \"AlphaTest+55\"",           "\"Queue\" = \"Transparent\"");
+                    sb.Replace("\"Queue\" = \"Transparent-100\"",        "\"Queue\" = \"Transparent\"");
+                    break;
+                default:
+                    sb.Replace(LIL_LIGHTMODE_FORWARD_0, LIL_LIGHTMODE_BRP_FORWARD_0);
+                    sb.Replace(LIL_LIGHTMODE_FORWARD_1, LIL_LIGHTMODE_BRP_FORWARD_1);
+                    sb.Replace(LIL_LIGHTMODE_FORWARD_2, LIL_LIGHTMODE_BRP_FORWARD_2);
+                    break;
+            }
 
             foreach(KeyValuePair<string,string> replace in replaces)
             {

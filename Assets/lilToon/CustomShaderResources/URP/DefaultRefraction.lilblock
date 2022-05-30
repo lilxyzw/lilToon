@@ -20,7 +20,7 @@
         Pass
         {
             Name "FORWARD"
-            Tags {"LightMode" = "UniversalForward"}
+            Tags {"LightMode" = "*LIL_LIGHTMODE_FORWARD_0*"}
 
             Stencil
             {

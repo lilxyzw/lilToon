@@ -22,7 +22,7 @@
         Pass
         {
             Name "FORWARD"
-            Tags {"LightMode" = "UniversalForward"}
+            Tags {"LightMode" = "*LIL_LIGHTMODE_FORWARD_0*"}
 
             Stencil
             {
@@ -69,7 +69,7 @@
         Pass
         {
             Name "FORWARD_OUTLINE"
-            Tags {"LightMode" = "SRPDefaultUnlit"}
+            Tags {"LightMode" = "*LIL_LIGHTMODE_FORWARD_0*"}
 
             Stencil
             {

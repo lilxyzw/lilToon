@@ -86,57 +86,6 @@ namespace lilToon
             Mul
         }
 
-        public enum lilPresetCategory
-        {
-            Skin,
-            Hair,
-            Cloth,
-            Nature,
-            Inorganic,
-            Effect,
-            Other
-        }
-
-        public enum lilPropertyBlock
-        {
-            Base,
-            Lighting,
-            UV,
-            MainColor,
-            MainColor1st,
-            MainColor2nd,
-            MainColor3rd,
-            AlphaMask,
-            Shadow,
-            Emission,
-            Emission1st,
-            Emission2nd,
-            NormalMap,
-            NormalMap1st,
-            NormalMap2nd,
-            Anisotropy,
-            Reflections,
-            Reflection,
-            MatCaps,
-            MatCap1st,
-            MatCap2nd,
-            RimLight,
-            Glitter,
-            Backlight,
-            Gem,
-            Outline,
-            Parallax,
-            DistanceFade,
-            AudioLink,
-            Dissolve,
-            Refraction,
-            Fur,
-            Encryption,
-            Stencil,
-            Rendering,
-            Tessellation
-        }
-
         public enum lilLightingPreset
         {
             Default,
@@ -153,24 +102,6 @@ namespace lilToon
         private const string boothURL = "https://lilxyzw.booth.pm/";
         private const string githubURL = "https://github.com/lilxyzw/lilToon";
         public const string versionInfoURL = "https://raw.githubusercontent.com/lilxyzw/lilToon/master/version.json";
-        private const string mainFolderGUID                 = "05d1d116436047941ad97d1b9064ee05"; // "Assets/lilToon"
-        private const string editorFolderGUID               = "3e73d675b9c1adc4f8b6b8ef01bce51c"; // "Assets/lilToon/Editor"
-        private const string presetsFolderGUID              = "35817d21af2f3134182c4a7e4c07786b"; // "Assets/lilToon/Presets"
-        private const string editorGUID                     = "aefa51cbc37d602418a38a02c3b9afb9"; // "Assets/lilToon/Editor/lilInspector.cs"
-        private const string editorLanguageFileGUID         = "a63ad2f5296744a4bad011de744ba8ba"; // "Assets/lilToon/Editor/Resources/lang.txt"
-        private const string editorGUIBoxInDarkGUID         = "bb1313c9ea1425b41b74e98fd04bcbc8"; // "Assets/lilToon/Editor/Resources/gui_box_inner_dark.guiskin"
-        private const string editorGUIBoxInLightGUID        = "f18d71f528511e748887f5e246abcc16"; // "Assets/lilToon/Editor/Resources/gui_box_inner_light.guiskin"
-        private const string editorGUIBoxInHalfDarkGUID     = "a72199a4c9cc3714d8edfbc5d3b13823"; // "Assets/lilToon/Editor/Resources/gui_box_inner_half_dark.guiskin"
-        private const string editorGUIBoxInHalfLightGUID    = "8343038a4a0cbef4d8af45c073520436"; // "Assets/lilToon/Editor/Resources/gui_box_inner_half_light.guiskin"
-        private const string editorGUIBoxOutDarkGUID        = "29f3c01461cd0474eab36bf2e939bb58"; // "Assets/lilToon/Editor/Resources/gui_box_outer_dark.guiskin"
-        private const string editorGUIBoxOutLightGUID       = "16cc103a658d8404894e66dd8f35cb77"; // "Assets/lilToon/Editor/Resources/gui_box_outer_light.guiskin"
-        private const string editorGUICustomBoxDarkGUID     = "45dfb1bafd2c7d34ab453c29c0b1f46e"; // "Assets/lilToon/Editor/Resources/gui_custom_box_dark.guiskin"
-        private const string editorGUICustomBoxLightGUID    = "a1ed8756474bfd34f80fa22e6c43b2e5"; // "Assets/lilToon/Editor/Resources/gui_custom_box_light.guiskin"
-        private const string shaderFolderGUID               = "ac0a8f602b5e72f458f4914bf08f0269"; // "Assets/lilToon/Shader"
-        private const string shaderPipelineGUID             = "32299664512e2e042bbc351c1d46d383"; // "Assets/lilToon/Shader/Includes/lil_pipeline.hlsl";
-        private const string shaderCommonGUID               = "5520e766422958546bbe885a95d5a67e"; // "Assets/lilToon/Shader/Includes/lil_common.hlsl";
-        private const string shaderSettingHLSLGUID          = "937115b0cd7c27140b76bbd51c6ee76b"; // "Assets/lilToon/Shader/Includes/lil_setting.hlsl";
-        private const string avatarEncryptionGUID           = "f9787bf8ed5154f4b931278945ac8ca1"; // "Assets/AvaterEncryption";
         private const string editorSettingTempPath          = "Temp/lilToonEditorSetting";
         public const string versionInfoTempPath             = "Temp/lilToonVersion";
         public const string packageListTempPath             = "Temp/lilToonPackageList";
@@ -184,90 +115,28 @@ namespace lilToon
             public const string rspPath = "Assets/mcs.rsp";
         #endif
 
-        public static string GetMainFolderPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(mainFolderGUID);
-        }
-        public static string GetEditorFolderPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(editorFolderGUID);
-        }
-        public static string GetPresetsFolderPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(presetsFolderGUID);
-        }
-        public static string GetEditorPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(editorGUID);
-        }
-        public static string GetShaderFolderPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(shaderFolderGUID);
-        }
-        public static string[] GetShaderFolderPaths()
-        {
-            return new[] {GetShaderFolderPath()};
-        }
-        public static string GetShaderPipelinePath()
-        {
-            return AssetDatabase.GUIDToAssetPath(shaderPipelineGUID);
-        }
-        public static string GetShaderCommonPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(shaderCommonGUID);
-        }
-        public static string GetSettingFolderPath()
-        {
-            return GetMainFolderPath();
-        }
-        public static string GetShaderSettingPath()
-        {
-            return GetSettingFolderPath() + "/ShaderSetting.asset";
-        }
-        public static string GetShaderSettingHLSLPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(shaderSettingHLSLGUID);
-        }
-        public static string GetEditorLanguageFileGUID()
-        {
-            return AssetDatabase.GUIDToAssetPath(editorLanguageFileGUID);
-        }
-        public static string GetAvatarEncryptionPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(avatarEncryptionGUID);
-        }
-        public static string GetGUIBoxInDarkPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(editorGUIBoxInDarkGUID);
-        }
-        public static string GetGUIBoxInLightPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(editorGUIBoxInLightGUID);
-        }
-        public static string GetGUIBoxInHalfDarkPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(editorGUIBoxInHalfDarkGUID);
-        }
-        public static string GetGUIBoxInHalfLightPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(editorGUIBoxInHalfLightGUID);
-        }
-        public static string GetGUIBoxOutDarkPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(editorGUIBoxOutDarkGUID);
-        }
-        public static string GetGUIBoxOutLightPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(editorGUIBoxOutLightGUID);
-        }
-        public static string GetGUICustomBoxDarkPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(editorGUICustomBoxDarkGUID);
-        }
-        public static string GetGUICustomBoxLightPath()
-        {
-            return AssetDatabase.GUIDToAssetPath(editorGUICustomBoxLightGUID);
-        }
+        public static string GetMainFolderPath()            { return GUIDToPath("05d1d116436047941ad97d1b9064ee05"); } // "Assets/lilToon"
+        public static string GetEditorFolderPath()          { return GUIDToPath("3e73d675b9c1adc4f8b6b8ef01bce51c"); } // "Assets/lilToon/Editor"
+        public static string GetPresetsFolderPath()         { return GUIDToPath("35817d21af2f3134182c4a7e4c07786b"); } // "Assets/lilToon/Presets"
+        public static string GetEditorPath()                { return GUIDToPath("aefa51cbc37d602418a38a02c3b9afb9"); } // "Assets/lilToon/Editor/lilInspector.cs"
+        public static string GetShaderFolderPath()          { return GUIDToPath("ac0a8f602b5e72f458f4914bf08f0269"); } // "Assets/lilToon/Shader"
+        public static string GetShaderPipelinePath()        { return GUIDToPath("32299664512e2e042bbc351c1d46d383"); } // "Assets/lilToon/Shader/Includes/lil_pipeline.hlsl";
+        public static string GetShaderCommonPath()          { return GUIDToPath("5520e766422958546bbe885a95d5a67e"); } // "Assets/lilToon/Shader/Includes/lil_common.hlsl";
+        public static string GetShaderSettingHLSLPath()     { return GUIDToPath("937115b0cd7c27140b76bbd51c6ee76b"); } // "Assets/lilToon/Shader/Includes/lil_setting.hlsl";
+        public static string GetEditorLanguageFileGUID()    { return GUIDToPath("a63ad2f5296744a4bad011de744ba8ba"); } // "Assets/lilToon/Editor/Resources/lang.txt"
+        public static string GetAvatarEncryptionPath()      { return GUIDToPath("f9787bf8ed5154f4b931278945ac8ca1"); } // "Assets/AvaterEncryption";
+        public static string GetGUIBoxInDarkPath()          { return GUIDToPath("bb1313c9ea1425b41b74e98fd04bcbc8"); } // "Assets/lilToon/Editor/Resources/gui_box_inner_dark.guiskin"
+        public static string GetGUIBoxInLightPath()         { return GUIDToPath("f18d71f528511e748887f5e246abcc16"); } // "Assets/lilToon/Editor/Resources/gui_box_inner_light.guiskin"
+        public static string GetGUIBoxInHalfDarkPath()      { return GUIDToPath("a72199a4c9cc3714d8edfbc5d3b13823"); } // "Assets/lilToon/Editor/Resources/gui_box_inner_half_dark.guiskin"
+        public static string GetGUIBoxInHalfLightPath()     { return GUIDToPath("8343038a4a0cbef4d8af45c073520436"); } // "Assets/lilToon/Editor/Resources/gui_box_inner_half_light.guiskin"
+        public static string GetGUIBoxOutDarkPath()         { return GUIDToPath("29f3c01461cd0474eab36bf2e939bb58"); } // "Assets/lilToon/Editor/Resources/gui_box_outer_dark.guiskin"
+        public static string GetGUIBoxOutLightPath()        { return GUIDToPath("16cc103a658d8404894e66dd8f35cb77"); } // "Assets/lilToon/Editor/Resources/gui_box_outer_light.guiskin"
+        public static string GetGUICustomBoxDarkPath()      { return GUIDToPath("45dfb1bafd2c7d34ab453c29c0b1f46e"); } // "Assets/lilToon/Editor/Resources/gui_custom_box_dark.guiskin"
+        public static string GetGUICustomBoxLightPath()     { return GUIDToPath("a1ed8756474bfd34f80fa22e6c43b2e5"); } // "Assets/lilToon/Editor/Resources/gui_custom_box_light.guiskin"
+        public static string[] GetShaderFolderPaths()       { return new[] {GetShaderFolderPath()}; }
+        public static string GetSettingFolderPath()         { return GetMainFolderPath(); }
+        public static string GetShaderSettingPath()         { return GetMainFolderPath() + "/ShaderSetting.asset"; }
+        public static string GUIDToPath(string GUID)        { return AssetDatabase.GUIDToAssetPath(GUID); }
 
         public static readonly Vector2 defaultTextureOffset = new Vector2(0.0f,0.0f);
         public static readonly Vector2 defaultTextureScale = new Vector2(1.0f,1.0f);
@@ -542,460 +411,466 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Material properties
         #region
-        private MaterialProperty transparentModeMat;
-        private MaterialProperty asOverlay;
-        private MaterialProperty invisible;
-        private MaterialProperty asUnlit;
-        private MaterialProperty cutoff;
-        private MaterialProperty subpassCutoff;
-        private MaterialProperty flipNormal;
-        private MaterialProperty shiftBackfaceUV;
-        private MaterialProperty backfaceForceShadow;
-        private MaterialProperty vertexLightStrength;
-        private MaterialProperty lightMinLimit;
-        private MaterialProperty lightMaxLimit;
-        private MaterialProperty beforeExposureLimit;
-        private MaterialProperty monochromeLighting;
-        private MaterialProperty alphaBoostFA;
-        private MaterialProperty lilDirectionalLightStrength;
-        private MaterialProperty lightDirectionOverride;
-        private MaterialProperty baseColor;
-        private MaterialProperty baseMap;
-        private MaterialProperty baseColorMap;
-        private MaterialProperty triMask;
-            private MaterialProperty cull;
-            private MaterialProperty srcBlend;
-            private MaterialProperty dstBlend;
-            private MaterialProperty srcBlendAlpha;
-            private MaterialProperty dstBlendAlpha;
-            private MaterialProperty blendOp;
-            private MaterialProperty blendOpAlpha;
-            private MaterialProperty srcBlendFA;
-            private MaterialProperty dstBlendFA;
-            private MaterialProperty srcBlendAlphaFA;
-            private MaterialProperty dstBlendAlphaFA;
-            private MaterialProperty blendOpFA;
-            private MaterialProperty blendOpAlphaFA;
-            private MaterialProperty zclip;
-            private MaterialProperty zwrite;
-            private MaterialProperty ztest;
-            private MaterialProperty stencilRef;
-            private MaterialProperty stencilReadMask;
-            private MaterialProperty stencilWriteMask;
-            private MaterialProperty stencilComp;
-            private MaterialProperty stencilPass;
-            private MaterialProperty stencilFail;
-            private MaterialProperty stencilZFail;
-            private MaterialProperty offsetFactor;
-            private MaterialProperty offsetUnits;
-            private MaterialProperty colorMask;
-            private MaterialProperty alphaToMask;
-            private MaterialProperty lilShadowCasterBias;
-        //private MaterialProperty useMainTex;
-            private MaterialProperty mainColor;
-            private MaterialProperty mainTex;
-            private MaterialProperty mainTexHSVG;
-            private MaterialProperty mainTex_ScrollRotate;
-            private MaterialProperty mainGradationStrength;
-            private MaterialProperty mainGradationTex;
-            private MaterialProperty mainColorAdjustMask;
-        private MaterialProperty useMain2ndTex;
-            private MaterialProperty mainColor2nd;
-            private MaterialProperty main2ndTex;
-            private MaterialProperty main2ndTex_UVMode;
-            private MaterialProperty main2ndTexAngle;
-            private MaterialProperty main2ndTexDecalAnimation;
-            private MaterialProperty main2ndTexDecalSubParam;
-            private MaterialProperty main2ndTexIsDecal;
-            private MaterialProperty main2ndTexIsLeftOnly;
-            private MaterialProperty main2ndTexIsRightOnly;
-            private MaterialProperty main2ndTexShouldCopy;
-            private MaterialProperty main2ndTexShouldFlipMirror;
-            private MaterialProperty main2ndTexShouldFlipCopy;
-            private MaterialProperty main2ndTexIsMSDF;
-            private MaterialProperty main2ndBlendMask;
-            private MaterialProperty main2ndTexBlendMode;
-            private MaterialProperty main2ndEnableLighting;
-            private MaterialProperty main2ndDissolveMask;
-            private MaterialProperty main2ndDissolveNoiseMask;
-            private MaterialProperty main2ndDissolveNoiseMask_ScrollRotate;
-            private MaterialProperty main2ndDissolveNoiseStrength;
-            private MaterialProperty main2ndDissolveColor;
-            private MaterialProperty main2ndDissolveParams;
-            private MaterialProperty main2ndDissolvePos;
-            private MaterialProperty main2ndDistanceFade;
-        private MaterialProperty useMain3rdTex;
-            private MaterialProperty mainColor3rd;
-            private MaterialProperty main3rdTex;
-            private MaterialProperty main3rdTex_UVMode;
-            private MaterialProperty main3rdTexAngle;
-            private MaterialProperty main3rdTexDecalAnimation;
-            private MaterialProperty main3rdTexDecalSubParam;
-            private MaterialProperty main3rdTexIsDecal;
-            private MaterialProperty main3rdTexIsLeftOnly;
-            private MaterialProperty main3rdTexIsRightOnly;
-            private MaterialProperty main3rdTexShouldCopy;
-            private MaterialProperty main3rdTexShouldFlipMirror;
-            private MaterialProperty main3rdTexShouldFlipCopy;
-            private MaterialProperty main3rdTexIsMSDF;
-            private MaterialProperty main3rdBlendMask;
-            private MaterialProperty main3rdTexBlendMode;
-            private MaterialProperty main3rdEnableLighting;
-            private MaterialProperty main3rdDissolveMask;
-            private MaterialProperty main3rdDissolveNoiseMask;
-            private MaterialProperty main3rdDissolveNoiseMask_ScrollRotate;
-            private MaterialProperty main3rdDissolveNoiseStrength;
-            private MaterialProperty main3rdDissolveColor;
-            private MaterialProperty main3rdDissolveParams;
-            private MaterialProperty main3rdDissolvePos;
-            private MaterialProperty main3rdDistanceFade;
-        private MaterialProperty alphaMaskMode;
-            private MaterialProperty alphaMask;
-            private MaterialProperty alphaMaskScale;
-            private MaterialProperty alphaMaskValue;
-        private MaterialProperty useShadow;
-            private MaterialProperty shadowStrength;
-            private MaterialProperty shadowStrengthMask;
-            private MaterialProperty shadowBorderMask;
-            private MaterialProperty shadowBlurMask;
-            private MaterialProperty shadowStrengthMaskLOD;
-            private MaterialProperty shadowBorderMaskLOD;
-            private MaterialProperty shadowBlurMaskLOD;
-            private MaterialProperty shadowAOShift;
-            private MaterialProperty shadowAOShift2;
-            private MaterialProperty shadowPostAO;
-            private MaterialProperty shadowColor;
-            private MaterialProperty shadowColorTex;
-            private MaterialProperty shadowNormalStrength;
-            private MaterialProperty shadowBorder;
-            private MaterialProperty shadowBlur;
-            private MaterialProperty shadow2ndColor;
-            private MaterialProperty shadow2ndColorTex;
-            private MaterialProperty shadow2ndNormalStrength;
-            private MaterialProperty shadow2ndBorder;
-            private MaterialProperty shadow2ndBlur;
-            private MaterialProperty shadow3rdColor;
-            private MaterialProperty shadow3rdColorTex;
-            private MaterialProperty shadow3rdNormalStrength;
-            private MaterialProperty shadow3rdBorder;
-            private MaterialProperty shadow3rdBlur;
-            private MaterialProperty shadowMainStrength;
-            private MaterialProperty shadowEnvStrength;
-            private MaterialProperty shadowBorderColor;
-            private MaterialProperty shadowBorderRange;
-            private MaterialProperty shadowReceive;
-            private MaterialProperty shadow2ndReceive;
-            private MaterialProperty shadow3rdReceive;
-            private MaterialProperty shadowMaskType;
-            private MaterialProperty shadowFlatBorder;
-            private MaterialProperty shadowFlatBlur;
-        private MaterialProperty useBacklight;
-            private MaterialProperty backlightColor;
-            private MaterialProperty backlightColorTex;
-            private MaterialProperty backlightNormalStrength;
-            private MaterialProperty backlightBorder;
-            private MaterialProperty backlightBlur;
-            private MaterialProperty backlightDirectivity;
-            private MaterialProperty backlightViewStrength;
-            private MaterialProperty backlightReceiveShadow;
-            private MaterialProperty backlightBackfaceMask;
-        private MaterialProperty useBumpMap;
-            private MaterialProperty bumpMap;
-            private MaterialProperty bumpScale;
-        private MaterialProperty useBump2ndMap;
-            private MaterialProperty bump2ndMap;
-            private MaterialProperty bump2ndScale;
-            private MaterialProperty bump2ndScaleMask;
-        private MaterialProperty useAnisotropy;
-            private MaterialProperty anisotropyTangentMap;
-            private MaterialProperty anisotropyScale;
-            private MaterialProperty anisotropyScaleMask;
-            private MaterialProperty anisotropyTangentWidth;
-            private MaterialProperty anisotropyBitangentWidth;
-            private MaterialProperty anisotropyShift;
-            private MaterialProperty anisotropyShiftNoiseScale;
-            private MaterialProperty anisotropySpecularStrength;
-            private MaterialProperty anisotropy2ndTangentWidth;
-            private MaterialProperty anisotropy2ndBitangentWidth;
-            private MaterialProperty anisotropy2ndShift;
-            private MaterialProperty anisotropy2ndShiftNoiseScale;
-            private MaterialProperty anisotropy2ndSpecularStrength;
-            private MaterialProperty anisotropyShiftNoiseMask;
-            private MaterialProperty anisotropy2Reflection;
-            private MaterialProperty anisotropy2MatCap;
-            private MaterialProperty anisotropy2MatCap2nd;
-        private MaterialProperty useReflection;
-            private MaterialProperty metallic;
-            private MaterialProperty metallicGlossMap;
-            private MaterialProperty smoothness;
-            private MaterialProperty smoothnessTex;
-            private MaterialProperty reflectance;
-            private MaterialProperty reflectionColor;
-            private MaterialProperty reflectionColorTex;
-            private MaterialProperty gsaaStrength;
-            private MaterialProperty applySpecular;
-            private MaterialProperty applySpecularFA;
-            private MaterialProperty specularNormalStrength;
-            private MaterialProperty specularToon;
-            private MaterialProperty specularBorder;
-            private MaterialProperty specularBlur;
-            private MaterialProperty applyReflection;
-            private MaterialProperty reflectionNormalStrength;
-            private MaterialProperty reflectionApplyTransparency;
-            private MaterialProperty reflectionCubeTex;
-            private MaterialProperty reflectionCubeColor;
-            private MaterialProperty reflectionCubeOverride;
-            private MaterialProperty reflectionCubeEnableLighting;
-            private MaterialProperty reflectionBlendMode;
-        private MaterialProperty useMatCap;
-            private MaterialProperty matcapTex;
-            private MaterialProperty matcapColor;
-            private MaterialProperty matcapBlendUV1;
-            private MaterialProperty matcapZRotCancel;
-            private MaterialProperty matcapPerspective;
-            private MaterialProperty matcapVRParallaxStrength;
-            private MaterialProperty matcapBlend;
-            private MaterialProperty matcapBlendMask;
-            private MaterialProperty matcapEnableLighting;
-            private MaterialProperty matcapShadowMask;
-            private MaterialProperty matcapBackfaceMask;
-            private MaterialProperty matcapLod;
-            private MaterialProperty matcapBlendMode;
-            private MaterialProperty matcapMul;
-            private MaterialProperty matcapApplyTransparency;
-            private MaterialProperty matcapNormalStrength;
-            private MaterialProperty matcapCustomNormal;
-            private MaterialProperty matcapBumpMap;
-            private MaterialProperty matcapBumpScale;
-        private MaterialProperty useMatCap2nd;
-            private MaterialProperty matcap2ndTex;
-            private MaterialProperty matcap2ndColor;
-            private MaterialProperty matcap2ndBlendUV1;
-            private MaterialProperty matcap2ndZRotCancel;
-            private MaterialProperty matcap2ndPerspective;
-            private MaterialProperty matcap2ndVRParallaxStrength;
-            private MaterialProperty matcap2ndBlend;
-            private MaterialProperty matcap2ndBlendMask;
-            private MaterialProperty matcap2ndEnableLighting;
-            private MaterialProperty matcap2ndShadowMask;
-            private MaterialProperty matcap2ndBackfaceMask;
-            private MaterialProperty matcap2ndLod;
-            private MaterialProperty matcap2ndBlendMode;
-            private MaterialProperty matcap2ndMul;
-            private MaterialProperty matcap2ndApplyTransparency;
-            private MaterialProperty matcap2ndNormalStrength;
-            private MaterialProperty matcap2ndCustomNormal;
-            private MaterialProperty matcap2ndBumpMap;
-            private MaterialProperty matcap2ndBumpScale;
-        private MaterialProperty useRim;
-            private MaterialProperty rimColor;
-            private MaterialProperty rimColorTex;
-            private MaterialProperty rimNormalStrength;
-            private MaterialProperty rimBorder;
-            private MaterialProperty rimBlur;
-            private MaterialProperty rimFresnelPower;
-            private MaterialProperty rimEnableLighting;
-            private MaterialProperty rimShadowMask;
-            private MaterialProperty rimBackfaceMask;
-            private MaterialProperty rimVRParallaxStrength;
-            private MaterialProperty rimApplyTransparency;
-            private MaterialProperty rimDirStrength;
-            private MaterialProperty rimDirRange;
-            private MaterialProperty rimIndirRange;
-            private MaterialProperty rimIndirColor;
-            private MaterialProperty rimIndirBorder;
-            private MaterialProperty rimIndirBlur;
-        private MaterialProperty useGlitter;
-            private MaterialProperty glitterUVMode;
-            private MaterialProperty glitterColor;
-            private MaterialProperty glitterColorTex;
-            private MaterialProperty glitterMainStrength;
-            private MaterialProperty glitterParams1;
-            private MaterialProperty glitterParams2;
-            private MaterialProperty glitterPostContrast;
-            private MaterialProperty glitterSensitivity;
-            private MaterialProperty glitterEnableLighting;
-            private MaterialProperty glitterShadowMask;
-            private MaterialProperty glitterBackfaceMask;
-            private MaterialProperty glitterApplyTransparency;
-            private MaterialProperty glitterVRParallaxStrength;
-            private MaterialProperty glitterNormalStrength;
-        private MaterialProperty useEmission;
-            private MaterialProperty emissionColor;
-            private MaterialProperty emissionMap;
-            private MaterialProperty emissionMap_ScrollRotate;
-            private MaterialProperty emissionMap_UVMode;
-            private MaterialProperty emissionBlend;
-            private MaterialProperty emissionBlendMask;
-            private MaterialProperty emissionBlendMask_ScrollRotate;
-            private MaterialProperty emissionBlink;
-            private MaterialProperty emissionUseGrad;
-            private MaterialProperty emissionGradTex;
-            private MaterialProperty emissionGradSpeed;
-            private MaterialProperty emissionParallaxDepth;
-            private MaterialProperty emissionFluorescence;
-        private MaterialProperty useEmission2nd;
-            private MaterialProperty emission2ndColor;
-            private MaterialProperty emission2ndMap;
-            private MaterialProperty emission2ndMap_ScrollRotate;
-            private MaterialProperty emission2ndMap_UVMode;
-            private MaterialProperty emission2ndBlend;
-            private MaterialProperty emission2ndBlendMask;
-            private MaterialProperty emission2ndBlendMask_ScrollRotate;
-            private MaterialProperty emission2ndBlink;
-            private MaterialProperty emission2ndUseGrad;
-            private MaterialProperty emission2ndGradTex;
-            private MaterialProperty emission2ndGradSpeed;
-            private MaterialProperty emission2ndParallaxDepth;
-            private MaterialProperty emission2ndFluorescence;
-        //private MaterialProperty useOutline;
-            private MaterialProperty outlineColor;
-            private MaterialProperty outlineTex;
-            private MaterialProperty outlineTex_ScrollRotate;
-            private MaterialProperty outlineTexHSVG;
-            private MaterialProperty outlineLitColor;
-            private MaterialProperty outlineLitApplyTex;
-            private MaterialProperty outlineLitScale;
-            private MaterialProperty outlineLitOffset;
-            private MaterialProperty outlineWidth;
-            private MaterialProperty outlineWidthMask;
-            private MaterialProperty outlineFixWidth;
-            private MaterialProperty outlineVertexR2Width;
-            private MaterialProperty outlineDeleteMesh;
-            private MaterialProperty outlineVectorTex;
-            private MaterialProperty outlineVectorUVMode;
-            private MaterialProperty outlineVectorScale;
-            private MaterialProperty outlineEnableLighting;
-            private MaterialProperty outlineZBias;
-            private MaterialProperty outlineCull;
-            private MaterialProperty outlineSrcBlend;
-            private MaterialProperty outlineDstBlend;
-            private MaterialProperty outlineSrcBlendAlpha;
-            private MaterialProperty outlineDstBlendAlpha;
-            private MaterialProperty outlineBlendOp;
-            private MaterialProperty outlineBlendOpAlpha;
-            private MaterialProperty outlineSrcBlendFA;
-            private MaterialProperty outlineDstBlendFA;
-            private MaterialProperty outlineSrcBlendAlphaFA;
-            private MaterialProperty outlineDstBlendAlphaFA;
-            private MaterialProperty outlineBlendOpFA;
-            private MaterialProperty outlineBlendOpAlphaFA;
-            private MaterialProperty outlineZclip;
-            private MaterialProperty outlineZwrite;
-            private MaterialProperty outlineZtest;
-            private MaterialProperty outlineStencilRef;
-            private MaterialProperty outlineStencilReadMask;
-            private MaterialProperty outlineStencilWriteMask;
-            private MaterialProperty outlineStencilComp;
-            private MaterialProperty outlineStencilPass;
-            private MaterialProperty outlineStencilFail;
-            private MaterialProperty outlineStencilZFail;
-            private MaterialProperty outlineOffsetFactor;
-            private MaterialProperty outlineOffsetUnits;
-            private MaterialProperty outlineColorMask;
-            private MaterialProperty outlineAlphaToMask;
-        private MaterialProperty useParallax;
-            private MaterialProperty usePOM;
-            private MaterialProperty parallaxMap;
-            private MaterialProperty parallax;
-            private MaterialProperty parallaxOffset;
-        //private MaterialProperty useDistanceFade;
-            private MaterialProperty distanceFadeColor;
-            private MaterialProperty distanceFade;
-        private MaterialProperty useClippingCanceller;
-        private MaterialProperty useAudioLink;
-            private MaterialProperty audioLinkDefaultValue;
-            private MaterialProperty audioLinkUVMode;
-            private MaterialProperty audioLinkUVParams;
-            private MaterialProperty audioLinkStart;
-            private MaterialProperty audioLinkMask;
-            private MaterialProperty audioLink2Main2nd;
-            private MaterialProperty audioLink2Main3rd;
-            private MaterialProperty audioLink2Emission;
-            private MaterialProperty audioLink2EmissionGrad;
-            private MaterialProperty audioLink2Emission2nd;
-            private MaterialProperty audioLink2Emission2ndGrad;
-            private MaterialProperty audioLink2Vertex;
-            private MaterialProperty audioLinkVertexUVMode;
-            private MaterialProperty audioLinkVertexUVParams;
-            private MaterialProperty audioLinkVertexStart;
-            private MaterialProperty audioLinkVertexStrength;
-            private MaterialProperty audioLinkAsLocal;
-            private MaterialProperty audioLinkLocalMap;
-            private MaterialProperty audioLinkLocalMapParams;
-        //private MaterialProperty useDissolve;
-            private MaterialProperty dissolveMask;
-            private MaterialProperty dissolveNoiseMask;
-            private MaterialProperty dissolveNoiseMask_ScrollRotate;
-            private MaterialProperty dissolveNoiseStrength;
-            private MaterialProperty dissolveColor;
-            private MaterialProperty dissolveParams;
-            private MaterialProperty dissolvePos;
-        //private MaterialProperty useEncryption
-            private MaterialProperty ignoreEncryption;
-            private MaterialProperty keys;
-        //private MaterialProperty useRefraction;
-            private MaterialProperty refractionStrength;
-            private MaterialProperty refractionFresnelPower;
-            private MaterialProperty refractionColorFromMain;
-            private MaterialProperty refractionColor;
-        //private MaterialProperty useFur;
-            private MaterialProperty furNoiseMask;
-            private MaterialProperty furMask;
-            private MaterialProperty furLengthMask;
-            private MaterialProperty furVectorTex;
-            private MaterialProperty furVectorScale;
-            private MaterialProperty furVector;
-            private MaterialProperty furGravity;
-            private MaterialProperty furRandomize;
-            private MaterialProperty furAO;
-            private MaterialProperty vertexColor2FurVector;
-            private MaterialProperty furMeshType;
-            private MaterialProperty furLayerNum;
-            private MaterialProperty furRootOffset;
-            private MaterialProperty furCutoutLength;
-            private MaterialProperty furTouchStrength;
-            private MaterialProperty furCull;
-            private MaterialProperty furSrcBlend;
-            private MaterialProperty furDstBlend;
-            private MaterialProperty furSrcBlendAlpha;
-            private MaterialProperty furDstBlendAlpha;
-            private MaterialProperty furBlendOp;
-            private MaterialProperty furBlendOpAlpha;
-            private MaterialProperty furSrcBlendFA;
-            private MaterialProperty furDstBlendFA;
-            private MaterialProperty furSrcBlendAlphaFA;
-            private MaterialProperty furDstBlendAlphaFA;
-            private MaterialProperty furBlendOpFA;
-            private MaterialProperty furBlendOpAlphaFA;
-            private MaterialProperty furZclip;
-            private MaterialProperty furZwrite;
-            private MaterialProperty furZtest;
-            private MaterialProperty furStencilRef;
-            private MaterialProperty furStencilReadMask;
-            private MaterialProperty furStencilWriteMask;
-            private MaterialProperty furStencilComp;
-            private MaterialProperty furStencilPass;
-            private MaterialProperty furStencilFail;
-            private MaterialProperty furStencilZFail;
-            private MaterialProperty furOffsetFactor;
-            private MaterialProperty furOffsetUnits;
-            private MaterialProperty furColorMask;
-            private MaterialProperty furAlphaToMask;
-        //private MaterialProperty useTessellation;
-            private MaterialProperty tessEdge;
-            private MaterialProperty tessStrength;
-            private MaterialProperty tessShrink;
-            private MaterialProperty tessFactorMax;
-        //private MaterialProperty useGem;
-            private MaterialProperty gemChromaticAberration;
-            private MaterialProperty gemEnvContrast;
-            private MaterialProperty gemEnvColor;
-            private MaterialProperty gemParticleLoop;
-            private MaterialProperty gemParticleColor;
-            private MaterialProperty gemVRParallaxStrength;
-        //private MaterialProperty useFakeShadow;
-            private MaterialProperty fakeShadowVector;
+        private lilMaterialProperty transparentModeMat = new lilMaterialProperty();
+        private lilMaterialProperty asOverlay = new lilMaterialProperty();
+        private lilMaterialProperty invisible = new lilMaterialProperty();
+        private lilMaterialProperty asUnlit = new lilMaterialProperty();
+        private lilMaterialProperty cutoff = new lilMaterialProperty();
+        private lilMaterialProperty subpassCutoff = new lilMaterialProperty();
+        private lilMaterialProperty flipNormal = new lilMaterialProperty();
+        private lilMaterialProperty shiftBackfaceUV = new lilMaterialProperty();
+        private lilMaterialProperty backfaceForceShadow = new lilMaterialProperty();
+        private lilMaterialProperty vertexLightStrength = new lilMaterialProperty();
+        private lilMaterialProperty lightMinLimit = new lilMaterialProperty();
+        private lilMaterialProperty lightMaxLimit = new lilMaterialProperty();
+        private lilMaterialProperty beforeExposureLimit = new lilMaterialProperty();
+        private lilMaterialProperty monochromeLighting = new lilMaterialProperty();
+        private lilMaterialProperty alphaBoostFA = new lilMaterialProperty();
+        private lilMaterialProperty lilDirectionalLightStrength = new lilMaterialProperty();
+        private lilMaterialProperty lightDirectionOverride = new lilMaterialProperty();
+        private lilMaterialProperty baseColor = new lilMaterialProperty();
+        private lilMaterialProperty baseMap = new lilMaterialProperty();
+        private lilMaterialProperty baseColorMap = new lilMaterialProperty();
+        private lilMaterialProperty triMask = new lilMaterialProperty();
+            private lilMaterialProperty cull = new lilMaterialProperty();
+            private lilMaterialProperty srcBlend = new lilMaterialProperty();
+            private lilMaterialProperty dstBlend = new lilMaterialProperty();
+            private lilMaterialProperty srcBlendAlpha = new lilMaterialProperty();
+            private lilMaterialProperty dstBlendAlpha = new lilMaterialProperty();
+            private lilMaterialProperty blendOp = new lilMaterialProperty();
+            private lilMaterialProperty blendOpAlpha = new lilMaterialProperty();
+            private lilMaterialProperty srcBlendFA = new lilMaterialProperty();
+            private lilMaterialProperty dstBlendFA = new lilMaterialProperty();
+            private lilMaterialProperty srcBlendAlphaFA = new lilMaterialProperty();
+            private lilMaterialProperty dstBlendAlphaFA = new lilMaterialProperty();
+            private lilMaterialProperty blendOpFA = new lilMaterialProperty();
+            private lilMaterialProperty blendOpAlphaFA = new lilMaterialProperty();
+            private lilMaterialProperty zclip = new lilMaterialProperty();
+            private lilMaterialProperty zwrite = new lilMaterialProperty();
+            private lilMaterialProperty ztest = new lilMaterialProperty();
+            private lilMaterialProperty stencilRef = new lilMaterialProperty();
+            private lilMaterialProperty stencilReadMask = new lilMaterialProperty();
+            private lilMaterialProperty stencilWriteMask = new lilMaterialProperty();
+            private lilMaterialProperty stencilComp = new lilMaterialProperty();
+            private lilMaterialProperty stencilPass = new lilMaterialProperty();
+            private lilMaterialProperty stencilFail = new lilMaterialProperty();
+            private lilMaterialProperty stencilZFail = new lilMaterialProperty();
+            private lilMaterialProperty offsetFactor = new lilMaterialProperty();
+            private lilMaterialProperty offsetUnits = new lilMaterialProperty();
+            private lilMaterialProperty colorMask = new lilMaterialProperty();
+            private lilMaterialProperty alphaToMask = new lilMaterialProperty();
+            private lilMaterialProperty lilShadowCasterBias = new lilMaterialProperty();
+        //private lilMaterialProperty useMainTex = new lilMaterialProperty();
+            private lilMaterialProperty mainColor = new lilMaterialProperty();
+            private lilMaterialProperty mainTex = new lilMaterialProperty();
+            private lilMaterialProperty mainTexHSVG = new lilMaterialProperty();
+            private lilMaterialProperty mainTex_ScrollRotate = new lilMaterialProperty();
+            private lilMaterialProperty mainGradationStrength = new lilMaterialProperty();
+            private lilMaterialProperty mainGradationTex = new lilMaterialProperty();
+            private lilMaterialProperty mainColorAdjustMask = new lilMaterialProperty();
+        private lilMaterialProperty useMain2ndTex = new lilMaterialProperty();
+            private lilMaterialProperty mainColor2nd = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTex = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTex_UVMode = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTexAngle = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTexDecalAnimation = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTexDecalSubParam = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTexIsDecal = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTexIsLeftOnly = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTexIsRightOnly = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTexShouldCopy = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTexShouldFlipMirror = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTexShouldFlipCopy = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTexIsMSDF = new lilMaterialProperty();
+            private lilMaterialProperty main2ndBlendMask = new lilMaterialProperty();
+            private lilMaterialProperty main2ndTexBlendMode = new lilMaterialProperty();
+            private lilMaterialProperty main2ndEnableLighting = new lilMaterialProperty();
+            private lilMaterialProperty main2ndDissolveMask = new lilMaterialProperty();
+            private lilMaterialProperty main2ndDissolveNoiseMask = new lilMaterialProperty();
+            private lilMaterialProperty main2ndDissolveNoiseMask_ScrollRotate = new lilMaterialProperty();
+            private lilMaterialProperty main2ndDissolveNoiseStrength = new lilMaterialProperty();
+            private lilMaterialProperty main2ndDissolveColor = new lilMaterialProperty();
+            private lilMaterialProperty main2ndDissolveParams = new lilMaterialProperty();
+            private lilMaterialProperty main2ndDissolvePos = new lilMaterialProperty();
+            private lilMaterialProperty main2ndDistanceFade = new lilMaterialProperty();
+        private lilMaterialProperty useMain3rdTex = new lilMaterialProperty();
+            private lilMaterialProperty mainColor3rd = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTex = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTex_UVMode = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTexAngle = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTexDecalAnimation = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTexDecalSubParam = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTexIsDecal = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTexIsLeftOnly = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTexIsRightOnly = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTexShouldCopy = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTexShouldFlipMirror = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTexShouldFlipCopy = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTexIsMSDF = new lilMaterialProperty();
+            private lilMaterialProperty main3rdBlendMask = new lilMaterialProperty();
+            private lilMaterialProperty main3rdTexBlendMode = new lilMaterialProperty();
+            private lilMaterialProperty main3rdEnableLighting = new lilMaterialProperty();
+            private lilMaterialProperty main3rdDissolveMask = new lilMaterialProperty();
+            private lilMaterialProperty main3rdDissolveNoiseMask = new lilMaterialProperty();
+            private lilMaterialProperty main3rdDissolveNoiseMask_ScrollRotate = new lilMaterialProperty();
+            private lilMaterialProperty main3rdDissolveNoiseStrength = new lilMaterialProperty();
+            private lilMaterialProperty main3rdDissolveColor = new lilMaterialProperty();
+            private lilMaterialProperty main3rdDissolveParams = new lilMaterialProperty();
+            private lilMaterialProperty main3rdDissolvePos = new lilMaterialProperty();
+            private lilMaterialProperty main3rdDistanceFade = new lilMaterialProperty();
+        private lilMaterialProperty alphaMaskMode = new lilMaterialProperty();
+            private lilMaterialProperty alphaMask = new lilMaterialProperty();
+            private lilMaterialProperty alphaMaskScale = new lilMaterialProperty();
+            private lilMaterialProperty alphaMaskValue = new lilMaterialProperty();
+        private lilMaterialProperty useShadow = new lilMaterialProperty();
+            private lilMaterialProperty shadowStrength = new lilMaterialProperty();
+            private lilMaterialProperty shadowStrengthMask = new lilMaterialProperty();
+            private lilMaterialProperty shadowBorderMask = new lilMaterialProperty();
+            private lilMaterialProperty shadowBlurMask = new lilMaterialProperty();
+            private lilMaterialProperty shadowStrengthMaskLOD = new lilMaterialProperty();
+            private lilMaterialProperty shadowBorderMaskLOD = new lilMaterialProperty();
+            private lilMaterialProperty shadowBlurMaskLOD = new lilMaterialProperty();
+            private lilMaterialProperty shadowAOShift = new lilMaterialProperty();
+            private lilMaterialProperty shadowAOShift2 = new lilMaterialProperty();
+            private lilMaterialProperty shadowPostAO = new lilMaterialProperty();
+            private lilMaterialProperty shadowColor = new lilMaterialProperty();
+            private lilMaterialProperty shadowColorTex = new lilMaterialProperty();
+            private lilMaterialProperty shadowNormalStrength = new lilMaterialProperty();
+            private lilMaterialProperty shadowBorder = new lilMaterialProperty();
+            private lilMaterialProperty shadowBlur = new lilMaterialProperty();
+            private lilMaterialProperty shadow2ndColor = new lilMaterialProperty();
+            private lilMaterialProperty shadow2ndColorTex = new lilMaterialProperty();
+            private lilMaterialProperty shadow2ndNormalStrength = new lilMaterialProperty();
+            private lilMaterialProperty shadow2ndBorder = new lilMaterialProperty();
+            private lilMaterialProperty shadow2ndBlur = new lilMaterialProperty();
+            private lilMaterialProperty shadow3rdColor = new lilMaterialProperty();
+            private lilMaterialProperty shadow3rdColorTex = new lilMaterialProperty();
+            private lilMaterialProperty shadow3rdNormalStrength = new lilMaterialProperty();
+            private lilMaterialProperty shadow3rdBorder = new lilMaterialProperty();
+            private lilMaterialProperty shadow3rdBlur = new lilMaterialProperty();
+            private lilMaterialProperty shadowMainStrength = new lilMaterialProperty();
+            private lilMaterialProperty shadowEnvStrength = new lilMaterialProperty();
+            private lilMaterialProperty shadowBorderColor = new lilMaterialProperty();
+            private lilMaterialProperty shadowBorderRange = new lilMaterialProperty();
+            private lilMaterialProperty shadowReceive = new lilMaterialProperty();
+            private lilMaterialProperty shadow2ndReceive = new lilMaterialProperty();
+            private lilMaterialProperty shadow3rdReceive = new lilMaterialProperty();
+            private lilMaterialProperty shadowMaskType = new lilMaterialProperty();
+            private lilMaterialProperty shadowFlatBorder = new lilMaterialProperty();
+            private lilMaterialProperty shadowFlatBlur = new lilMaterialProperty();
+        private lilMaterialProperty useBacklight = new lilMaterialProperty();
+            private lilMaterialProperty backlightColor = new lilMaterialProperty();
+            private lilMaterialProperty backlightColorTex = new lilMaterialProperty();
+            private lilMaterialProperty backlightMainStrength = new lilMaterialProperty();
+            private lilMaterialProperty backlightNormalStrength = new lilMaterialProperty();
+            private lilMaterialProperty backlightBorder = new lilMaterialProperty();
+            private lilMaterialProperty backlightBlur = new lilMaterialProperty();
+            private lilMaterialProperty backlightDirectivity = new lilMaterialProperty();
+            private lilMaterialProperty backlightViewStrength = new lilMaterialProperty();
+            private lilMaterialProperty backlightReceiveShadow = new lilMaterialProperty();
+            private lilMaterialProperty backlightBackfaceMask = new lilMaterialProperty();
+        private lilMaterialProperty useBumpMap = new lilMaterialProperty();
+            private lilMaterialProperty bumpMap = new lilMaterialProperty();
+            private lilMaterialProperty bumpScale = new lilMaterialProperty();
+        private lilMaterialProperty useBump2ndMap = new lilMaterialProperty();
+            private lilMaterialProperty bump2ndMap = new lilMaterialProperty();
+            private lilMaterialProperty bump2ndScale = new lilMaterialProperty();
+            private lilMaterialProperty bump2ndScaleMask = new lilMaterialProperty();
+        private lilMaterialProperty useAnisotropy = new lilMaterialProperty();
+            private lilMaterialProperty anisotropyTangentMap = new lilMaterialProperty();
+            private lilMaterialProperty anisotropyScale = new lilMaterialProperty();
+            private lilMaterialProperty anisotropyScaleMask = new lilMaterialProperty();
+            private lilMaterialProperty anisotropyTangentWidth = new lilMaterialProperty();
+            private lilMaterialProperty anisotropyBitangentWidth = new lilMaterialProperty();
+            private lilMaterialProperty anisotropyShift = new lilMaterialProperty();
+            private lilMaterialProperty anisotropyShiftNoiseScale = new lilMaterialProperty();
+            private lilMaterialProperty anisotropySpecularStrength = new lilMaterialProperty();
+            private lilMaterialProperty anisotropy2ndTangentWidth = new lilMaterialProperty();
+            private lilMaterialProperty anisotropy2ndBitangentWidth = new lilMaterialProperty();
+            private lilMaterialProperty anisotropy2ndShift = new lilMaterialProperty();
+            private lilMaterialProperty anisotropy2ndShiftNoiseScale = new lilMaterialProperty();
+            private lilMaterialProperty anisotropy2ndSpecularStrength = new lilMaterialProperty();
+            private lilMaterialProperty anisotropyShiftNoiseMask = new lilMaterialProperty();
+            private lilMaterialProperty anisotropy2Reflection = new lilMaterialProperty();
+            private lilMaterialProperty anisotropy2MatCap = new lilMaterialProperty();
+            private lilMaterialProperty anisotropy2MatCap2nd = new lilMaterialProperty();
+        private lilMaterialProperty useReflection = new lilMaterialProperty();
+            private lilMaterialProperty metallic = new lilMaterialProperty();
+            private lilMaterialProperty metallicGlossMap = new lilMaterialProperty();
+            private lilMaterialProperty smoothness = new lilMaterialProperty();
+            private lilMaterialProperty smoothnessTex = new lilMaterialProperty();
+            private lilMaterialProperty reflectance = new lilMaterialProperty();
+            private lilMaterialProperty reflectionColor = new lilMaterialProperty();
+            private lilMaterialProperty reflectionColorTex = new lilMaterialProperty();
+            private lilMaterialProperty gsaaStrength = new lilMaterialProperty();
+            private lilMaterialProperty applySpecular = new lilMaterialProperty();
+            private lilMaterialProperty applySpecularFA = new lilMaterialProperty();
+            private lilMaterialProperty specularNormalStrength = new lilMaterialProperty();
+            private lilMaterialProperty specularToon = new lilMaterialProperty();
+            private lilMaterialProperty specularBorder = new lilMaterialProperty();
+            private lilMaterialProperty specularBlur = new lilMaterialProperty();
+            private lilMaterialProperty applyReflection = new lilMaterialProperty();
+            private lilMaterialProperty reflectionNormalStrength = new lilMaterialProperty();
+            private lilMaterialProperty reflectionApplyTransparency = new lilMaterialProperty();
+            private lilMaterialProperty reflectionCubeTex = new lilMaterialProperty();
+            private lilMaterialProperty reflectionCubeColor = new lilMaterialProperty();
+            private lilMaterialProperty reflectionCubeOverride = new lilMaterialProperty();
+            private lilMaterialProperty reflectionCubeEnableLighting = new lilMaterialProperty();
+            private lilMaterialProperty reflectionBlendMode = new lilMaterialProperty();
+        private lilMaterialProperty useMatCap = new lilMaterialProperty();
+            private lilMaterialProperty matcapTex = new lilMaterialProperty();
+            private lilMaterialProperty matcapColor = new lilMaterialProperty();
+            private lilMaterialProperty matcapMainStrength = new lilMaterialProperty();
+            private lilMaterialProperty matcapBlendUV1 = new lilMaterialProperty();
+            private lilMaterialProperty matcapZRotCancel = new lilMaterialProperty();
+            private lilMaterialProperty matcapPerspective = new lilMaterialProperty();
+            private lilMaterialProperty matcapVRParallaxStrength = new lilMaterialProperty();
+            private lilMaterialProperty matcapBlend = new lilMaterialProperty();
+            private lilMaterialProperty matcapBlendMask = new lilMaterialProperty();
+            private lilMaterialProperty matcapEnableLighting = new lilMaterialProperty();
+            private lilMaterialProperty matcapShadowMask = new lilMaterialProperty();
+            private lilMaterialProperty matcapBackfaceMask = new lilMaterialProperty();
+            private lilMaterialProperty matcapLod = new lilMaterialProperty();
+            private lilMaterialProperty matcapBlendMode = new lilMaterialProperty();
+            private lilMaterialProperty matcapMul = new lilMaterialProperty();
+            private lilMaterialProperty matcapApplyTransparency = new lilMaterialProperty();
+            private lilMaterialProperty matcapNormalStrength = new lilMaterialProperty();
+            private lilMaterialProperty matcapCustomNormal = new lilMaterialProperty();
+            private lilMaterialProperty matcapBumpMap = new lilMaterialProperty();
+            private lilMaterialProperty matcapBumpScale = new lilMaterialProperty();
+        private lilMaterialProperty useMatCap2nd = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndTex = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndColor = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndMainStrength = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndBlendUV1 = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndZRotCancel = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndPerspective = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndVRParallaxStrength = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndBlend = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndBlendMask = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndEnableLighting = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndShadowMask = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndBackfaceMask = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndLod = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndBlendMode = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndMul = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndApplyTransparency = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndNormalStrength = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndCustomNormal = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndBumpMap = new lilMaterialProperty();
+            private lilMaterialProperty matcap2ndBumpScale = new lilMaterialProperty();
+        private lilMaterialProperty useRim = new lilMaterialProperty();
+            private lilMaterialProperty rimColor = new lilMaterialProperty();
+            private lilMaterialProperty rimColorTex = new lilMaterialProperty();
+            private lilMaterialProperty rimMainStrength = new lilMaterialProperty();
+            private lilMaterialProperty rimNormalStrength = new lilMaterialProperty();
+            private lilMaterialProperty rimBorder = new lilMaterialProperty();
+            private lilMaterialProperty rimBlur = new lilMaterialProperty();
+            private lilMaterialProperty rimFresnelPower = new lilMaterialProperty();
+            private lilMaterialProperty rimEnableLighting = new lilMaterialProperty();
+            private lilMaterialProperty rimShadowMask = new lilMaterialProperty();
+            private lilMaterialProperty rimBackfaceMask = new lilMaterialProperty();
+            private lilMaterialProperty rimVRParallaxStrength = new lilMaterialProperty();
+            private lilMaterialProperty rimApplyTransparency = new lilMaterialProperty();
+            private lilMaterialProperty rimDirStrength = new lilMaterialProperty();
+            private lilMaterialProperty rimDirRange = new lilMaterialProperty();
+            private lilMaterialProperty rimIndirRange = new lilMaterialProperty();
+            private lilMaterialProperty rimIndirColor = new lilMaterialProperty();
+            private lilMaterialProperty rimIndirBorder = new lilMaterialProperty();
+            private lilMaterialProperty rimIndirBlur = new lilMaterialProperty();
+        private lilMaterialProperty useGlitter = new lilMaterialProperty();
+            private lilMaterialProperty glitterUVMode = new lilMaterialProperty();
+            private lilMaterialProperty glitterColor = new lilMaterialProperty();
+            private lilMaterialProperty glitterColorTex = new lilMaterialProperty();
+            private lilMaterialProperty glitterMainStrength = new lilMaterialProperty();
+            private lilMaterialProperty glitterParams1 = new lilMaterialProperty();
+            private lilMaterialProperty glitterParams2 = new lilMaterialProperty();
+            private lilMaterialProperty glitterPostContrast = new lilMaterialProperty();
+            private lilMaterialProperty glitterSensitivity = new lilMaterialProperty();
+            private lilMaterialProperty glitterEnableLighting = new lilMaterialProperty();
+            private lilMaterialProperty glitterShadowMask = new lilMaterialProperty();
+            private lilMaterialProperty glitterBackfaceMask = new lilMaterialProperty();
+            private lilMaterialProperty glitterApplyTransparency = new lilMaterialProperty();
+            private lilMaterialProperty glitterVRParallaxStrength = new lilMaterialProperty();
+            private lilMaterialProperty glitterNormalStrength = new lilMaterialProperty();
+        private lilMaterialProperty useEmission = new lilMaterialProperty();
+            private lilMaterialProperty emissionColor = new lilMaterialProperty();
+            private lilMaterialProperty emissionMap = new lilMaterialProperty();
+            private lilMaterialProperty emissionMap_ScrollRotate = new lilMaterialProperty();
+            private lilMaterialProperty emissionMap_UVMode = new lilMaterialProperty();
+            private lilMaterialProperty emissionMainStrength = new lilMaterialProperty();
+            private lilMaterialProperty emissionBlend = new lilMaterialProperty();
+            private lilMaterialProperty emissionBlendMask = new lilMaterialProperty();
+            private lilMaterialProperty emissionBlendMask_ScrollRotate = new lilMaterialProperty();
+            private lilMaterialProperty emissionBlink = new lilMaterialProperty();
+            private lilMaterialProperty emissionUseGrad = new lilMaterialProperty();
+            private lilMaterialProperty emissionGradTex = new lilMaterialProperty();
+            private lilMaterialProperty emissionGradSpeed = new lilMaterialProperty();
+            private lilMaterialProperty emissionParallaxDepth = new lilMaterialProperty();
+            private lilMaterialProperty emissionFluorescence = new lilMaterialProperty();
+        private lilMaterialProperty useEmission2nd = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndColor = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndMap = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndMap_ScrollRotate = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndMap_UVMode = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndMainStrength = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndBlend = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndBlendMask = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndBlendMask_ScrollRotate = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndBlink = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndUseGrad = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndGradTex = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndGradSpeed = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndParallaxDepth = new lilMaterialProperty();
+            private lilMaterialProperty emission2ndFluorescence = new lilMaterialProperty();
+        //private lilMaterialProperty useOutline = new lilMaterialProperty();
+            private lilMaterialProperty outlineColor = new lilMaterialProperty();
+            private lilMaterialProperty outlineTex = new lilMaterialProperty();
+            private lilMaterialProperty outlineTex_ScrollRotate = new lilMaterialProperty();
+            private lilMaterialProperty outlineTexHSVG = new lilMaterialProperty();
+            private lilMaterialProperty outlineLitColor = new lilMaterialProperty();
+            private lilMaterialProperty outlineLitApplyTex = new lilMaterialProperty();
+            private lilMaterialProperty outlineLitScale = new lilMaterialProperty();
+            private lilMaterialProperty outlineLitOffset = new lilMaterialProperty();
+            private lilMaterialProperty outlineWidth = new lilMaterialProperty();
+            private lilMaterialProperty outlineWidthMask = new lilMaterialProperty();
+            private lilMaterialProperty outlineFixWidth = new lilMaterialProperty();
+            private lilMaterialProperty outlineVertexR2Width = new lilMaterialProperty();
+            private lilMaterialProperty outlineDeleteMesh = new lilMaterialProperty();
+            private lilMaterialProperty outlineVectorTex = new lilMaterialProperty();
+            private lilMaterialProperty outlineVectorUVMode = new lilMaterialProperty();
+            private lilMaterialProperty outlineVectorScale = new lilMaterialProperty();
+            private lilMaterialProperty outlineEnableLighting = new lilMaterialProperty();
+            private lilMaterialProperty outlineZBias = new lilMaterialProperty();
+            private lilMaterialProperty outlineCull = new lilMaterialProperty();
+            private lilMaterialProperty outlineSrcBlend = new lilMaterialProperty();
+            private lilMaterialProperty outlineDstBlend = new lilMaterialProperty();
+            private lilMaterialProperty outlineSrcBlendAlpha = new lilMaterialProperty();
+            private lilMaterialProperty outlineDstBlendAlpha = new lilMaterialProperty();
+            private lilMaterialProperty outlineBlendOp = new lilMaterialProperty();
+            private lilMaterialProperty outlineBlendOpAlpha = new lilMaterialProperty();
+            private lilMaterialProperty outlineSrcBlendFA = new lilMaterialProperty();
+            private lilMaterialProperty outlineDstBlendFA = new lilMaterialProperty();
+            private lilMaterialProperty outlineSrcBlendAlphaFA = new lilMaterialProperty();
+            private lilMaterialProperty outlineDstBlendAlphaFA = new lilMaterialProperty();
+            private lilMaterialProperty outlineBlendOpFA = new lilMaterialProperty();
+            private lilMaterialProperty outlineBlendOpAlphaFA = new lilMaterialProperty();
+            private lilMaterialProperty outlineZclip = new lilMaterialProperty();
+            private lilMaterialProperty outlineZwrite = new lilMaterialProperty();
+            private lilMaterialProperty outlineZtest = new lilMaterialProperty();
+            private lilMaterialProperty outlineStencilRef = new lilMaterialProperty();
+            private lilMaterialProperty outlineStencilReadMask = new lilMaterialProperty();
+            private lilMaterialProperty outlineStencilWriteMask = new lilMaterialProperty();
+            private lilMaterialProperty outlineStencilComp = new lilMaterialProperty();
+            private lilMaterialProperty outlineStencilPass = new lilMaterialProperty();
+            private lilMaterialProperty outlineStencilFail = new lilMaterialProperty();
+            private lilMaterialProperty outlineStencilZFail = new lilMaterialProperty();
+            private lilMaterialProperty outlineOffsetFactor = new lilMaterialProperty();
+            private lilMaterialProperty outlineOffsetUnits = new lilMaterialProperty();
+            private lilMaterialProperty outlineColorMask = new lilMaterialProperty();
+            private lilMaterialProperty outlineAlphaToMask = new lilMaterialProperty();
+        private lilMaterialProperty useParallax = new lilMaterialProperty();
+            private lilMaterialProperty usePOM = new lilMaterialProperty();
+            private lilMaterialProperty parallaxMap = new lilMaterialProperty();
+            private lilMaterialProperty parallax = new lilMaterialProperty();
+            private lilMaterialProperty parallaxOffset = new lilMaterialProperty();
+        //private lilMaterialProperty useDistanceFade = new lilMaterialProperty();
+            private lilMaterialProperty distanceFadeColor = new lilMaterialProperty();
+            private lilMaterialProperty distanceFade = new lilMaterialProperty();
+        private lilMaterialProperty useClippingCanceller = new lilMaterialProperty();
+        private lilMaterialProperty useAudioLink = new lilMaterialProperty();
+            private lilMaterialProperty audioLinkDefaultValue = new lilMaterialProperty();
+            private lilMaterialProperty audioLinkUVMode = new lilMaterialProperty();
+            private lilMaterialProperty audioLinkUVParams = new lilMaterialProperty();
+            private lilMaterialProperty audioLinkStart = new lilMaterialProperty();
+            private lilMaterialProperty audioLinkMask = new lilMaterialProperty();
+            private lilMaterialProperty audioLink2Main2nd = new lilMaterialProperty();
+            private lilMaterialProperty audioLink2Main3rd = new lilMaterialProperty();
+            private lilMaterialProperty audioLink2Emission = new lilMaterialProperty();
+            private lilMaterialProperty audioLink2EmissionGrad = new lilMaterialProperty();
+            private lilMaterialProperty audioLink2Emission2nd = new lilMaterialProperty();
+            private lilMaterialProperty audioLink2Emission2ndGrad = new lilMaterialProperty();
+            private lilMaterialProperty audioLink2Vertex = new lilMaterialProperty();
+            private lilMaterialProperty audioLinkVertexUVMode = new lilMaterialProperty();
+            private lilMaterialProperty audioLinkVertexUVParams = new lilMaterialProperty();
+            private lilMaterialProperty audioLinkVertexStart = new lilMaterialProperty();
+            private lilMaterialProperty audioLinkVertexStrength = new lilMaterialProperty();
+            private lilMaterialProperty audioLinkAsLocal = new lilMaterialProperty();
+            private lilMaterialProperty audioLinkLocalMap = new lilMaterialProperty();
+            private lilMaterialProperty audioLinkLocalMapParams = new lilMaterialProperty();
+        //private lilMaterialProperty useDissolve = new lilMaterialProperty();
+            private lilMaterialProperty dissolveMask = new lilMaterialProperty();
+            private lilMaterialProperty dissolveNoiseMask = new lilMaterialProperty();
+            private lilMaterialProperty dissolveNoiseMask_ScrollRotate = new lilMaterialProperty();
+            private lilMaterialProperty dissolveNoiseStrength = new lilMaterialProperty();
+            private lilMaterialProperty dissolveColor = new lilMaterialProperty();
+            private lilMaterialProperty dissolveParams = new lilMaterialProperty();
+            private lilMaterialProperty dissolvePos = new lilMaterialProperty();
+        //private lilMaterialProperty useEncryptio = new lilMaterialProperty();
+            private lilMaterialProperty ignoreEncryption = new lilMaterialProperty();
+            private lilMaterialProperty keys = new lilMaterialProperty();
+        //private lilMaterialProperty useRefraction = new lilMaterialProperty();
+            private lilMaterialProperty refractionStrength = new lilMaterialProperty();
+            private lilMaterialProperty refractionFresnelPower = new lilMaterialProperty();
+            private lilMaterialProperty refractionColorFromMain = new lilMaterialProperty();
+            private lilMaterialProperty refractionColor = new lilMaterialProperty();
+        //private lilMaterialProperty useFur = new lilMaterialProperty();
+            private lilMaterialProperty furNoiseMask = new lilMaterialProperty();
+            private lilMaterialProperty furMask = new lilMaterialProperty();
+            private lilMaterialProperty furLengthMask = new lilMaterialProperty();
+            private lilMaterialProperty furVectorTex = new lilMaterialProperty();
+            private lilMaterialProperty furVectorScale = new lilMaterialProperty();
+            private lilMaterialProperty furVector = new lilMaterialProperty();
+            private lilMaterialProperty furGravity = new lilMaterialProperty();
+            private lilMaterialProperty furRandomize = new lilMaterialProperty();
+            private lilMaterialProperty furAO = new lilMaterialProperty();
+            private lilMaterialProperty vertexColor2FurVector = new lilMaterialProperty();
+            private lilMaterialProperty furMeshType = new lilMaterialProperty();
+            private lilMaterialProperty furLayerNum = new lilMaterialProperty();
+            private lilMaterialProperty furRootOffset = new lilMaterialProperty();
+            private lilMaterialProperty furCutoutLength = new lilMaterialProperty();
+            private lilMaterialProperty furTouchStrength = new lilMaterialProperty();
+            private lilMaterialProperty furCull = new lilMaterialProperty();
+            private lilMaterialProperty furSrcBlend = new lilMaterialProperty();
+            private lilMaterialProperty furDstBlend = new lilMaterialProperty();
+            private lilMaterialProperty furSrcBlendAlpha = new lilMaterialProperty();
+            private lilMaterialProperty furDstBlendAlpha = new lilMaterialProperty();
+            private lilMaterialProperty furBlendOp = new lilMaterialProperty();
+            private lilMaterialProperty furBlendOpAlpha = new lilMaterialProperty();
+            private lilMaterialProperty furSrcBlendFA = new lilMaterialProperty();
+            private lilMaterialProperty furDstBlendFA = new lilMaterialProperty();
+            private lilMaterialProperty furSrcBlendAlphaFA = new lilMaterialProperty();
+            private lilMaterialProperty furDstBlendAlphaFA = new lilMaterialProperty();
+            private lilMaterialProperty furBlendOpFA = new lilMaterialProperty();
+            private lilMaterialProperty furBlendOpAlphaFA = new lilMaterialProperty();
+            private lilMaterialProperty furZclip = new lilMaterialProperty();
+            private lilMaterialProperty furZwrite = new lilMaterialProperty();
+            private lilMaterialProperty furZtest = new lilMaterialProperty();
+            private lilMaterialProperty furStencilRef = new lilMaterialProperty();
+            private lilMaterialProperty furStencilReadMask = new lilMaterialProperty();
+            private lilMaterialProperty furStencilWriteMask = new lilMaterialProperty();
+            private lilMaterialProperty furStencilComp = new lilMaterialProperty();
+            private lilMaterialProperty furStencilPass = new lilMaterialProperty();
+            private lilMaterialProperty furStencilFail = new lilMaterialProperty();
+            private lilMaterialProperty furStencilZFail = new lilMaterialProperty();
+            private lilMaterialProperty furOffsetFactor = new lilMaterialProperty();
+            private lilMaterialProperty furOffsetUnits = new lilMaterialProperty();
+            private lilMaterialProperty furColorMask = new lilMaterialProperty();
+            private lilMaterialProperty furAlphaToMask = new lilMaterialProperty();
+        //private lilMaterialProperty useTessellation = new lilMaterialProperty();
+            private lilMaterialProperty tessEdge = new lilMaterialProperty();
+            private lilMaterialProperty tessStrength = new lilMaterialProperty();
+            private lilMaterialProperty tessShrink = new lilMaterialProperty();
+            private lilMaterialProperty tessFactorMax = new lilMaterialProperty();
+        //private lilMaterialProperty useGem = new lilMaterialProperty();
+            private lilMaterialProperty gemChromaticAberration = new lilMaterialProperty();
+            private lilMaterialProperty gemEnvContrast = new lilMaterialProperty();
+            private lilMaterialProperty gemEnvColor = new lilMaterialProperty();
+            private lilMaterialProperty gemParticleLoop = new lilMaterialProperty();
+            private lilMaterialProperty gemParticleColor = new lilMaterialProperty();
+            private lilMaterialProperty gemVRParallaxStrength = new lilMaterialProperty();
+        //private lilMaterialProperty useFakeShadow = new lilMaterialProperty();
+            private lilMaterialProperty fakeShadowVector = new lilMaterialProperty();
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -1211,6 +1086,7 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowEmissionMap, colorMaskRGBAContent, emissionMap, emissionColor, emissionMap_ScrollRotate, emissionMap_UVMode, true, true);
                         DrawColorAsAlpha(emissionColor);
+                        m_MaterialEditor.ShaderProperty(emissionMainStrength, GetLoc("sMainColorPower"));
                         DrawLine();
                         TextureGUI(ref edSet.isShowEmissionBlendMask, maskBlendContent, emissionBlendMask, emissionBlend, emissionBlendMask_ScrollRotate, true, true);
                         DrawLine();
@@ -1228,6 +1104,7 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowEmission2ndMap, colorMaskRGBAContent, emission2ndMap, emission2ndColor, emission2ndMap_ScrollRotate, emission2ndMap_UVMode, true, true);
                         DrawColorAsAlpha(emission2ndColor);
+                        m_MaterialEditor.ShaderProperty(emission2ndMainStrength, GetLoc("sMainColorPower"));
                         DrawLine();
                         TextureGUI(ref edSet.isShowEmission2ndBlendMask, maskBlendContent, emission2ndBlendMask, emission2ndBlend, emission2ndBlendMask_ScrollRotate, true, true);
                         DrawLine();
@@ -2098,6 +1975,7 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowEmissionMap, colorMaskRGBAContent, emissionMap, emissionColor, emissionMap_ScrollRotate, emissionMap_UVMode, true, true);
                         DrawColorAsAlpha(emissionColor);
+                        m_MaterialEditor.ShaderProperty(emissionMainStrength, GetLoc("sMainColorPower"));
                         DrawLine();
                         TextureGUI(ref edSet.isShowEmissionBlendMask, maskBlendContent, emissionBlendMask, emissionBlend, emissionBlendMask_ScrollRotate, true, true);
                         DrawLine();
@@ -2127,6 +2005,7 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowEmission2ndMap, colorMaskRGBAContent, emission2ndMap, emission2ndColor, emission2ndMap_ScrollRotate, emission2ndMap_UVMode, true, true);
                         DrawColorAsAlpha(emission2ndColor);
+                        m_MaterialEditor.ShaderProperty(emission2ndMainStrength, GetLoc("sMainColorPower"));
                         DrawLine();
                         TextureGUI(ref edSet.isShowEmission2ndBlendMask, maskBlendContent, emission2ndBlendMask, emission2ndBlend, emission2ndBlendMask_ScrollRotate, true, true);
                         DrawLine();
@@ -2248,6 +2127,7 @@ namespace lilToon
                             TextureGUI(ref edSet.isShowBacklightColorTex, colorMaskRGBAContent, backlightColorTex, backlightColor);
                             EditorGUI.indentLevel++;
                             DrawColorAsAlpha(backlightColor);
+                            m_MaterialEditor.ShaderProperty(backlightMainStrength, GetLoc("sMainColorPower"));
                             m_MaterialEditor.ShaderProperty(backlightReceiveShadow, GetLoc("sReceiveShadow"));
                             m_MaterialEditor.ShaderProperty(backlightBackfaceMask, GetLoc("sBackfaceMask"));
                             EditorGUI.indentLevel--;
@@ -2328,6 +2208,7 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         MatCapTextureGUI(ref edSet.isShowMatCapUV, matcapContent, matcapTex, matcapColor, matcapBlendUV1, matcapZRotCancel, matcapPerspective, matcapVRParallaxStrength);
                         DrawColorAsAlpha(matcapColor);
+                        m_MaterialEditor.ShaderProperty(matcapMainStrength, GetLoc("sMainColorPower"));
                         m_MaterialEditor.ShaderProperty(matcapNormalStrength, GetLoc("sNormalStrength"));
                         DrawLine();
                         TextureGUI(ref edSet.isShowMatCapBlendMask, maskBlendContent, matcapBlendMask, matcapBlend);
@@ -2361,6 +2242,7 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         MatCapTextureGUI(ref edSet.isShowMatCap2ndUV, matcapContent, matcap2ndTex, matcap2ndColor, matcap2ndBlendUV1, matcap2ndZRotCancel, matcap2ndPerspective, matcap2ndVRParallaxStrength);
                         DrawColorAsAlpha(matcap2ndColor);
+                        m_MaterialEditor.ShaderProperty(matcap2ndMainStrength, GetLoc("sMainColorPower"));
                         m_MaterialEditor.ShaderProperty(matcap2ndNormalStrength, GetLoc("sNormalStrength"));
                         DrawLine();
                         TextureGUI(ref edSet.isShowMatCap2ndBlendMask, maskBlendContent, matcap2ndBlendMask, matcap2ndBlend);
@@ -2399,6 +2281,7 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowRimColorTex, colorMaskRGBAContent, rimColorTex, rimColor);
                         DrawColorAsAlpha(rimColor);
+                        m_MaterialEditor.ShaderProperty(rimMainStrength, GetLoc("sMainColorPower"));
                         m_MaterialEditor.ShaderProperty(rimEnableLighting, GetLoc("sEnableLighting"));
                         m_MaterialEditor.ShaderProperty(rimShadowMask, GetLoc("sShadowMask"));
                         m_MaterialEditor.ShaderProperty(rimBackfaceMask, GetLoc("sBackfaceMask"));
@@ -3123,513 +3006,1309 @@ namespace lilToon
         private void LoadProperties(MaterialProperty[] props)
         {
             // Base
-            invisible = FindProperty("_Invisible", props, false);
-            asUnlit = FindProperty("_AsUnlit", props, false);
-            cutoff = FindProperty("_Cutoff", props, false);
-            subpassCutoff = FindProperty("_SubpassCutoff", props, false);
-            flipNormal = FindProperty("_FlipNormal", props, false);
-            shiftBackfaceUV = FindProperty("_ShiftBackfaceUV", props, false);
-            backfaceForceShadow = FindProperty("_BackfaceForceShadow", props, false);
+            invisible.p             = FindProperty("_Invisible", props, false);
+            asUnlit.p               = FindProperty("_AsUnlit", props, false);
+            cutoff.p                = FindProperty("_Cutoff", props, false);
+            subpassCutoff.p         = FindProperty("_SubpassCutoff", props, false);
+            flipNormal.p            = FindProperty("_FlipNormal", props, false);
+            shiftBackfaceUV.p       = FindProperty("_ShiftBackfaceUV", props, false);
+            backfaceForceShadow.p   = FindProperty("_BackfaceForceShadow", props, false);
 
             // Lighting
-            vertexLightStrength = FindProperty("_VertexLightStrength", props, false);
-            lightMinLimit = FindProperty("_LightMinLimit", props, false);
-            lightMaxLimit = FindProperty("_LightMaxLimit", props, false);
-            beforeExposureLimit = FindProperty("_BeforeExposureLimit", props, false);
-            monochromeLighting = FindProperty("_MonochromeLighting", props, false);
-            alphaBoostFA = FindProperty("_AlphaBoostFA", props, false);
-            lilDirectionalLightStrength = FindProperty("_lilDirectionalLightStrength", props, false);
-            lightDirectionOverride = FindProperty("_LightDirectionOverride", props, false);
+            vertexLightStrength.p           = FindProperty("_VertexLightStrength", props, false);
+            lightMinLimit.p                 = FindProperty("_LightMinLimit", props, false);
+            lightMaxLimit.p                 = FindProperty("_LightMaxLimit", props, false);
+            beforeExposureLimit.p           = FindProperty("_BeforeExposureLimit", props, false);
+            monochromeLighting.p            = FindProperty("_MonochromeLighting", props, false);
+            alphaBoostFA.p                  = FindProperty("_AlphaBoostFA", props, false);
+            lilDirectionalLightStrength.p   = FindProperty("_lilDirectionalLightStrength", props, false);
+            lightDirectionOverride.p        = FindProperty("_LightDirectionOverride", props, false);
 
             // Copy
-            baseColor = FindProperty("_BaseColor", props, false);
-            baseMap = FindProperty("_BaseMap", props, false);
-            baseColorMap = FindProperty("_BaseColorMap", props, false);
+            baseColor.p     = FindProperty("_BaseColor", props, false);
+            baseMap.p       = FindProperty("_BaseMap", props, false);
+            baseColorMap.p  = FindProperty("_BaseColorMap", props, false);
 
             // Rendering
-            cull = FindProperty("_Cull", props, false);
-            srcBlend = FindProperty("_SrcBlend", props, false);
-            dstBlend = FindProperty("_DstBlend", props, false);
-            srcBlendAlpha = FindProperty("_SrcBlendAlpha", props, false);
-            dstBlendAlpha = FindProperty("_DstBlendAlpha", props, false);
-            blendOp = FindProperty("_BlendOp", props, false);
-            blendOpAlpha = FindProperty("_BlendOpAlpha", props, false);
-            srcBlendFA = FindProperty("_SrcBlendFA", props, false);
-            dstBlendFA = FindProperty("_DstBlendFA", props, false);
-            srcBlendAlphaFA = FindProperty("_SrcBlendAlphaFA", props, false);
-            dstBlendAlphaFA = FindProperty("_DstBlendAlphaFA", props, false);
-            blendOpFA = FindProperty("_BlendOpFA", props, false);
-            blendOpAlphaFA = FindProperty("_BlendOpAlphaFA", props, false);
-            zclip = FindProperty("_ZClip", props, false);
-            zwrite = FindProperty("_ZWrite", props, false);
-            ztest = FindProperty("_ZTest", props, false);
-            stencilRef = FindProperty("_StencilRef", props, false);
-            stencilReadMask = FindProperty("_StencilReadMask", props, false);
-            stencilWriteMask = FindProperty("_StencilWriteMask", props, false);
-            stencilComp = FindProperty("_StencilComp", props, false);
-            stencilPass = FindProperty("_StencilPass", props, false);
-            stencilFail = FindProperty("_StencilFail", props, false);
-            stencilZFail = FindProperty("_StencilZFail", props, false);
-            offsetFactor = FindProperty("_OffsetFactor", props, false);
-            offsetUnits = FindProperty("_OffsetUnits", props, false);
-            colorMask = FindProperty("_ColorMask", props, false);
-            alphaToMask = FindProperty("_AlphaToMask", props, false);
-            lilShadowCasterBias = FindProperty("_lilShadowCasterBias", props, false);
+            cull.p                  = FindProperty("_Cull", props, false);
+            srcBlend.p              = FindProperty("_SrcBlend", props, false);
+            dstBlend.p              = FindProperty("_DstBlend", props, false);
+            srcBlendAlpha.p         = FindProperty("_SrcBlendAlpha", props, false);
+            dstBlendAlpha.p         = FindProperty("_DstBlendAlpha", props, false);
+            blendOp.p               = FindProperty("_BlendOp", props, false);
+            blendOpAlpha.p          = FindProperty("_BlendOpAlpha", props, false);
+            srcBlendFA.p            = FindProperty("_SrcBlendFA", props, false);
+            dstBlendFA.p            = FindProperty("_DstBlendFA", props, false);
+            srcBlendAlphaFA.p       = FindProperty("_SrcBlendAlphaFA", props, false);
+            dstBlendAlphaFA.p       = FindProperty("_DstBlendAlphaFA", props, false);
+            blendOpFA.p             = FindProperty("_BlendOpFA", props, false);
+            blendOpAlphaFA.p        = FindProperty("_BlendOpAlphaFA", props, false);
+            zclip.p                 = FindProperty("_ZClip", props, false);
+            zwrite.p                = FindProperty("_ZWrite", props, false);
+            ztest.p                 = FindProperty("_ZTest", props, false);
+            stencilRef.p            = FindProperty("_StencilRef", props, false);
+            stencilReadMask.p       = FindProperty("_StencilReadMask", props, false);
+            stencilWriteMask.p      = FindProperty("_StencilWriteMask", props, false);
+            stencilComp.p           = FindProperty("_StencilComp", props, false);
+            stencilPass.p           = FindProperty("_StencilPass", props, false);
+            stencilFail.p           = FindProperty("_StencilFail", props, false);
+            stencilZFail.p          = FindProperty("_StencilZFail", props, false);
+            offsetFactor.p          = FindProperty("_OffsetFactor", props, false);
+            offsetUnits.p           = FindProperty("_OffsetUnits", props, false);
+            colorMask.p             = FindProperty("_ColorMask", props, false);
+            alphaToMask.p           = FindProperty("_AlphaToMask", props, false);
+            lilShadowCasterBias.p   = FindProperty("_lilShadowCasterBias", props, false);
 
             // Main
-            mainTex_ScrollRotate = FindProperty("_MainTex_ScrollRotate", props, false);
-            mainColor = FindProperty("_Color", props, false);
-            mainTex = FindProperty("_MainTex", props, false);
-            mainTexHSVG = FindProperty("_MainTexHSVG", props, false);
-            mainGradationStrength = FindProperty("_MainGradationStrength", props, false);
-            mainGradationTex = FindProperty("_MainGradationTex", props, false);
-            mainColorAdjustMask = FindProperty("_MainColorAdjustMask", props, false);
+            mainTex_ScrollRotate.p  = FindProperty("_MainTex_ScrollRotate", props, false);
+            mainColor.p             = FindProperty("_Color", props, false);
+            mainTex.p               = FindProperty("_MainTex", props, false);
+            mainTexHSVG.p           = FindProperty("_MainTexHSVG", props, false);
+            mainGradationStrength.p = FindProperty("_MainGradationStrength", props, false);
+            mainGradationTex.p      = FindProperty("_MainGradationTex", props, false);
+            mainColorAdjustMask.p   = FindProperty("_MainColorAdjustMask", props, false);
 
             // Main 2nd
-            useMain2ndTex = FindProperty("_UseMain2ndTex", props, false);
-            mainColor2nd = FindProperty("_Color2nd", props, false);
-            main2ndTex = FindProperty("_Main2ndTex", props, false);
-            main2ndTex_UVMode = FindProperty("_Main2ndTex_UVMode", props, false);
-            main2ndTexAngle = FindProperty("_Main2ndTexAngle", props, false);
-            main2ndTexDecalAnimation = FindProperty("_Main2ndTexDecalAnimation", props, false);
-            main2ndTexDecalSubParam = FindProperty("_Main2ndTexDecalSubParam", props, false);
-            main2ndTexIsDecal = FindProperty("_Main2ndTexIsDecal", props, false);
-            main2ndTexIsLeftOnly = FindProperty("_Main2ndTexIsLeftOnly", props, false);
-            main2ndTexIsRightOnly = FindProperty("_Main2ndTexIsRightOnly", props, false);
-            main2ndTexShouldCopy = FindProperty("_Main2ndTexShouldCopy", props, false);
-            main2ndTexShouldFlipMirror = FindProperty("_Main2ndTexShouldFlipMirror", props, false);
-            main2ndTexShouldFlipCopy = FindProperty("_Main2ndTexShouldFlipCopy", props, false);
-            main2ndTexIsMSDF = FindProperty("_Main2ndTexIsMSDF", props, false);
-            main2ndBlendMask = FindProperty("_Main2ndBlendMask", props, false);
-            main2ndTexBlendMode = FindProperty("_Main2ndTexBlendMode", props, false);
-            main2ndEnableLighting = FindProperty("_Main2ndEnableLighting", props, false);
-            main2ndDissolveMask = FindProperty("_Main2ndDissolveMask", props, false);
-            main2ndDissolveNoiseMask = FindProperty("_Main2ndDissolveNoiseMask", props, false);
-            main2ndDissolveNoiseMask_ScrollRotate = FindProperty("_Main2ndDissolveNoiseMask_ScrollRotate", props, false);
-            main2ndDissolveNoiseStrength = FindProperty("_Main2ndDissolveNoiseStrength", props, false);
-            main2ndDissolveColor = FindProperty("_Main2ndDissolveColor", props, false);
-            main2ndDissolveParams = FindProperty("_Main2ndDissolveParams", props, false);
-            main2ndDissolvePos = FindProperty("_Main2ndDissolvePos", props, false);
-            main2ndDistanceFade = FindProperty("_Main2ndDistanceFade", props, false);
+            useMain2ndTex.p                         = FindProperty("_UseMain2ndTex", props, false);
+            mainColor2nd.p                          = FindProperty("_Color2nd", props, false);
+            main2ndTex.p                            = FindProperty("_Main2ndTex", props, false);
+            main2ndTex_UVMode.p                     = FindProperty("_Main2ndTex_UVMode", props, false);
+            main2ndTexAngle.p                       = FindProperty("_Main2ndTexAngle", props, false);
+            main2ndTexDecalAnimation.p              = FindProperty("_Main2ndTexDecalAnimation", props, false);
+            main2ndTexDecalSubParam.p               = FindProperty("_Main2ndTexDecalSubParam", props, false);
+            main2ndTexIsDecal.p                     = FindProperty("_Main2ndTexIsDecal", props, false);
+            main2ndTexIsLeftOnly.p                  = FindProperty("_Main2ndTexIsLeftOnly", props, false);
+            main2ndTexIsRightOnly.p                 = FindProperty("_Main2ndTexIsRightOnly", props, false);
+            main2ndTexShouldCopy.p                  = FindProperty("_Main2ndTexShouldCopy", props, false);
+            main2ndTexShouldFlipMirror.p            = FindProperty("_Main2ndTexShouldFlipMirror", props, false);
+            main2ndTexShouldFlipCopy.p              = FindProperty("_Main2ndTexShouldFlipCopy", props, false);
+            main2ndTexIsMSDF.p                      = FindProperty("_Main2ndTexIsMSDF", props, false);
+            main2ndBlendMask.p                      = FindProperty("_Main2ndBlendMask", props, false);
+            main2ndTexBlendMode.p                   = FindProperty("_Main2ndTexBlendMode", props, false);
+            main2ndEnableLighting.p                 = FindProperty("_Main2ndEnableLighting", props, false);
+            main2ndDissolveMask.p                   = FindProperty("_Main2ndDissolveMask", props, false);
+            main2ndDissolveNoiseMask.p              = FindProperty("_Main2ndDissolveNoiseMask", props, false);
+            main2ndDissolveNoiseMask_ScrollRotate.p = FindProperty("_Main2ndDissolveNoiseMask_ScrollRotate", props, false);
+            main2ndDissolveNoiseStrength.p          = FindProperty("_Main2ndDissolveNoiseStrength", props, false);
+            main2ndDissolveColor.p                  = FindProperty("_Main2ndDissolveColor", props, false);
+            main2ndDissolveParams.p                 = FindProperty("_Main2ndDissolveParams", props, false);
+            main2ndDissolvePos.p                    = FindProperty("_Main2ndDissolvePos", props, false);
+            main2ndDistanceFade.p                   = FindProperty("_Main2ndDistanceFade", props, false);
 
             // Main 3rd
-            useMain3rdTex = FindProperty("_UseMain3rdTex", props, false);
-            mainColor3rd = FindProperty("_Color3rd", props, false);
-            main3rdTex = FindProperty("_Main3rdTex", props, false);
-            main3rdTex_UVMode = FindProperty("_Main3rdTex_UVMode", props, false);
-            main3rdTexAngle = FindProperty("_Main3rdTexAngle", props, false);
-            main3rdTexIsDecal = FindProperty("_Main3rdTexIsDecal", props, false);
-            main3rdTexDecalAnimation = FindProperty("_Main3rdTexDecalAnimation", props, false);
-            main3rdTexDecalSubParam = FindProperty("_Main3rdTexDecalSubParam", props, false);
-            main3rdTexIsLeftOnly = FindProperty("_Main3rdTexIsLeftOnly", props, false);
-            main3rdTexIsRightOnly = FindProperty("_Main3rdTexIsRightOnly", props, false);
-            main3rdTexShouldCopy = FindProperty("_Main3rdTexShouldCopy", props, false);
-            main3rdTexShouldFlipMirror = FindProperty("_Main3rdTexShouldFlipMirror", props, false);
-            main3rdTexShouldFlipCopy = FindProperty("_Main3rdTexShouldFlipCopy", props, false);
-            main3rdTexIsMSDF = FindProperty("_Main3rdTexIsMSDF", props, false);
-            main3rdBlendMask = FindProperty("_Main3rdBlendMask", props, false);
-            main3rdTexBlendMode = FindProperty("_Main3rdTexBlendMode", props, false);
-            main3rdEnableLighting = FindProperty("_Main3rdEnableLighting", props, false);
-            main3rdDissolveMask = FindProperty("_Main3rdDissolveMask", props, false);
-            main3rdDissolveNoiseMask = FindProperty("_Main3rdDissolveNoiseMask", props, false);
-            main3rdDissolveNoiseMask_ScrollRotate = FindProperty("_Main3rdDissolveNoiseMask_ScrollRotate", props, false);
-            main3rdDissolveNoiseStrength = FindProperty("_Main3rdDissolveNoiseStrength", props, false);
-            main3rdDissolveColor = FindProperty("_Main3rdDissolveColor", props, false);
-            main3rdDissolveParams = FindProperty("_Main3rdDissolveParams", props, false);
-            main3rdDissolvePos = FindProperty("_Main3rdDissolvePos", props, false);
-            main3rdDistanceFade = FindProperty("_Main3rdDistanceFade", props, false);
+            useMain3rdTex.p                         = FindProperty("_UseMain3rdTex", props, false);
+            mainColor3rd.p                          = FindProperty("_Color3rd", props, false);
+            main3rdTex.p                            = FindProperty("_Main3rdTex", props, false);
+            main3rdTex_UVMode.p                     = FindProperty("_Main3rdTex_UVMode", props, false);
+            main3rdTexAngle.p                       = FindProperty("_Main3rdTexAngle", props, false);
+            main3rdTexDecalAnimation.p              = FindProperty("_Main3rdTexDecalAnimation", props, false);
+            main3rdTexDecalSubParam.p               = FindProperty("_Main3rdTexDecalSubParam", props, false);
+            main3rdTexIsDecal.p                     = FindProperty("_Main3rdTexIsDecal", props, false);
+            main3rdTexIsLeftOnly.p                  = FindProperty("_Main3rdTexIsLeftOnly", props, false);
+            main3rdTexIsRightOnly.p                 = FindProperty("_Main3rdTexIsRightOnly", props, false);
+            main3rdTexShouldCopy.p                  = FindProperty("_Main3rdTexShouldCopy", props, false);
+            main3rdTexShouldFlipMirror.p            = FindProperty("_Main3rdTexShouldFlipMirror", props, false);
+            main3rdTexShouldFlipCopy.p              = FindProperty("_Main3rdTexShouldFlipCopy", props, false);
+            main3rdTexIsMSDF.p                      = FindProperty("_Main3rdTexIsMSDF", props, false);
+            main3rdBlendMask.p                      = FindProperty("_Main3rdBlendMask", props, false);
+            main3rdTexBlendMode.p                   = FindProperty("_Main3rdTexBlendMode", props, false);
+            main3rdEnableLighting.p                 = FindProperty("_Main3rdEnableLighting", props, false);
+            main3rdDissolveMask.p                   = FindProperty("_Main3rdDissolveMask", props, false);
+            main3rdDissolveNoiseMask.p              = FindProperty("_Main3rdDissolveNoiseMask", props, false);
+            main3rdDissolveNoiseMask_ScrollRotate.p = FindProperty("_Main3rdDissolveNoiseMask_ScrollRotate", props, false);
+            main3rdDissolveNoiseStrength.p          = FindProperty("_Main3rdDissolveNoiseStrength", props, false);
+            main3rdDissolveColor.p                  = FindProperty("_Main3rdDissolveColor", props, false);
+            main3rdDissolveParams.p                 = FindProperty("_Main3rdDissolveParams", props, false);
+            main3rdDissolvePos.p                    = FindProperty("_Main3rdDissolvePos", props, false);
+            main3rdDistanceFade.p                   = FindProperty("_Main3rdDistanceFade", props, false);
 
             // Alpha Mask
-            alphaMaskMode = FindProperty("_AlphaMaskMode", props, false);
-            alphaMask = FindProperty("_AlphaMask", props, false);
-            alphaMaskScale = FindProperty("_AlphaMaskScale", props, false);
-            alphaMaskValue = FindProperty("_AlphaMaskValue", props, false);
+            alphaMaskMode.p     = FindProperty("_AlphaMaskMode", props, false);
+            alphaMask.p         = FindProperty("_AlphaMask", props, false);
+            alphaMaskScale.p    = FindProperty("_AlphaMaskScale", props, false);
+            alphaMaskValue.p    = FindProperty("_AlphaMaskValue", props, false);
 
             // Shadow
-            useShadow = FindProperty("_UseShadow", props, false);
-            shadowStrength = FindProperty("_ShadowStrength", props, false);
-            shadowStrengthMask = FindProperty("_ShadowStrengthMask", props, false);
-            shadowBorderMask = FindProperty("_ShadowBorderMask", props, false);
-            shadowBlurMask = FindProperty("_ShadowBlurMask", props, false);
-            shadowStrengthMaskLOD = FindProperty("_ShadowStrengthMaskLOD", props, false);
-            shadowBorderMaskLOD = FindProperty("_ShadowBorderMaskLOD", props, false);
-            shadowBlurMaskLOD = FindProperty("_ShadowBlurMaskLOD", props, false);
-            shadowAOShift = FindProperty("_ShadowAOShift", props, false);
-            shadowAOShift2 = FindProperty("_ShadowAOShift2", props, false);
-            shadowPostAO = FindProperty("_ShadowPostAO", props, false);
-            shadowColor = FindProperty("_ShadowColor", props, false);
-            shadowColorTex = FindProperty("_ShadowColorTex", props, false);
-            shadowNormalStrength = FindProperty("_ShadowNormalStrength", props, false);
-            shadowBorder = FindProperty("_ShadowBorder", props, false);
-            shadowBlur = FindProperty("_ShadowBlur", props, false);
-            shadow2ndColor = FindProperty("_Shadow2ndColor", props, false);
-            shadow2ndColorTex = FindProperty("_Shadow2ndColorTex", props, false);
-            shadow2ndNormalStrength = FindProperty("_Shadow2ndNormalStrength", props, false);
-            shadow2ndBorder = FindProperty("_Shadow2ndBorder", props, false);
-            shadow2ndBlur = FindProperty("_Shadow2ndBlur", props, false);
-            shadow3rdColor = FindProperty("_Shadow3rdColor", props, false);
-            shadow3rdColorTex = FindProperty("_Shadow3rdColorTex", props, false);
-            shadow3rdNormalStrength = FindProperty("_Shadow3rdNormalStrength", props, false);
-            shadow3rdBorder = FindProperty("_Shadow3rdBorder", props, false);
-            shadow3rdBlur = FindProperty("_Shadow3rdBlur", props, false);
-            shadowMainStrength = FindProperty("_ShadowMainStrength", props, false);
-            shadowEnvStrength = FindProperty("_ShadowEnvStrength", props, false);
-            shadowBorderColor = FindProperty("_ShadowBorderColor", props, false);
-            shadowBorderRange = FindProperty("_ShadowBorderRange", props, false);
-            shadowReceive = FindProperty("_ShadowReceive", props, false);
-            shadow2ndReceive = FindProperty("_Shadow2ndReceive", props, false);
-            shadow3rdReceive = FindProperty("_Shadow3rdReceive", props, false);
-            shadowMaskType = FindProperty("_ShadowMaskType", props, false);
-            shadowFlatBorder = FindProperty("_ShadowFlatBorder", props, false);
-            shadowFlatBlur = FindProperty("_ShadowFlatBlur", props, false);
+            useShadow.p                 = FindProperty("_UseShadow", props, false);
+            shadowStrength.p            = FindProperty("_ShadowStrength", props, false);
+            shadowStrengthMask.p        = FindProperty("_ShadowStrengthMask", props, false);
+            shadowBorderMask.p          = FindProperty("_ShadowBorderMask", props, false);
+            shadowBlurMask.p            = FindProperty("_ShadowBlurMask", props, false);
+            shadowStrengthMaskLOD.p     = FindProperty("_ShadowStrengthMaskLOD", props, false);
+            shadowBorderMaskLOD.p       = FindProperty("_ShadowBorderMaskLOD", props, false);
+            shadowBlurMaskLOD.p         = FindProperty("_ShadowBlurMaskLOD", props, false);
+            shadowAOShift.p             = FindProperty("_ShadowAOShift", props, false);
+            shadowAOShift2.p            = FindProperty("_ShadowAOShift2", props, false);
+            shadowPostAO.p              = FindProperty("_ShadowPostAO", props, false);
+            shadowColor.p               = FindProperty("_ShadowColor", props, false);
+            shadowColorTex.p            = FindProperty("_ShadowColorTex", props, false);
+            shadowNormalStrength.p      = FindProperty("_ShadowNormalStrength", props, false);
+            shadowBorder.p              = FindProperty("_ShadowBorder", props, false);
+            shadowBlur.p                = FindProperty("_ShadowBlur", props, false);
+            shadow2ndColor.p            = FindProperty("_Shadow2ndColor", props, false);
+            shadow2ndColorTex.p         = FindProperty("_Shadow2ndColorTex", props, false);
+            shadow2ndNormalStrength.p   = FindProperty("_Shadow2ndNormalStrength", props, false);
+            shadow2ndBorder.p           = FindProperty("_Shadow2ndBorder", props, false);
+            shadow2ndBlur.p             = FindProperty("_Shadow2ndBlur", props, false);
+            shadow3rdColor.p            = FindProperty("_Shadow3rdColor", props, false);
+            shadow3rdColorTex.p         = FindProperty("_Shadow3rdColorTex", props, false);
+            shadow3rdNormalStrength.p   = FindProperty("_Shadow3rdNormalStrength", props, false);
+            shadow3rdBorder.p           = FindProperty("_Shadow3rdBorder", props, false);
+            shadow3rdBlur.p             = FindProperty("_Shadow3rdBlur", props, false);
+            shadowMainStrength.p        = FindProperty("_ShadowMainStrength", props, false);
+            shadowEnvStrength.p         = FindProperty("_ShadowEnvStrength", props, false);
+            shadowBorderColor.p         = FindProperty("_ShadowBorderColor", props, false);
+            shadowBorderRange.p         = FindProperty("_ShadowBorderRange", props, false);
+            shadowReceive.p             = FindProperty("_ShadowReceive", props, false);
+            shadow2ndReceive.p          = FindProperty("_Shadow2ndReceive", props, false);
+            shadow3rdReceive.p          = FindProperty("_Shadow3rdReceive", props, false);
+            shadowMaskType.p            = FindProperty("_ShadowMaskType", props, false);
+            shadowFlatBorder.p          = FindProperty("_ShadowFlatBorder", props, false);
+            shadowFlatBlur.p            = FindProperty("_ShadowFlatBlur", props, false);
             
             // BackLight
-            useBacklight = FindProperty("_UseBacklight", props, false);
-            backlightColor = FindProperty("_BacklightColor", props, false);
-            backlightColorTex = FindProperty("_BacklightColorTex", props, false);
-            backlightNormalStrength = FindProperty("_BacklightNormalStrength", props, false);
-            backlightBorder = FindProperty("_BacklightBorder", props, false);
-            backlightBlur = FindProperty("_BacklightBlur", props, false);
-            backlightDirectivity = FindProperty("_BacklightDirectivity", props, false);
-            backlightViewStrength = FindProperty("_BacklightViewStrength", props, false);
-            backlightReceiveShadow = FindProperty("_BacklightReceiveShadow", props, false);
-            backlightBackfaceMask = FindProperty("_BacklightBackfaceMask", props, false);
+            useBacklight.p              = FindProperty("_UseBacklight", props, false);
+            backlightColor.p            = FindProperty("_BacklightColor", props, false);
+            backlightColorTex.p         = FindProperty("_BacklightColorTex", props, false);
+            backlightMainStrength.p     = FindProperty("_BacklightMainStrength", props, false);
+            backlightNormalStrength.p   = FindProperty("_BacklightNormalStrength", props, false);
+            backlightBorder.p           = FindProperty("_BacklightBorder", props, false);
+            backlightBlur.p             = FindProperty("_BacklightBlur", props, false);
+            backlightDirectivity.p      = FindProperty("_BacklightDirectivity", props, false);
+            backlightViewStrength.p     = FindProperty("_BacklightViewStrength", props, false);
+            backlightReceiveShadow.p    = FindProperty("_BacklightReceiveShadow", props, false);
+            backlightBackfaceMask.p     = FindProperty("_BacklightBackfaceMask", props, false);
 
             // Outline
-            outlineColor = FindProperty("_OutlineColor", props, false);
-            outlineTex = FindProperty("_OutlineTex", props, false);
-            outlineTex_ScrollRotate = FindProperty("_OutlineTex_ScrollRotate", props, false);
-            outlineTexHSVG = FindProperty("_OutlineTexHSVG", props, false);
-            outlineLitColor = FindProperty("_OutlineLitColor", props, false);
-            outlineLitApplyTex = FindProperty("_OutlineLitApplyTex", props, false);
-            outlineLitScale = FindProperty("_OutlineLitScale", props, false);
-            outlineLitOffset = FindProperty("_OutlineLitOffset", props, false);
-            outlineWidth = FindProperty("_OutlineWidth", props, false);
-            outlineWidthMask = FindProperty("_OutlineWidthMask", props, false);
-            outlineFixWidth = FindProperty("_OutlineFixWidth", props, false);
-            outlineVertexR2Width = FindProperty("_OutlineVertexR2Width", props, false);
-            outlineDeleteMesh = FindProperty("_OutlineDeleteMesh", props, false);
-            outlineVectorTex = FindProperty("_OutlineVectorTex", props, false);
-            outlineVectorUVMode = FindProperty("_OutlineVectorUVMode", props, false);
-            outlineVectorScale = FindProperty("_OutlineVectorScale", props, false);
-            outlineEnableLighting = FindProperty("_OutlineEnableLighting", props, false);
-            outlineZBias = FindProperty("_OutlineZBias", props, false);
-            outlineCull = FindProperty("_OutlineCull", props, false);
-            outlineSrcBlend = FindProperty("_OutlineSrcBlend", props, false);
-            outlineDstBlend = FindProperty("_OutlineDstBlend", props, false);
-            outlineSrcBlendAlpha = FindProperty("_OutlineSrcBlendAlpha", props, false);
-            outlineDstBlendAlpha = FindProperty("_OutlineDstBlendAlpha", props, false);
-            outlineBlendOp = FindProperty("_OutlineBlendOp", props, false);
-            outlineBlendOpAlpha = FindProperty("_OutlineBlendOpAlpha", props, false);
-            outlineSrcBlendFA = FindProperty("_OutlineSrcBlendFA", props, false);
-            outlineDstBlendFA = FindProperty("_OutlineDstBlendFA", props, false);
-            outlineSrcBlendAlphaFA = FindProperty("_OutlineSrcBlendAlphaFA", props, false);
-            outlineDstBlendAlphaFA = FindProperty("_OutlineDstBlendAlphaFA", props, false);
-            outlineBlendOpFA = FindProperty("_OutlineBlendOpFA", props, false);
-            outlineBlendOpAlphaFA = FindProperty("_OutlineBlendOpAlphaFA", props, false);
-            outlineZclip = FindProperty("_OutlineZClip", props, false);
-            outlineZwrite = FindProperty("_OutlineZWrite", props, false);
-            outlineZtest = FindProperty("_OutlineZTest", props, false);
-            outlineStencilRef = FindProperty("_OutlineStencilRef", props, false);
-            outlineStencilReadMask = FindProperty("_OutlineStencilReadMask", props, false);
-            outlineStencilWriteMask = FindProperty("_OutlineStencilWriteMask", props, false);
-            outlineStencilComp = FindProperty("_OutlineStencilComp", props, false);
-            outlineStencilPass = FindProperty("_OutlineStencilPass", props, false);
-            outlineStencilFail = FindProperty("_OutlineStencilFail", props, false);
-            outlineStencilZFail = FindProperty("_OutlineStencilZFail", props, false);
-            outlineOffsetFactor = FindProperty("_OutlineOffsetFactor", props, false);
-            outlineOffsetUnits = FindProperty("_OutlineOffsetUnits", props, false);
-            outlineColorMask = FindProperty("_OutlineColorMask", props, false);
-            outlineAlphaToMask = FindProperty("_OutlineAlphaToMask", props, false);
+            outlineColor.p              = FindProperty("_OutlineColor", props, false);
+            outlineTex.p                = FindProperty("_OutlineTex", props, false);
+            outlineTex_ScrollRotate.p   = FindProperty("_OutlineTex_ScrollRotate", props, false);
+            outlineTexHSVG.p            = FindProperty("_OutlineTexHSVG", props, false);
+            outlineLitColor.p           = FindProperty("_OutlineLitColor", props, false);
+            outlineLitApplyTex.p        = FindProperty("_OutlineLitApplyTex", props, false);
+            outlineLitScale.p           = FindProperty("_OutlineLitScale", props, false);
+            outlineLitOffset.p          = FindProperty("_OutlineLitOffset", props, false);
+            outlineWidth.p              = FindProperty("_OutlineWidth", props, false);
+            outlineWidthMask.p          = FindProperty("_OutlineWidthMask", props, false);
+            outlineFixWidth.p           = FindProperty("_OutlineFixWidth", props, false);
+            outlineVertexR2Width.p      = FindProperty("_OutlineVertexR2Width", props, false);
+            outlineDeleteMesh.p         = FindProperty("_OutlineDeleteMesh", props, false);
+            outlineVectorTex.p          = FindProperty("_OutlineVectorTex", props, false);
+            outlineVectorUVMode.p       = FindProperty("_OutlineVectorUVMode", props, false);
+            outlineVectorScale.p        = FindProperty("_OutlineVectorScale", props, false);
+            outlineEnableLighting.p     = FindProperty("_OutlineEnableLighting", props, false);
+            outlineZBias.p              = FindProperty("_OutlineZBias", props, false);
+            outlineCull.p               = FindProperty("_OutlineCull", props, false);
+            outlineSrcBlend.p           = FindProperty("_OutlineSrcBlend", props, false);
+            outlineDstBlend.p           = FindProperty("_OutlineDstBlend", props, false);
+            outlineSrcBlendAlpha.p      = FindProperty("_OutlineSrcBlendAlpha", props, false);
+            outlineDstBlendAlpha.p      = FindProperty("_OutlineDstBlendAlpha", props, false);
+            outlineBlendOp.p            = FindProperty("_OutlineBlendOp", props, false);
+            outlineBlendOpAlpha.p       = FindProperty("_OutlineBlendOpAlpha", props, false);
+            outlineSrcBlendFA.p         = FindProperty("_OutlineSrcBlendFA", props, false);
+            outlineDstBlendFA.p         = FindProperty("_OutlineDstBlendFA", props, false);
+            outlineSrcBlendAlphaFA.p    = FindProperty("_OutlineSrcBlendAlphaFA", props, false);
+            outlineDstBlendAlphaFA.p    = FindProperty("_OutlineDstBlendAlphaFA", props, false);
+            outlineBlendOpFA.p          = FindProperty("_OutlineBlendOpFA", props, false);
+            outlineBlendOpAlphaFA.p     = FindProperty("_OutlineBlendOpAlphaFA", props, false);
+            outlineZclip.p              = FindProperty("_OutlineZClip", props, false);
+            outlineZwrite.p             = FindProperty("_OutlineZWrite", props, false);
+            outlineZtest.p              = FindProperty("_OutlineZTest", props, false);
+            outlineStencilRef.p         = FindProperty("_OutlineStencilRef", props, false);
+            outlineStencilReadMask.p    = FindProperty("_OutlineStencilReadMask", props, false);
+            outlineStencilWriteMask.p   = FindProperty("_OutlineStencilWriteMask", props, false);
+            outlineStencilComp.p        = FindProperty("_OutlineStencilComp", props, false);
+            outlineStencilPass.p        = FindProperty("_OutlineStencilPass", props, false);
+            outlineStencilFail.p        = FindProperty("_OutlineStencilFail", props, false);
+            outlineStencilZFail.p       = FindProperty("_OutlineStencilZFail", props, false);
+            outlineOffsetFactor.p       = FindProperty("_OutlineOffsetFactor", props, false);
+            outlineOffsetUnits.p        = FindProperty("_OutlineOffsetUnits", props, false);
+            outlineColorMask.p          = FindProperty("_OutlineColorMask", props, false);
+            outlineAlphaToMask.p        = FindProperty("_OutlineAlphaToMask", props, false);
 
             // Normal Map
-            useBumpMap = FindProperty("_UseBumpMap", props, false);
-            bumpMap = FindProperty("_BumpMap", props, false);
-            bumpScale = FindProperty("_BumpScale", props, false);
+            useBumpMap.p    = FindProperty("_UseBumpMap", props, false);
+            bumpMap.p       = FindProperty("_BumpMap", props, false);
+            bumpScale.p     = FindProperty("_BumpScale", props, false);
 
             // Normal Map 2nd
-            useBump2ndMap = FindProperty("_UseBump2ndMap", props, false);
-            bump2ndMap = FindProperty("_Bump2ndMap", props, false);
-            bump2ndScale = FindProperty("_Bump2ndScale", props, false);
-            bump2ndScaleMask = FindProperty("_Bump2ndScaleMask", props, false);
+            useBump2ndMap.p     = FindProperty("_UseBump2ndMap", props, false);
+            bump2ndMap.p        = FindProperty("_Bump2ndMap", props, false);
+            bump2ndScale.p      = FindProperty("_Bump2ndScale", props, false);
+            bump2ndScaleMask.p  = FindProperty("_Bump2ndScaleMask", props, false);
             
             // Anisotropy
-            useAnisotropy = FindProperty("_UseAnisotropy", props, false);
-            anisotropyTangentMap = FindProperty("_AnisotropyTangentMap", props, false);
-            anisotropyScale = FindProperty("_AnisotropyScale", props, false);
-            anisotropyScaleMask = FindProperty("_AnisotropyScaleMask", props, false);
-            anisotropyTangentWidth = FindProperty("_AnisotropyTangentWidth", props, false);
-            anisotropyBitangentWidth = FindProperty("_AnisotropyBitangentWidth", props, false);
-            anisotropyShift = FindProperty("_AnisotropyShift", props, false);
-            anisotropyShiftNoiseScale = FindProperty("_AnisotropyShiftNoiseScale", props, false);
-            anisotropySpecularStrength = FindProperty("_AnisotropySpecularStrength", props, false);
-            anisotropy2ndTangentWidth = FindProperty("_Anisotropy2ndTangentWidth", props, false);
-            anisotropy2ndBitangentWidth = FindProperty("_Anisotropy2ndBitangentWidth", props, false);
-            anisotropy2ndShift = FindProperty("_Anisotropy2ndShift", props, false);
-            anisotropy2ndShiftNoiseScale = FindProperty("_Anisotropy2ndShiftNoiseScale", props, false);
-            anisotropy2ndSpecularStrength = FindProperty("_Anisotropy2ndSpecularStrength", props, false);
-            anisotropyShiftNoiseMask = FindProperty("_AnisotropyShiftNoiseMask", props, false);
-            anisotropy2Reflection = FindProperty("_Anisotropy2Reflection", props, false);
-            anisotropy2MatCap = FindProperty("_Anisotropy2MatCap", props, false);
-            anisotropy2MatCap2nd = FindProperty("_Anisotropy2MatCap2nd", props, false);
+            useAnisotropy.p                 = FindProperty("_UseAnisotropy", props, false);
+            anisotropyTangentMap.p          = FindProperty("_AnisotropyTangentMap", props, false);
+            anisotropyScale.p               = FindProperty("_AnisotropyScale", props, false);
+            anisotropyScaleMask.p           = FindProperty("_AnisotropyScaleMask", props, false);
+            anisotropyTangentWidth.p        = FindProperty("_AnisotropyTangentWidth", props, false);
+            anisotropyBitangentWidth.p      = FindProperty("_AnisotropyBitangentWidth", props, false);
+            anisotropyShift.p               = FindProperty("_AnisotropyShift", props, false);
+            anisotropyShiftNoiseScale.p     = FindProperty("_AnisotropyShiftNoiseScale", props, false);
+            anisotropySpecularStrength.p    = FindProperty("_AnisotropySpecularStrength", props, false);
+            anisotropy2ndTangentWidth.p     = FindProperty("_Anisotropy2ndTangentWidth", props, false);
+            anisotropy2ndBitangentWidth.p   = FindProperty("_Anisotropy2ndBitangentWidth", props, false);
+            anisotropy2ndShift.p            = FindProperty("_Anisotropy2ndShift", props, false);
+            anisotropy2ndShiftNoiseScale.p  = FindProperty("_Anisotropy2ndShiftNoiseScale", props, false);
+            anisotropy2ndSpecularStrength.p = FindProperty("_Anisotropy2ndSpecularStrength", props, false);
+            anisotropyShiftNoiseMask.p      = FindProperty("_AnisotropyShiftNoiseMask", props, false);
+            anisotropy2Reflection.p         = FindProperty("_Anisotropy2Reflection", props, false);
+            anisotropy2MatCap.p             = FindProperty("_Anisotropy2MatCap", props, false);
+            anisotropy2MatCap2nd.p          = FindProperty("_Anisotropy2MatCap2nd", props, false);
             
             // Reflection
-            useReflection = FindProperty("_UseReflection", props, false);
-            smoothness = FindProperty("_Smoothness", props, false);
-            smoothnessTex = FindProperty("_SmoothnessTex", props, false);
-            metallic = FindProperty("_Metallic", props, false);
-            metallicGlossMap = FindProperty("_MetallicGlossMap", props, false);
-            reflectance = FindProperty("_Reflectance", props, false);
-            reflectionColor = FindProperty("_ReflectionColor", props, false);
-            reflectionColorTex = FindProperty("_ReflectionColorTex", props, false);
-            gsaaStrength = FindProperty("_GSAAStrength", props, false);
-            applySpecular = FindProperty("_ApplySpecular", props, false);
-            applySpecularFA = FindProperty("_ApplySpecularFA", props, false);
-            specularNormalStrength = FindProperty("_SpecularNormalStrength", props, false);
-            specularToon = FindProperty("_SpecularToon", props, false);
-            specularBorder = FindProperty("_SpecularBorder", props, false);
-            specularBlur = FindProperty("_SpecularBlur", props, false);
-            applyReflection = FindProperty("_ApplyReflection", props, false);
-            reflectionBlendMode = FindProperty("_ReflectionBlendMode", props, false);
-            reflectionNormalStrength = FindProperty("_ReflectionNormalStrength", props, false);
-            reflectionApplyTransparency = FindProperty("_ReflectionApplyTransparency", props, false);
-            reflectionCubeTex = FindProperty("_ReflectionCubeTex", props, false);
-            reflectionCubeColor = FindProperty("_ReflectionCubeColor", props, false);
-            reflectionCubeOverride = FindProperty("_ReflectionCubeOverride", props, false);
-            reflectionCubeEnableLighting = FindProperty("_ReflectionCubeEnableLighting", props, false);
+            useReflection.p                 = FindProperty("_UseReflection", props, false);
+            smoothness.p                    = FindProperty("_Smoothness", props, false);
+            smoothnessTex.p                 = FindProperty("_SmoothnessTex", props, false);
+            metallic.p                      = FindProperty("_Metallic", props, false);
+            metallicGlossMap.p              = FindProperty("_MetallicGlossMap", props, false);
+            reflectance.p                   = FindProperty("_Reflectance", props, false);
+            reflectionColor.p               = FindProperty("_ReflectionColor", props, false);
+            reflectionColorTex.p            = FindProperty("_ReflectionColorTex", props, false);
+            gsaaStrength.p                  = FindProperty("_GSAAStrength", props, false);
+            applySpecular.p                 = FindProperty("_ApplySpecular", props, false);
+            applySpecularFA.p               = FindProperty("_ApplySpecularFA", props, false);
+            specularNormalStrength.p        = FindProperty("_SpecularNormalStrength", props, false);
+            specularToon.p                  = FindProperty("_SpecularToon", props, false);
+            specularBorder.p                = FindProperty("_SpecularBorder", props, false);
+            specularBlur.p                  = FindProperty("_SpecularBlur", props, false);
+            applyReflection.p               = FindProperty("_ApplyReflection", props, false);
+            reflectionBlendMode.p           = FindProperty("_ReflectionBlendMode", props, false);
+            reflectionNormalStrength.p      = FindProperty("_ReflectionNormalStrength", props, false);
+            reflectionApplyTransparency.p   = FindProperty("_ReflectionApplyTransparency", props, false);
+            reflectionCubeTex.p             = FindProperty("_ReflectionCubeTex", props, false);
+            reflectionCubeColor.p           = FindProperty("_ReflectionCubeColor", props, false);
+            reflectionCubeOverride.p        = FindProperty("_ReflectionCubeOverride", props, false);
+            reflectionCubeEnableLighting.p  = FindProperty("_ReflectionCubeEnableLighting", props, false);
             
             // MatCap
-            useMatCap = FindProperty("_UseMatCap", props, false);
-            matcapTex = FindProperty("_MatCapTex", props, false);
-            matcapColor = FindProperty("_MatCapColor", props, false);
-            matcapBlendUV1 = FindProperty("_MatCapBlendUV1", props, false);
-            matcapZRotCancel = FindProperty("_MatCapZRotCancel", props, false);
-            matcapPerspective = FindProperty("_MatCapPerspective", props, false);
-            matcapVRParallaxStrength = FindProperty("_MatCapVRParallaxStrength", props, false);
-            matcapBlend = FindProperty("_MatCapBlend", props, false);
-            matcapBlendMask = FindProperty("_MatCapBlendMask", props, false);
-            matcapEnableLighting = FindProperty("_MatCapEnableLighting", props, false);
-            matcapShadowMask = FindProperty("_MatCapShadowMask", props, false);
-            matcapBackfaceMask = FindProperty("_MatCapBackfaceMask", props, false);
-            matcapLod = FindProperty("_MatCapLod", props, false);
-            matcapBlendMode = FindProperty("_MatCapBlendMode", props, false);
-            matcapApplyTransparency = FindProperty("_MatCapApplyTransparency", props, false);
-            matcapNormalStrength = FindProperty("_MatCapNormalStrength", props, false);
-            matcapCustomNormal = FindProperty("_MatCapCustomNormal", props, false);
-            matcapBumpMap = FindProperty("_MatCapBumpMap", props, false);
-            matcapBumpScale = FindProperty("_MatCapBumpScale", props, false);
+            useMatCap.p                 = FindProperty("_UseMatCap", props, false);
+            matcapTex.p                 = FindProperty("_MatCapTex", props, false);
+            matcapColor.p               = FindProperty("_MatCapColor", props, false);
+            matcapMainStrength.p        = FindProperty("_MatCapMainStrength", props, false);
+            matcapBlendUV1.p            = FindProperty("_MatCapBlendUV1", props, false);
+            matcapZRotCancel.p          = FindProperty("_MatCapZRotCancel", props, false);
+            matcapPerspective.p         = FindProperty("_MatCapPerspective", props, false);
+            matcapVRParallaxStrength.p  = FindProperty("_MatCapVRParallaxStrength", props, false);
+            matcapBlend.p               = FindProperty("_MatCapBlend", props, false);
+            matcapBlendMask.p           = FindProperty("_MatCapBlendMask", props, false);
+            matcapEnableLighting.p      = FindProperty("_MatCapEnableLighting", props, false);
+            matcapShadowMask.p          = FindProperty("_MatCapShadowMask", props, false);
+            matcapBackfaceMask.p        = FindProperty("_MatCapBackfaceMask", props, false);
+            matcapLod.p                 = FindProperty("_MatCapLod", props, false);
+            matcapBlendMode.p           = FindProperty("_MatCapBlendMode", props, false);
+            matcapApplyTransparency.p   = FindProperty("_MatCapApplyTransparency", props, false);
+            matcapNormalStrength.p      = FindProperty("_MatCapNormalStrength", props, false);
+            matcapCustomNormal.p        = FindProperty("_MatCapCustomNormal", props, false);
+            matcapBumpMap.p             = FindProperty("_MatCapBumpMap", props, false);
+            matcapBumpScale.p           = FindProperty("_MatCapBumpScale", props, false);
             
             // MatCap 2nd
-            useMatCap2nd = FindProperty("_UseMatCap2nd", props, false);
-            matcap2ndTex = FindProperty("_MatCap2ndTex", props, false);
-            matcap2ndColor = FindProperty("_MatCap2ndColor", props, false);
-            matcap2ndBlendUV1 = FindProperty("_MatCap2ndBlendUV1", props, false);
-            matcap2ndZRotCancel = FindProperty("_MatCap2ndZRotCancel", props, false);
-            matcap2ndPerspective = FindProperty("_MatCap2ndPerspective", props, false);
-            matcap2ndVRParallaxStrength = FindProperty("_MatCap2ndVRParallaxStrength", props, false);
-            matcap2ndBlend = FindProperty("_MatCap2ndBlend", props, false);
-            matcap2ndBlendMask = FindProperty("_MatCap2ndBlendMask", props, false);
-            matcap2ndEnableLighting = FindProperty("_MatCap2ndEnableLighting", props, false);
-            matcap2ndShadowMask = FindProperty("_MatCap2ndShadowMask", props, false);
-            matcap2ndBackfaceMask = FindProperty("_MatCap2ndBackfaceMask", props, false);
-            matcap2ndLod = FindProperty("_MatCap2ndLod", props, false);
-            matcap2ndBlendMode = FindProperty("_MatCap2ndBlendMode", props, false);
-            matcap2ndApplyTransparency = FindProperty("_MatCap2ndApplyTransparency", props, false);
-            matcap2ndNormalStrength = FindProperty("_MatCap2ndNormalStrength", props, false);
-            matcap2ndCustomNormal = FindProperty("_MatCap2ndCustomNormal", props, false);
-            matcap2ndBumpMap = FindProperty("_MatCap2ndBumpMap", props, false);
-            matcap2ndBumpScale = FindProperty("_MatCap2ndBumpScale", props, false);
+            useMatCap2nd.p                  = FindProperty("_UseMatCap2nd", props, false);
+            matcap2ndTex.p                  = FindProperty("_MatCap2ndTex", props, false);
+            matcap2ndColor.p                = FindProperty("_MatCap2ndColor", props, false);
+            matcap2ndMainStrength.p         = FindProperty("_MatCap2ndMainStrength", props, false);
+            matcap2ndBlendUV1.p             = FindProperty("_MatCap2ndBlendUV1", props, false);
+            matcap2ndZRotCancel.p           = FindProperty("_MatCap2ndZRotCancel", props, false);
+            matcap2ndPerspective.p          = FindProperty("_MatCap2ndPerspective", props, false);
+            matcap2ndVRParallaxStrength.p   = FindProperty("_MatCap2ndVRParallaxStrength", props, false);
+            matcap2ndBlend.p                = FindProperty("_MatCap2ndBlend", props, false);
+            matcap2ndBlendMask.p            = FindProperty("_MatCap2ndBlendMask", props, false);
+            matcap2ndEnableLighting.p       = FindProperty("_MatCap2ndEnableLighting", props, false);
+            matcap2ndShadowMask.p           = FindProperty("_MatCap2ndShadowMask", props, false);
+            matcap2ndBackfaceMask.p         = FindProperty("_MatCap2ndBackfaceMask", props, false);
+            matcap2ndLod.p                  = FindProperty("_MatCap2ndLod", props, false);
+            matcap2ndBlendMode.p            = FindProperty("_MatCap2ndBlendMode", props, false);
+            matcap2ndApplyTransparency.p    = FindProperty("_MatCap2ndApplyTransparency", props, false);
+            matcap2ndNormalStrength.p       = FindProperty("_MatCap2ndNormalStrength", props, false);
+            matcap2ndCustomNormal.p         = FindProperty("_MatCap2ndCustomNormal", props, false);
+            matcap2ndBumpMap.p              = FindProperty("_MatCap2ndBumpMap", props, false);
+            matcap2ndBumpScale.p            = FindProperty("_MatCap2ndBumpScale", props, false);
             
             // Rim
-            useRim = FindProperty("_UseRim", props, false);
-            rimColor = FindProperty("_RimColor", props, false);
-            rimColorTex = FindProperty("_RimColorTex", props, false);
-            rimNormalStrength = FindProperty("_RimNormalStrength", props, false);
-            rimBorder = FindProperty("_RimBorder", props, false);
-            rimBlur = FindProperty("_RimBlur", props, false);
-            rimFresnelPower = FindProperty("_RimFresnelPower", props, false);
-            rimEnableLighting = FindProperty("_RimEnableLighting", props, false);
-            rimShadowMask = FindProperty("_RimShadowMask", props, false);
-            rimBackfaceMask = FindProperty("_RimBackfaceMask", props, false);
-            rimVRParallaxStrength = FindProperty("_RimVRParallaxStrength", props, false);
-            rimApplyTransparency = FindProperty("_RimApplyTransparency", props, false);
-            rimDirStrength = FindProperty("_RimDirStrength", props, false);
-            rimDirRange = FindProperty("_RimDirRange", props, false);
-            rimIndirRange = FindProperty("_RimIndirRange", props, false);
-            rimIndirColor = FindProperty("_RimIndirColor", props, false);
-            rimIndirBorder = FindProperty("_RimIndirBorder", props, false);
-            rimIndirBlur = FindProperty("_RimIndirBlur", props, false);
+            useRim.p                = FindProperty("_UseRim", props, false);
+            rimColor.p              = FindProperty("_RimColor", props, false);
+            rimColorTex.p           = FindProperty("_RimColorTex", props, false);
+            rimMainStrength.p       = FindProperty("_RimMainStrength", props, false);
+            rimNormalStrength.p     = FindProperty("_RimNormalStrength", props, false);
+            rimBorder.p             = FindProperty("_RimBorder", props, false);
+            rimBlur.p               = FindProperty("_RimBlur", props, false);
+            rimFresnelPower.p       = FindProperty("_RimFresnelPower", props, false);
+            rimEnableLighting.p     = FindProperty("_RimEnableLighting", props, false);
+            rimShadowMask.p         = FindProperty("_RimShadowMask", props, false);
+            rimBackfaceMask.p       = FindProperty("_RimBackfaceMask", props, false);
+            rimVRParallaxStrength.p = FindProperty("_RimVRParallaxStrength", props, false);
+            rimApplyTransparency.p  = FindProperty("_RimApplyTransparency", props, false);
+            rimDirStrength.p        = FindProperty("_RimDirStrength", props, false);
+            rimDirRange.p           = FindProperty("_RimDirRange", props, false);
+            rimIndirRange.p         = FindProperty("_RimIndirRange", props, false);
+            rimIndirColor.p         = FindProperty("_RimIndirColor", props, false);
+            rimIndirBorder.p        = FindProperty("_RimIndirBorder", props, false);
+            rimIndirBlur.p          = FindProperty("_RimIndirBlur", props, false);
 
             // Glitter
-            useGlitter = FindProperty("_UseGlitter", props, false);
-            glitterUVMode = FindProperty("_GlitterUVMode", props, false);
-            glitterColor = FindProperty("_GlitterColor", props, false);
-            glitterColorTex = FindProperty("_GlitterColorTex", props, false);
-            glitterMainStrength = FindProperty("_GlitterMainStrength", props, false);
-            glitterEnableLighting = FindProperty("_GlitterEnableLighting", props, false);
-            glitterShadowMask = FindProperty("_GlitterShadowMask", props, false);
-            glitterBackfaceMask = FindProperty("_GlitterBackfaceMask", props, false);
-            glitterApplyTransparency = FindProperty("_GlitterApplyTransparency", props, false);
-            glitterParams1 = FindProperty("_GlitterParams1", props, false);
-            glitterParams2 = FindProperty("_GlitterParams2", props, false);
-            glitterPostContrast = FindProperty("_GlitterPostContrast", props, false);
-            glitterSensitivity = FindProperty("_GlitterSensitivity", props, false);
-            glitterVRParallaxStrength = FindProperty("_GlitterVRParallaxStrength", props, false);
-            glitterNormalStrength = FindProperty("_GlitterNormalStrength", props, false);
+            useGlitter.p                = FindProperty("_UseGlitter", props, false);
+            glitterUVMode.p             = FindProperty("_GlitterUVMode", props, false);
+            glitterColor.p              = FindProperty("_GlitterColor", props, false);
+            glitterColorTex.p           = FindProperty("_GlitterColorTex", props, false);
+            glitterMainStrength.p       = FindProperty("_GlitterMainStrength", props, false);
+            glitterEnableLighting.p     = FindProperty("_GlitterEnableLighting", props, false);
+            glitterShadowMask.p         = FindProperty("_GlitterShadowMask", props, false);
+            glitterBackfaceMask.p       = FindProperty("_GlitterBackfaceMask", props, false);
+            glitterApplyTransparency.p  = FindProperty("_GlitterApplyTransparency", props, false);
+            glitterParams1.p            = FindProperty("_GlitterParams1", props, false);
+            glitterParams2.p            = FindProperty("_GlitterParams2", props, false);
+            glitterPostContrast.p       = FindProperty("_GlitterPostContrast", props, false);
+            glitterSensitivity.p        = FindProperty("_GlitterSensitivity", props, false);
+            glitterVRParallaxStrength.p = FindProperty("_GlitterVRParallaxStrength", props, false);
+            glitterNormalStrength.p     = FindProperty("_GlitterNormalStrength", props, false);
 
             // Emission
-            useEmission = FindProperty("_UseEmission", props, false);
-            emissionColor = FindProperty("_EmissionColor", props, false);
-            emissionMap = FindProperty("_EmissionMap", props, false);
-            emissionMap_ScrollRotate = FindProperty("_EmissionMap_ScrollRotate", props, false);
-            emissionMap_UVMode = FindProperty("_EmissionMap_UVMode", props, false);
-            emissionBlend = FindProperty("_EmissionBlend", props, false);
-            emissionBlendMask = FindProperty("_EmissionBlendMask", props, false);
-            emissionBlendMask_ScrollRotate = FindProperty("_EmissionBlendMask_ScrollRotate", props, false);
-            emissionBlink = FindProperty("_EmissionBlink", props, false);
-            emissionUseGrad = FindProperty("_EmissionUseGrad", props, false);
-            emissionGradTex = FindProperty("_EmissionGradTex", props, false);
-            emissionGradSpeed = FindProperty("_EmissionGradSpeed", props, false);
-            emissionParallaxDepth = FindProperty("_EmissionParallaxDepth", props, false);
-            emissionFluorescence = FindProperty("_EmissionFluorescence", props, false);
+            useEmission.p                       = FindProperty("_UseEmission", props, false);
+            emissionColor.p                     = FindProperty("_EmissionColor", props, false);
+            emissionMap.p                       = FindProperty("_EmissionMap", props, false);
+            emissionMap_ScrollRotate.p          = FindProperty("_EmissionMap_ScrollRotate", props, false);
+            emissionMap_UVMode.p                = FindProperty("_EmissionMap_UVMode", props, false);
+            emissionMainStrength.p              = FindProperty("_EmissionMainStrength", props, false);
+            emissionBlend.p                     = FindProperty("_EmissionBlend", props, false);
+            emissionBlendMask.p                 = FindProperty("_EmissionBlendMask", props, false);
+            emissionBlendMask_ScrollRotate.p    = FindProperty("_EmissionBlendMask_ScrollRotate", props, false);
+            emissionBlink.p                     = FindProperty("_EmissionBlink", props, false);
+            emissionUseGrad.p                   = FindProperty("_EmissionUseGrad", props, false);
+            emissionGradTex.p                   = FindProperty("_EmissionGradTex", props, false);
+            emissionGradSpeed.p                 = FindProperty("_EmissionGradSpeed", props, false);
+            emissionParallaxDepth.p             = FindProperty("_EmissionParallaxDepth", props, false);
+            emissionFluorescence.p              = FindProperty("_EmissionFluorescence", props, false);
 
             // Emission 2nd
-            useEmission2nd = FindProperty("_UseEmission2nd", props, false);
-            emission2ndColor = FindProperty("_Emission2ndColor", props, false);
-            emission2ndMap = FindProperty("_Emission2ndMap", props, false);
-            emission2ndMap_ScrollRotate = FindProperty("_Emission2ndMap_ScrollRotate", props, false);
-            emission2ndMap_UVMode = FindProperty("_Emission2ndMap_UVMode", props, false);
-            emission2ndBlend = FindProperty("_Emission2ndBlend", props, false);
-            emission2ndBlendMask = FindProperty("_Emission2ndBlendMask", props, false);
-            emission2ndBlendMask_ScrollRotate = FindProperty("_Emission2ndBlendMask_ScrollRotate", props, false);
-            emission2ndBlink = FindProperty("_Emission2ndBlink", props, false);
-            emission2ndUseGrad = FindProperty("_Emission2ndUseGrad", props, false);
-            emission2ndGradTex = FindProperty("_Emission2ndGradTex", props, false);
-            emission2ndGradSpeed = FindProperty("_Emission2ndGradSpeed", props, false);
-            emission2ndParallaxDepth = FindProperty("_Emission2ndParallaxDepth", props, false);
-            emission2ndFluorescence = FindProperty("_Emission2ndFluorescence", props, false);
+            useEmission2nd.p                    = FindProperty("_UseEmission2nd", props, false);
+            emission2ndColor.p                  = FindProperty("_Emission2ndColor", props, false);
+            emission2ndMap.p                    = FindProperty("_Emission2ndMap", props, false);
+            emission2ndMap_ScrollRotate.p       = FindProperty("_Emission2ndMap_ScrollRotate", props, false);
+            emission2ndMap_UVMode.p             = FindProperty("_Emission2ndMap_UVMode", props, false);
+            emission2ndMainStrength.p           = FindProperty("_Emission2ndMainStrength", props, false);
+            emission2ndBlend.p                  = FindProperty("_Emission2ndBlend", props, false);
+            emission2ndBlendMask.p              = FindProperty("_Emission2ndBlendMask", props, false);
+            emission2ndBlendMask_ScrollRotate.p = FindProperty("_Emission2ndBlendMask_ScrollRotate", props, false);
+            emission2ndBlink.p                  = FindProperty("_Emission2ndBlink", props, false);
+            emission2ndUseGrad.p                = FindProperty("_Emission2ndUseGrad", props, false);
+            emission2ndGradTex.p                = FindProperty("_Emission2ndGradTex", props, false);
+            emission2ndGradSpeed.p              = FindProperty("_Emission2ndGradSpeed", props, false);
+            emission2ndParallaxDepth.p          = FindProperty("_Emission2ndParallaxDepth", props, false);
+            emission2ndFluorescence.p           = FindProperty("_Emission2ndFluorescence", props, false);
             
             // Parallax
-            useParallax = FindProperty("_UseParallax", props, false);
-            usePOM = FindProperty("_UsePOM", props, false);
-            parallaxMap = FindProperty("_ParallaxMap", props, false);
-            parallax = FindProperty("_Parallax", props, false);
-            parallaxOffset = FindProperty("_ParallaxOffset", props, false);
+            useParallax.p       = FindProperty("_UseParallax", props, false);
+            usePOM.p            = FindProperty("_UsePOM", props, false);
+            parallaxMap.p       = FindProperty("_ParallaxMap", props, false);
+            parallax.p          = FindProperty("_Parallax", props, false);
+            parallaxOffset.p    = FindProperty("_ParallaxOffset", props, false);
 
             // Distance Fade
-            distanceFade = FindProperty("_DistanceFade", props, false);
-                distanceFadeColor = FindProperty("_DistanceFadeColor", props, false);
+            distanceFade.p      = FindProperty("_DistanceFade", props, false);
+            distanceFadeColor.p = FindProperty("_DistanceFadeColor", props, false);
             
             // AudioLink
-            useAudioLink = FindProperty("_UseAudioLink", props, false);
-            audioLinkDefaultValue = FindProperty("_AudioLinkDefaultValue", props, false);
-            audioLinkUVMode = FindProperty("_AudioLinkUVMode", props, false);
-            audioLinkUVParams = FindProperty("_AudioLinkUVParams", props, false);
-            audioLinkStart = FindProperty("_AudioLinkStart", props, false);
-            audioLinkMask = FindProperty("_AudioLinkMask", props, false);
-            audioLink2Main2nd = FindProperty("_AudioLink2Main2nd", props, false);
-            audioLink2Main3rd = FindProperty("_AudioLink2Main3rd", props, false);
-            audioLink2Emission = FindProperty("_AudioLink2Emission", props, false);
-            audioLink2EmissionGrad = FindProperty("_AudioLink2EmissionGrad", props, false);
-            audioLink2Emission2nd = FindProperty("_AudioLink2Emission2nd", props, false);
-            audioLink2Emission2ndGrad = FindProperty("_AudioLink2Emission2ndGrad", props, false);
-            audioLink2Vertex = FindProperty("_AudioLink2Vertex", props, false);
-            audioLinkVertexUVMode = FindProperty("_AudioLinkVertexUVMode", props, false);
-            audioLinkVertexUVParams = FindProperty("_AudioLinkVertexUVParams", props, false);
-            audioLinkVertexStart = FindProperty("_AudioLinkVertexStart", props, false);
-            audioLinkVertexStrength = FindProperty("_AudioLinkVertexStrength", props, false);
-            audioLinkAsLocal = FindProperty("_AudioLinkAsLocal", props, false);
-            audioLinkLocalMap = FindProperty("_AudioLinkLocalMap", props, false);
-            audioLinkLocalMapParams = FindProperty("_AudioLinkLocalMapParams", props, false);
+            useAudioLink.p              = FindProperty("_UseAudioLink", props, false);
+            audioLinkDefaultValue.p     = FindProperty("_AudioLinkDefaultValue", props, false);
+            audioLinkUVMode.p           = FindProperty("_AudioLinkUVMode", props, false);
+            audioLinkUVParams.p         = FindProperty("_AudioLinkUVParams", props, false);
+            audioLinkStart.p            = FindProperty("_AudioLinkStart", props, false);
+            audioLinkMask.p             = FindProperty("_AudioLinkMask", props, false);
+            audioLink2Main2nd.p         = FindProperty("_AudioLink2Main2nd", props, false);
+            audioLink2Main3rd.p         = FindProperty("_AudioLink2Main3rd", props, false);
+            audioLink2Emission.p        = FindProperty("_AudioLink2Emission", props, false);
+            audioLink2EmissionGrad.p    = FindProperty("_AudioLink2EmissionGrad", props, false);
+            audioLink2Emission2nd.p     = FindProperty("_AudioLink2Emission2nd", props, false);
+            audioLink2Emission2ndGrad.p = FindProperty("_AudioLink2Emission2ndGrad", props, false);
+            audioLink2Vertex.p          = FindProperty("_AudioLink2Vertex", props, false);
+            audioLinkVertexUVMode.p     = FindProperty("_AudioLinkVertexUVMode", props, false);
+            audioLinkVertexUVParams.p   = FindProperty("_AudioLinkVertexUVParams", props, false);
+            audioLinkVertexStart.p      = FindProperty("_AudioLinkVertexStart", props, false);
+            audioLinkVertexStrength.p   = FindProperty("_AudioLinkVertexStrength", props, false);
+            audioLinkAsLocal.p          = FindProperty("_AudioLinkAsLocal", props, false);
+            audioLinkLocalMap.p         = FindProperty("_AudioLinkLocalMap", props, false);
+            audioLinkLocalMapParams.p   = FindProperty("_AudioLinkLocalMapParams", props, false);
 
             // Dissolve
-            dissolveMask = FindProperty("_DissolveMask", props, false);
-            dissolveNoiseMask = FindProperty("_DissolveNoiseMask", props, false);
-            dissolveNoiseMask_ScrollRotate = FindProperty("_DissolveNoiseMask_ScrollRotate", props, false);
-            dissolveNoiseStrength = FindProperty("_DissolveNoiseStrength", props, false);
-            dissolveColor = FindProperty("_DissolveColor", props, false);
-            dissolveParams = FindProperty("_DissolveParams", props, false);
-            dissolvePos = FindProperty("_DissolvePos", props, false);
+            dissolveMask.p                      = FindProperty("_DissolveMask", props, false);
+            dissolveNoiseMask.p                 = FindProperty("_DissolveNoiseMask", props, false);
+            dissolveNoiseMask_ScrollRotate.p    = FindProperty("_DissolveNoiseMask_ScrollRotate", props, false);
+            dissolveNoiseStrength.p             = FindProperty("_DissolveNoiseStrength", props, false);
+            dissolveColor.p                     = FindProperty("_DissolveColor", props, false);
+            dissolveParams.p                    = FindProperty("_DissolveParams", props, false);
+            dissolvePos.p                       = FindProperty("_DissolvePos", props, false);
 
             // Encryption
-            ignoreEncryption = FindProperty("_IgnoreEncryption", props, false);
-            keys = FindProperty("_Keys", props, false);
+            ignoreEncryption.p  = FindProperty("_IgnoreEncryption", props, false);
+            keys.p              = FindProperty("_Keys", props, false);
 
             // Fur
-            furNoiseMask = FindProperty("_FurNoiseMask", props, false);
-            furLengthMask = FindProperty("_FurLengthMask", props, false);
-            furMask = FindProperty("_FurMask", props, false);
-            furVectorTex = FindProperty("_FurVectorTex", props, false);
-            furVectorScale = FindProperty("_FurVectorScale", props, false);
-            furVector = FindProperty("_FurVector", props, false);
-            furGravity = FindProperty("_FurGravity", props, false);
-            furRandomize = FindProperty("_FurRandomize", props, false);
-            furAO = FindProperty("_FurAO", props, false);
-            vertexColor2FurVector = FindProperty("_VertexColor2FurVector", props, false);
-            furMeshType = FindProperty("_FurMeshType", props, false);
-            furLayerNum = FindProperty("_FurLayerNum", props, false);
-            furRootOffset = FindProperty("_FurRootOffset", props, false);
-            furCutoutLength = FindProperty("_FurCutoutLength", props, false);
-            furTouchStrength = FindProperty("_FurTouchStrength", props, false);
-            furCull = FindProperty("_FurCull", props, false);
-            furSrcBlend = FindProperty("_FurSrcBlend", props, false);
-            furDstBlend = FindProperty("_FurDstBlend", props, false);
-            furSrcBlendAlpha = FindProperty("_FurSrcBlendAlpha", props, false);
-            furDstBlendAlpha = FindProperty("_FurDstBlendAlpha", props, false);
-            furBlendOp = FindProperty("_FurBlendOp", props, false);
-            furBlendOpAlpha = FindProperty("_FurBlendOpAlpha", props, false);
-            furSrcBlendFA = FindProperty("_FurSrcBlendFA", props, false);
-            furDstBlendFA = FindProperty("_FurDstBlendFA", props, false);
-            furSrcBlendAlphaFA = FindProperty("_FurSrcBlendAlphaFA", props, false);
-            furDstBlendAlphaFA = FindProperty("_FurDstBlendAlphaFA", props, false);
-            furBlendOpFA = FindProperty("_FurBlendOpFA", props, false);
-            furBlendOpAlphaFA = FindProperty("_FurBlendOpAlphaFA", props, false);
-            furZclip = FindProperty("_FurZClip", props, false);
-            furZwrite = FindProperty("_FurZWrite", props, false);
-            furZtest = FindProperty("_FurZTest", props, false);
-            furStencilRef = FindProperty("_FurStencilRef", props, false);
-            furStencilReadMask = FindProperty("_FurStencilReadMask", props, false);
-            furStencilWriteMask = FindProperty("_FurStencilWriteMask", props, false);
-            furStencilComp = FindProperty("_FurStencilComp", props, false);
-            furStencilPass = FindProperty("_FurStencilPass", props, false);
-            furStencilFail = FindProperty("_FurStencilFail", props, false);
-            furStencilZFail = FindProperty("_FurStencilZFail", props, false);
-            furOffsetFactor = FindProperty("_FurOffsetFactor", props, false);
-            furOffsetUnits = FindProperty("_FurOffsetUnits", props, false);
-            furColorMask = FindProperty("_FurColorMask", props, false);
-            furAlphaToMask = FindProperty("_FurAlphaToMask", props, false);
+            furNoiseMask.p          = FindProperty("_FurNoiseMask", props, false);
+            furLengthMask.p         = FindProperty("_FurLengthMask", props, false);
+            furMask.p               = FindProperty("_FurMask", props, false);
+            furVectorTex.p          = FindProperty("_FurVectorTex", props, false);
+            furVectorScale.p        = FindProperty("_FurVectorScale", props, false);
+            furVector.p             = FindProperty("_FurVector", props, false);
+            furGravity.p            = FindProperty("_FurGravity", props, false);
+            furRandomize.p          = FindProperty("_FurRandomize", props, false);
+            furAO.p                 = FindProperty("_FurAO", props, false);
+            vertexColor2FurVector.p = FindProperty("_VertexColor2FurVector", props, false);
+            furMeshType.p           = FindProperty("_FurMeshType", props, false);
+            furLayerNum.p           = FindProperty("_FurLayerNum", props, false);
+            furRootOffset.p         = FindProperty("_FurRootOffset", props, false);
+            furCutoutLength.p       = FindProperty("_FurCutoutLength", props, false);
+            furTouchStrength.p      = FindProperty("_FurTouchStrength", props, false);
+            furCull.p               = FindProperty("_FurCull", props, false);
+            furSrcBlend.p           = FindProperty("_FurSrcBlend", props, false);
+            furDstBlend.p           = FindProperty("_FurDstBlend", props, false);
+            furSrcBlendAlpha.p      = FindProperty("_FurSrcBlendAlpha", props, false);
+            furDstBlendAlpha.p      = FindProperty("_FurDstBlendAlpha", props, false);
+            furBlendOp.p            = FindProperty("_FurBlendOp", props, false);
+            furBlendOpAlpha.p       = FindProperty("_FurBlendOpAlpha", props, false);
+            furSrcBlendFA.p         = FindProperty("_FurSrcBlendFA", props, false);
+            furDstBlendFA.p         = FindProperty("_FurDstBlendFA", props, false);
+            furSrcBlendAlphaFA.p    = FindProperty("_FurSrcBlendAlphaFA", props, false);
+            furDstBlendAlphaFA.p    = FindProperty("_FurDstBlendAlphaFA", props, false);
+            furBlendOpFA.p          = FindProperty("_FurBlendOpFA", props, false);
+            furBlendOpAlphaFA.p     = FindProperty("_FurBlendOpAlphaFA", props, false);
+            furZclip.p              = FindProperty("_FurZClip", props, false);
+            furZwrite.p             = FindProperty("_FurZWrite", props, false);
+            furZtest.p              = FindProperty("_FurZTest", props, false);
+            furStencilRef.p         = FindProperty("_FurStencilRef", props, false);
+            furStencilReadMask.p    = FindProperty("_FurStencilReadMask", props, false);
+            furStencilWriteMask.p   = FindProperty("_FurStencilWriteMask", props, false);
+            furStencilComp.p        = FindProperty("_FurStencilComp", props, false);
+            furStencilPass.p        = FindProperty("_FurStencilPass", props, false);
+            furStencilFail.p        = FindProperty("_FurStencilFail", props, false);
+            furStencilZFail.p       = FindProperty("_FurStencilZFail", props, false);
+            furOffsetFactor.p       = FindProperty("_FurOffsetFactor", props, false);
+            furOffsetUnits.p        = FindProperty("_FurOffsetUnits", props, false);
+            furColorMask.p          = FindProperty("_FurColorMask", props, false);
+            furAlphaToMask.p        = FindProperty("_FurAlphaToMask", props, false);
 
             // Refraction
-            refractionStrength = FindProperty("_RefractionStrength", props, false);
-            refractionFresnelPower = FindProperty("_RefractionFresnelPower", props, false);
-            refractionColorFromMain = FindProperty("_RefractionColorFromMain", props, false);
-            refractionColor = FindProperty("_RefractionColor", props, false);
+            refractionStrength.p        = FindProperty("_RefractionStrength", props, false);
+            refractionFresnelPower.p    = FindProperty("_RefractionFresnelPower", props, false);
+            refractionColorFromMain.p   = FindProperty("_RefractionColorFromMain", props, false);
+            refractionColor.p           = FindProperty("_RefractionColor", props, false);
 
             // Gem
-            gemChromaticAberration = FindProperty("_GemChromaticAberration", props, false);
-            gemEnvContrast = FindProperty("_GemEnvContrast", props, false);
-            gemEnvColor = FindProperty("_GemEnvColor", props, false);
-            gemParticleLoop = FindProperty("_GemParticleLoop", props, false);
-            gemParticleColor = FindProperty("_GemParticleColor", props, false);
-            gemVRParallaxStrength = FindProperty("_GemVRParallaxStrength", props, false);
+            gemChromaticAberration.p    = FindProperty("_GemChromaticAberration", props, false);
+            gemEnvContrast.p            = FindProperty("_GemEnvContrast", props, false);
+            gemEnvColor.p               = FindProperty("_GemEnvColor", props, false);
+            gemParticleLoop.p           = FindProperty("_GemParticleLoop", props, false);
+            gemParticleColor.p          = FindProperty("_GemParticleColor", props, false);
+            gemVRParallaxStrength.p     = FindProperty("_GemVRParallaxStrength", props, false);
 
             // FakeShadow
-            fakeShadowVector = FindProperty("_FakeShadowVector", props, false);
+            fakeShadowVector.p  = FindProperty("_FakeShadowVector", props, false);
 
             // Tessellation
-            tessEdge = FindProperty("_TessEdge", props, false);
-            tessStrength = FindProperty("_TessStrength", props, false);
-            tessShrink = FindProperty("_TessShrink", props, false);
-            tessFactorMax = FindProperty("_TessFactorMax", props, false);
+            tessEdge.p      = FindProperty("_TessEdge", props, false);
+            tessStrength.p  = FindProperty("_TessStrength", props, false);
+            tessShrink.p    = FindProperty("_TessShrink", props, false);
+            tessFactorMax.p = FindProperty("_TessFactorMax", props, false);
 
             // Multi
-            transparentModeMat = FindProperty("_TransparentMode", props, false);
-            useClippingCanceller = FindProperty("_UseClippingCanceller", props, false);
-            asOverlay = FindProperty("_AsOverlay", props, false);
+            transparentModeMat.p    = FindProperty("_TransparentMode", props, false);
+            useClippingCanceller.p  = FindProperty("_UseClippingCanceller", props, false);
+            asOverlay.p             = FindProperty("_AsOverlay", props, false);
 
             // Lite
-            triMask = FindProperty("_TriMask", props, false);
-            matcapMul = FindProperty("_MatCapMul", props, false);
+            triMask.p   = FindProperty("_TriMask", props, false);
+            matcapMul.p = FindProperty("_MatCapMul", props, false);
+        }
+
+        private void SetPropertyBlock()
+        {
+            AddBlock(lilPropertyBlock.Base, invisible);
+            AddBlock(lilPropertyBlock.Base, cutoff);
+            AddBlock(lilPropertyBlock.Base, cull);
+            AddBlock(lilPropertyBlock.Base, flipNormal);
+            AddBlock(lilPropertyBlock.Base, backfaceForceShadow);
+            AddBlock(lilPropertyBlock.Base, zwrite);
+            AddBlock(lilPropertyBlock.Base, fakeShadowVector);
+            AddBlock(lilPropertyBlock.Base, triMask, true);
+
+            AddBlock(lilPropertyBlock.Lighting, lightMinLimit);
+            AddBlock(lilPropertyBlock.Lighting, lightMaxLimit);
+            AddBlock(lilPropertyBlock.Lighting, monochromeLighting);
+            AddBlock(lilPropertyBlock.Lighting, shadowEnvStrength);
+            AddBlock(lilPropertyBlock.Lighting, asUnlit);
+            AddBlock(lilPropertyBlock.Lighting, vertexLightStrength);
+            AddBlock(lilPropertyBlock.Lighting, lightDirectionOverride);
+            AddBlock(lilPropertyBlock.Lighting, alphaBoostFA);
+            AddBlock(lilPropertyBlock.Lighting, blendOpFA);
+            AddBlock(lilPropertyBlock.Lighting, beforeExposureLimit);
+            AddBlock(lilPropertyBlock.Lighting, lilDirectionalLightStrength);
+
+            AddBlock(lilPropertyBlock.UV, mainTex_ScrollRotate);
+            AddBlock(lilPropertyBlock.UV, shiftBackfaceUV);
+
+            AddBlock(lilPropertyBlock.MainColor, mainColor);
+            AddBlock(lilPropertyBlock.MainColor, mainTexHSVG);
+            AddBlock(lilPropertyBlock.MainColor, mainGradationStrength);
+            AddBlock(lilPropertyBlock.MainColor, useMain2ndTex);
+            AddBlock(lilPropertyBlock.MainColor, mainColor2nd);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTex_UVMode);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTexAngle);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTexDecalAnimation);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTexDecalSubParam);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTexIsDecal);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTexIsLeftOnly);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTexIsRightOnly);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTexShouldCopy);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTexShouldFlipMirror);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTexShouldFlipCopy);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTexIsMSDF);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTexBlendMode);
+            AddBlock(lilPropertyBlock.MainColor, main2ndEnableLighting);
+            AddBlock(lilPropertyBlock.MainColor, main2ndDissolveNoiseMask_ScrollRotate);
+            AddBlock(lilPropertyBlock.MainColor, main2ndDissolveNoiseStrength);
+            AddBlock(lilPropertyBlock.MainColor, main2ndDissolveColor);
+            AddBlock(lilPropertyBlock.MainColor, main2ndDissolveParams);
+            AddBlock(lilPropertyBlock.MainColor, main2ndDissolvePos);
+            AddBlock(lilPropertyBlock.MainColor, main2ndDistanceFade);
+            AddBlock(lilPropertyBlock.MainColor, useMain3rdTex);
+            AddBlock(lilPropertyBlock.MainColor, mainColor3rd);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTex_UVMode);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTexAngle);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTexDecalAnimation);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTexDecalSubParam);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTexIsDecal);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTexIsLeftOnly);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTexIsRightOnly);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTexShouldCopy);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTexShouldFlipMirror);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTexShouldFlipCopy);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTexIsMSDF);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTexBlendMode);
+            AddBlock(lilPropertyBlock.MainColor, main3rdEnableLighting);
+            AddBlock(lilPropertyBlock.MainColor, main3rdDissolveMask);
+            AddBlock(lilPropertyBlock.MainColor, main3rdDissolveNoiseMask);
+            AddBlock(lilPropertyBlock.MainColor, main3rdDissolveNoiseMask_ScrollRotate);
+            AddBlock(lilPropertyBlock.MainColor, main3rdDissolveNoiseStrength);
+            AddBlock(lilPropertyBlock.MainColor, main3rdDissolveColor);
+            AddBlock(lilPropertyBlock.MainColor, main3rdDissolveParams);
+            AddBlock(lilPropertyBlock.MainColor, main3rdDissolvePos);
+            AddBlock(lilPropertyBlock.MainColor, main3rdDistanceFade);
+            AddBlock(lilPropertyBlock.MainColor, alphaMaskMode);
+            AddBlock(lilPropertyBlock.MainColor, alphaMaskScale);
+            AddBlock(lilPropertyBlock.MainColor, alphaMaskValue);
+            AddBlock(lilPropertyBlock.MainColor, mainTex, true);
+            AddBlock(lilPropertyBlock.MainColor, mainGradationTex, true);
+            AddBlock(lilPropertyBlock.MainColor, mainColorAdjustMask, true);
+            AddBlock(lilPropertyBlock.MainColor, main2ndTex, true);
+            AddBlock(lilPropertyBlock.MainColor, main2ndBlendMask, true);
+            AddBlock(lilPropertyBlock.MainColor, main2ndDissolveMask, true);
+            AddBlock(lilPropertyBlock.MainColor, main2ndDissolveNoiseMask, true);
+            AddBlock(lilPropertyBlock.MainColor, main3rdTex, true);
+            AddBlock(lilPropertyBlock.MainColor, main3rdBlendMask, true);
+            AddBlock(lilPropertyBlock.MainColor, main3rdDissolveMask, true);
+            AddBlock(lilPropertyBlock.MainColor, main3rdDissolveNoiseMask, true);
+            AddBlock(lilPropertyBlock.MainColor, alphaMask, true);
+
+            AddBlock(lilPropertyBlock.MainColor1st, mainColor);
+            AddBlock(lilPropertyBlock.MainColor1st, mainTexHSVG);
+            AddBlock(lilPropertyBlock.MainColor1st, mainGradationStrength);
+            AddBlock(lilPropertyBlock.MainColor1st, mainTex, true);
+            AddBlock(lilPropertyBlock.MainColor1st, mainGradationTex, true);
+            AddBlock(lilPropertyBlock.MainColor1st, mainColorAdjustMask, true);
+
+            AddBlock(lilPropertyBlock.MainColor2nd, useMain2ndTex);
+            AddBlock(lilPropertyBlock.MainColor2nd, mainColor2nd);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTex_UVMode);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTexAngle);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTexDecalAnimation);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTexDecalSubParam);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTexIsDecal);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTexIsLeftOnly);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTexIsRightOnly);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTexShouldCopy);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTexShouldFlipMirror);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTexShouldFlipCopy);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTexIsMSDF);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTexBlendMode);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndEnableLighting);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndDissolveNoiseMask_ScrollRotate);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndDissolveNoiseStrength);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndDissolveColor);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndDissolveParams);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndDissolvePos);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndDistanceFade);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndTex, true);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndBlendMask, true);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndDissolveMask, true);
+            AddBlock(lilPropertyBlock.MainColor2nd, main2ndDissolveNoiseMask, true);
+
+            AddBlock(lilPropertyBlock.MainColor3rd, useMain3rdTex);
+            AddBlock(lilPropertyBlock.MainColor3rd, mainColor3rd);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTex_UVMode);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTexAngle);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTexDecalAnimation);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTexDecalSubParam);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTexIsDecal);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTexIsLeftOnly);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTexIsRightOnly);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTexShouldCopy);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTexShouldFlipMirror);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTexShouldFlipCopy);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTexIsMSDF);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTexBlendMode);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdEnableLighting);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdDissolveMask);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdDissolveNoiseMask);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdDissolveNoiseMask_ScrollRotate);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdDissolveNoiseStrength);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdDissolveColor);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdDissolveParams);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdDissolvePos);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdDistanceFade);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdTex, true);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdBlendMask, true);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdDissolveMask, true);
+            AddBlock(lilPropertyBlock.MainColor3rd, main3rdDissolveNoiseMask, true);
+
+            AddBlock(lilPropertyBlock.AlphaMask, alphaMaskMode);
+            AddBlock(lilPropertyBlock.AlphaMask, alphaMaskScale);
+            AddBlock(lilPropertyBlock.AlphaMask, alphaMaskValue);
+            AddBlock(lilPropertyBlock.AlphaMask, alphaMask, true);
+
+            AddBlock(lilPropertyBlock.Shadow, useShadow);
+            AddBlock(lilPropertyBlock.Shadow, shadowColor);
+            AddBlock(lilPropertyBlock.Shadow, shadowNormalStrength);
+            AddBlock(lilPropertyBlock.Shadow, shadowBorder);
+            AddBlock(lilPropertyBlock.Shadow, shadowBlur);
+            AddBlock(lilPropertyBlock.Shadow, shadowStrength);
+            AddBlock(lilPropertyBlock.Shadow, shadowAOShift);
+            AddBlock(lilPropertyBlock.Shadow, shadowAOShift2);
+            AddBlock(lilPropertyBlock.Shadow, shadowPostAO);
+            AddBlock(lilPropertyBlock.Shadow, shadow2ndColor);
+            AddBlock(lilPropertyBlock.Shadow, shadow2ndNormalStrength);
+            AddBlock(lilPropertyBlock.Shadow, shadow2ndBorder);
+            AddBlock(lilPropertyBlock.Shadow, shadow2ndBlur);
+            AddBlock(lilPropertyBlock.Shadow, shadow3rdColor);
+            AddBlock(lilPropertyBlock.Shadow, shadow3rdNormalStrength);
+            AddBlock(lilPropertyBlock.Shadow, shadow3rdBorder);
+            AddBlock(lilPropertyBlock.Shadow, shadow3rdBlur);
+            AddBlock(lilPropertyBlock.Shadow, shadowMainStrength);
+            AddBlock(lilPropertyBlock.Shadow, shadowEnvStrength);
+            AddBlock(lilPropertyBlock.Shadow, shadowBorderColor);
+            AddBlock(lilPropertyBlock.Shadow, shadowBorderRange);
+            AddBlock(lilPropertyBlock.Shadow, shadowReceive);
+            AddBlock(lilPropertyBlock.Shadow, shadow2ndReceive);
+            AddBlock(lilPropertyBlock.Shadow, shadow3rdReceive);
+            AddBlock(lilPropertyBlock.Shadow, shadowMaskType);
+            AddBlock(lilPropertyBlock.Shadow, shadowFlatBorder);
+            AddBlock(lilPropertyBlock.Shadow, shadowFlatBlur);
+            AddBlock(lilPropertyBlock.Shadow, lilShadowCasterBias);
+            AddBlock(lilPropertyBlock.Shadow, shadowBorderMaskLOD);
+            AddBlock(lilPropertyBlock.Shadow, shadowBlurMaskLOD);
+            AddBlock(lilPropertyBlock.Shadow, shadowStrengthMaskLOD);
+            AddBlock(lilPropertyBlock.Shadow, shadowBorderMask, true);
+            AddBlock(lilPropertyBlock.Shadow, shadowBlurMask, true);
+            AddBlock(lilPropertyBlock.Shadow, shadowStrengthMask, true);
+            AddBlock(lilPropertyBlock.Shadow, shadowColorTex, true);
+            AddBlock(lilPropertyBlock.Shadow, shadow2ndColorTex, true);
+            AddBlock(lilPropertyBlock.Shadow, shadow3rdColorTex, true);
+
+            AddBlock(lilPropertyBlock.Emission, useEmission);
+            AddBlock(lilPropertyBlock.Emission, emissionColor);
+            AddBlock(lilPropertyBlock.Emission, emissionMap_ScrollRotate);
+            AddBlock(lilPropertyBlock.Emission, emissionMap_UVMode);
+            AddBlock(lilPropertyBlock.Emission, emissionMainStrength);
+            AddBlock(lilPropertyBlock.Emission, emissionBlend);
+            AddBlock(lilPropertyBlock.Emission, emissionBlendMask_ScrollRotate);
+            AddBlock(lilPropertyBlock.Emission, emissionBlink);
+            AddBlock(lilPropertyBlock.Emission, emissionUseGrad);
+            AddBlock(lilPropertyBlock.Emission, emissionGradSpeed);
+            AddBlock(lilPropertyBlock.Emission, emissionParallaxDepth);
+            AddBlock(lilPropertyBlock.Emission, emissionFluorescence);
+            AddBlock(lilPropertyBlock.Emission, useEmission2nd);
+            AddBlock(lilPropertyBlock.Emission, emission2ndColor);
+            AddBlock(lilPropertyBlock.Emission, emission2ndMap_ScrollRotate);
+            AddBlock(lilPropertyBlock.Emission, emission2ndMap_UVMode);
+            AddBlock(lilPropertyBlock.Emission, emission2ndMainStrength);
+            AddBlock(lilPropertyBlock.Emission, emission2ndBlend);
+            AddBlock(lilPropertyBlock.Emission, emission2ndBlendMask_ScrollRotate);
+            AddBlock(lilPropertyBlock.Emission, emission2ndBlink);
+            AddBlock(lilPropertyBlock.Emission, emission2ndUseGrad);
+            AddBlock(lilPropertyBlock.Emission, emission2ndGradSpeed);
+            AddBlock(lilPropertyBlock.Emission, emission2ndParallaxDepth);
+            AddBlock(lilPropertyBlock.Emission, emission2ndFluorescence);
+            AddBlock(lilPropertyBlock.Emission, emissionMap, true);
+            AddBlock(lilPropertyBlock.Emission, emissionBlendMask, true);
+            AddBlock(lilPropertyBlock.Emission, emissionGradTex, true);
+            AddBlock(lilPropertyBlock.Emission, emission2ndMap, true);
+            AddBlock(lilPropertyBlock.Emission, emission2ndBlendMask, true);
+            AddBlock(lilPropertyBlock.Emission, emission2ndGradTex, true);
+
+            AddBlock(lilPropertyBlock.Emission1st, useEmission);
+            AddBlock(lilPropertyBlock.Emission1st, emissionColor);
+            AddBlock(lilPropertyBlock.Emission1st, emissionMap_ScrollRotate);
+            AddBlock(lilPropertyBlock.Emission1st, emissionMap_UVMode);
+            AddBlock(lilPropertyBlock.Emission1st, emissionMainStrength);
+            AddBlock(lilPropertyBlock.Emission1st, emissionBlend);
+            AddBlock(lilPropertyBlock.Emission1st, emissionBlendMask_ScrollRotate);
+            AddBlock(lilPropertyBlock.Emission1st, emissionBlink);
+            AddBlock(lilPropertyBlock.Emission1st, emissionUseGrad);
+            AddBlock(lilPropertyBlock.Emission1st, emissionGradSpeed);
+            AddBlock(lilPropertyBlock.Emission1st, emissionParallaxDepth);
+            AddBlock(lilPropertyBlock.Emission1st, emissionFluorescence);
+            AddBlock(lilPropertyBlock.Emission1st, emissionMap, true);
+            AddBlock(lilPropertyBlock.Emission1st, emissionBlendMask, true);
+            AddBlock(lilPropertyBlock.Emission1st, emissionGradTex, true);
+
+            AddBlock(lilPropertyBlock.Emission2nd, useEmission2nd);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndColor);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndMap_ScrollRotate);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndMap_UVMode);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndMainStrength);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndBlend);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndBlendMask_ScrollRotate);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndBlink);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndUseGrad);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndGradSpeed);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndParallaxDepth);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndFluorescence);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndMap, true);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndBlendMask, true);
+            AddBlock(lilPropertyBlock.Emission2nd, emission2ndGradTex, true);
+
+            AddBlock(lilPropertyBlock.NormalMap, useBumpMap);
+            AddBlock(lilPropertyBlock.NormalMap, bumpScale);
+            AddBlock(lilPropertyBlock.NormalMap, useBump2ndMap);
+            AddBlock(lilPropertyBlock.NormalMap, bump2ndScale);
+            AddBlock(lilPropertyBlock.NormalMap, useAnisotropy);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropyScale);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropyTangentWidth);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropyBitangentWidth);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropyShift);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropyShiftNoiseScale);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropySpecularStrength);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropy2ndTangentWidth);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropy2ndBitangentWidth);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropy2ndShift);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropy2ndShiftNoiseScale);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropy2ndSpecularStrength);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropy2Reflection);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropy2MatCap);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropy2MatCap2nd);
+            AddBlock(lilPropertyBlock.NormalMap, bumpMap, true);
+            AddBlock(lilPropertyBlock.NormalMap, bump2ndMap, true);
+            AddBlock(lilPropertyBlock.NormalMap, bump2ndScaleMask, true);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropyTangentMap, true);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropyScaleMask, true);
+            AddBlock(lilPropertyBlock.NormalMap, anisotropyShiftNoiseMask, true);
+
+            AddBlock(lilPropertyBlock.NormalMap1st, useBumpMap);
+            AddBlock(lilPropertyBlock.NormalMap1st, bumpScale);
+            AddBlock(lilPropertyBlock.NormalMap1st, bumpMap, true);
+
+            AddBlock(lilPropertyBlock.NormalMap2nd, useBump2ndMap);
+            AddBlock(lilPropertyBlock.NormalMap2nd, bump2ndScale);
+            AddBlock(lilPropertyBlock.NormalMap2nd, bump2ndMap, true);
+            AddBlock(lilPropertyBlock.NormalMap2nd, bump2ndScaleMask, true);
+
+            AddBlock(lilPropertyBlock.Anisotropy, useAnisotropy);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropyScale);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropyTangentWidth);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropyBitangentWidth);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropyShift);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropyShiftNoiseScale);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropySpecularStrength);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropy2ndTangentWidth);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropy2ndBitangentWidth);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropy2ndShift);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropy2ndShiftNoiseScale);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropy2ndSpecularStrength);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropy2Reflection);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropy2MatCap);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropy2MatCap2nd);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropyTangentMap);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropyScaleMask, true);
+            AddBlock(lilPropertyBlock.Anisotropy, anisotropyShiftNoiseMask, true);
+
+            AddBlock(lilPropertyBlock.Reflections, useReflection);
+            AddBlock(lilPropertyBlock.Reflections, metallic);
+            AddBlock(lilPropertyBlock.Reflections, smoothness);
+            AddBlock(lilPropertyBlock.Reflections, reflectance);
+            AddBlock(lilPropertyBlock.Reflections, reflectionColor);
+            AddBlock(lilPropertyBlock.Reflections, gsaaStrength);
+            AddBlock(lilPropertyBlock.Reflections, applySpecular);
+            AddBlock(lilPropertyBlock.Reflections, applySpecularFA);
+            AddBlock(lilPropertyBlock.Reflections, specularNormalStrength);
+            AddBlock(lilPropertyBlock.Reflections, specularToon);
+            AddBlock(lilPropertyBlock.Reflections, specularBorder);
+            AddBlock(lilPropertyBlock.Reflections, specularBlur);
+            AddBlock(lilPropertyBlock.Reflections, applyReflection);
+            AddBlock(lilPropertyBlock.Reflections, reflectionNormalStrength);
+            AddBlock(lilPropertyBlock.Reflections, reflectionApplyTransparency);
+            AddBlock(lilPropertyBlock.Reflections, reflectionCubeColor);
+            AddBlock(lilPropertyBlock.Reflections, reflectionCubeOverride);
+            AddBlock(lilPropertyBlock.Reflections, reflectionCubeEnableLighting);
+            AddBlock(lilPropertyBlock.Reflections, reflectionBlendMode);
+            AddBlock(lilPropertyBlock.Reflections, useMatCap);
+            AddBlock(lilPropertyBlock.Reflections, matcapColor);
+            AddBlock(lilPropertyBlock.Reflections, matcapMainStrength);
+            AddBlock(lilPropertyBlock.Reflections, matcapBlendUV1);
+            AddBlock(lilPropertyBlock.Reflections, matcapZRotCancel);
+            AddBlock(lilPropertyBlock.Reflections, matcapPerspective);
+            AddBlock(lilPropertyBlock.Reflections, matcapVRParallaxStrength);
+            AddBlock(lilPropertyBlock.Reflections, matcapBlend);
+            AddBlock(lilPropertyBlock.Reflections, matcapEnableLighting);
+            AddBlock(lilPropertyBlock.Reflections, matcapShadowMask);
+            AddBlock(lilPropertyBlock.Reflections, matcapBackfaceMask);
+            AddBlock(lilPropertyBlock.Reflections, matcapLod);
+            AddBlock(lilPropertyBlock.Reflections, matcapBlendMode);
+            AddBlock(lilPropertyBlock.Reflections, matcapMul);
+            AddBlock(lilPropertyBlock.Reflections, matcapApplyTransparency);
+            AddBlock(lilPropertyBlock.Reflections, matcapNormalStrength);
+            AddBlock(lilPropertyBlock.Reflections, matcapCustomNormal);
+            AddBlock(lilPropertyBlock.Reflections, matcapBumpScale);
+            AddBlock(lilPropertyBlock.Reflections, useMatCap2nd);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndColor);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndMainStrength);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndBlendUV1);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndZRotCancel);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndPerspective);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndVRParallaxStrength);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndBlend);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndEnableLighting);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndShadowMask);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndBackfaceMask);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndLod);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndBlendMode);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndMul);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndNormalStrength);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndApplyTransparency);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndCustomNormal);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndBumpScale);
+            AddBlock(lilPropertyBlock.Reflections, useRim);
+            AddBlock(lilPropertyBlock.Reflections, rimColor);
+            AddBlock(lilPropertyBlock.Reflections, rimMainStrength);
+            AddBlock(lilPropertyBlock.Reflections, rimNormalStrength);
+            AddBlock(lilPropertyBlock.Reflections, rimBorder);
+            AddBlock(lilPropertyBlock.Reflections, rimBlur);
+            AddBlock(lilPropertyBlock.Reflections, rimFresnelPower);
+            AddBlock(lilPropertyBlock.Reflections, rimEnableLighting);
+            AddBlock(lilPropertyBlock.Reflections, rimShadowMask);
+            AddBlock(lilPropertyBlock.Reflections, rimBackfaceMask);
+            AddBlock(lilPropertyBlock.Reflections, rimVRParallaxStrength);
+            AddBlock(lilPropertyBlock.Reflections, rimApplyTransparency);
+            AddBlock(lilPropertyBlock.Reflections, rimDirStrength);
+            AddBlock(lilPropertyBlock.Reflections, rimDirRange);
+            AddBlock(lilPropertyBlock.Reflections, rimIndirRange);
+            AddBlock(lilPropertyBlock.Reflections, rimIndirColor);
+            AddBlock(lilPropertyBlock.Reflections, rimIndirBorder);
+            AddBlock(lilPropertyBlock.Reflections, rimIndirBlur);
+            AddBlock(lilPropertyBlock.Reflections, useGlitter);
+            AddBlock(lilPropertyBlock.Reflections, glitterUVMode);
+            AddBlock(lilPropertyBlock.Reflections, glitterColor);
+            AddBlock(lilPropertyBlock.Reflections, glitterMainStrength);
+            AddBlock(lilPropertyBlock.Reflections, glitterParams1);
+            AddBlock(lilPropertyBlock.Reflections, glitterParams2);
+            AddBlock(lilPropertyBlock.Reflections, glitterPostContrast);
+            AddBlock(lilPropertyBlock.Reflections, glitterSensitivity);
+            AddBlock(lilPropertyBlock.Reflections, glitterEnableLighting);
+            AddBlock(lilPropertyBlock.Reflections, glitterShadowMask);
+            AddBlock(lilPropertyBlock.Reflections, glitterBackfaceMask);
+            AddBlock(lilPropertyBlock.Reflections, glitterApplyTransparency);
+            AddBlock(lilPropertyBlock.Reflections, glitterVRParallaxStrength);
+            AddBlock(lilPropertyBlock.Reflections, glitterNormalStrength);
+            AddBlock(lilPropertyBlock.Reflections, useBacklight);
+            AddBlock(lilPropertyBlock.Reflections, backlightColor);
+            AddBlock(lilPropertyBlock.Reflections, backlightMainStrength);
+            AddBlock(lilPropertyBlock.Reflections, backlightNormalStrength);
+            AddBlock(lilPropertyBlock.Reflections, backlightBorder);
+            AddBlock(lilPropertyBlock.Reflections, backlightBlur);
+            AddBlock(lilPropertyBlock.Reflections, backlightDirectivity);
+            AddBlock(lilPropertyBlock.Reflections, backlightViewStrength);
+            AddBlock(lilPropertyBlock.Reflections, backlightReceiveShadow);
+            AddBlock(lilPropertyBlock.Reflections, backlightBackfaceMask);
+            AddBlock(lilPropertyBlock.Reflections, gemChromaticAberration);
+            AddBlock(lilPropertyBlock.Reflections, gemEnvContrast);
+            AddBlock(lilPropertyBlock.Reflections, gemEnvColor);
+            AddBlock(lilPropertyBlock.Reflections, gemParticleLoop);
+            AddBlock(lilPropertyBlock.Reflections, gemParticleColor);
+            AddBlock(lilPropertyBlock.Reflections, gemVRParallaxStrength);
+            AddBlock(lilPropertyBlock.Reflections, refractionStrength);
+            AddBlock(lilPropertyBlock.Reflections, refractionFresnelPower);
+            AddBlock(lilPropertyBlock.Reflections, metallicGlossMap, true);
+            AddBlock(lilPropertyBlock.Reflections, smoothnessTex, true);
+            AddBlock(lilPropertyBlock.Reflections, reflectionColorTex, true);
+            AddBlock(lilPropertyBlock.Reflections, reflectionCubeTex, true);
+            AddBlock(lilPropertyBlock.Reflections, matcapTex, true);
+            AddBlock(lilPropertyBlock.Reflections, matcapBlendMask, true);
+            AddBlock(lilPropertyBlock.Reflections, matcapBumpMap, true);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndTex, true);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndBlendMask, true);
+            AddBlock(lilPropertyBlock.Reflections, matcap2ndBumpMap, true);
+            AddBlock(lilPropertyBlock.Reflections, rimColorTex, true);
+            AddBlock(lilPropertyBlock.Reflections, glitterColorTex, true);
+            AddBlock(lilPropertyBlock.Reflections, backlightColorTex, true);
+
+            AddBlock(lilPropertyBlock.Reflection, useReflection);
+            AddBlock(lilPropertyBlock.Reflection, metallic);
+            AddBlock(lilPropertyBlock.Reflection, smoothness);
+            AddBlock(lilPropertyBlock.Reflection, reflectance);
+            AddBlock(lilPropertyBlock.Reflection, reflectionColor);
+            AddBlock(lilPropertyBlock.Reflection, gsaaStrength);
+            AddBlock(lilPropertyBlock.Reflection, applySpecular);
+            AddBlock(lilPropertyBlock.Reflection, applySpecularFA);
+            AddBlock(lilPropertyBlock.Reflection, specularNormalStrength);
+            AddBlock(lilPropertyBlock.Reflection, specularToon);
+            AddBlock(lilPropertyBlock.Reflection, specularBorder);
+            AddBlock(lilPropertyBlock.Reflection, specularBlur);
+            AddBlock(lilPropertyBlock.Reflection, applyReflection);
+            AddBlock(lilPropertyBlock.Reflection, reflectionNormalStrength);
+            AddBlock(lilPropertyBlock.Reflection, reflectionApplyTransparency);
+            AddBlock(lilPropertyBlock.Reflection, reflectionCubeColor);
+            AddBlock(lilPropertyBlock.Reflection, reflectionCubeOverride);
+            AddBlock(lilPropertyBlock.Reflection, reflectionCubeEnableLighting);
+            AddBlock(lilPropertyBlock.Reflection, reflectionBlendMode);
+            AddBlock(lilPropertyBlock.Reflection, metallicGlossMap, true);
+            AddBlock(lilPropertyBlock.Reflection, smoothnessTex, true);
+            AddBlock(lilPropertyBlock.Reflection, reflectionColorTex, true);
+            AddBlock(lilPropertyBlock.Reflection, reflectionCubeTex, true);
+
+            AddBlock(lilPropertyBlock.MatCaps, useMatCap);
+            AddBlock(lilPropertyBlock.MatCaps, matcapColor);
+            AddBlock(lilPropertyBlock.MatCaps, matcapMainStrength);
+            AddBlock(lilPropertyBlock.MatCaps, matcapBlendUV1);
+            AddBlock(lilPropertyBlock.MatCaps, matcapZRotCancel);
+            AddBlock(lilPropertyBlock.MatCaps, matcapPerspective);
+            AddBlock(lilPropertyBlock.MatCaps, matcapVRParallaxStrength);
+            AddBlock(lilPropertyBlock.MatCaps, matcapBlend);
+            AddBlock(lilPropertyBlock.MatCaps, matcapEnableLighting);
+            AddBlock(lilPropertyBlock.MatCaps, matcapShadowMask);
+            AddBlock(lilPropertyBlock.MatCaps, matcapBackfaceMask);
+            AddBlock(lilPropertyBlock.MatCaps, matcapLod);
+            AddBlock(lilPropertyBlock.MatCaps, matcapBlendMode);
+            AddBlock(lilPropertyBlock.MatCaps, matcapMul);
+            AddBlock(lilPropertyBlock.MatCaps, matcapApplyTransparency);
+            AddBlock(lilPropertyBlock.MatCaps, matcapNormalStrength);
+            AddBlock(lilPropertyBlock.MatCaps, matcapCustomNormal);
+            AddBlock(lilPropertyBlock.MatCaps, matcapBumpScale);
+            AddBlock(lilPropertyBlock.MatCaps, useMatCap2nd);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndColor);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndMainStrength);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndBlendUV1);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndZRotCancel);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndPerspective);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndVRParallaxStrength);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndBlend);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndEnableLighting);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndShadowMask);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndBackfaceMask);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndLod);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndBlendMode);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndMul);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndNormalStrength);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndApplyTransparency);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndCustomNormal);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndBumpScale);
+            AddBlock(lilPropertyBlock.MatCaps, matcapTex, true);
+            AddBlock(lilPropertyBlock.MatCaps, matcapBlendMask, true);
+            AddBlock(lilPropertyBlock.MatCaps, matcapBumpMap, true);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndTex, true);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndBlendMask, true);
+            AddBlock(lilPropertyBlock.MatCaps, matcap2ndBumpMap, true);
+
+            AddBlock(lilPropertyBlock.MatCap1st, useMatCap);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapColor);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapMainStrength);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapBlendUV1);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapZRotCancel);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapPerspective);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapVRParallaxStrength);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapBlend);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapEnableLighting);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapShadowMask);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapBackfaceMask);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapLod);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapBlendMode);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapMul);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapApplyTransparency);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapNormalStrength);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapCustomNormal);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapBumpScale);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapTex, true);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapBlendMask, true);
+            AddBlock(lilPropertyBlock.MatCap1st, matcapBumpMap, true);
+
+            AddBlock(lilPropertyBlock.MatCap2nd, useMatCap2nd);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndColor);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndMainStrength);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndBlendUV1);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndZRotCancel);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndPerspective);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndVRParallaxStrength);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndBlend);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndEnableLighting);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndShadowMask);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndBackfaceMask);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndLod);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndBlendMode);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndMul);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndApplyTransparency);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndNormalStrength);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndCustomNormal);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndBumpScale);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndTex, true);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndBlendMask, true);
+            AddBlock(lilPropertyBlock.MatCap2nd, matcap2ndBumpMap, true);
+
+            AddBlock(lilPropertyBlock.RimLight, useRim);
+            AddBlock(lilPropertyBlock.RimLight, rimColor);
+            AddBlock(lilPropertyBlock.RimLight, rimMainStrength);
+            AddBlock(lilPropertyBlock.RimLight, rimNormalStrength);
+            AddBlock(lilPropertyBlock.RimLight, rimBorder);
+            AddBlock(lilPropertyBlock.RimLight, rimBlur);
+            AddBlock(lilPropertyBlock.RimLight, rimFresnelPower);
+            AddBlock(lilPropertyBlock.RimLight, rimEnableLighting);
+            AddBlock(lilPropertyBlock.RimLight, rimShadowMask);
+            AddBlock(lilPropertyBlock.RimLight, rimBackfaceMask);
+            AddBlock(lilPropertyBlock.RimLight, rimVRParallaxStrength);
+            AddBlock(lilPropertyBlock.RimLight, rimApplyTransparency);
+            AddBlock(lilPropertyBlock.RimLight, rimDirStrength);
+            AddBlock(lilPropertyBlock.RimLight, rimDirRange);
+            AddBlock(lilPropertyBlock.RimLight, rimIndirRange);
+            AddBlock(lilPropertyBlock.RimLight, rimIndirColor);
+            AddBlock(lilPropertyBlock.RimLight, rimIndirBorder);
+            AddBlock(lilPropertyBlock.RimLight, rimIndirBlur);
+            AddBlock(lilPropertyBlock.RimLight, rimColorTex, true);
+
+            AddBlock(lilPropertyBlock.Glitter, useGlitter);
+            AddBlock(lilPropertyBlock.Glitter, glitterUVMode);
+            AddBlock(lilPropertyBlock.Glitter, glitterColor);
+            AddBlock(lilPropertyBlock.Glitter, glitterMainStrength);
+            AddBlock(lilPropertyBlock.Glitter, glitterParams1);
+            AddBlock(lilPropertyBlock.Glitter, glitterParams2);
+            AddBlock(lilPropertyBlock.Glitter, glitterPostContrast);
+            AddBlock(lilPropertyBlock.Glitter, glitterSensitivity);
+            AddBlock(lilPropertyBlock.Glitter, glitterEnableLighting);
+            AddBlock(lilPropertyBlock.Glitter, glitterShadowMask);
+            AddBlock(lilPropertyBlock.Glitter, glitterBackfaceMask);
+            AddBlock(lilPropertyBlock.Glitter, glitterApplyTransparency);
+            AddBlock(lilPropertyBlock.Glitter, glitterVRParallaxStrength);
+            AddBlock(lilPropertyBlock.Glitter, glitterNormalStrength);
+            AddBlock(lilPropertyBlock.Glitter, glitterColorTex, true);
+
+            AddBlock(lilPropertyBlock.Backlight, useBacklight);
+            AddBlock(lilPropertyBlock.Backlight, backlightColor);
+            AddBlock(lilPropertyBlock.Backlight, backlightMainStrength);
+            AddBlock(lilPropertyBlock.Backlight, backlightNormalStrength);
+            AddBlock(lilPropertyBlock.Backlight, backlightBorder);
+            AddBlock(lilPropertyBlock.Backlight, backlightBlur);
+            AddBlock(lilPropertyBlock.Backlight, backlightDirectivity);
+            AddBlock(lilPropertyBlock.Backlight, backlightViewStrength);
+            AddBlock(lilPropertyBlock.Backlight, backlightReceiveShadow);
+            AddBlock(lilPropertyBlock.Backlight, backlightBackfaceMask);
+            AddBlock(lilPropertyBlock.Backlight, backlightColorTex, true);
+
+            AddBlock(lilPropertyBlock.Gem, gemChromaticAberration);
+            AddBlock(lilPropertyBlock.Gem, gemEnvContrast);
+            AddBlock(lilPropertyBlock.Gem, gemEnvColor);
+            AddBlock(lilPropertyBlock.Gem, gemParticleLoop);
+            AddBlock(lilPropertyBlock.Gem, gemParticleColor);
+            AddBlock(lilPropertyBlock.Gem, gemVRParallaxStrength);
+            AddBlock(lilPropertyBlock.Gem, refractionStrength);
+            AddBlock(lilPropertyBlock.Gem, refractionFresnelPower);
+            AddBlock(lilPropertyBlock.Gem, smoothness);
+            AddBlock(lilPropertyBlock.Gem, smoothnessTex, true);
+
+            AddBlock(lilPropertyBlock.Outline, outlineColor);
+            AddBlock(lilPropertyBlock.Outline, outlineTex_ScrollRotate);
+            AddBlock(lilPropertyBlock.Outline, outlineTexHSVG);
+            AddBlock(lilPropertyBlock.Outline, outlineLitColor);
+            AddBlock(lilPropertyBlock.Outline, outlineLitApplyTex);
+            AddBlock(lilPropertyBlock.Outline, outlineLitScale);
+            AddBlock(lilPropertyBlock.Outline, outlineLitOffset);
+            AddBlock(lilPropertyBlock.Outline, outlineWidth);
+            AddBlock(lilPropertyBlock.Outline, outlineFixWidth);
+            AddBlock(lilPropertyBlock.Outline, outlineVertexR2Width);
+            AddBlock(lilPropertyBlock.Outline, outlineDeleteMesh);
+            AddBlock(lilPropertyBlock.Outline, outlineVectorUVMode);
+            AddBlock(lilPropertyBlock.Outline, outlineVectorScale);
+            AddBlock(lilPropertyBlock.Outline, outlineEnableLighting);
+            AddBlock(lilPropertyBlock.Outline, outlineZBias);
+            AddBlock(lilPropertyBlock.Outline, outlineTex, true);
+            AddBlock(lilPropertyBlock.Outline, outlineWidthMask, true);
+            AddBlock(lilPropertyBlock.Outline, outlineVectorTex, true);
+
+            AddBlock(lilPropertyBlock.Parallax, useParallax);
+            AddBlock(lilPropertyBlock.Parallax, usePOM);
+            AddBlock(lilPropertyBlock.Parallax, parallax);
+            AddBlock(lilPropertyBlock.Parallax, parallaxOffset);
+            AddBlock(lilPropertyBlock.Parallax, parallaxMap, true);
+
+            AddBlock(lilPropertyBlock.DistanceFade, distanceFadeColor);
+            AddBlock(lilPropertyBlock.DistanceFade, distanceFade);
+
+            AddBlock(lilPropertyBlock.AudioLink, useAudioLink);
+            AddBlock(lilPropertyBlock.AudioLink, audioLinkDefaultValue);
+            AddBlock(lilPropertyBlock.AudioLink, audioLinkUVMode);
+            AddBlock(lilPropertyBlock.AudioLink, audioLinkUVParams);
+            AddBlock(lilPropertyBlock.AudioLink, audioLinkStart);
+            AddBlock(lilPropertyBlock.AudioLink, audioLink2Main2nd);
+            AddBlock(lilPropertyBlock.AudioLink, audioLink2Main3rd);
+            AddBlock(lilPropertyBlock.AudioLink, audioLink2Emission);
+            AddBlock(lilPropertyBlock.AudioLink, audioLink2EmissionGrad);
+            AddBlock(lilPropertyBlock.AudioLink, audioLink2Emission2nd);
+            AddBlock(lilPropertyBlock.AudioLink, audioLink2Emission2ndGrad);
+            AddBlock(lilPropertyBlock.AudioLink, audioLink2Vertex);
+            AddBlock(lilPropertyBlock.AudioLink, audioLinkVertexUVMode);
+            AddBlock(lilPropertyBlock.AudioLink, audioLinkVertexUVParams);
+            AddBlock(lilPropertyBlock.AudioLink, audioLinkVertexStart);
+            AddBlock(lilPropertyBlock.AudioLink, audioLinkVertexStrength);
+            AddBlock(lilPropertyBlock.AudioLink, audioLinkAsLocal);
+            AddBlock(lilPropertyBlock.AudioLink, audioLinkLocalMap);
+            AddBlock(lilPropertyBlock.AudioLink, audioLinkLocalMapParams);
+            AddBlock(lilPropertyBlock.AudioLink, audioLinkMask, true);
+
+            AddBlock(lilPropertyBlock.Dissolve, dissolveNoiseMask_ScrollRotate);
+            AddBlock(lilPropertyBlock.Dissolve, dissolveNoiseStrength);
+            AddBlock(lilPropertyBlock.Dissolve, dissolveColor);
+            AddBlock(lilPropertyBlock.Dissolve, dissolveParams);
+            AddBlock(lilPropertyBlock.Dissolve, dissolvePos);
+            AddBlock(lilPropertyBlock.Dissolve, dissolveMask, true);
+            AddBlock(lilPropertyBlock.Dissolve, dissolveNoiseMask, true);
+
+            AddBlock(lilPropertyBlock.Refraction, refractionStrength);
+            AddBlock(lilPropertyBlock.Refraction, refractionFresnelPower);
+            AddBlock(lilPropertyBlock.Refraction, refractionColorFromMain);
+            AddBlock(lilPropertyBlock.Refraction, refractionColor);
+
+            AddBlock(lilPropertyBlock.Fur, furVectorScale);
+            AddBlock(lilPropertyBlock.Fur, furVector);
+            AddBlock(lilPropertyBlock.Fur, furGravity);
+            AddBlock(lilPropertyBlock.Fur, furRandomize);
+            AddBlock(lilPropertyBlock.Fur, furAO);
+            AddBlock(lilPropertyBlock.Fur, vertexColor2FurVector);
+            AddBlock(lilPropertyBlock.Fur, furMeshType);
+            AddBlock(lilPropertyBlock.Fur, furLayerNum);
+            AddBlock(lilPropertyBlock.Fur, furRootOffset);
+            AddBlock(lilPropertyBlock.Fur, furCutoutLength);
+            AddBlock(lilPropertyBlock.Fur, furTouchStrength);
+            AddBlock(lilPropertyBlock.Fur, furNoiseMask, true);
+            AddBlock(lilPropertyBlock.Fur, furMask, true);
+            AddBlock(lilPropertyBlock.Fur, furLengthMask, true);
+            AddBlock(lilPropertyBlock.Fur, furVectorTex, true);
+
+            AddBlock(lilPropertyBlock.Encryption, ignoreEncryption);
+            AddBlock(lilPropertyBlock.Encryption, keys);
+
+            AddBlock(lilPropertyBlock.Stencil, stencilRef);
+            AddBlock(lilPropertyBlock.Stencil, stencilReadMask);
+            AddBlock(lilPropertyBlock.Stencil, stencilWriteMask);
+            AddBlock(lilPropertyBlock.Stencil, stencilComp);
+            AddBlock(lilPropertyBlock.Stencil, stencilPass);
+            AddBlock(lilPropertyBlock.Stencil, stencilFail);
+            AddBlock(lilPropertyBlock.Stencil, stencilZFail);
+            AddBlock(lilPropertyBlock.Stencil, outlineStencilRef);
+            AddBlock(lilPropertyBlock.Stencil, outlineStencilReadMask);
+            AddBlock(lilPropertyBlock.Stencil, outlineStencilWriteMask);
+            AddBlock(lilPropertyBlock.Stencil, outlineStencilComp);
+            AddBlock(lilPropertyBlock.Stencil, outlineStencilPass);
+            AddBlock(lilPropertyBlock.Stencil, outlineStencilFail);
+            AddBlock(lilPropertyBlock.Stencil, outlineStencilZFail);
+            AddBlock(lilPropertyBlock.Stencil, furStencilRef);
+            AddBlock(lilPropertyBlock.Stencil, furStencilReadMask);
+            AddBlock(lilPropertyBlock.Stencil, furStencilWriteMask);
+            AddBlock(lilPropertyBlock.Stencil, furStencilComp);
+            AddBlock(lilPropertyBlock.Stencil, furStencilPass);
+            AddBlock(lilPropertyBlock.Stencil, furStencilFail);
+            AddBlock(lilPropertyBlock.Stencil, furStencilZFail);
+
+            AddBlock(lilPropertyBlock.Rendering, beforeExposureLimit);
+            AddBlock(lilPropertyBlock.Rendering, lilDirectionalLightStrength);
+            AddBlock(lilPropertyBlock.Rendering, subpassCutoff);
+            AddBlock(lilPropertyBlock.Rendering, cull);
+            AddBlock(lilPropertyBlock.Rendering, srcBlend);
+            AddBlock(lilPropertyBlock.Rendering, dstBlend);
+            AddBlock(lilPropertyBlock.Rendering, srcBlendAlpha);
+            AddBlock(lilPropertyBlock.Rendering, dstBlendAlpha);
+            AddBlock(lilPropertyBlock.Rendering, blendOp);
+            AddBlock(lilPropertyBlock.Rendering, blendOpAlpha);
+            AddBlock(lilPropertyBlock.Rendering, srcBlendFA);
+            AddBlock(lilPropertyBlock.Rendering, dstBlendFA);
+            AddBlock(lilPropertyBlock.Rendering, srcBlendAlphaFA);
+            AddBlock(lilPropertyBlock.Rendering, dstBlendAlphaFA);
+            AddBlock(lilPropertyBlock.Rendering, blendOpFA);
+            AddBlock(lilPropertyBlock.Rendering, blendOpAlphaFA);
+            AddBlock(lilPropertyBlock.Rendering, zclip);
+            AddBlock(lilPropertyBlock.Rendering, zwrite);
+            AddBlock(lilPropertyBlock.Rendering, ztest);
+            AddBlock(lilPropertyBlock.Rendering, offsetFactor);
+            AddBlock(lilPropertyBlock.Rendering, offsetUnits);
+            AddBlock(lilPropertyBlock.Rendering, colorMask);
+            AddBlock(lilPropertyBlock.Rendering, alphaToMask);
+            AddBlock(lilPropertyBlock.Rendering, lilShadowCasterBias);
+            AddBlock(lilPropertyBlock.Rendering, outlineCull);
+            AddBlock(lilPropertyBlock.Rendering, outlineSrcBlend);
+            AddBlock(lilPropertyBlock.Rendering, outlineDstBlend);
+            AddBlock(lilPropertyBlock.Rendering, outlineSrcBlendAlpha);
+            AddBlock(lilPropertyBlock.Rendering, outlineDstBlendAlpha);
+            AddBlock(lilPropertyBlock.Rendering, outlineBlendOp);
+            AddBlock(lilPropertyBlock.Rendering, outlineBlendOpAlpha);
+            AddBlock(lilPropertyBlock.Rendering, outlineSrcBlendFA);
+            AddBlock(lilPropertyBlock.Rendering, outlineDstBlendFA);
+            AddBlock(lilPropertyBlock.Rendering, outlineSrcBlendAlphaFA);
+            AddBlock(lilPropertyBlock.Rendering, outlineDstBlendAlphaFA);
+            AddBlock(lilPropertyBlock.Rendering, outlineBlendOpFA);
+            AddBlock(lilPropertyBlock.Rendering, outlineBlendOpAlphaFA);
+            AddBlock(lilPropertyBlock.Rendering, outlineZclip);
+            AddBlock(lilPropertyBlock.Rendering, outlineZwrite);
+            AddBlock(lilPropertyBlock.Rendering, outlineZtest);
+            AddBlock(lilPropertyBlock.Rendering, outlineOffsetFactor);
+            AddBlock(lilPropertyBlock.Rendering, outlineOffsetUnits);
+            AddBlock(lilPropertyBlock.Rendering, outlineColorMask);
+            AddBlock(lilPropertyBlock.Rendering, outlineAlphaToMask);
+            AddBlock(lilPropertyBlock.Rendering, furCull);
+            AddBlock(lilPropertyBlock.Rendering, furSrcBlend);
+            AddBlock(lilPropertyBlock.Rendering, furDstBlend);
+            AddBlock(lilPropertyBlock.Rendering, furSrcBlendAlpha);
+            AddBlock(lilPropertyBlock.Rendering, furDstBlendAlpha);
+            AddBlock(lilPropertyBlock.Rendering, furBlendOp);
+            AddBlock(lilPropertyBlock.Rendering, furBlendOpAlpha);
+            AddBlock(lilPropertyBlock.Rendering, furSrcBlendFA);
+            AddBlock(lilPropertyBlock.Rendering, furDstBlendFA);
+            AddBlock(lilPropertyBlock.Rendering, furSrcBlendAlphaFA);
+            AddBlock(lilPropertyBlock.Rendering, furDstBlendAlphaFA);
+            AddBlock(lilPropertyBlock.Rendering, furBlendOpFA);
+            AddBlock(lilPropertyBlock.Rendering, furBlendOpAlphaFA);
+            AddBlock(lilPropertyBlock.Rendering, furZclip);
+            AddBlock(lilPropertyBlock.Rendering, furZwrite);
+            AddBlock(lilPropertyBlock.Rendering, furZtest);
+            AddBlock(lilPropertyBlock.Rendering, furOffsetFactor);
+            AddBlock(lilPropertyBlock.Rendering, furOffsetUnits);
+            AddBlock(lilPropertyBlock.Rendering, furColorMask);
+            AddBlock(lilPropertyBlock.Rendering, furAlphaToMask);
+
+            AddBlock(lilPropertyBlock.Tessellation, tessEdge);
+            AddBlock(lilPropertyBlock.Tessellation, tessStrength);
+            AddBlock(lilPropertyBlock.Tessellation, tessShrink);
+            AddBlock(lilPropertyBlock.Tessellation, tessFactorMax);
+        }
+
+        private void AddBlock(lilPropertyBlock block, lilMaterialProperty prop)
+        {
+            if(!prop.blocks.Contains(block))
+            {
+                prop.blocks.Add(block);
+            }
+        }
+
+        private void AddBlock(lilPropertyBlock block, lilMaterialProperty prop, bool isTexture)
+        {
+            prop.isTexture = isTexture;
+            if(!prop.blocks.Contains(block))
+            {
+                prop.blocks.Add(block);
+            }
         }
 
         private void CopyMainColorProperties()
@@ -3643,10 +4322,9 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Language
         #region
-        public static string GetLoc(string value)
-        {
-            return loc.ContainsKey(value) ? loc[value] : value;
-        }
+        public static string GetLoc(string value) { return loc.ContainsKey(value) ? loc[value] : value; }
+
+        public static string BuildParams(params string[] labels) { return string.Join("|", labels); }
 
         public static void InitializeLanguage()
         {
@@ -3669,7 +4347,7 @@ namespace lilToon
 
         public static void LoadCustomLanguage(string langFileGUID)
         {
-            string langPath = AssetDatabase.GUIDToAssetPath(langFileGUID);
+            string langPath = GUIDToPath(langFileGUID);
             LoadLanguage(langPath);
         }
 
@@ -3757,7 +4435,7 @@ namespace lilToon
             string[] shaderFolderPaths = GetShaderFolderPaths();
             string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
             lilRenderPipeline RP = RPReader.GetRP();
-            Array.ForEach(shaderGuids, shaderGuid => RewriteShaderRP(AssetDatabase.GUIDToAssetPath(shaderGuid), RP));
+            Array.ForEach(shaderGuids, shaderGuid => RewriteShaderRP(GUIDToPath(shaderGuid), RP));
             RewriteShaderRP(GetShaderPipelinePath(), RP);
         }
 
@@ -3877,7 +4555,7 @@ namespace lilToon
             {
                 foreach(string guid in AssetDatabase.FindAssets("t:lilToonSetting"))
                 {
-                    string path = AssetDatabase.GUIDToAssetPath(guid);
+                    string path = GUIDToPath(guid);
                     var shaderSettingOld = AssetDatabase.LoadAssetAtPath<lilToonSetting>(path);
                     shaderSetting = UnityEngine.Object.Instantiate(shaderSettingOld);
                     if(shaderSetting != null)
@@ -4035,7 +4713,7 @@ namespace lilToon
             shaderSetting.LIL_FEATURE_TEX_TESSELLATION = true;
         }
 
-        public static void ApplyShaderSetting(lilToonSetting shaderSetting, string reportTitle)
+        public static void ApplyShaderSetting(lilToonSetting shaderSetting, string reportTitle = null)
         {
             EditorUtility.SetDirty(shaderSetting);
             AssetDatabase.SaveAssets();
@@ -4063,7 +4741,7 @@ namespace lilToon
                 };
                 foreach (string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
                 {
-                    string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
+                    string shaderPath = GUIDToPath(shaderGuid);
                     lilShaderRewriter.RewriteReceiveShadow(shaderPath, isShadowReceive);
                     lilShaderRewriter.RewriteForwardAdd(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
                     lilShaderRewriter.RewriteVertexLight(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
@@ -4072,7 +4750,7 @@ namespace lilToon
                 }
                 foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader"))
                 {
-                    string shaderPath = AssetDatabase.GUIDToAssetPath(shaderGuid);
+                    string shaderPath = GUIDToPath(shaderGuid);
                     if(!shaderPath.Contains(".lilcontainer")) continue;
                     string folder = Path.GetDirectoryName(shaderPath);
                     if(!folders.Contains(folder)) folders.Add(folder);
@@ -4089,11 +4767,6 @@ namespace lilToon
             {
                 Debug.Log(reportTitle + "\r\n" + shaderSettingString);
             }
-        }
-
-        public static void ApplyShaderSetting(lilToonSetting shaderSetting)
-        {
-            ApplyShaderSetting(shaderSetting, null);
         }
 
         public static string BuildShaderSettingString(lilToonSetting shaderSetting, bool isFile)
@@ -4259,6 +4932,33 @@ namespace lilToon
             }
         }
 
+        public static void ApplyShaderSettingOptimized()
+        {
+            lilToonSetting shaderSetting = null;
+            InitializeShaderSetting(ref shaderSetting);
+            if(shaderSetting == null) return;
+
+            TurnOffAllShaderSetting(ref shaderSetting);
+
+            // Get materials
+            foreach(string guid in AssetDatabase.FindAssets("t:material"))
+            {
+                Material material = AssetDatabase.LoadAssetAtPath<Material>(GUIDToPath(guid));
+                SetupShaderSettingFromMaterial(material, ref shaderSetting);
+            }
+
+            // Get animations
+            foreach(string guid in AssetDatabase.FindAssets("t:animationclip"))
+            {
+                AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(GUIDToPath(guid));
+                SetupShaderSettingFromAnimationClip(clip, ref shaderSetting);
+            }
+
+            // Apply
+            ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
+            AssetDatabase.Refresh();
+        }
+
         public static void SetShaderSettingBeforeBuild(GameObject gameObject)
         {
             if(File.Exists(postBuildTempPath)) return;
@@ -4312,33 +5012,6 @@ namespace lilToon
                     }
                 }
             #endif
-
-            // Apply
-            ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
-            AssetDatabase.Refresh();
-        }
-
-        public static void ApplyShaderSettingOptimized()
-        {
-            lilToonSetting shaderSetting = null;
-            InitializeShaderSetting(ref shaderSetting);
-            if(shaderSetting == null) return;
-
-            TurnOffAllShaderSetting(ref shaderSetting);
-
-            // Get materials
-            foreach(string guid in AssetDatabase.FindAssets("t:material"))
-            {
-                Material material = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(guid));
-                SetupShaderSettingFromMaterial(material, ref shaderSetting);
-            }
-
-            // Get animations
-            foreach(string guid in AssetDatabase.FindAssets("t:animationclip"))
-            {
-                AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(AssetDatabase.GUIDToAssetPath(guid));
-                SetupShaderSettingFromAnimationClip(clip, ref shaderSetting);
-            }
 
             // Apply
             ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
@@ -4478,22 +5151,18 @@ namespace lilToon
             InitializeShaders();
             foreach(string guid in AssetDatabase.FindAssets("t:material"))
             {
-                Material material = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(guid));
+                Material material = AssetDatabase.LoadAssetAtPath<Material>(GUIDToPath(guid));
                 MigrateMaterial(material);
             }
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
 
-        public static void MigrateMaterial(Material material)
+        private static void MigrateMaterial(Material material)
         {
+            if(material.shader == null || !material.shader.name.Contains("lilToon")) return;
             int version = material.HasProperty("_lilToonVersion") ? (int)material.GetFloat("_lilToonVersion") : 0;
-            MigrateMaterial(material, version);
-        }
-
-        public static void MigrateMaterial(Material material, int version)
-        {
-            if(material.shader == null || !material.shader.name.Contains("lilToon") || version >= currentVersionValue) return;
+            if(version >= currentVersionValue) return;
             Debug.Log("[lilToon]Run migration: " + material.name);
             material.SetFloat("_lilToonVersion", currentVersionValue);
 
@@ -4692,13 +5361,17 @@ namespace lilToon
 
         private static bool AutoFixHelpBox(string message)
         {
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            GUILayout.Label(message, EditorStyles.wordWrappedMiniLabel);
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            bool pressed = GUILayout.Button(GetLoc("sFixNow"));
+            GUILayout.BeginHorizontal(EditorStyles.helpBox);
+                GUILayout.Label(EditorGUIUtility.IconContent("console.warnicon"), GUILayout.ExpandWidth(false));
+                GUILayout.Space(-EditorStyles.label.fontSize);
+                GUILayout.BeginVertical();
+                GUILayout.Label(message, EditorStyles.wordWrappedMiniLabel);
+                    GUILayout.BeginHorizontal();
+                        GUILayout.FlexibleSpace();
+                        bool pressed = GUILayout.Button(GetLoc("sFixNow"));
+                    GUILayout.EndHorizontal();
+                GUILayout.EndVertical();
             GUILayout.EndHorizontal();
-            EditorGUILayout.EndVertical();
             return pressed;
         }
 
@@ -4830,11 +5503,6 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Editor
         #region
-        public static string BuildParams(params string[] labels)
-        {
-            return string.Join("|", labels);
-        }
-
         public static void ApplyEditorSettingTemp()
         {
             if(string.IsNullOrEmpty(edSet.languageNames))
@@ -4864,62 +5532,21 @@ namespace lilToon
         {
             if(string.IsNullOrEmpty(latestVersion.latest_vertion_name))
             {
-                if(!File.Exists(versionInfoTempPath))
+                if(File.Exists(versionInfoTempPath))
                 {
-                    latestVersion.latest_vertion_name = currentVersionName;
-                    latestVersion.latest_vertion_value = currentVersionValue;
-                    return;
+                    StreamReader sr = new StreamReader(versionInfoTempPath);
+                    string s = sr.ReadToEnd();
+                    sr.Close();
+                    if(!string.IsNullOrEmpty(s) && s.Contains("latest_vertion_name") && s.Contains("latest_vertion_value"))
+                    {
+                        EditorJsonUtility.FromJsonOverwrite(s,latestVersion);
+                        return;
+                    }
                 }
-                StreamReader sr = new StreamReader(versionInfoTempPath);
-                string s = sr.ReadToEnd();
-                sr.Close();
-                if(!string.IsNullOrEmpty(s) && s.Contains("latest_vertion_name") && s.Contains("latest_vertion_value"))
-                {
-                    EditorJsonUtility.FromJsonOverwrite(s,latestVersion);
-                }
-                else
-                {
-                    latestVersion.latest_vertion_name = currentVersionName;
-                    latestVersion.latest_vertion_value = currentVersionValue;
-                    return;
-                }
+                latestVersion.latest_vertion_name = currentVersionName;
+                latestVersion.latest_vertion_value = currentVersionValue;
+                return;
             }
-        }
-
-        public void CopyProperty(MaterialProperty property)
-        {
-            if(property != null) copiedProperties[property.name] = property;
-        }
-
-        public void PasteProperty(ref MaterialProperty property)
-        {
-            if(property != null && copiedProperties.ContainsKey(property.name) && copiedProperties[property.name] != null)
-            {
-                MaterialProperty.PropType propType = property.type;
-                if(propType == MaterialProperty.PropType.Color)     property.colorValue = copiedProperties[property.name].colorValue;
-                if(propType == MaterialProperty.PropType.Vector)    property.vectorValue = copiedProperties[property.name].vectorValue;
-                if(propType == MaterialProperty.PropType.Float)     property.floatValue = copiedProperties[property.name].floatValue;
-                if(propType == MaterialProperty.PropType.Range)     property.floatValue = copiedProperties[property.name].floatValue;
-                if(propType == MaterialProperty.PropType.Texture)   property.textureValue = copiedProperties[property.name].textureValue;
-            }
-        }
-
-        public void ResetProperty(ref MaterialProperty property)
-        {
-            #if UNITY_2019_3_OR_NEWER
-            if(property != null && property.targets[0] is Material && ((Material)property.targets[0]).shader != null)
-            {
-                Shader shader = ((Material)property.targets[0]).shader;
-                int propID = shader.FindPropertyIndex(property.name);
-                if(propID == -1) return;
-                MaterialProperty.PropType propType = property.type;
-                if(propType == MaterialProperty.PropType.Color)     property.colorValue = shader.GetPropertyDefaultVectorValue(propID);
-                if(propType == MaterialProperty.PropType.Vector)    property.vectorValue = shader.GetPropertyDefaultVectorValue(propID);
-                if(propType == MaterialProperty.PropType.Float)     property.floatValue = shader.GetPropertyDefaultFloatValue(propID);
-                if(propType == MaterialProperty.PropType.Range)     property.floatValue = shader.GetPropertyDefaultFloatValue(propID);
-                if(propType == MaterialProperty.PropType.Texture)   property.textureValue = null;
-            }
-            #endif
         }
 
         private void CheckShaderType(Material material)
@@ -4970,10 +5597,503 @@ namespace lilToon
             }
         }
 
+        private lilMaterialProperty[] AllProperties()
+        {
+            return new[]
+            {
+                transparentModeMat,
+                asOverlay,
+                invisible,
+                asUnlit,
+                cutoff,
+                subpassCutoff,
+                flipNormal,
+                shiftBackfaceUV,
+                backfaceForceShadow,
+                vertexLightStrength,
+                lightMinLimit,
+                lightMaxLimit,
+                beforeExposureLimit,
+                monochromeLighting,
+                alphaBoostFA,
+                lilDirectionalLightStrength,
+                lightDirectionOverride,
+                baseColor,
+                baseMap,
+                baseColorMap,
+                triMask,
+                cull,
+                srcBlend,
+                dstBlend,
+                srcBlendAlpha,
+                dstBlendAlpha,
+                blendOp,
+                blendOpAlpha,
+                srcBlendFA,
+                dstBlendFA,
+                srcBlendAlphaFA,
+                dstBlendAlphaFA,
+                blendOpFA,
+                blendOpAlphaFA,
+                zclip,
+                zwrite,
+                ztest,
+                stencilRef,
+                stencilReadMask,
+                stencilWriteMask,
+                stencilComp,
+                stencilPass,
+                stencilFail,
+                stencilZFail,
+                offsetFactor,
+                offsetUnits,
+                colorMask,
+                alphaToMask,
+                lilShadowCasterBias,
+                mainColor,
+                mainTex,
+                mainTexHSVG,
+                mainTex_ScrollRotate,
+                mainGradationStrength,
+                mainGradationTex,
+                mainColorAdjustMask,
+                useMain2ndTex,
+                mainColor2nd,
+                main2ndTex,
+                main2ndTex_UVMode,
+                main2ndTexAngle,
+                main2ndTexDecalAnimation,
+                main2ndTexDecalSubParam,
+                main2ndTexIsDecal,
+                main2ndTexIsLeftOnly,
+                main2ndTexIsRightOnly,
+                main2ndTexShouldCopy,
+                main2ndTexShouldFlipMirror,
+                main2ndTexShouldFlipCopy,
+                main2ndTexIsMSDF,
+                main2ndBlendMask,
+                main2ndTexBlendMode,
+                main2ndEnableLighting,
+                main2ndDissolveMask,
+                main2ndDissolveNoiseMask,
+                main2ndDissolveNoiseMask_ScrollRotate,
+                main2ndDissolveNoiseStrength,
+                main2ndDissolveColor,
+                main2ndDissolveParams,
+                main2ndDissolvePos,
+                main2ndDistanceFade,
+                useMain3rdTex,
+                mainColor3rd,
+                main3rdTex,
+                main3rdTex_UVMode,
+                main3rdTexAngle,
+                main3rdTexDecalAnimation,
+                main3rdTexDecalSubParam,
+                main3rdTexIsDecal,
+                main3rdTexIsLeftOnly,
+                main3rdTexIsRightOnly,
+                main3rdTexShouldCopy,
+                main3rdTexShouldFlipMirror,
+                main3rdTexShouldFlipCopy,
+                main3rdTexIsMSDF,
+                main3rdBlendMask,
+                main3rdTexBlendMode,
+                main3rdEnableLighting,
+                main3rdDissolveMask,
+                main3rdDissolveNoiseMask,
+                main3rdDissolveNoiseMask_ScrollRotate,
+                main3rdDissolveNoiseStrength,
+                main3rdDissolveColor,
+                main3rdDissolveParams,
+                main3rdDissolvePos,
+                main3rdDistanceFade,
+                alphaMaskMode,
+                alphaMask,
+                alphaMaskScale,
+                alphaMaskValue,
+                useShadow,
+                shadowStrength,
+                shadowStrengthMask,
+                shadowBorderMask,
+                shadowBlurMask,
+                shadowStrengthMaskLOD,
+                shadowBorderMaskLOD,
+                shadowBlurMaskLOD,
+                shadowAOShift,
+                shadowAOShift2,
+                shadowPostAO,
+                shadowColor,
+                shadowColorTex,
+                shadowNormalStrength,
+                shadowBorder,
+                shadowBlur,
+                shadow2ndColor,
+                shadow2ndColorTex,
+                shadow2ndNormalStrength,
+                shadow2ndBorder,
+                shadow2ndBlur,
+                shadow3rdColor,
+                shadow3rdColorTex,
+                shadow3rdNormalStrength,
+                shadow3rdBorder,
+                shadow3rdBlur,
+                shadowMainStrength,
+                shadowEnvStrength,
+                shadowBorderColor,
+                shadowBorderRange,
+                shadowReceive,
+                shadow2ndReceive,
+                shadow3rdReceive,
+                shadowMaskType,
+                shadowFlatBorder,
+                shadowFlatBlur,
+                useBacklight,
+                backlightColor,
+                backlightColorTex,
+                backlightMainStrength,
+                backlightNormalStrength,
+                backlightBorder,
+                backlightBlur,
+                backlightDirectivity,
+                backlightViewStrength,
+                backlightReceiveShadow,
+                backlightBackfaceMask,
+                useBumpMap,
+                bumpMap,
+                bumpScale,
+                useBump2ndMap,
+                bump2ndMap,
+                bump2ndScale,
+                bump2ndScaleMask,
+                useAnisotropy,
+                anisotropyTangentMap,
+                anisotropyScale,
+                anisotropyScaleMask,
+                anisotropyTangentWidth,
+                anisotropyBitangentWidth,
+                anisotropyShift,
+                anisotropyShiftNoiseScale,
+                anisotropySpecularStrength,
+                anisotropy2ndTangentWidth,
+                anisotropy2ndBitangentWidth,
+                anisotropy2ndShift,
+                anisotropy2ndShiftNoiseScale,
+                anisotropy2ndSpecularStrength,
+                anisotropyShiftNoiseMask,
+                anisotropy2Reflection,
+                anisotropy2MatCap,
+                anisotropy2MatCap2nd,
+                useReflection,
+                metallic,
+                metallicGlossMap,
+                smoothness,
+                smoothnessTex,
+                reflectance,
+                reflectionColor,
+                reflectionColorTex,
+                gsaaStrength,
+                applySpecular,
+                applySpecularFA,
+                specularNormalStrength,
+                specularToon,
+                specularBorder,
+                specularBlur,
+                applyReflection,
+                reflectionNormalStrength,
+                reflectionApplyTransparency,
+                reflectionCubeTex,
+                reflectionCubeColor,
+                reflectionCubeOverride,
+                reflectionCubeEnableLighting,
+                reflectionBlendMode,
+                useMatCap,
+                matcapTex,
+                matcapColor,
+                matcapMainStrength,
+                matcapBlendUV1,
+                matcapZRotCancel,
+                matcapPerspective,
+                matcapVRParallaxStrength,
+                matcapBlend,
+                matcapBlendMask,
+                matcapEnableLighting,
+                matcapShadowMask,
+                matcapBackfaceMask,
+                matcapLod,
+                matcapBlendMode,
+                matcapMul,
+                matcapApplyTransparency,
+                matcapNormalStrength,
+                matcapCustomNormal,
+                matcapBumpMap,
+                matcapBumpScale,
+                useMatCap2nd,
+                matcap2ndTex,
+                matcap2ndColor,
+                matcap2ndMainStrength,
+                matcap2ndBlendUV1,
+                matcap2ndZRotCancel,
+                matcap2ndPerspective,
+                matcap2ndVRParallaxStrength,
+                matcap2ndBlend,
+                matcap2ndBlendMask,
+                matcap2ndEnableLighting,
+                matcap2ndShadowMask,
+                matcap2ndBackfaceMask,
+                matcap2ndLod,
+                matcap2ndBlendMode,
+                matcap2ndMul,
+                matcap2ndApplyTransparency,
+                matcap2ndNormalStrength,
+                matcap2ndCustomNormal,
+                matcap2ndBumpMap,
+                matcap2ndBumpScale,
+                useRim,
+                rimColor,
+                rimColorTex,
+                rimMainStrength,
+                rimNormalStrength,
+                rimBorder,
+                rimBlur,
+                rimFresnelPower,
+                rimEnableLighting,
+                rimShadowMask,
+                rimBackfaceMask,
+                rimVRParallaxStrength,
+                rimApplyTransparency,
+                rimDirStrength,
+                rimDirRange,
+                rimIndirRange,
+                rimIndirColor,
+                rimIndirBorder,
+                rimIndirBlur,
+                useGlitter,
+                glitterUVMode,
+                glitterColor,
+                glitterColorTex,
+                glitterMainStrength,
+                glitterParams1,
+                glitterParams2,
+                glitterPostContrast,
+                glitterSensitivity,
+                glitterEnableLighting,
+                glitterShadowMask,
+                glitterBackfaceMask,
+                glitterApplyTransparency,
+                glitterVRParallaxStrength,
+                glitterNormalStrength,
+                useEmission,
+                emissionColor,
+                emissionMap,
+                emissionMap_ScrollRotate,
+                emissionMap_UVMode,
+                emissionMainStrength,
+                emissionBlend,
+                emissionBlendMask,
+                emissionBlendMask_ScrollRotate,
+                emissionBlink,
+                emissionUseGrad,
+                emissionGradTex,
+                emissionGradSpeed,
+                emissionParallaxDepth,
+                emissionFluorescence,
+                useEmission2nd,
+                emission2ndColor,
+                emission2ndMap,
+                emission2ndMap_ScrollRotate,
+                emission2ndMap_UVMode,
+                emission2ndMainStrength,
+                emission2ndBlend,
+                emission2ndBlendMask,
+                emission2ndBlendMask_ScrollRotate,
+                emission2ndBlink,
+                emission2ndUseGrad,
+                emission2ndGradTex,
+                emission2ndGradSpeed,
+                emission2ndParallaxDepth,
+                emission2ndFluorescence,
+                outlineColor,
+                outlineTex,
+                outlineTex_ScrollRotate,
+                outlineTexHSVG,
+                outlineLitColor,
+                outlineLitApplyTex,
+                outlineLitScale,
+                outlineLitOffset,
+                outlineWidth,
+                outlineWidthMask,
+                outlineFixWidth,
+                outlineVertexR2Width,
+                outlineDeleteMesh,
+                outlineVectorTex,
+                outlineVectorUVMode,
+                outlineVectorScale,
+                outlineEnableLighting,
+                outlineZBias,
+                outlineCull,
+                outlineSrcBlend,
+                outlineDstBlend,
+                outlineSrcBlendAlpha,
+                outlineDstBlendAlpha,
+                outlineBlendOp,
+                outlineBlendOpAlpha,
+                outlineSrcBlendFA,
+                outlineDstBlendFA,
+                outlineSrcBlendAlphaFA,
+                outlineDstBlendAlphaFA,
+                outlineBlendOpFA,
+                outlineBlendOpAlphaFA,
+                outlineZclip,
+                outlineZwrite,
+                outlineZtest,
+                outlineStencilRef,
+                outlineStencilReadMask,
+                outlineStencilWriteMask,
+                outlineStencilComp,
+                outlineStencilPass,
+                outlineStencilFail,
+                outlineStencilZFail,
+                outlineOffsetFactor,
+                outlineOffsetUnits,
+                outlineColorMask,
+                outlineAlphaToMask,
+                useParallax,
+                usePOM,
+                parallaxMap,
+                parallax,
+                parallaxOffset,
+                distanceFadeColor,
+                distanceFade,
+                useClippingCanceller,
+                useAudioLink,
+                audioLinkDefaultValue,
+                audioLinkUVMode,
+                audioLinkUVParams,
+                audioLinkStart,
+                audioLinkMask,
+                audioLink2Main2nd,
+                audioLink2Main3rd,
+                audioLink2Emission,
+                audioLink2EmissionGrad,
+                audioLink2Emission2nd,
+                audioLink2Emission2ndGrad,
+                audioLink2Vertex,
+                audioLinkVertexUVMode,
+                audioLinkVertexUVParams,
+                audioLinkVertexStart,
+                audioLinkVertexStrength,
+                audioLinkAsLocal,
+                audioLinkLocalMap,
+                audioLinkLocalMapParams,
+                dissolveMask,
+                dissolveNoiseMask,
+                dissolveNoiseMask_ScrollRotate,
+                dissolveNoiseStrength,
+                dissolveColor,
+                dissolveParams,
+                dissolvePos,
+                ignoreEncryption,
+                keys,
+                refractionStrength,
+                refractionFresnelPower,
+                refractionColorFromMain,
+                refractionColor,
+                furNoiseMask,
+                furMask,
+                furLengthMask,
+                furVectorTex,
+                furVectorScale,
+                furVector,
+                furGravity,
+                furRandomize,
+                furAO,
+                vertexColor2FurVector,
+                furMeshType,
+                furLayerNum,
+                furRootOffset,
+                furCutoutLength,
+                furTouchStrength,
+                furCull,
+                furSrcBlend,
+                furDstBlend,
+                furSrcBlendAlpha,
+                furDstBlendAlpha,
+                furBlendOp,
+                furBlendOpAlpha,
+                furSrcBlendFA,
+                furDstBlendFA,
+                furSrcBlendAlphaFA,
+                furDstBlendAlphaFA,
+                furBlendOpFA,
+                furBlendOpAlphaFA,
+                furZclip,
+                furZwrite,
+                furZtest,
+                furStencilRef,
+                furStencilReadMask,
+                furStencilWriteMask,
+                furStencilComp,
+                furStencilPass,
+                furStencilFail,
+                furStencilZFail,
+                furOffsetFactor,
+                furOffsetUnits,
+                furColorMask,
+                furAlphaToMask,
+                tessEdge,
+                tessStrength,
+                tessShrink,
+                tessFactorMax,
+                gemChromaticAberration,
+                gemEnvContrast,
+                gemEnvColor,
+                gemParticleLoop,
+                gemParticleColor,
+                gemVRParallaxStrength,
+                fakeShadowVector
+            };
+        }
+
+        private void CopyProperties(lilPropertyBlock propertyBlock)
+        {
+            SetPropertyBlock();
+            foreach(lilMaterialProperty prop in AllProperties())
+            {
+                foreach(lilPropertyBlock block in prop.blocks)
+                {
+                    if(block == propertyBlock && prop.p != null) copiedProperties[prop.name] = prop.p;
+                }
+            }
+        }
+
         private void CopyProperties(object obj)
         {
-            lilPropertyBlock propertyBlock = (lilPropertyBlock)obj;
-            CopyProperties(propertyBlock);
+            CopyProperties((lilPropertyBlock)obj);
+        }
+
+        private void PasteProperties(lilPropertyBlock propertyBlock, bool shouldCopyTex)
+        {
+            SetPropertyBlock();
+            foreach(lilMaterialProperty prop in AllProperties())
+            {
+                if(!shouldCopyTex && prop.isTexture)
+                {
+                    Debug.Log("Skip Texture");
+                    continue;
+                }
+                foreach(lilPropertyBlock block in prop.blocks)
+                {
+                    if(block == propertyBlock && prop.p != null && copiedProperties.ContainsKey(prop.name) && copiedProperties[prop.name] != null)
+                    {
+                        MaterialProperty.PropType propType = prop.type;
+                        if(propType == MaterialProperty.PropType.Color)     prop.colorValue = copiedProperties[prop.name].colorValue;
+                        if(propType == MaterialProperty.PropType.Vector)    prop.vectorValue = copiedProperties[prop.name].vectorValue;
+                        if(propType == MaterialProperty.PropType.Float)     prop.floatValue = copiedProperties[prop.name].floatValue;
+                        if(propType == MaterialProperty.PropType.Range)     prop.floatValue = copiedProperties[prop.name].floatValue;
+                        if(propType == MaterialProperty.PropType.Texture)   prop.textureValue = copiedProperties[prop.name].textureValue;
+                    }
+                }
+            }
         }
 
         private void PasteProperties(object obj)
@@ -4982,2491 +6102,34 @@ namespace lilToon
             PasteProperties(propertyBlockData.propertyBlock, propertyBlockData.shouldCopyTex);
         }
 
-        private void ResetProperties(object obj)
-        {
-            lilPropertyBlock propertyBlock = (lilPropertyBlock)obj;
-            ResetProperties(propertyBlock);
-        }
-
-        private void CopyProperties(lilPropertyBlock propertyBlock)
-        {
-            switch(propertyBlock)
-            {
-                case lilPropertyBlock.Base:
-                        CopyProperty(invisible);
-                        CopyProperty(cutoff);
-                        CopyProperty(cull);
-                        CopyProperty(flipNormal);
-                        CopyProperty(backfaceForceShadow);
-                        CopyProperty(zwrite);
-                        CopyProperty(fakeShadowVector);
-                        CopyProperty(triMask);
-                    break;
-                case lilPropertyBlock.Lighting:
-                        CopyProperty(lightMinLimit);
-                        CopyProperty(lightMaxLimit);
-                        CopyProperty(monochromeLighting);
-                        CopyProperty(shadowEnvStrength);
-                        CopyProperty(asUnlit);
-                        CopyProperty(vertexLightStrength);
-                        CopyProperty(lightDirectionOverride);
-                        CopyProperty(alphaBoostFA);
-                        CopyProperty(blendOpFA);
-                        CopyProperty(beforeExposureLimit);
-                        CopyProperty(lilDirectionalLightStrength);
-                    break;
-                case lilPropertyBlock.UV:
-                        CopyProperty(mainTex_ScrollRotate);
-                        CopyProperty(shiftBackfaceUV);
-                    break;
-                case lilPropertyBlock.MainColor:
-                        CopyProperty(mainColor);
-                        CopyProperty(mainTexHSVG);
-                        CopyProperty(mainGradationStrength);
-                        CopyProperty(mainGradationTex);
-                        CopyProperty(useMain2ndTex);
-                        CopyProperty(mainColor2nd);
-                        CopyProperty(main2ndTex_UVMode);
-                        CopyProperty(main2ndTexAngle);
-                        CopyProperty(main2ndTexDecalAnimation);
-                        CopyProperty(main2ndTexDecalSubParam);
-                        CopyProperty(main2ndTexIsDecal);
-                        CopyProperty(main2ndTexIsLeftOnly);
-                        CopyProperty(main2ndTexIsRightOnly);
-                        CopyProperty(main2ndTexShouldCopy);
-                        CopyProperty(main2ndTexShouldFlipMirror);
-                        CopyProperty(main2ndTexShouldFlipCopy);
-                        CopyProperty(main2ndTexIsMSDF);
-                        CopyProperty(main2ndTexBlendMode);
-                        CopyProperty(main2ndEnableLighting);
-                        CopyProperty(main2ndDissolveNoiseMask_ScrollRotate);
-                        CopyProperty(main2ndDissolveNoiseStrength);
-                        CopyProperty(main2ndDissolveColor);
-                        CopyProperty(main2ndDissolveParams);
-                        CopyProperty(main2ndDissolvePos);
-                        CopyProperty(main2ndDistanceFade);
-                        CopyProperty(useMain3rdTex);
-                        CopyProperty(mainColor3rd);
-                        CopyProperty(main3rdTex_UVMode);
-                        CopyProperty(main3rdTexAngle);
-                        CopyProperty(main3rdTexDecalAnimation);
-                        CopyProperty(main3rdTexDecalSubParam);
-                        CopyProperty(main3rdTexIsDecal);
-                        CopyProperty(main3rdTexIsLeftOnly);
-                        CopyProperty(main3rdTexIsRightOnly);
-                        CopyProperty(main3rdTexShouldCopy);
-                        CopyProperty(main3rdTexShouldFlipMirror);
-                        CopyProperty(main3rdTexShouldFlipCopy);
-                        CopyProperty(main3rdTexIsMSDF);
-                        CopyProperty(main3rdTexBlendMode);
-                        CopyProperty(main3rdEnableLighting);
-                        CopyProperty(main3rdDissolveMask);
-                        CopyProperty(main3rdDissolveNoiseMask);
-                        CopyProperty(main3rdDissolveNoiseMask_ScrollRotate);
-                        CopyProperty(main3rdDissolveNoiseStrength);
-                        CopyProperty(main3rdDissolveColor);
-                        CopyProperty(main3rdDissolveParams);
-                        CopyProperty(main3rdDissolvePos);
-                        CopyProperty(main3rdDistanceFade);
-                        CopyProperty(alphaMaskMode);
-                        CopyProperty(alphaMaskScale);
-                        CopyProperty(alphaMaskValue);
-                        CopyProperty(mainTex);
-                        CopyProperty(mainColorAdjustMask);
-                        CopyProperty(main2ndTex);
-                        CopyProperty(main2ndBlendMask);
-                        CopyProperty(main2ndDissolveMask);
-                        CopyProperty(main2ndDissolveNoiseMask);
-                        CopyProperty(main3rdTex);
-                        CopyProperty(main3rdBlendMask);
-                        CopyProperty(main3rdDissolveMask);
-                        CopyProperty(main3rdDissolveNoiseMask);
-                        CopyProperty(alphaMask);
-                    break;
-                case lilPropertyBlock.MainColor1st:
-                        CopyProperty(mainColor);
-                        CopyProperty(mainTexHSVG);
-                        CopyProperty(mainGradationStrength);
-                        CopyProperty(mainGradationTex);
-                        CopyProperty(mainTex);
-                        CopyProperty(mainColorAdjustMask);
-                    break;
-                case lilPropertyBlock.MainColor2nd:
-                        CopyProperty(useMain2ndTex);
-                        CopyProperty(mainColor2nd);
-                        CopyProperty(main2ndTex_UVMode);
-                        CopyProperty(main2ndTexAngle);
-                        CopyProperty(main2ndTexDecalAnimation);
-                        CopyProperty(main2ndTexDecalSubParam);
-                        CopyProperty(main2ndTexIsDecal);
-                        CopyProperty(main2ndTexIsLeftOnly);
-                        CopyProperty(main2ndTexIsRightOnly);
-                        CopyProperty(main2ndTexShouldCopy);
-                        CopyProperty(main2ndTexShouldFlipMirror);
-                        CopyProperty(main2ndTexShouldFlipCopy);
-                        CopyProperty(main2ndTexIsMSDF);
-                        CopyProperty(main2ndTexBlendMode);
-                        CopyProperty(main2ndEnableLighting);
-                        CopyProperty(main2ndDissolveNoiseMask_ScrollRotate);
-                        CopyProperty(main2ndDissolveNoiseStrength);
-                        CopyProperty(main2ndDissolveColor);
-                        CopyProperty(main2ndDissolveParams);
-                        CopyProperty(main2ndDissolvePos);
-                        CopyProperty(main2ndDistanceFade);
-                        CopyProperty(main2ndTex);
-                        CopyProperty(main2ndBlendMask);
-                        CopyProperty(main2ndDissolveMask);
-                        CopyProperty(main2ndDissolveNoiseMask);
-                    break;
-                case lilPropertyBlock.MainColor3rd:
-                        CopyProperty(useMain3rdTex);
-                        CopyProperty(mainColor3rd);
-                        CopyProperty(main3rdTex_UVMode);
-                        CopyProperty(main3rdTexAngle);
-                        CopyProperty(main3rdTexDecalAnimation);
-                        CopyProperty(main3rdTexDecalSubParam);
-                        CopyProperty(main3rdTexIsDecal);
-                        CopyProperty(main3rdTexIsLeftOnly);
-                        CopyProperty(main3rdTexIsRightOnly);
-                        CopyProperty(main3rdTexShouldCopy);
-                        CopyProperty(main3rdTexShouldFlipMirror);
-                        CopyProperty(main3rdTexShouldFlipCopy);
-                        CopyProperty(main3rdTexIsMSDF);
-                        CopyProperty(main3rdTexBlendMode);
-                        CopyProperty(main3rdEnableLighting);
-                        CopyProperty(main3rdDissolveMask);
-                        CopyProperty(main3rdDissolveNoiseMask);
-                        CopyProperty(main3rdDissolveNoiseMask_ScrollRotate);
-                        CopyProperty(main3rdDissolveNoiseStrength);
-                        CopyProperty(main3rdDissolveColor);
-                        CopyProperty(main3rdDissolveParams);
-                        CopyProperty(main3rdDissolvePos);
-                        CopyProperty(main3rdDistanceFade);
-                        CopyProperty(main3rdTex);
-                        CopyProperty(main3rdBlendMask);
-                        CopyProperty(main3rdDissolveMask);
-                        CopyProperty(main3rdDissolveNoiseMask);
-                    break;
-                case lilPropertyBlock.AlphaMask:
-                        CopyProperty(alphaMaskMode);
-                        CopyProperty(alphaMaskScale);
-                        CopyProperty(alphaMaskValue);
-                        CopyProperty(alphaMask);
-                    break;
-                case lilPropertyBlock.Shadow:
-                        CopyProperty(useShadow);
-                        CopyProperty(shadowColor);
-                        CopyProperty(shadowNormalStrength);
-                        CopyProperty(shadowBorder);
-                        CopyProperty(shadowBlur);
-                        CopyProperty(shadowStrength);
-                        CopyProperty(shadowAOShift);
-                        CopyProperty(shadowAOShift2);
-                        CopyProperty(shadowPostAO);
-                        CopyProperty(shadow2ndColor);
-                        CopyProperty(shadow2ndNormalStrength);
-                        CopyProperty(shadow2ndBorder);
-                        CopyProperty(shadow2ndBlur);
-                        CopyProperty(shadow3rdColor);
-                        CopyProperty(shadow3rdNormalStrength);
-                        CopyProperty(shadow3rdBorder);
-                        CopyProperty(shadow3rdBlur);
-                        CopyProperty(shadowMainStrength);
-                        CopyProperty(shadowEnvStrength);
-                        CopyProperty(shadowBorderColor);
-                        CopyProperty(shadowBorderRange);
-                        CopyProperty(shadowReceive);
-                        CopyProperty(shadow2ndReceive);
-                        CopyProperty(shadow3rdReceive);
-                        CopyProperty(shadowMaskType);
-                        CopyProperty(shadowFlatBorder);
-                        CopyProperty(shadowFlatBlur);
-                        CopyProperty(lilShadowCasterBias);
-                        CopyProperty(shadowBorderMaskLOD);
-                        CopyProperty(shadowBlurMaskLOD);
-                        CopyProperty(shadowStrengthMaskLOD);
-                        CopyProperty(shadowBorderMask);
-                        CopyProperty(shadowBlurMask);
-                        CopyProperty(shadowStrengthMask);
-                        CopyProperty(shadowColorTex);
-                        CopyProperty(shadow2ndColorTex);
-                        CopyProperty(shadow3rdColorTex);
-                    break;
-                case lilPropertyBlock.Emission:
-                        CopyProperty(useEmission);
-                        CopyProperty(emissionColor);
-                        CopyProperty(emissionMap_ScrollRotate);
-                        CopyProperty(emissionMap_UVMode);
-                        CopyProperty(emissionBlend);
-                        CopyProperty(emissionBlendMask_ScrollRotate);
-                        CopyProperty(emissionBlink);
-                        CopyProperty(emissionUseGrad);
-                        CopyProperty(emissionGradTex);
-                        CopyProperty(emissionGradSpeed);
-                        CopyProperty(emissionParallaxDepth);
-                        CopyProperty(emissionFluorescence);
-                        CopyProperty(useEmission2nd);
-                        CopyProperty(emission2ndColor);
-                        CopyProperty(emission2ndMap_ScrollRotate);
-                        CopyProperty(emission2ndMap_UVMode);
-                        CopyProperty(emission2ndBlend);
-                        CopyProperty(emission2ndBlendMask_ScrollRotate);
-                        CopyProperty(emission2ndBlink);
-                        CopyProperty(emission2ndUseGrad);
-                        CopyProperty(emission2ndGradTex);
-                        CopyProperty(emission2ndGradSpeed);
-                        CopyProperty(emission2ndParallaxDepth);
-                        CopyProperty(emission2ndFluorescence);
-                        CopyProperty(emissionMap);
-                        CopyProperty(emissionBlendMask);
-                        CopyProperty(emission2ndMap);
-                        CopyProperty(emission2ndBlendMask);
-                    break;
-                case lilPropertyBlock.Emission1st:
-                        CopyProperty(useEmission);
-                        CopyProperty(emissionColor);
-                        CopyProperty(emissionMap_ScrollRotate);
-                        CopyProperty(emissionMap_UVMode);
-                        CopyProperty(emissionBlend);
-                        CopyProperty(emissionBlendMask_ScrollRotate);
-                        CopyProperty(emissionBlink);
-                        CopyProperty(emissionUseGrad);
-                        CopyProperty(emissionGradTex);
-                        CopyProperty(emissionGradSpeed);
-                        CopyProperty(emissionParallaxDepth);
-                        CopyProperty(emissionFluorescence);
-                        CopyProperty(emissionMap);
-                        CopyProperty(emissionBlendMask);
-                    break;
-                case lilPropertyBlock.Emission2nd:
-                        CopyProperty(useEmission2nd);
-                        CopyProperty(emission2ndColor);
-                        CopyProperty(emission2ndMap_ScrollRotate);
-                        CopyProperty(emission2ndMap_UVMode);
-                        CopyProperty(emission2ndBlend);
-                        CopyProperty(emission2ndBlendMask_ScrollRotate);
-                        CopyProperty(emission2ndBlink);
-                        CopyProperty(emission2ndUseGrad);
-                        CopyProperty(emission2ndGradTex);
-                        CopyProperty(emission2ndGradSpeed);
-                        CopyProperty(emission2ndParallaxDepth);
-                        CopyProperty(emission2ndFluorescence);
-                        CopyProperty(emission2ndMap);
-                        CopyProperty(emission2ndBlendMask);
-                    break;
-                case lilPropertyBlock.NormalMap:
-                        CopyProperty(useBumpMap);
-                        CopyProperty(bumpScale);
-                        CopyProperty(useBump2ndMap);
-                        CopyProperty(bump2ndScale);
-                        CopyProperty(useAnisotropy);
-                        CopyProperty(anisotropyScale);
-                        CopyProperty(anisotropyTangentWidth);
-                        CopyProperty(anisotropyBitangentWidth);
-                        CopyProperty(anisotropyShift);
-                        CopyProperty(anisotropyShiftNoiseScale);
-                        CopyProperty(anisotropySpecularStrength);
-                        CopyProperty(anisotropy2ndTangentWidth);
-                        CopyProperty(anisotropy2ndBitangentWidth);
-                        CopyProperty(anisotropy2ndShift);
-                        CopyProperty(anisotropy2ndShiftNoiseScale);
-                        CopyProperty(anisotropy2ndSpecularStrength);
-                        CopyProperty(anisotropy2Reflection);
-                        CopyProperty(anisotropy2MatCap);
-                        CopyProperty(anisotropy2MatCap2nd);
-                        CopyProperty(bumpMap);
-                        CopyProperty(bump2ndMap);
-                        CopyProperty(bump2ndScaleMask);
-                        CopyProperty(anisotropyTangentMap);
-                        CopyProperty(anisotropyScaleMask);
-                        CopyProperty(anisotropyShiftNoiseMask);
-                    break;
-                case lilPropertyBlock.NormalMap1st:
-                        CopyProperty(useBumpMap);
-                        CopyProperty(bumpScale);
-                        CopyProperty(bumpMap);
-                    break;
-                case lilPropertyBlock.NormalMap2nd:
-                        CopyProperty(useBump2ndMap);
-                        CopyProperty(bump2ndScale);
-                        CopyProperty(bump2ndMap);
-                        CopyProperty(bump2ndScaleMask);
-                    break;
-                case lilPropertyBlock.Anisotropy:
-                        CopyProperty(useAnisotropy);
-                        CopyProperty(anisotropyScale);
-                        CopyProperty(anisotropyTangentWidth);
-                        CopyProperty(anisotropyBitangentWidth);
-                        CopyProperty(anisotropyShift);
-                        CopyProperty(anisotropyShiftNoiseScale);
-                        CopyProperty(anisotropySpecularStrength);
-                        CopyProperty(anisotropy2ndTangentWidth);
-                        CopyProperty(anisotropy2ndBitangentWidth);
-                        CopyProperty(anisotropy2ndShift);
-                        CopyProperty(anisotropy2ndShiftNoiseScale);
-                        CopyProperty(anisotropy2ndSpecularStrength);
-                        CopyProperty(anisotropy2Reflection);
-                        CopyProperty(anisotropy2MatCap);
-                        CopyProperty(anisotropy2MatCap2nd);
-                        CopyProperty(anisotropyTangentMap);
-                        CopyProperty(anisotropyScaleMask);
-                        CopyProperty(anisotropyShiftNoiseMask);
-                    break;
-                case lilPropertyBlock.Reflections:
-                        CopyProperty(useReflection);
-                        CopyProperty(metallic);
-                        CopyProperty(smoothness);
-                        CopyProperty(reflectance);
-                        CopyProperty(reflectionColor);
-                        CopyProperty(gsaaStrength);
-                        CopyProperty(applySpecular);
-                        CopyProperty(applySpecularFA);
-                        CopyProperty(specularNormalStrength);
-                        CopyProperty(specularToon);
-                        CopyProperty(specularBorder);
-                        CopyProperty(specularBlur);
-                        CopyProperty(applyReflection);
-                        CopyProperty(reflectionNormalStrength);
-                        CopyProperty(reflectionApplyTransparency);
-                        CopyProperty(reflectionCubeColor);
-                        CopyProperty(reflectionCubeOverride);
-                        CopyProperty(reflectionCubeEnableLighting);
-                        CopyProperty(reflectionBlendMode);
-                        CopyProperty(useMatCap);
-                        CopyProperty(matcapColor);
-                        CopyProperty(matcapBlendUV1);
-                        CopyProperty(matcapZRotCancel);
-                        CopyProperty(matcapPerspective);
-                        CopyProperty(matcapVRParallaxStrength);
-                        CopyProperty(matcapBlend);
-                        CopyProperty(matcapEnableLighting);
-                        CopyProperty(matcapShadowMask);
-                        CopyProperty(matcapBackfaceMask);
-                        CopyProperty(matcapLod);
-                        CopyProperty(matcapBlendMode);
-                        CopyProperty(matcapMul);
-                        CopyProperty(matcapApplyTransparency);
-                        CopyProperty(matcapNormalStrength);
-                        CopyProperty(matcapCustomNormal);
-                        CopyProperty(matcapBumpScale);
-                        CopyProperty(useMatCap2nd);
-                        CopyProperty(matcap2ndColor);
-                        CopyProperty(matcap2ndBlendUV1);
-                        CopyProperty(matcap2ndZRotCancel);
-                        CopyProperty(matcap2ndPerspective);
-                        CopyProperty(matcap2ndVRParallaxStrength);
-                        CopyProperty(matcap2ndBlend);
-                        CopyProperty(matcap2ndEnableLighting);
-                        CopyProperty(matcap2ndShadowMask);
-                        CopyProperty(matcap2ndBackfaceMask);
-                        CopyProperty(matcap2ndLod);
-                        CopyProperty(matcap2ndBlendMode);
-                        CopyProperty(matcap2ndMul);
-                        CopyProperty(matcap2ndNormalStrength);
-                        CopyProperty(matcap2ndApplyTransparency);
-                        CopyProperty(matcap2ndCustomNormal);
-                        CopyProperty(matcap2ndBumpScale);
-                        CopyProperty(useRim);
-                        CopyProperty(rimColor);
-                        CopyProperty(rimNormalStrength);
-                        CopyProperty(rimBorder);
-                        CopyProperty(rimBlur);
-                        CopyProperty(rimFresnelPower);
-                        CopyProperty(rimEnableLighting);
-                        CopyProperty(rimShadowMask);
-                        CopyProperty(rimBackfaceMask);
-                        CopyProperty(rimVRParallaxStrength);
-                        CopyProperty(rimApplyTransparency);
-                        CopyProperty(rimDirStrength);
-                        CopyProperty(rimDirRange);
-                        CopyProperty(rimIndirRange);
-                        CopyProperty(rimIndirColor);
-                        CopyProperty(rimIndirBorder);
-                        CopyProperty(rimIndirBlur);
-                        CopyProperty(useGlitter);
-                        CopyProperty(glitterUVMode);
-                        CopyProperty(glitterColor);
-                        CopyProperty(glitterMainStrength);
-                        CopyProperty(glitterParams1);
-                        CopyProperty(glitterParams2);
-                        CopyProperty(glitterPostContrast);
-                        CopyProperty(glitterSensitivity);
-                        CopyProperty(glitterEnableLighting);
-                        CopyProperty(glitterShadowMask);
-                        CopyProperty(glitterBackfaceMask);
-                        CopyProperty(glitterApplyTransparency);
-                        CopyProperty(glitterVRParallaxStrength);
-                        CopyProperty(glitterNormalStrength);
-                        CopyProperty(useBacklight);
-                        CopyProperty(backlightColor);
-                        CopyProperty(backlightNormalStrength);
-                        CopyProperty(backlightBorder);
-                        CopyProperty(backlightBlur);
-                        CopyProperty(backlightDirectivity);
-                        CopyProperty(backlightViewStrength);
-                        CopyProperty(backlightReceiveShadow);
-                        CopyProperty(backlightBackfaceMask);
-                        CopyProperty(gemChromaticAberration);
-                        CopyProperty(gemEnvContrast);
-                        CopyProperty(gemEnvColor);
-                        CopyProperty(gemParticleLoop);
-                        CopyProperty(gemParticleColor);
-                        CopyProperty(gemVRParallaxStrength);
-                        CopyProperty(refractionStrength);
-                        CopyProperty(refractionFresnelPower);
-                        CopyProperty(metallicGlossMap);
-                        CopyProperty(smoothnessTex);
-                        CopyProperty(reflectionColorTex);
-                        CopyProperty(reflectionCubeTex);
-                        CopyProperty(matcapTex);
-                        CopyProperty(matcapBlendMask);
-                        CopyProperty(matcapBumpMap);
-                        CopyProperty(matcap2ndTex);
-                        CopyProperty(matcap2ndBlendMask);
-                        CopyProperty(matcap2ndBumpMap);
-                        CopyProperty(rimColorTex);
-                        CopyProperty(glitterColorTex);
-                        CopyProperty(backlightColorTex);
-                    break;
-                case lilPropertyBlock.Reflection:
-                        CopyProperty(useReflection);
-                        CopyProperty(metallic);
-                        CopyProperty(smoothness);
-                        CopyProperty(reflectance);
-                        CopyProperty(reflectionColor);
-                        CopyProperty(gsaaStrength);
-                        CopyProperty(applySpecular);
-                        CopyProperty(applySpecularFA);
-                        CopyProperty(specularNormalStrength);
-                        CopyProperty(specularToon);
-                        CopyProperty(specularBorder);
-                        CopyProperty(specularBlur);
-                        CopyProperty(applyReflection);
-                        CopyProperty(reflectionNormalStrength);
-                        CopyProperty(reflectionApplyTransparency);
-                        CopyProperty(reflectionCubeColor);
-                        CopyProperty(reflectionCubeOverride);
-                        CopyProperty(reflectionCubeEnableLighting);
-                        CopyProperty(reflectionBlendMode);
-                        CopyProperty(metallicGlossMap);
-                        CopyProperty(smoothnessTex);
-                        CopyProperty(reflectionColorTex);
-                        CopyProperty(reflectionCubeTex);
-                    break;
-                case lilPropertyBlock.MatCaps:
-                        CopyProperty(useMatCap);
-                        CopyProperty(matcapColor);
-                        CopyProperty(matcapBlendUV1);
-                        CopyProperty(matcapZRotCancel);
-                        CopyProperty(matcapPerspective);
-                        CopyProperty(matcapVRParallaxStrength);
-                        CopyProperty(matcapBlend);
-                        CopyProperty(matcapEnableLighting);
-                        CopyProperty(matcapShadowMask);
-                        CopyProperty(matcapBackfaceMask);
-                        CopyProperty(matcapLod);
-                        CopyProperty(matcapBlendMode);
-                        CopyProperty(matcapMul);
-                        CopyProperty(matcapApplyTransparency);
-                        CopyProperty(matcapNormalStrength);
-                        CopyProperty(matcapCustomNormal);
-                        CopyProperty(matcapBumpScale);
-                        CopyProperty(useMatCap2nd);
-                        CopyProperty(matcap2ndColor);
-                        CopyProperty(matcap2ndBlendUV1);
-                        CopyProperty(matcap2ndZRotCancel);
-                        CopyProperty(matcap2ndPerspective);
-                        CopyProperty(matcap2ndVRParallaxStrength);
-                        CopyProperty(matcap2ndBlend);
-                        CopyProperty(matcap2ndEnableLighting);
-                        CopyProperty(matcap2ndShadowMask);
-                        CopyProperty(matcap2ndBackfaceMask);
-                        CopyProperty(matcap2ndLod);
-                        CopyProperty(matcap2ndBlendMode);
-                        CopyProperty(matcap2ndMul);
-                        CopyProperty(matcap2ndNormalStrength);
-                        CopyProperty(matcap2ndApplyTransparency);
-                        CopyProperty(matcap2ndCustomNormal);
-                        CopyProperty(matcap2ndBumpScale);
-                        CopyProperty(matcapTex);
-                        CopyProperty(matcapBlendMask);
-                        CopyProperty(matcapBumpMap);
-                        CopyProperty(matcap2ndTex);
-                        CopyProperty(matcap2ndBlendMask);
-                        CopyProperty(matcap2ndBumpMap);
-                    break;
-                case lilPropertyBlock.MatCap1st:
-                        CopyProperty(useMatCap);
-                        CopyProperty(matcapColor);
-                        CopyProperty(matcapBlendUV1);
-                        CopyProperty(matcapZRotCancel);
-                        CopyProperty(matcapPerspective);
-                        CopyProperty(matcapVRParallaxStrength);
-                        CopyProperty(matcapBlend);
-                        CopyProperty(matcapEnableLighting);
-                        CopyProperty(matcapShadowMask);
-                        CopyProperty(matcapBackfaceMask);
-                        CopyProperty(matcapLod);
-                        CopyProperty(matcapBlendMode);
-                        CopyProperty(matcapMul);
-                        CopyProperty(matcapApplyTransparency);
-                        CopyProperty(matcapNormalStrength);
-                        CopyProperty(matcapCustomNormal);
-                        CopyProperty(matcapBumpScale);
-                        CopyProperty(matcapTex);
-                        CopyProperty(matcapBlendMask);
-                        CopyProperty(matcapBumpMap);
-                    break;
-                case lilPropertyBlock.MatCap2nd:
-                        CopyProperty(useMatCap2nd);
-                        CopyProperty(matcap2ndColor);
-                        CopyProperty(matcap2ndBlendUV1);
-                        CopyProperty(matcap2ndZRotCancel);
-                        CopyProperty(matcap2ndPerspective);
-                        CopyProperty(matcap2ndVRParallaxStrength);
-                        CopyProperty(matcap2ndBlend);
-                        CopyProperty(matcap2ndEnableLighting);
-                        CopyProperty(matcap2ndShadowMask);
-                        CopyProperty(matcap2ndBackfaceMask);
-                        CopyProperty(matcap2ndLod);
-                        CopyProperty(matcap2ndBlendMode);
-                        CopyProperty(matcap2ndMul);
-                        CopyProperty(matcap2ndApplyTransparency);
-                        CopyProperty(matcap2ndNormalStrength);
-                        CopyProperty(matcap2ndCustomNormal);
-                        CopyProperty(matcap2ndBumpScale);
-                        CopyProperty(matcap2ndTex);
-                        CopyProperty(matcap2ndBlendMask);
-                        CopyProperty(matcap2ndBumpMap);
-                    break;
-                case lilPropertyBlock.RimLight:
-                        CopyProperty(useRim);
-                        CopyProperty(rimColor);
-                        CopyProperty(rimNormalStrength);
-                        CopyProperty(rimBorder);
-                        CopyProperty(rimBlur);
-                        CopyProperty(rimFresnelPower);
-                        CopyProperty(rimEnableLighting);
-                        CopyProperty(rimShadowMask);
-                        CopyProperty(rimBackfaceMask);
-                        CopyProperty(rimVRParallaxStrength);
-                        CopyProperty(rimApplyTransparency);
-                        CopyProperty(rimDirStrength);
-                        CopyProperty(rimDirRange);
-                        CopyProperty(rimIndirRange);
-                        CopyProperty(rimIndirColor);
-                        CopyProperty(rimIndirBorder);
-                        CopyProperty(rimIndirBlur);
-                        CopyProperty(rimColorTex);
-                    break;
-                case lilPropertyBlock.Glitter:
-                        CopyProperty(useGlitter);
-                        CopyProperty(glitterUVMode);
-                        CopyProperty(glitterColor);
-                        CopyProperty(glitterMainStrength);
-                        CopyProperty(glitterParams1);
-                        CopyProperty(glitterParams2);
-                        CopyProperty(glitterPostContrast);
-                        CopyProperty(glitterSensitivity);
-                        CopyProperty(glitterEnableLighting);
-                        CopyProperty(glitterShadowMask);
-                        CopyProperty(glitterBackfaceMask);
-                        CopyProperty(glitterApplyTransparency);
-                        CopyProperty(glitterVRParallaxStrength);
-                        CopyProperty(glitterNormalStrength);
-                        CopyProperty(glitterColorTex);
-                    break;
-                case lilPropertyBlock.Backlight:
-                        CopyProperty(useBacklight);
-                        CopyProperty(backlightColor);
-                        CopyProperty(backlightNormalStrength);
-                        CopyProperty(backlightBorder);
-                        CopyProperty(backlightBlur);
-                        CopyProperty(backlightDirectivity);
-                        CopyProperty(backlightViewStrength);
-                        CopyProperty(backlightReceiveShadow);
-                        CopyProperty(backlightBackfaceMask);
-                        CopyProperty(backlightColorTex);
-                    break;
-                case lilPropertyBlock.Gem:
-                        CopyProperty(gemChromaticAberration);
-                        CopyProperty(gemEnvContrast);
-                        CopyProperty(gemEnvColor);
-                        CopyProperty(gemParticleLoop);
-                        CopyProperty(gemParticleColor);
-                        CopyProperty(gemVRParallaxStrength);
-                        CopyProperty(refractionStrength);
-                        CopyProperty(refractionFresnelPower);
-                        CopyProperty(smoothness);
-                        CopyProperty(smoothnessTex);
-                    break;
-                case lilPropertyBlock.Outline:
-                        CopyProperty(outlineColor);
-                        CopyProperty(outlineTex_ScrollRotate);
-                        CopyProperty(outlineTexHSVG);
-                        CopyProperty(outlineLitColor);
-                        CopyProperty(outlineLitApplyTex);
-                        CopyProperty(outlineLitScale);
-                        CopyProperty(outlineLitOffset);
-                        CopyProperty(outlineWidth);
-                        CopyProperty(outlineFixWidth);
-                        CopyProperty(outlineVertexR2Width);
-                        CopyProperty(outlineDeleteMesh);
-                        CopyProperty(outlineVectorTex);
-                        CopyProperty(outlineVectorUVMode);
-                        CopyProperty(outlineVectorScale);
-                        CopyProperty(outlineEnableLighting);
-                        CopyProperty(outlineZBias);
-                        CopyProperty(outlineTex);
-                        CopyProperty(outlineWidthMask);
-                    break;
-                case lilPropertyBlock.Parallax:
-                        CopyProperty(useParallax);
-                        CopyProperty(usePOM);
-                        CopyProperty(parallax);
-                        CopyProperty(parallaxOffset);
-                        CopyProperty(parallaxMap);
-                    break;
-                case lilPropertyBlock.DistanceFade:
-                        CopyProperty(distanceFadeColor);
-                        CopyProperty(distanceFade);
-                    break;
-                case lilPropertyBlock.AudioLink:
-                        CopyProperty(useAudioLink);
-                        CopyProperty(audioLinkDefaultValue);
-                        CopyProperty(audioLinkUVMode);
-                        CopyProperty(audioLinkUVParams);
-                        CopyProperty(audioLinkStart);
-                        CopyProperty(audioLink2Main2nd);
-                        CopyProperty(audioLink2Main3rd);
-                        CopyProperty(audioLink2Emission);
-                        CopyProperty(audioLink2EmissionGrad);
-                        CopyProperty(audioLink2Emission2nd);
-                        CopyProperty(audioLink2Emission2ndGrad);
-                        CopyProperty(audioLink2Vertex);
-                        CopyProperty(audioLinkVertexUVMode);
-                        CopyProperty(audioLinkVertexUVParams);
-                        CopyProperty(audioLinkVertexStart);
-                        CopyProperty(audioLinkVertexStrength);
-                        CopyProperty(audioLinkAsLocal);
-                        CopyProperty(audioLinkLocalMap);
-                        CopyProperty(audioLinkLocalMapParams);
-                        CopyProperty(audioLinkMask);
-                    break;
-                case lilPropertyBlock.Dissolve:
-                        CopyProperty(dissolveNoiseMask_ScrollRotate);
-                        CopyProperty(dissolveNoiseStrength);
-                        CopyProperty(dissolveColor);
-                        CopyProperty(dissolveParams);
-                        CopyProperty(dissolvePos);
-                        CopyProperty(dissolveMask);
-                        CopyProperty(dissolveNoiseMask);
-                    break;
-                case lilPropertyBlock.Refraction:
-                        CopyProperty(refractionStrength);
-                        CopyProperty(refractionFresnelPower);
-                        CopyProperty(refractionColorFromMain);
-                        CopyProperty(refractionColor);
-                    break;
-                case lilPropertyBlock.Fur:
-                        CopyProperty(furVectorScale);
-                        CopyProperty(furVector);
-                        CopyProperty(furGravity);
-                        CopyProperty(furRandomize);
-                        CopyProperty(furAO);
-                        CopyProperty(vertexColor2FurVector);
-                        CopyProperty(furMeshType);
-                        CopyProperty(furLayerNum);
-                        CopyProperty(furRootOffset);
-                        CopyProperty(furCutoutLength);
-                        CopyProperty(furTouchStrength);
-                        CopyProperty(furNoiseMask);
-                        CopyProperty(furMask);
-                        CopyProperty(furLengthMask);
-                        CopyProperty(furVectorTex);
-                    break;
-                case lilPropertyBlock.Encryption:
-                        CopyProperty(ignoreEncryption);
-                        CopyProperty(keys);
-                    break;
-                case lilPropertyBlock.Stencil:
-                        CopyProperty(stencilRef);
-                        CopyProperty(stencilReadMask);
-                        CopyProperty(stencilWriteMask);
-                        CopyProperty(stencilComp);
-                        CopyProperty(stencilPass);
-                        CopyProperty(stencilFail);
-                        CopyProperty(stencilZFail);
-                        CopyProperty(outlineStencilRef);
-                        CopyProperty(outlineStencilReadMask);
-                        CopyProperty(outlineStencilWriteMask);
-                        CopyProperty(outlineStencilComp);
-                        CopyProperty(outlineStencilPass);
-                        CopyProperty(outlineStencilFail);
-                        CopyProperty(outlineStencilZFail);
-                        CopyProperty(furStencilRef);
-                        CopyProperty(furStencilReadMask);
-                        CopyProperty(furStencilWriteMask);
-                        CopyProperty(furStencilComp);
-                        CopyProperty(furStencilPass);
-                        CopyProperty(furStencilFail);
-                        CopyProperty(furStencilZFail);
-                    break;
-                case lilPropertyBlock.Rendering:
-                        CopyProperty(beforeExposureLimit);
-                        CopyProperty(lilDirectionalLightStrength);
-                        CopyProperty(subpassCutoff);
-                        CopyProperty(cull);
-                        CopyProperty(srcBlend);
-                        CopyProperty(dstBlend);
-                        CopyProperty(srcBlendAlpha);
-                        CopyProperty(dstBlendAlpha);
-                        CopyProperty(blendOp);
-                        CopyProperty(blendOpAlpha);
-                        CopyProperty(srcBlendFA);
-                        CopyProperty(dstBlendFA);
-                        CopyProperty(srcBlendAlphaFA);
-                        CopyProperty(dstBlendAlphaFA);
-                        CopyProperty(blendOpFA);
-                        CopyProperty(blendOpAlphaFA);
-                        CopyProperty(zclip);
-                        CopyProperty(zwrite);
-                        CopyProperty(ztest);
-                        CopyProperty(offsetFactor);
-                        CopyProperty(offsetUnits);
-                        CopyProperty(colorMask);
-                        CopyProperty(alphaToMask);
-                        CopyProperty(lilShadowCasterBias);
-                        CopyProperty(outlineCull);
-                        CopyProperty(outlineSrcBlend);
-                        CopyProperty(outlineDstBlend);
-                        CopyProperty(outlineSrcBlendAlpha);
-                        CopyProperty(outlineDstBlendAlpha);
-                        CopyProperty(outlineBlendOp);
-                        CopyProperty(outlineBlendOpAlpha);
-                        CopyProperty(outlineSrcBlendFA);
-                        CopyProperty(outlineDstBlendFA);
-                        CopyProperty(outlineSrcBlendAlphaFA);
-                        CopyProperty(outlineDstBlendAlphaFA);
-                        CopyProperty(outlineBlendOpFA);
-                        CopyProperty(outlineBlendOpAlphaFA);
-                        CopyProperty(outlineZclip);
-                        CopyProperty(outlineZwrite);
-                        CopyProperty(outlineZtest);
-                        CopyProperty(outlineOffsetFactor);
-                        CopyProperty(outlineOffsetUnits);
-                        CopyProperty(outlineColorMask);
-                        CopyProperty(outlineAlphaToMask);
-                        CopyProperty(furCull);
-                        CopyProperty(furSrcBlend);
-                        CopyProperty(furDstBlend);
-                        CopyProperty(furSrcBlendAlpha);
-                        CopyProperty(furDstBlendAlpha);
-                        CopyProperty(furBlendOp);
-                        CopyProperty(furBlendOpAlpha);
-                        CopyProperty(furSrcBlendFA);
-                        CopyProperty(furDstBlendFA);
-                        CopyProperty(furSrcBlendAlphaFA);
-                        CopyProperty(furDstBlendAlphaFA);
-                        CopyProperty(furBlendOpFA);
-                        CopyProperty(furBlendOpAlphaFA);
-                        CopyProperty(furZclip);
-                        CopyProperty(furZwrite);
-                        CopyProperty(furZtest);
-                        CopyProperty(furOffsetFactor);
-                        CopyProperty(furOffsetUnits);
-                        CopyProperty(furColorMask);
-                        CopyProperty(furAlphaToMask);
-                    break;
-                case lilPropertyBlock.Tessellation:
-                        CopyProperty(tessEdge);
-                        CopyProperty(tessStrength);
-                        CopyProperty(tessShrink);
-                        CopyProperty(tessFactorMax);
-                    break;
-            }
-        }
-
-        private void PasteProperties(lilPropertyBlock propertyBlock, bool shouldCopyTex)
-        {
-            switch(propertyBlock)
-            {
-                case lilPropertyBlock.Base:
-                        PasteProperty(ref invisible);
-                        PasteProperty(ref cutoff);
-                        PasteProperty(ref cull);
-                        PasteProperty(ref flipNormal);
-                        PasteProperty(ref backfaceForceShadow);
-                        PasteProperty(ref zwrite);
-                        PasteProperty(ref fakeShadowVector);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref triMask);
-                        }
-                    break;
-                case lilPropertyBlock.Lighting:
-                        PasteProperty(ref lightMinLimit);
-                        PasteProperty(ref lightMaxLimit);
-                        PasteProperty(ref monochromeLighting);
-                        PasteProperty(ref shadowEnvStrength);
-                        PasteProperty(ref asUnlit);
-                        PasteProperty(ref vertexLightStrength);
-                        PasteProperty(ref lightDirectionOverride);
-                        PasteProperty(ref alphaBoostFA);
-                        PasteProperty(ref blendOpFA);
-                        PasteProperty(ref beforeExposureLimit);
-                        PasteProperty(ref lilDirectionalLightStrength);
-                    break;
-                case lilPropertyBlock.UV:
-                        PasteProperty(ref mainTex_ScrollRotate);
-                        PasteProperty(ref shiftBackfaceUV);
-                    break;
-                case lilPropertyBlock.MainColor:
-                        PasteProperty(ref mainColor);
-                        PasteProperty(ref mainTexHSVG);
-                        PasteProperty(ref mainGradationStrength);
-                        PasteProperty(ref mainGradationTex);
-                        PasteProperty(ref useMain2ndTex);
-                        PasteProperty(ref mainColor2nd);
-                        PasteProperty(ref main2ndTex_UVMode);
-                        PasteProperty(ref main2ndTexAngle);
-                        PasteProperty(ref main2ndTexDecalAnimation);
-                        PasteProperty(ref main2ndTexDecalSubParam);
-                        PasteProperty(ref main2ndTexIsDecal);
-                        PasteProperty(ref main2ndTexIsLeftOnly);
-                        PasteProperty(ref main2ndTexIsRightOnly);
-                        PasteProperty(ref main2ndTexShouldCopy);
-                        PasteProperty(ref main2ndTexShouldFlipMirror);
-                        PasteProperty(ref main2ndTexShouldFlipCopy);
-                        PasteProperty(ref main2ndTexIsMSDF);
-                        PasteProperty(ref main2ndTexBlendMode);
-                        PasteProperty(ref main2ndEnableLighting);
-                        PasteProperty(ref main2ndDissolveNoiseMask_ScrollRotate);
-                        PasteProperty(ref main2ndDissolveNoiseStrength);
-                        PasteProperty(ref main2ndDissolveColor);
-                        PasteProperty(ref main2ndDissolveParams);
-                        PasteProperty(ref main2ndDissolvePos);
-                        PasteProperty(ref main2ndDistanceFade);
-                        PasteProperty(ref useMain3rdTex);
-                        PasteProperty(ref mainColor3rd);
-                        PasteProperty(ref main3rdTex_UVMode);
-                        PasteProperty(ref main3rdTexAngle);
-                        PasteProperty(ref main3rdTexDecalAnimation);
-                        PasteProperty(ref main3rdTexDecalSubParam);
-                        PasteProperty(ref main3rdTexIsDecal);
-                        PasteProperty(ref main3rdTexIsLeftOnly);
-                        PasteProperty(ref main3rdTexIsRightOnly);
-                        PasteProperty(ref main3rdTexShouldCopy);
-                        PasteProperty(ref main3rdTexShouldFlipMirror);
-                        PasteProperty(ref main3rdTexShouldFlipCopy);
-                        PasteProperty(ref main3rdTexIsMSDF);
-                        PasteProperty(ref main3rdTexBlendMode);
-                        PasteProperty(ref main3rdEnableLighting);
-                        PasteProperty(ref main3rdDissolveMask);
-                        PasteProperty(ref main3rdDissolveNoiseMask);
-                        PasteProperty(ref main3rdDissolveNoiseMask_ScrollRotate);
-                        PasteProperty(ref main3rdDissolveNoiseStrength);
-                        PasteProperty(ref main3rdDissolveColor);
-                        PasteProperty(ref main3rdDissolveParams);
-                        PasteProperty(ref main3rdDissolvePos);
-                        PasteProperty(ref main3rdDistanceFade);
-                        PasteProperty(ref alphaMaskMode);
-                        PasteProperty(ref alphaMaskScale);
-                        PasteProperty(ref alphaMaskValue);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref mainTex);
-                            PasteProperty(ref mainColorAdjustMask);
-                            PasteProperty(ref main2ndTex);
-                            PasteProperty(ref main2ndBlendMask);
-                            PasteProperty(ref main2ndDissolveMask);
-                            PasteProperty(ref main2ndDissolveNoiseMask);
-                            PasteProperty(ref main3rdTex);
-                            PasteProperty(ref main3rdBlendMask);
-                            PasteProperty(ref main3rdDissolveMask);
-                            PasteProperty(ref main3rdDissolveNoiseMask);
-                            PasteProperty(ref alphaMask);
-                        }
-                    break;
-                case lilPropertyBlock.MainColor1st:
-                        PasteProperty(ref mainColor);
-                        PasteProperty(ref mainTexHSVG);
-                        PasteProperty(ref mainGradationStrength);
-                        PasteProperty(ref mainGradationTex);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref mainTex);
-                            PasteProperty(ref mainColorAdjustMask);
-                        }
-                    break;
-                case lilPropertyBlock.MainColor2nd:
-                        PasteProperty(ref useMain2ndTex);
-                        PasteProperty(ref mainColor2nd);
-                        PasteProperty(ref main2ndTex_UVMode);
-                        PasteProperty(ref main2ndTexAngle);
-                        PasteProperty(ref main2ndTexDecalAnimation);
-                        PasteProperty(ref main2ndTexDecalSubParam);
-                        PasteProperty(ref main2ndTexIsDecal);
-                        PasteProperty(ref main2ndTexIsLeftOnly);
-                        PasteProperty(ref main2ndTexIsRightOnly);
-                        PasteProperty(ref main2ndTexShouldCopy);
-                        PasteProperty(ref main2ndTexShouldFlipMirror);
-                        PasteProperty(ref main2ndTexShouldFlipCopy);
-                        PasteProperty(ref main2ndTexIsMSDF);
-                        PasteProperty(ref main2ndTexBlendMode);
-                        PasteProperty(ref main2ndEnableLighting);
-                        PasteProperty(ref main2ndDissolveNoiseMask_ScrollRotate);
-                        PasteProperty(ref main2ndDissolveNoiseStrength);
-                        PasteProperty(ref main2ndDissolveColor);
-                        PasteProperty(ref main2ndDissolveParams);
-                        PasteProperty(ref main2ndDissolvePos);
-                        PasteProperty(ref main2ndDistanceFade);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref main2ndTex);
-                            PasteProperty(ref main2ndBlendMask);
-                            PasteProperty(ref main2ndDissolveMask);
-                            PasteProperty(ref main2ndDissolveNoiseMask);
-                        }
-                    break;
-                case lilPropertyBlock.MainColor3rd:
-                        PasteProperty(ref useMain3rdTex);
-                        PasteProperty(ref mainColor3rd);
-                        PasteProperty(ref main3rdTex_UVMode);
-                        PasteProperty(ref main3rdTexAngle);
-                        PasteProperty(ref main3rdTexDecalAnimation);
-                        PasteProperty(ref main3rdTexDecalSubParam);
-                        PasteProperty(ref main3rdTexIsDecal);
-                        PasteProperty(ref main3rdTexIsLeftOnly);
-                        PasteProperty(ref main3rdTexIsRightOnly);
-                        PasteProperty(ref main3rdTexShouldCopy);
-                        PasteProperty(ref main3rdTexShouldFlipMirror);
-                        PasteProperty(ref main3rdTexShouldFlipCopy);
-                        PasteProperty(ref main3rdTexIsMSDF);
-                        PasteProperty(ref main3rdTexBlendMode);
-                        PasteProperty(ref main3rdEnableLighting);
-                        PasteProperty(ref main3rdDissolveMask);
-                        PasteProperty(ref main3rdDissolveNoiseMask);
-                        PasteProperty(ref main3rdDissolveNoiseMask_ScrollRotate);
-                        PasteProperty(ref main3rdDissolveNoiseStrength);
-                        PasteProperty(ref main3rdDissolveColor);
-                        PasteProperty(ref main3rdDissolveParams);
-                        PasteProperty(ref main3rdDissolvePos);
-                        PasteProperty(ref main3rdDistanceFade);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref main3rdTex);
-                            PasteProperty(ref main3rdBlendMask);
-                            PasteProperty(ref main3rdDissolveMask);
-                            PasteProperty(ref main3rdDissolveNoiseMask);
-                        }
-                    break;
-                case lilPropertyBlock.AlphaMask:
-                        PasteProperty(ref alphaMaskMode);
-                        PasteProperty(ref alphaMaskScale);
-                        PasteProperty(ref alphaMaskValue);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref alphaMask);
-                        }
-                    break;
-                case lilPropertyBlock.Shadow:
-                        PasteProperty(ref useShadow);
-                        PasteProperty(ref shadowColor);
-                        PasteProperty(ref shadowNormalStrength);
-                        PasteProperty(ref shadowBorder);
-                        PasteProperty(ref shadowBlur);
-                        PasteProperty(ref shadowStrength);
-                        PasteProperty(ref shadowAOShift);
-                        PasteProperty(ref shadowAOShift2);
-                        PasteProperty(ref shadowPostAO);
-                        PasteProperty(ref shadow2ndColor);
-                        PasteProperty(ref shadow2ndNormalStrength);
-                        PasteProperty(ref shadow2ndBorder);
-                        PasteProperty(ref shadow2ndBlur);
-                        PasteProperty(ref shadow3rdColor);
-                        PasteProperty(ref shadow3rdNormalStrength);
-                        PasteProperty(ref shadow3rdBorder);
-                        PasteProperty(ref shadow3rdBlur);
-                        PasteProperty(ref shadowMainStrength);
-                        PasteProperty(ref shadowEnvStrength);
-                        PasteProperty(ref shadowBorderColor);
-                        PasteProperty(ref shadowBorderRange);
-                        PasteProperty(ref shadowReceive);
-                        PasteProperty(ref shadow2ndReceive);
-                        PasteProperty(ref shadow3rdReceive);
-                        PasteProperty(ref shadowMaskType);
-                        PasteProperty(ref shadowFlatBorder);
-                        PasteProperty(ref shadowFlatBlur);
-                        PasteProperty(ref lilShadowCasterBias);
-                        PasteProperty(ref shadowBorderMaskLOD);
-                        PasteProperty(ref shadowBlurMaskLOD);
-                        PasteProperty(ref shadowStrengthMaskLOD);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref shadowBorderMask);
-                            PasteProperty(ref shadowBlurMask);
-                            PasteProperty(ref shadowStrengthMask);
-                            PasteProperty(ref shadowColorTex);
-                            PasteProperty(ref shadow2ndColorTex);
-                            PasteProperty(ref shadow3rdColorTex);
-                        }
-                    break;
-                case lilPropertyBlock.Emission:
-                        PasteProperty(ref useEmission);
-                        PasteProperty(ref emissionColor);
-                        PasteProperty(ref emissionMap_ScrollRotate);
-                        PasteProperty(ref emissionMap_UVMode);
-                        PasteProperty(ref emissionBlend);
-                        PasteProperty(ref emissionBlendMask_ScrollRotate);
-                        PasteProperty(ref emissionBlink);
-                        PasteProperty(ref emissionUseGrad);
-                        PasteProperty(ref emissionGradTex);
-                        PasteProperty(ref emissionGradSpeed);
-                        PasteProperty(ref emissionParallaxDepth);
-                        PasteProperty(ref emissionFluorescence);
-                        PasteProperty(ref useEmission2nd);
-                        PasteProperty(ref emission2ndColor);
-                        PasteProperty(ref emission2ndMap_ScrollRotate);
-                        PasteProperty(ref emission2ndMap_UVMode);
-                        PasteProperty(ref emission2ndBlend);
-                        PasteProperty(ref emission2ndBlendMask_ScrollRotate);
-                        PasteProperty(ref emission2ndBlink);
-                        PasteProperty(ref emission2ndUseGrad);
-                        PasteProperty(ref emission2ndGradTex);
-                        PasteProperty(ref emission2ndGradSpeed);
-                        PasteProperty(ref emission2ndParallaxDepth);
-                        PasteProperty(ref emission2ndFluorescence);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref emissionMap);
-                            PasteProperty(ref emissionBlendMask);
-                            PasteProperty(ref emission2ndMap);
-                            PasteProperty(ref emission2ndBlendMask);
-                        }
-                    break;
-                case lilPropertyBlock.Emission1st:
-                        PasteProperty(ref useEmission);
-                        PasteProperty(ref emissionColor);
-                        PasteProperty(ref emissionMap_ScrollRotate);
-                        PasteProperty(ref emissionMap_UVMode);
-                        PasteProperty(ref emissionBlend);
-                        PasteProperty(ref emissionBlendMask_ScrollRotate);
-                        PasteProperty(ref emissionBlink);
-                        PasteProperty(ref emissionUseGrad);
-                        PasteProperty(ref emissionGradTex);
-                        PasteProperty(ref emissionGradSpeed);
-                        PasteProperty(ref emissionParallaxDepth);
-                        PasteProperty(ref emissionFluorescence);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref emissionMap);
-                            PasteProperty(ref emissionBlendMask);
-                        }
-                    break;
-                case lilPropertyBlock.Emission2nd:
-                        PasteProperty(ref useEmission2nd);
-                        PasteProperty(ref emission2ndColor);
-                        PasteProperty(ref emission2ndMap_ScrollRotate);
-                        PasteProperty(ref emission2ndMap_UVMode);
-                        PasteProperty(ref emission2ndBlend);
-                        PasteProperty(ref emission2ndBlendMask_ScrollRotate);
-                        PasteProperty(ref emission2ndBlink);
-                        PasteProperty(ref emission2ndUseGrad);
-                        PasteProperty(ref emission2ndGradTex);
-                        PasteProperty(ref emission2ndGradSpeed);
-                        PasteProperty(ref emission2ndParallaxDepth);
-                        PasteProperty(ref emission2ndFluorescence);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref emission2ndMap);
-                            PasteProperty(ref emission2ndBlendMask);
-                        }
-                    break;
-                case lilPropertyBlock.NormalMap:
-                        PasteProperty(ref useBumpMap);
-                        PasteProperty(ref bumpScale);
-                        PasteProperty(ref useBump2ndMap);
-                        PasteProperty(ref bump2ndScale);
-                        PasteProperty(ref useAnisotropy);
-                        PasteProperty(ref anisotropyScale);
-                        PasteProperty(ref anisotropyTangentWidth);
-                        PasteProperty(ref anisotropyBitangentWidth);
-                        PasteProperty(ref anisotropyShift);
-                        PasteProperty(ref anisotropyShiftNoiseScale);
-                        PasteProperty(ref anisotropySpecularStrength);
-                        PasteProperty(ref anisotropy2ndTangentWidth);
-                        PasteProperty(ref anisotropy2ndBitangentWidth);
-                        PasteProperty(ref anisotropy2ndShift);
-                        PasteProperty(ref anisotropy2ndShiftNoiseScale);
-                        PasteProperty(ref anisotropy2ndSpecularStrength);
-                        PasteProperty(ref anisotropy2Reflection);
-                        PasteProperty(ref anisotropy2MatCap);
-                        PasteProperty(ref anisotropy2MatCap2nd);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref bumpMap);
-                            PasteProperty(ref bump2ndMap);
-                            PasteProperty(ref bump2ndScaleMask);
-                            PasteProperty(ref anisotropyTangentMap);
-                            PasteProperty(ref anisotropyScaleMask);
-                            PasteProperty(ref anisotropyShiftNoiseMask);
-                        }
-                    break;
-                case lilPropertyBlock.NormalMap1st:
-                        PasteProperty(ref useBumpMap);
-                        PasteProperty(ref bumpScale);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref bumpMap);
-                        }
-                    break;
-                case lilPropertyBlock.NormalMap2nd:
-                        PasteProperty(ref useBump2ndMap);
-                        PasteProperty(ref bump2ndScale);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref bump2ndMap);
-                            PasteProperty(ref bump2ndScaleMask);
-                        }
-                    break;
-                case lilPropertyBlock.Anisotropy:
-                        PasteProperty(ref useAnisotropy);
-                        PasteProperty(ref anisotropyScale);
-                        PasteProperty(ref anisotropyTangentWidth);
-                        PasteProperty(ref anisotropyBitangentWidth);
-                        PasteProperty(ref anisotropyShift);
-                        PasteProperty(ref anisotropyShiftNoiseScale);
-                        PasteProperty(ref anisotropySpecularStrength);
-                        PasteProperty(ref anisotropy2ndTangentWidth);
-                        PasteProperty(ref anisotropy2ndBitangentWidth);
-                        PasteProperty(ref anisotropy2ndShift);
-                        PasteProperty(ref anisotropy2ndShiftNoiseScale);
-                        PasteProperty(ref anisotropy2ndSpecularStrength);
-                        PasteProperty(ref anisotropy2Reflection);
-                        PasteProperty(ref anisotropy2MatCap);
-                        PasteProperty(ref anisotropy2MatCap2nd);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref anisotropyTangentMap);
-                            PasteProperty(ref anisotropyScaleMask);
-                            PasteProperty(ref anisotropyShiftNoiseMask);
-                        }
-                    break;
-                case lilPropertyBlock.Reflections:
-                        PasteProperty(ref useReflection);
-                        PasteProperty(ref metallic);
-                        PasteProperty(ref smoothness);
-                        PasteProperty(ref reflectance);
-                        PasteProperty(ref reflectionColor);
-                        PasteProperty(ref gsaaStrength);
-                        PasteProperty(ref applySpecular);
-                        PasteProperty(ref applySpecularFA);
-                        PasteProperty(ref specularNormalStrength);
-                        PasteProperty(ref specularToon);
-                        PasteProperty(ref specularBorder);
-                        PasteProperty(ref specularBlur);
-                        PasteProperty(ref applyReflection);
-                        PasteProperty(ref reflectionNormalStrength);
-                        PasteProperty(ref reflectionApplyTransparency);
-                        PasteProperty(ref reflectionCubeColor);
-                        PasteProperty(ref reflectionCubeOverride);
-                        PasteProperty(ref reflectionCubeEnableLighting);
-                        PasteProperty(ref reflectionBlendMode);
-                        PasteProperty(ref useMatCap);
-                        PasteProperty(ref matcapColor);
-                        PasteProperty(ref matcapBlendUV1);
-                        PasteProperty(ref matcapZRotCancel);
-                        PasteProperty(ref matcapPerspective);
-                        PasteProperty(ref matcapVRParallaxStrength);
-                        PasteProperty(ref matcapBlend);
-                        PasteProperty(ref matcapEnableLighting);
-                        PasteProperty(ref matcapShadowMask);
-                        PasteProperty(ref matcapBackfaceMask);
-                        PasteProperty(ref matcapLod);
-                        PasteProperty(ref matcapBlendMode);
-                        PasteProperty(ref matcapMul);
-                        PasteProperty(ref matcapApplyTransparency);
-                        PasteProperty(ref matcapNormalStrength);
-                        PasteProperty(ref matcapCustomNormal);
-                        PasteProperty(ref matcapBumpScale);
-                        PasteProperty(ref useMatCap2nd);
-                        PasteProperty(ref matcap2ndColor);
-                        PasteProperty(ref matcap2ndBlendUV1);
-                        PasteProperty(ref matcap2ndZRotCancel);
-                        PasteProperty(ref matcap2ndPerspective);
-                        PasteProperty(ref matcap2ndVRParallaxStrength);
-                        PasteProperty(ref matcap2ndBlend);
-                        PasteProperty(ref matcap2ndEnableLighting);
-                        PasteProperty(ref matcap2ndShadowMask);
-                        PasteProperty(ref matcap2ndBackfaceMask);
-                        PasteProperty(ref matcap2ndLod);
-                        PasteProperty(ref matcap2ndBlendMode);
-                        PasteProperty(ref matcap2ndMul);
-                        PasteProperty(ref matcap2ndNormalStrength);
-                        PasteProperty(ref matcap2ndApplyTransparency);
-                        PasteProperty(ref matcap2ndCustomNormal);
-                        PasteProperty(ref matcap2ndBumpScale);
-                        PasteProperty(ref useRim);
-                        PasteProperty(ref rimColor);
-                        PasteProperty(ref rimNormalStrength);
-                        PasteProperty(ref rimBorder);
-                        PasteProperty(ref rimBlur);
-                        PasteProperty(ref rimFresnelPower);
-                        PasteProperty(ref rimEnableLighting);
-                        PasteProperty(ref rimShadowMask);
-                        PasteProperty(ref rimBackfaceMask);
-                        PasteProperty(ref rimVRParallaxStrength);
-                        PasteProperty(ref rimApplyTransparency);
-                        PasteProperty(ref rimDirStrength);
-                        PasteProperty(ref rimDirRange);
-                        PasteProperty(ref rimIndirRange);
-                        PasteProperty(ref rimIndirColor);
-                        PasteProperty(ref rimIndirBorder);
-                        PasteProperty(ref rimIndirBlur);
-                        PasteProperty(ref useGlitter);
-                        PasteProperty(ref glitterUVMode);
-                        PasteProperty(ref glitterColor);
-                        PasteProperty(ref glitterMainStrength);
-                        PasteProperty(ref glitterParams1);
-                        PasteProperty(ref glitterParams2);
-                        PasteProperty(ref glitterPostContrast);
-                        PasteProperty(ref glitterSensitivity);
-                        PasteProperty(ref glitterEnableLighting);
-                        PasteProperty(ref glitterShadowMask);
-                        PasteProperty(ref glitterBackfaceMask);
-                        PasteProperty(ref glitterApplyTransparency);
-                        PasteProperty(ref glitterVRParallaxStrength);
-                        PasteProperty(ref glitterNormalStrength);
-                        PasteProperty(ref useBacklight);
-                        PasteProperty(ref backlightColor);
-                        PasteProperty(ref backlightNormalStrength);
-                        PasteProperty(ref backlightBorder);
-                        PasteProperty(ref backlightBlur);
-                        PasteProperty(ref backlightDirectivity);
-                        PasteProperty(ref backlightViewStrength);
-                        PasteProperty(ref backlightReceiveShadow);
-                        PasteProperty(ref backlightBackfaceMask);
-                        PasteProperty(ref gemChromaticAberration);
-                        PasteProperty(ref gemEnvContrast);
-                        PasteProperty(ref gemEnvColor);
-                        PasteProperty(ref gemParticleLoop);
-                        PasteProperty(ref gemParticleColor);
-                        PasteProperty(ref gemVRParallaxStrength);
-                        PasteProperty(ref refractionStrength);
-                        PasteProperty(ref refractionFresnelPower);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref metallicGlossMap);
-                            PasteProperty(ref smoothnessTex);
-                            PasteProperty(ref reflectionColorTex);
-                            PasteProperty(ref reflectionCubeTex);
-                            PasteProperty(ref matcapTex);
-                            PasteProperty(ref matcapBlendMask);
-                            PasteProperty(ref matcapBumpMap);
-                            PasteProperty(ref matcap2ndTex);
-                            PasteProperty(ref matcap2ndBlendMask);
-                            PasteProperty(ref matcap2ndBumpMap);
-                            PasteProperty(ref rimColorTex);
-                            PasteProperty(ref glitterColorTex);
-                            PasteProperty(ref backlightColorTex);
-                        }
-                    break;
-                case lilPropertyBlock.Reflection:
-                        PasteProperty(ref useReflection);
-                        PasteProperty(ref metallic);
-                        PasteProperty(ref smoothness);
-                        PasteProperty(ref reflectance);
-                        PasteProperty(ref reflectionColor);
-                        PasteProperty(ref gsaaStrength);
-                        PasteProperty(ref applySpecular);
-                        PasteProperty(ref applySpecularFA);
-                        PasteProperty(ref specularNormalStrength);
-                        PasteProperty(ref specularToon);
-                        PasteProperty(ref specularBorder);
-                        PasteProperty(ref specularBlur);
-                        PasteProperty(ref applyReflection);
-                        PasteProperty(ref reflectionNormalStrength);
-                        PasteProperty(ref reflectionApplyTransparency);
-                        PasteProperty(ref reflectionCubeColor);
-                        PasteProperty(ref reflectionCubeOverride);
-                        PasteProperty(ref reflectionCubeEnableLighting);
-                        PasteProperty(ref reflectionBlendMode);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref metallicGlossMap);
-                            PasteProperty(ref smoothnessTex);
-                            PasteProperty(ref reflectionColorTex);
-                            PasteProperty(ref reflectionCubeTex);
-                        }
-                    break;
-                case lilPropertyBlock.MatCaps:
-                        PasteProperty(ref useMatCap);
-                        PasteProperty(ref matcapColor);
-                        PasteProperty(ref matcapBlendUV1);
-                        PasteProperty(ref matcapZRotCancel);
-                        PasteProperty(ref matcapPerspective);
-                        PasteProperty(ref matcapVRParallaxStrength);
-                        PasteProperty(ref matcapBlend);
-                        PasteProperty(ref matcapEnableLighting);
-                        PasteProperty(ref matcapShadowMask);
-                        PasteProperty(ref matcapBackfaceMask);
-                        PasteProperty(ref matcapLod);
-                        PasteProperty(ref matcapBlendMode);
-                        PasteProperty(ref matcapMul);
-                        PasteProperty(ref matcapApplyTransparency);
-                        PasteProperty(ref matcapNormalStrength);
-                        PasteProperty(ref matcapCustomNormal);
-                        PasteProperty(ref matcapBumpScale);
-                        PasteProperty(ref useMatCap2nd);
-                        PasteProperty(ref matcap2ndColor);
-                        PasteProperty(ref matcap2ndBlendUV1);
-                        PasteProperty(ref matcap2ndZRotCancel);
-                        PasteProperty(ref matcap2ndPerspective);
-                        PasteProperty(ref matcap2ndVRParallaxStrength);
-                        PasteProperty(ref matcap2ndBlend);
-                        PasteProperty(ref matcap2ndEnableLighting);
-                        PasteProperty(ref matcap2ndShadowMask);
-                        PasteProperty(ref matcap2ndBackfaceMask);
-                        PasteProperty(ref matcap2ndLod);
-                        PasteProperty(ref matcap2ndBlendMode);
-                        PasteProperty(ref matcap2ndMul);
-                        PasteProperty(ref matcap2ndNormalStrength);
-                        PasteProperty(ref matcap2ndApplyTransparency);
-                        PasteProperty(ref matcap2ndCustomNormal);
-                        PasteProperty(ref matcap2ndBumpScale);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref matcapTex);
-                            PasteProperty(ref matcapBlendMask);
-                            PasteProperty(ref matcapBumpMap);
-                            PasteProperty(ref matcap2ndTex);
-                            PasteProperty(ref matcap2ndBlendMask);
-                            PasteProperty(ref matcap2ndBumpMap);
-                        }
-                    break;
-                case lilPropertyBlock.MatCap1st:
-                        PasteProperty(ref useMatCap);
-                        PasteProperty(ref matcapColor);
-                        PasteProperty(ref matcapBlendUV1);
-                        PasteProperty(ref matcapZRotCancel);
-                        PasteProperty(ref matcapPerspective);
-                        PasteProperty(ref matcapVRParallaxStrength);
-                        PasteProperty(ref matcapBlend);
-                        PasteProperty(ref matcapEnableLighting);
-                        PasteProperty(ref matcapShadowMask);
-                        PasteProperty(ref matcapBackfaceMask);
-                        PasteProperty(ref matcapLod);
-                        PasteProperty(ref matcapBlendMode);
-                        PasteProperty(ref matcapMul);
-                        PasteProperty(ref matcapApplyTransparency);
-                        PasteProperty(ref matcapNormalStrength);
-                        PasteProperty(ref matcapCustomNormal);
-                        PasteProperty(ref matcapBumpScale);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref matcapTex);
-                            PasteProperty(ref matcapBlendMask);
-                            PasteProperty(ref matcapBumpMap);
-                        }
-                    break;
-                case lilPropertyBlock.MatCap2nd:
-                        PasteProperty(ref useMatCap2nd);
-                        PasteProperty(ref matcap2ndColor);
-                        PasteProperty(ref matcap2ndBlendUV1);
-                        PasteProperty(ref matcap2ndZRotCancel);
-                        PasteProperty(ref matcap2ndPerspective);
-                        PasteProperty(ref matcap2ndVRParallaxStrength);
-                        PasteProperty(ref matcap2ndBlend);
-                        PasteProperty(ref matcap2ndEnableLighting);
-                        PasteProperty(ref matcap2ndShadowMask);
-                        PasteProperty(ref matcap2ndBackfaceMask);
-                        PasteProperty(ref matcap2ndLod);
-                        PasteProperty(ref matcap2ndBlendMode);
-                        PasteProperty(ref matcap2ndMul);
-                        PasteProperty(ref matcap2ndApplyTransparency);
-                        PasteProperty(ref matcap2ndNormalStrength);
-                        PasteProperty(ref matcap2ndCustomNormal);
-                        PasteProperty(ref matcap2ndBumpScale);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref matcap2ndTex);
-                            PasteProperty(ref matcap2ndBlendMask);
-                            PasteProperty(ref matcap2ndBumpMap);
-                        }
-                    break;
-                case lilPropertyBlock.RimLight:
-                        PasteProperty(ref useRim);
-                        PasteProperty(ref rimColor);
-                        PasteProperty(ref rimNormalStrength);
-                        PasteProperty(ref rimBorder);
-                        PasteProperty(ref rimBlur);
-                        PasteProperty(ref rimFresnelPower);
-                        PasteProperty(ref rimEnableLighting);
-                        PasteProperty(ref rimShadowMask);
-                        PasteProperty(ref rimBackfaceMask);
-                        PasteProperty(ref rimVRParallaxStrength);
-                        PasteProperty(ref rimApplyTransparency);
-                        PasteProperty(ref rimDirStrength);
-                        PasteProperty(ref rimDirRange);
-                        PasteProperty(ref rimIndirRange);
-                        PasteProperty(ref rimIndirColor);
-                        PasteProperty(ref rimIndirBorder);
-                        PasteProperty(ref rimIndirBlur);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref rimColorTex);
-                        }
-                    break;
-                case lilPropertyBlock.Glitter:
-                        PasteProperty(ref useGlitter);
-                        PasteProperty(ref glitterUVMode);
-                        PasteProperty(ref glitterColor);
-                        PasteProperty(ref glitterMainStrength);
-                        PasteProperty(ref glitterParams1);
-                        PasteProperty(ref glitterParams2);
-                        PasteProperty(ref glitterPostContrast);
-                        PasteProperty(ref glitterSensitivity);
-                        PasteProperty(ref glitterEnableLighting);
-                        PasteProperty(ref glitterShadowMask);
-                        PasteProperty(ref glitterBackfaceMask);
-                        PasteProperty(ref glitterApplyTransparency);
-                        PasteProperty(ref glitterVRParallaxStrength);
-                        PasteProperty(ref glitterNormalStrength);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref glitterColorTex);
-                        }
-                    break;
-                case lilPropertyBlock.Backlight:
-                        PasteProperty(ref useBacklight);
-                        PasteProperty(ref backlightColor);
-                        PasteProperty(ref backlightNormalStrength);
-                        PasteProperty(ref backlightBorder);
-                        PasteProperty(ref backlightBlur);
-                        PasteProperty(ref backlightDirectivity);
-                        PasteProperty(ref backlightViewStrength);
-                        PasteProperty(ref backlightReceiveShadow);
-                        PasteProperty(ref backlightBackfaceMask);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref backlightColorTex);
-                        }
-                    break;
-                case lilPropertyBlock.Gem:
-                        PasteProperty(ref gemChromaticAberration);
-                        PasteProperty(ref gemEnvContrast);
-                        PasteProperty(ref gemEnvColor);
-                        PasteProperty(ref gemParticleLoop);
-                        PasteProperty(ref gemParticleColor);
-                        PasteProperty(ref gemVRParallaxStrength);
-                        PasteProperty(ref refractionStrength);
-                        PasteProperty(ref refractionFresnelPower);
-                        PasteProperty(ref smoothness);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref smoothnessTex);
-                        }
-                    break;
-                case lilPropertyBlock.Outline:
-                        PasteProperty(ref outlineColor);
-                        PasteProperty(ref outlineTex_ScrollRotate);
-                        PasteProperty(ref outlineTexHSVG);
-                        PasteProperty(ref outlineLitColor);
-                        PasteProperty(ref outlineLitApplyTex);
-                        PasteProperty(ref outlineLitScale);
-                        PasteProperty(ref outlineLitOffset);
-                        PasteProperty(ref outlineWidth);
-                        PasteProperty(ref outlineFixWidth);
-                        PasteProperty(ref outlineVertexR2Width);
-                        PasteProperty(ref outlineDeleteMesh);
-                        PasteProperty(ref outlineVectorTex);
-                        PasteProperty(ref outlineVectorUVMode);
-                        PasteProperty(ref outlineVectorScale);
-                        PasteProperty(ref outlineEnableLighting);
-                        PasteProperty(ref outlineZBias);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref outlineTex);
-                            PasteProperty(ref outlineWidthMask);
-                        }
-                    break;
-                case lilPropertyBlock.Parallax:
-                        PasteProperty(ref useParallax);
-                        PasteProperty(ref usePOM);
-                        PasteProperty(ref parallax);
-                        PasteProperty(ref parallaxOffset);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref parallaxMap);
-                        }
-                    break;
-                case lilPropertyBlock.DistanceFade:
-                        PasteProperty(ref distanceFadeColor);
-                        PasteProperty(ref distanceFade);
-                    break;
-                case lilPropertyBlock.AudioLink:
-                        PasteProperty(ref useAudioLink);
-                        PasteProperty(ref audioLinkDefaultValue);
-                        PasteProperty(ref audioLinkUVMode);
-                        PasteProperty(ref audioLinkUVParams);
-                        PasteProperty(ref audioLinkStart);
-                        PasteProperty(ref audioLink2Main2nd);
-                        PasteProperty(ref audioLink2Main3rd);
-                        PasteProperty(ref audioLink2Emission);
-                        PasteProperty(ref audioLink2EmissionGrad);
-                        PasteProperty(ref audioLink2Emission2nd);
-                        PasteProperty(ref audioLink2Emission2ndGrad);
-                        PasteProperty(ref audioLink2Vertex);
-                        PasteProperty(ref audioLinkVertexUVMode);
-                        PasteProperty(ref audioLinkVertexUVParams);
-                        PasteProperty(ref audioLinkVertexStart);
-                        PasteProperty(ref audioLinkVertexStrength);
-                        PasteProperty(ref audioLinkAsLocal);
-                        PasteProperty(ref audioLinkLocalMap);
-                        PasteProperty(ref audioLinkLocalMapParams);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref audioLinkMask);
-                        }
-                    break;
-                case lilPropertyBlock.Dissolve:
-                        PasteProperty(ref dissolveNoiseMask_ScrollRotate);
-                        PasteProperty(ref dissolveNoiseStrength);
-                        PasteProperty(ref dissolveColor);
-                        PasteProperty(ref dissolveParams);
-                        PasteProperty(ref dissolvePos);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref dissolveMask);
-                            PasteProperty(ref dissolveNoiseMask);
-                        }
-                    break;
-                case lilPropertyBlock.Refraction:
-                        PasteProperty(ref refractionStrength);
-                        PasteProperty(ref refractionFresnelPower);
-                        PasteProperty(ref refractionColorFromMain);
-                        PasteProperty(ref refractionColor);
-                    break;
-                case lilPropertyBlock.Fur:
-                        PasteProperty(ref furVectorScale);
-                        PasteProperty(ref furVector);
-                        PasteProperty(ref furGravity);
-                        PasteProperty(ref furRandomize);
-                        PasteProperty(ref furAO);
-                        PasteProperty(ref vertexColor2FurVector);
-                        PasteProperty(ref furMeshType);
-                        PasteProperty(ref furLayerNum);
-                        PasteProperty(ref furRootOffset);
-                        PasteProperty(ref furCutoutLength);
-                        PasteProperty(ref furTouchStrength);
-                        if(shouldCopyTex)
-                        {
-                            PasteProperty(ref furNoiseMask);
-                            PasteProperty(ref furMask);
-                            PasteProperty(ref furLengthMask);
-                            PasteProperty(ref furVectorTex);
-                        }
-                    break;
-                case lilPropertyBlock.Encryption:
-                        PasteProperty(ref ignoreEncryption);
-                        PasteProperty(ref keys);
-                    break;
-                case lilPropertyBlock.Stencil:
-                        PasteProperty(ref stencilRef);
-                        PasteProperty(ref stencilReadMask);
-                        PasteProperty(ref stencilWriteMask);
-                        PasteProperty(ref stencilComp);
-                        PasteProperty(ref stencilPass);
-                        PasteProperty(ref stencilFail);
-                        PasteProperty(ref stencilZFail);
-                        PasteProperty(ref outlineStencilRef);
-                        PasteProperty(ref outlineStencilReadMask);
-                        PasteProperty(ref outlineStencilWriteMask);
-                        PasteProperty(ref outlineStencilComp);
-                        PasteProperty(ref outlineStencilPass);
-                        PasteProperty(ref outlineStencilFail);
-                        PasteProperty(ref outlineStencilZFail);
-                        PasteProperty(ref furStencilRef);
-                        PasteProperty(ref furStencilReadMask);
-                        PasteProperty(ref furStencilWriteMask);
-                        PasteProperty(ref furStencilComp);
-                        PasteProperty(ref furStencilPass);
-                        PasteProperty(ref furStencilFail);
-                        PasteProperty(ref furStencilZFail);
-                    break;
-                case lilPropertyBlock.Rendering:
-                        PasteProperty(ref beforeExposureLimit);
-                        PasteProperty(ref lilDirectionalLightStrength);
-                        PasteProperty(ref subpassCutoff);
-                        PasteProperty(ref cull);
-                        PasteProperty(ref srcBlend);
-                        PasteProperty(ref dstBlend);
-                        PasteProperty(ref srcBlendAlpha);
-                        PasteProperty(ref dstBlendAlpha);
-                        PasteProperty(ref blendOp);
-                        PasteProperty(ref blendOpAlpha);
-                        PasteProperty(ref srcBlendFA);
-                        PasteProperty(ref dstBlendFA);
-                        PasteProperty(ref srcBlendAlphaFA);
-                        PasteProperty(ref dstBlendAlphaFA);
-                        PasteProperty(ref blendOpFA);
-                        PasteProperty(ref blendOpAlphaFA);
-                        PasteProperty(ref zclip);
-                        PasteProperty(ref zwrite);
-                        PasteProperty(ref ztest);
-                        PasteProperty(ref offsetFactor);
-                        PasteProperty(ref offsetUnits);
-                        PasteProperty(ref colorMask);
-                        PasteProperty(ref alphaToMask);
-                        PasteProperty(ref lilShadowCasterBias);
-                        PasteProperty(ref outlineCull);
-                        PasteProperty(ref outlineSrcBlend);
-                        PasteProperty(ref outlineDstBlend);
-                        PasteProperty(ref outlineSrcBlendAlpha);
-                        PasteProperty(ref outlineDstBlendAlpha);
-                        PasteProperty(ref outlineBlendOp);
-                        PasteProperty(ref outlineBlendOpAlpha);
-                        PasteProperty(ref outlineSrcBlendFA);
-                        PasteProperty(ref outlineDstBlendFA);
-                        PasteProperty(ref outlineSrcBlendAlphaFA);
-                        PasteProperty(ref outlineDstBlendAlphaFA);
-                        PasteProperty(ref outlineBlendOpFA);
-                        PasteProperty(ref outlineBlendOpAlphaFA);
-                        PasteProperty(ref outlineZclip);
-                        PasteProperty(ref outlineZwrite);
-                        PasteProperty(ref outlineZtest);
-                        PasteProperty(ref outlineOffsetFactor);
-                        PasteProperty(ref outlineOffsetUnits);
-                        PasteProperty(ref outlineColorMask);
-                        PasteProperty(ref outlineAlphaToMask);
-                        PasteProperty(ref furCull);
-                        PasteProperty(ref furSrcBlend);
-                        PasteProperty(ref furDstBlend);
-                        PasteProperty(ref furSrcBlendAlpha);
-                        PasteProperty(ref furDstBlendAlpha);
-                        PasteProperty(ref furBlendOp);
-                        PasteProperty(ref furBlendOpAlpha);
-                        PasteProperty(ref furSrcBlendFA);
-                        PasteProperty(ref furDstBlendFA);
-                        PasteProperty(ref furSrcBlendAlphaFA);
-                        PasteProperty(ref furDstBlendAlphaFA);
-                        PasteProperty(ref furBlendOpFA);
-                        PasteProperty(ref furBlendOpAlphaFA);
-                        PasteProperty(ref furZclip);
-                        PasteProperty(ref furZwrite);
-                        PasteProperty(ref furZtest);
-                        PasteProperty(ref furOffsetFactor);
-                        PasteProperty(ref furOffsetUnits);
-                        PasteProperty(ref furColorMask);
-                        PasteProperty(ref furAlphaToMask);
-                    break;
-                case lilPropertyBlock.Tessellation:
-                        PasteProperty(ref tessEdge);
-                        PasteProperty(ref tessStrength);
-                        PasteProperty(ref tessShrink);
-                        PasteProperty(ref tessFactorMax);
-                    break;
-            }
-        }
-
         private void ResetProperties(lilPropertyBlock propertyBlock)
         {
-            switch(propertyBlock)
+            #if UNITY_2019_3_OR_NEWER
+            SetPropertyBlock();
+            foreach(lilMaterialProperty prop in AllProperties())
             {
-                case lilPropertyBlock.Base:
-                        ResetProperty(ref invisible);
-                        ResetProperty(ref cutoff);
-                        ResetProperty(ref cull);
-                        ResetProperty(ref flipNormal);
-                        ResetProperty(ref backfaceForceShadow);
-                        ResetProperty(ref zwrite);
-                        ResetProperty(ref fakeShadowVector);
-                        ResetProperty(ref triMask);
-                    break;
-                case lilPropertyBlock.Lighting:
-                        ResetProperty(ref lightMinLimit);
-                        ResetProperty(ref lightMaxLimit);
-                        ResetProperty(ref monochromeLighting);
-                        ResetProperty(ref shadowEnvStrength);
-                        ResetProperty(ref asUnlit);
-                        ResetProperty(ref vertexLightStrength);
-                        ResetProperty(ref lightDirectionOverride);
-                        ResetProperty(ref alphaBoostFA);
-                        ResetProperty(ref blendOpFA);
-                        ResetProperty(ref beforeExposureLimit);
-                        ResetProperty(ref lilDirectionalLightStrength);
-                    break;
-                case lilPropertyBlock.UV:
-                        ResetProperty(ref mainTex_ScrollRotate);
-                        ResetProperty(ref shiftBackfaceUV);
-                    break;
-                case lilPropertyBlock.MainColor:
-                        ResetProperty(ref mainColor);
-                        ResetProperty(ref mainTexHSVG);
-                        ResetProperty(ref mainGradationStrength);
-                        ResetProperty(ref mainGradationTex);
-                        ResetProperty(ref useMain2ndTex);
-                        ResetProperty(ref mainColor2nd);
-                        ResetProperty(ref main2ndTex_UVMode);
-                        ResetProperty(ref main2ndTexAngle);
-                        ResetProperty(ref main2ndTexDecalAnimation);
-                        ResetProperty(ref main2ndTexDecalSubParam);
-                        ResetProperty(ref main2ndTexIsDecal);
-                        ResetProperty(ref main2ndTexIsLeftOnly);
-                        ResetProperty(ref main2ndTexIsRightOnly);
-                        ResetProperty(ref main2ndTexShouldCopy);
-                        ResetProperty(ref main2ndTexShouldFlipMirror);
-                        ResetProperty(ref main2ndTexShouldFlipCopy);
-                        ResetProperty(ref main2ndTexIsMSDF);
-                        ResetProperty(ref main2ndTexBlendMode);
-                        ResetProperty(ref main2ndEnableLighting);
-                        ResetProperty(ref main2ndDissolveNoiseMask_ScrollRotate);
-                        ResetProperty(ref main2ndDissolveNoiseStrength);
-                        ResetProperty(ref main2ndDissolveColor);
-                        ResetProperty(ref main2ndDissolveParams);
-                        ResetProperty(ref main2ndDissolvePos);
-                        ResetProperty(ref main2ndDistanceFade);
-                        ResetProperty(ref useMain3rdTex);
-                        ResetProperty(ref mainColor3rd);
-                        ResetProperty(ref main3rdTex_UVMode);
-                        ResetProperty(ref main3rdTexAngle);
-                        ResetProperty(ref main3rdTexDecalAnimation);
-                        ResetProperty(ref main3rdTexDecalSubParam);
-                        ResetProperty(ref main3rdTexIsDecal);
-                        ResetProperty(ref main3rdTexIsLeftOnly);
-                        ResetProperty(ref main3rdTexIsRightOnly);
-                        ResetProperty(ref main3rdTexShouldCopy);
-                        ResetProperty(ref main3rdTexShouldFlipMirror);
-                        ResetProperty(ref main3rdTexShouldFlipCopy);
-                        ResetProperty(ref main3rdTexIsMSDF);
-                        ResetProperty(ref main3rdTexBlendMode);
-                        ResetProperty(ref main3rdEnableLighting);
-                        ResetProperty(ref main3rdDissolveMask);
-                        ResetProperty(ref main3rdDissolveNoiseMask);
-                        ResetProperty(ref main3rdDissolveNoiseMask_ScrollRotate);
-                        ResetProperty(ref main3rdDissolveNoiseStrength);
-                        ResetProperty(ref main3rdDissolveColor);
-                        ResetProperty(ref main3rdDissolveParams);
-                        ResetProperty(ref main3rdDissolvePos);
-                        ResetProperty(ref main3rdDistanceFade);
-                        ResetProperty(ref alphaMaskMode);
-                        ResetProperty(ref alphaMaskScale);
-                        ResetProperty(ref alphaMaskValue);
-                        ResetProperty(ref mainTex);
-                        ResetProperty(ref mainColorAdjustMask);
-                        ResetProperty(ref main2ndTex);
-                        ResetProperty(ref main2ndBlendMask);
-                        ResetProperty(ref main2ndDissolveMask);
-                        ResetProperty(ref main2ndDissolveNoiseMask);
-                        ResetProperty(ref main3rdTex);
-                        ResetProperty(ref main3rdBlendMask);
-                        ResetProperty(ref main3rdDissolveMask);
-                        ResetProperty(ref main3rdDissolveNoiseMask);
-                        ResetProperty(ref alphaMask);
-                    break;
-                case lilPropertyBlock.MainColor1st:
-                        ResetProperty(ref mainColor);
-                        ResetProperty(ref mainTexHSVG);
-                        ResetProperty(ref mainGradationStrength);
-                        ResetProperty(ref mainGradationTex);
-                        ResetProperty(ref mainTex);
-                        ResetProperty(ref mainColorAdjustMask);
-                    break;
-                case lilPropertyBlock.MainColor2nd:
-                        ResetProperty(ref useMain2ndTex);
-                        ResetProperty(ref mainColor2nd);
-                        ResetProperty(ref main2ndTex_UVMode);
-                        ResetProperty(ref main2ndTexAngle);
-                        ResetProperty(ref main2ndTexDecalAnimation);
-                        ResetProperty(ref main2ndTexDecalSubParam);
-                        ResetProperty(ref main2ndTexIsDecal);
-                        ResetProperty(ref main2ndTexIsLeftOnly);
-                        ResetProperty(ref main2ndTexIsRightOnly);
-                        ResetProperty(ref main2ndTexShouldCopy);
-                        ResetProperty(ref main2ndTexShouldFlipMirror);
-                        ResetProperty(ref main2ndTexShouldFlipCopy);
-                        ResetProperty(ref main2ndTexIsMSDF);
-                        ResetProperty(ref main2ndTexBlendMode);
-                        ResetProperty(ref main2ndEnableLighting);
-                        ResetProperty(ref main2ndDissolveNoiseMask_ScrollRotate);
-                        ResetProperty(ref main2ndDissolveNoiseStrength);
-                        ResetProperty(ref main2ndDissolveColor);
-                        ResetProperty(ref main2ndDissolveParams);
-                        ResetProperty(ref main2ndDissolvePos);
-                        ResetProperty(ref main2ndDistanceFade);
-                        ResetProperty(ref main2ndTex);
-                        ResetProperty(ref main2ndBlendMask);
-                        ResetProperty(ref main2ndDissolveMask);
-                        ResetProperty(ref main2ndDissolveNoiseMask);
-                    break;
-                case lilPropertyBlock.MainColor3rd:
-                        ResetProperty(ref useMain3rdTex);
-                        ResetProperty(ref mainColor3rd);
-                        ResetProperty(ref main3rdTex_UVMode);
-                        ResetProperty(ref main3rdTexAngle);
-                        ResetProperty(ref main3rdTexDecalAnimation);
-                        ResetProperty(ref main3rdTexDecalSubParam);
-                        ResetProperty(ref main3rdTexIsDecal);
-                        ResetProperty(ref main3rdTexIsLeftOnly);
-                        ResetProperty(ref main3rdTexIsRightOnly);
-                        ResetProperty(ref main3rdTexShouldCopy);
-                        ResetProperty(ref main3rdTexShouldFlipMirror);
-                        ResetProperty(ref main3rdTexShouldFlipCopy);
-                        ResetProperty(ref main3rdTexIsMSDF);
-                        ResetProperty(ref main3rdTexBlendMode);
-                        ResetProperty(ref main3rdEnableLighting);
-                        ResetProperty(ref main3rdDissolveMask);
-                        ResetProperty(ref main3rdDissolveNoiseMask);
-                        ResetProperty(ref main3rdDissolveNoiseMask_ScrollRotate);
-                        ResetProperty(ref main3rdDissolveNoiseStrength);
-                        ResetProperty(ref main3rdDissolveColor);
-                        ResetProperty(ref main3rdDissolveParams);
-                        ResetProperty(ref main3rdDissolvePos);
-                        ResetProperty(ref main3rdDistanceFade);
-                        ResetProperty(ref main3rdTex);
-                        ResetProperty(ref main3rdBlendMask);
-                        ResetProperty(ref main3rdDissolveMask);
-                        ResetProperty(ref main3rdDissolveNoiseMask);
-                    break;
-                case lilPropertyBlock.AlphaMask:
-                        ResetProperty(ref alphaMaskMode);
-                        ResetProperty(ref alphaMaskScale);
-                        ResetProperty(ref alphaMaskValue);
-                        ResetProperty(ref alphaMask);
-                    break;
-                case lilPropertyBlock.Shadow:
-                        ResetProperty(ref useShadow);
-                        ResetProperty(ref shadowColor);
-                        ResetProperty(ref shadowNormalStrength);
-                        ResetProperty(ref shadowBorder);
-                        ResetProperty(ref shadowBlur);
-                        ResetProperty(ref shadowStrength);
-                        ResetProperty(ref shadowAOShift);
-                        ResetProperty(ref shadowAOShift2);
-                        ResetProperty(ref shadowPostAO);
-                        ResetProperty(ref shadow2ndColor);
-                        ResetProperty(ref shadow2ndNormalStrength);
-                        ResetProperty(ref shadow2ndBorder);
-                        ResetProperty(ref shadow2ndBlur);
-                        ResetProperty(ref shadow3rdColor);
-                        ResetProperty(ref shadow3rdNormalStrength);
-                        ResetProperty(ref shadow3rdBorder);
-                        ResetProperty(ref shadow3rdBlur);
-                        ResetProperty(ref shadowMainStrength);
-                        ResetProperty(ref shadowEnvStrength);
-                        ResetProperty(ref shadowBorderColor);
-                        ResetProperty(ref shadowBorderRange);
-                        ResetProperty(ref shadowReceive);
-                        ResetProperty(ref shadow2ndReceive);
-                        ResetProperty(ref shadow3rdReceive);
-                        ResetProperty(ref shadowMaskType);
-                        ResetProperty(ref shadowFlatBorder);
-                        ResetProperty(ref shadowFlatBlur);
-                        ResetProperty(ref lilShadowCasterBias);
-                        ResetProperty(ref shadowBorderMaskLOD);
-                        ResetProperty(ref shadowBlurMaskLOD);
-                        ResetProperty(ref shadowStrengthMaskLOD);
-                        ResetProperty(ref shadowBorderMask);
-                        ResetProperty(ref shadowBlurMask);
-                        ResetProperty(ref shadowStrengthMask);
-                        ResetProperty(ref shadowColorTex);
-                        ResetProperty(ref shadow2ndColorTex);
-                        ResetProperty(ref shadow3rdColorTex);
-                    break;
-                case lilPropertyBlock.Emission:
-                        ResetProperty(ref useEmission);
-                        ResetProperty(ref emissionColor);
-                        ResetProperty(ref emissionMap_ScrollRotate);
-                        ResetProperty(ref emissionMap_UVMode);
-                        ResetProperty(ref emissionBlend);
-                        ResetProperty(ref emissionBlendMask_ScrollRotate);
-                        ResetProperty(ref emissionBlink);
-                        ResetProperty(ref emissionUseGrad);
-                        ResetProperty(ref emissionGradTex);
-                        ResetProperty(ref emissionGradSpeed);
-                        ResetProperty(ref emissionParallaxDepth);
-                        ResetProperty(ref emissionFluorescence);
-                        ResetProperty(ref useEmission2nd);
-                        ResetProperty(ref emission2ndColor);
-                        ResetProperty(ref emission2ndMap_ScrollRotate);
-                        ResetProperty(ref emission2ndMap_UVMode);
-                        ResetProperty(ref emission2ndBlend);
-                        ResetProperty(ref emission2ndBlendMask_ScrollRotate);
-                        ResetProperty(ref emission2ndBlink);
-                        ResetProperty(ref emission2ndUseGrad);
-                        ResetProperty(ref emission2ndGradTex);
-                        ResetProperty(ref emission2ndGradSpeed);
-                        ResetProperty(ref emission2ndParallaxDepth);
-                        ResetProperty(ref emission2ndFluorescence);
-                        ResetProperty(ref emissionMap);
-                        ResetProperty(ref emissionBlendMask);
-                        ResetProperty(ref emission2ndMap);
-                        ResetProperty(ref emission2ndBlendMask);
-                    break;
-                case lilPropertyBlock.Emission1st:
-                        ResetProperty(ref useEmission);
-                        ResetProperty(ref emissionColor);
-                        ResetProperty(ref emissionMap_ScrollRotate);
-                        ResetProperty(ref emissionMap_UVMode);
-                        ResetProperty(ref emissionBlend);
-                        ResetProperty(ref emissionBlendMask_ScrollRotate);
-                        ResetProperty(ref emissionBlink);
-                        ResetProperty(ref emissionUseGrad);
-                        ResetProperty(ref emissionGradTex);
-                        ResetProperty(ref emissionGradSpeed);
-                        ResetProperty(ref emissionParallaxDepth);
-                        ResetProperty(ref emissionFluorescence);
-                        ResetProperty(ref emissionMap);
-                        ResetProperty(ref emissionBlendMask);
-                    break;
-                case lilPropertyBlock.Emission2nd:
-                        ResetProperty(ref useEmission2nd);
-                        ResetProperty(ref emission2ndColor);
-                        ResetProperty(ref emission2ndMap_ScrollRotate);
-                        ResetProperty(ref emission2ndMap_UVMode);
-                        ResetProperty(ref emission2ndBlend);
-                        ResetProperty(ref emission2ndBlendMask_ScrollRotate);
-                        ResetProperty(ref emission2ndBlink);
-                        ResetProperty(ref emission2ndUseGrad);
-                        ResetProperty(ref emission2ndGradTex);
-                        ResetProperty(ref emission2ndGradSpeed);
-                        ResetProperty(ref emission2ndParallaxDepth);
-                        ResetProperty(ref emission2ndFluorescence);
-                        ResetProperty(ref emission2ndMap);
-                        ResetProperty(ref emission2ndBlendMask);
-                    break;
-                case lilPropertyBlock.NormalMap:
-                        ResetProperty(ref useBumpMap);
-                        ResetProperty(ref bumpScale);
-                        ResetProperty(ref useBump2ndMap);
-                        ResetProperty(ref bump2ndScale);
-                        ResetProperty(ref useAnisotropy);
-                        ResetProperty(ref anisotropyScale);
-                        ResetProperty(ref anisotropyTangentWidth);
-                        ResetProperty(ref anisotropyBitangentWidth);
-                        ResetProperty(ref anisotropyShift);
-                        ResetProperty(ref anisotropyShiftNoiseScale);
-                        ResetProperty(ref anisotropySpecularStrength);
-                        ResetProperty(ref anisotropy2ndTangentWidth);
-                        ResetProperty(ref anisotropy2ndBitangentWidth);
-                        ResetProperty(ref anisotropy2ndShift);
-                        ResetProperty(ref anisotropy2ndShiftNoiseScale);
-                        ResetProperty(ref anisotropy2ndSpecularStrength);
-                        ResetProperty(ref anisotropy2Reflection);
-                        ResetProperty(ref anisotropy2MatCap);
-                        ResetProperty(ref anisotropy2MatCap2nd);
-                        ResetProperty(ref bumpMap);
-                        ResetProperty(ref bump2ndMap);
-                        ResetProperty(ref bump2ndScaleMask);
-                        ResetProperty(ref anisotropyTangentMap);
-                        ResetProperty(ref anisotropyScaleMask);
-                        ResetProperty(ref anisotropyShiftNoiseMask);
-                    break;
-                case lilPropertyBlock.NormalMap1st:
-                        ResetProperty(ref useBumpMap);
-                        ResetProperty(ref bumpScale);
-                        ResetProperty(ref bumpMap);
-                    break;
-                case lilPropertyBlock.NormalMap2nd:
-                        ResetProperty(ref useBump2ndMap);
-                        ResetProperty(ref bump2ndScale);
-                        ResetProperty(ref bump2ndMap);
-                        ResetProperty(ref bump2ndScaleMask);
-                    break;
-                case lilPropertyBlock.Anisotropy:
-                        ResetProperty(ref useAnisotropy);
-                        ResetProperty(ref anisotropyScale);
-                        ResetProperty(ref anisotropyTangentWidth);
-                        ResetProperty(ref anisotropyBitangentWidth);
-                        ResetProperty(ref anisotropyShift);
-                        ResetProperty(ref anisotropyShiftNoiseScale);
-                        ResetProperty(ref anisotropySpecularStrength);
-                        ResetProperty(ref anisotropy2ndTangentWidth);
-                        ResetProperty(ref anisotropy2ndBitangentWidth);
-                        ResetProperty(ref anisotropy2ndShift);
-                        ResetProperty(ref anisotropy2ndShiftNoiseScale);
-                        ResetProperty(ref anisotropy2ndSpecularStrength);
-                        ResetProperty(ref anisotropy2Reflection);
-                        ResetProperty(ref anisotropy2MatCap);
-                        ResetProperty(ref anisotropy2MatCap2nd);
-                        ResetProperty(ref anisotropyTangentMap);
-                        ResetProperty(ref anisotropyScaleMask);
-                        ResetProperty(ref anisotropyShiftNoiseMask);
-                    break;
-                case lilPropertyBlock.Reflections:
-                        ResetProperty(ref useReflection);
-                        ResetProperty(ref metallic);
-                        ResetProperty(ref smoothness);
-                        ResetProperty(ref reflectance);
-                        ResetProperty(ref reflectionColor);
-                        ResetProperty(ref gsaaStrength);
-                        ResetProperty(ref applySpecular);
-                        ResetProperty(ref applySpecularFA);
-                        ResetProperty(ref specularNormalStrength);
-                        ResetProperty(ref specularToon);
-                        ResetProperty(ref specularBorder);
-                        ResetProperty(ref specularBlur);
-                        ResetProperty(ref applyReflection);
-                        ResetProperty(ref reflectionNormalStrength);
-                        ResetProperty(ref reflectionApplyTransparency);
-                        ResetProperty(ref reflectionCubeColor);
-                        ResetProperty(ref reflectionCubeOverride);
-                        ResetProperty(ref reflectionCubeEnableLighting);
-                        ResetProperty(ref reflectionBlendMode);
-                        ResetProperty(ref useMatCap);
-                        ResetProperty(ref matcapColor);
-                        ResetProperty(ref matcapBlendUV1);
-                        ResetProperty(ref matcapZRotCancel);
-                        ResetProperty(ref matcapPerspective);
-                        ResetProperty(ref matcapVRParallaxStrength);
-                        ResetProperty(ref matcapBlend);
-                        ResetProperty(ref matcapEnableLighting);
-                        ResetProperty(ref matcapShadowMask);
-                        ResetProperty(ref matcapBackfaceMask);
-                        ResetProperty(ref matcapLod);
-                        ResetProperty(ref matcapBlendMode);
-                        ResetProperty(ref matcapMul);
-                        ResetProperty(ref matcapApplyTransparency);
-                        ResetProperty(ref matcapNormalStrength);
-                        ResetProperty(ref matcapCustomNormal);
-                        ResetProperty(ref matcapBumpScale);
-                        ResetProperty(ref useMatCap2nd);
-                        ResetProperty(ref matcap2ndColor);
-                        ResetProperty(ref matcap2ndBlendUV1);
-                        ResetProperty(ref matcap2ndZRotCancel);
-                        ResetProperty(ref matcap2ndPerspective);
-                        ResetProperty(ref matcap2ndVRParallaxStrength);
-                        ResetProperty(ref matcap2ndBlend);
-                        ResetProperty(ref matcap2ndEnableLighting);
-                        ResetProperty(ref matcap2ndShadowMask);
-                        ResetProperty(ref matcap2ndBackfaceMask);
-                        ResetProperty(ref matcap2ndLod);
-                        ResetProperty(ref matcap2ndBlendMode);
-                        ResetProperty(ref matcap2ndMul);
-                        ResetProperty(ref matcap2ndNormalStrength);
-                        ResetProperty(ref matcap2ndApplyTransparency);
-                        ResetProperty(ref matcap2ndCustomNormal);
-                        ResetProperty(ref matcap2ndBumpScale);
-                        ResetProperty(ref useRim);
-                        ResetProperty(ref rimColor);
-                        ResetProperty(ref rimNormalStrength);
-                        ResetProperty(ref rimBorder);
-                        ResetProperty(ref rimBlur);
-                        ResetProperty(ref rimFresnelPower);
-                        ResetProperty(ref rimEnableLighting);
-                        ResetProperty(ref rimShadowMask);
-                        ResetProperty(ref rimBackfaceMask);
-                        ResetProperty(ref rimVRParallaxStrength);
-                        ResetProperty(ref rimApplyTransparency);
-                        ResetProperty(ref rimDirStrength);
-                        ResetProperty(ref rimDirRange);
-                        ResetProperty(ref rimIndirRange);
-                        ResetProperty(ref rimIndirColor);
-                        ResetProperty(ref rimIndirBorder);
-                        ResetProperty(ref rimIndirBlur);
-                        ResetProperty(ref useGlitter);
-                        ResetProperty(ref glitterUVMode);
-                        ResetProperty(ref glitterColor);
-                        ResetProperty(ref glitterMainStrength);
-                        ResetProperty(ref glitterParams1);
-                        ResetProperty(ref glitterParams2);
-                        ResetProperty(ref glitterPostContrast);
-                        ResetProperty(ref glitterSensitivity);
-                        ResetProperty(ref glitterEnableLighting);
-                        ResetProperty(ref glitterShadowMask);
-                        ResetProperty(ref glitterBackfaceMask);
-                        ResetProperty(ref glitterApplyTransparency);
-                        ResetProperty(ref glitterVRParallaxStrength);
-                        ResetProperty(ref glitterNormalStrength);
-                        ResetProperty(ref useBacklight);
-                        ResetProperty(ref backlightColor);
-                        ResetProperty(ref backlightNormalStrength);
-                        ResetProperty(ref backlightBorder);
-                        ResetProperty(ref backlightBlur);
-                        ResetProperty(ref backlightDirectivity);
-                        ResetProperty(ref backlightViewStrength);
-                        ResetProperty(ref backlightReceiveShadow);
-                        ResetProperty(ref backlightBackfaceMask);
-                        ResetProperty(ref gemChromaticAberration);
-                        ResetProperty(ref gemEnvContrast);
-                        ResetProperty(ref gemEnvColor);
-                        ResetProperty(ref gemParticleLoop);
-                        ResetProperty(ref gemParticleColor);
-                        ResetProperty(ref gemVRParallaxStrength);
-                        ResetProperty(ref refractionStrength);
-                        ResetProperty(ref refractionFresnelPower);
-                        ResetProperty(ref metallicGlossMap);
-                        ResetProperty(ref smoothnessTex);
-                        ResetProperty(ref reflectionColorTex);
-                        ResetProperty(ref reflectionCubeTex);
-                        ResetProperty(ref matcapTex);
-                        ResetProperty(ref matcapBlendMask);
-                        ResetProperty(ref matcapBumpMap);
-                        ResetProperty(ref matcap2ndTex);
-                        ResetProperty(ref matcap2ndBlendMask);
-                        ResetProperty(ref matcap2ndBumpMap);
-                        ResetProperty(ref rimColorTex);
-                        ResetProperty(ref glitterColorTex);
-                        ResetProperty(ref backlightColorTex);
-                    break;
-                case lilPropertyBlock.Reflection:
-                        ResetProperty(ref useReflection);
-                        ResetProperty(ref metallic);
-                        ResetProperty(ref smoothness);
-                        ResetProperty(ref reflectance);
-                        ResetProperty(ref reflectionColor);
-                        ResetProperty(ref gsaaStrength);
-                        ResetProperty(ref applySpecular);
-                        ResetProperty(ref applySpecularFA);
-                        ResetProperty(ref specularNormalStrength);
-                        ResetProperty(ref specularToon);
-                        ResetProperty(ref specularBorder);
-                        ResetProperty(ref specularBlur);
-                        ResetProperty(ref applyReflection);
-                        ResetProperty(ref reflectionNormalStrength);
-                        ResetProperty(ref reflectionApplyTransparency);
-                        ResetProperty(ref reflectionCubeTex);
-                        ResetProperty(ref reflectionCubeColor);
-                        ResetProperty(ref reflectionCubeOverride);
-                        ResetProperty(ref reflectionCubeEnableLighting);
-                        ResetProperty(ref metallicGlossMap);
-                        ResetProperty(ref smoothnessTex);
-                        ResetProperty(ref reflectionColorTex);
-                        ResetProperty(ref reflectionBlendMode);
-                    break;
-                case lilPropertyBlock.MatCaps:
-                        ResetProperty(ref useMatCap);
-                        ResetProperty(ref matcapColor);
-                        ResetProperty(ref matcapBlendUV1);
-                        ResetProperty(ref matcapZRotCancel);
-                        ResetProperty(ref matcapPerspective);
-                        ResetProperty(ref matcapVRParallaxStrength);
-                        ResetProperty(ref matcapBlend);
-                        ResetProperty(ref matcapEnableLighting);
-                        ResetProperty(ref matcapShadowMask);
-                        ResetProperty(ref matcapBackfaceMask);
-                        ResetProperty(ref matcapLod);
-                        ResetProperty(ref matcapBlendMode);
-                        ResetProperty(ref matcapMul);
-                        ResetProperty(ref matcapApplyTransparency);
-                        ResetProperty(ref matcapNormalStrength);
-                        ResetProperty(ref matcapCustomNormal);
-                        ResetProperty(ref matcapBumpScale);
-                        ResetProperty(ref useMatCap2nd);
-                        ResetProperty(ref matcap2ndColor);
-                        ResetProperty(ref matcap2ndBlendUV1);
-                        ResetProperty(ref matcap2ndZRotCancel);
-                        ResetProperty(ref matcap2ndPerspective);
-                        ResetProperty(ref matcap2ndVRParallaxStrength);
-                        ResetProperty(ref matcap2ndBlend);
-                        ResetProperty(ref matcap2ndEnableLighting);
-                        ResetProperty(ref matcap2ndShadowMask);
-                        ResetProperty(ref matcap2ndBackfaceMask);
-                        ResetProperty(ref matcap2ndLod);
-                        ResetProperty(ref matcap2ndBlendMode);
-                        ResetProperty(ref matcap2ndMul);
-                        ResetProperty(ref matcap2ndNormalStrength);
-                        ResetProperty(ref matcap2ndApplyTransparency);
-                        ResetProperty(ref matcap2ndCustomNormal);
-                        ResetProperty(ref matcap2ndBumpScale);
-                        ResetProperty(ref matcapTex);
-                        ResetProperty(ref matcapBlendMask);
-                        ResetProperty(ref matcapBumpMap);
-                        ResetProperty(ref matcap2ndTex);
-                        ResetProperty(ref matcap2ndBlendMask);
-                        ResetProperty(ref matcap2ndBumpMap);
-                    break;
-                case lilPropertyBlock.MatCap1st:
-                        ResetProperty(ref useMatCap);
-                        ResetProperty(ref matcapColor);
-                        ResetProperty(ref matcapBlendUV1);
-                        ResetProperty(ref matcapZRotCancel);
-                        ResetProperty(ref matcapPerspective);
-                        ResetProperty(ref matcapVRParallaxStrength);
-                        ResetProperty(ref matcapBlend);
-                        ResetProperty(ref matcapEnableLighting);
-                        ResetProperty(ref matcapShadowMask);
-                        ResetProperty(ref matcapBackfaceMask);
-                        ResetProperty(ref matcapLod);
-                        ResetProperty(ref matcapBlendMode);
-                        ResetProperty(ref matcapMul);
-                        ResetProperty(ref matcapApplyTransparency);
-                        ResetProperty(ref matcapNormalStrength);
-                        ResetProperty(ref matcapCustomNormal);
-                        ResetProperty(ref matcapBumpScale);
-                        ResetProperty(ref matcapTex);
-                        ResetProperty(ref matcapBlendMask);
-                        ResetProperty(ref matcapBumpMap);
-                    break;
-                case lilPropertyBlock.MatCap2nd:
-                        ResetProperty(ref useMatCap2nd);
-                        ResetProperty(ref matcap2ndColor);
-                        ResetProperty(ref matcap2ndBlendUV1);
-                        ResetProperty(ref matcap2ndZRotCancel);
-                        ResetProperty(ref matcap2ndPerspective);
-                        ResetProperty(ref matcap2ndVRParallaxStrength);
-                        ResetProperty(ref matcap2ndBlend);
-                        ResetProperty(ref matcap2ndEnableLighting);
-                        ResetProperty(ref matcap2ndShadowMask);
-                        ResetProperty(ref matcap2ndBackfaceMask);
-                        ResetProperty(ref matcap2ndLod);
-                        ResetProperty(ref matcap2ndBlendMode);
-                        ResetProperty(ref matcap2ndMul);
-                        ResetProperty(ref matcap2ndApplyTransparency);
-                        ResetProperty(ref matcap2ndNormalStrength);
-                        ResetProperty(ref matcap2ndCustomNormal);
-                        ResetProperty(ref matcap2ndBumpScale);
-                        ResetProperty(ref matcap2ndTex);
-                        ResetProperty(ref matcap2ndBlendMask);
-                        ResetProperty(ref matcap2ndBumpMap);
-                    break;
-                case lilPropertyBlock.RimLight:
-                        ResetProperty(ref useRim);
-                        ResetProperty(ref rimColor);
-                        ResetProperty(ref rimNormalStrength);
-                        ResetProperty(ref rimBorder);
-                        ResetProperty(ref rimBlur);
-                        ResetProperty(ref rimFresnelPower);
-                        ResetProperty(ref rimEnableLighting);
-                        ResetProperty(ref rimShadowMask);
-                        ResetProperty(ref rimBackfaceMask);
-                        ResetProperty(ref rimVRParallaxStrength);
-                        ResetProperty(ref rimApplyTransparency);
-                        ResetProperty(ref rimDirStrength);
-                        ResetProperty(ref rimDirRange);
-                        ResetProperty(ref rimIndirRange);
-                        ResetProperty(ref rimIndirColor);
-                        ResetProperty(ref rimIndirBorder);
-                        ResetProperty(ref rimIndirBlur);
-                        ResetProperty(ref rimColorTex);
-                    break;
-                case lilPropertyBlock.Glitter:
-                        ResetProperty(ref useGlitter);
-                        ResetProperty(ref glitterUVMode);
-                        ResetProperty(ref glitterColor);
-                        ResetProperty(ref glitterMainStrength);
-                        ResetProperty(ref glitterParams1);
-                        ResetProperty(ref glitterParams2);
-                        ResetProperty(ref glitterPostContrast);
-                        ResetProperty(ref glitterSensitivity);
-                        ResetProperty(ref glitterEnableLighting);
-                        ResetProperty(ref glitterShadowMask);
-                        ResetProperty(ref glitterBackfaceMask);
-                        ResetProperty(ref glitterApplyTransparency);
-                        ResetProperty(ref glitterVRParallaxStrength);
-                        ResetProperty(ref glitterNormalStrength);
-                        ResetProperty(ref glitterColorTex);
-                    break;
-                case lilPropertyBlock.Backlight:
-                        ResetProperty(ref useBacklight);
-                        ResetProperty(ref backlightColor);
-                        ResetProperty(ref backlightNormalStrength);
-                        ResetProperty(ref backlightBorder);
-                        ResetProperty(ref backlightBlur);
-                        ResetProperty(ref backlightDirectivity);
-                        ResetProperty(ref backlightViewStrength);
-                        ResetProperty(ref backlightReceiveShadow);
-                        ResetProperty(ref backlightBackfaceMask);
-                        ResetProperty(ref backlightColorTex);
-                    break;
-                case lilPropertyBlock.Gem:
-                        ResetProperty(ref gemChromaticAberration);
-                        ResetProperty(ref gemEnvContrast);
-                        ResetProperty(ref gemEnvColor);
-                        ResetProperty(ref gemParticleLoop);
-                        ResetProperty(ref gemParticleColor);
-                        ResetProperty(ref gemVRParallaxStrength);
-                        ResetProperty(ref refractionStrength);
-                        ResetProperty(ref refractionFresnelPower);
-                        ResetProperty(ref smoothness);
-                        ResetProperty(ref smoothnessTex);
-                    break;
-                case lilPropertyBlock.Outline:
-                        ResetProperty(ref outlineColor);
-                        ResetProperty(ref outlineTex_ScrollRotate);
-                        ResetProperty(ref outlineTexHSVG);
-                        ResetProperty(ref outlineLitColor);
-                        ResetProperty(ref outlineLitApplyTex);
-                        ResetProperty(ref outlineLitScale);
-                        ResetProperty(ref outlineLitOffset);
-                        ResetProperty(ref outlineWidth);
-                        ResetProperty(ref outlineFixWidth);
-                        ResetProperty(ref outlineVertexR2Width);
-                        ResetProperty(ref outlineDeleteMesh);
-                        ResetProperty(ref outlineVectorTex);
-                        ResetProperty(ref outlineVectorUVMode);
-                        ResetProperty(ref outlineVectorScale);
-                        ResetProperty(ref outlineEnableLighting);
-                        ResetProperty(ref outlineZBias);
-                        ResetProperty(ref outlineTex);
-                        ResetProperty(ref outlineWidthMask);
-                    break;
-                case lilPropertyBlock.Parallax:
-                        ResetProperty(ref useParallax);
-                        ResetProperty(ref usePOM);
-                        ResetProperty(ref parallax);
-                        ResetProperty(ref parallaxOffset);
-                        ResetProperty(ref parallaxMap);
-                    break;
-                case lilPropertyBlock.DistanceFade:
-                        ResetProperty(ref distanceFadeColor);
-                        ResetProperty(ref distanceFade);
-                    break;
-                case lilPropertyBlock.AudioLink:
-                        ResetProperty(ref useAudioLink);
-                        ResetProperty(ref audioLinkDefaultValue);
-                        ResetProperty(ref audioLinkUVMode);
-                        ResetProperty(ref audioLinkUVParams);
-                        ResetProperty(ref audioLinkStart);
-                        ResetProperty(ref audioLink2Main2nd);
-                        ResetProperty(ref audioLink2Main3rd);
-                        ResetProperty(ref audioLink2Emission);
-                        ResetProperty(ref audioLink2EmissionGrad);
-                        ResetProperty(ref audioLink2Emission2nd);
-                        ResetProperty(ref audioLink2Emission2ndGrad);
-                        ResetProperty(ref audioLink2Vertex);
-                        ResetProperty(ref audioLinkVertexUVMode);
-                        ResetProperty(ref audioLinkVertexUVParams);
-                        ResetProperty(ref audioLinkVertexStart);
-                        ResetProperty(ref audioLinkVertexStrength);
-                        ResetProperty(ref audioLinkAsLocal);
-                        ResetProperty(ref audioLinkLocalMap);
-                        ResetProperty(ref audioLinkLocalMapParams);
-                        ResetProperty(ref audioLinkMask);
-                    break;
-                case lilPropertyBlock.Dissolve:
-                        ResetProperty(ref dissolveNoiseMask_ScrollRotate);
-                        ResetProperty(ref dissolveNoiseStrength);
-                        ResetProperty(ref dissolveColor);
-                        ResetProperty(ref dissolveParams);
-                        ResetProperty(ref dissolvePos);
-                        ResetProperty(ref dissolveMask);
-                        ResetProperty(ref dissolveNoiseMask);
-                    break;
-                case lilPropertyBlock.Refraction:
-                        ResetProperty(ref refractionStrength);
-                        ResetProperty(ref refractionFresnelPower);
-                        ResetProperty(ref refractionColorFromMain);
-                        ResetProperty(ref refractionColor);
-                    break;
-                case lilPropertyBlock.Fur:
-                        ResetProperty(ref furVectorScale);
-                        ResetProperty(ref furVector);
-                        ResetProperty(ref furGravity);
-                        ResetProperty(ref furRandomize);
-                        ResetProperty(ref furAO);
-                        ResetProperty(ref vertexColor2FurVector);
-                        ResetProperty(ref furMeshType);
-                        ResetProperty(ref furLayerNum);
-                        ResetProperty(ref furRootOffset);
-                        ResetProperty(ref furCutoutLength);
-                        ResetProperty(ref furTouchStrength);
-                        ResetProperty(ref furNoiseMask);
-                        ResetProperty(ref furMask);
-                        ResetProperty(ref furLengthMask);
-                        ResetProperty(ref furVectorTex);
-                    break;
-                case lilPropertyBlock.Encryption:
-                        ResetProperty(ref ignoreEncryption);
-                        ResetProperty(ref keys);
-                    break;
-                case lilPropertyBlock.Stencil:
-                        ResetProperty(ref stencilRef);
-                        ResetProperty(ref stencilReadMask);
-                        ResetProperty(ref stencilWriteMask);
-                        ResetProperty(ref stencilComp);
-                        ResetProperty(ref stencilPass);
-                        ResetProperty(ref stencilFail);
-                        ResetProperty(ref stencilZFail);
-                        ResetProperty(ref outlineStencilRef);
-                        ResetProperty(ref outlineStencilReadMask);
-                        ResetProperty(ref outlineStencilWriteMask);
-                        ResetProperty(ref outlineStencilComp);
-                        ResetProperty(ref outlineStencilPass);
-                        ResetProperty(ref outlineStencilFail);
-                        ResetProperty(ref outlineStencilZFail);
-                        ResetProperty(ref furStencilRef);
-                        ResetProperty(ref furStencilReadMask);
-                        ResetProperty(ref furStencilWriteMask);
-                        ResetProperty(ref furStencilComp);
-                        ResetProperty(ref furStencilPass);
-                        ResetProperty(ref furStencilFail);
-                        ResetProperty(ref furStencilZFail);
-                    break;
-                case lilPropertyBlock.Rendering:
-                        ResetProperty(ref beforeExposureLimit);
-                        ResetProperty(ref lilDirectionalLightStrength);
-                        ResetProperty(ref subpassCutoff);
-                        ResetProperty(ref cull);
-                        ResetProperty(ref srcBlend);
-                        ResetProperty(ref dstBlend);
-                        ResetProperty(ref srcBlendAlpha);
-                        ResetProperty(ref dstBlendAlpha);
-                        ResetProperty(ref blendOp);
-                        ResetProperty(ref blendOpAlpha);
-                        ResetProperty(ref srcBlendFA);
-                        ResetProperty(ref dstBlendFA);
-                        ResetProperty(ref srcBlendAlphaFA);
-                        ResetProperty(ref dstBlendAlphaFA);
-                        ResetProperty(ref blendOpFA);
-                        ResetProperty(ref blendOpAlphaFA);
-                        ResetProperty(ref zclip);
-                        ResetProperty(ref zwrite);
-                        ResetProperty(ref ztest);
-                        ResetProperty(ref offsetFactor);
-                        ResetProperty(ref offsetUnits);
-                        ResetProperty(ref colorMask);
-                        ResetProperty(ref alphaToMask);
-                        ResetProperty(ref lilShadowCasterBias);
-                        ResetProperty(ref outlineCull);
-                        ResetProperty(ref outlineSrcBlend);
-                        ResetProperty(ref outlineDstBlend);
-                        ResetProperty(ref outlineSrcBlendAlpha);
-                        ResetProperty(ref outlineDstBlendAlpha);
-                        ResetProperty(ref outlineBlendOp);
-                        ResetProperty(ref outlineBlendOpAlpha);
-                        ResetProperty(ref outlineSrcBlendFA);
-                        ResetProperty(ref outlineDstBlendFA);
-                        ResetProperty(ref outlineSrcBlendAlphaFA);
-                        ResetProperty(ref outlineDstBlendAlphaFA);
-                        ResetProperty(ref outlineBlendOpFA);
-                        ResetProperty(ref outlineBlendOpAlphaFA);
-                        ResetProperty(ref outlineZclip);
-                        ResetProperty(ref outlineZwrite);
-                        ResetProperty(ref outlineZtest);
-                        ResetProperty(ref outlineOffsetFactor);
-                        ResetProperty(ref outlineOffsetUnits);
-                        ResetProperty(ref outlineColorMask);
-                        ResetProperty(ref outlineAlphaToMask);
-                        ResetProperty(ref furCull);
-                        ResetProperty(ref furSrcBlend);
-                        ResetProperty(ref furDstBlend);
-                        ResetProperty(ref furSrcBlendAlpha);
-                        ResetProperty(ref furDstBlendAlpha);
-                        ResetProperty(ref furBlendOp);
-                        ResetProperty(ref furBlendOpAlpha);
-                        ResetProperty(ref furSrcBlendFA);
-                        ResetProperty(ref furDstBlendFA);
-                        ResetProperty(ref furSrcBlendAlphaFA);
-                        ResetProperty(ref furDstBlendAlphaFA);
-                        ResetProperty(ref furBlendOpFA);
-                        ResetProperty(ref furBlendOpAlphaFA);
-                        ResetProperty(ref furZclip);
-                        ResetProperty(ref furZwrite);
-                        ResetProperty(ref furZtest);
-                        ResetProperty(ref furOffsetFactor);
-                        ResetProperty(ref furOffsetUnits);
-                        ResetProperty(ref furColorMask);
-                        ResetProperty(ref furAlphaToMask);
-                    break;
-                case lilPropertyBlock.Tessellation:
-                        ResetProperty(ref tessEdge);
-                        ResetProperty(ref tessStrength);
-                        ResetProperty(ref tessShrink);
-                        ResetProperty(ref tessFactorMax);
-                    break;
+                foreach(lilPropertyBlock block in prop.blocks)
+                {
+                    if(block == propertyBlock && prop.p != null && prop.targets[0] is Material && ((Material)prop.targets[0]).shader != null)
+                    {
+                        Shader shader = ((Material)prop.targets[0]).shader;
+                        int propID = shader.FindPropertyIndex(prop.name);
+                        if(propID == -1) return;
+                        MaterialProperty.PropType propType = prop.type;
+                        if(propType == MaterialProperty.PropType.Color)     prop.colorValue = shader.GetPropertyDefaultVectorValue(propID);
+                        if(propType == MaterialProperty.PropType.Vector)    prop.vectorValue = shader.GetPropertyDefaultVectorValue(propID);
+                        if(propType == MaterialProperty.PropType.Float)     prop.floatValue = shader.GetPropertyDefaultFloatValue(propID);
+                        if(propType == MaterialProperty.PropType.Range)     prop.floatValue = shader.GetPropertyDefaultFloatValue(propID);
+                        if(propType == MaterialProperty.PropType.Texture)   prop.textureValue = null;
+                    }
+                }
             }
+            #endif
+        }
+
+        private void ResetProperties(object obj)
+        {
+            ResetProperties((lilPropertyBlock)obj);
         }
 
         private void ApplyLightingPreset(lilLightingPreset lightingPreset)
@@ -7474,24 +6137,24 @@ namespace lilToon
             switch(lightingPreset)
             {
                 case lilLightingPreset.Default:
-                    if(asUnlit != null) asUnlit.floatValue = shaderSetting.defaultAsUnlit;
-                    if(vertexLightStrength != null) vertexLightStrength.floatValue = shaderSetting.defaultVertexLightStrength;
-                    if(lightMinLimit != null) lightMinLimit.floatValue = shaderSetting.defaultLightMinLimit;
-                    if(lightMaxLimit != null) lightMaxLimit.floatValue = shaderSetting.defaultLightMaxLimit;
-                    if(beforeExposureLimit != null) beforeExposureLimit.floatValue = shaderSetting.defaultBeforeExposureLimit;
-                    if(monochromeLighting != null) monochromeLighting.floatValue = shaderSetting.defaultMonochromeLighting;
-                    if(shadowEnvStrength != null) shadowEnvStrength.floatValue = 0.0f;
-                    if(lilDirectionalLightStrength != null) lilDirectionalLightStrength.floatValue = shaderSetting.defaultlilDirectionalLightStrength;
+                    if(asUnlit.p != null) asUnlit.floatValue = shaderSetting.defaultAsUnlit;
+                    if(vertexLightStrength.p != null) vertexLightStrength.floatValue = shaderSetting.defaultVertexLightStrength;
+                    if(lightMinLimit.p != null) lightMinLimit.floatValue = shaderSetting.defaultLightMinLimit;
+                    if(lightMaxLimit.p != null) lightMaxLimit.floatValue = shaderSetting.defaultLightMaxLimit;
+                    if(beforeExposureLimit.p != null) beforeExposureLimit.floatValue = shaderSetting.defaultBeforeExposureLimit;
+                    if(monochromeLighting.p != null) monochromeLighting.floatValue = shaderSetting.defaultMonochromeLighting;
+                    if(shadowEnvStrength.p != null) shadowEnvStrength.floatValue = 0.0f;
+                    if(lilDirectionalLightStrength.p != null) lilDirectionalLightStrength.floatValue = shaderSetting.defaultlilDirectionalLightStrength;
                     break;
                 case lilLightingPreset.SemiMonochrome:
-                    if(asUnlit != null) asUnlit.floatValue = 0.0f;
-                    if(vertexLightStrength != null) vertexLightStrength.floatValue = 0.0f;
-                    if(lightMinLimit != null) lightMinLimit.floatValue = 0.05f;
-                    if(lightMaxLimit != null) lightMaxLimit.floatValue = 1.0f;
-                    if(beforeExposureLimit != null) beforeExposureLimit.floatValue = 10000.0f;
-                    if(monochromeLighting != null) monochromeLighting.floatValue = 0.5f;
-                    if(shadowEnvStrength != null) shadowEnvStrength.floatValue = 0.0f;
-                    if(lilDirectionalLightStrength != null) lilDirectionalLightStrength.floatValue = 1.0f;
+                    if(asUnlit.p != null) asUnlit.floatValue = 0.0f;
+                    if(vertexLightStrength.p != null) vertexLightStrength.floatValue = 0.0f;
+                    if(lightMinLimit.p != null) lightMinLimit.floatValue = 0.05f;
+                    if(lightMaxLimit.p != null) lightMaxLimit.floatValue = 1.0f;
+                    if(beforeExposureLimit.p != null) beforeExposureLimit.floatValue = 10000.0f;
+                    if(monochromeLighting.p != null) monochromeLighting.floatValue = 0.5f;
+                    if(shadowEnvStrength.p != null) shadowEnvStrength.floatValue = 0.0f;
+                    if(lilDirectionalLightStrength.p != null) lilDirectionalLightStrength.floatValue = 1.0f;
                     break;
             }
         }
@@ -7508,157 +6171,36 @@ namespace lilToon
         public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess, bool ismulti)
         {
             if(isMultiVariants) return;
+            RenderingMode rend = renderingMode;
+            lilRenderPipeline RP = RPReader.GetRP();
             if(ismulti)
             {
-                lilRenderPipeline RP = RPReader.GetRP();
                 float tpmode = material.GetFloat("_TransparentMode");
-                if(tpmode == 1.0f)
+                switch((int)tpmode)
                 {
-                    if(isoutl)  material.shader = ltsmo;
-                    else        material.shader = ltsm;
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_OutlineSrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_OutlineDstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_AlphaToMask", 1);
-                    material.SetInt("_OutlineAlphaToMask", 1);
-                    material.SetOverrideTag("RenderType", "TransparentCutout");
-                    material.renderQueue = 2450;
+                    case 1  : rend = RenderingMode.Cutout; break;
+                    case 2  : rend = RenderingMode.Transparent; break;
+                    case 3  : rend = RenderingMode.Refraction; break;
+                    case 4  : rend = RenderingMode.Fur; break;
+                    case 5  : rend = RenderingMode.FurCutout; break;
+                    case 6  : rend = RenderingMode.Gem; break;
+                    default : rend = RenderingMode.Opaque; break;
                 }
-                else if(tpmode == 2.0f)
-                {
-                    if(isoutl)  material.shader = ltsmo;
-                    else        material.shader = ltsm;
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    material.SetInt("_OutlineSrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                    material.SetInt("_OutlineDstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    material.SetInt("_AlphaToMask", 0);
-                    material.SetInt("_OutlineAlphaToMask", 0);
-                    material.SetOverrideTag("RenderType", "TransparentCutout");
-                    material.renderQueue = RP == lilRenderPipeline.HDRP ? 3000 : 2460;
-                }
-                else if(tpmode == 3.0f)
-                {
-                    material.shader = ltsmref;
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_AlphaToMask", 0);
-                    material.SetOverrideTag("RenderType", "");
-                    material.renderQueue = -1;
-                }
-                else if(tpmode == 4.0f)
-                {
-                    material.shader = ltsmfur;
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    material.SetInt("_AlphaToMask", 0);
-                    material.SetInt("_FurSrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                    material.SetInt("_FurDstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    material.SetInt("_FurZWrite", 0);
-                    material.SetInt("_FurAlphaToMask", 0);
-                    material.SetOverrideTag("RenderType", "TransparentCutout");
-                    material.renderQueue = 3000;
-                }
-                else if(tpmode == 5.0f)
-                {
-                    material.shader = ltsmfur;
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_AlphaToMask", 1);
-                    material.SetInt("_FurSrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_FurDstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_FurZWrite", 1);
-                    material.SetInt("_FurAlphaToMask", 1);
-                    material.SetOverrideTag("RenderType", "TransparentCutout");
-                    material.renderQueue = 2450;
-                }
-                else if(tpmode == 6.0f)
-                {
-                    material.shader = ltsmgem;
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_AlphaToMask", 0);
-                    material.SetInt("_Cull", 0);
-                    material.SetOverrideTag("RenderType", "");
-                    material.renderQueue = -1;
-                }
-                else
-                {
-                    if(isoutl)  material.shader = ltsmo;
-                    else        material.shader = ltsm;
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_OutlineSrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_OutlineDstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_AlphaToMask", 0);
-                    material.SetInt("_OutlineAlphaToMask", 0);
-                    material.SetOverrideTag("RenderType", "");
-                    material.renderQueue = -1;
-                }
-                if(isstencil) material.renderQueue = material.shader.renderQueue - 1;
-                FixTransparentRenderQueue(material, tpmode);
-                if(tpmode == 6.0f)  material.SetInt("_ZWrite", 0);
-                else                material.SetInt("_ZWrite", 1);
-                material.SetInt("_ZTest", 4);
-                material.SetFloat("_OffsetFactor", 0.0f);
-                material.SetFloat("_OffsetUnits", 0.0f);
-                material.SetInt("_ColorMask", 15);
-                material.SetInt("_SrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_DstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                material.SetInt("_BlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
-                material.SetInt("_BlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
-                material.SetInt("_SrcBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_DstBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_SrcBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.Zero);
-                material.SetInt("_DstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_BlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
-                material.SetInt("_BlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
-                if(tpmode <= 2.0f)
-                {
-                    material.SetInt("_OutlineCull", 1);
-                    material.SetInt("_OutlineZWrite", 1);
-                    material.SetInt("_OutlineZTest", 2);
-                    material.SetFloat("_OutlineOffsetFactor", 0.0f);
-                    material.SetFloat("_OutlineOffsetUnits", 0.0f);
-                    material.SetInt("_OutlineColorMask", 15);
-                    material.SetInt("_OutlineSrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_OutlineDstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    material.SetInt("_OutlineBlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
-                    material.SetInt("_OutlineBlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
-                    material.SetInt("_OutlineSrcBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_OutlineDstBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_OutlineSrcBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_OutlineDstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_OutlineBlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
-                    material.SetInt("_OutlineBlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
-                }
-                if(renderingMode == RenderingMode.Fur || renderingMode == RenderingMode.FurCutout || renderingMode == RenderingMode.FurTwoPass)
-                {
-                    material.SetInt("_FurZTest", 4);
-                    material.SetFloat("_FurOffsetFactor", 0.0f);
-                    material.SetFloat("_FurOffsetUnits", 0.0f);
-                    material.SetInt("_FurColorMask", 15);
-                    material.SetInt("_FurSrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_FurDstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    material.SetInt("_FurBlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
-                    material.SetInt("_FurBlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
-                    material.SetInt("_FurSrcBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_FurDstBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_FurSrcBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_FurDstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_FurBlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
-                    material.SetInt("_FurBlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
-                }
-                return;
             }
-            switch (renderingMode)
+            switch(rend)
             {
                 case RenderingMode.Opaque:
                     if(islite)
                     {
                         if(isoutl)  material.shader = ltslo;
                         else        material.shader = ltsl;
+                    }
+                    else if(ismulti)
+                    {
+                        if(isoutl)  material.shader = ltsmo;
+                        else        material.shader = ltsm;
+                        material.SetOverrideTag("RenderType", "");
+                        material.renderQueue = -1;
                     }
                     else if(istess)
                     {
@@ -7686,6 +6228,13 @@ namespace lilToon
                         if(isoutl)  material.shader = ltslco;
                         else        material.shader = ltslc;
                     }
+                    else if(ismulti)
+                    {
+                        if(isoutl)  material.shader = ltsmo;
+                        else        material.shader = ltsm;
+                        material.SetOverrideTag("RenderType", "TransparentCutout");
+                        material.renderQueue = 2450;
+                    }
                     else if(istess)
                     {
                         if(isoutl)  material.shader = ltstessco;
@@ -7707,59 +6256,69 @@ namespace lilToon
                     }
                     break;
                 case RenderingMode.Transparent:
-                    switch (transparentMode)
+                    if(ismulti)
                     {
-                        case TransparentMode.Normal:
-                            if(islite)
-                            {
-                                if(isoutl)  material.shader = ltslto;
-                                else        material.shader = ltslt;
-                            }
-                            else if(istess)
-                            {
-                                if(isoutl)  material.shader = ltstessto;
-                                else        material.shader = ltstesst;
-                            }
-                            else
-                            {
-                                if(isoutl)  material.shader = ltsto;
-                                else        material.shader = ltst;
-                            }
-                            break;
-                        case TransparentMode.OnePass:
-                            if(islite)
-                            {
-                                if(isoutl)  material.shader = ltsloto;
-                                else        material.shader = ltslot;
-                            }
-                            else if(istess)
-                            {
-                                if(isoutl)  material.shader = ltstessoto;
-                                else        material.shader = ltstessot;
-                            }
-                            else
-                            {
-                                if(isoutl)  material.shader = ltsoto;
-                                else        material.shader = ltsot;
-                            }
-                            break;
-                        case TransparentMode.TwoPass:
-                            if(islite)
-                            {
-                                if(isoutl)  material.shader = ltsltto;
-                                else        material.shader = ltsltt;
-                            }
-                            else if(istess)
-                            {
-                                if(isoutl)  material.shader = ltstesstto;
-                                else        material.shader = ltstesstt;
-                            }
-                            else
-                            {
-                                if(isoutl)  material.shader = ltstto;
-                                else        material.shader = ltstt;
-                            }
-                            break;
+                        if(isoutl)  material.shader = ltsmo;
+                        else        material.shader = ltsm;
+                        material.SetOverrideTag("RenderType", "TransparentCutout");
+                        material.renderQueue = RP == lilRenderPipeline.HDRP ? 3000 : 2460;
+                    }
+                    else
+                    {
+                        switch (transparentMode)
+                        {
+                            case TransparentMode.Normal:
+                                if(islite)
+                                {
+                                    if(isoutl)  material.shader = ltslto;
+                                    else        material.shader = ltslt;
+                                }
+                                else if(istess)
+                                {
+                                    if(isoutl)  material.shader = ltstessto;
+                                    else        material.shader = ltstesst;
+                                }
+                                else
+                                {
+                                    if(isoutl)  material.shader = ltsto;
+                                    else        material.shader = ltst;
+                                }
+                                break;
+                            case TransparentMode.OnePass:
+                                if(islite)
+                                {
+                                    if(isoutl)  material.shader = ltsloto;
+                                    else        material.shader = ltslot;
+                                }
+                                else if(istess)
+                                {
+                                    if(isoutl)  material.shader = ltstessoto;
+                                    else        material.shader = ltstessot;
+                                }
+                                else
+                                {
+                                    if(isoutl)  material.shader = ltsoto;
+                                    else        material.shader = ltsot;
+                                }
+                                break;
+                            case TransparentMode.TwoPass:
+                                if(islite)
+                                {
+                                    if(isoutl)  material.shader = ltsltto;
+                                    else        material.shader = ltsltt;
+                                }
+                                else if(istess)
+                                {
+                                    if(isoutl)  material.shader = ltstesstto;
+                                    else        material.shader = ltstesstt;
+                                }
+                                else
+                                {
+                                    if(isoutl)  material.shader = ltstto;
+                                    else        material.shader = ltstt;
+                                }
+                                break;
+                        }
                     }
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
@@ -7772,7 +6331,16 @@ namespace lilToon
                     }
                     break;
                 case RenderingMode.Refraction:
-                    material.shader = ltsref;
+                    if(ismulti)
+                    {
+                        material.shader = ltsmref;
+                        material.SetOverrideTag("RenderType", "");
+                        material.renderQueue = -1;
+                    }
+                    else
+                    {
+                        material.shader = ltsref;
+                    }
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     material.SetInt("_AlphaToMask", 0);
@@ -7784,7 +6352,16 @@ namespace lilToon
                     material.SetInt("_AlphaToMask", 0);
                     break;
                 case RenderingMode.Fur:
-                    material.shader = ltsfur;
+                    if(ismulti)
+                    {
+                        material.shader = ltsmfur;
+                        material.SetOverrideTag("RenderType", "TransparentCutout");
+                        material.renderQueue = 3000;
+                    }
+                    else
+                    {
+                        material.shader = ltsfur;
+                    }
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                     material.SetInt("_AlphaToMask", 0);
@@ -7794,7 +6371,16 @@ namespace lilToon
                     material.SetInt("_FurAlphaToMask", 0);
                     break;
                 case RenderingMode.FurCutout:
-                    material.shader = ltsfurc;
+                    if(ismulti)
+                    {
+                        material.shader = ltsmfur;
+                        material.SetOverrideTag("RenderType", "TransparentCutout");
+                        material.renderQueue = 2450;
+                    }
+                    else
+                    {
+                        material.shader = ltsfurc;
+                    }
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     material.SetInt("_AlphaToMask", 1);
@@ -7814,7 +6400,16 @@ namespace lilToon
                     material.SetInt("_FurAlphaToMask", 0);
                     break;
                 case RenderingMode.Gem:
-                    material.shader = ltsgem;
+                    if(ismulti)
+                    {
+                        material.shader = ltsmgem;
+                        material.SetOverrideTag("RenderType", "");
+                        material.renderQueue = -1;
+                    }
+                    else
+                    {
+                        material.shader = ltsgem;
+                    }
                     material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     material.SetInt("_AlphaToMask", 0);
@@ -7823,7 +6418,7 @@ namespace lilToon
             if(isstencil) material.renderQueue = material.shader.renderQueue - 1;
             FixTransparentRenderQueue(material, renderingMode);
             material.SetInt("_ZWrite", 1);
-            if(renderingMode == RenderingMode.Gem)
+            if(rend == RenderingMode.Gem)
             {
                 material.SetInt("_Cull", 0);
                 material.SetInt("_ZWrite", 0);
@@ -7880,6 +6475,27 @@ namespace lilToon
             }
         }
 
+        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess)
+        {
+            SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess, isMulti);
+        }
+
+        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode)
+        {
+            SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isOutl, isLite, isStWr, isTess);
+        }
+
+        public static bool CheckMainTextureName(string name)
+        {
+            return mainTexCheckWords.Any(word => !name.Contains(word));
+        }
+
+        public static void RemoveUnusedTexture(Material material)
+        {
+            if(!material.shader.name.Contains("lilToon")) return;
+            RemoveUnusedTexture(material, material.shader.name.Contains("Lite"));
+        }
+
         private static void FixTransparentRenderQueue(Material material, RenderingMode renderingMode)
         {
             #if VRC_SDK_VRCSDK3 && UDON
@@ -7896,31 +6512,7 @@ namespace lilToon
             #endif
         }
 
-        private static void FixTransparentRenderQueue(Material material, float tpmode)
-        {
-            #if VRC_SDK_VRCSDK3 && UDON
-                if( tpmode == 2.0f ||
-                    tpmode == 3.0f ||
-                    tpmode == 4.0f ||
-                    tpmode == 6.0f
-                )
-                {
-                    material.renderQueue = 3000;
-                }
-            #endif
-        }
-
-        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess)
-        {
-            SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess, isMulti);
-        }
-
-        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode)
-        {
-            SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isOutl, isLite, isStWr, isTess);
-        }
-
-        public static void SetupShaderSettingFromMaterial(Material material, ref lilToonSetting shaderSetting)
+        private static void SetupShaderSettingFromMaterial(Material material, ref lilToonSetting shaderSetting)
         {
             if(material == null) return;
             if(!material.shader.name.Contains("lilToon") || material.shader.name.Contains("Lite") || material.shader.name.Contains("Multi")) return;
@@ -8274,7 +6866,7 @@ namespace lilToon
             }
         }
 
-        public static void SetupShaderSettingFromAnimationClip(AnimationClip clip, ref lilToonSetting shaderSetting, bool shouldCheckMaterial = false)
+        private static void SetupShaderSettingFromAnimationClip(AnimationClip clip, ref lilToonSetting shaderSetting, bool shouldCheckMaterial = false)
         {
             if(clip == null) return;
 
@@ -8363,24 +6955,13 @@ namespace lilToon
             }
         }
 
-        public static bool CheckMainTextureName(string name)
-        {
-            return mainTexCheckWords.Any(word => !name.Contains(word));
-        }
-
-        public static void RemoveUnusedTexture(Material material)
-        {
-            if(!material.shader.name.Contains("lilToon")) return;
-            RemoveUnusedTexture(material, material.shader.name.Contains("Lite"));
-        }
-
-        public static void SetShaderKeywords(Material material, string keyword, bool enable)
+        private static void SetShaderKeywords(Material material, string keyword, bool enable)
         {
             if(enable)  material.EnableKeyword(keyword);
             else        material.DisableKeyword(keyword);
         }
 
-        public void SetupMultiMaterial(Material material)
+        private void SetupMultiMaterial(Material material)
         {
             SetShaderKeywords(material, "UNITY_UI_ALPHACLIP",                   material.GetFloat("_TransparentMode") == 1.0f);
             SetShaderKeywords(material, "UNITY_UI_CLIP_RECT",                   material.GetFloat("_TransparentMode") == 2.0f || material.GetFloat("_TransparentMode") == 4.0f);
@@ -8673,7 +7254,7 @@ namespace lilToon
             Array.Resize(ref presets, presetGuid.Length);
             for(int i=0; i<presetGuid.Length; i++)
             {
-                presets[i] = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath(presetGuid[i]));
+                presets[i] = AssetDatabase.LoadAssetAtPath<lilToonPreset>(GUIDToPath(presetGuid[i]));
             }
         }
 
@@ -9190,7 +7771,7 @@ namespace lilToon
                         {
                             SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentMode);
                         }
-                        if(transparentModeBuf >= TransparentMode.OnePass && vertexLightStrength.floatValue != 1.0f && AutoFixHelpBox(GetLoc("sHelpOnePassVertexLight")))
+                        if(transparentModeBuf >= TransparentMode.OnePass && vertexLightStrength.floatValue != 1.0f && RPReader.GetRP() == lilRenderPipeline.BRP && AutoFixHelpBox(GetLoc("sHelpOnePassVertexLight")))
                         {
                             vertexLightStrength.floatValue = 1.0f;
                         }
@@ -12025,6 +10606,161 @@ namespace lilToon
             }
         #endif
         #endregion
+    }
+
+    public enum lilPresetCategory
+    {
+        Skin,
+        Hair,
+        Cloth,
+        Nature,
+        Inorganic,
+        Effect,
+        Other
+    }
+
+    public enum lilPropertyBlock
+    {
+        Base,
+        Lighting,
+        UV,
+        MainColor,
+        MainColor1st,
+        MainColor2nd,
+        MainColor3rd,
+        AlphaMask,
+        Shadow,
+        Emission,
+        Emission1st,
+        Emission2nd,
+        NormalMap,
+        NormalMap1st,
+        NormalMap2nd,
+        Anisotropy,
+        Reflections,
+        Reflection,
+        MatCaps,
+        MatCap1st,
+        MatCap2nd,
+        RimLight,
+        Glitter,
+        Backlight,
+        Gem,
+        Outline,
+        Parallax,
+        DistanceFade,
+        AudioLink,
+        Dissolve,
+        Refraction,
+        Fur,
+        Encryption,
+        Stencil,
+        Rendering,
+        Tessellation,
+        Other
+    }
+
+    public class lilMaterialProperty
+    {
+        public MaterialProperty p;
+        public List<lilPropertyBlock> blocks;
+        public bool isTexture;
+
+        // Values
+        public int intValue
+        {
+            get { return p.intValue; }
+            set { p.intValue = value; }
+        }
+
+        public float floatValue
+        {
+            get { return p.floatValue; }
+            set { p.floatValue = value; }
+        }
+
+        public Vector4 vectorValue
+        {
+            get { return p.vectorValue; }
+            set { p.vectorValue = value; }
+        }
+
+        public Color colorValue
+        {
+            get { return p.colorValue; }
+            set { p.colorValue = value; }
+        }
+
+        public Texture textureValue
+        {
+            get { return p.textureValue; }
+            set { p.textureValue = value; }
+        }
+
+        // Other
+        public string name
+        {
+            get { return p.name; }
+            private set { }
+        }
+        public string displayName
+        {
+            get { return p.displayName; }
+            private set { }
+        }
+
+        public MaterialProperty.PropFlags flags
+        {
+            get { return p.flags; }
+            private set { }
+        }
+
+        public bool hasMixedValue
+        {
+            get { return p.hasMixedValue; }
+            private set { }
+        }
+
+        public Vector2 rangeLimits
+        {
+            get { return p.rangeLimits; }
+            private set { }
+        }
+
+        public UnityEngine.Object[] targets
+        {
+            get { return p.targets; }
+            private set { }
+        }
+
+        public UnityEngine.Rendering.TextureDimension textureDimension
+        {
+            get { return p.textureDimension; }
+            private set { }
+        }
+
+        public MaterialProperty.PropType type
+        {
+            get { return p.type; }
+            private set { }
+        }
+
+        public lilMaterialProperty()
+        {
+            p = null;
+            blocks = new List<lilPropertyBlock>();
+            isTexture = false;
+        }
+
+        public lilMaterialProperty(MaterialProperty prop)
+        {
+            p = prop;
+        }
+
+        public static implicit operator MaterialProperty(lilMaterialProperty prop)
+        {
+            return prop.p;
+        }
     }
 }
 #endif

@@ -562,6 +562,7 @@ SAMPLER(sampler_linear_clamp);
         float   _BacklightDirectivity;
         float   _BacklightViewStrength;
         float   _BacklightBackfaceMask;
+        float   _BacklightMainStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_NORMAL)
         float   _BumpScale;
@@ -604,6 +605,7 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCapLod;
         float   _MatCapNormalStrength;
         float   _MatCapBumpScale;
+        float   _MatCapMainStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP_2ND)
         float   _MatCap2ndBlend;
@@ -614,6 +616,7 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCap2ndLod;
         float   _MatCap2ndNormalStrength;
         float   _MatCap2ndBumpScale;
+        float   _MatCap2ndMainStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_RIM)
         float   _RimNormalStrength;
@@ -629,6 +632,7 @@ SAMPLER(sampler_linear_clamp);
         float   _RimIndirBorder;
         float   _RimIndirBlur;
         float   _RimBackfaceMask;
+        float   _RimMainStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         float   _GlitterMainStrength;
@@ -645,12 +649,14 @@ SAMPLER(sampler_linear_clamp);
         float   _EmissionParallaxDepth;
         float   _EmissionFluorescence;
         float   _EmissionGradSpeed;
+        float   _EmissionMainStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION_2ND)
         float   _Emission2ndBlend;
         float   _Emission2ndParallaxDepth;
         float   _Emission2ndFluorescence;
         float   _Emission2ndGradSpeed;
+        float   _Emission2ndMainStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_PARALLAX)
         float   _Parallax;
@@ -1152,6 +1158,7 @@ SAMPLER(sampler_linear_clamp);
         float   _BacklightDirectivity;
         float   _BacklightViewStrength;
         float   _BacklightBackfaceMask;
+        float   _BacklightMainStrength;
     #endif
     #if defined(LIL_FEATURE_NORMAL_1ST)
         float   _BumpScale;
@@ -1193,6 +1200,7 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCapBackfaceMask;
         float   _MatCapLod;
         float   _MatCapNormalStrength;
+        float   _MatCapMainStrength;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             float   _MatCapBumpScale;
         #endif
@@ -1205,6 +1213,7 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCap2ndBackfaceMask;
         float   _MatCap2ndLod;
         float   _MatCap2ndNormalStrength;
+        float   _MatCap2ndMainStrength;
         #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
             float   _MatCap2ndBumpScale;
         #endif
@@ -1218,6 +1227,7 @@ SAMPLER(sampler_linear_clamp);
         float   _RimShadowMask;
         float   _RimVRParallaxStrength;
         float   _RimBackfaceMask;
+        float   _RimMainStrength;
         #if defined(LIL_FEATURE_RIMLIGHT_DIRECTION)
             float   _RimDirStrength;
             float   _RimDirRange;
@@ -1240,6 +1250,7 @@ SAMPLER(sampler_linear_clamp);
         float   _EmissionBlend;
         float   _EmissionParallaxDepth;
         float   _EmissionFluorescence;
+        float   _EmissionMainStrength;
         #if defined(LIL_FEATURE_EMISSION_GRADATION)
             float   _EmissionGradSpeed;
         #endif
@@ -1248,6 +1259,7 @@ SAMPLER(sampler_linear_clamp);
         float   _Emission2ndBlend;
         float   _Emission2ndParallaxDepth;
         float   _Emission2ndFluorescence;
+        float   _Emission2ndMainStrength;
         #if defined(LIL_FEATURE_EMISSION_GRADATION)
             float   _Emission2ndGradSpeed;
         #endif
