@@ -119,7 +119,7 @@ namespace lilToon
             [MenuItem(menuPathConvertGifToAtlas, false, menuPriorityConvertGifToAtlas)]
             private static void ConvertGifToAtlas()
             {
-                lilToonInspector.ConvertGifToAtlas(Selection.activeObject);
+                lilTextureUtils.ConvertGifToAtlas(Selection.activeObject);
             }
 
             [MenuItem(menuPathConvertGifToAtlas, true, menuPriorityConvertGifToAtlas)]

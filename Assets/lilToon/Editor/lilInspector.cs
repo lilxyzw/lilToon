@@ -7161,9 +7161,7 @@ namespace lilToon
         private void UV4Decal(MaterialProperty isDecal, MaterialProperty isLeftOnly, MaterialProperty isRightOnly, MaterialProperty shouldCopy, MaterialProperty shouldFlipMirror, MaterialProperty shouldFlipCopy, MaterialProperty tex, MaterialProperty angle, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty uvMode)
         {
             m_MaterialEditor.ShaderProperty(uvMode, "UV Mode|UV0|UV1|UV2|UV3|MatCap");
-            #if SYSTEM_DRAWING
             ConvertGifToAtlas(tex, decalAnimation, decalSubParam, isDecal);
-            #endif
             // Toggle decal
             EditorGUI.BeginChangeCheck();
             m_MaterialEditor.ShaderProperty(isDecal, GetLoc("sAsDecal"));
@@ -7658,6 +7656,23 @@ namespace lilToon
         private float RoundFloat1000000(float val)
         {
             return Mathf.Floor(val * 1000000.0f + 0.5f) * 0.000001f;
+        }
+
+        public static void ConvertGifToAtlas(MaterialProperty tex, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty isDecal)
+        {
+            #if SYSTEM_DRAWING
+                if(tex.textureValue != null && AssetDatabase.GetAssetPath(tex.textureValue).EndsWith(".gif", StringComparison.OrdinalIgnoreCase) && EditorButton(GetLoc("sConvertGif")))
+                {
+                    int frameCount, loopXY, duration;
+                    float xScale, yScale;
+                    string savePath = lilTextureUtils.ConvertGifToAtlas(tex.textureValue, out frameCount, out loopXY, out duration, out xScale, out yScale);
+
+                    tex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(savePath);
+                    decalAnimation.vectorValue = new Vector4(loopXY,loopXY,(float)frameCount,100.0f/(float)duration);
+                    decalSubParam.vectorValue = new Vector4(xScale,yScale,decalSubParam.vectorValue.z,decalSubParam.vectorValue.w);
+                    isDecal.floatValue = 1.0f;
+                }
+            #endif
         }
 
         private static bool EditorButton(string label)
@@ -8453,89 +8468,6 @@ namespace lilToon
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
-        // Gif to Atlas
-        #region
-        #if SYSTEM_DRAWING
-            public static string ConvertGifToAtlas(UnityEngine.Object tex)
-            {
-                int frameCount, loopXY, duration;
-                float xScale, yScale;
-                return ConvertGifToAtlas(tex, out frameCount, out loopXY, out duration, out xScale, out yScale);
-            }
-
-            public void ConvertGifToAtlas(MaterialProperty tex, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty isDecal)
-            {
-                if(tex.textureValue != null && AssetDatabase.GetAssetPath(tex.textureValue).EndsWith(".gif", StringComparison.OrdinalIgnoreCase) && EditorButton(GetLoc("sConvertGif")))
-                {
-                    int frameCount, loopXY, duration;
-                    float xScale, yScale;
-                    string savePath = ConvertGifToAtlas(tex.textureValue, out frameCount, out loopXY, out duration, out xScale, out yScale);
-
-                    tex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(savePath);
-                    decalAnimation.vectorValue = new Vector4(loopXY,loopXY,(float)frameCount,100.0f/(float)duration);
-                    decalSubParam.vectorValue = new Vector4(xScale,yScale,decalSubParam.vectorValue.z,decalSubParam.vectorValue.w);
-                    isDecal.floatValue = 1.0f;
-                }
-            }
-
-            public static string ConvertGifToAtlas(UnityEngine.Object tex, out int frameCount, out int loopXY, out int duration, out float xScale, out float yScale)
-            {
-                string path = AssetDatabase.GetAssetPath(tex);
-                System.Drawing.Image origGif = System.Drawing.Image.FromFile(path);
-                System.Drawing.Imaging.FrameDimension dimension = new System.Drawing.Imaging.FrameDimension(origGif.FrameDimensionsList[0]);
-                frameCount = origGif.GetFrameCount(dimension);
-                loopXY = Mathf.CeilToInt(Mathf.Sqrt(frameCount));
-                duration = BitConverter.ToInt32(origGif.GetPropertyItem(20736).Value, 0);
-                int finalWidth = 1;
-                int finalHeight = 1;
-                if(EditorUtility.DisplayDialog(GetLoc("sDialogGifToAtlas"), GetLoc("sUtilGif2AtlasPow2"), GetLoc("sYes"), GetLoc("sNo")))
-                {
-                    while(finalWidth < origGif.Width * loopXY) finalWidth *= 2;
-                    while(finalHeight < origGif.Height * loopXY) finalHeight *= 2;
-                }
-                else
-                {
-                    finalWidth = origGif.Width * loopXY;
-                    finalHeight = origGif.Height * loopXY;
-                }
-                Texture2D atlasTexture = new Texture2D(finalWidth, finalHeight);
-                xScale = (float)(origGif.Width * loopXY) / (float)finalWidth;
-                yScale = (float)(origGif.Height * loopXY) / (float)finalHeight;
-                for(int x = 0; x < finalWidth; x++)
-                {
-                    for(int y = 0; y < finalHeight; y++)
-                    {
-                        atlasTexture.SetPixel(x, finalHeight - 1 - y, Color.clear);
-                    }
-                }
-                for(int i = 0; i < frameCount; i++)
-                {
-                    int offsetX = i%loopXY;
-                    int offsetY = Mathf.FloorToInt(i/loopXY);
-                    origGif.SelectActiveFrame(dimension, i);
-                    System.Drawing.Bitmap frame = new System.Drawing.Bitmap(origGif.Width, origGif.Height);
-                    System.Drawing.Graphics.FromImage(frame).DrawImage(origGif, System.Drawing.Point.Empty);
-
-                    for(int x = 0; x < frame.Width; x++)
-                    {
-                        for(int y = 0; y < frame.Height; y++)
-                        {
-                            System.Drawing.Color sourceColor = frame.GetPixel(x, y);
-                            atlasTexture.SetPixel(x + (frame.Width * offsetX), finalHeight - (frame.Height * offsetY) - 1 - y, new Color32(sourceColor.R, sourceColor.G, sourceColor.B, sourceColor.A));
-                        }
-                    }
-                }
-                atlasTexture.Apply();
-
-                // Save
-                string savePath = lilTextureUtils.SaveTextureToPng(path, "_gif2png_" + loopXY + "_" + frameCount + "_" + duration, atlasTexture);
-                AssetDatabase.Refresh();
-                return savePath;
-            }
-        #endif
-        #endregion
-
-        //------------------------------------------------------------------------------------------------------------------------------
         // Obsolete
         #region
         [Obsolete("Use \"DrawCustomProperties(Material material)\" instead.")]
@@ -8653,6 +8585,18 @@ namespace lilToon
         public static string SavePng(string path, string add, Texture2D tex)
         {
             return lilTextureUtils.SaveTextureToPng(path, add, tex);
+        }
+
+        [Obsolete("Use \"lilTextureUtils.ConvertGifToAtlas(UnityEngine.Object tex)\" instead.")]
+        public static string ConvertGifToAtlas(UnityEngine.Object tex)
+        {
+            return lilTextureUtils.ConvertGifToAtlas(tex);
+        }
+
+        [Obsolete("Use \"lilTextureUtils.ConvertGifToAtlas(UnityEngine.Object tex, out int frameCount, out int loopXY, out int duration, out float xScale, out float yScale)\" instead.")]
+        public static string ConvertGifToAtlas(UnityEngine.Object tex, out int frameCount, out int loopXY, out int duration, out float xScale, out float yScale)
+        {
+            return lilTextureUtils.ConvertGifToAtlas(tex, out frameCount, out loopXY, out duration, out xScale, out yScale);
         }
 
         [Obsolete("Use \"lilLanguageManager.InitializeLanguage()\" instead.")]
