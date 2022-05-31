@@ -49,13 +49,13 @@ namespace lilToon
 
             if(File.Exists(lilToonInspector.postBuildTempPath)) File.Delete(lilToonInspector.postBuildTempPath);
             lilToonSetting shaderSetting = null;
-            lilToonInspector.InitializeShaderSetting(ref shaderSetting);
+            lilToonSetting.InitializeShaderSetting(ref shaderSetting);
             if(shaderSetting != null)
             {
-                lilToonInspector.TurnOnAllShaderSetting(ref shaderSetting);
+                lilToonSetting.TurnOnAllShaderSetting(ref shaderSetting);
                 EditorUtility.SetDirty(shaderSetting);
                 AssetDatabase.SaveAssets();
-                lilToonInspector.ApplyShaderSetting(shaderSetting);
+                lilToonSetting.ApplyShaderSetting(shaderSetting);
             }
 
             AssetDatabase.Refresh();
@@ -211,7 +211,7 @@ namespace lilToon
                 }
 
                 lilToonSetting shaderSetting = null;
-                lilToonInspector.InitializeShaderSetting(ref shaderSetting);
+                lilToonSetting.InitializeShaderSetting(ref shaderSetting);
 
                 // Materials in SerializedObject
                 SerializedObject serializedObject = new SerializedObject(importer);
@@ -658,12 +658,12 @@ public class lilToonBuildProcessor : IPreprocessBuildWithReport, IPostprocessBui
 
     public void OnPreprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
     {
-        lilToonInspector.SetShaderSettingBeforeBuild();
+        lilToonSetting.SetShaderSettingBeforeBuild();
     }
 
     public void OnPostprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
     {
-        lilToonInspector.SetShaderSettingAfterBuild();
+        lilToonSetting.SetShaderSettingAfterBuild();
     }
 }
 
@@ -676,19 +676,19 @@ public class lilToonBuildProcessor : IPreprocessBuildWithReport, IPostprocessBui
 
         public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
         {
-            lilToonInspector.SetShaderSettingBeforeBuild();
+            lilToonSetting.SetShaderSettingBeforeBuild();
             return true;
         }
 
         public bool OnPreprocessAvatar(GameObject avatarGameObject)
         {
-            lilToonInspector.SetShaderSettingBeforeBuild(avatarGameObject);
+            lilToonSetting.SetShaderSettingBeforeBuild(avatarGameObject);
             return true;
         }
 
         public void OnPostprocessAvatar()
         {
-            lilToonInspector.SetShaderSettingAfterBuild();
+            lilToonSetting.SetShaderSettingAfterBuild();
         }
     }
 #endif

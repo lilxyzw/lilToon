@@ -79,7 +79,7 @@ namespace lilToon
             {
                 EditorApplication.delayCall += () =>
                 {
-                    lilToonInspector.SetShaderSettingAfterBuild();
+                    lilToonSetting.SetShaderSettingAfterBuild();
                 };
             }
         }
