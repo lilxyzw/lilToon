@@ -4597,42 +4597,6 @@ namespace lilToon
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
-        // Migration
-        #region
-        public static void MigrateMaterials()
-        {
-            InitializeShaders();
-            foreach(string guid in AssetDatabase.FindAssets("t:material"))
-            {
-                Material material = AssetDatabase.LoadAssetAtPath<Material>(GUIDToPath(guid));
-                MigrateMaterial(material);
-            }
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-        }
-
-        private static void MigrateMaterial(Material material)
-        {
-            if(material.shader == null || !material.shader.name.Contains("lilToon")) return;
-            int version = material.HasProperty("_lilToonVersion") ? (int)material.GetFloat("_lilToonVersion") : 0;
-            if(version >= currentVersionValue) return;
-            Debug.Log("[lilToon]Run migration: " + material.name);
-            material.SetFloat("_lilToonVersion", currentVersionValue);
-
-            // 1.2.7 -> 1.2.8
-            if(version < 21)
-            {
-                if(material.shader.name.Contains("_lil/lilToonMulti"))
-                {
-                    int renderQueue = material.renderQueue;
-                    material.shader = material.HasProperty("_UseOutline") && material.GetFloat("_UseOutline") != 0.0f ? ltsmo : ltsm;
-                    material.renderQueue = renderQueue;
-                }
-            }
-        }
-        #endregion
-
-        //------------------------------------------------------------------------------------------------------------------------------
         // GUI
         #region
         public static GUIStyle InitializeBox(int border, int margin, int padding)
