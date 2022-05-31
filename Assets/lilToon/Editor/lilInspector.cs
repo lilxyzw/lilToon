@@ -43,43 +43,7 @@ namespace lilToon
         private const string boothURL = "https://lilxyzw.booth.pm/";
         private const string githubURL = "https://github.com/lilxyzw/lilToon";
         public const string versionInfoURL = "https://raw.githubusercontent.com/lilxyzw/lilToon/master/version.json";
-        private const string editorSettingTempPath          = "Temp/lilToonEditorSetting";
-        public const string versionInfoTempPath             = "Temp/lilToonVersion";
-        public const string packageListTempPath             = "Temp/lilToonPackageList";
-        public const string postBuildTempPath               = "Temp/lilToonPostBuild";
-        public const string startupTempPath                 = "Temp/lilToonStartup";
         private static readonly string[] mainTexCheckWords = new[] {"mask", "shadow", "shade", "outline", "normal", "bumpmap", "matcap", "rimlight", "emittion", "reflection", "specular", "roughness", "smoothness", "metallic", "metalness", "opacity", "parallax", "displacement", "height", "ambient", "occlusion"};
-
-        #if NET_4_6
-            public const string rspPath = "Assets/csc.rsp";
-        #else
-            public const string rspPath = "Assets/mcs.rsp";
-        #endif
-
-        public static string GetMainFolderPath()            { return GUIDToPath("05d1d116436047941ad97d1b9064ee05"); } // "Assets/lilToon"
-        public static string GetEditorFolderPath()          { return GUIDToPath("3e73d675b9c1adc4f8b6b8ef01bce51c"); } // "Assets/lilToon/Editor"
-        public static string GetPresetsFolderPath()         { return GUIDToPath("35817d21af2f3134182c4a7e4c07786b"); } // "Assets/lilToon/Presets"
-        public static string GetEditorPath()                { return GUIDToPath("aefa51cbc37d602418a38a02c3b9afb9"); } // "Assets/lilToon/Editor/lilInspector.cs"
-        public static string GetShaderFolderPath()          { return GUIDToPath("ac0a8f602b5e72f458f4914bf08f0269"); } // "Assets/lilToon/Shader"
-        public static string GetShaderPipelinePath()        { return GUIDToPath("32299664512e2e042bbc351c1d46d383"); } // "Assets/lilToon/Shader/Includes/lil_pipeline.hlsl";
-        public static string GetShaderCommonPath()          { return GUIDToPath("5520e766422958546bbe885a95d5a67e"); } // "Assets/lilToon/Shader/Includes/lil_common.hlsl";
-        public static string GetShaderSettingHLSLPath()     { return GUIDToPath("937115b0cd7c27140b76bbd51c6ee76b"); } // "Assets/lilToon/Shader/Includes/lil_setting.hlsl";
-        public static string GetEditorLanguageFileGUID()    { return GUIDToPath("a63ad2f5296744a4bad011de744ba8ba"); } // "Assets/lilToon/Editor/Resources/lang.txt"
-        public static string GetAvatarEncryptionPath()      { return GUIDToPath("f9787bf8ed5154f4b931278945ac8ca1"); } // "Assets/AvaterEncryption";
-        public static string GetGUIBoxInDarkPath()          { return GUIDToPath("bb1313c9ea1425b41b74e98fd04bcbc8"); } // "Assets/lilToon/Editor/Resources/gui_box_inner_dark.guiskin"
-        public static string GetGUIBoxInLightPath()         { return GUIDToPath("f18d71f528511e748887f5e246abcc16"); } // "Assets/lilToon/Editor/Resources/gui_box_inner_light.guiskin"
-        public static string GetGUIBoxInHalfDarkPath()      { return GUIDToPath("a72199a4c9cc3714d8edfbc5d3b13823"); } // "Assets/lilToon/Editor/Resources/gui_box_inner_half_dark.guiskin"
-        public static string GetGUIBoxInHalfLightPath()     { return GUIDToPath("8343038a4a0cbef4d8af45c073520436"); } // "Assets/lilToon/Editor/Resources/gui_box_inner_half_light.guiskin"
-        public static string GetGUIBoxOutDarkPath()         { return GUIDToPath("29f3c01461cd0474eab36bf2e939bb58"); } // "Assets/lilToon/Editor/Resources/gui_box_outer_dark.guiskin"
-        public static string GetGUIBoxOutLightPath()        { return GUIDToPath("16cc103a658d8404894e66dd8f35cb77"); } // "Assets/lilToon/Editor/Resources/gui_box_outer_light.guiskin"
-        public static string GetGUICustomBoxDarkPath()      { return GUIDToPath("45dfb1bafd2c7d34ab453c29c0b1f46e"); } // "Assets/lilToon/Editor/Resources/gui_custom_box_dark.guiskin"
-        public static string GetGUICustomBoxLightPath()     { return GUIDToPath("a1ed8756474bfd34f80fa22e6c43b2e5"); } // "Assets/lilToon/Editor/Resources/gui_custom_box_light.guiskin"
-        public static string[] GetShaderFolderPaths()       { return new[] {GetShaderFolderPath()}; }
-        public static string GetSettingFolderPath()         { return GetMainFolderPath(); }
-        public static string GetShaderSettingPath()         { return GetMainFolderPath() + "/ShaderSetting.asset"; }
-        public static string GUIDToPath(string GUID)        { return AssetDatabase.GUIDToAssetPath(GUID); }
-
-        public static bool ExistsEncryption() { return !string.IsNullOrEmpty(GetAvatarEncryptionPath()); }
 
         public static readonly Vector2 defaultTextureOffset = new Vector2(0.0f,0.0f);
         public static readonly Vector2 defaultTextureScale = new Vector2(1.0f,1.0f);
@@ -1514,7 +1478,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Encryption
-                if(ExistsEncryption())
+                if(lilDirectoryManager.ExistsEncryption())
                 {
                     edSet.isShowEncryption = Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
                     DrawMenuButton(GetLoc("sAnchorEncryption"), lilPropertyBlock.Encryption);
@@ -2453,7 +2417,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Encryption
-                if(ExistsEncryption())
+                if(lilDirectoryManager.ExistsEncryption())
                 {
                     edSet.isShowEncryption = Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
                     DrawMenuButton(GetLoc("sAnchorEncryption"), lilPropertyBlock.Encryption);
@@ -4282,7 +4246,7 @@ namespace lilToon
 
             if(loc.Count == 0)
             {
-                string langPath = GetEditorLanguageFileGUID();
+                string langPath = lilDirectoryManager.GetEditorLanguageFileGUID();
                 LoadLanguage(langPath);
                 InitializeLabels();
             }
@@ -4290,7 +4254,7 @@ namespace lilToon
 
         public static void LoadCustomLanguage(string langFileGUID)
         {
-            string langPath = GUIDToPath(langFileGUID);
+            string langPath = lilDirectoryManager.GUIDToPath(langFileGUID);
             LoadLanguage(langPath);
         }
 
@@ -4306,7 +4270,7 @@ namespace lilToon
             // Load language
             if(numbuf != edSet.languageNum)
             {
-                string langPath = GetEditorLanguageFileGUID();
+                string langPath = lilDirectoryManager.GetEditorLanguageFileGUID();
                 LoadLanguage(langPath);
                 InitializeLabels();
             }
@@ -4375,11 +4339,11 @@ namespace lilToon
         #region
         public static void RewriteShaderRP()
         {
-            string[] shaderFolderPaths = GetShaderFolderPaths();
+            string[] shaderFolderPaths = lilDirectoryManager.GetShaderFolderPaths();
             string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
             lilRenderPipeline RP = RPReader.GetRP();
-            Array.ForEach(shaderGuids, shaderGuid => RewriteShaderRP(GUIDToPath(shaderGuid), RP));
-            RewriteShaderRP(GetShaderPipelinePath(), RP);
+            Array.ForEach(shaderGuids, shaderGuid => RewriteShaderRP(lilDirectoryManager.GUIDToPath(shaderGuid), RP));
+            RewriteShaderRP(lilDirectoryManager.GetShaderPipelinePath(), RP);
         }
 
         private static void RewriteShaderRP(string shaderPath, lilRenderPipeline RP)
@@ -4703,18 +4667,18 @@ namespace lilToon
             };
             if(EditorGUIUtility.isProSkin)
             {
-                boxOuter.normal.background      = (Texture2D)EditorGUIUtility.Load(GetGUIBoxOutDarkPath());
-                boxInnerHalf.normal.background  = (Texture2D)EditorGUIUtility.Load(GetGUIBoxInHalfDarkPath());
-                boxInner.normal.background      = (Texture2D)EditorGUIUtility.Load(GetGUIBoxInDarkPath());
-                customBox.normal.background     = (Texture2D)EditorGUIUtility.Load(GetGUICustomBoxDarkPath());
+                boxOuter.normal.background      = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUIBoxOutDarkPath());
+                boxInnerHalf.normal.background  = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUIBoxInHalfDarkPath());
+                boxInner.normal.background      = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUIBoxInDarkPath());
+                customBox.normal.background     = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUICustomBoxDarkPath());
                 customToggleFont = EditorStyles.label;
             }
             else
             {
-                boxOuter.normal.background      = (Texture2D)EditorGUIUtility.Load(GetGUIBoxOutLightPath());
-                boxInnerHalf.normal.background  = (Texture2D)EditorGUIUtility.Load(GetGUIBoxInHalfLightPath());
-                boxInner.normal.background      = (Texture2D)EditorGUIUtility.Load(GetGUIBoxInLightPath());
-                customBox.normal.background     = (Texture2D)EditorGUIUtility.Load(GetGUICustomBoxLightPath());
+                boxOuter.normal.background      = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUIBoxOutLightPath());
+                boxInnerHalf.normal.background  = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUIBoxInHalfLightPath());
+                boxInner.normal.background      = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUIBoxInLightPath());
+                customBox.normal.background     = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUICustomBoxLightPath());
                 customToggleFont = new GUIStyle();
                 customToggleFont.normal.textColor = Color.white;
                 customToggleFont.contentOffset = new Vector2(2f,0f);
@@ -4924,11 +4888,11 @@ namespace lilToon
         {
             if(string.IsNullOrEmpty(edSet.languageNames))
             {
-                if(!File.Exists(editorSettingTempPath))
+                if(!File.Exists(lilDirectoryManager.editorSettingTempPath))
                 {
                     return;
                 }
-                StreamReader sr = new StreamReader(editorSettingTempPath);
+                StreamReader sr = new StreamReader(lilDirectoryManager.editorSettingTempPath);
                 string s = sr.ReadToEnd();
                 sr.Close();
                 if(!string.IsNullOrEmpty(s))
@@ -4940,7 +4904,7 @@ namespace lilToon
 
         public static void SaveEditorSettingTemp()
         {
-            StreamWriter sw = new StreamWriter(editorSettingTempPath,false);
+            StreamWriter sw = new StreamWriter(lilDirectoryManager.editorSettingTempPath,false);
             sw.Write(EditorJsonUtility.ToJson(edSet));
             sw.Close();
         }
@@ -4949,9 +4913,9 @@ namespace lilToon
         {
             if(string.IsNullOrEmpty(latestVersion.latest_vertion_name))
             {
-                if(File.Exists(versionInfoTempPath))
+                if(File.Exists(lilDirectoryManager.versionInfoTempPath))
                 {
-                    StreamReader sr = new StreamReader(versionInfoTempPath);
+                    StreamReader sr = new StreamReader(lilDirectoryManager.versionInfoTempPath);
                     string s = sr.ReadToEnd();
                     sr.Close();
                     if(!string.IsNullOrEmpty(s) && s.Contains("latest_vertion_name") && s.Contains("latest_vertion_value"))
@@ -9002,6 +8966,41 @@ namespace lilToon
         {
             lilToonPreset.ApplyPreset(material, preset, ismulti);
         }
+
+        private const string WARN_ABOUT_DIRECTORY = "Methods related to directories have been moved to lilDirectoryManager.";
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public const string editorSettingTempPath           = lilDirectoryManager.editorSettingTempPath;
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public const string versionInfoTempPath             = lilDirectoryManager.versionInfoTempPath;
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public const string packageListTempPath             = lilDirectoryManager.packageListTempPath;
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public const string postBuildTempPath               = lilDirectoryManager.postBuildTempPath;
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public const string startupTempPath                 = lilDirectoryManager.startupTempPath;
+        #if NET_4_6
+            [Obsolete(WARN_ABOUT_DIRECTORY)] public const string rspPath = "Assets/csc.rsp";
+        #else
+            [Obsolete(WARN_ABOUT_DIRECTORY)] public const string rspPath = "Assets/mcs.rsp";
+        #endif
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetMainFolderPath()            { return lilDirectoryManager.GetMainFolderPath()        ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetEditorFolderPath()          { return lilDirectoryManager.GetEditorFolderPath()      ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetPresetsFolderPath()         { return lilDirectoryManager.GetPresetsFolderPath()     ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetEditorPath()                { return lilDirectoryManager.GetEditorPath()            ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetShaderFolderPath()          { return lilDirectoryManager.GetShaderFolderPath()      ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetShaderPipelinePath()        { return lilDirectoryManager.GetShaderPipelinePath()    ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetShaderCommonPath()          { return lilDirectoryManager.GetShaderCommonPath()      ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetShaderSettingHLSLPath()     { return lilDirectoryManager.GetShaderSettingHLSLPath() ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetEditorLanguageFileGUID()    { return lilDirectoryManager.GetEditorLanguageFileGUID(); }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetAvatarEncryptionPath()      { return lilDirectoryManager.GetAvatarEncryptionPath()  ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetGUIBoxInDarkPath()          { return lilDirectoryManager.GetGUIBoxInDarkPath()      ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetGUIBoxInLightPath()         { return lilDirectoryManager.GetGUIBoxInLightPath()     ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetGUIBoxInHalfDarkPath()      { return lilDirectoryManager.GetGUIBoxInHalfDarkPath()  ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetGUIBoxInHalfLightPath()     { return lilDirectoryManager.GetGUIBoxInHalfLightPath() ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetGUIBoxOutDarkPath()         { return lilDirectoryManager.GetGUIBoxOutDarkPath()     ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetGUIBoxOutLightPath()        { return lilDirectoryManager.GetGUIBoxOutLightPath()    ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetGUICustomBoxDarkPath()      { return lilDirectoryManager.GetGUICustomBoxDarkPath()  ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetGUICustomBoxLightPath()     { return lilDirectoryManager.GetGUICustomBoxLightPath() ; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string[] GetShaderFolderPaths()       { return lilDirectoryManager.GetShaderFolderPaths(); }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetSettingFolderPath()         { return lilDirectoryManager.GetMainFolderPath(); }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetShaderSettingPath()         { return lilDirectoryManager.GetMainFolderPath() + "/ShaderSetting.asset"; }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GUIDToPath(string GUID)        { return lilDirectoryManager.GUIDToPath(GUID); }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static bool ExistsEncryption() { return lilDirectoryManager.ExistsEncryption(); }
         #endregion
     }
 

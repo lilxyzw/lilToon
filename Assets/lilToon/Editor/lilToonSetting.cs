@@ -97,13 +97,13 @@ public class lilToonSetting : ScriptableObject
     public static void InitializeShaderSetting(ref lilToonSetting shaderSetting)
     {
         if(shaderSetting != null) return;
-        string shaderSettingPath = lilToonInspector.GetShaderSettingPath();
+        string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
         shaderSetting = AssetDatabase.LoadAssetAtPath<lilToonSetting>(shaderSettingPath);
         if(shaderSetting == null)
         {
             foreach(string guid in AssetDatabase.FindAssets("t:lilToonSetting"))
             {
-                string path = lilToonInspector.GUIDToPath(guid);
+                string path = lilDirectoryManager.GUIDToPath(guid);
                 var shaderSettingOld = AssetDatabase.LoadAssetAtPath<lilToonSetting>(path);
                 shaderSetting = UnityEngine.Object.Instantiate(shaderSettingOld);
                 if(shaderSetting != null)
@@ -160,7 +160,7 @@ public class lilToonSetting : ScriptableObject
         shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX = false;
         shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL = false;
         shaderSetting.LIL_FEATURE_DISSOLVE = false;
-        shaderSetting.LIL_FEATURE_ENCRYPTION = lilToonInspector.ExistsEncryption();
+        shaderSetting.LIL_FEATURE_ENCRYPTION = lilDirectoryManager.ExistsEncryption();
         shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = false;
         shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = false;
         shaderSetting.LIL_FEATURE_FUR_COLLISION = false;
@@ -231,7 +231,7 @@ public class lilToonSetting : ScriptableObject
         shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX = true;
         shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL = true;
         shaderSetting.LIL_FEATURE_DISSOLVE = true;
-        shaderSetting.LIL_FEATURE_ENCRYPTION = lilToonInspector.ExistsEncryption();
+        shaderSetting.LIL_FEATURE_ENCRYPTION = lilDirectoryManager.ExistsEncryption();
         shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = true;
         shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = true;
         shaderSetting.LIL_FEATURE_FUR_COLLISION = true;
@@ -267,7 +267,7 @@ public class lilToonSetting : ScriptableObject
         AssetDatabase.SaveAssets();
         string shaderSettingString = BuildShaderSettingString(shaderSetting, true);
         string shaderSettingStringBuf = "";
-        string shaderSettingHLSLPath = lilToonInspector.GetShaderSettingHLSLPath();
+        string shaderSettingHLSLPath = lilDirectoryManager.GetShaderSettingHLSLPath();
         if(File.Exists(shaderSettingHLSLPath))
         {
             StreamReader sr = new StreamReader(shaderSettingHLSLPath);
@@ -281,15 +281,15 @@ public class lilToonSetting : ScriptableObject
             StreamWriter sw = new StreamWriter(shaderSettingHLSLPath,false);
             sw.Write(shaderSettingString);
             sw.Close();
-            string[] shaderFolderPaths = lilToonInspector.GetShaderFolderPaths();
+            string[] shaderFolderPaths = lilDirectoryManager.GetShaderFolderPaths();
             bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;
             var folders = new List<string>
             {
-                lilToonInspector.GetShaderFolderPath()
+                lilDirectoryManager.GetShaderFolderPath()
             };
             foreach (string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
             {
-                string shaderPath = lilToonInspector.GUIDToPath(shaderGuid);
+                string shaderPath = lilDirectoryManager.GUIDToPath(shaderGuid);
                 lilShaderRewriter.RewriteReceiveShadow(shaderPath, isShadowReceive);
                 lilShaderRewriter.RewriteForwardAdd(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
                 lilShaderRewriter.RewriteVertexLight(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
@@ -298,7 +298,7 @@ public class lilToonSetting : ScriptableObject
             }
             foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader"))
             {
-                string shaderPath = lilToonInspector.GUIDToPath(shaderGuid);
+                string shaderPath = lilDirectoryManager.GUIDToPath(shaderGuid);
                 if(!shaderPath.Contains(".lilcontainer")) continue;
                 string folder = Path.GetDirectoryName(shaderPath);
                 if(!folders.Contains(folder)) folders.Add(folder);
@@ -466,14 +466,14 @@ public class lilToonSetting : ScriptableObject
         // Get materials
         foreach(string guid in AssetDatabase.FindAssets("t:material"))
         {
-            Material material = AssetDatabase.LoadAssetAtPath<Material>(lilToonInspector.GUIDToPath(guid));
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
             SetupShaderSettingFromMaterial(material, ref shaderSetting);
         }
 
         // Get animations
         foreach(string guid in AssetDatabase.FindAssets("t:animationclip"))
         {
-            AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(lilToonInspector.GUIDToPath(guid));
+            AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(lilDirectoryManager.GUIDToPath(guid));
             SetupShaderSettingFromAnimationClip(clip, ref shaderSetting);
         }
 
@@ -484,8 +484,8 @@ public class lilToonSetting : ScriptableObject
 
     public static void SetShaderSettingBeforeBuild(GameObject gameObject)
     {
-        if(File.Exists(lilToonInspector.postBuildTempPath)) return;
-        File.Create(lilToonInspector.postBuildTempPath);
+        if(File.Exists(lilDirectoryManager.postBuildTempPath)) return;
+        File.Create(lilDirectoryManager.postBuildTempPath);
 
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
@@ -543,15 +543,15 @@ public class lilToonSetting : ScriptableObject
 
     public static void SetShaderSettingBeforeBuild()
     {
-        if(File.Exists(lilToonInspector.postBuildTempPath)) return;
-        File.Create(lilToonInspector.postBuildTempPath);
+        if(File.Exists(lilDirectoryManager.postBuildTempPath)) return;
+        File.Create(lilDirectoryManager.postBuildTempPath);
         ApplyShaderSettingOptimized();
     }
 
     public static void SetShaderSettingAfterBuild()
     {
-        if(!File.Exists(lilToonInspector.postBuildTempPath)) return;
-        File.Delete(lilToonInspector.postBuildTempPath);
+        if(!File.Exists(lilDirectoryManager.postBuildTempPath)) return;
+        File.Delete(lilDirectoryManager.postBuildTempPath);
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
         if(shaderSetting == null) return;

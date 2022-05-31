@@ -8,7 +8,7 @@ using UnityEngine;
 public class lilToonPreset : ScriptableObject
 {
     public lilPresetBase[] bases;
-    public lilToon.lilPresetCategory category;
+    public lilPresetCategory category;
     public string renderingMode;
     public Shader shader;
     public lilPresetColor[] colors;
@@ -118,7 +118,7 @@ public class lilToonPreset : ScriptableObject
         var presetList = new List<lilToonPreset>();
         for(int i=0; i<presetGuid.Length; i++)
         {
-            presetList.Add(AssetDatabase.LoadAssetAtPath<lilToonPreset>(lilToonInspector.GUIDToPath(presetGuid[i])));
+            presetList.Add(AssetDatabase.LoadAssetAtPath<lilToonPreset>(lilDirectoryManager.GUIDToPath(presetGuid[i])));
         }
         return presetList.ToArray();
     }
@@ -496,7 +496,7 @@ public class lilToonPreset : ScriptableObject
                 preset.outlineMainTex = shouldSaveMainTex2Outline;
 
                 EditorUtility.SetDirty(preset);
-                string savePath = EditorUtility.SaveFilePanel("Save Preset", lilToonInspector.GetPresetsFolderPath(), filename, "asset");
+                string savePath = EditorUtility.SaveFilePanel("Save Preset", lilDirectoryManager.GetPresetsFolderPath(), filename, "asset");
                 if(!string.IsNullOrEmpty(savePath))
                 {
                     AssetDatabase.CreateAsset(preset, FileUtil.GetProjectRelativePath(savePath));

@@ -14,34 +14,34 @@ namespace lilToon
         {
             //------------------------------------------------------------------------------------------------------------------------------
             // Variables
-            string editorPath = lilToonInspector.GetEditorPath();
+            string editorPath = lilDirectoryManager.GetEditorPath();
 
             lilToonInspector.ApplyEditorSettingTemp();
             lilToonInspector.InitializeLanguage();
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Create files
-            if(!File.Exists(lilToonInspector.startupTempPath))
+            if(!File.Exists(lilDirectoryManager.startupTempPath))
             {
-                File.Create(lilToonInspector.startupTempPath);
+                File.Create(lilDirectoryManager.startupTempPath);
 
                 // RSP
-                if(!File.Exists(lilToonInspector.rspPath))
+                if(!File.Exists(lilDirectoryManager.rspPath))
                 {
-                    StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
+                    StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
                     sw.Write("-r:System.Drawing.dll\n-define:SYSTEM_DRAWING");
                     sw.Close();
                     AssetDatabase.Refresh();
                     AssetDatabase.ImportAsset(editorPath);
                 }
 
-                StreamReader sr = new StreamReader(lilToonInspector.rspPath);
+                StreamReader sr = new StreamReader(lilDirectoryManager.rspPath);
                 string s = sr.ReadToEnd();
                 sr.Close();
 
                 if(!s.Contains("r:System.Drawing.dll"))
                 {
-                    StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
+                    StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
                     sw.Write("\n-r:System.Drawing.dll");
                     sw.Close();
                     AssetDatabase.Refresh();
@@ -49,7 +49,7 @@ namespace lilToon
                 }
                 if(!s.Contains("define:SYSTEM_DRAWING"))
                 {
-                    StreamWriter sw = new StreamWriter(lilToonInspector.rspPath,true);
+                    StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
                     sw.Write("\n-define:SYSTEM_DRAWING");
                     sw.Close();
                     AssetDatabase.Refresh();
@@ -59,7 +59,7 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Version check
-            if(!File.Exists(lilToonInspector.versionInfoTempPath))
+            if(!File.Exists(lilDirectoryManager.versionInfoTempPath))
             {
                 CoroutineHandler.StartStaticCoroutine(GetLatestVersionInfo());
             }
@@ -75,7 +75,7 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Turn on all settings when auto
-            if(File.Exists(lilToonInspector.postBuildTempPath)) 
+            if(File.Exists(lilDirectoryManager.postBuildTempPath)) 
             {
                 EditorApplication.delayCall += () =>
                 {
@@ -95,19 +95,19 @@ namespace lilToon
                     if(!webRequest.isNetworkError)
                 #endif
                 {
-                    StreamWriter sw = new StreamWriter(lilToonInspector.versionInfoTempPath,false);
+                    StreamWriter sw = new StreamWriter(lilDirectoryManager.versionInfoTempPath,false);
                     sw.Write(webRequest.downloadHandler.text);
                     sw.Close();
                 }
             }
         }
 
-        public static void MigrateMaterials()
+        private static void MigrateMaterials()
         {
             lilToonInspector.InitializeShaders();
             foreach(string guid in AssetDatabase.FindAssets("t:material"))
             {
-                Material material = AssetDatabase.LoadAssetAtPath<Material>(lilToonInspector.GUIDToPath(guid));
+                Material material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
                 MigrateMaterial(material);
             }
             AssetDatabase.SaveAssets();

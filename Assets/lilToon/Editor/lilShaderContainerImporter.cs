@@ -176,9 +176,8 @@ namespace lilToon
             insertPostText = "";
             resourcesFolderPath = GetCustomShaderResourcesFolderPath() + "/";
             assetFolderPath = Path.GetDirectoryName(assetPath) + "/";
-            shaderLibsPath = lilToonInspector.GetShaderFolderPath() + "/Includes";
+            shaderLibsPath = lilDirectoryManager.GetShaderFolderPath() + "/Includes";
             assetName = Path.GetFileName(assetPath);
-            //shaderSettingText = lilToonInspector.BuildShaderSettingString(false).Replace("\r\n", "\r\n            ");
             shaderSettingText = BuildShaderSettingString(false).Replace("\r\n", "\r\n            ");
             shaderName = "";
             editorName = "";

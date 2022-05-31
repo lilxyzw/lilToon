@@ -47,7 +47,7 @@ namespace lilToon
         {
             lilToonInspector.RewriteShaderRP();
 
-            if(File.Exists(lilToonInspector.postBuildTempPath)) File.Delete(lilToonInspector.postBuildTempPath);
+            if(File.Exists(lilDirectoryManager.postBuildTempPath)) File.Delete(lilDirectoryManager.postBuildTempPath);
             lilToonSetting shaderSetting = null;
             lilToonSetting.InitializeShaderSetting(ref shaderSetting);
             if(shaderSetting != null)
@@ -426,7 +426,7 @@ namespace lilToon
             avatarWidth =  maxZ > avatarWidth ?  maxZ : avatarWidth;
             avatarWidth *= 2.5f;
 
-            string shaderSettingPath = lilToonInspector.GetShaderSettingPath();
+            string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
             lilToonSetting shaderSetting = AssetDatabase.LoadAssetAtPath<lilToonSetting>(shaderSettingPath);
 
             // MeshRenderer
