@@ -917,7 +917,7 @@ namespace lilToon
                         if(mainGradationStrength.floatValue != 0)
                         {
                             m_MaterialEditor.TexturePropertySingleLine(gradationContent, mainGradationTex);
-                            GradientEditor(material, mainGrad, mainGradationTex, true);
+                            lilTextureUtils.GradientEditor(material, mainGrad, mainGradationTex, true);
                         }
                         DrawLine();
                         m_MaterialEditor.TexturePropertySingleLine(adjustMaskContent, mainColorAdjustMask);
@@ -1721,7 +1721,7 @@ namespace lilToon
                             if(mainGradationStrength.floatValue != 0)
                             {
                                 m_MaterialEditor.TexturePropertySingleLine(gradationContent, mainGradationTex);
-                                GradientEditor(material, mainGrad, mainGradationTex, true);
+                                lilTextureUtils.GradientEditor(material, mainGrad, mainGradationTex, true);
                             }
                             DrawLine();
                             m_MaterialEditor.TexturePropertySingleLine(adjustMaskContent, mainColorAdjustMask);
@@ -1893,7 +1893,7 @@ namespace lilToon
                         {
                             EditorGUI.indentLevel++;
                             m_MaterialEditor.TexturePropertySingleLine(gradSpeedContent, emissionGradTex, emissionGradSpeed);
-                            GradientEditor(material, "_eg", emiGrad, emissionGradSpeed);
+                            lilTextureUtils.GradientEditor(material, "_eg", emiGrad, emissionGradSpeed);
                             EditorGUI.indentLevel--;
                         }
                         DrawLine();
@@ -1923,7 +1923,7 @@ namespace lilToon
                         {
                             EditorGUI.indentLevel++;
                             m_MaterialEditor.TexturePropertySingleLine(gradSpeedContent, emission2ndGradTex, emission2ndGradSpeed);
-                            GradientEditor(material, "_e2g", emi2Grad, emission2ndGradSpeed);
+                            lilTextureUtils.GradientEditor(material, "_e2g", emi2Grad, emission2ndGradSpeed);
                             EditorGUI.indentLevel--;
                         }
                         DrawLine();
@@ -7808,7 +7808,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(material.GetTexture(mainTex.name));
                 if(!string.IsNullOrEmpty(path))
                 {
-                    LoadTexture(ref srcTexture, path);
+                    lilTextureUtils.LoadTexture(ref srcTexture, path);
                     hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                 }
                 else
@@ -7837,7 +7837,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main2ndTex.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        LoadTexture(ref srcMain2, path);
+                        lilTextureUtils.LoadTexture(ref srcMain2, path);
                         hsvgMaterial.SetTexture(main2ndTex.name, srcMain2);
                     }
                     else
@@ -7848,7 +7848,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main2ndBlendMask.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        LoadTexture(ref srcMask2, path);
+                        lilTextureUtils.LoadTexture(ref srcMask2, path);
                         hsvgMaterial.SetTexture(main2ndBlendMask.name, srcMask2);
                     }
                     else
@@ -7878,7 +7878,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main3rdTex.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        LoadTexture(ref srcMain3, path);
+                        lilTextureUtils.LoadTexture(ref srcMain3, path);
                         hsvgMaterial.SetTexture(main3rdTex.name, srcMain3);
                     }
                     else
@@ -7889,7 +7889,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main3rdBlendMask.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        LoadTexture(ref srcMask3, path);
+                        lilTextureUtils.LoadTexture(ref srcMask3, path);
                         hsvgMaterial.SetTexture(main3rdBlendMask.name, srcMask3);
                     }
                     else
@@ -7901,7 +7901,7 @@ namespace lilToon
                 Texture2D outTexture = null;
                 RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
-                outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
+                outTexture = lilTextureUtils.SaveTextureToPng(material, outTexture, mainTex.name);
                 if(outTexture != mainTex.textureValue)
                 {
                     mainTexHSVG.vectorValue = defaultHSVG;
@@ -7960,7 +7960,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(material.GetTexture(mainTex.name));
                 if(!string.IsNullOrEmpty(path))
                 {
-                    LoadTexture(ref srcTexture, path);
+                    lilTextureUtils.LoadTexture(ref srcTexture, path);
                     hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                 }
                 else
@@ -7989,7 +7989,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main2ndTex.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        LoadTexture(ref srcMain2, path);
+                        lilTextureUtils.LoadTexture(ref srcMain2, path);
                         hsvgMaterial.SetTexture(main2ndTex.name, srcMain2);
                     }
                     else
@@ -8000,7 +8000,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main2ndBlendMask.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        LoadTexture(ref srcMask2, path);
+                        lilTextureUtils.LoadTexture(ref srcMask2, path);
                         hsvgMaterial.SetTexture(main2ndBlendMask.name, srcMask2);
                     }
                     else
@@ -8030,7 +8030,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main3rdTex.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        LoadTexture(ref srcMain3, path);
+                        lilTextureUtils.LoadTexture(ref srcMain3, path);
                         hsvgMaterial.SetTexture(main3rdTex.name, srcMain3);
                     }
                     else
@@ -8041,7 +8041,7 @@ namespace lilToon
                     path = AssetDatabase.GetAssetPath(material.GetTexture(main3rdBlendMask.name));
                     if(!string.IsNullOrEmpty(path))
                     {
-                        LoadTexture(ref srcMask3, path);
+                        lilTextureUtils.LoadTexture(ref srcMask3, path);
                         hsvgMaterial.SetTexture(main3rdBlendMask.name, srcMask3);
                     }
                     else
@@ -8053,7 +8053,7 @@ namespace lilToon
                 Texture2D outTexture = null;
                 RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
-                outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
+                outTexture = lilTextureUtils.SaveTextureToPng(material, outTexture, mainTex.name);
                 if(outTexture != mainTex.textureValue)
                 {
                     CopyTextureSetting(bufMainTexture, outTexture);
@@ -8119,14 +8119,14 @@ namespace lilToon
                 bool existsShadowTex = !string.IsNullOrEmpty(path);
                 if(existsShadowTex)
                 {
-                    LoadTexture(ref srcMain2, path);
+                    lilTextureUtils.LoadTexture(ref srcMain2, path);
                     hsvgMaterial.SetTexture(main2ndTex.name, srcMain2);
                 }
 
                 path = AssetDatabase.GetAssetPath(bakedMainTex);
                 if(!string.IsNullOrEmpty(path))
                 {
-                    LoadTexture(ref srcTexture, path);
+                    lilTextureUtils.LoadTexture(ref srcTexture, path);
                     hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                     hsvgMaterial.SetTexture(main3rdTex.name, srcTexture);
                     if(!existsShadowTex) hsvgMaterial.SetTexture(main2ndTex.name, srcTexture);
@@ -8141,7 +8141,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(material.GetTexture(shadowStrengthMask.name));
                 if(!string.IsNullOrEmpty(path))
                 {
-                    LoadTexture(ref srcMask2, path);
+                    lilTextureUtils.LoadTexture(ref srcMask2, path);
                     hsvgMaterial.SetTexture(main2ndBlendMask.name, srcMask2);
                     hsvgMaterial.SetTexture(main3rdBlendMask.name, srcMask2);
                 }
@@ -8154,9 +8154,9 @@ namespace lilToon
                 Texture2D outTexture = null;
                 RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
-                if(shadowType == 0) outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
-                if(shadowType == 1) outTexture = SaveTextureToPng(material, outTexture, mainTex.name, "_shadow_1st");
-                if(shadowType == 2) outTexture = SaveTextureToPng(material, outTexture, mainTex.name, "_shadow_2nd");
+                if(shadowType == 0) outTexture = lilTextureUtils.SaveTextureToPng(material, outTexture, mainTex.name);
+                if(shadowType == 1) outTexture = lilTextureUtils.SaveTextureToPng(material, outTexture, mainTex.name, "_shadow_1st");
+                if(shadowType == 2) outTexture = lilTextureUtils.SaveTextureToPng(material, outTexture, mainTex.name, "_shadow_2nd");
                 if(outTexture != mainTex.textureValue)
                 {
                     CopyTextureSetting(bufMainTexture, outTexture);
@@ -8194,7 +8194,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(material.GetTexture(matcapTex.name));
                 if(!string.IsNullOrEmpty(path))
                 {
-                    LoadTexture(ref srcTexture, path);
+                    lilTextureUtils.LoadTexture(ref srcTexture, path);
                     hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                 }
                 else
@@ -8205,7 +8205,7 @@ namespace lilToon
                 Texture2D outTexture = null;
                 RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
-                outTexture = SaveTextureToPng(material, outTexture, matcapTex.name);
+                outTexture = lilTextureUtils.SaveTextureToPng(material, outTexture, matcapTex.name);
                 if(outTexture != matcapTex.textureValue)
                 {
                     CopyTextureSetting(bufMainTexture, outTexture);
@@ -8242,7 +8242,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(matcapBlendMask.textureValue);
                 if(!string.IsNullOrEmpty(path))
                 {
-                    LoadTexture(ref srcTexture, path);
+                    lilTextureUtils.LoadTexture(ref srcTexture, path);
                     hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                 }
                 else
@@ -8253,7 +8253,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(rimColorTex.textureValue);
                 if(!string.IsNullOrEmpty(path))
                 {
-                    LoadTexture(ref srcMain2, path);
+                    lilTextureUtils.LoadTexture(ref srcMain2, path);
                     hsvgMaterial.SetTexture(main2ndTex.name, srcMain2);
                 }
                 else
@@ -8264,7 +8264,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(emissionBlendMask.textureValue);
                 if(!string.IsNullOrEmpty(path))
                 {
-                    LoadTexture(ref srcMain3, path);
+                    lilTextureUtils.LoadTexture(ref srcMain3, path);
                     hsvgMaterial.SetTexture(main3rdTex.name, srcMain3);
                 }
                 else
@@ -8275,7 +8275,7 @@ namespace lilToon
                 Texture2D outTexture = null;
                 RunBake(ref outTexture, srcTexture, hsvgMaterial, bufMainTexture);
 
-                outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
+                outTexture = lilTextureUtils.SaveTextureToPng(material, outTexture, mainTex.name);
                 if(outTexture != mainTex.textureValue && mainTex.textureValue != null)
                 {
                     CopyTextureSetting(bufMainTexture, outTexture);
@@ -8313,7 +8313,7 @@ namespace lilToon
             path = AssetDatabase.GetAssetPath(bufMainTexture);
             if(!string.IsNullOrEmpty(path))
             {
-                LoadTexture(ref srcTexture, path);
+                lilTextureUtils.LoadTexture(ref srcTexture, path);
                 hsvgMaterial.SetTexture(mainTex.name, srcTexture);
             }
             else
@@ -8324,7 +8324,7 @@ namespace lilToon
             path = AssetDatabase.GetAssetPath(material.GetTexture(alphaMask.name));
             if(!string.IsNullOrEmpty(path))
             {
-                LoadTexture(ref srcAlphaMask, path);
+                lilTextureUtils.LoadTexture(ref srcAlphaMask, path);
                 hsvgMaterial.SetTexture(alphaMask.name, srcAlphaMask);
             }
             else
@@ -8335,7 +8335,7 @@ namespace lilToon
             Texture2D outTexture = null;
             RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
-            outTexture = SaveTextureToPng(outTexture, bufMainTexture);
+            outTexture = lilTextureUtils.SaveTextureToPng(outTexture, bufMainTexture);
             if(outTexture != bufMainTexture)
             {
                 CopyTextureSetting(bufMainTexture, outTexture);
@@ -8370,7 +8370,7 @@ namespace lilToon
                 path = AssetDatabase.GetAssetPath(material.GetTexture(outlineTex.name));
                 if(!string.IsNullOrEmpty(path))
                 {
-                    LoadTexture(ref srcTexture, path);
+                    lilTextureUtils.LoadTexture(ref srcTexture, path);
                     hsvgMaterial.SetTexture(mainTex.name, srcTexture);
                 }
                 else
@@ -8381,7 +8381,7 @@ namespace lilToon
                 Texture2D outTexture = null;
                 RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
-                outTexture = SaveTextureToPng(material, outTexture, mainTex.name);
+                outTexture = lilTextureUtils.SaveTextureToPng(material, outTexture, mainTex.name);
                 if(outTexture != mainTex.textureValue)
                 {
                     CopyTextureSetting(bufMainTexture, outTexture);
@@ -8420,7 +8420,7 @@ namespace lilToon
             if(masktex != null) path = AssetDatabase.GetAssetPath(bufMainTexture);
             if(!string.IsNullOrEmpty(path))
             {
-                LoadTexture(ref srcTexture, path);
+                lilTextureUtils.LoadTexture(ref srcTexture, path);
                 hsvgMaterial.SetTexture(mainTex.name, srcTexture);
             }
             else
@@ -8433,7 +8433,7 @@ namespace lilToon
 
             if(!string.IsNullOrEmpty(path)) path = Path.GetDirectoryName(path) + "/Baked_" + material.name + "_" + propName;
             else                            path = "Assets/Baked_" + material.name + "_" + propName;
-            outTexture = SaveTextureToPng(outTexture, path);
+            outTexture = lilTextureUtils.SaveTextureToPng(outTexture, path);
             if(outTexture != bufMainTexture)
             {
                 CopyTextureSetting(bufMainTexture, outTexture);
@@ -8469,7 +8469,6 @@ namespace lilToon
             RenderTexture.ReleaseTemporary(dstTexture);
         }
 
-
         private void CopyTextureSetting(Texture2D fromTexture, Texture2D toTexture)
         {
             if(fromTexture == null || toTexture == null) return;
@@ -8484,242 +8483,6 @@ namespace lilToon
             toTextureImporter.SetTextureSettings(fromTextureImporterSettings);
             toTextureImporter.SetPlatformTextureSettings(fromTextureImporter.GetDefaultPlatformTextureSettings());
             AssetDatabase.ImportAsset(toPath);
-        }
-        #endregion
-
-        //------------------------------------------------------------------------------------------------------------------------------
-        // Gradient
-        #region
-        private void SetLinear(Texture2D tex)
-        {
-            if(tex != null)
-            {
-                string path = AssetDatabase.GetAssetPath(tex);
-                TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(path);
-                textureImporter.sRGBTexture = false;
-                AssetDatabase.ImportAsset(path);
-            }
-        }
-
-        private void GradientEditor(Material material, Gradient ingrad, MaterialProperty texprop, bool setLinear = false)
-        {
-            #if UNITY_2018_3_OR_NEWER
-                ingrad = EditorGUILayout.GradientField(GetLoc("sGradColor"), ingrad);
-            #else
-                MethodInfo setMethod = typeof(EditorGUILayout).GetMethod(
-                    "GradientField",
-                    BindingFlags.NonPublic | BindingFlags.Static,
-                    null,
-                    new [] {typeof(string), typeof(Gradient), typeof(GUILayoutOption[])},
-                    null);
-                if(setMethod != null) {
-                    ingrad = (Gradient)setMethod.Invoke(null, new object[]{GetLoc("sGradColor"), ingrad, null});;
-                }
-            #endif
-            GUILayout.BeginHorizontal();
-            if(GUILayout.Button("Test"))
-            {
-                texprop.textureValue = GradientToTexture(ingrad, setLinear);
-            }
-            if(GUILayout.Button("Save"))
-            {
-                Texture2D tex = GradientToTexture(ingrad, setLinear);
-                tex = SaveTextureToPng(material, tex, texprop.name);
-                if(setLinear) SetLinear(tex);
-                texprop.textureValue = tex;
-            }
-            GUILayout.EndHorizontal();
-        }
-
-        private void GradientEditor(Material material, string emissionName, Gradient ingrad, MaterialProperty texprop, bool setLinear = false)
-        {
-            ingrad = MaterialToGradient(material, emissionName);
-            #if UNITY_2018_3_OR_NEWER
-                ingrad = EditorGUILayout.GradientField(GetLoc("sGradColor"), ingrad);
-            #else
-                MethodInfo setMethod = typeof(EditorGUILayout).GetMethod(
-                    "GradientField",
-                    BindingFlags.NonPublic | BindingFlags.Static,
-                    null,
-                    new [] {typeof(string), typeof(Gradient), typeof(GUILayoutOption[])},
-                    null);
-                if(setMethod != null) {
-                    ingrad = (Gradient)setMethod.Invoke(null, new object[]{GetLoc("sGradColor"), ingrad, null});;
-                }
-            #endif
-            GradientToMaterial(material, emissionName, ingrad);
-            GUILayout.BeginHorizontal();
-            if(GUILayout.Button("Test"))
-            {
-                texprop.textureValue = GradientToTexture(ingrad, setLinear);
-            }
-            if(GUILayout.Button("Save"))
-            {
-                Texture2D tex = GradientToTexture(ingrad, setLinear);
-                tex = SaveTextureToPng(material, tex, texprop.name);
-                if(setLinear) SetLinear(tex);
-                texprop.textureValue = tex;
-            }
-            GUILayout.EndHorizontal();
-        }
-
-        private Gradient MaterialToGradient(Material material, string emissionName)
-        {
-            Gradient outgrad = new Gradient();
-            GradientColorKey[] colorKey = new GradientColorKey[material.GetInt(emissionName + "ci")];
-            GradientAlphaKey[] alphaKey = new GradientAlphaKey[material.GetInt(emissionName + "ai")];
-            for(int i=0;i<colorKey.Length;i++)
-            {
-                colorKey[i].color = material.GetColor(emissionName + "c" + i.ToString());
-                colorKey[i].time = material.GetColor(emissionName + "c" + i.ToString()).a;
-            }
-            for(int j=0;j<alphaKey.Length;j++)
-            {
-                alphaKey[j].alpha = material.GetColor(emissionName + "a" + j.ToString()).r;
-                alphaKey[j].time = material.GetColor(emissionName + "a" + j.ToString()).a;
-            }
-            outgrad.SetKeys(colorKey, alphaKey);
-            return outgrad;
-        }
-
-        private void GradientToMaterial(Material material, string emissionName, Gradient ingrad)
-        {
-            material.SetInt(emissionName + "ci", ingrad.colorKeys.Length);
-            material.SetInt(emissionName + "ai", ingrad.alphaKeys.Length);
-            for(int ic=0;ic<ingrad.colorKeys.Length;ic++)
-            {
-                material.SetColor(emissionName + "c" + ic.ToString(), new Color(ingrad.colorKeys[ic].color.r, ingrad.colorKeys[ic].color.g, ingrad.colorKeys[ic].color.b, ingrad.colorKeys[ic].time));
-            }
-            for(int ia=0;ia<ingrad.alphaKeys.Length;ia++)
-            {
-                material.SetColor(emissionName + "a" + ia.ToString(), new Color(ingrad.alphaKeys[ia].alpha, 0, 0, ingrad.alphaKeys[ia].time));
-            }
-        }
-
-        private Texture2D GradientToTexture(Gradient grad, bool setLinear = false)
-        {
-            Texture2D tex = new Texture2D(128, 4, TextureFormat.ARGB32, true, setLinear);
-
-            // Set colors
-            for(int w = 0; w < tex.width; w++)
-            {
-                for(int h = 0; h < tex.height; h++)
-                {
-                    tex.SetPixel(w, h, grad.Evaluate((float)w / tex.width));
-                }
-            }
-
-            tex.Apply();
-            return tex;
-        }
-        #endregion
-
-        //------------------------------------------------------------------------------------------------------------------------------
-        // Load Texture
-        #region
-        private static void GetReadableTexture(ref Texture2D tex)
-        {
-            if(tex == null) return;
-
-            #if UNITY_2018_3_OR_NEWER
-            if(!tex.isReadable)
-            #endif
-            {
-                RenderTexture bufRT = RenderTexture.active;
-                RenderTexture texR = RenderTexture.GetTemporary(tex.width, tex.height);
-                Graphics.Blit(tex, texR);
-                RenderTexture.active = texR;
-                tex = new Texture2D(texR.width, texR.height);
-                tex.ReadPixels(new Rect(0, 0, texR.width, texR.height), 0, 0);
-                tex.Apply();
-                RenderTexture.active = bufRT;
-                RenderTexture.ReleaseTemporary(texR);
-            }
-        }
-
-        public static void LoadTexture(ref Texture2D tex, string path)
-        {
-            if(string.IsNullOrEmpty(path)) return;
-
-            tex = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
-            GetReadableTexture(ref tex);
-            if(path.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
-               path.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
-               path.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase))
-            {
-                byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
-                tex.LoadImage(bytes);
-            }
-
-            if(tex != null) tex.filterMode = FilterMode.Bilinear;
-        }
-        #endregion
-
-        //------------------------------------------------------------------------------------------------------------------------------
-        // Save Texture
-        #region
-        private Texture2D SaveTextureToPng(Material material, Texture2D tex, string texname, string customName = "")
-        {
-            string path = AssetDatabase.GetAssetPath(material.GetTexture(texname));
-            if(string.IsNullOrEmpty(path)) path = AssetDatabase.GetAssetPath(material);
-
-            string filename = Path.GetFileNameWithoutExtension(path);
-            if(!string.IsNullOrEmpty(customName)) filename += customName;
-            else                                  filename += "_2";
-            if(!string.IsNullOrEmpty(path))  path = EditorUtility.SaveFilePanel("Save Texture", Path.GetDirectoryName(path), filename, "png");
-            else                 path = EditorUtility.SaveFilePanel("Save Texture", "Assets", tex.name + ".png", "png");
-            if(!string.IsNullOrEmpty(path)) {
-                File.WriteAllBytes(path, tex.EncodeToPNG());
-                UnityEngine.Object.DestroyImmediate(tex);
-                AssetDatabase.Refresh();
-                return AssetDatabase.LoadAssetAtPath<Texture2D>(path.Substring(path.IndexOf("Assets")));
-            }
-            else
-            {
-                return (Texture2D)material.GetTexture(texname);
-            }
-        }
-
-        private Texture2D SaveTextureToPng(Texture2D tex, Texture2D origTex)
-        {
-            string path = AssetDatabase.GetAssetPath(origTex);
-            if(!string.IsNullOrEmpty(path))  path = EditorUtility.SaveFilePanel("Save Texture", Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path)+"_alpha", "png");
-            else                 path = EditorUtility.SaveFilePanel("Save Texture", "Assets", tex.name + "_alpha.png", "png");
-            if(!string.IsNullOrEmpty(path)) {
-                File.WriteAllBytes(path, tex.EncodeToPNG());
-                UnityEngine.Object.DestroyImmediate(tex);
-                AssetDatabase.Refresh();
-                return AssetDatabase.LoadAssetAtPath<Texture2D>(path.Substring(path.IndexOf("Assets")));
-            }
-            else
-            {
-                return origTex;
-            }
-        }
-
-        private Texture2D SaveTextureToPng(Texture2D tex, string path, string customName = "")
-        {
-            string filename = customName + Path.GetFileNameWithoutExtension(path);
-            if(!string.IsNullOrEmpty(path)) path = EditorUtility.SaveFilePanel("Save Texture", Path.GetDirectoryName(path), filename, "png");
-            else                            path = EditorUtility.SaveFilePanel("Save Texture", "Assets", filename, "png");
-            if(!string.IsNullOrEmpty(path))
-            {
-                File.WriteAllBytes(path, tex.EncodeToPNG());
-                UnityEngine.Object.DestroyImmediate(tex);
-                AssetDatabase.Refresh();
-                return AssetDatabase.LoadAssetAtPath<Texture2D>(path.Substring(path.IndexOf("Assets")));
-            }
-            else
-            {
-                return tex;
-            }
-        }
-
-        public static string SavePng(string path, string add, Texture2D tex)
-        {
-            string savePath = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path) + add + ".png";
-            File.WriteAllBytes(savePath, tex.EncodeToPNG());
-            return savePath;
         }
         #endregion
 
@@ -8852,7 +8615,7 @@ namespace lilToon
                 atlasTexture.Apply();
 
                 // Save
-                string savePath = SavePng(path, "_gif2png_" + loopXY + "_" + frameCount + "_" + duration, atlasTexture);
+                string savePath = lilTextureUtils.SaveTextureToPng(path, "_gif2png_" + loopXY + "_" + frameCount + "_" + duration, atlasTexture);
                 AssetDatabase.Refresh();
                 return savePath;
             }
@@ -8965,6 +8728,18 @@ namespace lilToon
         public static void ApplyPreset(Material material, lilToonPreset preset, bool ismulti)
         {
             lilToonPreset.ApplyPreset(material, preset, ismulti);
+        }
+
+        [Obsolete("Use \"lilTextureUtils.LoadTexture(ref Texture2D tex, string path)\" instead.")]
+        public static void LoadTexture(ref Texture2D tex, string path)
+        {
+            lilTextureUtils.LoadTexture(ref tex, path);
+        }
+
+        [Obsolete("Use \"lilTextureUtils.SaveTextureToPng(string path, string add, Texture2D tex)\" instead.")]
+        public static string SavePng(string path, string add, Texture2D tex)
+        {
+            return lilTextureUtils.SaveTextureToPng(path, add, tex);
         }
 
         private const string WARN_ABOUT_DIRECTORY = "Methods related to directories have been moved to lilDirectoryManager.";

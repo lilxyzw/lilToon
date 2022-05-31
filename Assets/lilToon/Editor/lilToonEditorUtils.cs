@@ -91,7 +91,7 @@ namespace lilToon
             Texture2D srcTexture = new Texture2D(2, 2, TextureFormat.ARGB32, true, true);
             Material hsvgMaterial = new Material(Shader.Find("Hidden/ltsother_baker"));
             string path = AssetDatabase.GetAssetPath(Selection.activeObject);
-            lilToonInspector.LoadTexture(ref srcTexture, path);
+            lilTextureUtils.LoadTexture(ref srcTexture, path);
             hsvgMaterial.SetTexture("_MainTex", srcTexture);
             hsvgMaterial.EnableKeyword("_NORMAL_DXGL");
 
@@ -99,7 +99,7 @@ namespace lilToon
             lilToonInspector.RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
             // Save
-            lilToonInspector.SavePng(path, "_conv", outTexture);
+            lilTextureUtils.SaveTextureToPng(path, "_conv", outTexture);
             AssetDatabase.Refresh();
 
             UnityEngine.Object.DestroyImmediate(hsvgMaterial);
@@ -138,7 +138,7 @@ namespace lilToon
             string path = AssetDatabase.GetAssetPath(Selection.activeObject);
             byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
             srcTexture.LoadImage(bytes);
-            lilToonInspector.LoadTexture(ref srcTexture, path);
+            lilTextureUtils.LoadTexture(ref srcTexture, path);
             int finalWidth;
             int finalHeight;
             int scale;
@@ -165,7 +165,7 @@ namespace lilToon
             outTex.Apply();
 
             // Save
-            string savePath = lilToonInspector.SavePng(path, "_resized", outTex);
+            string savePath = lilTextureUtils.SaveTextureToPng(path, "_resized", outTex);
             AssetDatabase.Refresh();
             TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(savePath);
             textureImporter.filterMode = FilterMode.Point;
