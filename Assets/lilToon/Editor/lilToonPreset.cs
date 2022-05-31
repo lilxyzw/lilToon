@@ -746,4 +746,18 @@ public class lilToonPreset : ScriptableObject
     }
     #endregion
 }
+
+namespace lilToon
+{
+    public enum lilPresetCategory
+    {
+        Skin,
+        Hair,
+        Cloth,
+        Nature,
+        Inorganic,
+        Effect,
+        Other
+    }
+}
 #endif

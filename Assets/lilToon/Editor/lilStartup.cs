@@ -17,7 +17,7 @@ namespace lilToon
             string editorPath = lilDirectoryManager.GetEditorPath();
 
             lilToonInspector.ApplyEditorSettingTemp();
-            lilToonInspector.InitializeLanguage();
+            lilLanguageManager.InitializeLanguage();
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Create files

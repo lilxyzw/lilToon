@@ -1,0 +1,91 @@
+#if UNITY_EDITOR
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace lilToon
+{
+    public enum EditorMode
+    {
+        Simple,
+        Advanced,
+        Preset,
+        Settings
+    }
+
+    public enum RenderingMode
+    {
+        Opaque,
+        Cutout,
+        Transparent,
+        Refraction,
+        RefractionBlur,
+        Fur,
+        FurCutout,
+        FurTwoPass,
+        Gem
+    }
+
+    public enum TransparentMode
+    {
+        Normal,
+        OnePass,
+        TwoPass
+    }
+
+    public enum BlendMode
+    {
+        Alpha,
+        Add,
+        Screen,
+        Mul
+    }
+
+    public enum lilLightingPreset
+    {
+        Default,
+        SemiMonochrome
+    }
+
+    public enum lilPropertyBlock
+    {
+        Base,
+        Lighting,
+        UV,
+        MainColor,
+        MainColor1st,
+        MainColor2nd,
+        MainColor3rd,
+        AlphaMask,
+        Shadow,
+        Emission,
+        Emission1st,
+        Emission2nd,
+        NormalMap,
+        NormalMap1st,
+        NormalMap2nd,
+        Anisotropy,
+        Reflections,
+        Reflection,
+        MatCaps,
+        MatCap1st,
+        MatCap2nd,
+        RimLight,
+        Glitter,
+        Backlight,
+        Gem,
+        Outline,
+        Parallax,
+        DistanceFade,
+        AudioLink,
+        Dissolve,
+        Refraction,
+        Fur,
+        Encryption,
+        Stencil,
+        Rendering,
+        Tessellation,
+        Other
+    }
+}
+#endif

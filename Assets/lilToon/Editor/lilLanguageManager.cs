@@ -1,0 +1,138 @@
+#if UNITY_EDITOR
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+
+namespace lilToon
+{
+    public class lilLanguageManager
+    {
+        private static readonly Dictionary<string, string> loc = new Dictionary<string, string>();
+
+        public static string sMainColorBranch;
+        public static string sCullModes;
+        public static string sBlendModes;
+        public static string sAlphaMaskModes;
+        public static string blinkSetting;
+        public static string sDistanceFadeSetting;
+        public static string sDissolveParams;
+        public static string sDissolveParamsMode;
+        public static string sDissolveParamsOther;
+        public static string sGlitterParams1;
+        public static string sGlitterParams2;
+        public static string sTransparentMode;
+        public static string sOutlineVertexColorUsages;
+        public static string sShadowMaskTypes;
+        public static string[] sRenderingModeList;
+        public static string[] sRenderingModeListLite;
+        public static string[] sTransparentModeList;
+        public static GUIContent mainColorRGBAContent;
+        public static GUIContent colorRGBAContent;
+        public static GUIContent colorAlphaRGBAContent;
+        public static GUIContent maskBlendContent;
+        public static GUIContent colorMaskRGBAContent;
+        public static GUIContent alphaMaskContent;
+        public static GUIContent maskStrengthContent;
+        public static GUIContent normalMapContent;
+        public static GUIContent noiseMaskContent;
+        public static GUIContent adjustMaskContent;
+        public static GUIContent matcapContent;
+        public static GUIContent gradationContent;
+        public static GUIContent gradSpeedContent;
+        public static GUIContent smoothnessContent;
+        public static GUIContent metallicContent;
+        public static GUIContent parallaxContent;
+        public static GUIContent customMaskContent;
+        public static GUIContent shadow1stColorRGBAContent;
+        public static GUIContent shadow2ndColorRGBAContent;
+        public static GUIContent shadow3rdColorRGBAContent;
+
+        public static string GetLoc(string value) { return loc.ContainsKey(value) ? loc[value] : value; }
+        public static string BuildParams(params string[] labels) { return string.Join("|", labels); }
+
+        public static void LoadCustomLanguage(string langFileGUID)
+        {
+            LoadLanguage(lilDirectoryManager.GUIDToPath(langFileGUID));
+        }
+
+        public static void InitializeLanguage()
+        {
+            if(lilToonInspector.edSet.languageNum == -1)
+            {
+                if(Application.systemLanguage == SystemLanguage.Japanese)                   lilToonInspector.edSet.languageNum = 1;
+                else if(Application.systemLanguage == SystemLanguage.Korean)                lilToonInspector.edSet.languageNum = 2;
+                else if(Application.systemLanguage == SystemLanguage.ChineseSimplified)     lilToonInspector.edSet.languageNum = 3;
+                else if(Application.systemLanguage == SystemLanguage.ChineseTraditional)    lilToonInspector.edSet.languageNum = 4;
+                else                                                                        lilToonInspector.edSet.languageNum = 0;
+            }
+
+            if(loc.Count == 0)
+            {
+                UpdateLanguage();
+            }
+        }
+
+        public static void UpdateLanguage()
+        {
+            string langPath = lilDirectoryManager.GetEditorLanguageFileGUID();
+            LoadLanguage(langPath);
+            InitializeLabels();
+        }
+
+        private static void LoadLanguage(string langPath)
+        {
+            if(string.IsNullOrEmpty(langPath) || !File.Exists(langPath)) return;
+            StreamReader sr = new StreamReader(langPath);
+
+            string str = sr.ReadLine();
+            lilToonInspector.edSet.languageNames = str.Substring(str.IndexOf("\t")+1);
+            lilToonInspector.edSet.languageName = lilToonInspector.edSet.languageNames.Split('\t')[lilToonInspector.edSet.languageNum];
+            while((str = sr.ReadLine()) != null)
+            {
+                string[] lineContents = str.Split('\t');
+                loc[lineContents[0]] = lineContents[lilToonInspector.edSet.languageNum+1];
+            }
+            sr.Close();
+        }
+
+        private static void InitializeLabels()
+        {
+            sCullModes = BuildParams(GetLoc("sCullMode"), GetLoc("sCullModeOff"), GetLoc("sCullModeFront"), GetLoc("sCullModeBack"));
+            sBlendModes = BuildParams(GetLoc("sBlendMode"), GetLoc("sBlendModeNormal"), GetLoc("sBlendModeAdd"), GetLoc("sBlendModeScreen"), GetLoc("sBlendModeMul"));
+            sAlphaMaskModes = BuildParams(GetLoc("sAlphaMask"), GetLoc("sAlphaMaskModeNone"), GetLoc("sAlphaMaskModeReplace"), GetLoc("sAlphaMaskModeMul"));
+            blinkSetting = BuildParams(GetLoc("sBlinkStrength"), GetLoc("sBlinkType"), GetLoc("sBlinkSpeed"), GetLoc("sBlinkOffset"));
+            sDistanceFadeSetting = BuildParams(GetLoc("sStartDistance"), GetLoc("sEndDistance"), GetLoc("sStrength"), GetLoc("sBackfaceForceShadow"));
+            sDissolveParams = BuildParams(GetLoc("sDissolveMode"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"), GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"));
+            sDissolveParamsMode = BuildParams(GetLoc("sDissolve"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"));
+            sDissolveParamsOther = BuildParams(GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"), "Dummy");
+            sGlitterParams1 = BuildParams("Tiling", GetLoc("sParticleSize"), GetLoc("sContrast"));
+            sGlitterParams2 = BuildParams(GetLoc("sBlinkSpeed"), GetLoc("sAngleLimit"), GetLoc("sRimLightDirection"), GetLoc("sColorRandomness"));
+            sTransparentMode = BuildParams(GetLoc("sRenderingMode"), GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout"), GetLoc("sRenderingModeGem"));
+            sRenderingModeList = new[]{GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeRefractionBlur"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout"), GetLoc("sRenderingModeFurTwoPass"), GetLoc("sRenderingModeGem")};
+            sRenderingModeListLite = new[]{GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent")};
+            sTransparentModeList = new[]{GetLoc("sTransparentModeNormal"), GetLoc("sTransparentModeOnePass"), GetLoc("sTransparentModeTwoPass")};
+            sOutlineVertexColorUsages = BuildParams(GetLoc("sVertexColor"), GetLoc("sNone"), GetLoc("sVertexR2Width"), GetLoc("sVertexRGBA2Normal"));
+            sShadowMaskTypes = BuildParams(GetLoc("sMaskType"), GetLoc("sStrength"), GetLoc("sFlat"));
+            colorRGBAContent = new GUIContent(GetLoc("sColor"), GetLoc("sTextureRGBA"));
+            colorAlphaRGBAContent = new GUIContent(GetLoc("sColorAlpha"), GetLoc("sTextureRGBA"));
+            maskBlendContent = new GUIContent(GetLoc("sMask"), GetLoc("sBlendR"));
+            colorMaskRGBAContent = new GUIContent(GetLoc("sColor") + " / " + GetLoc("sMask"), GetLoc("sTextureRGBA"));
+            alphaMaskContent = new GUIContent(GetLoc("sAlphaMask"), GetLoc("sAlphaR"));
+            maskStrengthContent = new GUIContent(GetLoc("sStrengthMask"), GetLoc("sStrengthR"));
+            normalMapContent = new GUIContent(GetLoc("sNormalMap"), GetLoc("sNormalRGB"));
+            noiseMaskContent = new GUIContent(GetLoc("sNoise"), GetLoc("sNoiseR"));
+            adjustMaskContent = new GUIContent(GetLoc("sColorAdjustMask"), GetLoc("sBlendR"));
+            matcapContent = new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA"));
+            gradationContent = new GUIContent(GetLoc("sGradation"), GetLoc("sTextureRGBA"));
+            gradSpeedContent = new GUIContent(GetLoc("sGradTexSpeed"), GetLoc("sTextureRGBA"));
+            smoothnessContent = new GUIContent(GetLoc("sSmoothness"), GetLoc("sSmoothnessR"));
+            metallicContent = new GUIContent(GetLoc("sMetallic"), GetLoc("sMetallicR"));
+            parallaxContent = new GUIContent(GetLoc("sParallax"), GetLoc("sParallaxR"));
+            customMaskContent = new GUIContent(GetLoc("sMask"), "");
+            shadow1stColorRGBAContent = new GUIContent(GetLoc("sShadow1stColor"), GetLoc("sTextureRGBA"));
+            shadow2ndColorRGBAContent = new GUIContent(GetLoc("sShadow2ndColor"), GetLoc("sTextureRGBA"));
+            shadow3rdColorRGBAContent = new GUIContent(GetLoc("sShadow3rdColor"), GetLoc("sTextureRGBA"));
+        }
+    }
+}
+#endif

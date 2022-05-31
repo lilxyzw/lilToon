@@ -132,6 +132,75 @@ namespace lilToon
         protected static Shader ltsmgem     = Shader.Find("Hidden/lilToonMultiGem");
 
         protected static Shader mtoon       = Shader.Find("VRM/MToon");
+
+        public static void InitializeShaders()
+        {
+            lts         = Shader.Find("lilToon");
+            ltsc        = Shader.Find("Hidden/lilToonCutout");
+            ltst        = Shader.Find("Hidden/lilToonTransparent");
+            ltsot       = Shader.Find("Hidden/lilToonOnePassTransparent");
+            ltstt       = Shader.Find("Hidden/lilToonTwoPassTransparent");
+
+            ltso        = Shader.Find("Hidden/lilToonOutline");
+            ltsco       = Shader.Find("Hidden/lilToonCutoutOutline");
+            ltsto       = Shader.Find("Hidden/lilToonTransparentOutline");
+            ltsoto      = Shader.Find("Hidden/lilToonOnePassTransparentOutline");
+            ltstto      = Shader.Find("Hidden/lilToonTwoPassTransparentOutline");
+
+            ltsoo       = Shader.Find("_lil/[Optional] lilToonOutlineOnly");
+            ltscoo      = Shader.Find("_lil/[Optional] lilToonCutoutOutlineOnly");
+            ltstoo      = Shader.Find("_lil/[Optional] lilToonTransparentOutlineOnly");
+
+            ltstess     = Shader.Find("Hidden/lilToonTessellation");
+            ltstessc    = Shader.Find("Hidden/lilToonTessellationCutout");
+            ltstesst    = Shader.Find("Hidden/lilToonTessellationTransparent");
+            ltstessot   = Shader.Find("Hidden/lilToonTessellationOnePassTransparent");
+            ltstesstt   = Shader.Find("Hidden/lilToonTessellationTwoPassTransparent");
+
+            ltstesso    = Shader.Find("Hidden/lilToonTessellationOutline");
+            ltstessco   = Shader.Find("Hidden/lilToonTessellationCutoutOutline");
+            ltstessto   = Shader.Find("Hidden/lilToonTessellationTransparentOutline");
+            ltstessoto  = Shader.Find("Hidden/lilToonTessellationOnePassTransparentOutline");
+            ltstesstto  = Shader.Find("Hidden/lilToonTessellationTwoPassTransparentOutline");
+
+            ltsl        = Shader.Find("Hidden/lilToonLite");
+            ltslc       = Shader.Find("Hidden/lilToonLiteCutout");
+            ltslt       = Shader.Find("Hidden/lilToonLiteTransparent");
+            ltslot      = Shader.Find("Hidden/lilToonLiteOnePassTransparent");
+            ltsltt      = Shader.Find("Hidden/lilToonLiteTwoPassTransparent");
+
+            ltslo       = Shader.Find("Hidden/lilToonLiteOutline");
+            ltslco      = Shader.Find("Hidden/lilToonLiteCutoutOutline");
+            ltslto      = Shader.Find("Hidden/lilToonLiteTransparentOutline");
+            ltsloto     = Shader.Find("Hidden/lilToonLiteOnePassTransparentOutline");
+            ltsltto     = Shader.Find("Hidden/lilToonLiteTwoPassTransparentOutline");
+
+            ltsref      = Shader.Find("Hidden/lilToonRefraction");
+            ltsrefb     = Shader.Find("Hidden/lilToonRefractionBlur");
+            ltsfur      = Shader.Find("Hidden/lilToonFur");
+            ltsfurc     = Shader.Find("Hidden/lilToonFurCutout");
+            ltsfurtwo   = Shader.Find("Hidden/lilToonFurTwoPass");
+
+            ltsgem      = Shader.Find("Hidden/lilToonGem");
+
+            ltsfs       = Shader.Find("_lil/lilToonFakeShadow");
+
+            ltsbaker    = Shader.Find("Hidden/ltsother_baker");
+            ltspo       = Shader.Find("Hidden/ltspass_opaque");
+            ltspc       = Shader.Find("Hidden/ltspass_cutout");
+            ltspt       = Shader.Find("Hidden/ltspass_transparent");
+            ltsptesso   = Shader.Find("Hidden/ltspass_tess_opaque");
+            ltsptessc   = Shader.Find("Hidden/ltspass_tess_cutout");
+            ltsptesst   = Shader.Find("Hidden/ltspass_tess_transparent");
+
+            ltsm        = Shader.Find("_lil/lilToonMulti");
+            ltsmo       = Shader.Find("Hidden/lilToonMultiOutline");
+            ltsmref     = Shader.Find("Hidden/lilToonMultiRefraction");
+            ltsmfur     = Shader.Find("Hidden/lilToonMultiFur");
+            ltsmgem     = Shader.Find("Hidden/lilToonMultiGem");
+
+            mtoon       = Shader.Find("VRM/MToon");
+        }
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -241,7 +310,6 @@ namespace lilToon
         protected static GUIStyle middleButton      = new GUIStyle(){alignment = TextAnchor.MiddleCenter};
         private static bool isCustomEditor = false;
         private static bool isMultiVariants = false;
-        private static readonly Dictionary<string, string> loc = new Dictionary<string, string>();
         private static lilToonSetting shaderSetting;
         private static readonly Dictionary<string, MaterialProperty> copiedProperties = new Dictionary<string, MaterialProperty>();
         private readonly Gradient mainGrad  = new Gradient();
@@ -253,43 +321,43 @@ namespace lilToon
             latest_vertion_value = 0
         };
 
-        protected static string sMainColorBranch;
-        protected static string sCullModes;
-        protected static string sBlendModes;
-        protected static string sAlphaMaskModes;
-        protected static string blinkSetting;
-        protected static string sDistanceFadeSetting;
-        protected static string sDissolveParams;
-        protected static string sDissolveParamsMode;
-        protected static string sDissolveParamsOther;
-        protected static string sGlitterParams1;
-        protected static string sGlitterParams2;
-        protected static string sTransparentMode;
-        protected static string sOutlineVertexColorUsages;
-        protected static string sShadowMaskTypes;
-        protected static string[] sRenderingModeList;
-        protected static string[] sRenderingModeListLite;
-        protected static string[] sTransparentModeList;
-        protected static GUIContent mainColorRGBAContent;
-        protected static GUIContent colorRGBAContent;
-        protected static GUIContent colorAlphaRGBAContent;
-        protected static GUIContent maskBlendContent;
-        protected static GUIContent colorMaskRGBAContent;
-        protected static GUIContent alphaMaskContent;
-        protected static GUIContent maskStrengthContent;
-        protected static GUIContent normalMapContent;
-        protected static GUIContent noiseMaskContent;
-        protected static GUIContent adjustMaskContent;
-        protected static GUIContent matcapContent;
-        protected static GUIContent gradationContent;
-        protected static GUIContent gradSpeedContent;
-        protected static GUIContent smoothnessContent;
-        protected static GUIContent metallicContent;
-        protected static GUIContent parallaxContent;
-        protected static GUIContent customMaskContent;
-        protected static GUIContent shadow1stColorRGBAContent;
-        protected static GUIContent shadow2ndColorRGBAContent;
-        protected static GUIContent shadow3rdColorRGBAContent;
+        protected static string     sMainColorBranch            { get { return lilLanguageManager.sMainColorBranch         ;} set { lilLanguageManager.sMainColorBranch          = value; } }
+        protected static string     sCullModes                  { get { return lilLanguageManager.sCullModes               ;} set { lilLanguageManager.sCullModes                = value; } }
+        protected static string     sBlendModes                 { get { return lilLanguageManager.sBlendModes              ;} set { lilLanguageManager.sBlendModes               = value; } }
+        protected static string     sAlphaMaskModes             { get { return lilLanguageManager.sAlphaMaskModes          ;} set { lilLanguageManager.sAlphaMaskModes           = value; } }
+        protected static string     blinkSetting                { get { return lilLanguageManager.blinkSetting             ;} set { lilLanguageManager.blinkSetting              = value; } }
+        protected static string     sDistanceFadeSetting        { get { return lilLanguageManager.sDistanceFadeSetting     ;} set { lilLanguageManager.sDistanceFadeSetting      = value; } }
+        protected static string     sDissolveParams             { get { return lilLanguageManager.sDissolveParams          ;} set { lilLanguageManager.sDissolveParams           = value; } }
+        protected static string     sDissolveParamsMode         { get { return lilLanguageManager.sDissolveParamsMode      ;} set { lilLanguageManager.sDissolveParamsMode       = value; } }
+        protected static string     sDissolveParamsOther        { get { return lilLanguageManager.sDissolveParamsOther     ;} set { lilLanguageManager.sDissolveParamsOther      = value; } }
+        protected static string     sGlitterParams1             { get { return lilLanguageManager.sGlitterParams1          ;} set { lilLanguageManager.sGlitterParams1           = value; } }
+        protected static string     sGlitterParams2             { get { return lilLanguageManager.sGlitterParams2          ;} set { lilLanguageManager.sGlitterParams2           = value; } }
+        protected static string     sTransparentMode            { get { return lilLanguageManager.sTransparentMode         ;} set { lilLanguageManager.sTransparentMode          = value; } }
+        protected static string     sOutlineVertexColorUsages   { get { return lilLanguageManager.sOutlineVertexColorUsages;} set { lilLanguageManager.sOutlineVertexColorUsages = value; } }
+        protected static string     sShadowMaskTypes            { get { return lilLanguageManager.sShadowMaskTypes         ;} set { lilLanguageManager.sShadowMaskTypes          = value; } }
+        protected static string[]   sRenderingModeList          { get { return lilLanguageManager.sRenderingModeList       ;} set { lilLanguageManager.sRenderingModeList        = value; } }
+        protected static string[]   sRenderingModeListLite      { get { return lilLanguageManager.sRenderingModeListLite   ;} set { lilLanguageManager.sRenderingModeListLite    = value; } }
+        protected static string[]   sTransparentModeList        { get { return lilLanguageManager.sTransparentModeList     ;} set { lilLanguageManager.sTransparentModeList      = value; } }
+        protected static GUIContent mainColorRGBAContent        { get { return lilLanguageManager.mainColorRGBAContent     ;} set { lilLanguageManager.mainColorRGBAContent      = value; } }
+        protected static GUIContent colorRGBAContent            { get { return lilLanguageManager.colorRGBAContent         ;} set { lilLanguageManager.colorRGBAContent          = value; } }
+        protected static GUIContent colorAlphaRGBAContent       { get { return lilLanguageManager.colorAlphaRGBAContent    ;} set { lilLanguageManager.colorAlphaRGBAContent     = value; } }
+        protected static GUIContent maskBlendContent            { get { return lilLanguageManager.maskBlendContent         ;} set { lilLanguageManager.maskBlendContent          = value; } }
+        protected static GUIContent colorMaskRGBAContent        { get { return lilLanguageManager.colorMaskRGBAContent     ;} set { lilLanguageManager.colorMaskRGBAContent      = value; } }
+        protected static GUIContent alphaMaskContent            { get { return lilLanguageManager.alphaMaskContent         ;} set { lilLanguageManager.alphaMaskContent          = value; } }
+        protected static GUIContent maskStrengthContent         { get { return lilLanguageManager.maskStrengthContent      ;} set { lilLanguageManager.maskStrengthContent       = value; } }
+        protected static GUIContent normalMapContent            { get { return lilLanguageManager.normalMapContent         ;} set { lilLanguageManager.normalMapContent          = value; } }
+        protected static GUIContent noiseMaskContent            { get { return lilLanguageManager.noiseMaskContent         ;} set { lilLanguageManager.noiseMaskContent          = value; } }
+        protected static GUIContent adjustMaskContent           { get { return lilLanguageManager.adjustMaskContent        ;} set { lilLanguageManager.adjustMaskContent         = value; } }
+        protected static GUIContent matcapContent               { get { return lilLanguageManager.matcapContent            ;} set { lilLanguageManager.matcapContent             = value; } }
+        protected static GUIContent gradationContent            { get { return lilLanguageManager.gradationContent         ;} set { lilLanguageManager.gradationContent          = value; } }
+        protected static GUIContent gradSpeedContent            { get { return lilLanguageManager.gradSpeedContent         ;} set { lilLanguageManager.gradSpeedContent          = value; } }
+        protected static GUIContent smoothnessContent           { get { return lilLanguageManager.smoothnessContent        ;} set { lilLanguageManager.smoothnessContent         = value; } }
+        protected static GUIContent metallicContent             { get { return lilLanguageManager.metallicContent          ;} set { lilLanguageManager.metallicContent           = value; } }
+        protected static GUIContent parallaxContent             { get { return lilLanguageManager.parallaxContent          ;} set { lilLanguageManager.parallaxContent           = value; } }
+        protected static GUIContent customMaskContent           { get { return lilLanguageManager.customMaskContent        ;} set { lilLanguageManager.customMaskContent         = value; } }
+        protected static GUIContent shadow1stColorRGBAContent   { get { return lilLanguageManager.shadow1stColorRGBAContent;} set { lilLanguageManager.shadow1stColorRGBAContent = value; } }
+        protected static GUIContent shadow2ndColorRGBAContent   { get { return lilLanguageManager.shadow2ndColorRGBAContent;} set { lilLanguageManager.shadow2ndColorRGBAContent = value; } }
+        protected static GUIContent shadow3rdColorRGBAContent   { get { return lilLanguageManager.shadow3rdColorRGBAContent;} set { lilLanguageManager.shadow3rdColorRGBAContent = value; } }
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -4229,38 +4297,13 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Language
         #region
-        public static string GetLoc(string value) { return loc.ContainsKey(value) ? loc[value] : value; }
-
-        public static string BuildParams(params string[] labels) { return string.Join("|", labels); }
-
-        public static void InitializeLanguage()
-        {
-            if(edSet.languageNum == -1)
-            {
-                if(Application.systemLanguage == SystemLanguage.Japanese)                   edSet.languageNum = 1;
-                else if(Application.systemLanguage == SystemLanguage.Korean)                edSet.languageNum = 2;
-                else if(Application.systemLanguage == SystemLanguage.ChineseSimplified)     edSet.languageNum = 3;
-                else if(Application.systemLanguage == SystemLanguage.ChineseTraditional)    edSet.languageNum = 4;
-                else                                                                        edSet.languageNum = 0;
-            }
-
-            if(loc.Count == 0)
-            {
-                string langPath = lilDirectoryManager.GetEditorLanguageFileGUID();
-                LoadLanguage(langPath);
-                InitializeLabels();
-            }
-        }
-
-        public static void LoadCustomLanguage(string langFileGUID)
-        {
-            string langPath = lilDirectoryManager.GUIDToPath(langFileGUID);
-            LoadLanguage(langPath);
-        }
+        public static string GetLoc(string value)                   { return lilLanguageManager.GetLoc(value); }
+        public static string BuildParams(params string[] labels)    { return lilLanguageManager.BuildParams(labels); }
+        public static void LoadCustomLanguage(string langFileGUID)  { lilLanguageManager.LoadCustomLanguage(langFileGUID); }
 
         private static void SelectLang()
         {
-            InitializeLanguage();
+            lilLanguageManager.InitializeLanguage();
             int numbuf = edSet.languageNum;
 
             // Select language
@@ -4270,67 +4313,10 @@ namespace lilToon
             // Load language
             if(numbuf != edSet.languageNum)
             {
-                string langPath = lilDirectoryManager.GetEditorLanguageFileGUID();
-                LoadLanguage(langPath);
-                InitializeLabels();
+                lilLanguageManager.UpdateLanguage();
             }
 
             if(!string.IsNullOrEmpty(GetLoc("sLanguageWarning"))) EditorGUILayout.HelpBox(GetLoc("sLanguageWarning"),MessageType.Warning);
-        }
-
-        private static void LoadLanguage(string langPath)
-        {
-            if(string.IsNullOrEmpty(langPath) || !File.Exists(langPath)) return;
-            StreamReader sr = new StreamReader(langPath);
-
-            string str = sr.ReadLine();
-            edSet.languageNames = str.Substring(str.IndexOf("\t")+1);
-            edSet.languageName = edSet.languageNames.Split('\t')[edSet.languageNum];
-            while((str = sr.ReadLine()) != null)
-            {
-                string[] lineContents = str.Split('\t');
-                loc[lineContents[0]] = lineContents[edSet.languageNum+1];
-            }
-            sr.Close();
-        }
-
-        private static void InitializeLabels()
-        {
-            sCullModes = BuildParams(GetLoc("sCullMode"), GetLoc("sCullModeOff"), GetLoc("sCullModeFront"), GetLoc("sCullModeBack"));
-            sBlendModes = BuildParams(GetLoc("sBlendMode"), GetLoc("sBlendModeNormal"), GetLoc("sBlendModeAdd"), GetLoc("sBlendModeScreen"), GetLoc("sBlendModeMul"));
-            sAlphaMaskModes = BuildParams(GetLoc("sAlphaMask"), GetLoc("sAlphaMaskModeNone"), GetLoc("sAlphaMaskModeReplace"), GetLoc("sAlphaMaskModeMul"));
-            blinkSetting = BuildParams(GetLoc("sBlinkStrength"), GetLoc("sBlinkType"), GetLoc("sBlinkSpeed"), GetLoc("sBlinkOffset"));
-            sDistanceFadeSetting = BuildParams(GetLoc("sStartDistance"), GetLoc("sEndDistance"), GetLoc("sStrength"), GetLoc("sBackfaceForceShadow"));
-            sDissolveParams = BuildParams(GetLoc("sDissolveMode"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"), GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"));
-            sDissolveParamsMode = BuildParams(GetLoc("sDissolve"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"));
-            sDissolveParamsOther = BuildParams(GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"), "Dummy");
-            sGlitterParams1 = BuildParams("Tiling", GetLoc("sParticleSize"), GetLoc("sContrast"));
-            sGlitterParams2 = BuildParams(GetLoc("sBlinkSpeed"), GetLoc("sAngleLimit"), GetLoc("sRimLightDirection"), GetLoc("sColorRandomness"));
-            sTransparentMode = BuildParams(GetLoc("sRenderingMode"), GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout"), GetLoc("sRenderingModeGem"));
-            sRenderingModeList = new[]{GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeRefractionBlur"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout"), GetLoc("sRenderingModeFurTwoPass"), GetLoc("sRenderingModeGem")};
-            sRenderingModeListLite = new[]{GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent")};
-            sTransparentModeList = new[]{GetLoc("sTransparentModeNormal"), GetLoc("sTransparentModeOnePass"), GetLoc("sTransparentModeTwoPass")};
-            sOutlineVertexColorUsages = BuildParams(GetLoc("sVertexColor"), GetLoc("sNone"), GetLoc("sVertexR2Width"), GetLoc("sVertexRGBA2Normal"));
-            sShadowMaskTypes = BuildParams(GetLoc("sMaskType"), GetLoc("sStrength"), GetLoc("sFlat"));
-            colorRGBAContent = new GUIContent(GetLoc("sColor"), GetLoc("sTextureRGBA"));
-            colorAlphaRGBAContent = new GUIContent(GetLoc("sColorAlpha"), GetLoc("sTextureRGBA"));
-            maskBlendContent = new GUIContent(GetLoc("sMask"), GetLoc("sBlendR"));
-            colorMaskRGBAContent = new GUIContent(GetLoc("sColor") + " / " + GetLoc("sMask"), GetLoc("sTextureRGBA"));
-            alphaMaskContent = new GUIContent(GetLoc("sAlphaMask"), GetLoc("sAlphaR"));
-            maskStrengthContent = new GUIContent(GetLoc("sStrengthMask"), GetLoc("sStrengthR"));
-            normalMapContent = new GUIContent(GetLoc("sNormalMap"), GetLoc("sNormalRGB"));
-            noiseMaskContent = new GUIContent(GetLoc("sNoise"), GetLoc("sNoiseR"));
-            adjustMaskContent = new GUIContent(GetLoc("sColorAdjustMask"), GetLoc("sBlendR"));
-            matcapContent = new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA"));
-            gradationContent = new GUIContent(GetLoc("sGradation"), GetLoc("sTextureRGBA"));
-            gradSpeedContent = new GUIContent(GetLoc("sGradTexSpeed"), GetLoc("sTextureRGBA"));
-            smoothnessContent = new GUIContent(GetLoc("sSmoothness"), GetLoc("sSmoothnessR"));
-            metallicContent = new GUIContent(GetLoc("sMetallic"), GetLoc("sMetallicR"));
-            parallaxContent = new GUIContent(GetLoc("sParallax"), GetLoc("sParallaxR"));
-            customMaskContent = new GUIContent(GetLoc("sMask"), "");
-            shadow1stColorRGBAContent = new GUIContent(GetLoc("sShadow1stColor"), GetLoc("sTextureRGBA"));
-            shadow2ndColorRGBAContent = new GUIContent(GetLoc("sShadow2ndColor"), GetLoc("sTextureRGBA"));
-            shadow3rdColorRGBAContent = new GUIContent(GetLoc("sShadow3rdColor"), GetLoc("sTextureRGBA"));
         }
         #endregion
 
@@ -4484,79 +4470,6 @@ namespace lilToon
             shaderSetting.presetHair = (lilToonPreset)EditorGUILayout.ObjectField("Hair", shaderSetting.presetHair, typeof(lilToonPreset), false);
             shaderSetting.presetCloth = (lilToonPreset)EditorGUILayout.ObjectField("Cloth", shaderSetting.presetCloth, typeof(lilToonPreset), false);
             EditorGUI.indentLevel--;
-        }
-        #endregion
-
-        //------------------------------------------------------------------------------------------------------------------------------
-        // Initialize Editor Variable
-        #region
-        public static void InitializeShaders()
-        {
-            lts         = Shader.Find("lilToon");
-            ltsc        = Shader.Find("Hidden/lilToonCutout");
-            ltst        = Shader.Find("Hidden/lilToonTransparent");
-            ltsot       = Shader.Find("Hidden/lilToonOnePassTransparent");
-            ltstt       = Shader.Find("Hidden/lilToonTwoPassTransparent");
-
-            ltso        = Shader.Find("Hidden/lilToonOutline");
-            ltsco       = Shader.Find("Hidden/lilToonCutoutOutline");
-            ltsto       = Shader.Find("Hidden/lilToonTransparentOutline");
-            ltsoto      = Shader.Find("Hidden/lilToonOnePassTransparentOutline");
-            ltstto      = Shader.Find("Hidden/lilToonTwoPassTransparentOutline");
-
-            ltsoo       = Shader.Find("_lil/[Optional] lilToonOutlineOnly");
-            ltscoo      = Shader.Find("_lil/[Optional] lilToonCutoutOutlineOnly");
-            ltstoo      = Shader.Find("_lil/[Optional] lilToonTransparentOutlineOnly");
-
-            ltstess     = Shader.Find("Hidden/lilToonTessellation");
-            ltstessc    = Shader.Find("Hidden/lilToonTessellationCutout");
-            ltstesst    = Shader.Find("Hidden/lilToonTessellationTransparent");
-            ltstessot   = Shader.Find("Hidden/lilToonTessellationOnePassTransparent");
-            ltstesstt   = Shader.Find("Hidden/lilToonTessellationTwoPassTransparent");
-
-            ltstesso    = Shader.Find("Hidden/lilToonTessellationOutline");
-            ltstessco   = Shader.Find("Hidden/lilToonTessellationCutoutOutline");
-            ltstessto   = Shader.Find("Hidden/lilToonTessellationTransparentOutline");
-            ltstessoto  = Shader.Find("Hidden/lilToonTessellationOnePassTransparentOutline");
-            ltstesstto  = Shader.Find("Hidden/lilToonTessellationTwoPassTransparentOutline");
-
-            ltsl        = Shader.Find("Hidden/lilToonLite");
-            ltslc       = Shader.Find("Hidden/lilToonLiteCutout");
-            ltslt       = Shader.Find("Hidden/lilToonLiteTransparent");
-            ltslot      = Shader.Find("Hidden/lilToonLiteOnePassTransparent");
-            ltsltt      = Shader.Find("Hidden/lilToonLiteTwoPassTransparent");
-
-            ltslo       = Shader.Find("Hidden/lilToonLiteOutline");
-            ltslco      = Shader.Find("Hidden/lilToonLiteCutoutOutline");
-            ltslto      = Shader.Find("Hidden/lilToonLiteTransparentOutline");
-            ltsloto     = Shader.Find("Hidden/lilToonLiteOnePassTransparentOutline");
-            ltsltto     = Shader.Find("Hidden/lilToonLiteTwoPassTransparentOutline");
-
-            ltsref      = Shader.Find("Hidden/lilToonRefraction");
-            ltsrefb     = Shader.Find("Hidden/lilToonRefractionBlur");
-            ltsfur      = Shader.Find("Hidden/lilToonFur");
-            ltsfurc     = Shader.Find("Hidden/lilToonFurCutout");
-            ltsfurtwo   = Shader.Find("Hidden/lilToonFurTwoPass");
-
-            ltsgem      = Shader.Find("Hidden/lilToonGem");
-
-            ltsfs       = Shader.Find("_lil/lilToonFakeShadow");
-
-            ltsbaker    = Shader.Find("Hidden/ltsother_baker");
-            ltspo       = Shader.Find("Hidden/ltspass_opaque");
-            ltspc       = Shader.Find("Hidden/ltspass_cutout");
-            ltspt       = Shader.Find("Hidden/ltspass_transparent");
-            ltsptesso   = Shader.Find("Hidden/ltspass_tess_opaque");
-            ltsptessc   = Shader.Find("Hidden/ltspass_tess_cutout");
-            ltsptesst   = Shader.Find("Hidden/ltspass_tess_transparent");
-
-            ltsm        = Shader.Find("_lil/lilToonMulti");
-            ltsmo       = Shader.Find("Hidden/lilToonMultiOutline");
-            ltsmref     = Shader.Find("Hidden/lilToonMultiRefraction");
-            ltsmfur     = Shader.Find("Hidden/lilToonMultiFur");
-            ltsmgem     = Shader.Find("Hidden/lilToonMultiGem");
-
-            mtoon       = Shader.Find("VRM/MToon");
         }
         #endregion
 
@@ -8742,6 +8655,12 @@ namespace lilToon
             return lilTextureUtils.SaveTextureToPng(path, add, tex);
         }
 
+        [Obsolete("Use \"lilLanguageManager.InitializeLanguage()\" instead.")]
+        public static void InitializeLanguage()
+        {
+            lilLanguageManager.InitializeLanguage();
+        }
+
         private const string WARN_ABOUT_DIRECTORY = "Methods related to directories have been moved to lilDirectoryManager.";
         [Obsolete(WARN_ABOUT_DIRECTORY)] public const string editorSettingTempPath           = lilDirectoryManager.editorSettingTempPath;
         [Obsolete(WARN_ABOUT_DIRECTORY)] public const string versionInfoTempPath             = lilDirectoryManager.versionInfoTempPath;
@@ -8777,207 +8696,6 @@ namespace lilToon
         [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GUIDToPath(string GUID)        { return lilDirectoryManager.GUIDToPath(GUID); }
         [Obsolete(WARN_ABOUT_DIRECTORY)] public static bool ExistsEncryption() { return lilDirectoryManager.ExistsEncryption(); }
         #endregion
-    }
-
-    //------------------------------------------------------------------------------------------------------------------------------
-    // Enum
-    #region
-    public enum EditorMode
-    {
-        Simple,
-        Advanced,
-        Preset,
-        Settings
-    }
-
-    public enum RenderingMode
-    {
-        Opaque,
-        Cutout,
-        Transparent,
-        Refraction,
-        RefractionBlur,
-        Fur,
-        FurCutout,
-        FurTwoPass,
-        Gem
-    }
-
-    public enum TransparentMode
-    {
-        Normal,
-        OnePass,
-        TwoPass
-    }
-
-    public enum BlendMode
-    {
-        Alpha,
-        Add,
-        Screen,
-        Mul
-    }
-
-    public enum lilLightingPreset
-    {
-        Default,
-        SemiMonochrome
-    }
-
-    public enum lilPresetCategory
-    {
-        Skin,
-        Hair,
-        Cloth,
-        Nature,
-        Inorganic,
-        Effect,
-        Other
-    }
-
-    public enum lilPropertyBlock
-    {
-        Base,
-        Lighting,
-        UV,
-        MainColor,
-        MainColor1st,
-        MainColor2nd,
-        MainColor3rd,
-        AlphaMask,
-        Shadow,
-        Emission,
-        Emission1st,
-        Emission2nd,
-        NormalMap,
-        NormalMap1st,
-        NormalMap2nd,
-        Anisotropy,
-        Reflections,
-        Reflection,
-        MatCaps,
-        MatCap1st,
-        MatCap2nd,
-        RimLight,
-        Glitter,
-        Backlight,
-        Gem,
-        Outline,
-        Parallax,
-        DistanceFade,
-        AudioLink,
-        Dissolve,
-        Refraction,
-        Fur,
-        Encryption,
-        Stencil,
-        Rendering,
-        Tessellation,
-        Other
-    }
-    #endregion
-
-    public class lilMaterialProperty
-    {
-        public MaterialProperty p;
-        public List<lilPropertyBlock> blocks;
-        public bool isTexture;
-
-        // Values
-        //public int intValue
-        //{
-        //    get { return p.intValue; }
-        //    set { p.intValue = value; }
-        //}
-
-        public float floatValue
-        {
-            get { return p.floatValue; }
-            set { p.floatValue = value; }
-        }
-
-        public Vector4 vectorValue
-        {
-            get { return p.vectorValue; }
-            set { p.vectorValue = value; }
-        }
-
-        public Color colorValue
-        {
-            get { return p.colorValue; }
-            set { p.colorValue = value; }
-        }
-
-        public Texture textureValue
-        {
-            get { return p.textureValue; }
-            set { p.textureValue = value; }
-        }
-
-        // Other
-        public string name
-        {
-            get { return p.name; }
-            private set { }
-        }
-        public string displayName
-        {
-            get { return p.displayName; }
-            private set { }
-        }
-
-        public MaterialProperty.PropFlags flags
-        {
-            get { return p.flags; }
-            private set { }
-        }
-
-        public bool hasMixedValue
-        {
-            get { return p.hasMixedValue; }
-            private set { }
-        }
-
-        public Vector2 rangeLimits
-        {
-            get { return p.rangeLimits; }
-            private set { }
-        }
-
-        public UnityEngine.Object[] targets
-        {
-            get { return p.targets; }
-            private set { }
-        }
-
-        public UnityEngine.Rendering.TextureDimension textureDimension
-        {
-            get { return p.textureDimension; }
-            private set { }
-        }
-
-        public MaterialProperty.PropType type
-        {
-            get { return p.type; }
-            private set { }
-        }
-
-        public lilMaterialProperty()
-        {
-            p = null;
-            blocks = new List<lilPropertyBlock>();
-            isTexture = false;
-        }
-
-        public lilMaterialProperty(MaterialProperty prop)
-        {
-            p = prop;
-        }
-
-        public static implicit operator MaterialProperty(lilMaterialProperty prop)
-        {
-            return prop.p;
-        }
     }
 }
 #endif
