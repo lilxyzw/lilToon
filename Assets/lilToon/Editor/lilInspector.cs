@@ -10667,11 +10667,11 @@ namespace lilToon
         public bool isTexture;
 
         // Values
-        public int intValue
-        {
-            get { return p.intValue; }
-            set { p.intValue = value; }
-        }
+        //public int intValue
+        //{
+        //    get { return p.intValue; }
+        //    set { p.intValue = value; }
+        //}
 
         public float floatValue
         {

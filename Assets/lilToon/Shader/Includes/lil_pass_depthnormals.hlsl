@@ -55,7 +55,12 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     #if VERSION_GREATER_EQUAL(10, 1)
         float3 normalDirection = normalize(input.normalWS);
         normalDirection = fd.facing < (_FlipNormal-1.0) ? -normalDirection : normalDirection;
-        return float4(PackNormalOctRectEncode(normalize(mul((float3x3)LIL_MATRIX_V, normalDirection))), 0.0, 0.0);
+        normalDirection = normalize(normalDirection);
+        #if !(VERSION_GREATER_EQUAL(12, 1)) || defined(_GBUFFER_NORMALS_OCT)
+            return float4(PackNormalOctRectEncode(normalDirection), 0.0, 0.0);
+        #else
+            return float4(normalDirection, 0.0);
+        #endif
     #else
         return 0;
     #endif

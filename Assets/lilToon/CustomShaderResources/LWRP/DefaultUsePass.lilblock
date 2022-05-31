@@ -1,0 +1,12 @@
+    SubShader
+    {
+        Tags {*LIL_SUBSHADER_TAGS*}
+        *LIL_INSERT_USEPASS_PRE*
+        UsePass "*LIL_PASS_SHADER_NAME*/FORWARD"
+        UsePass "*LIL_PASS_SHADER_NAME*/SHADOW_CASTER"
+        UsePass "*LIL_PASS_SHADER_NAME*/DEPTHONLY"
+        UsePass "*LIL_PASS_SHADER_NAME*/LIGHTWEIGHT2D"
+        UsePass "*LIL_PASS_SHADER_NAME*/META"
+        *LIL_INSERT_USEPASS_POST*
+    }
+    Fallback "Lightweight Render Pipeline/Unlit"

@@ -357,3 +357,4 @@
 
         *LIL_INSERT_PASS_POST*
     }
+    Fallback "HDRP/Unlit"

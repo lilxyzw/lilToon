@@ -366,3 +366,4 @@
 
         *LIL_INSERT_PASS_POST*
     }
+    Fallback "Unlit/Texture"

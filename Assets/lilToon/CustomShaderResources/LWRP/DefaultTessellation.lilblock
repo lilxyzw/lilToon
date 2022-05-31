@@ -1,0 +1,254 @@
+    SubShader
+    {
+        HLSLINCLUDE
+            *LIL_SHADER_SETTING*
+            #define LIL_TESSELLATION
+            #pragma target 5.0
+            #pragma exclude_renderers gles gles3 glcore
+            #pragma fragmentoption ARB_precision_hint_fastest
+
+            #pragma lil_skip_variants_decals
+            #pragma lil_skip_variants_addlightshadows
+            #pragma lil_skip_variants_probevolumes
+            #pragma lil_skip_variants_ao
+        ENDHLSL
+
+        *LIL_INSERT_PASS_PRE*
+
+        // Forward
+        Pass
+        {
+            Name "FORWARD"
+            Tags {"LightMode" = "*LIL_LIGHTMODE_FORWARD_0*"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vertTess
+            #pragma fragment frag
+            #pragma hull hull
+            #pragma domain domain
+            #pragma require tesshw tessellation
+            #pragma lil_multi_compile_forward
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pipeline_lwrp.hlsl"
+            #include "Includes/lil_common.hlsl"
+            // Insert functions and includes that depend on Unity here
+            *LIL_SUBSHADER_INSERT*
+
+            #include "Includes/lil_pass_forward.hlsl"
+
+            *LIL_SUBSHADER_INSERT_POST*
+            ENDHLSL
+        }
+
+        // Forward Outline
+        Pass
+        {
+            Name "FORWARD_OUTLINE"
+            Tags {"LightMode" = "*LIL_LIGHTMODE_FORWARD_1*"}
+
+            Stencil
+            {
+                Ref [_OutlineStencilRef]
+                ReadMask [_OutlineStencilReadMask]
+                WriteMask [_OutlineStencilWriteMask]
+                Comp [_OutlineStencilComp]
+                Pass [_OutlineStencilPass]
+                Fail [_OutlineStencilFail]
+                ZFail [_OutlineStencilZFail]
+            }
+            Cull [_OutlineCull]
+            ZClip [_OutlineZClip]
+            ZWrite [_OutlineZWrite]
+            ZTest [_OutlineZTest]
+            ColorMask [_OutlineColorMask]
+            Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
+            BlendOp [_OutlineBlendOp], [_OutlineBlendOpAlpha]
+            Blend [_OutlineSrcBlend] [_OutlineDstBlend], [_OutlineSrcBlendAlpha] [_OutlineDstBlendAlpha]
+            AlphaToMask [_OutlineAlphaToMask]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vertTess
+            #pragma fragment frag
+            #pragma hull hull
+            #pragma domain domain
+            #pragma require tesshw tessellation
+            #pragma lil_multi_compile_forward
+            #pragma lil_skip_variants_shadows
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #define LIL_OUTLINE
+            #include "Includes/lil_pipeline_lwrp.hlsl"
+            #include "Includes/lil_common.hlsl"
+            // Insert functions and includes that depend on Unity here
+            *LIL_SUBSHADER_INSERT*
+
+            #include "Includes/lil_pass_forward.hlsl"
+
+            *LIL_SUBSHADER_INSERT_POST*
+            ENDHLSL
+        }
+
+        // ShadowCaster
+        Pass
+        {
+            Name "SHADOW_CASTER"
+            Tags {"LightMode" = "ShadowCaster"}
+		    Cull [_Cull]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma lil_multi_compile_shadowcaster
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pipeline_lwrp.hlsl"
+            #include "Includes/lil_common.hlsl"
+            // Insert functions and includes that depend on Unity here
+            *LIL_SUBSHADER_INSERT*
+
+            #include "Includes/lil_pass_shadowcaster.hlsl"
+
+            *LIL_SUBSHADER_INSERT_POST*
+            ENDHLSL
+        }
+
+        // DepthOnly
+        Pass
+        {
+            Name "DEPTHONLY"
+            Tags {"LightMode" = "DepthOnly"}
+		    Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma lil_multi_compile_depthonly
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pipeline_lwrp.hlsl"
+            #include "Includes/lil_common.hlsl"
+            // Insert functions and includes that depend on Unity here
+            *LIL_SUBSHADER_INSERT*
+
+            #include "Includes/lil_pass_depthonly.hlsl"
+
+            *LIL_SUBSHADER_INSERT_POST*
+            ENDHLSL
+        }
+
+        // Lightweight2D
+        Pass
+        {
+            Name "LIGHTWEIGHT2D"
+            Tags {"LightMode" = "Lightweight2D"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pipeline_lwrp.hlsl"
+            #include "Includes/lil_common.hlsl"
+            // Insert functions and includes that depend on Unity here
+            *LIL_SUBSHADER_INSERT*
+
+            #include "Includes/lil_pass_universal2d.hlsl"
+
+            *LIL_SUBSHADER_INSERT_POST*
+            ENDHLSL
+        }
+
+        // Meta
+        Pass
+        {
+            Name "META"
+            Tags {"LightMode" = "Meta"}
+            Cull Off
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma lil_multi_compile_meta
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pipeline_lwrp.hlsl"
+            #include "Includes/lil_common.hlsl"
+            // Insert functions and includes that depend on Unity here
+            *LIL_SUBSHADER_INSERT*
+
+            #include "Includes/lil_pass_meta.hlsl"
+
+            *LIL_SUBSHADER_INSERT_POST*
+            ENDHLSL
+        }
+
+        *LIL_INSERT_PASS_POST*
+    }
+    Fallback "Lightweight Render Pipeline/Unlit"

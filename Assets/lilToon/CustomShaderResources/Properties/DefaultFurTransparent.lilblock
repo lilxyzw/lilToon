@@ -49,7 +49,7 @@
 
         //----------------------------------------------------------------------------------------------------------------------
         // Fur Advanced
-        [lilCullMode]                                   _FurCull                ("Cull Mode|Off|Front|Back", Int) = 0
+        [lilEnum]                                       _FurCull                ("Cull Mode|Off|Front|Back", Int) = 0
         [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlend            ("SrcBlend", Int) = 5
         [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlend            ("DstBlend", Int) = 10
         [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlendAlpha       ("SrcBlendAlpha", Int) = 1

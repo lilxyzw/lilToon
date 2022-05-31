@@ -1,6 +1,6 @@
     SubShader
     {
-        Tags{*LIL_DOTS_SM_TAGS*}
+        Tags {*LIL_DOTS_SM_TAGS*}
         HLSLINCLUDE
             *LIL_DOTS_SM_4_5*
             #pragma exclude_renderers d3d11_9x
@@ -324,3 +324,4 @@
 
         *LIL_INSERT_PASS_POST*
     }
+    Fallback "Universal Render Pipeline/Unlit"

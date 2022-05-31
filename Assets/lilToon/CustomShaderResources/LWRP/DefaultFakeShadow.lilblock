@@ -1,0 +1,72 @@
+    SubShader
+    {
+        Tags {*LIL_SUBSHADER_TAGS*}
+        HLSLINCLUDE
+            *LIL_SHADER_SETTING*
+            #pragma target 3.5
+            #pragma fragmentoption ARB_precision_hint_fastest
+            #define LIL_FAKESHADOW
+
+            #pragma lil_skip_variants_shadows
+            #pragma lil_skip_variants_lightmaps
+            #pragma lil_skip_variants_decals
+            #pragma lil_skip_variants_addlight
+            #pragma lil_skip_variants_addlightshadows
+            #pragma lil_skip_variants_probevolumes
+            #pragma lil_skip_variants_ao
+            #pragma lil_skip_variants_lightlists
+            #pragma lil_skip_variants_reflections
+        ENDHLSL
+
+        *LIL_INSERT_PASS_PRE*
+
+        // Forward
+        Pass
+        {
+            Name "FORWARD"
+            Tags {"LightMode" = "*LIL_LIGHTMODE_FORWARD_0*"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
+            Cull [_Cull]
+            ZClip [_ZClip]
+            ZWrite [_ZWrite]
+            ZTest [_ZTest]
+            ColorMask [_ColorMask]
+            Offset [_OffsetFactor], [_OffsetUnits]
+            BlendOp [_BlendOp], [_BlendOpAlpha]
+            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
+            AlphaToMask [_AlphaToMask]
+
+            HLSLPROGRAM
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Build Option
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma lil_multi_compile_forward
+
+            //----------------------------------------------------------------------------------------------------------------------
+            // Pass
+            #include "Includes/lil_pipeline_lwrp.hlsl"
+            #include "Includes/lil_common.hlsl"
+            // Insert functions and includes that depend on Unity here
+            *LIL_SUBSHADER_INSERT*
+
+            #include "Includes/lil_pass_forward_fakeshadow.hlsl"
+
+            *LIL_SUBSHADER_INSERT_POST*
+            ENDHLSL
+        }
+
+        *LIL_INSERT_PASS_POST*
+    }
+    Fallback "Lightweight Render Pipeline/Unlit"
