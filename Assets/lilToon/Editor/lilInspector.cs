@@ -35,171 +35,73 @@ namespace lilToon
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
-        // Constant
-        #region
-        public const string currentVersionName = "1.3.0";
-        public const int currentVersionValue = 26;
-
-        private const string boothURL = "https://lilxyzw.booth.pm/";
-        private const string githubURL = "https://github.com/lilxyzw/lilToon";
-        public const string versionInfoURL = "https://raw.githubusercontent.com/lilxyzw/lilToon/master/version.json";
-        private static readonly string[] mainTexCheckWords = new[] {"mask", "shadow", "shade", "outline", "normal", "bumpmap", "matcap", "rimlight", "emittion", "reflection", "specular", "roughness", "smoothness", "metallic", "metalness", "opacity", "parallax", "displacement", "height", "ambient", "occlusion"};
-
-        public static readonly Vector2 defaultTextureOffset = new Vector2(0.0f,0.0f);
-        public static readonly Vector2 defaultTextureScale = new Vector2(1.0f,1.0f);
-        public static readonly Vector4 defaultScrollRotate = new Vector4(0.0f,0.0f,0.0f,0.0f);
-        public static readonly Vector4 defaultHSVG = new Vector4(0.0f,1.0f,1.0f,1.0f);
-        public static readonly Vector4 defaultKeys = new Vector4(0.0f,0.0f,0.0f,0.0f);
-        public static readonly Vector4 defaultDecalAnim = new Vector4(1.0f,1.0f,1.0f,30.0f);
-        public static readonly Vector4 defaultDissolveParams = new Vector4(0.0f,0.0f,0.5f,0.1f);
-        public static readonly Vector4 defaultDistanceFadeParams = new Vector4(0.1f,0.01f,0.0f,0.0f);
-        public static readonly Color lineColor = EditorGUIUtility.isProSkin ? new Color(0.35f,0.35f,0.35f,1.0f) : new Color(0.4f,0.4f,0.4f,1.0f);
-        #endregion
-
-        //------------------------------------------------------------------------------------------------------------------------------
         // Shader
         #region
-        protected static Shader lts         = Shader.Find("lilToon");
-        protected static Shader ltsc        = Shader.Find("Hidden/lilToonCutout");
-        protected static Shader ltst        = Shader.Find("Hidden/lilToonTransparent");
-        protected static Shader ltsot       = Shader.Find("Hidden/lilToonOnePassTransparent");
-        protected static Shader ltstt       = Shader.Find("Hidden/lilToonTwoPassTransparent");
+        protected static Shader lts         { get { return lilShaderManager.lts       ; } set { lilShaderManager.lts        = value; } }
+        protected static Shader ltsc        { get { return lilShaderManager.ltsc      ; } set { lilShaderManager.ltsc       = value; } }
+        protected static Shader ltst        { get { return lilShaderManager.ltst      ; } set { lilShaderManager.ltst       = value; } }
+        protected static Shader ltsot       { get { return lilShaderManager.ltsot     ; } set { lilShaderManager.ltsot      = value; } }
+        protected static Shader ltstt       { get { return lilShaderManager.ltstt     ; } set { lilShaderManager.ltstt      = value; } }
+        protected static Shader ltso        { get { return lilShaderManager.ltso      ; } set { lilShaderManager.ltso       = value; } }
+        protected static Shader ltsco       { get { return lilShaderManager.ltsco     ; } set { lilShaderManager.ltsco      = value; } }
+        protected static Shader ltsto       { get { return lilShaderManager.ltsto     ; } set { lilShaderManager.ltsto      = value; } }
+        protected static Shader ltsoto      { get { return lilShaderManager.ltsoto    ; } set { lilShaderManager.ltsoto     = value; } }
+        protected static Shader ltstto      { get { return lilShaderManager.ltstto    ; } set { lilShaderManager.ltstto     = value; } }
+        protected static Shader ltsoo       { get { return lilShaderManager.ltsoo     ; } set { lilShaderManager.ltsoo      = value; } }
+        protected static Shader ltscoo      { get { return lilShaderManager.ltscoo    ; } set { lilShaderManager.ltscoo     = value; } }
+        protected static Shader ltstoo      { get { return lilShaderManager.ltstoo    ; } set { lilShaderManager.ltstoo     = value; } }
+        protected static Shader ltstess     { get { return lilShaderManager.ltstess   ; } set { lilShaderManager.ltstess    = value; } }
+        protected static Shader ltstessc    { get { return lilShaderManager.ltstessc  ; } set { lilShaderManager.ltstessc   = value; } }
+        protected static Shader ltstesst    { get { return lilShaderManager.ltstesst  ; } set { lilShaderManager.ltstesst   = value; } }
+        protected static Shader ltstessot   { get { return lilShaderManager.ltstessot ; } set { lilShaderManager.ltstessot  = value; } }
+        protected static Shader ltstesstt   { get { return lilShaderManager.ltstesstt ; } set { lilShaderManager.ltstesstt  = value; } }
+        protected static Shader ltstesso    { get { return lilShaderManager.ltstesso  ; } set { lilShaderManager.ltstesso   = value; } }
+        protected static Shader ltstessco   { get { return lilShaderManager.ltstessco ; } set { lilShaderManager.ltstessco  = value; } }
+        protected static Shader ltstessto   { get { return lilShaderManager.ltstessto ; } set { lilShaderManager.ltstessto  = value; } }
+        protected static Shader ltstessoto  { get { return lilShaderManager.ltstessoto; } set { lilShaderManager.ltstessoto = value; } }
+        protected static Shader ltstesstto  { get { return lilShaderManager.ltstesstto; } set { lilShaderManager.ltstesstto = value; } }
+        protected static Shader ltsl        { get { return lilShaderManager.ltsl      ; } set { lilShaderManager.ltsl       = value; } }
+        protected static Shader ltslc       { get { return lilShaderManager.ltslc     ; } set { lilShaderManager.ltslc      = value; } }
+        protected static Shader ltslt       { get { return lilShaderManager.ltslt     ; } set { lilShaderManager.ltslt      = value; } }
+        protected static Shader ltslot      { get { return lilShaderManager.ltslot    ; } set { lilShaderManager.ltslot     = value; } }
+        protected static Shader ltsltt      { get { return lilShaderManager.ltsltt    ; } set { lilShaderManager.ltsltt     = value; } }
+        protected static Shader ltslo       { get { return lilShaderManager.ltslo     ; } set { lilShaderManager.ltslo      = value; } }
+        protected static Shader ltslco      { get { return lilShaderManager.ltslco    ; } set { lilShaderManager.ltslco     = value; } }
+        protected static Shader ltslto      { get { return lilShaderManager.ltslto    ; } set { lilShaderManager.ltslto     = value; } }
+        protected static Shader ltsloto     { get { return lilShaderManager.ltsloto   ; } set { lilShaderManager.ltsloto    = value; } }
+        protected static Shader ltsltto     { get { return lilShaderManager.ltsltto   ; } set { lilShaderManager.ltsltto    = value; } }
+        protected static Shader ltsref      { get { return lilShaderManager.ltsref    ; } set { lilShaderManager.ltsref     = value; } }
+        protected static Shader ltsrefb     { get { return lilShaderManager.ltsrefb   ; } set { lilShaderManager.ltsrefb    = value; } }
+        protected static Shader ltsfur      { get { return lilShaderManager.ltsfur    ; } set { lilShaderManager.ltsfur     = value; } }
+        protected static Shader ltsfurc     { get { return lilShaderManager.ltsfurc   ; } set { lilShaderManager.ltsfurc    = value; } }
+        protected static Shader ltsfurtwo   { get { return lilShaderManager.ltsfurtwo ; } set { lilShaderManager.ltsfurtwo  = value; } }
+        protected static Shader ltsfuro     { get { return lilShaderManager.ltsfuro   ; } set { lilShaderManager.ltsfuro    = value; } }
+        protected static Shader ltsfuroc    { get { return lilShaderManager.ltsfuroc  ; } set { lilShaderManager.ltsfuroc   = value; } }
+        protected static Shader ltsfurotwo  { get { return lilShaderManager.ltsfurotwo; } set { lilShaderManager.ltsfurotwo = value; } }
+        protected static Shader ltsgem      { get { return lilShaderManager.ltsgem    ; } set { lilShaderManager.ltsgem     = value; } }
+        protected static Shader ltsfs       { get { return lilShaderManager.ltsfs     ; } set { lilShaderManager.ltsfs      = value; } }
+        protected static Shader ltsover     { get { return lilShaderManager.ltsover   ; } set { lilShaderManager.ltsover    = value; } }
+        protected static Shader ltsoover    { get { return lilShaderManager.ltsoover  ; } set { lilShaderManager.ltsoover   = value; } }
+        protected static Shader ltslover    { get { return lilShaderManager.ltslover  ; } set { lilShaderManager.ltslover   = value; } }
+        protected static Shader ltsloover   { get { return lilShaderManager.ltsloover ; } set { lilShaderManager.ltsloover  = value; } }
+        protected static Shader ltsbaker    { get { return lilShaderManager.ltsbaker  ; } set { lilShaderManager.ltsbaker   = value; } }
+        protected static Shader ltspo       { get { return lilShaderManager.ltspo     ; } set { lilShaderManager.ltspo      = value; } }
+        protected static Shader ltspc       { get { return lilShaderManager.ltspc     ; } set { lilShaderManager.ltspc      = value; } }
+        protected static Shader ltspt       { get { return lilShaderManager.ltspt     ; } set { lilShaderManager.ltspt      = value; } }
+        protected static Shader ltsptesso   { get { return lilShaderManager.ltsptesso ; } set { lilShaderManager.ltsptesso  = value; } }
+        protected static Shader ltsptessc   { get { return lilShaderManager.ltsptessc ; } set { lilShaderManager.ltsptessc  = value; } }
+        protected static Shader ltsptesst   { get { return lilShaderManager.ltsptesst ; } set { lilShaderManager.ltsptesst  = value; } }
+        protected static Shader ltsm        { get { return lilShaderManager.ltsm      ; } set { lilShaderManager.ltsm       = value; } }
+        protected static Shader ltsmo       { get { return lilShaderManager.ltsmo     ; } set { lilShaderManager.ltsmo      = value; } }
+        protected static Shader ltsmref     { get { return lilShaderManager.ltsmref   ; } set { lilShaderManager.ltsmref    = value; } }
+        protected static Shader ltsmfur     { get { return lilShaderManager.ltsmfur   ; } set { lilShaderManager.ltsmfur    = value; } }
+        protected static Shader ltsmgem     { get { return lilShaderManager.ltsmgem   ; } set { lilShaderManager.ltsmgem    = value; } }
+        protected static Shader mtoon       { get { return lilShaderManager.mtoon     ; } set { lilShaderManager.mtoon      = value; } }
 
-        protected static Shader ltso        = Shader.Find("Hidden/lilToonOutline");
-        protected static Shader ltsco       = Shader.Find("Hidden/lilToonCutoutOutline");
-        protected static Shader ltsto       = Shader.Find("Hidden/lilToonTransparentOutline");
-        protected static Shader ltsoto      = Shader.Find("Hidden/lilToonOnePassTransparentOutline");
-        protected static Shader ltstto      = Shader.Find("Hidden/lilToonTwoPassTransparentOutline");
-
-        protected static Shader ltsoo       = Shader.Find("_lil/[Optional] lilToonOutlineOnly");
-        protected static Shader ltscoo      = Shader.Find("_lil/[Optional] lilToonCutoutOutlineOnly");
-        protected static Shader ltstoo      = Shader.Find("_lil/[Optional] lilToonTransparentOutlineOnly");
-
-        protected static Shader ltstess     = Shader.Find("Hidden/lilToonTessellation");
-        protected static Shader ltstessc    = Shader.Find("Hidden/lilToonTessellationCutout");
-        protected static Shader ltstesst    = Shader.Find("Hidden/lilToonTessellationTransparent");
-        protected static Shader ltstessot   = Shader.Find("Hidden/lilToonTessellationOnePassTransparent");
-        protected static Shader ltstesstt   = Shader.Find("Hidden/lilToonTessellationTwoPassTransparent");
-
-        protected static Shader ltstesso    = Shader.Find("Hidden/lilToonTessellationOutline");
-        protected static Shader ltstessco   = Shader.Find("Hidden/lilToonTessellationCutoutOutline");
-        protected static Shader ltstessto   = Shader.Find("Hidden/lilToonTessellationTransparentOutline");
-        protected static Shader ltstessoto  = Shader.Find("Hidden/lilToonTessellationOnePassTransparentOutline");
-        protected static Shader ltstesstto  = Shader.Find("Hidden/lilToonTessellationTwoPassTransparentOutline");
-
-        protected static Shader ltsl        = Shader.Find("Hidden/lilToonLite");
-        protected static Shader ltslc       = Shader.Find("Hidden/lilToonLiteCutout");
-        protected static Shader ltslt       = Shader.Find("Hidden/lilToonLiteTransparent");
-        protected static Shader ltslot      = Shader.Find("Hidden/lilToonLiteOnePassTransparent");
-        protected static Shader ltsltt      = Shader.Find("Hidden/lilToonLiteTwoPassTransparent");
-
-        protected static Shader ltslo       = Shader.Find("Hidden/lilToonLiteOutline");
-        protected static Shader ltslco      = Shader.Find("Hidden/lilToonLiteCutoutOutline");
-        protected static Shader ltslto      = Shader.Find("Hidden/lilToonLiteTransparentOutline");
-        protected static Shader ltsloto     = Shader.Find("Hidden/lilToonLiteOnePassTransparentOutline");
-        protected static Shader ltsltto     = Shader.Find("Hidden/lilToonLiteTwoPassTransparentOutline");
-
-        protected static Shader ltsref      = Shader.Find("Hidden/lilToonRefraction");
-        protected static Shader ltsrefb     = Shader.Find("Hidden/lilToonRefractionBlur");
-        protected static Shader ltsfur      = Shader.Find("Hidden/lilToonFur");
-        protected static Shader ltsfurc     = Shader.Find("Hidden/lilToonFurCutout");
-        protected static Shader ltsfurtwo   = Shader.Find("Hidden/lilToonFurTwoPass");
-        protected static Shader ltsfuro     = Shader.Find("_lil/[Optional] lilToonFurOnly");
-        protected static Shader ltsfuroc    = Shader.Find("_lil/[Optional] lilToonFurOnlyCutout");
-        protected static Shader ltsfurotwo  = Shader.Find("_lil/[Optional] lilToonFurOnlyTwoPass");
-
-        protected static Shader ltsgem      = Shader.Find("Hidden/lilToonGem");
-
-        protected static Shader ltsfs       = Shader.Find("_lil/lilToonFakeShadow");
-
-        protected static Shader ltsover     = Shader.Find("_lil/[Optional] lilToonOverlay");
-        protected static Shader ltsoover    = Shader.Find("_lil/[Optional] lilToonOverlayOnePass");
-        protected static Shader ltslover    = Shader.Find("_lil/[Optional] lilToonLiteOverlay");
-        protected static Shader ltsloover   = Shader.Find("_lil/[Optional] lilToonLiteOverlayOnePass");
-
-        protected static Shader ltsbaker    = Shader.Find("Hidden/ltsother_baker");
-        protected static Shader ltspo       = Shader.Find("Hidden/ltspass_opaque");
-        protected static Shader ltspc       = Shader.Find("Hidden/ltspass_cutout");
-        protected static Shader ltspt       = Shader.Find("Hidden/ltspass_transparent");
-        protected static Shader ltsptesso   = Shader.Find("Hidden/ltspass_tess_opaque");
-        protected static Shader ltsptessc   = Shader.Find("Hidden/ltspass_tess_cutout");
-        protected static Shader ltsptesst   = Shader.Find("Hidden/ltspass_tess_transparent");
-
-        protected static Shader ltsm        = Shader.Find("_lil/lilToonMulti");
-        protected static Shader ltsmo       = Shader.Find("Hidden/lilToonMultiOutline");
-        protected static Shader ltsmref     = Shader.Find("Hidden/lilToonMultiRefraction");
-        protected static Shader ltsmfur     = Shader.Find("Hidden/lilToonMultiFur");
-        protected static Shader ltsmgem     = Shader.Find("Hidden/lilToonMultiGem");
-
-        protected static Shader mtoon       = Shader.Find("VRM/MToon");
-
+        [Obsolete("")]
         public static void InitializeShaders()
         {
-            lts         = Shader.Find("lilToon");
-            ltsc        = Shader.Find("Hidden/lilToonCutout");
-            ltst        = Shader.Find("Hidden/lilToonTransparent");
-            ltsot       = Shader.Find("Hidden/lilToonOnePassTransparent");
-            ltstt       = Shader.Find("Hidden/lilToonTwoPassTransparent");
-
-            ltso        = Shader.Find("Hidden/lilToonOutline");
-            ltsco       = Shader.Find("Hidden/lilToonCutoutOutline");
-            ltsto       = Shader.Find("Hidden/lilToonTransparentOutline");
-            ltsoto      = Shader.Find("Hidden/lilToonOnePassTransparentOutline");
-            ltstto      = Shader.Find("Hidden/lilToonTwoPassTransparentOutline");
-
-            ltsoo       = Shader.Find("_lil/[Optional] lilToonOutlineOnly");
-            ltscoo      = Shader.Find("_lil/[Optional] lilToonCutoutOutlineOnly");
-            ltstoo      = Shader.Find("_lil/[Optional] lilToonTransparentOutlineOnly");
-
-            ltstess     = Shader.Find("Hidden/lilToonTessellation");
-            ltstessc    = Shader.Find("Hidden/lilToonTessellationCutout");
-            ltstesst    = Shader.Find("Hidden/lilToonTessellationTransparent");
-            ltstessot   = Shader.Find("Hidden/lilToonTessellationOnePassTransparent");
-            ltstesstt   = Shader.Find("Hidden/lilToonTessellationTwoPassTransparent");
-
-            ltstesso    = Shader.Find("Hidden/lilToonTessellationOutline");
-            ltstessco   = Shader.Find("Hidden/lilToonTessellationCutoutOutline");
-            ltstessto   = Shader.Find("Hidden/lilToonTessellationTransparentOutline");
-            ltstessoto  = Shader.Find("Hidden/lilToonTessellationOnePassTransparentOutline");
-            ltstesstto  = Shader.Find("Hidden/lilToonTessellationTwoPassTransparentOutline");
-
-            ltsl        = Shader.Find("Hidden/lilToonLite");
-            ltslc       = Shader.Find("Hidden/lilToonLiteCutout");
-            ltslt       = Shader.Find("Hidden/lilToonLiteTransparent");
-            ltslot      = Shader.Find("Hidden/lilToonLiteOnePassTransparent");
-            ltsltt      = Shader.Find("Hidden/lilToonLiteTwoPassTransparent");
-
-            ltslo       = Shader.Find("Hidden/lilToonLiteOutline");
-            ltslco      = Shader.Find("Hidden/lilToonLiteCutoutOutline");
-            ltslto      = Shader.Find("Hidden/lilToonLiteTransparentOutline");
-            ltsloto     = Shader.Find("Hidden/lilToonLiteOnePassTransparentOutline");
-            ltsltto     = Shader.Find("Hidden/lilToonLiteTwoPassTransparentOutline");
-
-            ltsref      = Shader.Find("Hidden/lilToonRefraction");
-            ltsrefb     = Shader.Find("Hidden/lilToonRefractionBlur");
-            ltsfur      = Shader.Find("Hidden/lilToonFur");
-            ltsfurc     = Shader.Find("Hidden/lilToonFurCutout");
-            ltsfurtwo   = Shader.Find("Hidden/lilToonFurTwoPass");
-
-            ltsgem      = Shader.Find("Hidden/lilToonGem");
-
-            ltsfs       = Shader.Find("_lil/lilToonFakeShadow");
-
-            ltsbaker    = Shader.Find("Hidden/ltsother_baker");
-            ltspo       = Shader.Find("Hidden/ltspass_opaque");
-            ltspc       = Shader.Find("Hidden/ltspass_cutout");
-            ltspt       = Shader.Find("Hidden/ltspass_transparent");
-            ltsptesso   = Shader.Find("Hidden/ltspass_tess_opaque");
-            ltsptessc   = Shader.Find("Hidden/ltspass_tess_cutout");
-            ltsptesst   = Shader.Find("Hidden/ltspass_tess_transparent");
-
-            ltsm        = Shader.Find("_lil/lilToonMulti");
-            ltsmo       = Shader.Find("Hidden/lilToonMultiOutline");
-            ltsmref     = Shader.Find("Hidden/lilToonMultiRefraction");
-            ltsmfur     = Shader.Find("Hidden/lilToonMultiFur");
-            ltsmgem     = Shader.Find("Hidden/lilToonMultiGem");
-
-            mtoon       = Shader.Find("VRM/MToon");
+            lilShaderManager.InitializeShaders();
         }
         #endregion
 
@@ -299,15 +201,15 @@ namespace lilToon
         public static lilToonPreset[] presets;
         public static lilToonEditorSetting edSet = new lilToonEditorSetting();
         protected static MaterialEditor m_MaterialEditor;
-        protected static GUIStyle boxOuter          = InitializeBox(4, 4, 2);
-        protected static GUIStyle boxInnerHalf      = InitializeBox(4, 2, 2);
-        protected static GUIStyle boxInner          = InitializeBox(4, 2, 2);
-        protected static GUIStyle customBox         = InitializeBox(6, 4, 4);
-        protected static GUIStyle customToggleFont  = new GUIStyle();
-        protected static GUIStyle wrapLabel         = new GUIStyle();
-        protected static GUIStyle boldLabel         = new GUIStyle();
-        protected static GUIStyle foldout           = new GUIStyle();
-        protected static GUIStyle middleButton      = new GUIStyle(){alignment = TextAnchor.MiddleCenter};
+        protected static GUIStyle boxOuter         { get { return lilEditorGUI.boxOuter        ; } private set { lilEditorGUI.boxOuter         = value; }}
+        protected static GUIStyle boxInnerHalf     { get { return lilEditorGUI.boxInnerHalf    ; } private set { lilEditorGUI.boxInnerHalf     = value; }}
+        protected static GUIStyle boxInner         { get { return lilEditorGUI.boxInner        ; } private set { lilEditorGUI.boxInner         = value; }}
+        protected static GUIStyle customBox        { get { return lilEditorGUI.customBox       ; } private set { lilEditorGUI.customBox        = value; }}
+        protected static GUIStyle customToggleFont { get { return lilEditorGUI.customToggleFont; } private set { lilEditorGUI.customToggleFont = value; }}
+        protected static GUIStyle wrapLabel        { get { return lilEditorGUI.wrapLabel       ; } private set { lilEditorGUI.wrapLabel        = value; }}
+        protected static GUIStyle boldLabel        { get { return lilEditorGUI.boldLabel       ; } private set { lilEditorGUI.boldLabel        = value; }}
+        protected static GUIStyle foldout          { get { return lilEditorGUI.foldout         ; } private set { lilEditorGUI.foldout          = value; }}
+        protected static GUIStyle middleButton     { get { return lilEditorGUI.middleButton    ; } private set { lilEditorGUI.middleButton     = value; }}
         private static bool isCustomEditor = false;
         private static bool isMultiVariants = false;
         private static lilToonSetting shaderSetting;
@@ -321,43 +223,43 @@ namespace lilToon
             latest_vertion_value = 0
         };
 
-        protected static string     sMainColorBranch            { get { return lilLanguageManager.sMainColorBranch         ;} set { lilLanguageManager.sMainColorBranch          = value; } }
-        protected static string     sCullModes                  { get { return lilLanguageManager.sCullModes               ;} set { lilLanguageManager.sCullModes                = value; } }
-        protected static string     sBlendModes                 { get { return lilLanguageManager.sBlendModes              ;} set { lilLanguageManager.sBlendModes               = value; } }
-        protected static string     sAlphaMaskModes             { get { return lilLanguageManager.sAlphaMaskModes          ;} set { lilLanguageManager.sAlphaMaskModes           = value; } }
-        protected static string     blinkSetting                { get { return lilLanguageManager.blinkSetting             ;} set { lilLanguageManager.blinkSetting              = value; } }
-        protected static string     sDistanceFadeSetting        { get { return lilLanguageManager.sDistanceFadeSetting     ;} set { lilLanguageManager.sDistanceFadeSetting      = value; } }
-        protected static string     sDissolveParams             { get { return lilLanguageManager.sDissolveParams          ;} set { lilLanguageManager.sDissolveParams           = value; } }
-        protected static string     sDissolveParamsMode         { get { return lilLanguageManager.sDissolveParamsMode      ;} set { lilLanguageManager.sDissolveParamsMode       = value; } }
-        protected static string     sDissolveParamsOther        { get { return lilLanguageManager.sDissolveParamsOther     ;} set { lilLanguageManager.sDissolveParamsOther      = value; } }
-        protected static string     sGlitterParams1             { get { return lilLanguageManager.sGlitterParams1          ;} set { lilLanguageManager.sGlitterParams1           = value; } }
-        protected static string     sGlitterParams2             { get { return lilLanguageManager.sGlitterParams2          ;} set { lilLanguageManager.sGlitterParams2           = value; } }
-        protected static string     sTransparentMode            { get { return lilLanguageManager.sTransparentMode         ;} set { lilLanguageManager.sTransparentMode          = value; } }
-        protected static string     sOutlineVertexColorUsages   { get { return lilLanguageManager.sOutlineVertexColorUsages;} set { lilLanguageManager.sOutlineVertexColorUsages = value; } }
-        protected static string     sShadowMaskTypes            { get { return lilLanguageManager.sShadowMaskTypes         ;} set { lilLanguageManager.sShadowMaskTypes          = value; } }
-        protected static string[]   sRenderingModeList          { get { return lilLanguageManager.sRenderingModeList       ;} set { lilLanguageManager.sRenderingModeList        = value; } }
-        protected static string[]   sRenderingModeListLite      { get { return lilLanguageManager.sRenderingModeListLite   ;} set { lilLanguageManager.sRenderingModeListLite    = value; } }
-        protected static string[]   sTransparentModeList        { get { return lilLanguageManager.sTransparentModeList     ;} set { lilLanguageManager.sTransparentModeList      = value; } }
-        protected static GUIContent mainColorRGBAContent        { get { return lilLanguageManager.mainColorRGBAContent     ;} set { lilLanguageManager.mainColorRGBAContent      = value; } }
-        protected static GUIContent colorRGBAContent            { get { return lilLanguageManager.colorRGBAContent         ;} set { lilLanguageManager.colorRGBAContent          = value; } }
-        protected static GUIContent colorAlphaRGBAContent       { get { return lilLanguageManager.colorAlphaRGBAContent    ;} set { lilLanguageManager.colorAlphaRGBAContent     = value; } }
-        protected static GUIContent maskBlendContent            { get { return lilLanguageManager.maskBlendContent         ;} set { lilLanguageManager.maskBlendContent          = value; } }
-        protected static GUIContent colorMaskRGBAContent        { get { return lilLanguageManager.colorMaskRGBAContent     ;} set { lilLanguageManager.colorMaskRGBAContent      = value; } }
-        protected static GUIContent alphaMaskContent            { get { return lilLanguageManager.alphaMaskContent         ;} set { lilLanguageManager.alphaMaskContent          = value; } }
-        protected static GUIContent maskStrengthContent         { get { return lilLanguageManager.maskStrengthContent      ;} set { lilLanguageManager.maskStrengthContent       = value; } }
-        protected static GUIContent normalMapContent            { get { return lilLanguageManager.normalMapContent         ;} set { lilLanguageManager.normalMapContent          = value; } }
-        protected static GUIContent noiseMaskContent            { get { return lilLanguageManager.noiseMaskContent         ;} set { lilLanguageManager.noiseMaskContent          = value; } }
-        protected static GUIContent adjustMaskContent           { get { return lilLanguageManager.adjustMaskContent        ;} set { lilLanguageManager.adjustMaskContent         = value; } }
-        protected static GUIContent matcapContent               { get { return lilLanguageManager.matcapContent            ;} set { lilLanguageManager.matcapContent             = value; } }
-        protected static GUIContent gradationContent            { get { return lilLanguageManager.gradationContent         ;} set { lilLanguageManager.gradationContent          = value; } }
-        protected static GUIContent gradSpeedContent            { get { return lilLanguageManager.gradSpeedContent         ;} set { lilLanguageManager.gradSpeedContent          = value; } }
-        protected static GUIContent smoothnessContent           { get { return lilLanguageManager.smoothnessContent        ;} set { lilLanguageManager.smoothnessContent         = value; } }
-        protected static GUIContent metallicContent             { get { return lilLanguageManager.metallicContent          ;} set { lilLanguageManager.metallicContent           = value; } }
-        protected static GUIContent parallaxContent             { get { return lilLanguageManager.parallaxContent          ;} set { lilLanguageManager.parallaxContent           = value; } }
-        protected static GUIContent customMaskContent           { get { return lilLanguageManager.customMaskContent        ;} set { lilLanguageManager.customMaskContent         = value; } }
-        protected static GUIContent shadow1stColorRGBAContent   { get { return lilLanguageManager.shadow1stColorRGBAContent;} set { lilLanguageManager.shadow1stColorRGBAContent = value; } }
-        protected static GUIContent shadow2ndColorRGBAContent   { get { return lilLanguageManager.shadow2ndColorRGBAContent;} set { lilLanguageManager.shadow2ndColorRGBAContent = value; } }
-        protected static GUIContent shadow3rdColorRGBAContent   { get { return lilLanguageManager.shadow3rdColorRGBAContent;} set { lilLanguageManager.shadow3rdColorRGBAContent = value; } }
+        protected static string     sMainColorBranch            { get { return lilLanguageManager.sMainColorBranch         ; } private set { lilLanguageManager.sMainColorBranch          = value; } }
+        protected static string     sCullModes                  { get { return lilLanguageManager.sCullModes               ; } private set { lilLanguageManager.sCullModes                = value; } }
+        protected static string     sBlendModes                 { get { return lilLanguageManager.sBlendModes              ; } private set { lilLanguageManager.sBlendModes               = value; } }
+        protected static string     sAlphaMaskModes             { get { return lilLanguageManager.sAlphaMaskModes          ; } private set { lilLanguageManager.sAlphaMaskModes           = value; } }
+        protected static string     blinkSetting                { get { return lilLanguageManager.blinkSetting             ; } private set { lilLanguageManager.blinkSetting              = value; } }
+        protected static string     sDistanceFadeSetting        { get { return lilLanguageManager.sDistanceFadeSetting     ; } private set { lilLanguageManager.sDistanceFadeSetting      = value; } }
+        protected static string     sDissolveParams             { get { return lilLanguageManager.sDissolveParams          ; } private set { lilLanguageManager.sDissolveParams           = value; } }
+        protected static string     sDissolveParamsMode         { get { return lilLanguageManager.sDissolveParamsMode      ; } private set { lilLanguageManager.sDissolveParamsMode       = value; } }
+        protected static string     sDissolveParamsOther        { get { return lilLanguageManager.sDissolveParamsOther     ; } private set { lilLanguageManager.sDissolveParamsOther      = value; } }
+        protected static string     sGlitterParams1             { get { return lilLanguageManager.sGlitterParams1          ; } private set { lilLanguageManager.sGlitterParams1           = value; } }
+        protected static string     sGlitterParams2             { get { return lilLanguageManager.sGlitterParams2          ; } private set { lilLanguageManager.sGlitterParams2           = value; } }
+        protected static string     sTransparentMode            { get { return lilLanguageManager.sTransparentMode         ; } private set { lilLanguageManager.sTransparentMode          = value; } }
+        protected static string     sOutlineVertexColorUsages   { get { return lilLanguageManager.sOutlineVertexColorUsages; } private set { lilLanguageManager.sOutlineVertexColorUsages = value; } }
+        protected static string     sShadowMaskTypes            { get { return lilLanguageManager.sShadowMaskTypes         ; } private set { lilLanguageManager.sShadowMaskTypes          = value; } }
+        protected static string[]   sRenderingModeList          { get { return lilLanguageManager.sRenderingModeList       ; } private set { lilLanguageManager.sRenderingModeList        = value; } }
+        protected static string[]   sRenderingModeListLite      { get { return lilLanguageManager.sRenderingModeListLite   ; } private set { lilLanguageManager.sRenderingModeListLite    = value; } }
+        protected static string[]   sTransparentModeList        { get { return lilLanguageManager.sTransparentModeList     ; } private set { lilLanguageManager.sTransparentModeList      = value; } }
+        protected static GUIContent mainColorRGBAContent        { get { return lilLanguageManager.mainColorRGBAContent     ; } private set { lilLanguageManager.mainColorRGBAContent      = value; } }
+        protected static GUIContent colorRGBAContent            { get { return lilLanguageManager.colorRGBAContent         ; } private set { lilLanguageManager.colorRGBAContent          = value; } }
+        protected static GUIContent colorAlphaRGBAContent       { get { return lilLanguageManager.colorAlphaRGBAContent    ; } private set { lilLanguageManager.colorAlphaRGBAContent     = value; } }
+        protected static GUIContent maskBlendContent            { get { return lilLanguageManager.maskBlendContent         ; } private set { lilLanguageManager.maskBlendContent          = value; } }
+        protected static GUIContent colorMaskRGBAContent        { get { return lilLanguageManager.colorMaskRGBAContent     ; } private set { lilLanguageManager.colorMaskRGBAContent      = value; } }
+        protected static GUIContent alphaMaskContent            { get { return lilLanguageManager.alphaMaskContent         ; } private set { lilLanguageManager.alphaMaskContent          = value; } }
+        protected static GUIContent maskStrengthContent         { get { return lilLanguageManager.maskStrengthContent      ; } private set { lilLanguageManager.maskStrengthContent       = value; } }
+        protected static GUIContent normalMapContent            { get { return lilLanguageManager.normalMapContent         ; } private set { lilLanguageManager.normalMapContent          = value; } }
+        protected static GUIContent noiseMaskContent            { get { return lilLanguageManager.noiseMaskContent         ; } private set { lilLanguageManager.noiseMaskContent          = value; } }
+        protected static GUIContent adjustMaskContent           { get { return lilLanguageManager.adjustMaskContent        ; } private set { lilLanguageManager.adjustMaskContent         = value; } }
+        protected static GUIContent matcapContent               { get { return lilLanguageManager.matcapContent            ; } private set { lilLanguageManager.matcapContent             = value; } }
+        protected static GUIContent gradationContent            { get { return lilLanguageManager.gradationContent         ; } private set { lilLanguageManager.gradationContent          = value; } }
+        protected static GUIContent gradSpeedContent            { get { return lilLanguageManager.gradSpeedContent         ; } private set { lilLanguageManager.gradSpeedContent          = value; } }
+        protected static GUIContent smoothnessContent           { get { return lilLanguageManager.smoothnessContent        ; } private set { lilLanguageManager.smoothnessContent         = value; } }
+        protected static GUIContent metallicContent             { get { return lilLanguageManager.metallicContent          ; } private set { lilLanguageManager.metallicContent           = value; } }
+        protected static GUIContent parallaxContent             { get { return lilLanguageManager.parallaxContent          ; } private set { lilLanguageManager.parallaxContent           = value; } }
+        protected static GUIContent customMaskContent           { get { return lilLanguageManager.customMaskContent        ; } private set { lilLanguageManager.customMaskContent         = value; } }
+        protected static GUIContent shadow1stColorRGBAContent   { get { return lilLanguageManager.shadow1stColorRGBAContent; } private set { lilLanguageManager.shadow1stColorRGBAContent = value; } }
+        protected static GUIContent shadow2ndColorRGBAContent   { get { return lilLanguageManager.shadow2ndColorRGBAContent; } private set { lilLanguageManager.shadow2ndColorRGBAContent = value; } }
+        protected static GUIContent shadow3rdColorRGBAContent   { get { return lilLanguageManager.shadow3rdColorRGBAContent; } private set { lilLanguageManager.shadow3rdColorRGBAContent = value; } }
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -862,13 +764,13 @@ namespace lilToon
 	    {
             //------------------------------------------------------------------------------------------------------------------------------
             // EditorAssets
-            InitializeGUIStyles();
+            lilEditorGUI.InitializeGUIStyles();
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Initialize Setting
             m_MaterialEditor = materialEditor;
             ApplyEditorSettingTemp();
-            InitializeShaders();
+            lilShaderManager.InitializeShaders();
             lilToonSetting.InitializeShaderSetting(ref shaderSetting);
 
             //------------------------------------------------------------------------------------------------------------------------------
@@ -913,11 +815,11 @@ namespace lilToon
 
             if(EditorGUI.EndChangeCheck())
             {
-                material.SetFloat("_lilToonVersion", currentVersionValue);
+                material.SetFloat("_lilToonVersion", lilConstant.currentVersionValue);
                 if(!isMultiVariants)
                 {
-                    if(isMulti) SetupMultiMaterial(material);
-                    else        RemoveShaderKeywords(material);
+                    if(isMulti) lilMaterialUtils.SetupMultiMaterial(material);
+                    else        lilMaterialUtils.RemoveShaderKeywords(material);
                 }
                 CopyMainColorProperties();
                 SaveEditorSettingTemp();
@@ -1454,7 +1356,7 @@ namespace lilToon
                 {
                     GUILayout.Label(GetLoc("sOptimization"), boldLabel);
                     edSet.isShowOptimization = Foldout(GetLoc("sOptimization"), edSet.isShowOptimization);
-                    DrawHelpButton(GetLoc("sAnchorOptimization"));
+                    lilEditorGUI.DrawHelpButton(GetLoc("sAnchorOptimization"));
                     if(edSet.isShowOptimization)
                     {
                         EditorGUILayout.BeginVertical(boxOuter);
@@ -1689,7 +1591,7 @@ namespace lilToon
                 {
                     GUILayout.Label(GetLoc("sOptimization"), boldLabel);
                     edSet.isShowOptimization = Foldout(GetLoc("sOptimization"), edSet.isShowOptimization);
-                    DrawHelpButton(GetLoc("sAnchorOptimization"));
+                    lilEditorGUI.DrawHelpButton(GetLoc("sAnchorOptimization"));
                     if(edSet.isShowOptimization)
                     {
                         EditorGUILayout.BeginVertical(boxOuter);
@@ -2192,7 +2094,7 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(matcapBackfaceMask, GetLoc("sBackfaceMask"));
                         m_MaterialEditor.ShaderProperty(matcapLod, GetLoc("sBlur"));
                         m_MaterialEditor.ShaderProperty(matcapBlendMode, sBlendModes);
-                        if(matcapEnableLighting.floatValue != 0.0f && matcapBlendMode.floatValue == 3.0f && AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
+                        if(matcapEnableLighting.floatValue != 0.0f && matcapBlendMode.floatValue == 3.0f && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
                         {
                             matcapEnableLighting.floatValue = 0.0f;
                         }
@@ -2226,7 +2128,7 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(matcap2ndBackfaceMask, GetLoc("sBackfaceMask"));
                         m_MaterialEditor.ShaderProperty(matcap2ndLod, GetLoc("sBlur"));
                         m_MaterialEditor.ShaderProperty(matcap2ndBlendMode, sBlendModes);
-                        if(matcap2ndEnableLighting.floatValue != 0.0f && matcap2ndBlendMode.floatValue == 3.0f && AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
+                        if(matcap2ndEnableLighting.floatValue != 0.0f && matcap2ndBlendMode.floatValue == 3.0f && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
                         {
                             matcap2ndEnableLighting.floatValue = 0.0f;
                         }
@@ -2879,7 +2781,7 @@ namespace lilToon
                 {
                     GUILayout.Label(GetLoc("sOptimization"), boldLabel);
                     edSet.isShowOptimization = Foldout(GetLoc("sOptimization"), edSet.isShowOptimization);
-                    DrawHelpButton(GetLoc("sAnchorOptimization"));
+                    lilEditorGUI.DrawHelpButton(GetLoc("sAnchorOptimization"));
                     if(edSet.isShowOptimization)
                     {
                         // Optimization
@@ -2932,7 +2834,7 @@ namespace lilToon
             EditorGUI.BeginChangeCheck();
             ToggleGUI("[Debug] Apply optimization on the editor", ref shaderSetting.isDebugOptimize);
             edSet.isShowShaderSetting = Foldout(GetLoc("sShaderSetting"), edSet.isShowShaderSetting);
-            DrawHelpButton(GetLoc("sAnchorShaderSetting"));
+            lilEditorGUI.DrawHelpButton(GetLoc("sAnchorShaderSetting"));
             if(edSet.isShowShaderSetting)
             {
                 EditorGUILayout.BeginVertical(customBox);
@@ -2945,7 +2847,7 @@ namespace lilToon
             {
                 EditorGUILayout.BeginVertical(customBox);
                 EditorGUILayout.HelpBox(GetLoc("sHelpShaderSetting"),MessageType.Info);
-                OptimizationSettingGUI();
+                ShaderSettingOptimizationGUI();
                 EditorGUILayout.EndVertical();
             }
 
@@ -2953,7 +2855,7 @@ namespace lilToon
             if(edSet.isShowDefaultValueSetting)
             {
                 EditorGUILayout.BeginVertical(customBox);
-                DefaultValueSettingGUI();
+                ShaderSettingDefaultValueGUI();
                 EditorGUILayout.EndVertical();
             }
             if(EditorGUI.EndChangeCheck())
@@ -3494,6 +3396,463 @@ namespace lilToon
             // Lite
             triMask.p   = FindProperty("_TriMask", props, false);
             matcapMul.p = FindProperty("_MatCapMul", props, false);
+        }
+
+        private lilMaterialProperty[] AllProperties()
+        {
+            return new[]
+            {
+                transparentModeMat,
+                asOverlay,
+                invisible,
+                asUnlit,
+                cutoff,
+                subpassCutoff,
+                flipNormal,
+                shiftBackfaceUV,
+                backfaceForceShadow,
+                vertexLightStrength,
+                lightMinLimit,
+                lightMaxLimit,
+                beforeExposureLimit,
+                monochromeLighting,
+                alphaBoostFA,
+                lilDirectionalLightStrength,
+                lightDirectionOverride,
+                baseColor,
+                baseMap,
+                baseColorMap,
+                triMask,
+                cull,
+                srcBlend,
+                dstBlend,
+                srcBlendAlpha,
+                dstBlendAlpha,
+                blendOp,
+                blendOpAlpha,
+                srcBlendFA,
+                dstBlendFA,
+                srcBlendAlphaFA,
+                dstBlendAlphaFA,
+                blendOpFA,
+                blendOpAlphaFA,
+                zclip,
+                zwrite,
+                ztest,
+                stencilRef,
+                stencilReadMask,
+                stencilWriteMask,
+                stencilComp,
+                stencilPass,
+                stencilFail,
+                stencilZFail,
+                offsetFactor,
+                offsetUnits,
+                colorMask,
+                alphaToMask,
+                lilShadowCasterBias,
+                mainColor,
+                mainTex,
+                mainTexHSVG,
+                mainTex_ScrollRotate,
+                mainGradationStrength,
+                mainGradationTex,
+                mainColorAdjustMask,
+                useMain2ndTex,
+                mainColor2nd,
+                main2ndTex,
+                main2ndTex_UVMode,
+                main2ndTexAngle,
+                main2ndTexDecalAnimation,
+                main2ndTexDecalSubParam,
+                main2ndTexIsDecal,
+                main2ndTexIsLeftOnly,
+                main2ndTexIsRightOnly,
+                main2ndTexShouldCopy,
+                main2ndTexShouldFlipMirror,
+                main2ndTexShouldFlipCopy,
+                main2ndTexIsMSDF,
+                main2ndBlendMask,
+                main2ndTexBlendMode,
+                main2ndEnableLighting,
+                main2ndDissolveMask,
+                main2ndDissolveNoiseMask,
+                main2ndDissolveNoiseMask_ScrollRotate,
+                main2ndDissolveNoiseStrength,
+                main2ndDissolveColor,
+                main2ndDissolveParams,
+                main2ndDissolvePos,
+                main2ndDistanceFade,
+                useMain3rdTex,
+                mainColor3rd,
+                main3rdTex,
+                main3rdTex_UVMode,
+                main3rdTexAngle,
+                main3rdTexDecalAnimation,
+                main3rdTexDecalSubParam,
+                main3rdTexIsDecal,
+                main3rdTexIsLeftOnly,
+                main3rdTexIsRightOnly,
+                main3rdTexShouldCopy,
+                main3rdTexShouldFlipMirror,
+                main3rdTexShouldFlipCopy,
+                main3rdTexIsMSDF,
+                main3rdBlendMask,
+                main3rdTexBlendMode,
+                main3rdEnableLighting,
+                main3rdDissolveMask,
+                main3rdDissolveNoiseMask,
+                main3rdDissolveNoiseMask_ScrollRotate,
+                main3rdDissolveNoiseStrength,
+                main3rdDissolveColor,
+                main3rdDissolveParams,
+                main3rdDissolvePos,
+                main3rdDistanceFade,
+                alphaMaskMode,
+                alphaMask,
+                alphaMaskScale,
+                alphaMaskValue,
+                useShadow,
+                shadowStrength,
+                shadowStrengthMask,
+                shadowBorderMask,
+                shadowBlurMask,
+                shadowStrengthMaskLOD,
+                shadowBorderMaskLOD,
+                shadowBlurMaskLOD,
+                shadowAOShift,
+                shadowAOShift2,
+                shadowPostAO,
+                shadowColor,
+                shadowColorTex,
+                shadowNormalStrength,
+                shadowBorder,
+                shadowBlur,
+                shadow2ndColor,
+                shadow2ndColorTex,
+                shadow2ndNormalStrength,
+                shadow2ndBorder,
+                shadow2ndBlur,
+                shadow3rdColor,
+                shadow3rdColorTex,
+                shadow3rdNormalStrength,
+                shadow3rdBorder,
+                shadow3rdBlur,
+                shadowMainStrength,
+                shadowEnvStrength,
+                shadowBorderColor,
+                shadowBorderRange,
+                shadowReceive,
+                shadow2ndReceive,
+                shadow3rdReceive,
+                shadowMaskType,
+                shadowFlatBorder,
+                shadowFlatBlur,
+                useBacklight,
+                backlightColor,
+                backlightColorTex,
+                backlightMainStrength,
+                backlightNormalStrength,
+                backlightBorder,
+                backlightBlur,
+                backlightDirectivity,
+                backlightViewStrength,
+                backlightReceiveShadow,
+                backlightBackfaceMask,
+                useBumpMap,
+                bumpMap,
+                bumpScale,
+                useBump2ndMap,
+                bump2ndMap,
+                bump2ndScale,
+                bump2ndScaleMask,
+                useAnisotropy,
+                anisotropyTangentMap,
+                anisotropyScale,
+                anisotropyScaleMask,
+                anisotropyTangentWidth,
+                anisotropyBitangentWidth,
+                anisotropyShift,
+                anisotropyShiftNoiseScale,
+                anisotropySpecularStrength,
+                anisotropy2ndTangentWidth,
+                anisotropy2ndBitangentWidth,
+                anisotropy2ndShift,
+                anisotropy2ndShiftNoiseScale,
+                anisotropy2ndSpecularStrength,
+                anisotropyShiftNoiseMask,
+                anisotropy2Reflection,
+                anisotropy2MatCap,
+                anisotropy2MatCap2nd,
+                useReflection,
+                metallic,
+                metallicGlossMap,
+                smoothness,
+                smoothnessTex,
+                reflectance,
+                reflectionColor,
+                reflectionColorTex,
+                gsaaStrength,
+                applySpecular,
+                applySpecularFA,
+                specularNormalStrength,
+                specularToon,
+                specularBorder,
+                specularBlur,
+                applyReflection,
+                reflectionNormalStrength,
+                reflectionApplyTransparency,
+                reflectionCubeTex,
+                reflectionCubeColor,
+                reflectionCubeOverride,
+                reflectionCubeEnableLighting,
+                reflectionBlendMode,
+                useMatCap,
+                matcapTex,
+                matcapColor,
+                matcapMainStrength,
+                matcapBlendUV1,
+                matcapZRotCancel,
+                matcapPerspective,
+                matcapVRParallaxStrength,
+                matcapBlend,
+                matcapBlendMask,
+                matcapEnableLighting,
+                matcapShadowMask,
+                matcapBackfaceMask,
+                matcapLod,
+                matcapBlendMode,
+                matcapMul,
+                matcapApplyTransparency,
+                matcapNormalStrength,
+                matcapCustomNormal,
+                matcapBumpMap,
+                matcapBumpScale,
+                useMatCap2nd,
+                matcap2ndTex,
+                matcap2ndColor,
+                matcap2ndMainStrength,
+                matcap2ndBlendUV1,
+                matcap2ndZRotCancel,
+                matcap2ndPerspective,
+                matcap2ndVRParallaxStrength,
+                matcap2ndBlend,
+                matcap2ndBlendMask,
+                matcap2ndEnableLighting,
+                matcap2ndShadowMask,
+                matcap2ndBackfaceMask,
+                matcap2ndLod,
+                matcap2ndBlendMode,
+                matcap2ndMul,
+                matcap2ndApplyTransparency,
+                matcap2ndNormalStrength,
+                matcap2ndCustomNormal,
+                matcap2ndBumpMap,
+                matcap2ndBumpScale,
+                useRim,
+                rimColor,
+                rimColorTex,
+                rimMainStrength,
+                rimNormalStrength,
+                rimBorder,
+                rimBlur,
+                rimFresnelPower,
+                rimEnableLighting,
+                rimShadowMask,
+                rimBackfaceMask,
+                rimVRParallaxStrength,
+                rimApplyTransparency,
+                rimDirStrength,
+                rimDirRange,
+                rimIndirRange,
+                rimIndirColor,
+                rimIndirBorder,
+                rimIndirBlur,
+                useGlitter,
+                glitterUVMode,
+                glitterColor,
+                glitterColorTex,
+                glitterMainStrength,
+                glitterParams1,
+                glitterParams2,
+                glitterPostContrast,
+                glitterSensitivity,
+                glitterEnableLighting,
+                glitterShadowMask,
+                glitterBackfaceMask,
+                glitterApplyTransparency,
+                glitterVRParallaxStrength,
+                glitterNormalStrength,
+                useEmission,
+                emissionColor,
+                emissionMap,
+                emissionMap_ScrollRotate,
+                emissionMap_UVMode,
+                emissionMainStrength,
+                emissionBlend,
+                emissionBlendMask,
+                emissionBlendMask_ScrollRotate,
+                emissionBlink,
+                emissionUseGrad,
+                emissionGradTex,
+                emissionGradSpeed,
+                emissionParallaxDepth,
+                emissionFluorescence,
+                useEmission2nd,
+                emission2ndColor,
+                emission2ndMap,
+                emission2ndMap_ScrollRotate,
+                emission2ndMap_UVMode,
+                emission2ndMainStrength,
+                emission2ndBlend,
+                emission2ndBlendMask,
+                emission2ndBlendMask_ScrollRotate,
+                emission2ndBlink,
+                emission2ndUseGrad,
+                emission2ndGradTex,
+                emission2ndGradSpeed,
+                emission2ndParallaxDepth,
+                emission2ndFluorescence,
+                outlineColor,
+                outlineTex,
+                outlineTex_ScrollRotate,
+                outlineTexHSVG,
+                outlineLitColor,
+                outlineLitApplyTex,
+                outlineLitScale,
+                outlineLitOffset,
+                outlineWidth,
+                outlineWidthMask,
+                outlineFixWidth,
+                outlineVertexR2Width,
+                outlineDeleteMesh,
+                outlineVectorTex,
+                outlineVectorUVMode,
+                outlineVectorScale,
+                outlineEnableLighting,
+                outlineZBias,
+                outlineCull,
+                outlineSrcBlend,
+                outlineDstBlend,
+                outlineSrcBlendAlpha,
+                outlineDstBlendAlpha,
+                outlineBlendOp,
+                outlineBlendOpAlpha,
+                outlineSrcBlendFA,
+                outlineDstBlendFA,
+                outlineSrcBlendAlphaFA,
+                outlineDstBlendAlphaFA,
+                outlineBlendOpFA,
+                outlineBlendOpAlphaFA,
+                outlineZclip,
+                outlineZwrite,
+                outlineZtest,
+                outlineStencilRef,
+                outlineStencilReadMask,
+                outlineStencilWriteMask,
+                outlineStencilComp,
+                outlineStencilPass,
+                outlineStencilFail,
+                outlineStencilZFail,
+                outlineOffsetFactor,
+                outlineOffsetUnits,
+                outlineColorMask,
+                outlineAlphaToMask,
+                useParallax,
+                usePOM,
+                parallaxMap,
+                parallax,
+                parallaxOffset,
+                distanceFadeColor,
+                distanceFade,
+                useClippingCanceller,
+                useAudioLink,
+                audioLinkDefaultValue,
+                audioLinkUVMode,
+                audioLinkUVParams,
+                audioLinkStart,
+                audioLinkMask,
+                audioLink2Main2nd,
+                audioLink2Main3rd,
+                audioLink2Emission,
+                audioLink2EmissionGrad,
+                audioLink2Emission2nd,
+                audioLink2Emission2ndGrad,
+                audioLink2Vertex,
+                audioLinkVertexUVMode,
+                audioLinkVertexUVParams,
+                audioLinkVertexStart,
+                audioLinkVertexStrength,
+                audioLinkAsLocal,
+                audioLinkLocalMap,
+                audioLinkLocalMapParams,
+                dissolveMask,
+                dissolveNoiseMask,
+                dissolveNoiseMask_ScrollRotate,
+                dissolveNoiseStrength,
+                dissolveColor,
+                dissolveParams,
+                dissolvePos,
+                ignoreEncryption,
+                keys,
+                refractionStrength,
+                refractionFresnelPower,
+                refractionColorFromMain,
+                refractionColor,
+                furNoiseMask,
+                furMask,
+                furLengthMask,
+                furVectorTex,
+                furVectorScale,
+                furVector,
+                furGravity,
+                furRandomize,
+                furAO,
+                vertexColor2FurVector,
+                furMeshType,
+                furLayerNum,
+                furRootOffset,
+                furCutoutLength,
+                furTouchStrength,
+                furCull,
+                furSrcBlend,
+                furDstBlend,
+                furSrcBlendAlpha,
+                furDstBlendAlpha,
+                furBlendOp,
+                furBlendOpAlpha,
+                furSrcBlendFA,
+                furDstBlendFA,
+                furSrcBlendAlphaFA,
+                furDstBlendAlphaFA,
+                furBlendOpFA,
+                furBlendOpAlphaFA,
+                furZclip,
+                furZwrite,
+                furZtest,
+                furStencilRef,
+                furStencilReadMask,
+                furStencilWriteMask,
+                furStencilComp,
+                furStencilPass,
+                furStencilFail,
+                furStencilZFail,
+                furOffsetFactor,
+                furOffsetUnits,
+                furColorMask,
+                furAlphaToMask,
+                tessEdge,
+                tessStrength,
+                tessShrink,
+                tessFactorMax,
+                gemChromaticAberration,
+                gemEnvContrast,
+                gemEnvColor,
+                gemParticleLoop,
+                gemParticleColor,
+                gemVRParallaxStrength,
+                fakeShadowVector
+            };
         }
 
         private void SetPropertyBlock()
@@ -4269,28 +4628,17 @@ namespace lilToon
             AddBlock(lilPropertyBlock.Tessellation, tessFactorMax);
         }
 
-        private void AddBlock(lilPropertyBlock block, lilMaterialProperty prop)
-        {
-            if(!prop.blocks.Contains(block))
-            {
-                prop.blocks.Add(block);
-            }
-        }
-
-        private void AddBlock(lilPropertyBlock block, lilMaterialProperty prop, bool isTexture)
+        private void AddBlock(lilPropertyBlock block, lilMaterialProperty prop, bool isTexture = false)
         {
             prop.isTexture = isTexture;
-            if(!prop.blocks.Contains(block))
-            {
-                prop.blocks.Add(block);
-            }
+            if(!prop.blocks.Contains(block)) prop.blocks.Add(block);
         }
 
         private void CopyMainColorProperties()
         {
-            if(mainColor != null && baseColor != null) baseColor.colorValue = mainColor.colorValue;
-            if(mainTex != null && baseMap != null) baseMap.textureValue = mainTex.textureValue;
-            if(mainTex != null && baseColorMap != null) baseColorMap.textureValue = mainTex.textureValue;
+            if(mainColor != null && baseColor    != null) baseColor.colorValue      = mainColor.colorValue;
+            if(mainTex   != null && baseMap      != null) baseMap.textureValue      = mainTex.textureValue;
+            if(mainTex   != null && baseColorMap != null) baseColorMap.textureValue = mainTex.textureValue;
         }
         #endregion
 
@@ -4321,125 +4669,9 @@ namespace lilToon
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
-        // Rendering Pipeline
+        // Shader Setting GUI
         #region
-        public static void RewriteShaderRP()
-        {
-            string[] shaderFolderPaths = lilDirectoryManager.GetShaderFolderPaths();
-            string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
-            lilRenderPipeline RP = RPReader.GetRP();
-            Array.ForEach(shaderGuids, shaderGuid => RewriteShaderRP(lilDirectoryManager.GUIDToPath(shaderGuid), RP));
-            RewriteShaderRP(lilDirectoryManager.GetShaderPipelinePath(), RP);
-        }
-
-        private static void RewriteShaderRP(string shaderPath, lilRenderPipeline RP)
-        {
-            string path = shaderPath;
-            StreamReader sr = new StreamReader(path);
-            string s = sr.ReadToEnd();
-            sr.Close();
-            RewriteBRP(ref s, RP == lilRenderPipeline.BRP);
-            RewriteLWRP(ref s, RP == lilRenderPipeline.LWRP);
-            RewriteURP(ref s, RP == lilRenderPipeline.URP);
-            RewriteHDRP(ref s, RP == lilRenderPipeline.HDRP);
-            StreamWriter sw = new StreamWriter(path,false);
-            sw.Write(s);
-            sw.Close();
-        }
-
-        private static void RewriteBRP(ref string s, bool isActive)
-        {
-            if(isActive)
-            {
-                s = s.Replace(
-                    "// BRP Start\r\n/*",
-                    "// BRP Start\r\n//");
-                s = s.Replace(
-                    "*/\r\n// BRP End",
-                    "//\r\n// BRP End");
-            }
-            else
-            {
-                s = s.Replace(
-                    "// BRP Start\r\n//",
-                    "// BRP Start\r\n/*");
-                s = s.Replace(
-                    "//\r\n// BRP End",
-                    "*/\r\n// BRP End");
-            }
-        }
-
-        private static void RewriteLWRP(ref string s, bool isActive)
-        {
-            if(isActive)
-            {
-                s = s.Replace(
-                    "// LWRP Start\r\n/*",
-                    "// LWRP Start\r\n//");
-                s = s.Replace(
-                    "*/\r\n// LWRP End",
-                    "//\r\n// LWRP End");
-            }
-            else
-            {
-                s = s.Replace(
-                    "// LWRP Start\r\n//",
-                    "// LWRP Start\r\n/*");
-                s = s.Replace(
-                    "//\r\n// LWRP End",
-                    "*/\r\n// LWRP End");
-            }
-        }
-
-        private static void RewriteURP(ref string s, bool isActive)
-        {
-            if(isActive)
-            {
-                s = s.Replace(
-                    "// URP Start\r\n/*",
-                    "// URP Start\r\n//");
-                s = s.Replace(
-                    "*/\r\n// URP End",
-                    "//\r\n// URP End");
-            }
-            else
-            {
-                s = s.Replace(
-                    "// URP Start\r\n//",
-                    "// URP Start\r\n/*");
-                s = s.Replace(
-                    "//\r\n// URP End",
-                    "*/\r\n// URP End");
-            }
-        }
-
-        private static void RewriteHDRP(ref string s, bool isActive)
-        {
-            if(isActive)
-            {
-                s = s.Replace(
-                    "// HDRP Start\r\n/*",
-                    "// HDRP Start\r\n//");
-                s = s.Replace(
-                    "*/\r\n// HDRP End",
-                    "//\r\n// HDRP End");
-            }
-            else
-            {
-                s = s.Replace(
-                    "// HDRP Start\r\n//",
-                    "// HDRP Start\r\n/*");
-                s = s.Replace(
-                    "//\r\n// HDRP End",
-                    "*/\r\n// HDRP End");
-            }
-        }
-        #endregion
-
-        //------------------------------------------------------------------------------------------------------------------------------
-        // Shader Setting
-        #region
-        private static void OptimizationSettingGUI()
+        private static void ShaderSettingOptimizationGUI()
         {
             lilRenderPipeline RP = RPReader.GetRP();
             if(RP == lilRenderPipeline.BRP)
@@ -4451,7 +4683,7 @@ namespace lilToon
             ToggleGUI(GetLoc("sSettingUseLightmap"), ref shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
         }
 
-        private static void DefaultValueSettingGUI()
+        private static void ShaderSettingDefaultValueGUI()
         {
             EditorGUILayout.LabelField("[GameObject] Fix lighting", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
@@ -4476,173 +4708,77 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // GUI
         #region
-        public static GUIStyle InitializeBox(int border, int margin, int padding)
-        {
-            return new GUIStyle
-                {
-                    border = new RectOffset(border, border, border, border),
-                    margin = new RectOffset(margin, margin, margin, margin),
-                    padding = new RectOffset(padding, padding, padding, padding),
-                    overflow = new RectOffset(0, 0, 0, 0)
-                };
-        }
-
         public static bool Foldout(string title, bool display)
         {
-            return Foldout(title, "", display);
+            return lilEditorGUI.Foldout(title, display);
         }
 
         public static bool Foldout(string title, string help, bool display)
         {
-            Rect rect = GUILayoutUtility.GetRect(16f, 20f, foldout);
-			rect.width += 8f;
-			rect.x -= 8f;
-            GUI.Box(rect, new GUIContent(title, help), foldout);
-
-            Event e = Event.current;
-
-            Rect toggleRect = new Rect(rect.x + 4f, rect.y + 2f, 13f, 13f);
-            if(e.type == EventType.Repaint) {
-                EditorStyles.foldout.Draw(toggleRect, false, false, display, false);
-            }
-
-            rect.width -= 24;
-            if(e.type == EventType.MouseDown && rect.Contains(e.mousePosition)) {
-                display = !display;
-                e.Use();
-            }
-
-            return display;
+            return lilEditorGUI.Foldout(title, help, display);
         }
 
         public static void DrawLine()
         {
-            EditorGUI.DrawRect(EditorGUI.IndentedRect(EditorGUILayout.GetControlRect(false, 1)), lineColor);
-        }
-
-        public static void DrawWebButton(string text, string URL)
-        {
-            Rect position = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect());
-            GUIContent icon = EditorGUIUtility.IconContent("BuildSettings.Web.Small");
-            icon.text = text;
-            GUIStyle style = new GUIStyle(EditorStyles.label){padding = new RectOffset()};
-            if(GUI.Button(position, icon, style)){
-                Application.OpenURL(URL);
-            }
-        }
-
-        public static void DrawSimpleFoldout(string label, ref bool condition, GUIStyle style, bool isCustomEditor = true)
-        {
-            EditorGUI.indentLevel++;
-            Rect position = EditorGUILayout.GetControlRect();
-            EditorGUI.LabelField(position, label, style);
-            EditorGUI.indentLevel--;
-
-            position.x += isCustomEditor ? 0 : 10;
-            condition = EditorGUI.Foldout(position, condition, "");
-        }
-
-        public static void DrawSimpleFoldout(string label, ref bool condition, bool isCustomEditor = true)
-        {
-            DrawSimpleFoldout(label, ref condition, boldLabel, isCustomEditor);
-        }
-
-        public static void DrawSimpleFoldout(GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, ref bool condition, bool isCustomEditor = true)
-        {
-            EditorGUI.indentLevel++;
-            Rect position = m_MaterialEditor.TexturePropertySingleLine(guiContent, textureName, rgba);
-            EditorGUI.indentLevel--;
-
-            position.x += isCustomEditor ? 0 : 10;
-            condition = EditorGUI.Foldout(position, condition, "");
-        }
-
-        public static void DrawSimpleFoldout(GUIContent guiContent, MaterialProperty textureName, ref bool condition, bool isCustomEditor = true)
-        {
-            EditorGUI.indentLevel++;
-            Rect position = m_MaterialEditor.TexturePropertySingleLine(guiContent, textureName);
-            EditorGUI.indentLevel--;
-
-            position.x += isCustomEditor ? 0 : 10;
-            condition = EditorGUI.Foldout(position, condition, "");
-        }
-
-        private static void InitializeGUIStyles()
-        {
-            wrapLabel = new GUIStyle(GUI.skin.label){wordWrap = true};
-            boldLabel = new GUIStyle(GUI.skin.label){fontStyle = FontStyle.Bold};
-            foldout = new GUIStyle("ShurikenModuleTitle")
-            {
-                fontSize = EditorStyles.label.fontSize,
-                border = new RectOffset(15, 7, 4, 4),
-                contentOffset = new Vector2(20f, -2f),
-                fixedHeight = 22
-            };
-            if(EditorGUIUtility.isProSkin)
-            {
-                boxOuter.normal.background      = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUIBoxOutDarkPath());
-                boxInnerHalf.normal.background  = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUIBoxInHalfDarkPath());
-                boxInner.normal.background      = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUIBoxInDarkPath());
-                customBox.normal.background     = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUICustomBoxDarkPath());
-                customToggleFont = EditorStyles.label;
-            }
-            else
-            {
-                boxOuter.normal.background      = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUIBoxOutLightPath());
-                boxInnerHalf.normal.background  = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUIBoxInHalfLightPath());
-                boxInner.normal.background      = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUIBoxInLightPath());
-                customBox.normal.background     = (Texture2D)EditorGUIUtility.Load(lilDirectoryManager.GetGUICustomBoxLightPath());
-                customToggleFont = new GUIStyle();
-                customToggleFont.normal.textColor = Color.white;
-                customToggleFont.contentOffset = new Vector2(2f,0f);
-            }
-        }
-
-        private static void DrawHelpButton(string helpAnchor)
-        {
-            Rect position = GUILayoutUtility.GetLastRect();
-            position.x += position.width - 24;
-            position.width = 24;
-            if(GUI.Button(position, EditorGUIUtility.IconContent("_Help"), middleButton)){
-                Application.OpenURL(GetLoc("sManualURL") + helpAnchor);
-            }
+            lilEditorGUI.DrawLine();
         }
 
         private static void DrawWebPages()
         {
             VersionCheck();
             GUIStyle labelStyle = new GUIStyle(GUI.skin.label){fontStyle = FontStyle.Bold};
-            string versionLabel = "lilToon " + currentVersionName;
-            if(latestVersion != null && latestVersion.latest_vertion_name != null && latestVersion.latest_vertion_value > currentVersionValue)
+            string versionLabel = "lilToon " + lilConstant.currentVersionName;
+            if(latestVersion != null && latestVersion.latest_vertion_name != null && latestVersion.latest_vertion_value > lilConstant.currentVersionValue)
             {
-                versionLabel = "[Update] lilToon " + currentVersionName + " -> " + latestVersion.latest_vertion_name;
+                versionLabel = "[Update] lilToon " + lilConstant.currentVersionName + " -> " + latestVersion.latest_vertion_name;
                 labelStyle.normal.textColor = Color.red;
             }
-            
-            DrawSimpleFoldout(versionLabel, ref edSet.isShowWebPages, labelStyle, isCustomEditor);
+
+            edSet.isShowWebPages = lilEditorGUI.DrawSimpleFoldout(versionLabel, edSet.isShowWebPages, labelStyle, isCustomEditor);
             if(edSet.isShowWebPages)
             {
                 EditorGUI.indentLevel++;
-                DrawWebButton("BOOTH", boothURL);
-                DrawWebButton("GitHub", githubURL);
+                lilEditorGUI.DrawWebButton("BOOTH", lilConstant.boothURL);
+                lilEditorGUI.DrawWebButton("GitHub", lilConstant.githubURL);
                 EditorGUI.indentLevel--;
+            }
+        }
+
+        private static void VersionCheck()
+        {
+            if(string.IsNullOrEmpty(latestVersion.latest_vertion_name))
+            {
+                if(File.Exists(lilDirectoryManager.versionInfoTempPath))
+                {
+                    StreamReader sr = new StreamReader(lilDirectoryManager.versionInfoTempPath);
+                    string s = sr.ReadToEnd();
+                    sr.Close();
+                    if(!string.IsNullOrEmpty(s) && s.Contains("latest_vertion_name") && s.Contains("latest_vertion_value"))
+                    {
+                        EditorJsonUtility.FromJsonOverwrite(s,latestVersion);
+                        return;
+                    }
+                }
+                latestVersion.latest_vertion_name = lilConstant.currentVersionName;
+                latestVersion.latest_vertion_value = lilConstant.currentVersionValue;
+                return;
             }
         }
 
         private static void DrawHelpPages()
         {
-            DrawSimpleFoldout(GetLoc("sHelp"), ref edSet.isShowHelpPages, isCustomEditor);
+            edSet.isShowHelpPages = lilEditorGUI.DrawSimpleFoldout(GetLoc("sHelp"), edSet.isShowHelpPages, isCustomEditor);
             if(edSet.isShowHelpPages)
             {
                 EditorGUI.indentLevel++;
-                DrawWebButton(GetLoc("sCommonProblems"), GetLoc("sReadmeURL") + GetLoc("sReadmeAnchorProblem"));
+                lilEditorGUI.DrawWebButton(GetLoc("sCommonProblems"), GetLoc("sReadmeURL") + GetLoc("sReadmeAnchorProblem"));
                 EditorGUI.indentLevel--;
             }
         }
 
         private static void DrawShaderTypeWarn(Material material)
         {
-            if(!isMultiVariants && material.shader.name.Contains("Overlay") && AutoFixHelpBox(GetLoc("sHelpSelectOverlay")))
+            if(!isMultiVariants && material.shader.name.Contains("Overlay") && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpSelectOverlay")))
             {
                 material.shader = lts;
             }
@@ -4651,22 +4787,6 @@ namespace lilToon
         private static void ToggleGUI(string label, ref bool value)
         {
             value = EditorGUILayout.ToggleLeft(label, value);
-        }
-
-        private static bool AutoFixHelpBox(string message)
-        {
-            GUILayout.BeginHorizontal(EditorStyles.helpBox);
-                GUILayout.Label(EditorGUIUtility.IconContent("console.warnicon"), GUILayout.ExpandWidth(false));
-                GUILayout.Space(-EditorStyles.label.fontSize);
-                GUILayout.BeginVertical();
-                GUILayout.Label(message, EditorStyles.wordWrappedMiniLabel);
-                    GUILayout.BeginHorizontal();
-                        GUILayout.FlexibleSpace();
-                        bool pressed = GUILayout.Button(GetLoc("sFixNow"));
-                    GUILayout.EndHorizontal();
-                GUILayout.EndVertical();
-            GUILayout.EndHorizontal();
-            return pressed;
         }
 
         private static void SelectEditorMode()
@@ -4822,27 +4942,6 @@ namespace lilToon
             sw.Close();
         }
 
-        private static void VersionCheck()
-        {
-            if(string.IsNullOrEmpty(latestVersion.latest_vertion_name))
-            {
-                if(File.Exists(lilDirectoryManager.versionInfoTempPath))
-                {
-                    StreamReader sr = new StreamReader(lilDirectoryManager.versionInfoTempPath);
-                    string s = sr.ReadToEnd();
-                    sr.Close();
-                    if(!string.IsNullOrEmpty(s) && s.Contains("latest_vertion_name") && s.Contains("latest_vertion_value"))
-                    {
-                        EditorJsonUtility.FromJsonOverwrite(s,latestVersion);
-                        return;
-                    }
-                }
-                latestVersion.latest_vertion_name = currentVersionName;
-                latestVersion.latest_vertion_value = currentVersionValue;
-                return;
-            }
-        }
-
         private void CheckShaderType(Material material)
         {
             isLite          = material.shader.name.Contains("Lite");
@@ -4876,476 +4975,22 @@ namespace lilToon
             if(isOnePass)           transparentModeBuf = TransparentMode.OnePass;
             if(!isFur && isTwoPass) transparentModeBuf = TransparentMode.TwoPass;
 
+            float tpmode = 0.0f;
+            if(material.HasProperty("_TransparentMode")) tpmode = material.GetFloat("_TransparentMode");
+
             isUseAlpha =
                 renderingModeBuf == RenderingMode.Cutout ||
                 renderingModeBuf == RenderingMode.Transparent ||
                 renderingModeBuf == RenderingMode.Fur ||
                 renderingModeBuf == RenderingMode.FurCutout ||
                 renderingModeBuf == RenderingMode.FurTwoPass ||
-                (isMulti && transparentModeMat.floatValue != 0.0f && transparentModeMat.floatValue != 3.0f && transparentModeMat.floatValue != 6.0f);
+                (isMulti && tpmode != 0.0f && tpmode != 3.0f && tpmode != 6.0f);
 
             if(isMulti)
             {
-                isCutout = transparentModeMat.floatValue == 1.0f || transparentModeMat.floatValue == 5.0f;
-                isTransparent = transparentModeMat.floatValue == 2.0f;
+                isCutout = tpmode == 1.0f || tpmode == 5.0f;
+                isTransparent = tpmode == 2.0f;
             }
-        }
-
-        private lilMaterialProperty[] AllProperties()
-        {
-            return new[]
-            {
-                transparentModeMat,
-                asOverlay,
-                invisible,
-                asUnlit,
-                cutoff,
-                subpassCutoff,
-                flipNormal,
-                shiftBackfaceUV,
-                backfaceForceShadow,
-                vertexLightStrength,
-                lightMinLimit,
-                lightMaxLimit,
-                beforeExposureLimit,
-                monochromeLighting,
-                alphaBoostFA,
-                lilDirectionalLightStrength,
-                lightDirectionOverride,
-                baseColor,
-                baseMap,
-                baseColorMap,
-                triMask,
-                cull,
-                srcBlend,
-                dstBlend,
-                srcBlendAlpha,
-                dstBlendAlpha,
-                blendOp,
-                blendOpAlpha,
-                srcBlendFA,
-                dstBlendFA,
-                srcBlendAlphaFA,
-                dstBlendAlphaFA,
-                blendOpFA,
-                blendOpAlphaFA,
-                zclip,
-                zwrite,
-                ztest,
-                stencilRef,
-                stencilReadMask,
-                stencilWriteMask,
-                stencilComp,
-                stencilPass,
-                stencilFail,
-                stencilZFail,
-                offsetFactor,
-                offsetUnits,
-                colorMask,
-                alphaToMask,
-                lilShadowCasterBias,
-                mainColor,
-                mainTex,
-                mainTexHSVG,
-                mainTex_ScrollRotate,
-                mainGradationStrength,
-                mainGradationTex,
-                mainColorAdjustMask,
-                useMain2ndTex,
-                mainColor2nd,
-                main2ndTex,
-                main2ndTex_UVMode,
-                main2ndTexAngle,
-                main2ndTexDecalAnimation,
-                main2ndTexDecalSubParam,
-                main2ndTexIsDecal,
-                main2ndTexIsLeftOnly,
-                main2ndTexIsRightOnly,
-                main2ndTexShouldCopy,
-                main2ndTexShouldFlipMirror,
-                main2ndTexShouldFlipCopy,
-                main2ndTexIsMSDF,
-                main2ndBlendMask,
-                main2ndTexBlendMode,
-                main2ndEnableLighting,
-                main2ndDissolveMask,
-                main2ndDissolveNoiseMask,
-                main2ndDissolveNoiseMask_ScrollRotate,
-                main2ndDissolveNoiseStrength,
-                main2ndDissolveColor,
-                main2ndDissolveParams,
-                main2ndDissolvePos,
-                main2ndDistanceFade,
-                useMain3rdTex,
-                mainColor3rd,
-                main3rdTex,
-                main3rdTex_UVMode,
-                main3rdTexAngle,
-                main3rdTexDecalAnimation,
-                main3rdTexDecalSubParam,
-                main3rdTexIsDecal,
-                main3rdTexIsLeftOnly,
-                main3rdTexIsRightOnly,
-                main3rdTexShouldCopy,
-                main3rdTexShouldFlipMirror,
-                main3rdTexShouldFlipCopy,
-                main3rdTexIsMSDF,
-                main3rdBlendMask,
-                main3rdTexBlendMode,
-                main3rdEnableLighting,
-                main3rdDissolveMask,
-                main3rdDissolveNoiseMask,
-                main3rdDissolveNoiseMask_ScrollRotate,
-                main3rdDissolveNoiseStrength,
-                main3rdDissolveColor,
-                main3rdDissolveParams,
-                main3rdDissolvePos,
-                main3rdDistanceFade,
-                alphaMaskMode,
-                alphaMask,
-                alphaMaskScale,
-                alphaMaskValue,
-                useShadow,
-                shadowStrength,
-                shadowStrengthMask,
-                shadowBorderMask,
-                shadowBlurMask,
-                shadowStrengthMaskLOD,
-                shadowBorderMaskLOD,
-                shadowBlurMaskLOD,
-                shadowAOShift,
-                shadowAOShift2,
-                shadowPostAO,
-                shadowColor,
-                shadowColorTex,
-                shadowNormalStrength,
-                shadowBorder,
-                shadowBlur,
-                shadow2ndColor,
-                shadow2ndColorTex,
-                shadow2ndNormalStrength,
-                shadow2ndBorder,
-                shadow2ndBlur,
-                shadow3rdColor,
-                shadow3rdColorTex,
-                shadow3rdNormalStrength,
-                shadow3rdBorder,
-                shadow3rdBlur,
-                shadowMainStrength,
-                shadowEnvStrength,
-                shadowBorderColor,
-                shadowBorderRange,
-                shadowReceive,
-                shadow2ndReceive,
-                shadow3rdReceive,
-                shadowMaskType,
-                shadowFlatBorder,
-                shadowFlatBlur,
-                useBacklight,
-                backlightColor,
-                backlightColorTex,
-                backlightMainStrength,
-                backlightNormalStrength,
-                backlightBorder,
-                backlightBlur,
-                backlightDirectivity,
-                backlightViewStrength,
-                backlightReceiveShadow,
-                backlightBackfaceMask,
-                useBumpMap,
-                bumpMap,
-                bumpScale,
-                useBump2ndMap,
-                bump2ndMap,
-                bump2ndScale,
-                bump2ndScaleMask,
-                useAnisotropy,
-                anisotropyTangentMap,
-                anisotropyScale,
-                anisotropyScaleMask,
-                anisotropyTangentWidth,
-                anisotropyBitangentWidth,
-                anisotropyShift,
-                anisotropyShiftNoiseScale,
-                anisotropySpecularStrength,
-                anisotropy2ndTangentWidth,
-                anisotropy2ndBitangentWidth,
-                anisotropy2ndShift,
-                anisotropy2ndShiftNoiseScale,
-                anisotropy2ndSpecularStrength,
-                anisotropyShiftNoiseMask,
-                anisotropy2Reflection,
-                anisotropy2MatCap,
-                anisotropy2MatCap2nd,
-                useReflection,
-                metallic,
-                metallicGlossMap,
-                smoothness,
-                smoothnessTex,
-                reflectance,
-                reflectionColor,
-                reflectionColorTex,
-                gsaaStrength,
-                applySpecular,
-                applySpecularFA,
-                specularNormalStrength,
-                specularToon,
-                specularBorder,
-                specularBlur,
-                applyReflection,
-                reflectionNormalStrength,
-                reflectionApplyTransparency,
-                reflectionCubeTex,
-                reflectionCubeColor,
-                reflectionCubeOverride,
-                reflectionCubeEnableLighting,
-                reflectionBlendMode,
-                useMatCap,
-                matcapTex,
-                matcapColor,
-                matcapMainStrength,
-                matcapBlendUV1,
-                matcapZRotCancel,
-                matcapPerspective,
-                matcapVRParallaxStrength,
-                matcapBlend,
-                matcapBlendMask,
-                matcapEnableLighting,
-                matcapShadowMask,
-                matcapBackfaceMask,
-                matcapLod,
-                matcapBlendMode,
-                matcapMul,
-                matcapApplyTransparency,
-                matcapNormalStrength,
-                matcapCustomNormal,
-                matcapBumpMap,
-                matcapBumpScale,
-                useMatCap2nd,
-                matcap2ndTex,
-                matcap2ndColor,
-                matcap2ndMainStrength,
-                matcap2ndBlendUV1,
-                matcap2ndZRotCancel,
-                matcap2ndPerspective,
-                matcap2ndVRParallaxStrength,
-                matcap2ndBlend,
-                matcap2ndBlendMask,
-                matcap2ndEnableLighting,
-                matcap2ndShadowMask,
-                matcap2ndBackfaceMask,
-                matcap2ndLod,
-                matcap2ndBlendMode,
-                matcap2ndMul,
-                matcap2ndApplyTransparency,
-                matcap2ndNormalStrength,
-                matcap2ndCustomNormal,
-                matcap2ndBumpMap,
-                matcap2ndBumpScale,
-                useRim,
-                rimColor,
-                rimColorTex,
-                rimMainStrength,
-                rimNormalStrength,
-                rimBorder,
-                rimBlur,
-                rimFresnelPower,
-                rimEnableLighting,
-                rimShadowMask,
-                rimBackfaceMask,
-                rimVRParallaxStrength,
-                rimApplyTransparency,
-                rimDirStrength,
-                rimDirRange,
-                rimIndirRange,
-                rimIndirColor,
-                rimIndirBorder,
-                rimIndirBlur,
-                useGlitter,
-                glitterUVMode,
-                glitterColor,
-                glitterColorTex,
-                glitterMainStrength,
-                glitterParams1,
-                glitterParams2,
-                glitterPostContrast,
-                glitterSensitivity,
-                glitterEnableLighting,
-                glitterShadowMask,
-                glitterBackfaceMask,
-                glitterApplyTransparency,
-                glitterVRParallaxStrength,
-                glitterNormalStrength,
-                useEmission,
-                emissionColor,
-                emissionMap,
-                emissionMap_ScrollRotate,
-                emissionMap_UVMode,
-                emissionMainStrength,
-                emissionBlend,
-                emissionBlendMask,
-                emissionBlendMask_ScrollRotate,
-                emissionBlink,
-                emissionUseGrad,
-                emissionGradTex,
-                emissionGradSpeed,
-                emissionParallaxDepth,
-                emissionFluorescence,
-                useEmission2nd,
-                emission2ndColor,
-                emission2ndMap,
-                emission2ndMap_ScrollRotate,
-                emission2ndMap_UVMode,
-                emission2ndMainStrength,
-                emission2ndBlend,
-                emission2ndBlendMask,
-                emission2ndBlendMask_ScrollRotate,
-                emission2ndBlink,
-                emission2ndUseGrad,
-                emission2ndGradTex,
-                emission2ndGradSpeed,
-                emission2ndParallaxDepth,
-                emission2ndFluorescence,
-                outlineColor,
-                outlineTex,
-                outlineTex_ScrollRotate,
-                outlineTexHSVG,
-                outlineLitColor,
-                outlineLitApplyTex,
-                outlineLitScale,
-                outlineLitOffset,
-                outlineWidth,
-                outlineWidthMask,
-                outlineFixWidth,
-                outlineVertexR2Width,
-                outlineDeleteMesh,
-                outlineVectorTex,
-                outlineVectorUVMode,
-                outlineVectorScale,
-                outlineEnableLighting,
-                outlineZBias,
-                outlineCull,
-                outlineSrcBlend,
-                outlineDstBlend,
-                outlineSrcBlendAlpha,
-                outlineDstBlendAlpha,
-                outlineBlendOp,
-                outlineBlendOpAlpha,
-                outlineSrcBlendFA,
-                outlineDstBlendFA,
-                outlineSrcBlendAlphaFA,
-                outlineDstBlendAlphaFA,
-                outlineBlendOpFA,
-                outlineBlendOpAlphaFA,
-                outlineZclip,
-                outlineZwrite,
-                outlineZtest,
-                outlineStencilRef,
-                outlineStencilReadMask,
-                outlineStencilWriteMask,
-                outlineStencilComp,
-                outlineStencilPass,
-                outlineStencilFail,
-                outlineStencilZFail,
-                outlineOffsetFactor,
-                outlineOffsetUnits,
-                outlineColorMask,
-                outlineAlphaToMask,
-                useParallax,
-                usePOM,
-                parallaxMap,
-                parallax,
-                parallaxOffset,
-                distanceFadeColor,
-                distanceFade,
-                useClippingCanceller,
-                useAudioLink,
-                audioLinkDefaultValue,
-                audioLinkUVMode,
-                audioLinkUVParams,
-                audioLinkStart,
-                audioLinkMask,
-                audioLink2Main2nd,
-                audioLink2Main3rd,
-                audioLink2Emission,
-                audioLink2EmissionGrad,
-                audioLink2Emission2nd,
-                audioLink2Emission2ndGrad,
-                audioLink2Vertex,
-                audioLinkVertexUVMode,
-                audioLinkVertexUVParams,
-                audioLinkVertexStart,
-                audioLinkVertexStrength,
-                audioLinkAsLocal,
-                audioLinkLocalMap,
-                audioLinkLocalMapParams,
-                dissolveMask,
-                dissolveNoiseMask,
-                dissolveNoiseMask_ScrollRotate,
-                dissolveNoiseStrength,
-                dissolveColor,
-                dissolveParams,
-                dissolvePos,
-                ignoreEncryption,
-                keys,
-                refractionStrength,
-                refractionFresnelPower,
-                refractionColorFromMain,
-                refractionColor,
-                furNoiseMask,
-                furMask,
-                furLengthMask,
-                furVectorTex,
-                furVectorScale,
-                furVector,
-                furGravity,
-                furRandomize,
-                furAO,
-                vertexColor2FurVector,
-                furMeshType,
-                furLayerNum,
-                furRootOffset,
-                furCutoutLength,
-                furTouchStrength,
-                furCull,
-                furSrcBlend,
-                furDstBlend,
-                furSrcBlendAlpha,
-                furDstBlendAlpha,
-                furBlendOp,
-                furBlendOpAlpha,
-                furSrcBlendFA,
-                furDstBlendFA,
-                furSrcBlendAlphaFA,
-                furDstBlendAlphaFA,
-                furBlendOpFA,
-                furBlendOpAlphaFA,
-                furZclip,
-                furZwrite,
-                furZtest,
-                furStencilRef,
-                furStencilReadMask,
-                furStencilWriteMask,
-                furStencilComp,
-                furStencilPass,
-                furStencilFail,
-                furStencilZFail,
-                furOffsetFactor,
-                furOffsetUnits,
-                furColorMask,
-                furAlphaToMask,
-                tessEdge,
-                tessStrength,
-                tessShrink,
-                tessFactorMax,
-                gemChromaticAberration,
-                gemEnvContrast,
-                gemEnvColor,
-                gemParticleLoop,
-                gemParticleColor,
-                gemVRParallaxStrength,
-                fakeShadowVector
-            };
         }
 
         private void CopyProperties(lilPropertyBlock propertyBlock)
@@ -5358,11 +5003,6 @@ namespace lilToon
                     if(block == propertyBlock && prop.p != null) copiedProperties[prop.name] = prop.p;
                 }
             }
-        }
-
-        private void CopyProperties(object obj)
-        {
-            CopyProperties((lilPropertyBlock)obj);
         }
 
         private void PasteProperties(lilPropertyBlock propertyBlock, bool shouldCopyTex)
@@ -5390,12 +5030,6 @@ namespace lilToon
             }
         }
 
-        private void PasteProperties(object obj)
-        {
-            lilPropertyBlockData propertyBlockData = (lilPropertyBlockData)obj;
-            PasteProperties(propertyBlockData.propertyBlock, propertyBlockData.shouldCopyTex);
-        }
-
         private void ResetProperties(lilPropertyBlock propertyBlock)
         {
             #if UNITY_2019_3_OR_NEWER
@@ -5419,6 +5053,17 @@ namespace lilToon
                 }
             }
             #endif
+        }
+
+        private void CopyProperties(object obj)
+        {
+            CopyProperties((lilPropertyBlock)obj);
+        }
+
+        private void PasteProperties(object obj)
+        {
+            lilPropertyBlockData propertyBlockData = (lilPropertyBlockData)obj;
+            PasteProperties(propertyBlockData.propertyBlock, propertyBlockData.shouldCopyTex);
         }
 
         private void ResetProperties(object obj)
@@ -5460,308 +5105,7 @@ namespace lilToon
         public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess, bool ismulti)
         {
             if(isMultiVariants) return;
-            RenderingMode rend = renderingMode;
-            lilRenderPipeline RP = RPReader.GetRP();
-            if(ismulti)
-            {
-                float tpmode = material.GetFloat("_TransparentMode");
-                switch((int)tpmode)
-                {
-                    case 1  : rend = RenderingMode.Cutout; break;
-                    case 2  : rend = RenderingMode.Transparent; break;
-                    case 3  : rend = RenderingMode.Refraction; break;
-                    case 4  : rend = RenderingMode.Fur; break;
-                    case 5  : rend = RenderingMode.FurCutout; break;
-                    case 6  : rend = RenderingMode.Gem; break;
-                    default : rend = RenderingMode.Opaque; break;
-                }
-            }
-            switch(rend)
-            {
-                case RenderingMode.Opaque:
-                    if(islite)
-                    {
-                        if(isoutl)  material.shader = ltslo;
-                        else        material.shader = ltsl;
-                    }
-                    else if(ismulti)
-                    {
-                        if(isoutl)  material.shader = ltsmo;
-                        else        material.shader = ltsm;
-                        material.SetOverrideTag("RenderType", "");
-                        material.renderQueue = -1;
-                    }
-                    else if(istess)
-                    {
-                        if(isoutl)  material.shader = ltstesso;
-                        else        material.shader = ltstess;
-                    }
-                    else
-                    {
-                        if(isoutl)  material.shader = ltso;
-                        else        material.shader = lts;
-                    }
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_AlphaToMask", 0);
-                    if(isoutl)
-                    {
-                        material.SetInt("_OutlineSrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                        material.SetInt("_OutlineDstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                        material.SetInt("_OutlineAlphaToMask", 0);
-                    }
-                    break;
-                case RenderingMode.Cutout:
-                    if(islite)
-                    {
-                        if(isoutl)  material.shader = ltslco;
-                        else        material.shader = ltslc;
-                    }
-                    else if(ismulti)
-                    {
-                        if(isoutl)  material.shader = ltsmo;
-                        else        material.shader = ltsm;
-                        material.SetOverrideTag("RenderType", "TransparentCutout");
-                        material.renderQueue = 2450;
-                    }
-                    else if(istess)
-                    {
-                        if(isoutl)  material.shader = ltstessco;
-                        else        material.shader = ltstessc;
-                    }
-                    else
-                    {
-                        if(isoutl)  material.shader = ltsco;
-                        else        material.shader = ltsc;
-                    }
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_AlphaToMask", 1);
-                    if(isoutl)
-                    {
-                        material.SetInt("_OutlineSrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                        material.SetInt("_OutlineDstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                        material.SetInt("_OutlineAlphaToMask", 1);
-                    }
-                    break;
-                case RenderingMode.Transparent:
-                    if(ismulti)
-                    {
-                        if(isoutl)  material.shader = ltsmo;
-                        else        material.shader = ltsm;
-                        material.SetOverrideTag("RenderType", "TransparentCutout");
-                        material.renderQueue = RP == lilRenderPipeline.HDRP ? 3000 : 2460;
-                    }
-                    else
-                    {
-                        switch (transparentMode)
-                        {
-                            case TransparentMode.Normal:
-                                if(islite)
-                                {
-                                    if(isoutl)  material.shader = ltslto;
-                                    else        material.shader = ltslt;
-                                }
-                                else if(istess)
-                                {
-                                    if(isoutl)  material.shader = ltstessto;
-                                    else        material.shader = ltstesst;
-                                }
-                                else
-                                {
-                                    if(isoutl)  material.shader = ltsto;
-                                    else        material.shader = ltst;
-                                }
-                                break;
-                            case TransparentMode.OnePass:
-                                if(islite)
-                                {
-                                    if(isoutl)  material.shader = ltsloto;
-                                    else        material.shader = ltslot;
-                                }
-                                else if(istess)
-                                {
-                                    if(isoutl)  material.shader = ltstessoto;
-                                    else        material.shader = ltstessot;
-                                }
-                                else
-                                {
-                                    if(isoutl)  material.shader = ltsoto;
-                                    else        material.shader = ltsot;
-                                }
-                                break;
-                            case TransparentMode.TwoPass:
-                                if(islite)
-                                {
-                                    if(isoutl)  material.shader = ltsltto;
-                                    else        material.shader = ltsltt;
-                                }
-                                else if(istess)
-                                {
-                                    if(isoutl)  material.shader = ltstesstto;
-                                    else        material.shader = ltstesstt;
-                                }
-                                else
-                                {
-                                    if(isoutl)  material.shader = ltstto;
-                                    else        material.shader = ltstt;
-                                }
-                                break;
-                        }
-                    }
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    material.SetInt("_AlphaToMask", 0);
-                    if(isoutl)
-                    {
-                        material.SetInt("_OutlineSrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                        material.SetInt("_OutlineDstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                        material.SetInt("_OutlineAlphaToMask", 0);
-                    }
-                    break;
-                case RenderingMode.Refraction:
-                    if(ismulti)
-                    {
-                        material.shader = ltsmref;
-                        material.SetOverrideTag("RenderType", "");
-                        material.renderQueue = -1;
-                    }
-                    else
-                    {
-                        material.shader = ltsref;
-                    }
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_AlphaToMask", 0);
-                    break;
-                case RenderingMode.RefractionBlur:
-                    material.shader = ltsrefb;
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_AlphaToMask", 0);
-                    break;
-                case RenderingMode.Fur:
-                    if(ismulti)
-                    {
-                        material.shader = ltsmfur;
-                        material.SetOverrideTag("RenderType", "TransparentCutout");
-                        material.renderQueue = 3000;
-                    }
-                    else
-                    {
-                        material.shader = ltsfur;
-                    }
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    material.SetInt("_AlphaToMask", 0);
-                    material.SetInt("_FurSrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                    material.SetInt("_FurDstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    material.SetInt("_FurZWrite", 0);
-                    material.SetInt("_FurAlphaToMask", 0);
-                    break;
-                case RenderingMode.FurCutout:
-                    if(ismulti)
-                    {
-                        material.shader = ltsmfur;
-                        material.SetOverrideTag("RenderType", "TransparentCutout");
-                        material.renderQueue = 2450;
-                    }
-                    else
-                    {
-                        material.shader = ltsfurc;
-                    }
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_AlphaToMask", 1);
-                    material.SetInt("_FurSrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_FurDstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                    material.SetInt("_FurZWrite", 1);
-                    material.SetInt("_FurAlphaToMask", 1);
-                    break;
-                case RenderingMode.FurTwoPass:
-                    material.shader = ltsfurtwo;
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    material.SetInt("_AlphaToMask", 0);
-                    material.SetInt("_FurSrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                    material.SetInt("_FurDstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    material.SetInt("_FurZWrite", 0);
-                    material.SetInt("_FurAlphaToMask", 0);
-                    break;
-                case RenderingMode.Gem:
-                    if(ismulti)
-                    {
-                        material.shader = ltsmgem;
-                        material.SetOverrideTag("RenderType", "");
-                        material.renderQueue = -1;
-                    }
-                    else
-                    {
-                        material.shader = ltsgem;
-                    }
-                    material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                    material.SetInt("_AlphaToMask", 0);
-                    break;
-            }
-            if(isstencil) material.renderQueue = material.shader.renderQueue - 1;
-            FixTransparentRenderQueue(material, renderingMode);
-            material.SetInt("_ZWrite", 1);
-            if(rend == RenderingMode.Gem)
-            {
-                material.SetInt("_Cull", 0);
-                material.SetInt("_ZWrite", 0);
-            }
-            material.SetInt("_ZTest", 4);
-            material.SetFloat("_OffsetFactor", 0.0f);
-            material.SetFloat("_OffsetUnits", 0.0f);
-            material.SetInt("_ColorMask", 15);
-            material.SetInt("_SrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-            material.SetInt("_DstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            material.SetInt("_BlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
-            material.SetInt("_BlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
-            material.SetInt("_SrcBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-            material.SetInt("_DstBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-            material.SetInt("_SrcBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.Zero);
-            material.SetInt("_DstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
-            material.SetInt("_BlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
-            material.SetInt("_BlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
-            if(isoutl)
-            {
-                material.SetInt("_OutlineCull", 1);
-                material.SetInt("_OutlineZWrite", 1);
-                material.SetInt("_OutlineZTest", 2);
-                material.SetFloat("_OutlineOffsetFactor", 0.0f);
-                material.SetFloat("_OutlineOffsetUnits", 0.0f);
-                material.SetInt("_OutlineColorMask", 15);
-                material.SetInt("_OutlineSrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_OutlineDstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                material.SetInt("_OutlineBlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
-                material.SetInt("_OutlineBlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
-                material.SetInt("_OutlineSrcBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_OutlineDstBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_OutlineSrcBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.Zero);
-                material.SetInt("_OutlineDstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_OutlineBlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
-                material.SetInt("_OutlineBlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
-            }
-            if(renderingMode == RenderingMode.Fur || renderingMode == RenderingMode.FurCutout || renderingMode == RenderingMode.FurTwoPass)
-            {
-                material.SetInt("_FurZTest", 4);
-                material.SetFloat("_FurOffsetFactor", 0.0f);
-                material.SetFloat("_FurOffsetUnits", 0.0f);
-                material.SetInt("_FurColorMask", 15);
-                material.SetInt("_FurSrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_FurDstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                material.SetInt("_FurBlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
-                material.SetInt("_FurBlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
-                material.SetInt("_FurSrcBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_FurDstBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_FurSrcBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.Zero);
-                material.SetInt("_FurDstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_FurBlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
-                material.SetInt("_FurBlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
-            }
+            lilMaterialUtils.SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess, ismulti);
         }
 
         public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess)
@@ -5774,254 +5118,23 @@ namespace lilToon
             SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isOutl, isLite, isStWr, isTess);
         }
 
+        [Obsolete("")]
         public static bool CheckMainTextureName(string name)
         {
-            return mainTexCheckWords.Any(word => !name.Contains(word));
+            return lilMaterialUtils.CheckMainTextureName(name);
         }
 
+        [Obsolete("")]
         public static void RemoveUnusedTexture(Material material)
         {
-            if(!material.shader.name.Contains("lilToon")) return;
-            RemoveUnusedTexture(material, material.shader.name.Contains("Lite"));
-        }
-
-        private static void FixTransparentRenderQueue(Material material, RenderingMode renderingMode)
-        {
-            #if VRC_SDK_VRCSDK3 && UDON
-                if( renderingMode == RenderingMode.Transparent ||
-                    renderingMode == RenderingMode.Refraction ||
-                    renderingMode == RenderingMode.RefractionBlur ||
-                    renderingMode == RenderingMode.Fur ||
-                    renderingMode == RenderingMode.FurTwoPass ||
-                    renderingMode == RenderingMode.Gem
-                )
-                {
-                    material.renderQueue = 3000;
-                }
-            #endif
-        }
-
-        private static void SetShaderKeywords(Material material, string keyword, bool enable)
-        {
-            if(enable)  material.EnableKeyword(keyword);
-            else        material.DisableKeyword(keyword);
-        }
-
-        private void SetupMultiMaterial(Material material)
-        {
-            SetShaderKeywords(material, "UNITY_UI_ALPHACLIP",                   material.GetFloat("_TransparentMode") == 1.0f);
-            SetShaderKeywords(material, "UNITY_UI_CLIP_RECT",                   material.GetFloat("_TransparentMode") == 2.0f || material.GetFloat("_TransparentMode") == 4.0f);
-            material.SetShaderPassEnabled("ShadowCaster",                       material.GetFloat("_AsOverlay") == 0.0f);
-            material.SetShaderPassEnabled("DepthOnly",                          material.GetFloat("_AsOverlay") == 0.0f);
-            material.SetShaderPassEnabled("DepthNormals",                       material.GetFloat("_AsOverlay") == 0.0f);
-            material.SetShaderPassEnabled("DepthForwardOnly",                   material.GetFloat("_AsOverlay") == 0.0f);
-            material.SetShaderPassEnabled("MotionVectors",                      material.GetFloat("_AsOverlay") == 0.0f);
-
-            if(isGem)
-            {
-                SetShaderKeywords(material, "_REQUIRE_UV2",                         false);
-                SetShaderKeywords(material, "_FADING_ON",                           false);
-            }
-            else
-            {
-                SetShaderKeywords(material, "_REQUIRE_UV2",                         useShadow.floatValue != 0.0f);
-                SetShaderKeywords(material, "_FADING_ON",                           distanceFade.vectorValue.z != 0.0f);
-            }
-
-            SetShaderKeywords(material, "_EMISSION",                            useEmission.floatValue != 0.0f);
-            SetShaderKeywords(material, "GEOM_TYPE_BRANCH",                     useEmission2nd.floatValue != 0.0f);
-            SetShaderKeywords(material, "_SUNDISK_SIMPLE",                      (useEmission.floatValue != 0.0f && emissionBlendMask.textureValue != null) || (useEmission2nd.floatValue != 0.0f && emission2ndBlendMask.textureValue != null));
-            SetShaderKeywords(material, "_NORMALMAP",                           useBumpMap.floatValue != 0.0f);
-            SetShaderKeywords(material, "EFFECT_BUMP",                          useBump2ndMap.floatValue != 0.0f);
-            SetShaderKeywords(material, "SOURCE_GBUFFER",                       useAnisotropy.floatValue != 0.0f);
-            SetShaderKeywords(material, "_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A", useMatCap.floatValue != 0.0f);
-            SetShaderKeywords(material, "_SPECULARHIGHLIGHTS_OFF",              useMatCap2nd.floatValue != 0.0f);
-            SetShaderKeywords(material, "GEOM_TYPE_MESH",                       (useMatCap.floatValue != 0.0f && matcapCustomNormal.floatValue != 0.0f) || (useMatCap2nd.floatValue != 0.0f && matcap2ndCustomNormal.floatValue != 0.0f));
-            SetShaderKeywords(material, "_METALLICGLOSSMAP",                    useRim.floatValue != 0.0f);
-            SetShaderKeywords(material, "GEOM_TYPE_LEAF",                       useRim.floatValue != 0.0f && rimDirStrength.floatValue != 0.0f);
-            SetShaderKeywords(material, "_SPECGLOSSMAP",                        useGlitter.floatValue != 0.0f);
-            SetShaderKeywords(material, "_MAPPING_6_FRAMES_LAYOUT",             useAudioLink.floatValue != 0.0f);
-            SetShaderKeywords(material, "_SUNDISK_HIGH_QUALITY",                useAudioLink.floatValue != 0.0f && audioLinkAsLocal.floatValue != 0.0f);
-            SetShaderKeywords(material, "GEOM_TYPE_BRANCH_DETAIL",              dissolveParams.vectorValue.x != 0.0f);
-
-            if(isGem)
-            {
-                SetShaderKeywords(material, "EFFECT_HUE_VARIATION",                 false);
-                SetShaderKeywords(material, "_COLORADDSUBDIFF_ON",                  false);
-                SetShaderKeywords(material, "_COLORCOLOR_ON",                       false);
-                SetShaderKeywords(material, "_SUNDISK_NONE",                        false);
-                SetShaderKeywords(material, "GEOM_TYPE_FROND",                      false);
-                SetShaderKeywords(material, "_COLOROVERLAY_ON",                     false);
-                SetShaderKeywords(material, "ANTI_FLICKER",                         false);
-                SetShaderKeywords(material, "_PARALLAXMAP",                         false);
-                SetShaderKeywords(material, "PIXELSNAP_ON",                         false);
-                SetShaderKeywords(material, "_GLOSSYREFLECTIONS_OFF",               false);
-            }
-            else
-            {
-                SetShaderKeywords(material, "EFFECT_HUE_VARIATION",                 mainTexHSVG.vectorValue != defaultHSVG || mainGradationStrength.floatValue != 0.0f);
-                SetShaderKeywords(material, "_COLORADDSUBDIFF_ON",                  useMain2ndTex.floatValue != 0.0f);
-                SetShaderKeywords(material, "_COLORCOLOR_ON",                       useMain3rdTex.floatValue != 0.0f);
-                SetShaderKeywords(material, "_SUNDISK_NONE",                        (useMain2ndTex.floatValue != 0.0f && main2ndTexDecalAnimation.vectorValue != defaultDecalAnim) || (useMain3rdTex.floatValue != 0.0f && main3rdTexDecalAnimation.vectorValue != defaultDecalAnim));
-                SetShaderKeywords(material, "GEOM_TYPE_FROND",                      (useMain2ndTex.floatValue != 0.0f && main2ndDissolveParams.vectorValue.x != 0.0f) || (useMain3rdTex.floatValue != 0.0f && main3rdDissolveParams.vectorValue.x != 0.0f));
-                SetShaderKeywords(material, "_COLOROVERLAY_ON",                     material.GetFloat("_TransparentMode") != 0.0f && alphaMaskMode.floatValue != 0.0f);
-                SetShaderKeywords(material, "ANTI_FLICKER",                         useBacklight.floatValue != 0.0f);
-                SetShaderKeywords(material, "_PARALLAXMAP",                         useParallax.floatValue != 0.0f);
-                SetShaderKeywords(material, "PIXELSNAP_ON",                         useParallax.floatValue != 0.0f && usePOM.floatValue != 0.0f);
-                SetShaderKeywords(material, "_GLOSSYREFLECTIONS_OFF",               useReflection.floatValue != 0.0f);
-            }
-
-            if(isRefr || isFur || isGem)
-            {
-                SetShaderKeywords(material, "ETC1_EXTERNAL_ALPHA",                  false);
-                SetShaderKeywords(material, "_DETAIL_MULX2",                        false);
-            }
-            else
-            {
-                SetShaderKeywords(material, "ETC1_EXTERNAL_ALPHA",                  false);
-                SetShaderKeywords(material, "_DETAIL_MULX2",                        isOutl && material.GetVector("_OutlineTexHSVG") != defaultHSVG);
-            }
-
-            // Remove old keywords
-            material.SetShaderPassEnabled("SRPDEFAULTUNLIT",                    true);
-            SetShaderKeywords(material, "BILLBOARD_FACE_CAMERA_POS",            false);
-        }
-
-        private static void RemoveUnusedTexture(Material material, bool islite)
-        {
-            RemoveUnusedProperties(material);
-            if(islite)
-            {
-                if(material.GetFloat("_UseShadow") == 0.0f)
-                {
-                    material.SetTexture("_ShadowColorTex", null);
-                    material.SetTexture("_Shadow2ndColorTex", null);
-                }
-                if(material.GetFloat("_UseEmission") == 0.0f)
-                {
-                    material.SetTexture("_EmissionMap", null);
-                }
-                if(material.GetFloat("_UseMatCap") == 0.0f)
-                {
-                    material.SetTexture("_MatCapTex", null);
-                }
-            }
-            else
-            {
-                if(material.GetFloat("_MainGradationStrength") == 0.0f) material.SetTexture("_MainGradationTex", null);
-                if(material.GetFloat("_UseMain2ndTex") == 0.0f)
-                {
-                    material.SetTexture("_Main2ndTex", null);
-                    material.SetTexture("_Main2ndBlendMask", null);
-                    material.SetTexture("_Main2ndDissolveMask", null);
-                    material.SetTexture("_Main2ndDissolveNoiseMask", null);
-                }
-                if(material.GetFloat("_UseMain3rdTex") == 0.0f)
-                {
-                    material.SetTexture("_Main3rdTex", null);
-                    material.SetTexture("_Main3rdBlendMask", null);
-                    material.SetTexture("_Main3rdDissolveMask", null);
-                    material.SetTexture("_Main3rdDissolveNoiseMask", null);
-                }
-                if(material.GetFloat("_UseShadow") == 0.0f)
-                {
-                    material.SetTexture("_ShadowBlurMask", null);
-                    material.SetTexture("_ShadowBorderMask", null);
-                    material.SetTexture("_ShadowStrengthMask", null);
-                    material.SetTexture("_ShadowColorTex", null);
-                    material.SetTexture("_Shadow2ndColorTex", null);
-                    material.SetTexture("_Shadow3rdColorTex", null);
-                }
-                if(material.GetFloat("_UseEmission") == 0.0f)
-                {
-                    material.SetTexture("_EmissionMap", null);
-                    material.SetTexture("_EmissionBlendMask", null);
-                    material.SetTexture("_EmissionGradTex", null);
-                }
-                if(material.GetFloat("_UseEmission2nd") == 0.0f)
-                {
-                    material.SetTexture("_Emission2ndMap", null);
-                    material.SetTexture("_Emission2ndBlendMask", null);
-                    material.SetTexture("_Emission2ndGradTex", null);
-                }
-                if(material.GetFloat("_UseBumpMap") == 0.0f) material.SetTexture("_BumpMap", null);
-                if(material.GetFloat("_UseBump2ndMap") == 0.0f)
-                {
-                    material.SetTexture("_Bump2ndMap", null);
-                    material.SetTexture("_Bump2ndScaleMask", null);
-                }
-                if(material.GetFloat("_UseAnisotropy") == 0.0f)
-                {
-                    material.SetTexture("_AnisotropyTangentMap", null);
-                    material.SetTexture("_AnisotropyScaleMask", null);
-                    material.SetTexture("_AnisotropyShiftNoiseMask", null);
-                }
-                if(material.GetFloat("_UseReflection") == 0.0f)
-                {
-                    material.SetTexture("_SmoothnessTex", null);
-                    material.SetTexture("_MetallicGlossMap", null);
-                    material.SetTexture("_ReflectionColorTex", null);
-                }
-                if(material.GetFloat("_UseMatCap") == 0.0f)
-                {
-                    material.SetTexture("_MatCapTex", null);
-                    material.SetTexture("_MatCapBlendMask", null);
-                }
-                if(material.GetFloat("_UseMatCap2nd") == 0.0f)
-                {
-                    material.SetTexture("_MatCap2ndTex", null);
-                    material.SetTexture("_MatCap2ndBlendMask", null);
-                }
-                if(material.GetFloat("_UseRim") == 0.0f) material.SetTexture("_RimColorTex", null);
-                if(material.GetFloat("_UseGlitter") == 0.0f) material.SetTexture("_GlitterColorTex", null);
-                if(material.GetFloat("_UseParallax") == 0.0f) material.SetTexture("_ParallaxMap", null);
-                if(material.GetFloat("_UseAudioLink") == 0.0f || material.GetFloat("_AudioLinkUVMode") != 3.0f) material.SetTexture("_AudioLinkMask", null);
-                if(material.GetFloat("_UseAudioLink") == 0.0f || material.GetFloat("_AudioLinkAsLocal") == 0.0f) material.SetTexture("_AudioLinkLocalMap", null);
-            }
-        }
-
-        private static void RemoveShaderKeywords(Material material)
-        {
-            foreach(string keyword in material.shaderKeywords)
-            {
-                material.DisableKeyword(keyword);
-            }
-        }
-
-        private static void RemoveUnusedProperties(Material material)
-        {
-            // https://light11.hatenadiary.com/entry/2018/12/04/224253
-            var so = new SerializedObject(material);
-            so.Update();
-            var savedProps = so.FindProperty("m_SavedProperties");
-
-            var texs = savedProps.FindPropertyRelative("m_TexEnvs");
-            DeleteUnused(ref texs, material);
-
-            var floats = savedProps.FindPropertyRelative("m_Floats");
-            DeleteUnused(ref floats, material);
-
-            var colors = savedProps.FindPropertyRelative("m_Colors");
-            DeleteUnused(ref colors, material);
-
-            so.ApplyModifiedProperties();
-        }
-
-        private static void DeleteUnused(ref SerializedProperty props, Material material)
-        {
-            for(int i = props.arraySize - 1; i >= 0; i--)
-            {
-                if(!material.HasProperty(props.GetArrayElementAtIndex(i).FindPropertyRelative("first").stringValue))
-                {
-                    props.DeleteArrayElementAtIndex(i);
-                }
-            }
+            lilMaterialUtils.RemoveUnusedTexture(material);
         }
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Presets
         #region
+        [Obsolete("")]
         public static void ApplyPreset(Material material, lilToonPreset preset)
         {
             lilToonPreset.ApplyPreset(material, preset, isMulti);
@@ -6030,18 +5143,13 @@ namespace lilToon
         private static void DrawPreset()
         {
             GUILayout.Label(GetLoc("sPresets"), boldLabel);
-            if(presets == null) LoadPresets();
+            if(presets == null) presets = lilToonPreset.LoadPresets();
             ShowPresets();
             EditorGUILayout.Space();
             GUILayout.BeginHorizontal();
-            if(EditorButton(GetLoc("sPresetRefresh"))) LoadPresets();
+            if(EditorButton(GetLoc("sPresetRefresh"))) presets = lilToonPreset.LoadPresets();
             if(EditorButton(GetLoc("sPresetSave"))) EditorWindow.GetWindow<lilToonPreset.lilPresetWindow>("[lilToon] Preset Window");
             GUILayout.EndHorizontal();
-        }
-
-        private static void LoadPresets()
-        {
-            presets = lilToonPreset.LoadPresets();
         }
 
         private static void ShowPresets()
@@ -6080,7 +5188,7 @@ namespace lilToon
                                 var objs = m_MaterialEditor.targets.Where(obj => obj is Material);
                                 foreach(UnityEngine.Object obj in objs)
                                 {
-                                    ApplyPreset((Material)obj, presets[j]);
+                                    lilToonPreset.ApplyPreset((Material)obj, presets[j], isMulti);
                                 }
                             }
                         }
@@ -6420,7 +5528,7 @@ namespace lilToon
             if(shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER) material.SetFloat("_UseClippingCanceller", 1.0f);
 
             SetupMaterialWithRenderingMode(material, renderingModeBuf, TransparentMode.Normal, isOutl, false, isStWr, false);
-            SetupMultiMaterial(material);
+            lilMaterialUtils.SetupMultiMaterial(material);
         }
 
         protected virtual void ReplaceToCustomShaders()
@@ -6429,7 +5537,7 @@ namespace lilToon
 
         protected void ConvertMaterialToCustomShader(Material material)
         {
-            InitializeShaders();
+            lilShaderManager.InitializeShaders();
             Shader shader = material.shader;
                  if(shader == lts)           { ReplaceToCustomShaders(); shader = lts       ;}
             else if(shader == ltsc)          { ReplaceToCustomShaders(); shader = ltsc      ;}
@@ -6557,7 +5665,7 @@ namespace lilToon
                         {
                             SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentMode);
                         }
-                        if(transparentModeBuf >= TransparentMode.OnePass && vertexLightStrength.floatValue != 1.0f && RPReader.GetRP() == lilRenderPipeline.BRP && AutoFixHelpBox(GetLoc("sHelpOnePassVertexLight")))
+                        if(transparentModeBuf >= TransparentMode.OnePass && vertexLightStrength.floatValue != 1.0f && RPReader.GetRP() == lilRenderPipeline.BRP && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpOnePassVertexLight")))
                         {
                             vertexLightStrength.floatValue = 1.0f;
                         }
@@ -6574,7 +5682,7 @@ namespace lilToon
                     {
                         m_MaterialEditor.ShaderProperty(cull, sCullModes);
                         EditorGUI.indentLevel++;
-                        if(cull.floatValue == 1.0f && AutoFixHelpBox(GetLoc("sHelpCullMode")))
+                        if(cull.floatValue == 1.0f && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpCullMode")))
                         {
                             cull.floatValue = 2.0f;
                         }
@@ -6587,7 +5695,7 @@ namespace lilToon
                     }
                     m_MaterialEditor.ShaderProperty(invisible, GetLoc("sInvisible"));
                     m_MaterialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
-                    if(zwrite.floatValue != 1.0f && !isGem && AutoFixHelpBox(GetLoc("sHelpZWrite")))
+                    if(zwrite.floatValue != 1.0f && !isGem && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpZWrite")))
                     {
                         zwrite.floatValue = 1.0f;
                     }
@@ -6639,7 +5747,7 @@ namespace lilToon
                 EditorGUILayout.LabelField(GetLoc("sAdvanced"));
                 EditorGUILayout.BeginVertical(customBox);
                     m_MaterialEditor.ShaderProperty(asUnlit, GetLoc("sAsUnlit"));
-                    if(asUnlit.floatValue != 0 && AutoFixHelpBox(GetLoc("sAsUnlitWarn")))
+                    if(asUnlit.floatValue != 0 && lilEditorGUI.AutoFixHelpBox(GetLoc("sAsUnlitWarn")))
                     {
                         asUnlit.floatValue = 0.0f;
                     }
@@ -6995,7 +6103,7 @@ namespace lilToon
                     if(EditorButton(GetLoc("sBake")))
                     {
                         outlineTex.textureValue = AutoBakeOutlineTexture(material);
-                        outlineTexHSVG.vectorValue = defaultHSVG;
+                        outlineTexHSVG.vectorValue = lilConstant.defaultHSVG;
                     }
                     EditorGUI.indentLevel--;
                     DrawLine();
@@ -7080,7 +6188,7 @@ namespace lilToon
                     if(EditorButton(GetLoc("sBake")))
                     {
                         outlineTex.textureValue = AutoBakeOutlineTexture(material);
-                        outlineTexHSVG.vectorValue = defaultHSVG;
+                        outlineTexHSVG.vectorValue = lilConstant.defaultHSVG;
                     }
                     EditorGUI.indentLevel--;
                     m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sWidth"), GetLoc("sWidthR")), outlineWidthMask, outlineWidth);
@@ -7349,7 +6457,7 @@ namespace lilToon
             // Reset
             if(EditorButton(GetLoc("sReset")))
             {
-                hsvg.vectorValue = defaultHSVG;
+                hsvg.vectorValue = lilConstant.defaultHSVG;
             }
         }
 
@@ -7406,7 +6514,7 @@ namespace lilToon
             if(EditorButton(GetLoc("sRemoveUnused")))
             {
                 Undo.RecordObject(material, "Remove unused properties");
-                RemoveUnusedTexture(material, isLite);
+                lilMaterialUtils.RemoveUnusedTexture(material, isLite);
             }
         }
 
@@ -7444,7 +6552,7 @@ namespace lilToon
 
         private void SetAlphaIsTransparencyGUI(MaterialProperty tex)
         {
-            if(tex.textureValue != null && !((Texture2D)tex.textureValue).alphaIsTransparency && AutoFixHelpBox(GetLoc("sNotAlphaIsTransparency")))
+            if(tex.textureValue != null && !((Texture2D)tex.textureValue).alphaIsTransparency && lilEditorGUI.AutoFixHelpBox(GetLoc("sNotAlphaIsTransparency")))
             {
                 string path = AssetDatabase.GetAssetPath(tex.textureValue);
                 TextureImporter textureImporter = (TextureImporter)TextureImporter.GetAtPath(path);
@@ -7488,7 +6596,7 @@ namespace lilToon
 
         private void BlendSettingGUI(ref bool isShow, string labelName, MaterialProperty srcRGB, MaterialProperty dstRGB, MaterialProperty srcA, MaterialProperty dstA, MaterialProperty opRGB, MaterialProperty opA)
         {
-            DrawSimpleFoldout(labelName, ref isShow, isCustomEditor);
+            isShow = lilEditorGUI.DrawSimpleFoldout(labelName, isShow, isCustomEditor);
             if(isShow)
             {
                 EditorGUI.indentLevel++;
@@ -7504,7 +6612,7 @@ namespace lilToon
 
         private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName)
         {
-            DrawSimpleFoldout(guiContent, textureName, ref isShow, isCustomEditor);
+            isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, isShow, isCustomEditor);
             if(isShow)
             {
                 EditorGUI.indentLevel++;
@@ -7515,7 +6623,7 @@ namespace lilToon
 
         private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba)
         {
-            DrawSimpleFoldout(guiContent, textureName, rgba, ref isShow, isCustomEditor);
+            isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
             if(isShow)
             {
                 EditorGUI.indentLevel++;
@@ -7526,7 +6634,7 @@ namespace lilToon
 
         private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate)
         {
-            DrawSimpleFoldout(guiContent, textureName, rgba, ref isShow, isCustomEditor);
+            isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
             if(isShow)
             {
                 EditorGUI.indentLevel++;
@@ -7540,7 +6648,7 @@ namespace lilToon
         {
             if(useCustomUV)
             {
-                DrawSimpleFoldout(guiContent, textureName, rgba, ref isShow, isCustomEditor);
+                isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
                 if(isShow)
                 {
                     EditorGUI.indentLevel++;
@@ -7559,7 +6667,7 @@ namespace lilToon
         {
             if(useCustomUV)
             {
-                DrawSimpleFoldout(guiContent, textureName, rgba, ref isShow, isCustomEditor);
+                isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
                 if(isShow)
                 {
                     EditorGUI.indentLevel++;
@@ -7577,7 +6685,7 @@ namespace lilToon
 
         private void MatCapTextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty blendUV1, MaterialProperty zRotCancel, MaterialProperty perspective, MaterialProperty vrParallaxStrength)
         {
-            DrawSimpleFoldout(guiContent, textureName, ref isShow, isCustomEditor);
+            isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, isShow, isCustomEditor);
             if(isShow)
             {
                 EditorGUI.indentLevel++;
@@ -7592,7 +6700,7 @@ namespace lilToon
 
         private void MatCapTextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty blendUV1, MaterialProperty zRotCancel, MaterialProperty perspective, MaterialProperty vrParallaxStrength)
         {
-            DrawSimpleFoldout(guiContent, textureName, rgba, ref isShow, isCustomEditor);
+            isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
             if(isShow)
             {
                 EditorGUI.indentLevel++;
@@ -7687,11 +6795,11 @@ namespace lilToon
         private void TextureBake(Material material, int bakeType)
         {
             //bool shouldBake1st = (bakeType == 1 || bakeType == 4) && mainTex.textureValue != null;
-            bool shouldNotBakeColor = (bakeType == 1 || bakeType == 4) && mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == defaultHSVG;
+            bool shouldNotBakeColor = (bakeType == 1 || bakeType == 4) && mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == lilConstant.defaultHSVG;
             bool cannotBake1st = mainTex.textureValue == null;
             bool shouldNotBake2nd = (bakeType == 2 || bakeType == 5) && useMain2ndTex.floatValue == 0.0;
             bool shouldNotBake3rd = (bakeType == 3 || bakeType == 6) && useMain3rdTex.floatValue == 0.0;
-            bool shouldNotBakeAll = bakeType == 0 && mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == defaultHSVG && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
+            bool shouldNotBakeAll = bakeType == 0 && mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == lilConstant.defaultHSVG && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
             if(cannotBake1st)
             {
                 EditorUtility.DisplayDialog(GetLoc("sDialogCannotBake"), GetLoc("sDialogSetMainTex"), GetLoc("sOK"));
@@ -7832,7 +6940,7 @@ namespace lilToon
                 outTexture = lilTextureUtils.SaveTextureToPng(material, outTexture, mainTex.name);
                 if(outTexture != mainTex.textureValue)
                 {
-                    mainTexHSVG.vectorValue = defaultHSVG;
+                    mainTexHSVG.vectorValue = lilConstant.defaultHSVG;
                     mainColor.colorValue = Color.white;
                     mainGradationStrength.floatValue = 0.0f;
                     mainGradationTex.textureValue = null;
@@ -7862,7 +6970,7 @@ namespace lilToon
 
         private Texture2D AutoBakeMainTexture(Material material)
         {
-            bool shouldNotBakeAll = mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == defaultHSVG && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
+            bool shouldNotBakeAll = mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == lilConstant.defaultHSVG && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
             if(!shouldNotBakeAll && EditorUtility.DisplayDialog(GetLoc("sDialogRunBake"), GetLoc("sDialogBakeMain"), GetLoc("sYes"), GetLoc("sNo")))
             {
                 bool bake2nd = useMain2ndTex.floatValue != 0.0;
@@ -8020,7 +7128,7 @@ namespace lilToon
                 Texture2D srcMask2 = new Texture2D(2, 2);
 
                 hsvgMaterial.SetColor(mainColor.name,                   Color.white);
-                hsvgMaterial.SetVector(mainTexHSVG.name,                defaultHSVG);
+                hsvgMaterial.SetVector(mainTexHSVG.name,                lilConstant.defaultHSVG);
                 hsvgMaterial.SetFloat(useMain2ndTex.name,               1.0f);
                 hsvgMaterial.SetFloat(useMain3rdTex.name,               1.0f);
                 hsvgMaterial.SetColor(mainColor3rd.name,                new Color(1.0f,1.0f,1.0f,shadowMainStrength.floatValue));
@@ -8117,7 +7225,7 @@ namespace lilToon
                 Texture2D srcTexture = new Texture2D(2, 2);
 
                 hsvgMaterial.SetColor(mainColor.name,           matcapColor.colorValue);
-                hsvgMaterial.SetVector(mainTexHSVG.name,        defaultHSVG);
+                hsvgMaterial.SetVector(mainTexHSVG.name,        lilConstant.defaultHSVG);
 
                 path = AssetDatabase.GetAssetPath(material.GetTexture(matcapTex.name));
                 if(!string.IsNullOrEmpty(path))
@@ -8233,7 +7341,7 @@ namespace lilToon
 
             hsvgMaterial.EnableKeyword("_ALPHAMASK");
             hsvgMaterial.SetColor(mainColor.name,           Color.white);
-            hsvgMaterial.SetVector(mainTexHSVG.name,        defaultHSVG);
+            hsvgMaterial.SetVector(mainTexHSVG.name,        lilConstant.defaultHSVG);
             hsvgMaterial.SetFloat(alphaMaskMode.name,       alphaMaskMode.floatValue);
             hsvgMaterial.SetFloat(alphaMaskScale.name,      alphaMaskScale.floatValue);
             hsvgMaterial.SetFloat(alphaMaskValue.name,      alphaMaskValue.floatValue);
@@ -8281,7 +7389,7 @@ namespace lilToon
 
         private Texture2D AutoBakeOutlineTexture(Material material)
         {
-            bool shouldNotBakeOutline = outlineTex.textureValue == null || outlineTexHSVG.vectorValue == defaultHSVG;
+            bool shouldNotBakeOutline = outlineTex.textureValue == null || outlineTexHSVG.vectorValue == lilConstant.defaultHSVG;
             if(!shouldNotBakeOutline && EditorUtility.DisplayDialog(GetLoc("sDialogRunBake"), GetLoc("sDialogBakeOutline"), GetLoc("sYes"), GetLoc("sNo")))
             {
                 // run bake
@@ -8603,6 +7711,42 @@ namespace lilToon
         public static void InitializeLanguage()
         {
             lilLanguageManager.InitializeLanguage();
+        }
+
+        [Obsolete("Use \"lilEditorGUI.InitializeBox(int border, int margin, int padding)\" instead.")]
+        public static GUIStyle InitializeBox(int border, int margin, int padding)
+        {
+            return lilEditorGUI.InitializeBox(border, margin, padding);
+        }
+
+        [Obsolete("Use \"lilEditorGUI.DrawWebButton(string text, string URL)\" instead.")]
+        public static void DrawWebButton(string text, string URL)
+        {
+            lilEditorGUI.DrawWebButton(text, URL);
+        }
+
+        [Obsolete("Use \"condition = lilEditorGUI.DrawSimpleFoldout(string label, bool condition, GUIStyle style, bool isCustomEditor = true)\" instead.")]
+        public static void DrawSimpleFoldout(string label, ref bool condition, GUIStyle style, bool isCustomEditor = true)
+        {
+            condition = lilEditorGUI.DrawSimpleFoldout(label, condition, style, isCustomEditor);
+        }
+
+        [Obsolete("Use \"condition = lilEditorGUI.DrawSimpleFoldout(string label, bool condition, bool isCustomEditor = true)\" instead.")]
+        public static void DrawSimpleFoldout(string label, ref bool condition, bool isCustomEditor = true)
+        {
+            condition = lilEditorGUI.DrawSimpleFoldout(label, condition, isCustomEditor);
+        }
+
+        [Obsolete("Use \"condition = lilEditorGUI.DrawSimpleFoldout(MaterialEditor materialEditor, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, bool condition, bool isCustomEditor = true)\" instead.")]
+        public static void DrawSimpleFoldout(GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, ref bool condition, bool isCustomEditor = true)
+        {
+            condition = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, condition, isCustomEditor);
+        }
+
+        [Obsolete("Use \"condition = lilEditorGUI.DrawSimpleFoldout(MaterialEditor materialEditor, GUIContent guiContent, MaterialProperty textureName, bool condition, bool isCustomEditor = true)\" instead.")]
+        public static void DrawSimpleFoldout(GUIContent guiContent, MaterialProperty textureName, ref bool condition, bool isCustomEditor = true)
+        {
+            condition = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, condition, isCustomEditor);
         }
 
         private const string WARN_ABOUT_DIRECTORY = "Methods related to directories have been moved to lilDirectoryManager.";

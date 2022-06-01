@@ -45,7 +45,7 @@ namespace lilToon
         [MenuItem(menuPathRefreshShaders, false, menuPriorityRefreshShaders)]
         private static void RefreshShaders()
         {
-            lilToonInspector.RewriteShaderRP();
+            lilShaderRewriter.RewriteShaderRP();
 
             if(File.Exists(lilDirectoryManager.postBuildTempPath)) File.Delete(lilDirectoryManager.postBuildTempPath);
             lilToonSetting shaderSetting = null;
@@ -72,7 +72,7 @@ namespace lilToon
             {
                 if(Selection.objects[i] is Material)
                 {
-                    lilToonInspector.RemoveUnusedTexture((Material)Selection.objects[i]);
+                    lilMaterialUtils.RemoveUnusedTexture((Material)Selection.objects[i]);
                 }
             }
         }
@@ -142,7 +142,7 @@ namespace lilToon
             int finalWidth;
             int finalHeight;
             int scale;
-            if(EditorUtility.DisplayDialog("Dot Texture reduction",lilToonInspector.GetLoc("sUtilDotTexRedRatio"),"1/2","1/4"))
+            if(EditorUtility.DisplayDialog("Dot Texture reduction",GetLoc("sUtilDotTexRedRatio"),"1/2","1/4"))
             {
                 finalWidth = srcTexture.width / 2;
                 finalHeight = srcTexture.height / 2;
@@ -185,7 +185,7 @@ namespace lilToon
         {
             if(Selection.objects.Length == 0) return;
             Shader lts = Shader.Find("lilToon");
-            if(lts == null) EditorUtility.DisplayDialog("Setup From FBX",lilToonInspector.GetLoc("sUtilShaderNotFound"),lilToonInspector.GetLoc("sCancel"));
+            if(lts == null) EditorUtility.DisplayDialog("Setup From FBX",GetLoc("sUtilShaderNotFound"),GetLoc("sCancel"));
             Undo.RecordObjects(Selection.objects, "Setup From FBX");
             foreach(UnityEngine.Object selectionObj in Selection.objects)
             {
@@ -207,7 +207,7 @@ namespace lilToon
                 }
                 else
                 {
-                    if(!EditorUtility.DisplayDialog("Setup From FBX",lilToonInspector.GetLoc("sUtilMaterialAlreadyExist"),lilToonInspector.GetLoc("sYes"), lilToonInspector.GetLoc("sNo"))) return;
+                    if(!EditorUtility.DisplayDialog("Setup From FBX",GetLoc("sUtilMaterialAlreadyExist"),GetLoc("sYes"),GetLoc("sNo"))) return;
                 }
 
                 lilToonSetting shaderSetting = null;
@@ -274,6 +274,22 @@ namespace lilToon
             Shader lts = Shader.Find("lilToon");
             if(lts != null) material.shader = lts;
 
+            if(material.GetTexture("_MainTex") == null)
+            {
+                foreach(string texGUID in AssetDatabase.FindAssets("t:texture2d"))
+                {
+                    Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
+                    if(tex == null) continue;
+                    string texNameLow = tex.name.ToLower();
+                    if(!texNameLow.Contains(materialLowerName)) continue;
+                    if(lilMaterialUtils.CheckMainTextureName(texNameLow))
+                    {
+                        material.SetTexture("_MainTex", tex);
+                        break;
+                    }
+                }
+            }
+
             lilToonPreset presetSkin = null;
             lilToonPreset presetFace = null;
             lilToonPreset presetHair = null;
@@ -285,22 +301,6 @@ namespace lilToon
                 presetFace    = shaderSetting.presetFace;
                 presetHair    = shaderSetting.presetHair;
                 presetCloth   = shaderSetting.presetCloth;
-            }
-
-            if(material.GetTexture("_MainTex") == null)
-            {
-                foreach(string texGUID in AssetDatabase.FindAssets("t:texture2d"))
-                {
-                    Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
-                    if(tex == null) continue;
-                    string texNameLow = tex.name.ToLower();
-                    if(!texNameLow.Contains(materialLowerName)) continue;
-                    if(lilToonInspector.CheckMainTextureName(texNameLow))
-                    {
-                        material.SetTexture("_MainTex", tex);
-                        break;
-                    }
-                }
             }
 
             if(presetSkin  == null) presetSkin  = AssetDatabase.LoadAssetAtPath<lilToonPreset>(AssetDatabase.GUIDToAssetPath("44e146d270da72d4cb21a0a3b8658d1a"));
@@ -350,11 +350,11 @@ namespace lilToon
 
             if(materialLowerName.Contains("cutout") || mainTexLowerName.Contains("cutout"))
             {
-                lilToonInspector.SetupMaterialWithRenderingMode(material, RenderingMode.Cutout, TransparentMode.Normal, isOutl, false, false, false, false);
+                lilMaterialUtils.SetupMaterialWithRenderingMode(material, RenderingMode.Cutout, TransparentMode.Normal, isOutl, false, false, false, false);
             }
             else if(materialLowerName.Contains("alpha") || mainTexLowerName.Contains("alpha") || materialLowerName.Contains("fade") || mainTexLowerName.Contains("fade") || materialLowerName.Contains("transparent") || mainTexLowerName.Contains("transparent"))
             {
-                lilToonInspector.SetupMaterialWithRenderingMode(material, RenderingMode.Transparent, TransparentMode.Normal, isOutl, false, false, false, false);
+                lilMaterialUtils.SetupMaterialWithRenderingMode(material, RenderingMode.Transparent, TransparentMode.Normal, isOutl, false, false, false, false);
             }
             //else
             //{
@@ -504,7 +504,7 @@ namespace lilToon
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            EditorUtility.DisplayDialog("[lilToon] Fix Lighting",lilToonInspector.GetLoc("sComplete"),lilToonInspector.GetLoc("sOK"));
+            EditorUtility.DisplayDialog("[lilToon] Fix Lighting",GetLoc("sComplete"),GetLoc("sOK"));
         }
 
         [MenuItem(menuPathFixLighting, true, menuPriorityFixLighting)]
@@ -529,6 +529,8 @@ namespace lilToon
                    assetPath.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
                    assetPath.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase);
         }
+
+        public static string GetLoc(string value) { return lilLanguageManager.GetLoc(value); }
     }
 
 #if UNITY_2019_3_OR_NEWER

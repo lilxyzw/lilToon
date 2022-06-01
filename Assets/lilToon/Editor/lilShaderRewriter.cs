@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System;
 using System.IO;
 using lilToon.lilRenderPipelineReader;
 using UnityEditor;
@@ -8,6 +9,125 @@ namespace lilToon
 {
     public class lilShaderRewriter
     {
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Rendering Pipeline
+        #region
+        public static void RewriteShaderRP()
+        {
+            string[] shaderFolderPaths = lilDirectoryManager.GetShaderFolderPaths();
+            string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
+            lilRenderPipeline RP = RPReader.GetRP();
+            Array.ForEach(shaderGuids, shaderGuid => RewriteShaderRP(lilDirectoryManager.GUIDToPath(shaderGuid), RP));
+            RewriteShaderRP(lilDirectoryManager.GetShaderPipelinePath(), RP);
+        }
+
+        private static void RewriteShaderRP(string shaderPath, lilRenderPipeline RP)
+        {
+            string path = shaderPath;
+            StreamReader sr = new StreamReader(path);
+            string s = sr.ReadToEnd();
+            sr.Close();
+            RewriteBRP(ref s, RP == lilRenderPipeline.BRP);
+            RewriteLWRP(ref s, RP == lilRenderPipeline.LWRP);
+            RewriteURP(ref s, RP == lilRenderPipeline.URP);
+            RewriteHDRP(ref s, RP == lilRenderPipeline.HDRP);
+            StreamWriter sw = new StreamWriter(path,false);
+            sw.Write(s);
+            sw.Close();
+        }
+
+        private static void RewriteBRP(ref string s, bool isActive)
+        {
+            if(isActive)
+            {
+                s = s.Replace(
+                    "// BRP Start\r\n/*",
+                    "// BRP Start\r\n//");
+                s = s.Replace(
+                    "*/\r\n// BRP End",
+                    "//\r\n// BRP End");
+            }
+            else
+            {
+                s = s.Replace(
+                    "// BRP Start\r\n//",
+                    "// BRP Start\r\n/*");
+                s = s.Replace(
+                    "//\r\n// BRP End",
+                    "*/\r\n// BRP End");
+            }
+        }
+
+        private static void RewriteLWRP(ref string s, bool isActive)
+        {
+            if(isActive)
+            {
+                s = s.Replace(
+                    "// LWRP Start\r\n/*",
+                    "// LWRP Start\r\n//");
+                s = s.Replace(
+                    "*/\r\n// LWRP End",
+                    "//\r\n// LWRP End");
+            }
+            else
+            {
+                s = s.Replace(
+                    "// LWRP Start\r\n//",
+                    "// LWRP Start\r\n/*");
+                s = s.Replace(
+                    "//\r\n// LWRP End",
+                    "*/\r\n// LWRP End");
+            }
+        }
+
+        private static void RewriteURP(ref string s, bool isActive)
+        {
+            if(isActive)
+            {
+                s = s.Replace(
+                    "// URP Start\r\n/*",
+                    "// URP Start\r\n//");
+                s = s.Replace(
+                    "*/\r\n// URP End",
+                    "//\r\n// URP End");
+            }
+            else
+            {
+                s = s.Replace(
+                    "// URP Start\r\n//",
+                    "// URP Start\r\n/*");
+                s = s.Replace(
+                    "//\r\n// URP End",
+                    "*/\r\n// URP End");
+            }
+        }
+
+        private static void RewriteHDRP(ref string s, bool isActive)
+        {
+            if(isActive)
+            {
+                s = s.Replace(
+                    "// HDRP Start\r\n/*",
+                    "// HDRP Start\r\n//");
+                s = s.Replace(
+                    "*/\r\n// HDRP End",
+                    "//\r\n// HDRP End");
+            }
+            else
+            {
+                s = s.Replace(
+                    "// HDRP Start\r\n//",
+                    "// HDRP Start\r\n/*");
+                s = s.Replace(
+                    "//\r\n// HDRP End",
+                    "*/\r\n// HDRP End");
+            }
+        }
+        #endregion
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Feature
         public static void RewriteReceiveShadow(string path, bool enable)
         {
             if(string.IsNullOrEmpty(path) || !File.Exists(path)) return;

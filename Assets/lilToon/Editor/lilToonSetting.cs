@@ -564,7 +564,7 @@ public class lilToonSetting : ScriptableObject
         if(material == null) return;
         if(!material.shader.name.Contains("lilToon") || material.shader.name.Contains("Lite") || material.shader.name.Contains("Multi")) return;
 
-        if(!shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV && material.HasProperty("_MainTex_ScrollRotate") && material.GetVector("_MainTex_ScrollRotate") != lilToonInspector.defaultScrollRotate)
+        if(!shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV && material.HasProperty("_MainTex_ScrollRotate") && material.GetVector("_MainTex_ScrollRotate") != lilConstant.defaultScrollRotate)
         {
             Debug.Log("[lilToon] LIL_FEATURE_ANIMATE_MAIN_UV : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV = true;
@@ -583,7 +583,7 @@ public class lilToonSetting : ScriptableObject
             Debug.Log("[lilToon] LIL_FEATURE_RECEIVE_SHADOW : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = true;
         }
-        if(!shaderSetting.LIL_FEATURE_DISTANCE_FADE && material.HasProperty("_DistanceFade") && material.GetVector("_DistanceFade").z != lilToonInspector.defaultDistanceFadeParams.z)
+        if(!shaderSetting.LIL_FEATURE_DISTANCE_FADE && material.HasProperty("_DistanceFade") && material.GetVector("_DistanceFade").z != lilConstant.defaultDistanceFadeParams.z)
         {
             Debug.Log("[lilToon] LIL_FEATURE_DISTANCE_FADE : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_DISTANCE_FADE = true;
@@ -648,7 +648,7 @@ public class lilToonSetting : ScriptableObject
             }
         }
 
-        if(!shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION && material.HasProperty("_MainTexHSVG") && material.GetVector("_MainTexHSVG") != lilToonInspector.defaultHSVG)
+        if(!shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION && material.HasProperty("_MainTexHSVG") && material.GetVector("_MainTexHSVG") != lilConstant.defaultHSVG)
         {
             Debug.Log("[lilToon] LIL_FEATURE_MAIN_TONE_CORRECTION : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION = true;
@@ -677,16 +677,16 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.LIL_FEATURE_DECAL = true;
         }
         if(!shaderSetting.LIL_FEATURE_ANIMATE_DECAL && (
-            (material.HasProperty("_Main2ndTexDecalAnimation") && material.GetVector("_Main2ndTexDecalAnimation") != lilToonInspector.defaultDecalAnim) ||
-            (material.HasProperty("_Main3rdTexDecalAnimation") && material.GetVector("_Main3rdTexDecalAnimation") != lilToonInspector.defaultDecalAnim))
+            (material.HasProperty("_Main2ndTexDecalAnimation") && material.GetVector("_Main2ndTexDecalAnimation") != lilConstant.defaultDecalAnim) ||
+            (material.HasProperty("_Main3rdTexDecalAnimation") && material.GetVector("_Main3rdTexDecalAnimation") != lilConstant.defaultDecalAnim))
         )
         {
             Debug.Log("[lilToon] LIL_FEATURE_ANIMATE_DECAL : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_ANIMATE_DECAL = true;
         }
         if(!shaderSetting.LIL_FEATURE_LAYER_DISSOLVE && (
-            (material.HasProperty("_Main2ndDissolveParams") && material.GetVector("_Main2ndDissolveParams").x != lilToonInspector.defaultDissolveParams.x) ||
-            (material.HasProperty("_Main3rdDissolveParams") && material.GetVector("_Main3rdDissolveParams").x != lilToonInspector.defaultDissolveParams.x))
+            (material.HasProperty("_Main2ndDissolveParams") && material.GetVector("_Main2ndDissolveParams").x != lilConstant.defaultDissolveParams.x) ||
+            (material.HasProperty("_Main3rdDissolveParams") && material.GetVector("_Main3rdDissolveParams").x != lilConstant.defaultDissolveParams.x))
         )
         {
             Debug.Log("[lilToon] LIL_FEATURE_LAYER_DISSOLVE : " + AssetDatabase.GetAssetPath(material));
@@ -708,16 +708,16 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.LIL_FEATURE_EMISSION_2ND = true;
         }
         if(!shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV && (
-            (material.HasProperty("_EmissionMap_ScrollRotate") && material.GetVector("_EmissionMap_ScrollRotate") != lilToonInspector.defaultScrollRotate) ||
-            (material.HasProperty("_Emission2ndMap_ScrollRotate") && material.GetVector("_Emission2ndMap_ScrollRotate") != lilToonInspector.defaultScrollRotate))
+            (material.HasProperty("_EmissionMap_ScrollRotate") && material.GetVector("_EmissionMap_ScrollRotate") != lilConstant.defaultScrollRotate) ||
+            (material.HasProperty("_Emission2ndMap_ScrollRotate") && material.GetVector("_Emission2ndMap_ScrollRotate") != lilConstant.defaultScrollRotate))
         )
         {
             Debug.Log("[lilToon] LIL_FEATURE_ANIMATE_EMISSION_UV : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV = true;
         }
         if(!shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_MASK_UV && (
-            (material.HasProperty("_EmissionBlendMask_ScrollRotate") && material.GetVector("_EmissionBlendMask_ScrollRotate") != lilToonInspector.defaultScrollRotate) ||
-            (material.HasProperty("_Emission2ndBlendMask_ScrollRotate") && material.GetVector("_Emission2ndBlendMask_ScrollRotate") != lilToonInspector.defaultScrollRotate))
+            (material.HasProperty("_EmissionBlendMask_ScrollRotate") && material.GetVector("_EmissionBlendMask_ScrollRotate") != lilConstant.defaultScrollRotate) ||
+            (material.HasProperty("_Emission2ndBlendMask_ScrollRotate") && material.GetVector("_Emission2ndBlendMask_ScrollRotate") != lilConstant.defaultScrollRotate))
         )
         {
             Debug.Log("[lilToon] LIL_FEATURE_ANIMATE_EMISSION_MASK_UV : " + AssetDatabase.GetAssetPath(material));
@@ -806,7 +806,7 @@ public class lilToonSetting : ScriptableObject
             Debug.Log("[lilToon] LIL_FEATURE_AUDIOLINK_LOCAL : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL = true;
         }
-        if(!shaderSetting.LIL_FEATURE_DISSOLVE && material.HasProperty("_DissolveParams") && material.GetVector("_DissolveParams").x != lilToonInspector.defaultDissolveParams.x)
+        if(!shaderSetting.LIL_FEATURE_DISSOLVE && material.HasProperty("_DissolveParams") && material.GetVector("_DissolveParams").x != lilConstant.defaultDissolveParams.x)
         {
             Debug.Log("[lilToon] LIL_FEATURE_DISSOLVE : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_DISSOLVE = true;
@@ -885,12 +885,12 @@ public class lilToonSetting : ScriptableObject
         // Outline
         if(material.shader.name.Contains("Outline"))
         {
-            if(!shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV && material.HasProperty("_OutlineTex_ScrollRotate") && material.GetVector("_OutlineTex_ScrollRotate") != lilToonInspector.defaultScrollRotate)
+            if(!shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV && material.HasProperty("_OutlineTex_ScrollRotate") && material.GetVector("_OutlineTex_ScrollRotate") != lilConstant.defaultScrollRotate)
             {
                 Debug.Log("[lilToon] LIL_FEATURE_ANIMATE_OUTLINE_UV : " + AssetDatabase.GetAssetPath(material));
                 shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = true;
             }
-            if(!shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION && material.HasProperty("_OutlineTexHSVG") && material.GetVector("_OutlineTexHSVG") != lilToonInspector.defaultHSVG)
+            if(!shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION && material.HasProperty("_OutlineTexHSVG") && material.GetVector("_OutlineTexHSVG") != lilConstant.defaultHSVG)
             {
                 Debug.Log("[lilToon] LIL_FEATURE_OUTLINE_TONE_CORRECTION : " + AssetDatabase.GetAssetPath(material));
                 shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = true;

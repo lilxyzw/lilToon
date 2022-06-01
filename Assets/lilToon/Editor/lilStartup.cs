@@ -66,10 +66,10 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Migration
-            if(lilToonInspector.edSet.currentVersionValue < lilToonInspector.currentVersionValue)
+            if(lilToonInspector.edSet.currentVersionValue < lilConstant.currentVersionValue)
             {
                 MigrateMaterials();
-                lilToonInspector.edSet.currentVersionValue = lilToonInspector.currentVersionValue;
+                lilToonInspector.edSet.currentVersionValue = lilConstant.currentVersionValue;
                 lilToonInspector.SaveEditorSettingTemp();
             }
 
@@ -86,7 +86,7 @@ namespace lilToon
 
         private static IEnumerator GetLatestVersionInfo()
         {
-            using(UnityWebRequest webRequest = UnityWebRequest.Get(lilToonInspector.versionInfoURL))
+            using(UnityWebRequest webRequest = UnityWebRequest.Get(lilConstant.versionInfoURL))
             {
                 yield return webRequest.SendWebRequest();
                 #if UNITY_2020_2_OR_NEWER
@@ -104,7 +104,6 @@ namespace lilToon
 
         private static void MigrateMaterials()
         {
-            lilToonInspector.InitializeShaders();
             foreach(string guid in AssetDatabase.FindAssets("t:material"))
             {
                 Material material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
@@ -118,9 +117,9 @@ namespace lilToon
         {
             if(material.shader == null || !material.shader.name.Contains("lilToon")) return;
             int version = material.HasProperty("_lilToonVersion") ? (int)material.GetFloat("_lilToonVersion") : 0;
-            if(version >= lilToonInspector.currentVersionValue) return;
+            if(version >= lilConstant.currentVersionValue) return;
             Debug.Log("[lilToon]Run migration: " + material.name);
-            material.SetFloat("_lilToonVersion", lilToonInspector.currentVersionValue);
+            material.SetFloat("_lilToonVersion", lilConstant.currentVersionValue);
 
             // 1.2.7 -> 1.2.8
             if(version < 21)

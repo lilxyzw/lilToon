@@ -81,7 +81,8 @@ public class lilToonPreset : ScriptableObject
 
         RenderingMode           renderingMode = RenderingMode.Opaque;
 
-        if(string.IsNullOrEmpty(preset.renderingMode) || !Enum.TryParse(preset.renderingMode, out renderingMode))
+        //if(string.IsNullOrEmpty(preset.renderingMode) || !Enum.TryParse(preset.renderingMode, out renderingMode))
+        if(string.IsNullOrEmpty(preset.renderingMode) || !Enum.IsDefined(typeof(RenderingMode), preset.renderingMode))
         {
             if(iscutout)            renderingMode = RenderingMode.Cutout;
             if(istransparent)       renderingMode = RenderingMode.Transparent;
@@ -91,12 +92,16 @@ public class lilToonPreset : ScriptableObject
             if(isfur && iscutout)   renderingMode = RenderingMode.FurCutout;
             if(isfur && istwopass)  renderingMode = RenderingMode.FurTwoPass;
         }
+        else
+        {
+            renderingMode = (RenderingMode)Enum.Parse(typeof(RenderingMode), preset.renderingMode);
+        }
 
         TransparentMode         transparentMode = TransparentMode.Normal;
         if(isonepass)           transparentMode = TransparentMode.OnePass;
         if(!isfur && istwopass) transparentMode = TransparentMode.TwoPass;
 
-        lilToonInspector.SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess, ismulti);
+        lilMaterialUtils.SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess, ismulti);
         if(preset.renderQueue != -2) material.renderQueue = preset.renderQueue;
 
         for(int i = 0; i < preset.colors.Length;   i++) material.SetColor(preset.colors[i].name, preset.colors[i].value);
@@ -310,7 +315,7 @@ public class lilToonPreset : ScriptableObject
 
             // Features
             EditorGUILayout.Space();
-            lilToonInspector.DrawSimpleFoldout(GetLoc("sPresetSaveTarget"), ref isShowFeatures);
+            lilEditorGUI.DrawSimpleFoldout(GetLoc("sPresetSaveTarget"), isShowFeatures);
             if(isShowFeatures)
             {
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
@@ -388,7 +393,7 @@ public class lilToonPreset : ScriptableObject
 
             // Textures
             EditorGUILayout.Space();
-            lilToonInspector.DrawSimpleFoldout(GetLoc("sPresetTexture"), ref isShowTextures);
+            lilEditorGUI.DrawSimpleFoldout(GetLoc("sPresetTexture"), isShowTextures);
             if(isShowTextures)
             {
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
@@ -742,7 +747,7 @@ public class lilToonPreset : ScriptableObject
             shouldSave_FurVectorTex = val;
         }
 
-        public static string GetLoc(string value) { return lilToonInspector.GetLoc(value); }
+        public static string GetLoc(string value) { return lilLanguageManager.GetLoc(value); }
     }
     #endregion
 }

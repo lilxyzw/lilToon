@@ -17,7 +17,7 @@ namespace lilToon
         public static void GradientEditor(Material material, Gradient ingrad, MaterialProperty texprop, bool setLinear = false)
         {
             #if UNITY_2018_3_OR_NEWER
-                ingrad = EditorGUILayout.GradientField(lilToonInspector.GetLoc("sGradColor"), ingrad);
+                ingrad = EditorGUILayout.GradientField(lilLanguageManager.GetLoc("sGradColor"), ingrad);
             #else
                 MethodInfo setMethod = typeof(EditorGUILayout).GetMethod(
                     "GradientField",
@@ -26,7 +26,7 @@ namespace lilToon
                     new [] {typeof(string), typeof(Gradient), typeof(GUILayoutOption[])},
                     null);
                 if(setMethod != null) {
-                    ingrad = (Gradient)setMethod.Invoke(null, new object[]{lilToonInspector.GetLoc("sGradColor"), ingrad, null});;
+                    ingrad = (Gradient)setMethod.Invoke(null, new object[]{lilLanguageManager.GetLoc("sGradColor"), ingrad, null});;
                 }
             #endif
             GUILayout.BeginHorizontal();
@@ -48,7 +48,7 @@ namespace lilToon
         {
             ingrad = MaterialToGradient(material, emissionName);
             #if UNITY_2018_3_OR_NEWER
-                ingrad = EditorGUILayout.GradientField(lilToonInspector.GetLoc("sGradColor"), ingrad);
+                ingrad = EditorGUILayout.GradientField(lilLanguageManager.GetLoc("sGradColor"), ingrad);
             #else
                 MethodInfo setMethod = typeof(EditorGUILayout).GetMethod(
                     "GradientField",
@@ -57,7 +57,7 @@ namespace lilToon
                     new [] {typeof(string), typeof(Gradient), typeof(GUILayoutOption[])},
                     null);
                 if(setMethod != null) {
-                    ingrad = (Gradient)setMethod.Invoke(null, new object[]{GetLoc("sGradColor"), ingrad, null});;
+                    ingrad = (Gradient)setMethod.Invoke(null, new object[]{lilLanguageManager.GetLoc("sGradColor"), ingrad, null});;
                 }
             #endif
             GradientToMaterial(material, emissionName, ingrad);
