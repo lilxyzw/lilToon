@@ -62,21 +62,21 @@ namespace lilToon.lilRenderPipelineReader
             };
         }
 
-        public static PackageVersionInfos GetURPVersion()
+        private static PackageVersionInfos GetURPVersion()
         {
             PackageVersionInfos version = ReadVersion("30648b8d550465f4bb77f1e1afd0b37d");
             version.RP = lilRenderPipeline.URP;
             return version;
         }
 
-        public static PackageVersionInfos GetLWRPVersion()
+        private static PackageVersionInfos GetLWRPVersion()
         {
             PackageVersionInfos version = ReadVersion("30648b8d550465f4bb77f1e1afd0b37d");
             version.RP = lilRenderPipeline.LWRP;
             return version;
         }
 
-        public static PackageVersionInfos GetHDRPVersion()
+        private static PackageVersionInfos GetHDRPVersion()
         {
             PackageVersionInfos version = ReadVersion("6f54db4299717fc4ca37866c6afa0905");
             version.RP = lilRenderPipeline.HDRP;

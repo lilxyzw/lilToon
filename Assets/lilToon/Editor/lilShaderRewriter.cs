@@ -7,9 +7,8 @@ using UnityEngine;
 
 namespace lilToon
 {
-    public class lilShaderRewriter
+    internal class lilShaderRewriter
     {
-
         //------------------------------------------------------------------------------------------------------------------------------
         // Rendering Pipeline
         #region
@@ -128,6 +127,7 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Feature
+        #region
         public static void RewriteReceiveShadow(string path, bool enable)
         {
             if(string.IsNullOrEmpty(path) || !File.Exists(path)) return;
@@ -390,6 +390,7 @@ namespace lilToon
             string path = AssetDatabase.GetAssetPath(shader);
             RewriteReceiveShadow(path, enable);
         }
+        #endregion
     }
 }
 #endif

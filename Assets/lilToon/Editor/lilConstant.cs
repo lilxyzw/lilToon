@@ -9,11 +9,11 @@ namespace lilToon
         public const string currentVersionName = "1.3.0";
         public const int currentVersionValue = 26;
 
-        public const string boothURL = "https://lilxyzw.booth.pm/";
-        public const string githubURL = "https://github.com/lilxyzw/lilToon";
-        public const string versionInfoURL = "https://raw.githubusercontent.com/lilxyzw/lilToon/master/version.json";
+        internal const string boothURL = "https://lilxyzw.booth.pm/";
+        internal const string githubURL = "https://github.com/lilxyzw/lilToon";
+        internal const string versionInfoURL = "https://raw.githubusercontent.com/lilxyzw/lilToon/master/version.json";
 
-        public static readonly string[] mainTexCheckWords = new[] {"mask", "shadow", "shade", "outline", "normal", "bumpmap", "matcap", "rimlight", "emittion", "reflection", "specular", "roughness", "smoothness", "metallic", "metalness", "opacity", "parallax", "displacement", "height", "ambient", "occlusion"};
+        internal static readonly string[] mainTexCheckWords = new[] {"mask", "shadow", "shade", "outline", "normal", "bumpmap", "matcap", "rimlight", "emittion", "reflection", "specular", "roughness", "smoothness", "metallic", "metalness", "opacity", "parallax", "displacement", "height", "ambient", "occlusion"};
 
         public static readonly Vector2 defaultTextureOffset = new Vector2(0.0f,0.0f);
         public static readonly Vector2 defaultTextureScale = new Vector2(1.0f,1.0f);

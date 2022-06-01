@@ -14,7 +14,7 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Gradient
         #region
-        public static void GradientEditor(Material material, Gradient ingrad, MaterialProperty texprop, bool setLinear = false)
+        internal static void GradientEditor(Material material, Gradient ingrad, MaterialProperty texprop, bool setLinear = false)
         {
             #if UNITY_2018_3_OR_NEWER
                 ingrad = EditorGUILayout.GradientField(lilLanguageManager.GetLoc("sGradColor"), ingrad);
@@ -44,7 +44,7 @@ namespace lilToon
             GUILayout.EndHorizontal();
         }
 
-        public static void GradientEditor(Material material, string emissionName, Gradient ingrad, MaterialProperty texprop, bool setLinear = false)
+        internal static void GradientEditor(Material material, string emissionName, Gradient ingrad, MaterialProperty texprop, bool setLinear = false)
         {
             ingrad = MaterialToGradient(material, emissionName);
             #if UNITY_2018_3_OR_NEWER
@@ -182,7 +182,7 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Save Texture
         #region
-        public static Texture2D SaveTextureToPng(Material material, Texture2D tex, string texname, string customName = "")
+        internal static Texture2D SaveTextureToPng(Material material, Texture2D tex, string texname, string customName = "")
         {
             string path = AssetDatabase.GetAssetPath(material.GetTexture(texname));
             if(string.IsNullOrEmpty(path)) path = AssetDatabase.GetAssetPath(material);
@@ -204,7 +204,7 @@ namespace lilToon
             }
         }
 
-        public static Texture2D SaveTextureToPng(Texture2D tex, Texture2D origTex)
+        internal static Texture2D SaveTextureToPng(Texture2D tex, Texture2D origTex)
         {
             string path = AssetDatabase.GetAssetPath(origTex);
             if(!string.IsNullOrEmpty(path))  path = EditorUtility.SaveFilePanel("Save Texture", Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path)+"_alpha", "png");
@@ -221,7 +221,7 @@ namespace lilToon
             }
         }
 
-        public static Texture2D SaveTextureToPng(Texture2D tex, string path, string customName = "")
+        internal static Texture2D SaveTextureToPng(Texture2D tex, string path, string customName = "")
         {
             string filename = customName + Path.GetFileNameWithoutExtension(path);
             if(!string.IsNullOrEmpty(path)) path = EditorUtility.SaveFilePanel("Save Texture", Path.GetDirectoryName(path), filename, "png");

@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace lilToon
 {
-    public class lilDirectoryManager
+    internal class lilDirectoryManager
     {
         public const string editorSettingTempPath           = "Temp/lilToonEditorSetting";
         public const string versionInfoTempPath             = "Temp/lilToonVersion";

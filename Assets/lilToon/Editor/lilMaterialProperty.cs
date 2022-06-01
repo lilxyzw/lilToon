@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace lilToon
 {
-    public class lilMaterialProperty
+    internal class lilMaterialProperty
     {
         public MaterialProperty p;
         public List<lilPropertyBlock> blocks;

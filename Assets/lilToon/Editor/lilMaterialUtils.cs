@@ -10,7 +10,7 @@ namespace lilToon
 {
     public class lilMaterialUtils
     {
-        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess, bool ismulti)
+        internal static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess, bool ismulti)
         {
             RenderingMode rend = renderingMode;
             lilRenderPipeline RP = RPReader.GetRP();

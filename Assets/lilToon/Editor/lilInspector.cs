@@ -97,12 +97,6 @@ namespace lilToon
         protected static Shader ltsmfur     { get { return lilShaderManager.ltsmfur   ; } set { lilShaderManager.ltsmfur    = value; } }
         protected static Shader ltsmgem     { get { return lilShaderManager.ltsmgem   ; } set { lilShaderManager.ltsmgem    = value; } }
         protected static Shader mtoon       { get { return lilShaderManager.mtoon     ; } set { lilShaderManager.mtoon      = value; } }
-
-        [Obsolete("")]
-        public static void InitializeShaders()
-        {
-            lilShaderManager.InitializeShaders();
-        }
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -855,7 +849,7 @@ namespace lilToon
             // Colors
             GUILayout.Label(GetLoc("sColors"), boldLabel);
 
-            edSet.isShowMain = Foldout(GetLoc("sMainColorSettingSimple"), edSet.isShowMain);
+            edSet.isShowMain = lilEditorGUI.Foldout(GetLoc("sMainColorSettingSimple"), edSet.isShowMain);
             if(edSet.isShowMain)
             {
                 if(isLite || isGem || isFakeShadow)
@@ -881,7 +875,7 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         m_MaterialEditor.TexturePropertySingleLine(mainColorRGBAContent, mainTex, mainColor);
                         ToneCorrectionGUI(mainTexHSVG, 1);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         EditorGUILayout.LabelField(GetLoc("sGradationMap"), boldLabel);
                         m_MaterialEditor.ShaderProperty(mainGradationStrength, GetLoc("sStrength"));
                         if(mainGradationStrength.floatValue != 0)
@@ -889,7 +883,7 @@ namespace lilToon
                             m_MaterialEditor.TexturePropertySingleLine(gradationContent, mainGradationTex);
                             lilTextureUtils.GradientEditor(material, mainGrad, mainGradationTex, true);
                         }
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.TexturePropertySingleLine(adjustMaskContent, mainColorAdjustMask);
                         TextureBakeGUI(material, 4);
                         EditorGUILayout.EndVertical();
@@ -903,7 +897,7 @@ namespace lilToon
                         EditorGUILayout.LabelField(GetLoc("sMainColor2nd"), customToggleFont);
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         m_MaterialEditor.TexturePropertySingleLine(colorRGBAContent, main2ndTex, mainColor2nd);
-                        DrawColorAsAlpha(mainColor2nd);
+                        lilEditorGUI.DrawColorAsAlpha(mainColor2nd);
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
@@ -915,7 +909,7 @@ namespace lilToon
                         EditorGUILayout.LabelField(GetLoc("sMainColor3rd"), customToggleFont);
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         m_MaterialEditor.TexturePropertySingleLine(colorRGBAContent, main3rdTex, mainColor3rd);
-                        DrawColorAsAlpha(mainColor3rd);
+                        lilEditorGUI.DrawColorAsAlpha(mainColor3rd);
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
@@ -933,7 +927,7 @@ namespace lilToon
             // Emission
             if(isLite)
             {
-                edSet.isShowEmission = Foldout(GetLoc("sEmissionSetting"), edSet.isShowEmission);
+                edSet.isShowEmission = lilEditorGUI.Foldout(GetLoc("sEmissionSetting"), edSet.isShowEmission);
                 DrawMenuButton(GetLoc("sAnchorEmission"), lilPropertyBlock.Emission);
                 if(edSet.isShowEmission)
                 {
@@ -950,7 +944,7 @@ namespace lilToon
             }
             else if(!isFakeShadow)
             {
-                edSet.isShowEmission = Foldout(GetLoc("sEmissionSetting"), edSet.isShowEmission);
+                edSet.isShowEmission = lilEditorGUI.Foldout(GetLoc("sEmissionSetting"), edSet.isShowEmission);
                 DrawMenuButton(GetLoc("sAnchorEmission"), lilPropertyBlock.Emission);
                 if(edSet.isShowEmission)
                 {
@@ -962,11 +956,11 @@ namespace lilToon
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowEmissionMap, colorMaskRGBAContent, emissionMap, emissionColor, emissionMap_ScrollRotate, emissionMap_UVMode, true, true);
-                        DrawColorAsAlpha(emissionColor);
+                        lilEditorGUI.DrawColorAsAlpha(emissionColor);
                         m_MaterialEditor.ShaderProperty(emissionMainStrength, GetLoc("sMainColorPower"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowEmissionBlendMask, maskBlendContent, emissionBlendMask, emissionBlend, emissionBlendMask_ScrollRotate, true, true);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emissionFluorescence, GetLoc("sFluorescence"));
                         EditorGUILayout.EndVertical();
                     }
@@ -980,11 +974,11 @@ namespace lilToon
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowEmission2ndMap, colorMaskRGBAContent, emission2ndMap, emission2ndColor, emission2ndMap_ScrollRotate, emission2ndMap_UVMode, true, true);
-                        DrawColorAsAlpha(emission2ndColor);
+                        lilEditorGUI.DrawColorAsAlpha(emission2ndColor);
                         m_MaterialEditor.ShaderProperty(emission2ndMainStrength, GetLoc("sMainColorPower"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowEmission2ndBlendMask, maskBlendContent, emission2ndBlendMask, emission2ndBlend, emission2ndBlendMask_ScrollRotate, true, true);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emission2ndFluorescence, GetLoc("sFluorescence"));
                         EditorGUILayout.EndVertical();
                     }
@@ -996,7 +990,7 @@ namespace lilToon
             // Outline
             DrawOutlineSettingsSimple(material);
 
-            if(mtoon != null && EditorButton(GetLoc("sConvertMToon"))) CreateMToonMaterial(material);
+            if(mtoon != null && lilEditorGUI.EditorButton(GetLoc("sConvertMToon"))) CreateMToonMaterial(material);
         }
 
         private void DrawAdvancedGUI(Material material)
@@ -1013,7 +1007,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // UV
-                edSet.isShowMainUV = Foldout(GetLoc("sMainUV"), edSet.isShowMainUV);
+                edSet.isShowMainUV = lilEditorGUI.Foldout(GetLoc("sMainUV"), edSet.isShowMainUV);
                 DrawMenuButton(GetLoc("sAnchorUVSetting"), lilPropertyBlock.UV);
                 if(edSet.isShowMainUV)
                 {
@@ -1048,7 +1042,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Main Color
-                edSet.isShowMain = Foldout(GetLoc("sMainColorSetting"), edSet.isShowMain);
+                edSet.isShowMain = lilEditorGUI.Foldout(GetLoc("sMainColorSetting"), edSet.isShowMain);
                 DrawMenuButton(GetLoc("sAnchorMainColor"), lilPropertyBlock.MainColor);
                 if(edSet.isShowMain)
                 {
@@ -1059,7 +1053,7 @@ namespace lilToon
                     DrawMenuButton(GetLoc("sAnchorMainColor1"), lilPropertyBlock.MainColor1st);
                     EditorGUILayout.BeginVertical(boxInnerHalf);
                     m_MaterialEditor.TexturePropertySingleLine(mainColorRGBAContent, mainTex, mainColor);
-                    if(isUseAlpha) SetAlphaIsTransparencyGUI(mainTex);
+                    if(isUseAlpha) lilEditorGUI.SetAlphaIsTransparencyGUI(mainTex);
                     EditorGUILayout.EndVertical();
                     EditorGUILayout.EndVertical();
                 }
@@ -1070,7 +1064,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Emission
-                edSet.isShowEmission = Foldout(GetLoc("sEmissionSetting"), edSet.isShowEmission);
+                edSet.isShowEmission = lilEditorGUI.Foldout(GetLoc("sEmissionSetting"), edSet.isShowEmission);
                 DrawMenuButton(GetLoc("sAnchorEmission"), lilPropertyBlock.Emission);
                 if(edSet.isShowEmission)
                 {
@@ -1082,7 +1076,7 @@ namespace lilToon
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowEmissionMap, colorMaskRGBAContent, emissionMap, emissionColor, emissionMap_ScrollRotate, emissionMap_UVMode, true, true);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emissionBlink, blinkSetting);
                         EditorGUILayout.EndVertical();
                     }
@@ -1097,7 +1091,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // MatCap
-                edSet.isShowMatCap = Foldout(GetLoc("sReflectionsSetting"), edSet.isShowMatCap);
+                edSet.isShowMatCap = lilEditorGUI.Foldout(GetLoc("sReflectionsSetting"), edSet.isShowMatCap);
                 DrawMenuButton(GetLoc("sAnchorMatCap"), lilPropertyBlock.MatCap1st);
                 if(edSet.isShowMatCap)
                 {
@@ -1116,7 +1110,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Rim
-                edSet.isShowRim = Foldout(GetLoc("sRimLight"), edSet.isShowRim);
+                edSet.isShowRim = lilEditorGUI.Foldout(GetLoc("sRimLight"), edSet.isShowRim);
                 DrawMenuButton(GetLoc("sAnchorRimLight"), lilPropertyBlock.RimLight);
                 if(edSet.isShowRim)
                 {
@@ -1128,8 +1122,8 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         m_MaterialEditor.ShaderProperty(rimColor, GetLoc("sColor"));
                         m_MaterialEditor.ShaderProperty(rimShadowMask, GetLoc("sShadowMask"));
-                        DrawLine();
-                        InvBorderGUI(rimBorder);
+                        lilEditorGUI.DrawLine();
+                        lilEditorGUI.InvBorderGUI(rimBorder);
                         m_MaterialEditor.ShaderProperty(rimBlur, GetLoc("sBlur"));
                         m_MaterialEditor.ShaderProperty(rimFresnelPower, GetLoc("sFresnelPower"));
                         EditorGUILayout.EndVertical();
@@ -1149,7 +1143,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Stencil
-                edSet.isShowStencil = Foldout(GetLoc("sStencilSetting"), edSet.isShowStencil);
+                edSet.isShowStencil = lilEditorGUI.Foldout(GetLoc("sStencilSetting"), edSet.isShowStencil);
                 DrawMenuButton(GetLoc("sAnchorStencil"), lilPropertyBlock.Stencil);
                 if(edSet.isShowStencil)
                 {
@@ -1159,7 +1153,7 @@ namespace lilToon
                     EditorGUILayout.BeginVertical(boxInner);
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Auto Setting
-                    if(EditorButton("Set Writer"))
+                    if(lilEditorGUI.EditorButton("Set Writer"))
                     {
                         isStWr = true;
                         stencilRef.floatValue = 1;
@@ -1171,7 +1165,7 @@ namespace lilToon
                         stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                         if(isOutl)
                         {
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             EditorGUILayout.LabelField(GetLoc("sOutline"), boldLabel);
                             outlineStencilRef.floatValue = 1;
                             outlineStencilReadMask.floatValue = 255.0f;
@@ -1184,7 +1178,7 @@ namespace lilToon
                         SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                         if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                     }
-                    if(EditorButton("Set Reader"))
+                    if(lilEditorGUI.EditorButton("Set Reader"))
                     {
                         isStWr = false;
                         stencilRef.floatValue = 1;
@@ -1196,7 +1190,7 @@ namespace lilToon
                         stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                         if(isOutl)
                         {
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             EditorGUILayout.LabelField(GetLoc("sOutline"), boldLabel);
                             outlineStencilRef.floatValue = 1;
                             outlineStencilReadMask.floatValue = 255.0f;
@@ -1209,7 +1203,7 @@ namespace lilToon
                         SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                         if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                     }
-                    if(EditorButton("Reset"))
+                    if(lilEditorGUI.EditorButton("Reset"))
                     {
                         isStWr = false;
                         stencilRef.floatValue = 0;
@@ -1221,7 +1215,7 @@ namespace lilToon
                         stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                         if(isOutl)
                         {
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             EditorGUILayout.LabelField(GetLoc("sOutline"), boldLabel);
                             outlineStencilRef.floatValue = 0;
                             outlineStencilReadMask.floatValue = 255.0f;
@@ -1237,7 +1231,7 @@ namespace lilToon
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Base
                     {
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(stencilRef, "Ref");
                         m_MaterialEditor.ShaderProperty(stencilReadMask, "ReadMask");
                         m_MaterialEditor.ShaderProperty(stencilWriteMask, "WriteMask");
@@ -1251,7 +1245,7 @@ namespace lilToon
                     // Outline
                     if(isOutl)
                     {
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         EditorGUILayout.LabelField(GetLoc("sOutline"), boldLabel);
                         m_MaterialEditor.ShaderProperty(outlineStencilRef, "Ref");
                         m_MaterialEditor.ShaderProperty(outlineStencilReadMask, "ReadMask");
@@ -1267,13 +1261,13 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Rendering
-                edSet.isShowRendering = Foldout(GetLoc("sRenderingSetting"), edSet.isShowRendering);
+                edSet.isShowRendering = lilEditorGUI.Foldout(GetLoc("sRenderingSetting"), edSet.isShowRendering);
                 DrawMenuButton(GetLoc("sAnchorRendering"), lilPropertyBlock.Rendering);
                 if(edSet.isShowRendering)
                 {
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Reset Button
-                    if(EditorButton(GetLoc("sRenderingReset")))
+                    if(lilEditorGUI.EditorButton(GetLoc("sRenderingReset")))
                     {
                         material.enableInstancing = false;
                         SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
@@ -1312,11 +1306,11 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(colorMask, GetLoc("sColorMask"));
                         m_MaterialEditor.ShaderProperty(alphaToMask, GetLoc("sAlphaToMask"));
                         m_MaterialEditor.ShaderProperty(lilShadowCasterBias, "Shadow Caster Bias");
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         BlendSettingGUI(ref edSet.isShowBlend, GetLoc("sForward"), srcBlend, dstBlend, srcBlendAlpha, dstBlendAlpha, blendOp, blendOpAlpha);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         BlendSettingGUI(ref edSet.isShowBlendAdd, GetLoc("sForwardAdd"), srcBlendFA, dstBlendFA, srcBlendAlphaFA, dstBlendAlphaFA, blendOpFA, blendOpAlphaFA);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.EnableInstancingField();
                         m_MaterialEditor.DoubleSidedGIField();
                         m_MaterialEditor.RenderQueueField();
@@ -1341,9 +1335,9 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(outlineOffsetUnits, GetLoc("sOffsetUnits"));
                         m_MaterialEditor.ShaderProperty(outlineColorMask, GetLoc("sColorMask"));
                         m_MaterialEditor.ShaderProperty(outlineAlphaToMask, GetLoc("sAlphaToMask"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         BlendSettingGUI(ref edSet.isShowBlendOutline, GetLoc("sForward"), outlineSrcBlend, outlineDstBlend, outlineSrcBlendAlpha, outlineDstBlendAlpha, outlineBlendOp, outlineBlendOpAlpha);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         BlendSettingGUI(ref edSet.isShowBlendAddOutline, GetLoc("sForwardAdd"), outlineSrcBlendFA, outlineDstBlendFA, outlineSrcBlendAlphaFA, outlineDstBlendAlphaFA, outlineBlendOpFA, outlineBlendOpAlphaFA);
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
@@ -1355,7 +1349,7 @@ namespace lilToon
                 if(!isMultiVariants)
                 {
                     GUILayout.Label(GetLoc("sOptimization"), boldLabel);
-                    edSet.isShowOptimization = Foldout(GetLoc("sOptimization"), edSet.isShowOptimization);
+                    edSet.isShowOptimization = lilEditorGUI.Foldout(GetLoc("sOptimization"), edSet.isShowOptimization);
                     lilEditorGUI.DrawHelpButton(GetLoc("sAnchorOptimization"));
                     if(edSet.isShowOptimization)
                     {
@@ -1363,7 +1357,7 @@ namespace lilToon
                         EditorGUILayout.LabelField(GetLoc("sOptimization"), customToggleFont);
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         DrawOptimizationButton(material, !(isLite && isMulti));
-                        RemoveUnusedPropertiesGUI(material);
+                        lilEditorGUI.RemoveUnusedPropertiesGUI(material);
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
@@ -1374,7 +1368,7 @@ namespace lilToon
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Base Setting
                 GUILayout.Label(GetLoc("sBaseSetting"), boldLabel);
-                edSet.isShowBase = Foldout(GetLoc("sBaseSetting"), edSet.isShowBase);
+                edSet.isShowBase = lilEditorGUI.Foldout(GetLoc("sBaseSetting"), edSet.isShowBase);
                 DrawMenuButton(GetLoc("sAnchorBaseSetting"), lilPropertyBlock.Base);
                 if(edSet.isShowBase)
                 {
@@ -1383,7 +1377,7 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(invisible, GetLoc("sInvisible"));
                         m_MaterialEditor.ShaderProperty(zwrite, GetLoc("sZWrite"));
                         m_MaterialEditor.RenderQueueField();
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         GUILayout.Label("FakeShadow", boldLabel);
                         m_MaterialEditor.ShaderProperty(fakeShadowVector, BuildParams(GetLoc("sVector"), GetLoc("sOffset")));
                     EditorGUILayout.EndVertical();
@@ -1391,7 +1385,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // UV
-                edSet.isShowMainUV = Foldout(GetLoc("sMainUV"), edSet.isShowMainUV);
+                edSet.isShowMainUV = lilEditorGUI.Foldout(GetLoc("sMainUV"), edSet.isShowMainUV);
                 DrawMenuButton(GetLoc("sAnchorUVSetting"), lilPropertyBlock.UV);
                 if(edSet.isShowMainUV)
                 {
@@ -1425,7 +1419,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Main Color
-                edSet.isShowMain = Foldout(GetLoc("sMainColorSetting"), edSet.isShowMain);
+                edSet.isShowMain = lilEditorGUI.Foldout(GetLoc("sMainColorSetting"), edSet.isShowMain);
                 DrawMenuButton(GetLoc("sAnchorMainColor"), lilPropertyBlock.MainColor);
                 if(edSet.isShowMain)
                 {
@@ -1450,7 +1444,7 @@ namespace lilToon
                 // Encryption
                 if(lilDirectoryManager.ExistsEncryption())
                 {
-                    edSet.isShowEncryption = Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
+                    edSet.isShowEncryption = lilEditorGUI.Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
                     DrawMenuButton(GetLoc("sAnchorEncryption"), lilPropertyBlock.Encryption);
                     if(edSet.isShowEncryption)
                     {
@@ -1467,7 +1461,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Stencil
-                edSet.isShowStencil = Foldout(GetLoc("sStencilSetting"), edSet.isShowStencil);
+                edSet.isShowStencil = lilEditorGUI.Foldout(GetLoc("sStencilSetting"), edSet.isShowStencil);
                 DrawMenuButton(GetLoc("sAnchorStencil"), lilPropertyBlock.Stencil);
                 if(edSet.isShowStencil)
                 {
@@ -1477,7 +1471,7 @@ namespace lilToon
                     EditorGUILayout.BeginVertical(boxInner);
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Auto Setting
-                    if(EditorButton("Set Writer"))
+                    if(lilEditorGUI.EditorButton("Set Writer"))
                     {
                         isStWr = true;
                         stencilRef.floatValue = 51;
@@ -1490,7 +1484,7 @@ namespace lilToon
                         material.renderQueue = material.shader.renderQueue - 1;
                         if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                     }
-                    if(EditorButton("Set Reader"))
+                    if(lilEditorGUI.EditorButton("Set Reader"))
                     {
                         isStWr = false;
                         stencilRef.floatValue = 51;
@@ -1503,7 +1497,7 @@ namespace lilToon
                         material.renderQueue = -1;
                         if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                     }
-                    if(EditorButton("Reset"))
+                    if(lilEditorGUI.EditorButton("Reset"))
                     {
                         isStWr = false;
                         stencilRef.floatValue = 51;
@@ -1519,7 +1513,7 @@ namespace lilToon
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Base
                     {
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(stencilRef, "Ref");
                         m_MaterialEditor.ShaderProperty(stencilReadMask, "ReadMask");
                         m_MaterialEditor.ShaderProperty(stencilWriteMask, "WriteMask");
@@ -1535,13 +1529,13 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Rendering
-                edSet.isShowRendering = Foldout(GetLoc("sRenderingSetting"), edSet.isShowRendering);
+                edSet.isShowRendering = lilEditorGUI.Foldout(GetLoc("sRenderingSetting"), edSet.isShowRendering);
                 DrawMenuButton(GetLoc("sAnchorRendering"), lilPropertyBlock.Rendering);
                 if(edSet.isShowRendering)
                 {
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Reset Button
-                    if(EditorButton(GetLoc("sRenderingReset")))
+                    if(lilEditorGUI.EditorButton(GetLoc("sRenderingReset")))
                     {
                         material.enableInstancing = false;
                         material.renderQueue = -1;
@@ -1574,9 +1568,9 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(colorMask, GetLoc("sColorMask"));
                         m_MaterialEditor.ShaderProperty(alphaToMask, GetLoc("sAlphaToMask"));
                         m_MaterialEditor.ShaderProperty(lilShadowCasterBias, "Shadow Caster Bias");
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         BlendSettingGUI(ref edSet.isShowBlend, GetLoc("sForward"), srcBlend, dstBlend, srcBlendAlpha, dstBlendAlpha, blendOp, blendOpAlpha);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.EnableInstancingField();
                         m_MaterialEditor.DoubleSidedGIField();
                         m_MaterialEditor.RenderQueueField();
@@ -1590,7 +1584,7 @@ namespace lilToon
                 if(!isMultiVariants)
                 {
                     GUILayout.Label(GetLoc("sOptimization"), boldLabel);
-                    edSet.isShowOptimization = Foldout(GetLoc("sOptimization"), edSet.isShowOptimization);
+                    edSet.isShowOptimization = lilEditorGUI.Foldout(GetLoc("sOptimization"), edSet.isShowOptimization);
                     lilEditorGUI.DrawHelpButton(GetLoc("sAnchorOptimization"));
                     if(edSet.isShowOptimization)
                     {
@@ -1598,7 +1592,7 @@ namespace lilToon
                         EditorGUILayout.LabelField(GetLoc("sOptimization"), customToggleFont);
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         DrawOptimizationButton(material, !(isLite && isMulti));
-                        RemoveUnusedPropertiesGUI(material);
+                        lilEditorGUI.RemoveUnusedPropertiesGUI(material);
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
@@ -1616,7 +1610,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // UV
-                edSet.isShowMainUV = Foldout(GetLoc("sMainUV"), edSet.isShowMainUV);
+                edSet.isShowMainUV = lilEditorGUI.Foldout(GetLoc("sMainUV"), edSet.isShowMainUV);
                 DrawMenuButton(GetLoc("sAnchorUVSetting"), lilPropertyBlock.UV);
                 if(edSet.isShowMainUV)
                 {
@@ -1651,7 +1645,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Main Color
-                edSet.isShowMain = Foldout(GetLoc("sMainColorSetting"), edSet.isShowMain);
+                edSet.isShowMain = lilEditorGUI.Foldout(GetLoc("sMainColorSetting"), edSet.isShowMain);
                 DrawMenuButton(GetLoc("sAnchorMainColor"), lilPropertyBlock.MainColor);
                 if(edSet.isShowMain)
                 {
@@ -1683,9 +1677,9 @@ namespace lilToon
                         //{
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             m_MaterialEditor.TexturePropertySingleLine(mainColorRGBAContent, mainTex, mainColor);
-                            if(isUseAlpha) SetAlphaIsTransparencyGUI(mainTex);
+                            if(isUseAlpha) lilEditorGUI.SetAlphaIsTransparencyGUI(mainTex);
                             ToneCorrectionGUI(mainTexHSVG, 1);
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             EditorGUILayout.LabelField(GetLoc("sGradationMap"), boldLabel);
                             m_MaterialEditor.ShaderProperty(mainGradationStrength, GetLoc("sStrength"));
                             if(mainGradationStrength.floatValue != 0)
@@ -1693,7 +1687,7 @@ namespace lilToon
                                 m_MaterialEditor.TexturePropertySingleLine(gradationContent, mainGradationTex);
                                 lilTextureUtils.GradientEditor(material, mainGrad, mainGradationTex, true);
                             }
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             m_MaterialEditor.TexturePropertySingleLine(adjustMaskContent, mainColorAdjustMask);
                             TextureBakeGUI(material, 4);
                             EditorGUILayout.EndVertical();
@@ -1710,20 +1704,20 @@ namespace lilToon
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             m_MaterialEditor.TexturePropertySingleLine(colorRGBAContent, main2ndTex, mainColor2nd);
                             EditorGUI.indentLevel += 2;
-                            DrawColorAsAlpha(mainColor2nd);
+                            lilEditorGUI.DrawColorAsAlpha(mainColor2nd);
                             m_MaterialEditor.ShaderProperty(main2ndTexIsMSDF, GetLoc("sAsMSDF"));
                             EditorGUI.indentLevel -= 2;
                             m_MaterialEditor.ShaderProperty(main2ndEnableLighting, GetLoc("sEnableLighting"));
                             m_MaterialEditor.ShaderProperty(main2ndTexBlendMode, sBlendModes);
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             UV4Decal(main2ndTexIsDecal, main2ndTexIsLeftOnly, main2ndTexIsRightOnly, main2ndTexShouldCopy, main2ndTexShouldFlipMirror, main2ndTexShouldFlipCopy, main2ndTex, main2ndTexAngle, main2ndTexDecalAnimation, main2ndTexDecalSubParam, main2ndTex_UVMode);
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             m_MaterialEditor.TexturePropertySingleLine(maskBlendContent, main2ndBlendMask);
                             EditorGUILayout.LabelField(GetLoc("sDistanceFade"));
                             EditorGUI.indentLevel++;
                             m_MaterialEditor.ShaderProperty(main2ndDistanceFade, sDistanceFadeSetting);
                             EditorGUI.indentLevel--;
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             m_MaterialEditor.ShaderProperty(main2ndDissolveParams, sDissolveParams);
                             if(main2ndDissolveParams.vectorValue.x == 1.0f)                                                TextureGUI(ref edSet.isShowMain2ndDissolveMask, maskBlendContent, main2ndDissolveMask);
                             if(main2ndDissolveParams.vectorValue.x == 2.0f && main2ndDissolveParams.vectorValue.y == 0.0f) m_MaterialEditor.ShaderProperty(main2ndDissolvePos, GetLoc("sPosition") + "|2");
@@ -1735,7 +1729,7 @@ namespace lilToon
                                 TextureGUI(ref edSet.isShowMain2ndDissolveNoiseMask, noiseMaskContent, main2ndDissolveNoiseMask, main2ndDissolveNoiseStrength, main2ndDissolveNoiseMask_ScrollRotate);
                                 m_MaterialEditor.ShaderProperty(main2ndDissolveColor, GetLoc("sColor"));
                             }
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             TextureBakeGUI(material, 5);
                             EditorGUILayout.EndVertical();
                         }
@@ -1751,20 +1745,20 @@ namespace lilToon
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             m_MaterialEditor.TexturePropertySingleLine(colorRGBAContent, main3rdTex, mainColor3rd);
                             EditorGUI.indentLevel += 2;
-                            DrawColorAsAlpha(mainColor3rd);
+                            lilEditorGUI.DrawColorAsAlpha(mainColor3rd);
                             m_MaterialEditor.ShaderProperty(main3rdTexIsMSDF, GetLoc("sAsMSDF"));
                             EditorGUI.indentLevel -= 2;
                             m_MaterialEditor.ShaderProperty(main3rdEnableLighting, GetLoc("sEnableLighting"));
                             m_MaterialEditor.ShaderProperty(main3rdTexBlendMode, sBlendModes);
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             UV4Decal(main3rdTexIsDecal, main3rdTexIsLeftOnly, main3rdTexIsRightOnly, main3rdTexShouldCopy, main3rdTexShouldFlipMirror, main3rdTexShouldFlipCopy, main3rdTex, main3rdTexAngle, main3rdTexDecalAnimation, main3rdTexDecalSubParam, main3rdTex_UVMode);
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             m_MaterialEditor.TexturePropertySingleLine(maskBlendContent, main3rdBlendMask);
                             EditorGUILayout.LabelField(GetLoc("sDistanceFade"));
                             EditorGUI.indentLevel++;
                             m_MaterialEditor.ShaderProperty(main3rdDistanceFade, sDistanceFadeSetting);
                             EditorGUI.indentLevel--;
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             m_MaterialEditor.ShaderProperty(main3rdDissolveParams, sDissolveParams);
                             if(main3rdDissolveParams.vectorValue.x == 1.0f)                                                TextureGUI(ref edSet.isShowMain3rdDissolveMask, maskBlendContent, main3rdDissolveMask);
                             if(main3rdDissolveParams.vectorValue.x == 2.0f && main3rdDissolveParams.vectorValue.y == 0.0f) m_MaterialEditor.ShaderProperty(main3rdDissolvePos, GetLoc("sPosition") + "|2");
@@ -1776,7 +1770,7 @@ namespace lilToon
                                 TextureGUI(ref edSet.isShowMain3rdDissolveNoiseMask, noiseMaskContent, main3rdDissolveNoiseMask, main3rdDissolveNoiseStrength, main3rdDissolveNoiseMask_ScrollRotate);
                                 m_MaterialEditor.ShaderProperty(main3rdDissolveColor, GetLoc("sColor"));
                             }
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             TextureBakeGUI(material, 6);
                             EditorGUILayout.EndVertical();
                         }
@@ -1839,7 +1833,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Emission
-                edSet.isShowEmission = Foldout(GetLoc("sEmissionSetting"), edSet.isShowEmission);
+                edSet.isShowEmission = lilEditorGUI.Foldout(GetLoc("sEmissionSetting"), edSet.isShowEmission);
                 DrawMenuButton(GetLoc("sAnchorEmission"), lilPropertyBlock.Emission);
                 if(edSet.isShowEmission)
                 {
@@ -1851,13 +1845,13 @@ namespace lilToon
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowEmissionMap, colorMaskRGBAContent, emissionMap, emissionColor, emissionMap_ScrollRotate, emissionMap_UVMode, true, true);
-                        DrawColorAsAlpha(emissionColor);
+                        lilEditorGUI.DrawColorAsAlpha(emissionColor);
                         m_MaterialEditor.ShaderProperty(emissionMainStrength, GetLoc("sMainColorPower"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowEmissionBlendMask, maskBlendContent, emissionBlendMask, emissionBlend, emissionBlendMask_ScrollRotate, true, true);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emissionBlink, blinkSetting);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emissionUseGrad, GetLoc("sGradation"));
                         if(emissionUseGrad.floatValue == 1)
                         {
@@ -1866,7 +1860,7 @@ namespace lilToon
                             lilTextureUtils.GradientEditor(material, "_eg", emiGrad, emissionGradSpeed);
                             EditorGUI.indentLevel--;
                         }
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emissionParallaxDepth, GetLoc("sParallaxDepth"));
                         m_MaterialEditor.ShaderProperty(emissionFluorescence, GetLoc("sFluorescence"));
                         EditorGUILayout.EndVertical();
@@ -1881,13 +1875,13 @@ namespace lilToon
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowEmission2ndMap, colorMaskRGBAContent, emission2ndMap, emission2ndColor, emission2ndMap_ScrollRotate, emission2ndMap_UVMode, true, true);
-                        DrawColorAsAlpha(emission2ndColor);
+                        lilEditorGUI.DrawColorAsAlpha(emission2ndColor);
                         m_MaterialEditor.ShaderProperty(emission2ndMainStrength, GetLoc("sMainColorPower"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowEmission2ndBlendMask, maskBlendContent, emission2ndBlendMask, emission2ndBlend, emission2ndBlendMask_ScrollRotate, true, true);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emission2ndBlink, blinkSetting);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emission2ndUseGrad, GetLoc("sGradation"));
                         if(emission2ndUseGrad.floatValue == 1)
                         {
@@ -1896,7 +1890,7 @@ namespace lilToon
                             lilTextureUtils.GradientEditor(material, "_e2g", emi2Grad, emission2ndGradSpeed);
                             EditorGUI.indentLevel--;
                         }
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emission2ndParallaxDepth, GetLoc("sParallaxDepth"));
                         m_MaterialEditor.ShaderProperty(emission2ndFluorescence, GetLoc("sFluorescence"));
                         EditorGUILayout.EndVertical();
@@ -1912,7 +1906,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Normal
-                edSet.isShowBump = Foldout(GetLoc("sNormalMapSetting"), edSet.isShowBump);
+                edSet.isShowBump = lilEditorGUI.Foldout(GetLoc("sNormalMapSetting"), edSet.isShowBump);
                 DrawMenuButton(GetLoc("sAnchorNormalMap"), lilPropertyBlock.NormalMap);
                 if(edSet.isShowBump)
                 {
@@ -1938,7 +1932,7 @@ namespace lilToon
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowBump2ndMap, normalMapContent, bump2ndMap, bump2ndScale);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowBump2ndScaleMask, maskStrengthContent, bump2ndScaleMask);
                         EditorGUILayout.EndVertical();
                     }
@@ -1953,9 +1947,9 @@ namespace lilToon
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowAnisotropyTangentMap, normalMapContent, anisotropyTangentMap);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowAnisotropyScaleMask, maskStrengthContent, anisotropyScaleMask, anisotropyScale);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         GUILayout.Label(GetLoc("sApplyTo"), boldLabel);
                         EditorGUI.indentLevel++;
                         m_MaterialEditor.ShaderProperty(anisotropy2Reflection, GetLoc("sReflection"));
@@ -1968,14 +1962,14 @@ namespace lilToon
                             m_MaterialEditor.ShaderProperty(anisotropyShift, GetLoc("sOffset"));
                             m_MaterialEditor.ShaderProperty(anisotropyShiftNoiseScale, GetLoc("sNoiseStrength"));
                             m_MaterialEditor.ShaderProperty(anisotropySpecularStrength, GetLoc("sStrength"));
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             EditorGUILayout.LabelField("2nd Specular", boldLabel);
                             m_MaterialEditor.ShaderProperty(anisotropy2ndTangentWidth, GetLoc("sTangentWidth"));
                             m_MaterialEditor.ShaderProperty(anisotropy2ndBitangentWidth, GetLoc("sBitangentWidth"));
                             m_MaterialEditor.ShaderProperty(anisotropy2ndShift, GetLoc("sOffset"));
                             m_MaterialEditor.ShaderProperty(anisotropy2ndShiftNoiseScale, GetLoc("sNoiseStrength"));
                             m_MaterialEditor.ShaderProperty(anisotropy2ndSpecularStrength, GetLoc("sStrength"));
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             m_MaterialEditor.ShaderProperty(anisotropyShiftNoiseMask, GetLoc("sNoise"));
                             EditorGUI.indentLevel--;
                         }
@@ -1991,7 +1985,7 @@ namespace lilToon
                 // Backlight
                 if(!isGem)
                 {
-                    edSet.isShowBacklight = Foldout(GetLoc("sBacklightSetting"), edSet.isShowBacklight);
+                    edSet.isShowBacklight = lilEditorGUI.Foldout(GetLoc("sBacklightSetting"), edSet.isShowBacklight);
                     DrawMenuButton(GetLoc("sAnchorBacklight"), lilPropertyBlock.Reflections);
                     if(edSet.isShowBacklight)
                     {
@@ -2003,14 +1997,14 @@ namespace lilToon
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             TextureGUI(ref edSet.isShowBacklightColorTex, colorMaskRGBAContent, backlightColorTex, backlightColor);
                             EditorGUI.indentLevel++;
-                            DrawColorAsAlpha(backlightColor);
+                            lilEditorGUI.DrawColorAsAlpha(backlightColor);
                             m_MaterialEditor.ShaderProperty(backlightMainStrength, GetLoc("sMainColorPower"));
                             m_MaterialEditor.ShaderProperty(backlightReceiveShadow, GetLoc("sReceiveShadow"));
                             m_MaterialEditor.ShaderProperty(backlightBackfaceMask, GetLoc("sBackfaceMask"));
                             EditorGUI.indentLevel--;
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             m_MaterialEditor.ShaderProperty(backlightNormalStrength, GetLoc("sNormalStrength"));
-                            InvBorderGUI(backlightBorder);
+                            lilEditorGUI.InvBorderGUI(backlightBorder);
                             m_MaterialEditor.ShaderProperty(backlightBlur, GetLoc("sBlur"));
                             m_MaterialEditor.ShaderProperty(backlightDirectivity, GetLoc("sDirectivity"));
                             m_MaterialEditor.ShaderProperty(backlightViewStrength, GetLoc("sViewDirectionStrength"));
@@ -2024,7 +2018,7 @@ namespace lilToon
                 // Reflection
                 if(!isGem)
                 {
-                    edSet.isShowReflections = Foldout(GetLoc("sReflectionsSetting"), edSet.isShowReflections);
+                    edSet.isShowReflections = lilEditorGUI.Foldout(GetLoc("sReflectionsSetting"), edSet.isShowReflections);
                     DrawMenuButton(GetLoc("sAnchorReflection"), lilPropertyBlock.Reflections);
                     if(edSet.isShowReflections)
                     {
@@ -2040,15 +2034,15 @@ namespace lilToon
                                 EditorGUILayout.BeginVertical(boxInnerHalf);
                                 TextureGUI(ref edSet.isShowSmoothnessTex, smoothnessContent, smoothnessTex, smoothness);
                                 m_MaterialEditor.ShaderProperty(gsaaStrength, "GSAA", 1);
-                                DrawLine();
+                                lilEditorGUI.DrawLine();
                                 TextureGUI(ref edSet.isShowMetallicGlossMap, metallicContent, metallicGlossMap, metallic);
-                                DrawLine();
+                                lilEditorGUI.DrawLine();
                                 TextureGUI(ref edSet.isShowReflectionColorTex, colorMaskRGBAContent, reflectionColorTex, reflectionColor);
                                 EditorGUI.indentLevel++;
-                                DrawColorAsAlpha(reflectionColor);
+                                lilEditorGUI.DrawColorAsAlpha(reflectionColor);
                                 m_MaterialEditor.ShaderProperty(reflectance, GetLoc("sReflectance"));
                                 EditorGUI.indentLevel--;
-                                DrawLine();
+                                lilEditorGUI.DrawLine();
                                 DrawSpecularMode();
                                 m_MaterialEditor.ShaderProperty(applyReflection, GetLoc("sApplyReflection"));
                                 if(applyReflection.floatValue == 1.0f)
@@ -2071,7 +2065,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // MatCap
-                edSet.isShowMatCap = Foldout(GetLoc("sMatCapSetting"), edSet.isShowMatCap);
+                edSet.isShowMatCap = lilEditorGUI.Foldout(GetLoc("sMatCapSetting"), edSet.isShowMatCap);
                 DrawMenuButton(GetLoc("sAnchorMatCap"), lilPropertyBlock.MatCaps);
                 if(edSet.isShowMatCap)
                 {
@@ -2084,10 +2078,10 @@ namespace lilToon
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         MatCapTextureGUI(ref edSet.isShowMatCapUV, matcapContent, matcapTex, matcapColor, matcapBlendUV1, matcapZRotCancel, matcapPerspective, matcapVRParallaxStrength);
-                        DrawColorAsAlpha(matcapColor);
+                        lilEditorGUI.DrawColorAsAlpha(matcapColor);
                         m_MaterialEditor.ShaderProperty(matcapMainStrength, GetLoc("sMainColorPower"));
                         m_MaterialEditor.ShaderProperty(matcapNormalStrength, GetLoc("sNormalStrength"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowMatCapBlendMask, maskBlendContent, matcapBlendMask, matcapBlend);
                         m_MaterialEditor.ShaderProperty(matcapEnableLighting, GetLoc("sEnableLighting"));
                         m_MaterialEditor.ShaderProperty(matcapShadowMask, GetLoc("sShadowMask"));
@@ -2099,7 +2093,7 @@ namespace lilToon
                             matcapEnableLighting.floatValue = 0.0f;
                         }
                         if(isTransparent) m_MaterialEditor.ShaderProperty(matcapApplyTransparency, GetLoc("sApplyTransparency"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(matcapCustomNormal, GetLoc("sMatCapCustomNormal"));
                         if(matcapCustomNormal.floatValue == 1)
                         {
@@ -2118,10 +2112,10 @@ namespace lilToon
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         MatCapTextureGUI(ref edSet.isShowMatCap2ndUV, matcapContent, matcap2ndTex, matcap2ndColor, matcap2ndBlendUV1, matcap2ndZRotCancel, matcap2ndPerspective, matcap2ndVRParallaxStrength);
-                        DrawColorAsAlpha(matcap2ndColor);
+                        lilEditorGUI.DrawColorAsAlpha(matcap2ndColor);
                         m_MaterialEditor.ShaderProperty(matcap2ndMainStrength, GetLoc("sMainColorPower"));
                         m_MaterialEditor.ShaderProperty(matcap2ndNormalStrength, GetLoc("sNormalStrength"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowMatCap2ndBlendMask, maskBlendContent, matcap2ndBlendMask, matcap2ndBlend);
                         m_MaterialEditor.ShaderProperty(matcap2ndEnableLighting, GetLoc("sEnableLighting"));
                         m_MaterialEditor.ShaderProperty(matcap2ndShadowMask, GetLoc("sShadowMask"));
@@ -2133,7 +2127,7 @@ namespace lilToon
                             matcap2ndEnableLighting.floatValue = 0.0f;
                         }
                         if(isTransparent) m_MaterialEditor.ShaderProperty(matcap2ndApplyTransparency, GetLoc("sApplyTransparency"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(matcap2ndCustomNormal, GetLoc("sMatCapCustomNormal"));
                         if(matcap2ndCustomNormal.floatValue == 1)
                         {
@@ -2146,7 +2140,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Rim
-                edSet.isShowRim = Foldout(GetLoc("sRimLightSetting"), edSet.isShowRim);
+                edSet.isShowRim = lilEditorGUI.Foldout(GetLoc("sRimLightSetting"), edSet.isShowRim);
                 DrawMenuButton(GetLoc("sAnchorRimLight"), lilPropertyBlock.RimLight);
                 if(edSet.isShowRim)
                 {
@@ -2157,31 +2151,31 @@ namespace lilToon
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowRimColorTex, colorMaskRGBAContent, rimColorTex, rimColor);
-                        DrawColorAsAlpha(rimColor);
+                        lilEditorGUI.DrawColorAsAlpha(rimColor);
                         m_MaterialEditor.ShaderProperty(rimMainStrength, GetLoc("sMainColorPower"));
                         m_MaterialEditor.ShaderProperty(rimEnableLighting, GetLoc("sEnableLighting"));
                         m_MaterialEditor.ShaderProperty(rimShadowMask, GetLoc("sShadowMask"));
                         m_MaterialEditor.ShaderProperty(rimBackfaceMask, GetLoc("sBackfaceMask"));
                         if(isTransparent) m_MaterialEditor.ShaderProperty(rimApplyTransparency, GetLoc("sApplyTransparency"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(rimDirStrength, GetLoc("sRimLightDirection"));
                         if(rimDirStrength.floatValue != 0)
                         {
                             EditorGUI.indentLevel++;
                             m_MaterialEditor.ShaderProperty(rimDirRange, GetLoc("sRimDirectionRange"));
-                            InvBorderGUI(rimBorder);
+                            lilEditorGUI.InvBorderGUI(rimBorder);
                             m_MaterialEditor.ShaderProperty(rimBlur, GetLoc("sBlur"));
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             m_MaterialEditor.ShaderProperty(rimIndirRange, GetLoc("sRimIndirectionRange"));
                             m_MaterialEditor.ShaderProperty(rimIndirColor, GetLoc("sColor"));
-                            InvBorderGUI(rimIndirBorder);
+                            lilEditorGUI.InvBorderGUI(rimIndirBorder);
                             m_MaterialEditor.ShaderProperty(rimIndirBlur, GetLoc("sBlur"));
                             EditorGUI.indentLevel--;
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                         }
                         else
                         {
-                            InvBorderGUI(rimBorder);
+                            lilEditorGUI.InvBorderGUI(rimBorder);
                             m_MaterialEditor.ShaderProperty(rimBlur, GetLoc("sBlur"));
                         }
                         m_MaterialEditor.ShaderProperty(rimNormalStrength, GetLoc("sNormalStrength"));
@@ -2200,7 +2194,7 @@ namespace lilToon
                 // Gem
                 if(isGem)
                 {
-                    edSet.isShowGem = Foldout(GetLoc("sGemSetting"), edSet.isShowGem);
+                    edSet.isShowGem = lilEditorGUI.Foldout(GetLoc("sGemSetting"), edSet.isShowGem);
                     DrawMenuButton(GetLoc("sAnchorGem"), lilPropertyBlock.Gem);
                     if(edSet.isShowGem)
                     {
@@ -2213,17 +2207,17 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(refractionStrength, GetLoc("sStrength"));
                         m_MaterialEditor.ShaderProperty(refractionFresnelPower, GetLoc("sRefractionFresnel"));
                         EditorGUI.indentLevel--;
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         GUILayout.Label(GetLoc("sGem"), boldLabel);
                         EditorGUI.indentLevel++;
                         m_MaterialEditor.ShaderProperty(gemChromaticAberration, GetLoc("sChromaticAberration"));
                         m_MaterialEditor.ShaderProperty(gemEnvContrast, GetLoc("sContrast"));
                         m_MaterialEditor.ShaderProperty(gemEnvColor, GetLoc("sEnvironmentColor"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(gemParticleLoop, GetLoc("sParticleLoop"));
                         m_MaterialEditor.ShaderProperty(gemParticleColor, GetLoc("sColor"));
                         EditorGUI.indentLevel--;
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(gemVRParallaxStrength, GetLoc("sVRParallaxStrength"));
                         if(shaderSetting.LIL_FEATURE_TEX_REFLECTION_SMOOTHNESS) m_MaterialEditor.TexturePropertySingleLine(smoothnessContent, smoothnessTex, smoothness);
                         else                                                    m_MaterialEditor.ShaderProperty(smoothness, GetLoc("sSmoothness"));
@@ -2248,7 +2242,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Parallax
-                edSet.isShowParallax = Foldout(GetLoc("sParallax"), edSet.isShowParallax);
+                edSet.isShowParallax = lilEditorGUI.Foldout(GetLoc("sParallax"), edSet.isShowParallax);
                 DrawMenuButton(GetLoc("sAnchorParallax"), lilPropertyBlock.Parallax);
                 if(edSet.isShowParallax)
                 {
@@ -2268,7 +2262,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Distance Fade
-                edSet.isShowDistanceFade = Foldout(GetLoc("sDistanceFade"), edSet.isShowDistanceFade);
+                edSet.isShowDistanceFade = lilEditorGUI.Foldout(GetLoc("sDistanceFade"), edSet.isShowDistanceFade);
                 DrawMenuButton(GetLoc("sAnchorDistanceFade"), lilPropertyBlock.DistanceFade);
                 if(edSet.isShowDistanceFade)
                 {
@@ -2286,7 +2280,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // AudioLink
-                edSet.isShowAudioLink = Foldout(GetLoc("sAudioLink"), edSet.isShowAudioLink);
+                edSet.isShowAudioLink = lilEditorGUI.Foldout(GetLoc("sAudioLink"), edSet.isShowAudioLink);
                 DrawMenuButton(GetLoc("sAnchorAudioLink"), lilPropertyBlock.AudioLink);
                 if(edSet.isShowAudioLink)
                 {
@@ -2307,20 +2301,20 @@ namespace lilToon
                         if(audioLinkUVMode.floatValue == 4)
                         {
                             m_MaterialEditor.TexturePropertySingleLine(customMaskContent, audioLinkMask);
-                            DrawVectorAs4Float(audioLinkUVParams, "Volume", "Base Boost", "Treble Boost", "Line Width");
+                            lilEditorGUI.DrawVectorAs4Float(audioLinkUVParams, "Volume", "Base Boost", "Treble Boost", "Line Width");
                         }
                         if(audioLinkUVMode.floatValue == 5)
                         {
                             m_MaterialEditor.ShaderProperty(audioLinkUVParams, sALParamsPos);
                             m_MaterialEditor.ShaderProperty(audioLinkStart, GetLoc("sAudioLinkStartPosition"));
                         }
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         GUILayout.Label(GetLoc("sAudioLinkDefaultValue"), boldLabel);
                         EditorGUI.indentLevel++;
-                        if(audioLinkUVMode.floatValue == 4) DrawVectorAs4Float(audioLinkDefaultValue, GetLoc("sStrength"), "Detail", "Speed", GetLoc("sThreshold"));
+                        if(audioLinkUVMode.floatValue == 4) lilEditorGUI.DrawVectorAs4Float(audioLinkDefaultValue, GetLoc("sStrength"), "Detail", "Speed", GetLoc("sThreshold"));
                         else m_MaterialEditor.ShaderProperty(audioLinkDefaultValue, BuildParams(GetLoc("sStrength"), GetLoc("sBlinkStrength"), GetLoc("sBlinkSpeed"), GetLoc("sThreshold")));
                         EditorGUI.indentLevel--;
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         GUILayout.Label(GetLoc("sApplyTo"), boldLabel);
                         EditorGUI.indentLevel++;
                         m_MaterialEditor.ShaderProperty(audioLink2Main2nd, GetLoc("sMainColor2nd"));
@@ -2339,12 +2333,12 @@ namespace lilToon
                             if(audioLinkVertexUVMode.floatValue == 2) m_MaterialEditor.ShaderProperty(audioLinkVertexUVParams, sALParamsUV);
                             if(audioLinkVertexUVMode.floatValue == 3) m_MaterialEditor.TexturePropertySingleLine(customMaskContent, audioLinkMask);
                             if(audioLinkVertexUVMode.floatValue == 1) m_MaterialEditor.ShaderProperty(audioLinkVertexStart, GetLoc("sAudioLinkStartPosition"));
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             m_MaterialEditor.ShaderProperty(audioLinkVertexStrength, BuildParams(GetLoc("sAudioLinkMovingVector"), GetLoc("sAudioLinkNormalStrength")));
                             EditorGUI.indentLevel--;
                         }
                         EditorGUI.indentLevel--;
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(audioLinkAsLocal, GetLoc("sAudioLinkAsLocal"));
                         if(audioLinkAsLocal.floatValue == 1)
                         {
@@ -2358,7 +2352,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Dissolve
-                edSet.isShowDissolve = Foldout(GetLoc("sDissolve"), edSet.isShowDissolve);
+                edSet.isShowDissolve = lilEditorGUI.Foldout(GetLoc("sDissolve"), edSet.isShowDissolve);
                 DrawMenuButton(GetLoc("sAnchorDissolve"), lilPropertyBlock.Dissolve);
                 if(edSet.isShowDissolve && ((renderingModeBuf == RenderingMode.Opaque && !isMulti) || (isMulti && transparentModeMat.floatValue == 0.0f)))
                 {
@@ -2389,7 +2383,7 @@ namespace lilToon
                 // Encryption
                 if(lilDirectoryManager.ExistsEncryption())
                 {
-                    edSet.isShowEncryption = Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
+                    edSet.isShowEncryption = lilEditorGUI.Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
                     DrawMenuButton(GetLoc("sAnchorEncryption"), lilPropertyBlock.Encryption);
                     if(edSet.isShowEncryption)
                     {
@@ -2408,7 +2402,7 @@ namespace lilToon
                 // Refraction
                 if(isRefr)
                 {
-                    edSet.isShowRefraction = Foldout(GetLoc("sRefractionSetting"), edSet.isShowRefraction);
+                    edSet.isShowRefraction = lilEditorGUI.Foldout(GetLoc("sRefractionSetting"), edSet.isShowRefraction);
                     DrawMenuButton(GetLoc("sAnchorRefraction"), lilPropertyBlock.Refraction);
                     if(edSet.isShowRefraction)
                     {
@@ -2429,7 +2423,7 @@ namespace lilToon
                 // Fur
                 if(isFur)
                 {
-                    edSet.isShowFur = Foldout(GetLoc("sFurSetting"), edSet.isShowFur);
+                    edSet.isShowFur = lilEditorGUI.Foldout(GetLoc("sFurSetting"), edSet.isShowFur);
                     DrawMenuButton(GetLoc("sAnchorFur"), lilPropertyBlock.Fur);
                     if(edSet.isShowFur)
                     {
@@ -2444,12 +2438,12 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(vertexColor2FurVector, GetLoc("sVertexColor2Vector"));
                         m_MaterialEditor.ShaderProperty(furGravity, GetLoc("sGravity"));
                         m_MaterialEditor.ShaderProperty(furRandomize, GetLoc("sRandomize"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.TexturePropertySingleLine(noiseMaskContent, furNoiseMask);
                         m_MaterialEditor.TextureScaleOffsetProperty(furNoiseMask);
                         m_MaterialEditor.TexturePropertySingleLine(alphaMaskContent, furMask);
                         m_MaterialEditor.ShaderProperty(furAO, GetLoc("sAO"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(furMeshType, "Mesh Type|Subdivision|Shrink");
                         if(furMeshType.floatValue == 0)
                         {
@@ -2467,7 +2461,7 @@ namespace lilToon
                         {
                             m_MaterialEditor.ShaderProperty(furLayerNum, GetLoc("sLayerNum"));
                         }
-                        MinusRangeGUI(furRootOffset, GetLoc("sRootWidth"));
+                        lilEditorGUI.MinusRangeGUI(furRootOffset, GetLoc("sRootWidth"));
                         m_MaterialEditor.ShaderProperty(furTouchStrength, GetLoc("sTouchStrength"));
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
@@ -2476,7 +2470,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Stencil
-                edSet.isShowStencil = Foldout(GetLoc("sStencilSetting"), edSet.isShowStencil);
+                edSet.isShowStencil = lilEditorGUI.Foldout(GetLoc("sStencilSetting"), edSet.isShowStencil);
                 DrawMenuButton(GetLoc("sAnchorStencil"), lilPropertyBlock.Stencil);
                 if(edSet.isShowStencil)
                 {
@@ -2486,7 +2480,7 @@ namespace lilToon
                     EditorGUILayout.BeginVertical(boxInner);
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Auto Setting
-                    if(EditorButton("Set Writer"))
+                    if(lilEditorGUI.EditorButton("Set Writer"))
                     {
                         isStWr = true;
                         stencilRef.floatValue = 1;
@@ -2498,7 +2492,7 @@ namespace lilToon
                         stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                         if(isOutl)
                         {
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             EditorGUILayout.LabelField(GetLoc("sOutline"), boldLabel);
                             outlineStencilRef.floatValue = 1;
                             outlineStencilReadMask.floatValue = 255.0f;
@@ -2510,7 +2504,7 @@ namespace lilToon
                         }
                         if(isFur)
                         {
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             EditorGUILayout.LabelField(GetLoc("sOutline"), boldLabel);
                             furStencilRef.floatValue = 1;
                             furStencilReadMask.floatValue = 255.0f;
@@ -2523,7 +2517,7 @@ namespace lilToon
                         SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                         if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                     }
-                    if(EditorButton("Set Reader"))
+                    if(lilEditorGUI.EditorButton("Set Reader"))
                     {
                         isStWr = false;
                         stencilRef.floatValue = 1;
@@ -2535,7 +2529,7 @@ namespace lilToon
                         stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                         if(isOutl)
                         {
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             EditorGUILayout.LabelField(GetLoc("sOutline"), boldLabel);
                             outlineStencilRef.floatValue = 1;
                             outlineStencilReadMask.floatValue = 255.0f;
@@ -2547,7 +2541,7 @@ namespace lilToon
                         }
                         if(isFur)
                         {
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             EditorGUILayout.LabelField(GetLoc("sOutline"), boldLabel);
                             furStencilRef.floatValue = 1;
                             furStencilReadMask.floatValue = 255.0f;
@@ -2560,7 +2554,7 @@ namespace lilToon
                         SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
                         if(renderingModeBuf == RenderingMode.Opaque) material.renderQueue += 450;
                     }
-                    if(EditorButton("Reset"))
+                    if(lilEditorGUI.EditorButton("Reset"))
                     {
                         isStWr = false;
                         stencilRef.floatValue = 0;
@@ -2572,7 +2566,7 @@ namespace lilToon
                         stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                         if(isOutl)
                         {
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             EditorGUILayout.LabelField(GetLoc("sOutline"), boldLabel);
                             outlineStencilRef.floatValue = 0;
                             outlineStencilReadMask.floatValue = 255.0f;
@@ -2584,7 +2578,7 @@ namespace lilToon
                         }
                         if(isFur)
                         {
-                            DrawLine();
+                            lilEditorGUI.DrawLine();
                             EditorGUILayout.LabelField(GetLoc("sOutline"), boldLabel);
                             furStencilRef.floatValue = 0;
                             furStencilReadMask.floatValue = 255.0f;
@@ -2600,7 +2594,7 @@ namespace lilToon
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Base
                     {
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(stencilRef, "Ref");
                         m_MaterialEditor.ShaderProperty(stencilReadMask, "ReadMask");
                         m_MaterialEditor.ShaderProperty(stencilWriteMask, "WriteMask");
@@ -2614,7 +2608,7 @@ namespace lilToon
                     // Outline
                     if(isOutl)
                     {
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         EditorGUILayout.LabelField(GetLoc("sOutline"), boldLabel);
                         m_MaterialEditor.ShaderProperty(outlineStencilRef, "Ref");
                         m_MaterialEditor.ShaderProperty(outlineStencilReadMask, "ReadMask");
@@ -2629,7 +2623,7 @@ namespace lilToon
                     // Fur
                     if(isFur)
                     {
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         EditorGUILayout.LabelField(GetLoc("sFur"), boldLabel);
                         m_MaterialEditor.ShaderProperty(furStencilRef, "Ref");
                         m_MaterialEditor.ShaderProperty(furStencilReadMask, "ReadMask");
@@ -2645,13 +2639,13 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Rendering
-                edSet.isShowRendering = Foldout(GetLoc("sRenderingSetting"), edSet.isShowRendering);
+                edSet.isShowRendering = lilEditorGUI.Foldout(GetLoc("sRenderingSetting"), edSet.isShowRendering);
                 DrawMenuButton(GetLoc("sAnchorRendering"), lilPropertyBlock.Rendering);
                 if(edSet.isShowRendering)
                 {
                     //------------------------------------------------------------------------------------------------------------------------------
                     // Reset Button
-                    if(EditorButton(GetLoc("sRenderingReset")))
+                    if(lilEditorGUI.EditorButton(GetLoc("sRenderingReset")))
                     {
                         material.enableInstancing = false;
                         SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
@@ -2690,11 +2684,11 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(colorMask, GetLoc("sColorMask"));
                         m_MaterialEditor.ShaderProperty(alphaToMask, GetLoc("sAlphaToMask"));
                         m_MaterialEditor.ShaderProperty(lilShadowCasterBias, "Shadow Caster Bias");
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         BlendSettingGUI(ref edSet.isShowBlend, GetLoc("sForward"), srcBlend, dstBlend, srcBlendAlpha, dstBlendAlpha, blendOp, blendOpAlpha);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         BlendSettingGUI(ref edSet.isShowBlendAdd, GetLoc("sForwardAdd"), srcBlendFA, dstBlendFA, srcBlendAlphaFA, dstBlendAlphaFA, blendOpFA, blendOpAlphaFA);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         if(!isCustomEditor) m_MaterialEditor.EnableInstancingField();
                         if(!isCustomEditor) m_MaterialEditor.DoubleSidedGIField();
                         m_MaterialEditor.RenderQueueField();
@@ -2717,9 +2711,9 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(outlineOffsetUnits, GetLoc("sOffsetUnits"));
                         m_MaterialEditor.ShaderProperty(outlineColorMask, GetLoc("sColorMask"));
                         m_MaterialEditor.ShaderProperty(outlineAlphaToMask, GetLoc("sAlphaToMask"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         BlendSettingGUI(ref edSet.isShowBlendOutline, GetLoc("sForward"), outlineSrcBlend, outlineDstBlend, outlineSrcBlendAlpha, outlineDstBlendAlpha, outlineBlendOp, outlineBlendOpAlpha);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         BlendSettingGUI(ref edSet.isShowBlendAddOutline, GetLoc("sForwardAdd"), outlineSrcBlendFA, outlineDstBlendFA, outlineSrcBlendAlphaFA, outlineDstBlendAlphaFA, outlineBlendOpFA, outlineBlendOpAlphaFA);
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
@@ -2740,9 +2734,9 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(furOffsetUnits, GetLoc("sOffsetUnits"));
                         m_MaterialEditor.ShaderProperty(furColorMask, GetLoc("sColorMask"));
                         m_MaterialEditor.ShaderProperty(furAlphaToMask, GetLoc("sAlphaToMask"));
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         BlendSettingGUI(ref edSet.isShowBlendFur, GetLoc("sForward"), furSrcBlend, furDstBlend, furSrcBlendAlpha, furDstBlendAlpha, furBlendOp, furBlendOpAlpha);
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         BlendSettingGUI(ref edSet.isShowBlendAddFur, GetLoc("sForwardAdd"), furSrcBlendFA, furDstBlendFA, furSrcBlendAlphaFA, furDstBlendAlphaFA, furBlendOpFA, furBlendOpAlphaFA);
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
@@ -2751,7 +2745,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Tessellation
-                edSet.isShowTess = Foldout(GetLoc("sTessellation"), edSet.isShowTess);
+                edSet.isShowTess = lilEditorGUI.Foldout(GetLoc("sTessellation"), edSet.isShowTess);
                 DrawMenuButton(GetLoc("sAnchorTessellation"), lilPropertyBlock.Tessellation);
                 if(edSet.isShowTess)
                 {
@@ -2780,7 +2774,7 @@ namespace lilToon
                 if(!isMultiVariants)
                 {
                     GUILayout.Label(GetLoc("sOptimization"), boldLabel);
-                    edSet.isShowOptimization = Foldout(GetLoc("sOptimization"), edSet.isShowOptimization);
+                    edSet.isShowOptimization = lilEditorGUI.Foldout(GetLoc("sOptimization"), edSet.isShowOptimization);
                     lilEditorGUI.DrawHelpButton(GetLoc("sAnchorOptimization"));
                     if(edSet.isShowOptimization)
                     {
@@ -2789,14 +2783,14 @@ namespace lilToon
                         EditorGUILayout.LabelField(GetLoc("sOptimization"), customToggleFont);
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         DrawOptimizationButton(material, !(isLite && isMulti));
-                        RemoveUnusedPropertiesGUI(material);
+                        lilEditorGUI.RemoveUnusedPropertiesGUI(material);
                         TextureBakeGUI(material, 0);
                         TextureBakeGUI(material, 1);
                         TextureBakeGUI(material, 2);
                         TextureBakeGUI(material, 3);
-                        if(EditorButton(GetLoc("sConvertLite"))) CreateLiteMaterial(material);
-                        if(mtoon != null && EditorButton(GetLoc("sConvertMToon"))) CreateMToonMaterial(material);
-                        if(!isMulti && !isFur && !isRefr && !isGem && EditorButton(GetLoc("sConvertMulti"))) CreateMultiMaterial(material);
+                        if(lilEditorGUI.EditorButton(GetLoc("sConvertLite"))) CreateLiteMaterial(material);
+                        if(mtoon != null && lilEditorGUI.EditorButton(GetLoc("sConvertMToon"))) CreateMToonMaterial(material);
+                        if(!isMulti && !isFur && !isRefr && !isGem && lilEditorGUI.EditorButton(GetLoc("sConvertMulti"))) CreateMultiMaterial(material);
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
 
@@ -2804,14 +2798,14 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxOuter);
                         EditorGUILayout.LabelField(GetLoc("sBake"), customToggleFont);
                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                        if(!isGem && EditorButton(GetLoc("sShadow1stColor")))   AutoBakeColoredMask(material, shadowColorTex,       shadowColor,        "Shadow1stColor");
-                        if(!isGem && EditorButton(GetLoc("sShadow2ndColor")))   AutoBakeColoredMask(material, shadow2ndColorTex,    shadow2ndColor,     "Shadow2ndColor");
-                        if(!isGem && EditorButton(GetLoc("sShadow3rdColor")))   AutoBakeColoredMask(material, shadow3rdColorTex,    shadow3rdColor,     "Shadow3rdColor");
-                        if(!isGem && EditorButton(GetLoc("sReflection")))       AutoBakeColoredMask(material, reflectionColorTex,   reflectionColor,    "ReflectionColor");
-                        if(EditorButton(GetLoc("sMatCap")))                     AutoBakeColoredMask(material, matcapBlendMask,      matcapColor,        "MatCapColor");
-                        if(EditorButton(GetLoc("sMatCap2nd")))                  AutoBakeColoredMask(material, matcap2ndBlendMask,   matcap2ndColor,     "MatCap2ndColor");
-                        if(EditorButton(GetLoc("sRimLight")))                   AutoBakeColoredMask(material, rimColorTex,          rimColor,           "RimColor");
-                        if(((!isRefr && !isFur && !isGem && !isCustomShader) || (isCustomShader && isOutl)) && EditorButton(GetLoc("sSettingTexOutlineColor"))) AutoBakeColoredMask(material, outlineColorMask, outlineColor, "OutlineColor");
+                        if(!isGem && lilEditorGUI.EditorButton(GetLoc("sShadow1stColor")))   AutoBakeColoredMask(material, shadowColorTex,       shadowColor,        "Shadow1stColor");
+                        if(!isGem && lilEditorGUI.EditorButton(GetLoc("sShadow2ndColor")))   AutoBakeColoredMask(material, shadow2ndColorTex,    shadow2ndColor,     "Shadow2ndColor");
+                        if(!isGem && lilEditorGUI.EditorButton(GetLoc("sShadow3rdColor")))   AutoBakeColoredMask(material, shadow3rdColorTex,    shadow3rdColor,     "Shadow3rdColor");
+                        if(!isGem && lilEditorGUI.EditorButton(GetLoc("sReflection")))       AutoBakeColoredMask(material, reflectionColorTex,   reflectionColor,    "ReflectionColor");
+                        if(lilEditorGUI.EditorButton(GetLoc("sMatCap")))                     AutoBakeColoredMask(material, matcapBlendMask,      matcapColor,        "MatCapColor");
+                        if(lilEditorGUI.EditorButton(GetLoc("sMatCap2nd")))                  AutoBakeColoredMask(material, matcap2ndBlendMask,   matcap2ndColor,     "MatCap2ndColor");
+                        if(lilEditorGUI.EditorButton(GetLoc("sRimLight")))                   AutoBakeColoredMask(material, rimColorTex,          rimColor,           "RimColor");
+                        if(((!isRefr && !isFur && !isGem && !isCustomShader) || (isCustomShader && isOutl)) && lilEditorGUI.EditorButton(GetLoc("sSettingTexOutlineColor"))) AutoBakeColoredMask(material, outlineColorMask, outlineColor, "OutlineColor");
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
@@ -2833,7 +2827,7 @@ namespace lilToon
 
             EditorGUI.BeginChangeCheck();
             ToggleGUI("[Debug] Apply optimization on the editor", ref shaderSetting.isDebugOptimize);
-            edSet.isShowShaderSetting = Foldout(GetLoc("sShaderSetting"), edSet.isShowShaderSetting);
+            edSet.isShowShaderSetting = lilEditorGUI.Foldout(GetLoc("sShaderSetting"), edSet.isShowShaderSetting);
             lilEditorGUI.DrawHelpButton(GetLoc("sAnchorShaderSetting"));
             if(edSet.isShowShaderSetting)
             {
@@ -2842,7 +2836,7 @@ namespace lilToon
                 EditorGUILayout.EndVertical();
             }
 
-            edSet.isShowOptimizationSetting = Foldout(GetLoc("sSettingBuildSizeOptimization"), edSet.isShowOptimizationSetting);
+            edSet.isShowOptimizationSetting = lilEditorGUI.Foldout(GetLoc("sSettingBuildSizeOptimization"), edSet.isShowOptimizationSetting);
             if(edSet.isShowOptimizationSetting)
             {
                 EditorGUILayout.BeginVertical(customBox);
@@ -2851,7 +2845,7 @@ namespace lilToon
                 EditorGUILayout.EndVertical();
             }
 
-            edSet.isShowDefaultValueSetting = Foldout(GetLoc("sSettingDefaultValue"), edSet.isShowDefaultValueSetting);
+            edSet.isShowDefaultValueSetting = lilEditorGUI.Foldout(GetLoc("sSettingDefaultValue"), edSet.isShowDefaultValueSetting);
             if(edSet.isShowDefaultValueSetting)
             {
                 EditorGUILayout.BeginVertical(customBox);
@@ -4653,17 +4647,8 @@ namespace lilToon
         {
             lilLanguageManager.InitializeLanguage();
             int numbuf = edSet.languageNum;
-
-            // Select language
-            string[] langName = edSet.languageNames.Split('\t');
-            edSet.languageNum = EditorGUILayout.Popup("Language", edSet.languageNum, langName);
-
-            // Load language
-            if(numbuf != edSet.languageNum)
-            {
-                lilLanguageManager.UpdateLanguage();
-            }
-
+            edSet.languageNum = EditorGUILayout.Popup("Language", edSet.languageNum, edSet.languageNames.Split('\t'));
+            if(numbuf != edSet.languageNum) lilLanguageManager.UpdateLanguage();
             if(!string.IsNullOrEmpty(GetLoc("sLanguageWarning"))) EditorGUILayout.HelpBox(GetLoc("sLanguageWarning"),MessageType.Warning);
         }
         #endregion
@@ -4708,20 +4693,14 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // GUI
         #region
-        public static bool Foldout(string title, bool display)
-        {
-            return lilEditorGUI.Foldout(title, display);
-        }
 
-        public static bool Foldout(string title, string help, bool display)
-        {
-            return lilEditorGUI.Foldout(title, help, display);
-        }
+        // For custom shader
+        public static bool Foldout(string title, bool display) { return lilEditorGUI.Foldout(title, display); }
+        public static bool Foldout(string title, string help, bool display) { return lilEditorGUI.Foldout(title, help, display); }
+        public static void DrawLine() { lilEditorGUI.DrawLine(); }
 
-        public static void DrawLine()
-        {
-            lilEditorGUI.DrawLine();
-        }
+        private static void ToggleGUI(string label, ref bool value) { value = EditorGUILayout.ToggleLeft(label, value); }
+        private void OpenHelpPage(object helpAnchor) { Application.OpenURL(GetLoc("sManualURL") + helpAnchor); }
 
         private static void DrawWebPages()
         {
@@ -4784,11 +4763,6 @@ namespace lilToon
             }
         }
 
-        private static void ToggleGUI(string label, ref bool value)
-        {
-            value = EditorGUILayout.ToggleLeft(label, value);
-        }
-
         private static void SelectEditorMode()
         {
             string[] sEditorModeList = {GetLoc("sEditorModeSimple"),GetLoc("sEditorModeAdvanced"),GetLoc("sEditorModePreset"),GetLoc("sEditorModeShaderSetting")};
@@ -4815,15 +4789,10 @@ namespace lilToon
             }
         }
 
-        private void OpenHelpPage(object helpAnchor)
-        {
-            Application.OpenURL(GetLoc("sManualURL") + helpAnchor);
-        }
-
         private void DrawVRCFallbackGUI(Material material)
         {
             #if VRC_SDK_VRCSDK2 || VRC_SDK_VRCSDK3 || VRC_SDK_VRCSDK4
-                edSet.isShowVRChat = Foldout("VRChat", "VRChat", edSet.isShowVRChat);
+                edSet.isShowVRChat = lilEditorGUI.Foldout("VRChat", "VRChat", edSet.isShowVRChat);
                 if(edSet.isShowVRChat)
                 {
                     EditorGUILayout.BeginVertical(boxOuter);
@@ -5117,29 +5086,11 @@ namespace lilToon
         {
             SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isOutl, isLite, isStWr, isTess);
         }
-
-        [Obsolete("")]
-        public static bool CheckMainTextureName(string name)
-        {
-            return lilMaterialUtils.CheckMainTextureName(name);
-        }
-
-        [Obsolete("")]
-        public static void RemoveUnusedTexture(Material material)
-        {
-            lilMaterialUtils.RemoveUnusedTexture(material);
-        }
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Presets
         #region
-        [Obsolete("")]
-        public static void ApplyPreset(Material material, lilToonPreset preset)
-        {
-            lilToonPreset.ApplyPreset(material, preset, isMulti);
-        }
-
         private static void DrawPreset()
         {
             GUILayout.Label(GetLoc("sPresets"), boldLabel);
@@ -5147,8 +5098,8 @@ namespace lilToon
             ShowPresets();
             EditorGUILayout.Space();
             GUILayout.BeginHorizontal();
-            if(EditorButton(GetLoc("sPresetRefresh"))) presets = lilToonPreset.LoadPresets();
-            if(EditorButton(GetLoc("sPresetSave"))) EditorWindow.GetWindow<lilToonPreset.lilPresetWindow>("[lilToon] Preset Window");
+            if(lilEditorGUI.EditorButton(GetLoc("sPresetRefresh"))) presets = lilToonPreset.LoadPresets();
+            if(lilEditorGUI.EditorButton(GetLoc("sPresetSave"))) EditorWindow.GetWindow<lilToonPreset.lilPresetWindow>("[lilToon] Preset Window");
             GUILayout.EndHorizontal();
         }
 
@@ -5163,7 +5114,7 @@ namespace lilToon
                                     GetLoc("sPresetCategoryOther") };
             for(int i=0; i<(int)lilPresetCategory.Other+1; i++)
             {
-                edSet.isShowCategorys[i] = Foldout(sCategorys[i], edSet.isShowCategorys[i]);
+                edSet.isShowCategorys[i] = lilEditorGUI.Foldout(sCategorys[i], edSet.isShowCategorys[i]);
                 if(edSet.isShowCategorys[i])
                 {
                     for(int j=0; j<presets.Length; j++)
@@ -5183,7 +5134,7 @@ namespace lilToon
                                     k = 256;
                                 }
                             }
-                            if(EditorButton(showName))
+                            if(lilEditorGUI.EditorButton(showName))
                             {
                                 var objs = m_MaterialEditor.targets.Where(obj => obj is Material);
                                 foreach(UnityEngine.Object obj in objs)
@@ -5513,6 +5464,7 @@ namespace lilToon
             liteMaterial.renderQueue = material.renderQueue;
         }
 
+        // TODO : Support other rendering mode
         private void CreateMultiMaterial(Material material)
         {
             material.shader = ltsm;
@@ -5649,7 +5601,7 @@ namespace lilToon
             EditorGUILayout.Space();
             GUILayout.Label(GetLoc("sBaseSetting"), boldLabel);
 
-            edSet.isShowBase = Foldout(GetLoc("sBaseSetting"), edSet.isShowBase);
+            edSet.isShowBase = lilEditorGUI.Foldout(GetLoc("sBaseSetting"), edSet.isShowBase);
             DrawMenuButton(GetLoc("sAnchorBaseSetting"), lilPropertyBlock.Base);
             if(edSet.isShowBase)
             {
@@ -5714,7 +5666,7 @@ namespace lilToon
                     }
                     if(isLite)
                     {
-                        DrawLine();
+                        lilEditorGUI.DrawLine();
                         m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sTriMask"), GetLoc("sTriMaskRGB")), triMask);
                     }
                 EditorGUILayout.EndVertical();
@@ -5723,7 +5675,7 @@ namespace lilToon
 
         private void DrawLightingSettings()
         {
-            edSet.isShowLightingSettings = Foldout(GetLoc("sLightingSettings"), edSet.isShowLightingSettings);
+            edSet.isShowLightingSettings = lilEditorGUI.Foldout(GetLoc("sLightingSettings"), edSet.isShowLightingSettings);
             DrawMenuButton(GetLoc("sAnchorLighting"), lilPropertyBlock.Lighting);
             if(edSet.isShowLightingSettings)
             {
@@ -5778,7 +5730,7 @@ namespace lilToon
 
         private void DrawLightingSettingsSimple()
         {
-            edSet.isShowLightingSettings = Foldout(GetLoc("sLightingSettings"), edSet.isShowLightingSettings);
+            edSet.isShowLightingSettings = lilEditorGUI.Foldout(GetLoc("sLightingSettings"), edSet.isShowLightingSettings);
             DrawMenuButton(GetLoc("sAnchorLighting"), lilPropertyBlock.Lighting);
             if(edSet.isShowLightingSettings)
             {
@@ -5803,7 +5755,7 @@ namespace lilToon
 
         private void DrawShadowSettings()
         {
-            edSet.isShowShadow = Foldout(GetLoc("sShadowSetting"), edSet.isShowShadow);
+            edSet.isShowShadow = lilEditorGUI.Foldout(GetLoc("sShadowSetting"), edSet.isShowShadow);
             DrawMenuButton(GetLoc("sAnchorShadow"), lilPropertyBlock.Shadow);
             if(edSet.isShowShadow)
             {
@@ -5829,7 +5781,7 @@ namespace lilToon
                         m_MaterialEditor.TexturePropertySingleLine(maskStrengthContent, shadowStrengthMask, shadowStrength);
                         m_MaterialEditor.ShaderProperty(shadowStrengthMaskLOD, "LOD", 2);
                     }
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(shadow1stColorRGBAContent, shadowColorTex, shadowColor);
                     EditorGUI.indentLevel += 2;
                         m_MaterialEditor.ShaderProperty(shadowBorder, GetLoc("sBorder"));
@@ -5837,45 +5789,45 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(shadowNormalStrength, GetLoc("sNormalStrength"));
                         m_MaterialEditor.ShaderProperty(shadowReceive, GetLoc("sReceiveShadow"));
                     EditorGUI.indentLevel -= 2;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(shadow2ndColorRGBAContent, shadow2ndColorTex, shadow2ndColor);
                     EditorGUI.indentLevel += 2;
-                        DrawColorAsAlpha(shadow2ndColor);
+                        lilEditorGUI.DrawColorAsAlpha(shadow2ndColor);
                         m_MaterialEditor.ShaderProperty(shadow2ndBorder, GetLoc("sBorder"));
                         m_MaterialEditor.ShaderProperty(shadow2ndBlur, GetLoc("sBlur"));
                         m_MaterialEditor.ShaderProperty(shadow2ndNormalStrength, GetLoc("sNormalStrength"));
                         m_MaterialEditor.ShaderProperty(shadow2ndReceive, GetLoc("sReceiveShadow"));
                     EditorGUI.indentLevel -= 2;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(shadow3rdColorRGBAContent, shadow3rdColorTex, shadow3rdColor);
                     EditorGUI.indentLevel += 2;
-                        DrawColorAsAlpha(shadow3rdColor);
+                        lilEditorGUI.DrawColorAsAlpha(shadow3rdColor);
                         m_MaterialEditor.ShaderProperty(shadow3rdBorder, GetLoc("sBorder"));
                         m_MaterialEditor.ShaderProperty(shadow3rdBlur, GetLoc("sBlur"));
                         m_MaterialEditor.ShaderProperty(shadow3rdNormalStrength, GetLoc("sNormalStrength"));
                         m_MaterialEditor.ShaderProperty(shadow3rdReceive, GetLoc("sReceiveShadow"));
                     EditorGUI.indentLevel -= 2;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.ShaderProperty(shadowBorderColor, GetLoc("sShadowBorderColor"));
                     m_MaterialEditor.ShaderProperty(shadowBorderRange, GetLoc("sShadowBorderRange"));
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.ShaderProperty(shadowMainStrength, GetLoc("sContrast"));
                     m_MaterialEditor.ShaderProperty(shadowEnvStrength, GetLoc("sShadowEnvStrength"));
                     m_MaterialEditor.ShaderProperty(lilShadowCasterBias, "Shadow Caster Bias");
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sBlurMask"), GetLoc("sBlurR")), shadowBlurMask);
                     m_MaterialEditor.ShaderProperty(shadowBlurMaskLOD, "LOD", 2);
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(new GUIContent("AO Map", GetLoc("sBorderR")), shadowBorderMask);
                     EditorGUI.indentLevel += 2;
                         m_MaterialEditor.ShaderProperty(shadowBorderMaskLOD, "LOD");
                         m_MaterialEditor.ShaderProperty(shadowPostAO, GetLoc("sIgnoreBorderProperties"));
-                        float min1 = GetRemapMinValue(shadowAOShift.vectorValue.x, shadowAOShift.vectorValue.y);
-                        float max1 = GetRemapMaxValue(shadowAOShift.vectorValue.x, shadowAOShift.vectorValue.y);
-                        float min2 = GetRemapMinValue(shadowAOShift.vectorValue.z, shadowAOShift.vectorValue.w);
-                        float max2 = GetRemapMaxValue(shadowAOShift.vectorValue.z, shadowAOShift.vectorValue.w);
-                        float min3 = GetRemapMinValue(shadowAOShift2.vectorValue.x, shadowAOShift2.vectorValue.y);
-                        float max3 = GetRemapMaxValue(shadowAOShift2.vectorValue.x, shadowAOShift2.vectorValue.y);
+                        float min1 = lilEditorGUI.GetRemapMinValue(shadowAOShift.vectorValue.x, shadowAOShift.vectorValue.y);
+                        float max1 = lilEditorGUI.GetRemapMaxValue(shadowAOShift.vectorValue.x, shadowAOShift.vectorValue.y);
+                        float min2 = lilEditorGUI.GetRemapMinValue(shadowAOShift.vectorValue.z, shadowAOShift.vectorValue.w);
+                        float max2 = lilEditorGUI.GetRemapMaxValue(shadowAOShift.vectorValue.z, shadowAOShift.vectorValue.w);
+                        float min3 = lilEditorGUI.GetRemapMinValue(shadowAOShift2.vectorValue.x, shadowAOShift2.vectorValue.y);
+                        float max3 = lilEditorGUI.GetRemapMaxValue(shadowAOShift2.vectorValue.x, shadowAOShift2.vectorValue.y);
                         EditorGUI.BeginChangeCheck();
                         EditorGUI.showMixedValue = alphaMaskScale.hasMixedValue || alphaMaskValue.hasMixedValue;
                         min1 = EditorGUILayout.Slider("1st Min", min1, -0.01f, 1.01f);
@@ -5892,14 +5844,14 @@ namespace lilToon
                             if(min2 == max2) max2 += 0.001f;
                             if(min3 == max3) max3 += 0.001f;
                             shadowAOShift.vectorValue = new Vector4(
-                                GetRemapScaleValue(min1, max1),
-                                GetRemapOffsetValue(min1, max1),
-                                GetRemapScaleValue(min2, max2),
-                                GetRemapOffsetValue(min2, max2)
+                                lilEditorGUI.GetRemapScaleValue(min1, max1),
+                                lilEditorGUI.GetRemapOffsetValue(min1, max1),
+                                lilEditorGUI.GetRemapScaleValue(min2, max2),
+                                lilEditorGUI.GetRemapOffsetValue(min2, max2)
                             );
                             shadowAOShift2.vectorValue = new Vector4(
-                                GetRemapScaleValue(min3, max3),
-                                GetRemapOffsetValue(min3, max3),
+                                lilEditorGUI.GetRemapScaleValue(min3, max3),
+                                lilEditorGUI.GetRemapOffsetValue(min3, max3),
                                 0.0f,
                                 0.0f
                             );
@@ -5915,13 +5867,13 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(shadowBorder, GetLoc("sBorder"));
                     m_MaterialEditor.ShaderProperty(shadowBlur, GetLoc("sBlur"));
                     EditorGUI.indentLevel -= 2;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(shadow2ndColorRGBAContent, shadow2ndColorTex);
                     EditorGUI.indentLevel += 2;
                     m_MaterialEditor.ShaderProperty(shadow2ndBorder, GetLoc("sBorder"));
                     m_MaterialEditor.ShaderProperty(shadow2ndBlur, GetLoc("sBlur"));
                     EditorGUI.indentLevel -= 2;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.ShaderProperty(shadowEnvStrength, GetLoc("sShadowEnvStrength"));
                     m_MaterialEditor.ShaderProperty(shadowBorderColor, GetLoc("sShadowBorderColor"));
                     m_MaterialEditor.ShaderProperty(shadowBorderRange, GetLoc("sShadowBorderRange"));
@@ -5933,7 +5885,7 @@ namespace lilToon
 
         private void DrawShadowSettingsSimple()
         {
-            edSet.isShowShadow = Foldout(GetLoc("sShadowSetting"), edSet.isShowShadow);
+            edSet.isShowShadow = lilEditorGUI.Foldout(GetLoc("sShadowSetting"), edSet.isShowShadow);
             DrawMenuButton(GetLoc("sAnchorShadow"), lilPropertyBlock.Shadow);
             if(edSet.isShowShadow)
             {
@@ -5959,7 +5911,7 @@ namespace lilToon
                         m_MaterialEditor.TexturePropertySingleLine(maskStrengthContent, shadowStrengthMask, shadowStrength);
                         m_MaterialEditor.ShaderProperty(shadowStrengthMaskLOD, "LOD", 2);
                     }
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(shadow1stColorRGBAContent, shadowColorTex, shadowColor);
                     EditorGUI.indentLevel += 2;
                         m_MaterialEditor.ShaderProperty(shadowBorder, GetLoc("sBorder"));
@@ -5967,28 +5919,28 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(shadowNormalStrength, GetLoc("sNormalStrength"));
                         m_MaterialEditor.ShaderProperty(shadowReceive, GetLoc("sReceiveShadow"));
                     EditorGUI.indentLevel -= 2;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(shadow2ndColorRGBAContent, shadow2ndColorTex, shadow2ndColor);
                     EditorGUI.indentLevel += 2;
-                        DrawColorAsAlpha(shadow2ndColor);
+                        lilEditorGUI.DrawColorAsAlpha(shadow2ndColor);
                         m_MaterialEditor.ShaderProperty(shadow2ndBorder, GetLoc("sBorder"));
                         m_MaterialEditor.ShaderProperty(shadow2ndBlur, GetLoc("sBlur"));
                         m_MaterialEditor.ShaderProperty(shadow2ndNormalStrength, GetLoc("sNormalStrength"));
                         m_MaterialEditor.ShaderProperty(shadow2ndReceive, GetLoc("sReceiveShadow"));
                     EditorGUI.indentLevel -= 2;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(shadow3rdColorRGBAContent, shadow3rdColorTex, shadow3rdColor);
                     EditorGUI.indentLevel += 2;
-                        DrawColorAsAlpha(shadow3rdColor);
+                        lilEditorGUI.DrawColorAsAlpha(shadow3rdColor);
                         m_MaterialEditor.ShaderProperty(shadow3rdBorder, GetLoc("sBorder"));
                         m_MaterialEditor.ShaderProperty(shadow3rdBlur, GetLoc("sBlur"));
                         m_MaterialEditor.ShaderProperty(shadow3rdNormalStrength, GetLoc("sNormalStrength"));
                         m_MaterialEditor.ShaderProperty(shadow3rdReceive, GetLoc("sReceiveShadow"));
                     EditorGUI.indentLevel -= 2;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.ShaderProperty(shadowBorderColor, GetLoc("sShadowBorderColor"));
                     m_MaterialEditor.ShaderProperty(shadowBorderRange, GetLoc("sShadowBorderRange"));
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.ShaderProperty(shadowMainStrength, GetLoc("sContrast"));
                     m_MaterialEditor.ShaderProperty(shadowEnvStrength, GetLoc("sShadowEnvStrength"));
                     EditorGUILayout.EndVertical();
@@ -6001,13 +5953,13 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(shadowBorder, GetLoc("sBorder"));
                         m_MaterialEditor.ShaderProperty(shadowBlur, GetLoc("sBlur"));
                     EditorGUI.indentLevel -= 2;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(shadow2ndColorRGBAContent, shadow2ndColorTex);
                     EditorGUI.indentLevel += 2;
                         m_MaterialEditor.ShaderProperty(shadow2ndBorder, GetLoc("sBorder"));
                         m_MaterialEditor.ShaderProperty(shadow2ndBlur, GetLoc("sBlur"));
                     EditorGUI.indentLevel -= 2;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.ShaderProperty(shadowEnvStrength, GetLoc("sShadowEnvStrength"));
                     m_MaterialEditor.ShaderProperty(shadowBorderColor, GetLoc("sShadowBorderColor"));
                     m_MaterialEditor.ShaderProperty(shadowBorderRange, GetLoc("sShadowBorderRange"));
@@ -6019,7 +5971,7 @@ namespace lilToon
 
         private void DrawGlitterSettings()
         {
-            edSet.isShowGlitter = Foldout(GetLoc("sGlitterSetting"), edSet.isShowGlitter);
+            edSet.isShowGlitter = lilEditorGUI.Foldout(GetLoc("sGlitterSetting"), edSet.isShowGlitter);
             DrawMenuButton(GetLoc("sAnchorGlitter"), lilPropertyBlock.Glitter);
             if(edSet.isShowGlitter)
             {
@@ -6031,20 +5983,20 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(glitterUVMode, "UV Mode|UV0|UV1");
                     TextureGUI(ref edSet.isShowGlitterColorTex, colorMaskRGBAContent, glitterColorTex, glitterColor);
                     EditorGUI.indentLevel++;
-                    DrawColorAsAlpha(glitterColor);
+                    lilEditorGUI.DrawColorAsAlpha(glitterColor);
                     m_MaterialEditor.ShaderProperty(glitterMainStrength, GetLoc("sMainColorPower"));
                     m_MaterialEditor.ShaderProperty(glitterEnableLighting, GetLoc("sEnableLighting"));
                     m_MaterialEditor.ShaderProperty(glitterShadowMask, GetLoc("sShadowMask"));
                     m_MaterialEditor.ShaderProperty(glitterBackfaceMask, GetLoc("sBackfaceMask"));
                     if(isTransparent) m_MaterialEditor.ShaderProperty(glitterApplyTransparency, GetLoc("sApplyTransparency"));
                     EditorGUI.indentLevel--;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
 
                     // Param1
                     Vector2 scale = new Vector2(256.0f/glitterParams1.vectorValue.x, 256.0f/glitterParams1.vectorValue.y);
                     float size = glitterParams1.vectorValue.z == 0.0f ? 0.0f : Mathf.Sqrt(glitterParams1.vectorValue.z);
                     float density = Mathf.Sqrt(1.0f / glitterParams1.vectorValue.w) / 1.5f;
-                    float sensitivity = RoundFloat1000000(glitterSensitivity.floatValue / density);
+                    float sensitivity = lilEditorGUI.RoundFloat1000000(glitterSensitivity.floatValue / density);
                     EditorGUIUtility.wideMode = true;
 
                     EditorGUI.BeginChangeCheck();
@@ -6077,7 +6029,7 @@ namespace lilToon
         private void DrawOutlineSettings(Material material)
         {
             if(isMultiVariants || isRefr || isFur || isGem || isFakeShadow || material.shader.name.Contains("Overlay")) return;
-            edSet.isShowOutline = Foldout(GetLoc("sOutlineSetting"), edSet.isShowOutline);
+            edSet.isShowOutline = lilEditorGUI.Foldout(GetLoc("sOutlineSetting"), edSet.isShowOutline);
             DrawMenuButton(GetLoc("sAnchorOutline"), lilPropertyBlock.Outline);
             if(edSet.isShowOutline)
             {
@@ -6100,20 +6052,20 @@ namespace lilToon
                     TextureGUI(ref edSet.isShowOutlineMap, mainColorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
                     EditorGUI.indentLevel++;
                     ToneCorrectionGUI(outlineTexHSVG);
-                    if(EditorButton(GetLoc("sBake")))
+                    if(lilEditorGUI.EditorButton(GetLoc("sBake")))
                     {
                         outlineTex.textureValue = AutoBakeOutlineTexture(material);
                         outlineTexHSVG.vectorValue = lilConstant.defaultHSVG;
                     }
                     EditorGUI.indentLevel--;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     GUILayout.Label(GetLoc("sHighlight"), boldLabel);
                     EditorGUI.indentLevel++;
                     m_MaterialEditor.ShaderProperty(outlineLitColor, GetLoc("sColor"));
-                    DrawColorAsAlpha(outlineLitColor);
+                    lilEditorGUI.DrawColorAsAlpha(outlineLitColor);
                     m_MaterialEditor.ShaderProperty(outlineLitApplyTex, GetLoc("sColorFromMain"));
-                    float min = GetRemapMinValue(outlineLitScale.floatValue, outlineLitOffset.floatValue);
-                    float max = GetRemapMaxValue(outlineLitScale.floatValue, outlineLitOffset.floatValue);
+                    float min = lilEditorGUI.GetRemapMinValue(outlineLitScale.floatValue, outlineLitOffset.floatValue);
+                    float max = lilEditorGUI.GetRemapMaxValue(outlineLitScale.floatValue, outlineLitOffset.floatValue);
                     EditorGUI.BeginChangeCheck();
                     EditorGUI.showMixedValue = alphaMaskScale.hasMixedValue || alphaMaskValue.hasMixedValue;
                     min = EditorGUILayout.Slider("Min", min, -0.01f, 1.01f);
@@ -6122,13 +6074,13 @@ namespace lilToon
                     if(EditorGUI.EndChangeCheck())
                     {
                         if(min == max) max += 0.001f;
-                        outlineLitScale.floatValue = GetRemapScaleValue(min, max);
-                        outlineLitOffset.floatValue = GetRemapOffsetValue(min, max);
+                        outlineLitScale.floatValue = lilEditorGUI.GetRemapScaleValue(min, max);
+                        outlineLitOffset.floatValue = lilEditorGUI.GetRemapOffsetValue(min, max);
                     }
                     EditorGUI.indentLevel--;
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.ShaderProperty(outlineEnableLighting, GetLoc("sEnableLighting"));
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sWidth"), GetLoc("sWidthR")), outlineWidthMask, outlineWidth);
                     EditorGUI.indentLevel++;
                     m_MaterialEditor.ShaderProperty(outlineFixWidth, GetLoc("sFixWidth"));
@@ -6145,7 +6097,7 @@ namespace lilToon
                     EditorGUILayout.BeginVertical(boxInnerHalf);
                     TextureGUI(ref edSet.isShowOutlineMap, mainColorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
                     m_MaterialEditor.ShaderProperty(outlineEnableLighting, GetLoc("sEnableLighting"));
-                    DrawLine();
+                    lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sWidth"), GetLoc("sWidthR")), outlineWidthMask, outlineWidth);
                     EditorGUI.indentLevel++;
                     m_MaterialEditor.ShaderProperty(outlineFixWidth, GetLoc("sFixWidth"));
@@ -6162,7 +6114,7 @@ namespace lilToon
         private void DrawOutlineSettingsSimple(Material material)
         {
             if(isMultiVariants || isRefr || isFur || isGem || isFakeShadow || material.shader.name.Contains("Overlay")) return;
-            edSet.isShowOutline = Foldout(GetLoc("sOutlineSetting"), edSet.isShowOutline);
+            edSet.isShowOutline = lilEditorGUI.Foldout(GetLoc("sOutlineSetting"), edSet.isShowOutline);
             DrawMenuButton(GetLoc("sAnchorOutline"), lilPropertyBlock.Outline);
             if(edSet.isShowOutline)
             {
@@ -6185,7 +6137,7 @@ namespace lilToon
                     TextureGUI(ref edSet.isShowOutlineMap, mainColorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
                     EditorGUI.indentLevel++;
                     ToneCorrectionGUI(outlineTexHSVG);
-                    if(EditorButton(GetLoc("sBake")))
+                    if(lilEditorGUI.EditorButton(GetLoc("sBake")))
                     {
                         outlineTex.textureValue = AutoBakeOutlineTexture(material);
                         outlineTexHSVG.vectorValue = lilConstant.defaultHSVG;
@@ -6268,254 +6220,62 @@ namespace lilToon
         #region
         private void UV4Decal(MaterialProperty isDecal, MaterialProperty isLeftOnly, MaterialProperty isRightOnly, MaterialProperty shouldCopy, MaterialProperty shouldFlipMirror, MaterialProperty shouldFlipCopy, MaterialProperty tex, MaterialProperty angle, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty uvMode)
         {
-            m_MaterialEditor.ShaderProperty(uvMode, "UV Mode|UV0|UV1|UV2|UV3|MatCap");
-            ConvertGifToAtlas(tex, decalAnimation, decalSubParam, isDecal);
-            // Toggle decal
-            EditorGUI.BeginChangeCheck();
-            m_MaterialEditor.ShaderProperty(isDecal, GetLoc("sAsDecal"));
-            if(EditorGUI.EndChangeCheck() && isDecal.floatValue == 0.0f)
-            {
-                isLeftOnly.floatValue = 0.0f;
-                isRightOnly.floatValue = 0.0f;
-                shouldFlipMirror.floatValue = 0.0f;
-                shouldCopy.floatValue = 0.0f;
-                shouldFlipCopy.floatValue = 0.0f;
-            }
-
-            if(isDecal.floatValue == 1.0f)
-            {
-                EditorGUI.indentLevel++;
-                // Mirror mode
-                // 0 : Normal
-                // 1 : Flip
-                // 2 : Left only
-                // 3 : Right only
-                // 4 : Right only (Flip)
-                int mirrorMode = 0;
-                if(isRightOnly.floatValue == 1.0f) mirrorMode = 3;
-                if(shouldFlipMirror.floatValue == 1.0f) mirrorMode++;
-                if(isLeftOnly.floatValue == 1.0f) mirrorMode = 2;
-
-                EditorGUI.BeginChangeCheck();
-                mirrorMode = EditorGUILayout.Popup(GetLoc("sMirrorMode"),mirrorMode,new string[]{GetLoc("sMirrorModeNormal"),GetLoc("sMirrorModeFlip"),GetLoc("sMirrorModeLeft"),GetLoc("sMirrorModeRight"),GetLoc("sMirrorModeRightFlip")});
-                if(EditorGUI.EndChangeCheck())
-                {
-                    if(mirrorMode == 0)
-                    {
-                        isLeftOnly.floatValue = 0.0f;
-                        isRightOnly.floatValue = 0.0f;
-                        shouldFlipMirror.floatValue = 0.0f;
-                    }
-                    if(mirrorMode == 1)
-                    {
-                        isLeftOnly.floatValue = 0.0f;
-                        isRightOnly.floatValue = 0.0f;
-                        shouldFlipMirror.floatValue = 1.0f;
-                    }
-                    if(mirrorMode == 2)
-                    {
-                        isLeftOnly.floatValue = 1.0f;
-                        isRightOnly.floatValue = 0.0f;
-                        shouldFlipMirror.floatValue = 0.0f;
-                    }
-                    if(mirrorMode == 3)
-                    {
-                        isLeftOnly.floatValue = 0.0f;
-                        isRightOnly.floatValue = 1.0f;
-                        shouldFlipMirror.floatValue = 0.0f;
-                    }
-                    if(mirrorMode == 4)
-                    {
-                        isLeftOnly.floatValue = 0.0f;
-                        isRightOnly.floatValue = 1.0f;
-                        shouldFlipMirror.floatValue = 1.0f;
-                    }
-                }
-
-                // Copy mode
-                // 0 : Normal
-                // 1 : Symmetry
-                // 2 : Flip
-                int copyMode = 0;
-                if(shouldCopy.floatValue == 1.0f) copyMode = 1;
-                if(shouldFlipCopy.floatValue == 1.0f) copyMode = 2;
-
-                EditorGUI.BeginChangeCheck();
-                copyMode = EditorGUILayout.Popup(GetLoc("sCopyMode"),copyMode,new string[]{GetLoc("sCopyModeNormal"),GetLoc("sCopyModeSymmetry"),GetLoc("sCopyModeFlip")});
-                if(EditorGUI.EndChangeCheck())
-                {
-                    if(copyMode == 0)
-                    {
-                        shouldCopy.floatValue = 0.0f;
-                        shouldFlipCopy.floatValue = 0.0f;
-                    }
-                    if(copyMode == 1)
-                    {
-                        shouldCopy.floatValue = 1.0f;
-                        shouldFlipCopy.floatValue = 0.0f;
-                    }
-                    if(copyMode == 2)
-                    {
-                        shouldCopy.floatValue = 1.0f;
-                        shouldFlipCopy.floatValue = 1.0f;
-                    }
-                }
-
-                // Load scale & offset
-                float scaleX = tex.textureScaleAndOffset.x;
-                float scaleY = tex.textureScaleAndOffset.y;
-                float posX = tex.textureScaleAndOffset.z;
-                float posY = tex.textureScaleAndOffset.w;
-
-                // scale & offset -> scale & position
-                if(scaleX==0.0f)
-                {
-                    posX = 0.5f;
-                    scaleX = 0.000001f;
-                }
-                else
-                {
-                    posX = (0.5f - posX) / scaleX;
-                    scaleX = 1.0f / scaleX;
-                }
-
-                if(scaleY==0.0f)
-                {
-                    posY = 0.5f;
-                    scaleY = 0.000001f;
-                }
-                else
-                {
-                    posY = (0.5f - posY) / scaleY;
-                    scaleY = 1.0f / scaleY;
-                }
-                scaleX = RoundFloat1000000(scaleX);
-                scaleY = RoundFloat1000000(scaleY);
-                posX = RoundFloat1000000(posX);
-                posY = RoundFloat1000000(posY);
-
-                // If uv copy enables, fix position
-                EditorGUI.BeginChangeCheck();
-                if(copyMode > 0)
-                {
-                    if(posX < 0.5f) posX = 1.0f - posX;
-                    posX = EditorGUILayout.Slider(GetLoc("sPositionX"), posX, 0.5f, 1.0f);
-                }
-                else
-                {
-                    posX = EditorGUILayout.Slider(GetLoc("sPositionX"), posX, 0.0f, 1.0f);
-                }
-
-                // Draw properties
-                posY = EditorGUILayout.Slider(GetLoc("sPositionY"), posY, 0.0f, 1.0f);
-                scaleX = EditorGUILayout.Slider(GetLoc("sScaleX"), scaleX, -1.0f, 1.0f);
-                scaleY = EditorGUILayout.Slider(GetLoc("sScaleY"), scaleY, -1.0f, 1.0f);
-                if(EditorGUI.EndChangeCheck())
-                {
-                    // Avoid division by zero
-                    if(scaleX == 0.0f) scaleX = 0.000001f;
-                    if(scaleY == 0.0f) scaleY = 0.000001f;
-
-                    // scale & position -> scale & offset
-                    scaleX = 1.0f / scaleX;
-                    scaleY = 1.0f / scaleY;
-                    posX = (-posX * scaleX) + 0.5f;
-                    posY = (-posY * scaleY) + 0.5f;
-
-                    tex.textureScaleAndOffset = new Vector4(scaleX, scaleY, posX, posY);
-                }
-
-                m_MaterialEditor.ShaderProperty(angle, GetLoc("sAngle"));
-                EditorGUI.indentLevel--;
-                m_MaterialEditor.ShaderProperty(decalAnimation, BuildParams(GetLoc("sAnimation"), GetLoc("sXFrames"), GetLoc("sYFrames"), GetLoc("sFrames"), GetLoc("sFPS")));
-                m_MaterialEditor.ShaderProperty(decalSubParam, BuildParams(GetLoc("sXRatio"), GetLoc("sYRatio"), GetLoc("sFixBorder")));
-            }
-            else
-            {
-                m_MaterialEditor.TextureScaleOffsetProperty(tex);
-                m_MaterialEditor.ShaderProperty(angle, GetLoc("sAngle"));
-            }
-
-            if(EditorButton(GetLoc("sReset")) && EditorUtility.DisplayDialog(GetLoc("sDialogResetUV"),GetLoc("sDialogResetUVMes"),GetLoc("sYes"),GetLoc("sNo")))
-            {
-                uvMode.floatValue = 0.0f;
-                isDecal.floatValue = 0.0f;
-                isLeftOnly.floatValue = 0.0f;
-                isRightOnly.floatValue = 0.0f;
-                shouldCopy.floatValue = 0.0f;
-                shouldFlipMirror.floatValue = 0.0f;
-                shouldFlipCopy.floatValue = 0.0f;
-                angle.floatValue = 0.0f;
-                decalAnimation.vectorValue = new Vector4(1.0f,1.0f,1.0f,30.0f);
-                decalSubParam.vectorValue = new Vector4(1.0f,1.0f,0.01f,1.0f);
-            }
+            lilEditorGUI.UV4Decal(m_MaterialEditor, isDecal, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, tex, angle, decalAnimation, decalSubParam, uvMode);
         }
 
         private void ToneCorrectionGUI(MaterialProperty hsvg)
         {
-            m_MaterialEditor.ShaderProperty(hsvg, BuildParams(GetLoc("sHue"), GetLoc("sSaturation"), GetLoc("sValue"), GetLoc("sGamma")));
-            // Reset
-            if(EditorButton(GetLoc("sReset")))
-            {
-                hsvg.vectorValue = lilConstant.defaultHSVG;
-            }
+            lilEditorGUI.ToneCorrectionGUI(m_MaterialEditor, hsvg);
         }
 
         private void ToneCorrectionGUI(MaterialProperty hsvg, int indent)
         {
-            EditorGUI.indentLevel += indent;
-            ToneCorrectionGUI(hsvg);
-            EditorGUI.indentLevel -= indent;
+            lilEditorGUI.ToneCorrectionGUI(m_MaterialEditor, hsvg, indent);
         }
 
-        private void DrawVectorAs4Float(MaterialProperty prop, string label0, string label1, string label2, string label3)
+        private void UVSettingGUI(MaterialProperty uvst, MaterialProperty uvsr)
         {
-            float param1 = prop.vectorValue.x;
-            float param2 = prop.vectorValue.y;
-            float param3 = prop.vectorValue.z;
-            float param4 = prop.vectorValue.w;
-
-            EditorGUI.BeginChangeCheck();
-            EditorGUI.showMixedValue = prop.hasMixedValue;
-            param1 = EditorGUILayout.FloatField(label0, param1);
-            param2 = EditorGUILayout.FloatField(label1, param2);
-            param3 = EditorGUILayout.FloatField(label2, param3);
-            param4 = EditorGUILayout.FloatField(label3, param4);
-            EditorGUI.showMixedValue = false;
-
-            if(EditorGUI.EndChangeCheck())
-            {
-                prop.vectorValue = new Vector4(param1, param2, param3, param4);
-            }
+            lilEditorGUI.UVSettingGUI(m_MaterialEditor, uvst, uvsr);
         }
 
-        private void DrawColorAsAlpha(MaterialProperty prop, string label)
+        private void BlendSettingGUI(ref bool isShow, string labelName, MaterialProperty srcRGB, MaterialProperty dstRGB, MaterialProperty srcA, MaterialProperty dstA, MaterialProperty opRGB, MaterialProperty opA)
         {
-            float alpha = prop.colorValue.a;
-
-            EditorGUI.BeginChangeCheck();
-            EditorGUI.showMixedValue = prop.hasMixedValue;
-            alpha = EditorGUILayout.Slider(label, alpha, 0.0f, 1.0f);
-            EditorGUI.showMixedValue = false;
-
-            if(EditorGUI.EndChangeCheck())
-            {
-                prop.colorValue = new Color(prop.colorValue.r, prop.colorValue.g, prop.colorValue.b, alpha);
-            }
+            lilEditorGUI.BlendSettingGUI(m_MaterialEditor, isCustomEditor, ref isShow, labelName, srcRGB, dstRGB, srcA, dstA, opRGB, opA);
         }
 
-        private void DrawColorAsAlpha(MaterialProperty prop)
+        private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName)
         {
-            DrawColorAsAlpha(prop, GetLoc("sAlpha"));
+            lilEditorGUI.TextureGUI(m_MaterialEditor, isCustomEditor, ref isShow, guiContent, textureName);
         }
 
-        private void RemoveUnusedPropertiesGUI(Material material)
+        private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba)
         {
-            if(EditorButton(GetLoc("sRemoveUnused")))
-            {
-                Undo.RecordObject(material, "Remove unused properties");
-                lilMaterialUtils.RemoveUnusedTexture(material, isLite);
-            }
+            lilEditorGUI.TextureGUI(m_MaterialEditor, isCustomEditor, ref isShow, guiContent, textureName, rgba);
+        }
+
+        private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate)
+        {
+            lilEditorGUI.TextureGUI(m_MaterialEditor, isCustomEditor, ref isShow, guiContent, textureName, rgba, scrollRotate);
+        }
+
+        private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate, bool useCustomUV, bool useUVAnimation)
+        {
+            lilEditorGUI.TextureGUI(m_MaterialEditor, isCustomEditor, ref isShow, guiContent, textureName, rgba, scrollRotate, useCustomUV, useUVAnimation);
+        }
+
+        private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate, MaterialProperty uvMode, bool useCustomUV, bool useUVAnimation)
+        {
+            lilEditorGUI.TextureGUI(m_MaterialEditor, isCustomEditor, ref isShow, guiContent, textureName, rgba, scrollRotate, uvMode, useCustomUV, useUVAnimation);
+        }
+
+        private void MatCapTextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty blendUV1, MaterialProperty zRotCancel, MaterialProperty perspective, MaterialProperty vrParallaxStrength)
+        {
+            lilEditorGUI.MatCapTextureGUI(m_MaterialEditor, isCustomEditor, ref isShow, guiContent, textureName, blendUV1, zRotCancel, perspective, vrParallaxStrength);
+        }
+
+        private void MatCapTextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty blendUV1, MaterialProperty zRotCancel, MaterialProperty perspective, MaterialProperty vrParallaxStrength)
+        {
+            lilEditorGUI.MatCapTextureGUI(m_MaterialEditor, isCustomEditor, ref isShow, guiContent, textureName, rgba, blendUV1, zRotCancel, perspective, vrParallaxStrength);
         }
 
         private void TextureBakeGUI(Material material, int bakeType)
@@ -6529,7 +6289,7 @@ namespace lilToon
             // 5 : 2nd Simple Button
             // 6 : 3rd Simple Button
             string[] sBake = {GetLoc("sBakeAll"), GetLoc("sBake1st"), GetLoc("sBake2nd"), GetLoc("sBake3rd"), GetLoc("sBake"), GetLoc("sBake"), GetLoc("sBake")};
-            if(EditorButton(sBake[bakeType]))
+            if(lilEditorGUI.EditorButton(sBake[bakeType]))
             {
                 Undo.RecordObject(material, "Bake");
                 TextureBake(material, bakeType);
@@ -6538,7 +6298,7 @@ namespace lilToon
 
         private void AlphamaskToTextureGUI(Material material)
         {
-            if(mainTex.textureValue != null && EditorButton(GetLoc("sBakeAlphamask")))
+            if(mainTex.textureValue != null && lilEditorGUI.EditorButton(GetLoc("sBakeAlphamask")))
             {
                 Texture2D bakedTexture = AutoBakeAlphaMask(material);
                 if(bakedTexture == mainTex.textureValue) return;
@@ -6548,244 +6308,6 @@ namespace lilToon
                 alphaMask.textureValue = null;
                 alphaMaskValue.floatValue = 0.0f;
             }
-        }
-
-        private void SetAlphaIsTransparencyGUI(MaterialProperty tex)
-        {
-            if(tex.textureValue != null && !((Texture2D)tex.textureValue).alphaIsTransparency && lilEditorGUI.AutoFixHelpBox(GetLoc("sNotAlphaIsTransparency")))
-            {
-                string path = AssetDatabase.GetAssetPath(tex.textureValue);
-                TextureImporter textureImporter = (TextureImporter)TextureImporter.GetAtPath(path);
-                textureImporter.alphaIsTransparency = true;
-                AssetDatabase.ImportAsset(path);
-            }
-        }
-
-        private void UVSettingGUI(MaterialProperty uvst, MaterialProperty uvsr)
-        {
-            EditorGUILayout.LabelField(GetLoc("sUVSetting"), boldLabel);
-            m_MaterialEditor.TextureScaleOffsetProperty(uvst);
-            m_MaterialEditor.ShaderProperty(uvsr, BuildParams(GetLoc("sAngle"), GetLoc("sUVAnimation"), GetLoc("sScroll"), GetLoc("sRotate")));
-        }
-
-        private void InvBorderGUI(MaterialProperty prop)
-        {
-            float f = prop.floatValue;
-            EditorGUI.BeginChangeCheck();
-            EditorGUI.showMixedValue = prop.hasMixedValue;
-            f = 1.0f - EditorGUILayout.Slider(GetLoc("sBorder"), 1.0f - f, 0.0f, 1.0f);
-            EditorGUI.showMixedValue = false;
-            if(EditorGUI.EndChangeCheck())
-            {
-                prop.floatValue = f;
-            }
-        }
-
-        private void MinusRangeGUI(MaterialProperty prop, string label)
-        {
-            float f = -prop.floatValue;
-            EditorGUI.BeginChangeCheck();
-            EditorGUI.showMixedValue = prop.hasMixedValue;
-            f = EditorGUILayout.Slider(label, f, 0.0f, 1.0f);
-            EditorGUI.showMixedValue = false;
-            if(EditorGUI.EndChangeCheck())
-            {
-                prop.floatValue = -f;
-            }
-        }
-
-        private void BlendSettingGUI(ref bool isShow, string labelName, MaterialProperty srcRGB, MaterialProperty dstRGB, MaterialProperty srcA, MaterialProperty dstA, MaterialProperty opRGB, MaterialProperty opA)
-        {
-            isShow = lilEditorGUI.DrawSimpleFoldout(labelName, isShow, isCustomEditor);
-            if(isShow)
-            {
-                EditorGUI.indentLevel++;
-                m_MaterialEditor.ShaderProperty(srcRGB, GetLoc("sSrcBlendRGB"));
-                m_MaterialEditor.ShaderProperty(dstRGB, GetLoc("sDstBlendRGB"));
-                m_MaterialEditor.ShaderProperty(srcA, GetLoc("sSrcBlendAlpha"));
-                m_MaterialEditor.ShaderProperty(dstA, GetLoc("sDstBlendAlpha"));
-                m_MaterialEditor.ShaderProperty(opRGB, GetLoc("sBlendOpRGB"));
-                m_MaterialEditor.ShaderProperty(opA, GetLoc("sBlendOpAlpha"));
-                EditorGUI.indentLevel--;
-            }
-        }
-
-        private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName)
-        {
-            isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, isShow, isCustomEditor);
-            if(isShow)
-            {
-                EditorGUI.indentLevel++;
-                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
-                EditorGUI.indentLevel--;
-            }
-        }
-
-        private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba)
-        {
-            isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
-            if(isShow)
-            {
-                EditorGUI.indentLevel++;
-                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
-                EditorGUI.indentLevel--;
-            }
-        }
-
-        private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate)
-        {
-            isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
-            if(isShow)
-            {
-                EditorGUI.indentLevel++;
-                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
-                m_MaterialEditor.ShaderProperty(scrollRotate, GetLoc("sScroll"));
-                EditorGUI.indentLevel--;
-            }
-        }
-
-        private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate, bool useCustomUV, bool useUVAnimation)
-        {
-            if(useCustomUV)
-            {
-                isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
-                if(isShow)
-                {
-                    EditorGUI.indentLevel++;
-                    if(useUVAnimation)  UVSettingGUI(textureName, scrollRotate);
-                    else                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
-                    EditorGUI.indentLevel--;
-                }
-            }
-            else
-            {
-                m_MaterialEditor.TexturePropertySingleLine(guiContent, textureName, rgba);
-            }
-        }
-
-        private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate, MaterialProperty uvMode, bool useCustomUV, bool useUVAnimation)
-        {
-            if(useCustomUV)
-            {
-                isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
-                if(isShow)
-                {
-                    EditorGUI.indentLevel++;
-                    if(useUVAnimation)  UVSettingGUI(textureName, scrollRotate);
-                    else                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
-                    m_MaterialEditor.ShaderProperty(uvMode, "UV Mode|UV0|UV1|UV2|UV3|Rim");
-                    EditorGUI.indentLevel--;
-                }
-            }
-            else
-            {
-                m_MaterialEditor.TexturePropertySingleLine(guiContent, textureName, rgba);
-            }
-        }
-
-        private void MatCapTextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty blendUV1, MaterialProperty zRotCancel, MaterialProperty perspective, MaterialProperty vrParallaxStrength)
-        {
-            isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, isShow, isCustomEditor);
-            if(isShow)
-            {
-                EditorGUI.indentLevel++;
-                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
-                m_MaterialEditor.ShaderProperty(blendUV1, GetLoc("sBlendUV1"));
-                m_MaterialEditor.ShaderProperty(zRotCancel, GetLoc("sMatCapZRotCancel"));
-                m_MaterialEditor.ShaderProperty(perspective, GetLoc("sFixPerspective"));
-                m_MaterialEditor.ShaderProperty(vrParallaxStrength, GetLoc("sVRParallaxStrength"));
-                EditorGUI.indentLevel--;
-            }
-        }
-
-        private void MatCapTextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty blendUV1, MaterialProperty zRotCancel, MaterialProperty perspective, MaterialProperty vrParallaxStrength)
-        {
-            isShow = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
-            if(isShow)
-            {
-                EditorGUI.indentLevel++;
-                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
-                m_MaterialEditor.ShaderProperty(blendUV1, GetLoc("sBlendUV1"));
-                m_MaterialEditor.ShaderProperty(zRotCancel, GetLoc("sMatCapZRotCancel"));
-                m_MaterialEditor.ShaderProperty(perspective, GetLoc("sFixPerspective"));
-                m_MaterialEditor.ShaderProperty(vrParallaxStrength, GetLoc("sVRParallaxStrength"));
-
-                GUILayout.BeginHorizontal();
-                Rect position2 = EditorGUILayout.GetControlRect();
-                Rect labelRect = new Rect(position2.x, position2.y, EditorGUIUtility.labelWidth, position2.height);
-                Rect buttonRect1 = new Rect(labelRect.x + labelRect.width, position2.y, (position2.width - EditorGUIUtility.labelWidth)*0.5f, position2.height);
-                Rect buttonRect2 = new Rect(buttonRect1.x + buttonRect1.width, position2.y, buttonRect1.width, position2.height);
-                EditorGUI.PrefixLabel(labelRect, new GUIContent("UV Preset"));
-                if(GUI.Button(buttonRect1, new GUIContent("MatCap"))) ApplyMatCapUVPreset(false, blendUV1, zRotCancel, perspective, vrParallaxStrength);
-                if(GUI.Button(buttonRect2, new GUIContent("AngelRing"))) ApplyMatCapUVPreset(true, blendUV1, zRotCancel, perspective, vrParallaxStrength);
-                GUILayout.EndHorizontal();
-                EditorGUI.indentLevel--;
-            }
-        }
-
-        private void ApplyMatCapUVPreset(bool isAngelRing, MaterialProperty blendUV1, MaterialProperty zRotCancel, MaterialProperty perspective, MaterialProperty vrParallaxStrength)
-        {
-            if(isAngelRing)
-            {
-                blendUV1.vectorValue = new Vector4(0.0f, 1.0f, 0.0f, 0.0f);
-                zRotCancel.floatValue = 1.0f;
-                perspective.floatValue = 0.0f;
-                vrParallaxStrength.floatValue = 0.0f;
-            }
-            else
-            {
-                blendUV1.vectorValue = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-                zRotCancel.floatValue = 1.0f;
-                perspective.floatValue = 1.0f;
-                vrParallaxStrength.floatValue = 1.0f;
-            }
-        }
-
-        private float GetRemapMinValue(float scale, float offset)
-        {
-            return RoundFloat1000000(Mathf.Clamp(-offset / scale, -0.01f, 1.01f));
-        }
-
-        private float GetRemapMaxValue(float scale, float offset)
-        {
-            return RoundFloat1000000(Mathf.Clamp((1.0f - offset) / scale, -0.01f, 1.01f));
-        }
-
-        private float GetRemapScaleValue(float min, float max)
-        {
-            return 1.0f / (max - min);
-        }
-
-        private float GetRemapOffsetValue(float min, float max)
-        {
-            return min / (min - max);
-        }
-
-        private float RoundFloat1000000(float val)
-        {
-            return Mathf.Floor(val * 1000000.0f + 0.5f) * 0.000001f;
-        }
-
-        public static void ConvertGifToAtlas(MaterialProperty tex, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty isDecal)
-        {
-            #if SYSTEM_DRAWING
-                if(tex.textureValue != null && AssetDatabase.GetAssetPath(tex.textureValue).EndsWith(".gif", StringComparison.OrdinalIgnoreCase) && EditorButton(GetLoc("sConvertGif")))
-                {
-                    int frameCount, loopXY, duration;
-                    float xScale, yScale;
-                    string savePath = lilTextureUtils.ConvertGifToAtlas(tex.textureValue, out frameCount, out loopXY, out duration, out xScale, out yScale);
-
-                    tex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(savePath);
-                    decalAnimation.vectorValue = new Vector4(loopXY,loopXY,(float)frameCount,100.0f/(float)duration);
-                    decalSubParam.vectorValue = new Vector4(xScale,yScale,decalSubParam.vectorValue.z,decalSubParam.vectorValue.w);
-                    isDecal.floatValue = 1.0f;
-                }
-            #endif
-        }
-
-        private static bool EditorButton(string label)
-        {
-            return GUI.Button(EditorGUI.IndentedRect(EditorGUILayout.GetControlRect()), label);
         }
         #endregion
 
@@ -7554,7 +7076,7 @@ namespace lilToon
                 lilToonInspector inspector = new lilToonInspector();
 
                 EditorGUILayout.LabelField("Selected Materials", string.Join(", ", objects.Select(obj => obj.name).ToArray()), EditorStyles.boldLabel);
-                DrawLine();
+                lilEditorGUI.DrawLine();
                 scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
                 EditorGUILayout.BeginVertical(InitializeMarginBox(20, 4, 4));
                 inspector.DrawAllGUI(materialEditor, props, material);
@@ -7747,6 +7269,36 @@ namespace lilToon
         public static void DrawSimpleFoldout(GUIContent guiContent, MaterialProperty textureName, ref bool condition, bool isCustomEditor = true)
         {
             condition = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, condition, isCustomEditor);
+        }
+
+        [Obsolete("Use \"lilShaderManager.InitializeShaders()\" instead.")]
+        public static void InitializeShaders()
+        {
+            lilShaderManager.InitializeShaders();
+        }
+
+        [Obsolete("Use \"lilMaterialUtils.CheckMainTextureName(string name)\" instead.")]
+        public static bool CheckMainTextureName(string name)
+        {
+            return lilMaterialUtils.CheckMainTextureName(name);
+        }
+
+        [Obsolete("Use \"lilMaterialUtils.RemoveUnusedTexture(Material material)\" instead.")]
+        public static void RemoveUnusedTexture(Material material)
+        {
+            lilMaterialUtils.RemoveUnusedTexture(material);
+        }
+
+        [Obsolete("Use \"lilToonPreset.ApplyPreset(Material material, lilToonPreset preset, bool ismulti)\" instead.")]
+        public static void ApplyPreset(Material material, lilToonPreset preset)
+        {
+            lilToonPreset.ApplyPreset(material, preset, isMulti);
+        }
+
+        [Obsolete("Use \"lilEditorGUI.ConvertGifToAtlas(MaterialProperty tex, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty isDecal)\" instead.")]
+        public static void ConvertGifToAtlas(MaterialProperty tex, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty isDecal)
+        {
+            lilEditorGUI.ConvertGifToAtlas(tex, decalAnimation, decalSubParam, isDecal);
         }
 
         private const string WARN_ABOUT_DIRECTORY = "Methods related to directories have been moved to lilDirectoryManager.";

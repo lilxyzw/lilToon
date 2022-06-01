@@ -261,7 +261,7 @@ public class lilToonSetting : ScriptableObject
         shaderSetting.LIL_FEATURE_TEX_TESSELLATION = true;
     }
 
-    public static void ApplyShaderSetting(lilToonSetting shaderSetting, string reportTitle = null)
+    internal static void ApplyShaderSetting(lilToonSetting shaderSetting, string reportTitle = null)
     {
         EditorUtility.SetDirty(shaderSetting);
         AssetDatabase.SaveAssets();
@@ -455,7 +455,7 @@ public class lilToonSetting : ScriptableObject
         return BuildShaderSettingString(shaderSetting, isFile);
     }
 
-    public static void ApplyShaderSettingOptimized()
+    internal static void ApplyShaderSettingOptimized()
     {
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
@@ -482,7 +482,7 @@ public class lilToonSetting : ScriptableObject
         AssetDatabase.Refresh();
     }
 
-    public static void SetShaderSettingBeforeBuild(GameObject gameObject)
+    internal static void SetShaderSettingBeforeBuild(GameObject gameObject)
     {
         if(File.Exists(lilDirectoryManager.postBuildTempPath)) return;
         File.Create(lilDirectoryManager.postBuildTempPath);
@@ -541,14 +541,14 @@ public class lilToonSetting : ScriptableObject
         AssetDatabase.Refresh();
     }
 
-    public static void SetShaderSettingBeforeBuild()
+    internal static void SetShaderSettingBeforeBuild()
     {
         if(File.Exists(lilDirectoryManager.postBuildTempPath)) return;
         File.Create(lilDirectoryManager.postBuildTempPath);
         ApplyShaderSettingOptimized();
     }
 
-    public static void SetShaderSettingAfterBuild()
+    internal static void SetShaderSettingAfterBuild()
     {
         if(!File.Exists(lilDirectoryManager.postBuildTempPath)) return;
         File.Delete(lilDirectoryManager.postBuildTempPath);

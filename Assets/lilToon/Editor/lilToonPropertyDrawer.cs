@@ -316,7 +316,7 @@ namespace lilToon
                 // Angle
                 angle = EditorGUI.Slider(position, labels[0], angle, -180.0f, 180.0f);
 
-                lilToonInspector.DrawLine();
+                lilEditorGUI.DrawLine();
 
                 // Heading (UV Animation)
                 EditorGUILayout.LabelField(labels[1], EditorStyles.boldLabel);
