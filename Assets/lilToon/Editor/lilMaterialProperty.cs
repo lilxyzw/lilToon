@@ -8,7 +8,7 @@ namespace lilToon
     internal class lilMaterialProperty
     {
         public MaterialProperty p;
-        public List<lilPropertyBlock> blocks;
+        public List<PropertyBlock> blocks;
         public bool isTexture;
 
         // Values
@@ -94,7 +94,7 @@ namespace lilToon
         public lilMaterialProperty()
         {
             p = null;
-            blocks = new List<lilPropertyBlock>();
+            blocks = new List<PropertyBlock>();
             isTexture = false;
         }
 

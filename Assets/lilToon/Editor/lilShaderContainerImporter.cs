@@ -5,7 +5,6 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEditor;
-using lilToon.lilRenderPipelineReader;
 using System.Reflection;
 #if UNITY_2020_2_OR_NEWER
 using UnityEditor.AssetImporters;
@@ -191,7 +190,7 @@ namespace lilToon
 
             StringBuilder sb;
 
-            version = RPReader.GetRPInfos();
+            version = lilRenderPipelineReader.GetRPInfos();
 
             switch(version.RP)
             {
@@ -330,7 +329,7 @@ namespace lilToon
                 Debug.LogWarning("[" + assetName + "] " + "File not found: " + path);
                 return;
             }
-            if(ctx != null) ctx.DependsOnSourceAsset(path);
+            AddDependency(ctx, path);
             StreamReader sr = new StreamReader(path);
             string line = "";
 
@@ -459,7 +458,7 @@ namespace lilToon
             string pathForRP = assetFolderPath + Path.GetFileNameWithoutExtension(subpath) + rpname + Path.GetExtension(subpath);
             if(File.Exists(pathForRP))
             {
-                if(ctx != null) ctx.DependsOnSourceAsset(pathForRP);
+                AddDependency(ctx, pathForRP);
                 insertPass = ReadTextFile(pathForRP);
                 return;
             }
@@ -472,7 +471,7 @@ namespace lilToon
                 return;
             }
 
-            if(ctx != null) ctx.DependsOnSourceAsset(subpath);
+            AddDependency(ctx, subpath);
             insertPass = ReadTextFile(subpath);
         }
 
@@ -573,7 +572,7 @@ namespace lilToon
                 Debug.LogWarning("[" + assetName + "] " + "File not found: " + subpath);
                 return;
             }
-            if(ctx != null) ctx.DependsOnSourceAsset(subpath);
+            AddDependency(ctx, subpath);
 
             if(rpname == "URP" && !subpath.Contains("UsePass"))
             {
@@ -615,7 +614,7 @@ namespace lilToon
                 Debug.LogWarning("[" + assetName + "] " + "File not found: " + subpath);
                 return;
             }
-            if(ctx != null) ctx.DependsOnSourceAsset(subpath);
+            AddDependency(ctx, subpath);
             insertText = ReadTextFile(subpath);
         }
 
@@ -635,7 +634,7 @@ namespace lilToon
                 Debug.LogWarning("[" + assetName + "] " + "File not found: " + subpath);
                 return;
             }
-            if(ctx != null) ctx.DependsOnSourceAsset(subpath);
+            AddDependency(ctx, subpath);
             insertPostText = ReadTextFile(subpath);
         }
 
@@ -664,7 +663,7 @@ namespace lilToon
                 Debug.LogWarning("[" + assetName + "] " + "File not found: " + subpath);
                 return;
             }
-            if(ctx != null) ctx.DependsOnSourceAsset(subpath);
+            AddDependency(ctx, subpath);
             sb.AppendLine(ReadTextFile(subpath));
         }
 
@@ -1308,6 +1307,13 @@ namespace lilToon
                 return (string)method.Invoke(null, new object[]{isFile});
             }
             return "";
+        }
+
+        private static void AddDependency(AssetImportContext ctx, string path)
+        {
+            #if UNITY_2018_2_OR_NEWER
+                if(ctx != null) ctx.DependsOnSourceAsset(path);
+            #endif
         }
     }
 }

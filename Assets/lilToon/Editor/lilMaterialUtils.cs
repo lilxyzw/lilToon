@@ -1,8 +1,5 @@
 #if UNITY_EDITOR
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using lilToon.lilRenderPipelineReader;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,7 +10,7 @@ namespace lilToon
         internal static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess, bool ismulti)
         {
             RenderingMode rend = renderingMode;
-            lilRenderPipeline RP = RPReader.GetRP();
+            lilRenderPipeline RP = lilRenderPipelineReader.GetRP();
             if(ismulti)
             {
                 float tpmode = material.GetFloat("_TransparentMode");
@@ -318,7 +315,7 @@ namespace lilToon
 
         public static bool CheckMainTextureName(string name)
         {
-            return lilConstant.mainTexCheckWords.Any(word => !name.Contains(word));
+            return lilConstants.mainTexCheckWords.Any(word => !name.Contains(word));
         }
 
         private static void FixTransparentRenderQueue(Material material, RenderingMode renderingMode)
@@ -449,7 +446,7 @@ namespace lilToon
             else
             {
                 SetShaderKeywords(material, "ETC1_EXTERNAL_ALPHA",                  false);
-                SetShaderKeywords(material, "_DETAIL_MULX2",                        isOutl && material.GetVector("_OutlineTexHSVG") != lilConstant.defaultHSVG);
+                SetShaderKeywords(material, "_DETAIL_MULX2",                        isOutl && material.GetVector("_OutlineTexHSVG") != lilConstants.defaultHSVG);
             }
 
             // Remove old keywords
@@ -477,13 +474,13 @@ namespace lilToon
 
         private static bool IsFeatureOnHSVG(Material material, string propname)
         {
-            if(material.HasProperty(propname)) return material.GetVector(propname) != lilConstant.defaultHSVG;
+            if(material.HasProperty(propname)) return material.GetVector(propname) != lilConstants.defaultHSVG;
             return false;
         }
 
         private static bool IsFeatureOnDecalAnimation(Material material, string propname)
         {
-            if(material.HasProperty(propname)) return material.GetVector(propname) != lilConstant.defaultDecalAnim;
+            if(material.HasProperty(propname)) return material.GetVector(propname) != lilConstants.defaultDecalAnim;
             return false;
         }
 

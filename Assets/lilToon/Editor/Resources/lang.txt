@@ -113,10 +113,10 @@ sCutoff	Cutoff	Cutoff (完全透明にする範囲)	Cutoff	Cutoff	Cutoff
 sSubpassCutoff	Subpass Cutoff	Subpass Cutoff (完全透明にする範囲)	Subpass Cutoff	Subpass Cutoff	Subpass Cutoff
 sCullMode	Cull Mode	Cull Mode (描画面)	Cull Mode	Cull Mode	Cull Mode
 sCullModeOff	Off	Off (両面を描画)	Off	Off	Off
-sCullModeFront	Front	Front (背面のみ描画)	Front	Front	Front
+sCullModeFront	Front	Front (裏面のみ描画)	Front	Front	Front
 sCullModeBack	Back	Back (前面のみ描画)	Back	Back	Back
-sFlipBackfaceNormal	Flip Backface Normal	背面の法線を反転	후면의 법선을 반전	翻转背影法线	翻轉背影法線
-sShiftBackfaceUV	Shift Backface UV	背面のUVをずらす	후면의 UV를 드티다	移动背面的UV	移動背面的UV
+sFlipBackfaceNormal	Flip Backface Normal	裏面の法線を反転	뒷면의 법선을 반전	翻转背影法线	翻轉背影法線
+sShiftBackfaceUV	Shift Backface UV	裏面のUVをずらす	뒷면의 UV를 드티다	移动背面的UV	移動背面的UV
 sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면에 그림자를 드리우다	背面的力量阴影	背面的力量陰影
 sLightingSettings	Lighting	ライティング・明るさ設定	라이팅 설정	照明设置	照明設置
 sVertexLightStrength	Vertex Light Strength	頂点ライトの強度	꼭지점 라이트의 강도	顶点灯的强度	頂點燈的強度

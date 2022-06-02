@@ -14,8 +14,6 @@ namespace lilToon
         {
             //------------------------------------------------------------------------------------------------------------------------------
             // Variables
-            string editorPath = lilDirectoryManager.GetEditorPath();
-
             lilToonInspector.ApplyEditorSettingTemp();
             lilLanguageManager.InitializeLanguage();
 
@@ -25,36 +23,40 @@ namespace lilToon
             {
                 File.Create(lilDirectoryManager.startupTempPath);
 
-                // RSP
-                if(!File.Exists(lilDirectoryManager.rspPath))
-                {
-                    StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
-                    sw.Write("-r:System.Drawing.dll\n-define:SYSTEM_DRAWING");
-                    sw.Close();
-                    AssetDatabase.Refresh();
-                    AssetDatabase.ImportAsset(editorPath);
-                }
+                #if !SYSTEM_DRAWING
+                    string editorPath = lilDirectoryManager.GetEditorPath();
 
-                StreamReader sr = new StreamReader(lilDirectoryManager.rspPath);
-                string s = sr.ReadToEnd();
-                sr.Close();
+                    // RSP
+                    if(!File.Exists(lilDirectoryManager.rspPath))
+                    {
+                        StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
+                        sw.Write("-r:System.Drawing.dll\n-define:SYSTEM_DRAWING");
+                        sw.Close();
+                        AssetDatabase.Refresh();
+                        AssetDatabase.ImportAsset(editorPath);
+                    }
 
-                if(!s.Contains("r:System.Drawing.dll"))
-                {
-                    StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
-                    sw.Write("\n-r:System.Drawing.dll");
-                    sw.Close();
-                    AssetDatabase.Refresh();
-                    AssetDatabase.ImportAsset(editorPath);
-                }
-                if(!s.Contains("define:SYSTEM_DRAWING"))
-                {
-                    StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
-                    sw.Write("\n-define:SYSTEM_DRAWING");
-                    sw.Close();
-                    AssetDatabase.Refresh();
-                    AssetDatabase.ImportAsset(editorPath);
-                }
+                    StreamReader sr = new StreamReader(lilDirectoryManager.rspPath);
+                    string s = sr.ReadToEnd();
+                    sr.Close();
+
+                    if(!s.Contains("r:System.Drawing.dll"))
+                    {
+                        StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
+                        sw.Write("\n-r:System.Drawing.dll");
+                        sw.Close();
+                        AssetDatabase.Refresh();
+                        AssetDatabase.ImportAsset(editorPath);
+                    }
+                    if(!s.Contains("define:SYSTEM_DRAWING"))
+                    {
+                        StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
+                        sw.Write("\n-define:SYSTEM_DRAWING");
+                        sw.Close();
+                        AssetDatabase.Refresh();
+                        AssetDatabase.ImportAsset(editorPath);
+                    }
+                #endif
             }
 
             //------------------------------------------------------------------------------------------------------------------------------
@@ -66,10 +68,10 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Migration
-            if(lilToonInspector.edSet.currentVersionValue < lilConstant.currentVersionValue)
+            if(lilToonInspector.edSet.currentVersionValue < lilConstants.currentVersionValue)
             {
                 MigrateMaterials();
-                lilToonInspector.edSet.currentVersionValue = lilConstant.currentVersionValue;
+                lilToonInspector.edSet.currentVersionValue = lilConstants.currentVersionValue;
                 lilToonInspector.SaveEditorSettingTemp();
             }
 
@@ -86,7 +88,7 @@ namespace lilToon
 
         private static IEnumerator GetLatestVersionInfo()
         {
-            using(UnityWebRequest webRequest = UnityWebRequest.Get(lilConstant.versionInfoURL))
+            using(UnityWebRequest webRequest = UnityWebRequest.Get(lilConstants.versionInfoURL))
             {
                 yield return webRequest.SendWebRequest();
                 #if UNITY_2020_2_OR_NEWER
@@ -117,9 +119,9 @@ namespace lilToon
         {
             if(material.shader == null || !material.shader.name.Contains("lilToon")) return;
             int version = material.HasProperty("_lilToonVersion") ? (int)material.GetFloat("_lilToonVersion") : 0;
-            if(version >= lilConstant.currentVersionValue) return;
+            if(version >= lilConstants.currentVersionValue) return;
             Debug.Log("[lilToon]Run migration: " + material.name);
-            material.SetFloat("_lilToonVersion", lilConstant.currentVersionValue);
+            material.SetFloat("_lilToonVersion", lilConstants.currentVersionValue);
 
             // 1.2.7 -> 1.2.8
             if(version < 21)

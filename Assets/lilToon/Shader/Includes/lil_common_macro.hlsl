@@ -223,14 +223,7 @@
     #undef SAMPLER
 #endif
 
-#if defined(SHADER_API_VULKAN) && UNITY_VERSION < 201800 && defined(LIL_TESSELLATION)
-    #if defined(POSITION)
-        #undef POSITION
-    #endif
-    #define POSITION gl_Position
-#endif
-
-#if defined(SHADER_API_D3D11_9X) || (UNITY_VERSION < 201800 && defined(SHADER_API_GLES))
+#if defined(SHADER_API_D3D11_9X)
     #define LIL_NOPERSPECTIVE
     #define LIL_CENTROID
 #else
@@ -264,7 +257,7 @@
     #define LIL_NOT_SUPPORT_VERTEXID
 #endif
 
-#if defined(SHADER_API_D3D9) || (UNITY_VERSION < 201800 && defined(SHADER_API_GLES)) || (defined(SHADER_TARGET_SURFACE_ANALYSIS) && defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER)) || defined(SHADER_TARGET_SURFACE_ANALYSIS)
+#if defined(SHADER_API_D3D9) || (defined(SHADER_TARGET_SURFACE_ANALYSIS) && defined(SHADER_TARGET_SURFACE_ANALYSIS_MOJOSHADER)) || defined(SHADER_TARGET_SURFACE_ANALYSIS)
     #define LIL_SAMPLE_1D(tex,samp,uv)                      tex2D(tex,float2(uv,0.5))
     #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)              tex2Dlod(tex,float4(uv,0.5,0,lod))
     #define LIL_SAMPLE_2D(tex,samp,uv)                      tex2D(tex,uv)
@@ -663,7 +656,7 @@ float3 lilBlendVRParallax(float3 a, float3 b, float c)
             brpShadowCoords._ShadowCoord = i._ShadowCoord; \
             UNITY_LIGHT_ATTENUATION(attenuationOrig, brpShadowCoords, i.positionWS); \
             atten = attenuationOrig
-    #elif !defined(LIL_PASS_FORWARDADD)
+    #elif (UNITY_VERSION < 201820) && !defined(UNITY_HALF_PRECISION_FRAGMENT_SHADER_REGISTERS) || !defined(LIL_PASS_FORWARDADD)
         #define LIL_SHADOW_COORDS(idx)
         #define LIL_TRANSFER_SHADOW(vi,uv,o)
         #define LIL_LIGHT_ATTENUATION(atten,i)

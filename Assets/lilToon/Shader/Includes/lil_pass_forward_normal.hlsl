@@ -453,6 +453,10 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             BEFORE_BLEND_EMISSION
             OVERRIDE_BLEND_EMISSION
         #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Backface Color
+        fd.col.rgb = (fd.facing < 0.0) ? lerp(fd.col.rgb, _BackfaceColor.rgb * fd.lightColor, _BackfaceColor.a) : fd.col.rgb;
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------

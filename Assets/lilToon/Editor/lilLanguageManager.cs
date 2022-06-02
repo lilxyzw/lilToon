@@ -1,6 +1,8 @@
 #if UNITY_EDITOR
+using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace lilToon
@@ -46,9 +48,39 @@ namespace lilToon
         public static GUIContent shadow1stColorRGBAContent;
         public static GUIContent shadow2ndColorRGBAContent;
         public static GUIContent shadow3rdColorRGBAContent;
+        public static LanguageSettings langSet = new LanguageSettings();
+
+        [Serializable]
+        public class LanguageSettings
+        {
+            public int languageNum = -1;
+            public string languageNames = "";
+            public string languageName = "English";
+        }
 
         public static string GetLoc(string value) { return loc.ContainsKey(value) ? loc[value] : value; }
         public static string BuildParams(params string[] labels) { return string.Join("|", labels); }
+
+        public static bool ShouldApplyTemp()
+        {
+            return string.IsNullOrEmpty(langSet.languageNames);
+        }
+
+        public static void ApplySettingTemp()
+        {
+            if(!ShouldApplyTemp() || !File.Exists(lilDirectoryManager.languageSettingTempPath)) return;
+            StreamReader sr = new StreamReader(lilDirectoryManager.languageSettingTempPath);
+            string s = sr.ReadToEnd();
+            sr.Close();
+            if(!string.IsNullOrEmpty(s)) EditorJsonUtility.FromJsonOverwrite(s,langSet);
+        }
+
+        public static void SaveSettingTemp()
+        {
+            StreamWriter sw = new StreamWriter(lilDirectoryManager.languageSettingTempPath,false);
+            sw.Write(EditorJsonUtility.ToJson(langSet));
+            sw.Close();
+        }
 
         public static void LoadCustomLanguage(string langFileGUID)
         {
@@ -57,13 +89,13 @@ namespace lilToon
 
         public static void InitializeLanguage()
         {
-            if(lilToonInspector.edSet.languageNum == -1)
+            if(langSet.languageNum == -1)
             {
-                if(Application.systemLanguage == SystemLanguage.Japanese)                   lilToonInspector.edSet.languageNum = 1;
-                else if(Application.systemLanguage == SystemLanguage.Korean)                lilToonInspector.edSet.languageNum = 2;
-                else if(Application.systemLanguage == SystemLanguage.ChineseSimplified)     lilToonInspector.edSet.languageNum = 3;
-                else if(Application.systemLanguage == SystemLanguage.ChineseTraditional)    lilToonInspector.edSet.languageNum = 4;
-                else                                                                        lilToonInspector.edSet.languageNum = 0;
+                if(Application.systemLanguage == SystemLanguage.Japanese)                   langSet.languageNum = 1;
+                else if(Application.systemLanguage == SystemLanguage.Korean)                langSet.languageNum = 2;
+                else if(Application.systemLanguage == SystemLanguage.ChineseSimplified)     langSet.languageNum = 3;
+                else if(Application.systemLanguage == SystemLanguage.ChineseTraditional)    langSet.languageNum = 4;
+                else                                                                        langSet.languageNum = 0;
             }
 
             if(loc.Count == 0)
@@ -79,18 +111,27 @@ namespace lilToon
             InitializeLabels();
         }
 
+        public static void SelectLang()
+        {
+            InitializeLanguage();
+            int numbuf = langSet.languageNum;
+            langSet.languageNum = EditorGUILayout.Popup("Language", langSet.languageNum, langSet.languageNames.Split('\t'));
+            if(numbuf != langSet.languageNum) UpdateLanguage();
+            if(!string.IsNullOrEmpty(GetLoc("sLanguageWarning"))) EditorGUILayout.HelpBox(GetLoc("sLanguageWarning"),MessageType.Warning);
+        }
+
         private static void LoadLanguage(string langPath)
         {
             if(string.IsNullOrEmpty(langPath) || !File.Exists(langPath)) return;
             StreamReader sr = new StreamReader(langPath);
 
             string str = sr.ReadLine();
-            lilToonInspector.edSet.languageNames = str.Substring(str.IndexOf("\t")+1);
-            lilToonInspector.edSet.languageName = lilToonInspector.edSet.languageNames.Split('\t')[lilToonInspector.edSet.languageNum];
+            langSet.languageNames = str.Substring(str.IndexOf("\t")+1);
+            langSet.languageName = langSet.languageNames.Split('\t')[langSet.languageNum];
             while((str = sr.ReadLine()) != null)
             {
                 string[] lineContents = str.Split('\t');
-                loc[lineContents[0]] = lineContents[lilToonInspector.edSet.languageNum+1];
+                loc[lineContents[0]] = lineContents[langSet.languageNum+1];
             }
             sr.Close();
         }

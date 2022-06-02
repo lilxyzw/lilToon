@@ -41,13 +41,13 @@ namespace lilToon
         Mul
     }
 
-    public enum lilLightingPreset
+    public enum LightingPreset
     {
         Default,
         SemiMonochrome
     }
 
-    public enum lilPropertyBlock
+    public enum PropertyBlock
     {
         Base,
         Lighting,

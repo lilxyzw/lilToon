@@ -439,7 +439,7 @@ float3 lilDecodeHDR(float4 data, float4 hdr)
 {
     float alpha = hdr.w * (data.a - 1.0) + 1.0;
 
-    #if defined(UNITY_COLORSPACE_GAMMA)
+    #if defined(LIL_COLORSPACE_GAMMA)
         return (hdr.x * alpha) * data.rgb;
     #elif defined(UNITY_USE_NATIVE_HDR)
         return hdr.x * data.rgb;

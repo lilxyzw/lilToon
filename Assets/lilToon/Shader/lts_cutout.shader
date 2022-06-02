@@ -11,6 +11,7 @@ Shader "Hidden/lilToonCutout"
         [lilToggle]     _FlipNormal                 ("Flip Backface Normal", Int) = 0
         [lilToggle]     _ShiftBackfaceUV            ("Shift Backface UV", Int) = 0
                         _BackfaceForceShadow        ("Backface Force Shadow", Range(0,1)) = 0
+        [lilHDR]        _BackfaceColor              ("Color", Color) = (0,0,0,0)
                         _VertexLightStrength        ("Vertex Light Strength", Range(0,1)) = 0
                         _LightMinLimit              ("Light Min Limit", Range(0,1)) = 0.05
                         _LightMaxLimit              ("Light Max Limit", Range(0,10)) = 1

@@ -7,7 +7,6 @@ using UnityEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using lilToon.lilRenderPipelineReader;
 #if VRC_SDK_VRCSDK3
     using VRC.SDKBase.Editor.BuildPipeline;
 #endif
@@ -544,7 +543,7 @@ namespace lilToon
         {
             if(!shader.name.Contains("lilToon") && !shader.name.Contains("ltspass")) return;
 
-            lilRenderPipeline lilRP = RPReader.GetRP();
+            lilRenderPipeline lilRP = lilRenderPipelineReader.GetRP();
 
             if(shader.name.Contains("lilToonMulti"))
             {

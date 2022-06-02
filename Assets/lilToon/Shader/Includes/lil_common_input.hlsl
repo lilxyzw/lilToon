@@ -349,6 +349,7 @@ SAMPLER(sampler_linear_clamp);
 #elif defined(LIL_MULTI)
     CBUFFER_START(UnityPerMaterial)
     float4  _LightDirectionOverride;
+    float4  _BackfaceColor;
     float4  _Color;
     float4  _MainTex_ST;
     float4  _MainTex_ScrollRotate;
@@ -847,6 +848,7 @@ SAMPLER(sampler_linear_clamp);
     //------------------------------------------------------------------------------------------------------------------------------
     // Vector
     float4  _LightDirectionOverride;
+    float4  _BackfaceColor;
     // Main
     float4  _Color;
     float4  _MainTex_ST;

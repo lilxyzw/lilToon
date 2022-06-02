@@ -58,7 +58,7 @@ namespace lilToon
 
         public static void DrawLine()
         {
-            EditorGUI.DrawRect(EditorGUI.IndentedRect(EditorGUILayout.GetControlRect(false, 1)), lilConstant.lineColor);
+            EditorGUI.DrawRect(EditorGUI.IndentedRect(EditorGUILayout.GetControlRect(false, 1)), lilConstants.lineColor);
         }
 
         public static void DrawWebButton(string text, string URL)
@@ -114,7 +114,9 @@ namespace lilToon
             boldLabel = new GUIStyle(GUI.skin.label){fontStyle = FontStyle.Bold};
             foldout = new GUIStyle("ShurikenModuleTitle")
             {
+                font = EditorStyles.label.font,
                 fontSize = EditorStyles.label.fontSize,
+                fontStyle = EditorStyles.label.fontStyle,
                 border = new RectOffset(15, 7, 4, 4),
                 contentOffset = new Vector2(20f, -2f),
                 fixedHeight = 22
@@ -359,7 +361,7 @@ namespace lilToon
             // Reset
             if(EditorButton(GetLoc("sReset")))
             {
-                hsvg.vectorValue = lilConstant.defaultHSVG;
+                hsvg.vectorValue = lilConstants.defaultHSVG;
             }
         }
 

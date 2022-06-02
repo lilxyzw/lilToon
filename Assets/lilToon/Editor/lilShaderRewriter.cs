@@ -1,7 +1,6 @@
 #if UNITY_EDITOR
 using System;
 using System.IO;
-using lilToon.lilRenderPipelineReader;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ namespace lilToon
         {
             string[] shaderFolderPaths = lilDirectoryManager.GetShaderFolderPaths();
             string[] shaderGuids = AssetDatabase.FindAssets("t:shader", shaderFolderPaths);
-            lilRenderPipeline RP = RPReader.GetRP();
+            lilRenderPipeline RP = lilRenderPipelineReader.GetRP();
             Array.ForEach(shaderGuids, shaderGuid => RewriteShaderRP(lilDirectoryManager.GUIDToPath(shaderGuid), RP));
             RewriteShaderRP(lilDirectoryManager.GetShaderPipelinePath(), RP);
         }

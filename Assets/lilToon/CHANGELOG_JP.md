@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 反射に`GSAA`と`合成モード`を追加
 - 影の強度、ぼかし、AOテクスチャに`LOD`を追加
 - 逆光ライト、マットキャップ、リムライト、発光に`メインカラーの強度`を追加
+- 裏面を単色で塗りつぶす機能を追加
 - 金属のMatCap素材、プリセットを追加
 - CircularのTangent Map素材を追加
 - 古いバージョンで上書きした場合のエラーを回避
@@ -32,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Setup from FBX`で使用するプリセットをシェーダー設定内に保存するように変更
 - `Fix lighting`で`ライト方向のオーバーライド`のマテリアルの設定が保持されるように変更
 - ファーのプリセットを再調整
+- いくつかのプロパティの表示名で`背面`になっていた部分を`裏面`に統一
 
 ### 修正
 - URPでフォグがうまく動作していなかった問題を修正

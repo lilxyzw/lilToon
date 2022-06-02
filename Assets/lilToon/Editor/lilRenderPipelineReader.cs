@@ -3,9 +3,9 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace lilToon.lilRenderPipelineReader
+namespace lilToon
 {
-    public class RPReader
+    public class lilRenderPipelineReader
     {
         public static lilRenderPipeline GetRP()
         {
@@ -113,7 +113,7 @@ namespace lilToon.lilRenderPipelineReader
 
         private class PackageInfos
         {
-            public string version;
+            public string version = "";
         }
     }
 

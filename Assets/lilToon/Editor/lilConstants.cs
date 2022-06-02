@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace lilToon
 {
-    public class lilConstant
+    public class lilConstants
     {
         public const string currentVersionName = "1.3.0";
         public const int currentVersionValue = 26;

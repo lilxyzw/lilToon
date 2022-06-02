@@ -1675,7 +1675,11 @@
     void lilDistanceFade(inout lilFragData fd)
     {
         float distFade = saturate((fd.depth - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x));
-        distFade = fd.facing < (_DistanceFade.w-1.0) ? _DistanceFade.z : distFade * _DistanceFade.z;
+        #if defined(LIL_OUTLINE) || defined(LIL_PASS_FORWARD_FUR_INCLUDED)
+            distFade = distFade * _DistanceFade.z;
+        #else
+            distFade = fd.facing < (_DistanceFade.w-1.0) ? _DistanceFade.z : distFade * _DistanceFade.z;
+        #endif
         #if defined(LIL_PASS_FORWARDADD)
             fd.col.rgb = lerp(fd.col.rgb, 0.0, distFade);
         #elif LIL_RENDER == 2

@@ -234,13 +234,8 @@ public class lilToonPreset : ScriptableObject
         private string[] presetName;
         private string filename = "";
         private RenderingMode renderingMode;
-        private bool isLite        = false;
         private bool isOutl        = false;
         private bool isTess        = false;
-        private bool isFakeShadow  = false;
-        private bool isOnePass     = false;
-        private bool isTwoPass     = false;
-        private bool isMulti       = false;
         private bool isShowFeatures = false;
         private bool isShowTextures = false;
 
@@ -264,7 +259,7 @@ public class lilToonPreset : ScriptableObject
             if(preset == null) preset = CreateInstance<lilToonPreset>();
 
             // load language
-            string[] langName = lilToonInspector.edSet.languageNames.Split('\t');
+            string[] langName = lilLanguageManager.langSet.languageNames.Split('\t');
             Array.Resize(ref presetName, langName.Length);
 
             // Initialize
@@ -275,13 +270,8 @@ public class lilToonPreset : ScriptableObject
             Array.Resize(ref preset.textures, 0);
             if(material.shader != null && !string.IsNullOrEmpty(material.shader.name))
             {
-                isLite        = material.shader.name.Contains("Lite");
                 isOutl        = material.shader.name.Contains("Outline");
                 isTess        = material.shader.name.Contains("Tessellation");
-                isFakeShadow  = material.shader.name.Contains("FakeShadow");
-                isOnePass     = material.shader.name.Contains("OnePass");
-                isTwoPass     = material.shader.name.Contains("TwoPass");
-                isMulti       = material.shader.name.Contains("Multi");
                 renderingMode = RenderingMode.Opaque;
                 if(material.shader.name.Contains("Cutout"))         renderingMode = RenderingMode.Cutout;
                 if(material.shader.name.Contains("Transparent"))    renderingMode = RenderingMode.Transparent;
@@ -294,13 +284,8 @@ public class lilToonPreset : ScriptableObject
             }
             else
             {
-                isLite        = false;
                 isOutl        = false;
                 isTess        = false;
-                isFakeShadow  = false;
-                isOnePass     = false;
-                isTwoPass     = false;
-                isMulti       = false;
                 renderingMode = RenderingMode.Opaque;
             }
 
@@ -315,7 +300,7 @@ public class lilToonPreset : ScriptableObject
 
             // Features
             EditorGUILayout.Space();
-            lilEditorGUI.DrawSimpleFoldout(GetLoc("sPresetSaveTarget"), isShowFeatures);
+            isShowFeatures = lilEditorGUI.DrawSimpleFoldout(GetLoc("sPresetSaveTarget"), isShowFeatures);
             if(isShowFeatures)
             {
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
@@ -393,7 +378,7 @@ public class lilToonPreset : ScriptableObject
 
             // Textures
             EditorGUILayout.Space();
-            lilEditorGUI.DrawSimpleFoldout(GetLoc("sPresetTexture"), isShowTextures);
+            isShowTextures = lilEditorGUI.DrawSimpleFoldout(GetLoc("sPresetTexture"), isShowTextures);
             if(isShowTextures)
             {
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);

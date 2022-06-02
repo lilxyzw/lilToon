@@ -7,19 +7,9 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Macro
-#if defined(OPENLIT_URP)
-    #if VERSION_GREATER_EQUAL(12, 0) && defined(_LIGHT_LAYERS)
-        #define OPENLIT_LIGHT_COLOR     ((_MainLightLayerMask & lilGetRenderingLayer()) != 0 ? _MainLightColor.rgb : 0.0)
-    #else
-        #define OPENLIT_LIGHT_COLOR     _MainLightColor.rgb
-    #endif
-    #define OPENLIT_LIGHT_DIRECTION _MainLightPosition.xyz
-    #define OPENLIT_MATRIX_M        GetObjectToWorldMatrix()
-#else
-    #define OPENLIT_LIGHT_COLOR     _LightColor0.rgb
-    #define OPENLIT_LIGHT_DIRECTION _WorldSpaceLightPos0.xyz
-    #define OPENLIT_MATRIX_M        unity_ObjectToWorld
-#endif
+#define OPENLIT_LIGHT_COLOR     _LightColor0.rgb
+#define OPENLIT_LIGHT_DIRECTION _WorldSpaceLightPos0.xyz
+#define OPENLIT_MATRIX_M        unity_ObjectToWorld
 #define OPENLIT_FALLBACK_DIRECTION  float4(0.001,0.002,0.001,0)
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -189,78 +179,27 @@ void CorrectLights(inout OpenLitLightDatas lightDatas, float lightMinLimit, floa
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Vertex Lighting
-#if defined(OPENLIT_URP)
-    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
-    {
-        float3 additionalLightColor = 0.0;
-        uint renderingLayers = lilGetRenderingLayer();
+float3 ComputeAdditionalLights(float3 positionWS, float3 positionCS)
+{
+    float4 toLightX = unity_4LightPosX0 - positionWS.x;
+    float4 toLightY = unity_4LightPosY0 - positionWS.y;
+    float4 toLightZ = unity_4LightPosZ0 - positionWS.z;
 
-        #if defined(_ADDITIONAL_LIGHTS) || defined(_ADDITIONAL_LIGHTS_VERTEX)
-            uint lightsCount = GetAdditionalLightsCount();
-            #if defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
-                ClusteredLightLoop cll = ClusteredLightLoopInit(GetNormalizedScreenSpaceUV(positionCS), positionWS);
-                while(ClusteredLightLoopNextWord(cll))
-                {
-                    while(ClusteredLightLoopNextLight(cll))
-                    {
-                        uint lightIndex = ClusteredLightLoopGetLightIndex(cll);
-            #elif defined(_USE_WEBGL1_LIGHTS) && _USE_WEBGL1_LIGHTS
-                for(uint lightIndex = 0; lightIndex < _WEBGL1_MAX_LIGHTS; lightIndex++)
-                {
-                    if(lightIndex >= lightsCount) break;
-            #else
-                for(uint lightIndex = 0; lightIndex < lightsCount; lightIndex++)
-                {
-            #endif
+    float4 lengthSq = toLightX * toLightX + 0.000001;
+    lengthSq += toLightY * toLightY;
+    lengthSq += toLightZ * toLightZ;
 
-                Light light = GetAdditionalLight(lightIndex, positionWS);
-                #if VERSION_GREATER_EQUAL(12, 0)
-                    if((light.layerMask & renderingLayers) != 0)
-                #endif
-                additionalLightColor += light.color * light.distanceAttenuation;
-            }
+    //float4 atten = 1.0 / (1.0 + lengthSq * unity_4LightAtten0);
+    float4 atten = saturate(saturate((25.0 - lengthSq * unity_4LightAtten0) * 0.111375) / (0.987725 + lengthSq * unity_4LightAtten0));
 
-            #if defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
-                }
-            #endif
-        #endif
+    float3 additionalLightColor;
+    additionalLightColor =                        unity_LightColor[0].rgb * atten.x;
+    additionalLightColor = additionalLightColor + unity_LightColor[1].rgb * atten.y;
+    additionalLightColor = additionalLightColor + unity_LightColor[2].rgb * atten.z;
+    additionalLightColor = additionalLightColor + unity_LightColor[3].rgb * atten.w;
 
-        #if defined(_ADDITIONAL_LIGHTS) && defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
-            for(uint lightIndex = 0; lightIndex < min(_AdditionalLightsDirectionalCount, MAX_VISIBLE_LIGHTS); lightIndex++)
-            {
-                Light light = GetAdditionalLight(lightIndex, positionWS);
-                #if VERSION_GREATER_EQUAL(12, 0)
-                    if((light.layerMask & renderingLayers) != 0)
-                #endif
-                additionalLightColor += light.color * light.distanceAttenuation;
-            }
-        #endif
-
-        return additionalLightColor;
-    }
-#else
-    float3 ComputeAdditionalLights(float3 positionWS, float3 positionCS)
-    {
-        float4 toLightX = unity_4LightPosX0 - positionWS.x;
-        float4 toLightY = unity_4LightPosY0 - positionWS.y;
-        float4 toLightZ = unity_4LightPosZ0 - positionWS.z;
-
-        float4 lengthSq = toLightX * toLightX + 0.000001;
-        lengthSq += toLightY * toLightY;
-        lengthSq += toLightZ * toLightZ;
-
-        //float4 atten = 1.0 / (1.0 + lengthSq * unity_4LightAtten0);
-        float4 atten = saturate(saturate((25.0 - lengthSq * unity_4LightAtten0) * 0.111375) / (0.987725 + lengthSq * unity_4LightAtten0));
-
-        float3 additionalLightColor;
-        additionalLightColor =                        unity_LightColor[0].rgb * atten.x;
-        additionalLightColor = additionalLightColor + unity_LightColor[1].rgb * atten.y;
-        additionalLightColor = additionalLightColor + unity_LightColor[2].rgb * atten.z;
-        additionalLightColor = additionalLightColor + unity_LightColor[3].rgb * atten.w;
-
-        return additionalLightColor;
-    }
-#endif
+    return additionalLightColor;
+}
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Encode and decode

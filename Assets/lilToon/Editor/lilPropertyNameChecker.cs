@@ -45,6 +45,7 @@ namespace lilToon
             res = res || name == "_Cutoff";
             res = res || name == "_FlipNormal";
             res = res || name == "_BackfaceForceShadow";
+            res = res || name == "_BackfaceColor";
             res = res || name == "_FakeShadowVector";
             res = res || name == "_TriMask";
             res = res || name == "_TransparentMode";

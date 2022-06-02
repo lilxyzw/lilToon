@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `GSAA` and `Blending Mode` to reflection
 - `LOD` to strength / blur / AO mask of shadows
 - `Main Color Power` to backlight, MatCaps, rim light, emissions
+- Added the function to fill the backface with a single color
 - Metal MatCap and preset
 - Added circular tangent map
 - Avoid errors when overwriting with an older version
