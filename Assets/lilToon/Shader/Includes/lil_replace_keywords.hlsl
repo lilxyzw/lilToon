@@ -28,7 +28,7 @@
 // ANTI_FLICKER                         LIL_FEATURE_BACKLIGHT
 // _EMISSION                            LIL_FEATURE_EMISSION_1ST
 // GEOM_TYPE_BRANCH                     LIL_FEATURE_EMISSION_2ND
-// _SUNDISK_SIMPLE                      LIL_FEATURE_TEX_EMISSION_MASK
+// _SUNDISK_SIMPLE                      LIL_FEATURE_EmissionBlendMask LIL_FEATURE_Emission2ndBlendMask
 // ------------------------------------ --------------------------------------------------------------------------------
 // _NORMALMAP                           LIL_FEATURE_NORMAL_1ST
 // EFFECT_BUMP                          LIL_FEATURE_NORMAL_2ND
@@ -36,7 +36,7 @@
 // _GLOSSYREFLECTIONS_OFF               LIL_FEATURE_REFLECTION
 // _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A LIL_FEATURE_MATCAP
 // _SPECULARHIGHLIGHTS_OFF              LIL_FEATURE_MATCAP_2ND
-// GEOM_TYPE_MESH                       LIL_FEATURE_TEX_MATCAP_NORMALMAP
+// GEOM_TYPE_MESH                       LIL_FEATURE_MatCapBumpMap LIL_FEATURE_MatCap2ndBumpMap
 // _METALLICGLOSSMAP                    LIL_FEATURE_RIMLIGHT
 // GEOM_TYPE_LEAF                       LIL_FEATURE_RIMLIGHT_DIRECTION
 // _SPECGLOSSMAP                        LIL_FEATURE_GLITTER
@@ -127,7 +127,8 @@
 #endif
 
 #if defined(_SUNDISK_SIMPLE)
-    #define LIL_FEATURE_TEX_EMISSION_MASK
+    #define LIL_FEATURE_EmissionBlendMask
+    #define LIL_FEATURE_Emission2ndBlendMask
     #undef _SUNDISK_SIMPLE
 #endif
 
@@ -162,7 +163,8 @@
 #endif
 
 #if defined(GEOM_TYPE_MESH)
-    #define LIL_FEATURE_TEX_MATCAP_NORMALMAP
+    #define LIL_FEATURE_MatCapBumpMap
+    #define LIL_FEATURE_MatCap2ndBumpMap
     #undef GEOM_TYPE_MESH
 #endif
 
@@ -220,38 +222,71 @@
 // Always defined keywords
 #define LIL_FEATURE_ANIMATE_MAIN_UV
 #define LIL_FEATURE_DECAL
-#define LIL_FEATURE_TEX_LAYER_MASK
-#define LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE
 #define LIL_FEATURE_SHADOW_3RD
 #define LIL_FEATURE_RECEIVE_SHADOW
-#define LIL_FEATURE_TEX_SHADOW_BLUR
-#define LIL_FEATURE_TEX_SHADOW_BORDER
-#define LIL_FEATURE_TEX_SHADOW_STRENGTH
-#define LIL_FEATURE_TEX_SHADOW_1ST
-#define LIL_FEATURE_TEX_SHADOW_2ND
-#define LIL_FEATURE_TEX_SHADOW_3RD
 #define LIL_FEATURE_EMISSION_UV
 #define LIL_FEATURE_ANIMATE_EMISSION_UV
 #define LIL_FEATURE_EMISSION_MASK_UV
 #define LIL_FEATURE_ANIMATE_EMISSION_MASK_UV
 #define LIL_FEATURE_EMISSION_GRADATION
-#define LIL_FEATURE_TEX_NORMAL_MASK
-#define LIL_FEATURE_TEX_REFLECTION_SMOOTHNESS
-#define LIL_FEATURE_TEX_REFLECTION_METALLIC
-#define LIL_FEATURE_TEX_REFLECTION_COLOR
-#define LIL_FEATURE_TEX_MATCAP_MASK
-#define LIL_FEATURE_TEX_RIMLIGHT_COLOR
 #define LIL_FEATURE_AUDIOLINK_VERTEX
-#define LIL_FEATURE_TEX_AUDIOLINK_MASK
-#define LIL_FEATURE_TEX_DISSOLVE_NOISE
 #define LIL_FEATURE_CLIPPING_CANCELLER
-#define LIL_FEATURE_TEX_OUTLINE_COLOR
 #define LIL_FEATURE_ANIMATE_OUTLINE_UV
-#define LIL_FEATURE_TEX_OUTLINE_WIDTH
-#define LIL_FEATURE_TEX_OUTLINE_NORMAL
-#define LIL_FEATURE_TEX_FUR_NORMAL
-#define LIL_FEATURE_TEX_FUR_MASK
-#define LIL_FEATURE_TEX_FUR_LENGTH
 #define LIL_FEATURE_FUR_COLLISION
 
+#define LIL_FEATURE_MainGradationTex
+#define LIL_FEATURE_MainColorAdjustMask
+#define LIL_FEATURE_Main2ndTex
+#define LIL_FEATURE_Main2ndBlendMask
+#define LIL_FEATURE_Main2ndDissolveMask
+#define LIL_FEATURE_Main2ndDissolveNoiseMask
+#define LIL_FEATURE_Main3rdTex
+#define LIL_FEATURE_Main3rdBlendMask
+#define LIL_FEATURE_Main3rdDissolveMask
+#define LIL_FEATURE_Main3rdDissolveNoiseMask
+#define LIL_FEATURE_AlphaMask
+#define LIL_FEATURE_BumpMap
+#define LIL_FEATURE_Bump2ndMap
+#define LIL_FEATURE_Bump2ndScaleMask
+#define LIL_FEATURE_AnisotropyTangentMap
+#define LIL_FEATURE_AnisotropyScaleMask
+#define LIL_FEATURE_AnisotropyShiftNoiseMask
+#define LIL_FEATURE_ShadowBorderMask
+#define LIL_FEATURE_ShadowBlurMask
+#define LIL_FEATURE_ShadowStrengthMask
+#define LIL_FEATURE_ShadowColorTex
+#define LIL_FEATURE_Shadow2ndColorTex
+#define LIL_FEATURE_Shadow3rdColorTex
+#define LIL_FEATURE_BacklightColorTex
+#define LIL_FEATURE_SmoothnessTex
+#define LIL_FEATURE_MetallicGlossMap
+#define LIL_FEATURE_ReflectionColorTex
+#define LIL_FEATURE_ReflectionCubeTex
+#define LIL_FEATURE_MatCapTex
+#define LIL_FEATURE_MatCapBlendMask
+#define LIL_FEATURE_MatCapBumpMap
+#define LIL_FEATURE_MatCap2ndTex
+#define LIL_FEATURE_MatCap2ndBlendMask
+#define LIL_FEATURE_MatCap2ndBumpMap
+#define LIL_FEATURE_RimColorTex
+#define LIL_FEATURE_GlitterColorTex
+#define LIL_FEATURE_GlitterShapeTex
+#define LIL_FEATURE_EmissionMap
+#define LIL_FEATURE_EmissionBlendMask
+#define LIL_FEATURE_EmissionGradTex
+#define LIL_FEATURE_Emission2ndMap
+#define LIL_FEATURE_Emission2ndBlendMask
+#define LIL_FEATURE_Emission2ndGradTex
+#define LIL_FEATURE_ParallaxMap
+#define LIL_FEATURE_AudioLinkMask
+#define LIL_FEATURE_AudioLinkLocalMap
+#define LIL_FEATURE_DissolveMask
+#define LIL_FEATURE_DissolveNoiseMask
+#define LIL_FEATURE_OutlineTex
+#define LIL_FEATURE_OutlineWidthMask
+#define LIL_FEATURE_OutlineVectorTex
+#define LIL_FEATURE_FurNoiseMask
+#define LIL_FEATURE_FurMask
+#define LIL_FEATURE_FurLengthMask
+#define LIL_FEATURE_FurVectorTex
 #endif

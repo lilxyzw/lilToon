@@ -21,7 +21,7 @@ Tested version
 - Unity 2019.4.31f1 (Built-in RP / URP 7.7.1 / HDRP 7.7.1)
 - Unity 2020.3.20f1 (Built-in RP / URP 10.6.0 / HDRP 10.6.0)
 - Unity 2021.1.24f1 (Built-in RP / URP 11.0.0 / HDRP 11.0.0)
-- Unity 2021.3.2f1 (Built-in RP / URP 12.1.6 / HDRP 12.1.6)
+- Unity 2021.3.4f1 (Built-in RP / URP 12.1.7 / HDRP 12.1.7)
 - Unity 2022.1.0b16 (Built-in RP / URP 13.1.7 / HDRP 13.1.7)
 
 Supported Shader Models

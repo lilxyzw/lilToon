@@ -124,6 +124,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         // Alpha
         #if LIL_RENDER == 0
             // Opaque
+            fd.col.a = 1.0;
         #elif LIL_RENDER == 1
             // Cutout
             clip(fd.col.a - _Cutoff);
@@ -165,6 +166,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         // Alpha
         #if LIL_RENDER == 0
             // Opaque
+            fd.col.a = 1.0;
         #elif LIL_RENDER == 1
             // Cutout
             clip(fd.col.a - _Cutoff);

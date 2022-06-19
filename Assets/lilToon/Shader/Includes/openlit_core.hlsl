@@ -1,4 +1,4 @@
-// OpenLit Library 1.0.1
+// OpenLit Library 1.0.2
 // This code is licensed under CC0 1.0 Universal.
 // https://creativecommons.org/publicdomain/zero/1.0/
 

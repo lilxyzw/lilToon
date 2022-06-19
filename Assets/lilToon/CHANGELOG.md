@@ -14,9 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `GSAA` and `Blending Mode` to reflection
 - `LOD` to strength / blur / AO mask of shadows
 - `Main Color Power` to backlight, MatCaps, rim light, emissions
-- Added the function to fill the backface with a single color
+- `Mask` for shape and `Randomize` for particle size to glitter
+- The function to fill the backface with a single color
 - Metal MatCap and preset
-- Added circular tangent map
+- Circular tangent map
+- Shape textures for glitter
 - Avoid errors when overwriting with an older version
 - Extension of custom shader function
 - URP and HDRP compatible 2 pass fur shader
@@ -39,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `[MainTexture]` to the `_MainTex` property
 - Fixed an issue where `Light Direction Override` was affecting ShadeSH9 calculations
 - Fixed an issue where lilToonMulti shader variants were being reduced too much at build
+- Fixed outline mask not working well in lilToonLite
 
 ### Removed
 - Support for Unity 2017

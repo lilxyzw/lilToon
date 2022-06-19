@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Reflection;
 #if UNITY_2020_2_OR_NEWER
-using UnityEditor.AssetImporters;
+    using UnityEditor.AssetImporters;
 #else
     using UnityEditor.Experimental.AssetImporters;
 #endif
@@ -15,57 +15,57 @@ using UnityEditor.AssetImporters;
 namespace lilToon
 {
     #if UNITY_2019_4_OR_NEWER
-    [ScriptedImporter(0, "lilcontainer")]
-    public class lilShaderContainerImporter : ScriptedImporter
-    {
-        public override void OnImportAsset(AssetImportContext ctx)
+        [ScriptedImporter(0, "lilcontainer")]
+        public class lilShaderContainerImporter : ScriptedImporter
         {
-            #if UNITY_2019_4_0 || UNITY_2019_4_1 || UNITY_2019_4_2 || UNITY_2019_4_3 || UNITY_2019_4_4 || UNITY_2019_4_5 || UNITY_2019_4_6 || UNITY_2019_4_7 || UNITY_2019_4_8 || UNITY_2019_4_9 || UNITY_2019_4_10
-                Shader shader = ShaderUtil.CreateShaderAsset(lilShaderContainer.UnpackContainer(ctx.assetPath, ctx), false);
-            #else
-                Shader shader = ShaderUtil.CreateShaderAsset(ctx, lilShaderContainer.UnpackContainer(ctx.assetPath, ctx), false);
-            #endif
-
-            ctx.AddObjectToAsset("main obj", shader);
-            ctx.SetMainObject(shader);
-        }
-    }
-
-    [CustomEditor(typeof(lilShaderContainerImporter))]
-    public class lilShaderContainerImporterEditor : ScriptedImporterEditor
-    {
-        public override void OnInspectorGUI()
-        {
-            if(GUILayout.Button("Export Shader"))
+            public override void OnImportAsset(AssetImportContext ctx)
             {
-                string assetPath = AssetDatabase.GetAssetPath(target);
-                string shaderText = lilShaderContainer.UnpackContainer(assetPath, null);
-                string exportPath = EditorUtility.SaveFilePanel("Export Shader", Path.GetDirectoryName(assetPath), Path.GetFileNameWithoutExtension(assetPath), "shader");
-                if(string.IsNullOrEmpty(exportPath)) return;
-                File.WriteAllText(exportPath, shaderText);
+                #if UNITY_2019_4_0 || UNITY_2019_4_1 || UNITY_2019_4_2 || UNITY_2019_4_3 || UNITY_2019_4_4 || UNITY_2019_4_5 || UNITY_2019_4_6 || UNITY_2019_4_7 || UNITY_2019_4_8 || UNITY_2019_4_9 || UNITY_2019_4_10
+                    Shader shader = ShaderUtil.CreateShaderAsset(lilShaderContainer.UnpackContainer(ctx.assetPath, ctx), false);
+                #else
+                    Shader shader = ShaderUtil.CreateShaderAsset(ctx, lilShaderContainer.UnpackContainer(ctx.assetPath, ctx), false);
+                #endif
+
+                ctx.AddObjectToAsset("main obj", shader);
+                ctx.SetMainObject(shader);
             }
-            ApplyRevertGUI();
         }
-    }
 
-    public class lilShaderContainerAssetPostprocessor : AssetPostprocessor
-    {
-        private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+        [CustomEditor(typeof(lilShaderContainerImporter))]
+        public class lilShaderContainerImporterEditor : ScriptedImporterEditor
         {
-            foreach(string path in importedAssets)
+            public override void OnInspectorGUI()
             {
-                if(!path.EndsWith("lilcontainer", StringComparison.InvariantCultureIgnoreCase)) continue;
-
-                var mainobj = AssetDatabase.LoadMainAssetAtPath(path);
-                if(mainobj is Shader) ShaderUtil.RegisterShader((Shader)mainobj);
-
-                foreach(var obj in AssetDatabase.LoadAllAssetRepresentationsAtPath(path))
+                if(GUILayout.Button("Export Shader"))
                 {
-                    if(obj is Shader) ShaderUtil.RegisterShader((Shader)obj);
+                    string assetPath = AssetDatabase.GetAssetPath(target);
+                    string shaderText = lilShaderContainer.UnpackContainer(assetPath, null);
+                    string exportPath = EditorUtility.SaveFilePanel("Export Shader", Path.GetDirectoryName(assetPath), Path.GetFileNameWithoutExtension(assetPath), "shader");
+                    if(string.IsNullOrEmpty(exportPath)) return;
+                    File.WriteAllText(exportPath, shaderText);
+                }
+                ApplyRevertGUI();
+            }
+        }
+
+        public class lilShaderContainerAssetPostprocessor : AssetPostprocessor
+        {
+            private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+            {
+                foreach(string path in importedAssets)
+                {
+                    if(!path.EndsWith("lilcontainer", StringComparison.InvariantCultureIgnoreCase)) continue;
+
+                    var mainobj = AssetDatabase.LoadMainAssetAtPath(path);
+                    if(mainobj is Shader) ShaderUtil.RegisterShader((Shader)mainobj);
+
+                    foreach(var obj in AssetDatabase.LoadAllAssetRepresentationsAtPath(path))
+                    {
+                        if(obj is Shader) ShaderUtil.RegisterShader((Shader)obj);
+                    }
                 }
             }
         }
-    }
     #endif
 
     public class lilShaderContainer
@@ -307,6 +307,14 @@ namespace lilToon
                 sb.Replace(
                     "#pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2",
                     "#pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2"
+                );
+            }
+
+            if((assetName.Contains("lts_fur") && !assetName.Contains("cutout")) || assetName.Contains("trans") || assetName.Contains("overlay"))
+            {
+                sb.Replace(
+                    "(\"Alpha Cutoff\", Range(-0.001,1.001)) = 0.5",
+                    "(\"Alpha Cutoff\", Range(-0.001,1.001)) = 0.001"
                 );
             }
 

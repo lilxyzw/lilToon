@@ -1109,7 +1109,7 @@ float3 lilCustomReflection(TEXTURECUBE(tex), float4 hdr, float3 viewDirection, f
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Glitter
-float4 lilVoronoi(float2 pos)
+float4 lilVoronoi(float2 pos, out float2 nearoffset, float scaleRandomize)
 {
     #if defined(SHADER_API_D3D9) || defined(SHADER_API_D3D11_9X)
         #define M1 46203.4357
@@ -1142,12 +1142,18 @@ float4 lilVoronoi(float2 pos)
     // Get the nearest position
     float4 fracpos = frac(pos).xyxy + float4(0.5,0.5,-0.5,-0.5);
     float4 dist4 = float4(lilNsqDistance(fracpos.xy,noise0.xy), lilNsqDistance(fracpos.zy,noise1.xy), lilNsqDistance(fracpos.xw,noise2.xy), lilNsqDistance(fracpos.zw,noise3.xy));
+    dist4 = lerp(dist4, dist4 / max(float4(noise0.z, noise1.z, noise2.z, noise3.z), 0.001), scaleRandomize);
+
+    float3 nearoffset0 = dist4.x < dist4.y ? float3(0,0,dist4.x) : float3(1,0,dist4.y);
+    float3 nearoffset1 = dist4.z < dist4.w ? float3(0,1,dist4.z) : float3(1,1,dist4.w);
+    nearoffset = nearoffset0.z < nearoffset1.z ? nearoffset0.xy : nearoffset1.xy;
+
     float4 near0 = dist4.x < dist4.y ? float4(noise0,dist4.x) : float4(noise1,dist4.y);
     float4 near1 = dist4.z < dist4.w ? float4(noise2,dist4.z) : float4(noise3,dist4.w);
     return near0.w < near1.w ? near0 : near1;
 }
 
-float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, float3 cameraDirection, float3 lightDirection, float4 glitterParams1, float4 glitterParams2, float glitterPostContrast, float glitterSensitivity)
+float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, float3 cameraDirection, float3 lightDirection, float4 glitterParams1, float4 glitterParams2, float glitterPostContrast, float glitterSensitivity, float glitterScaleRandomize, uint glitterAngleRandomize, TEXTURE2D(glitterShapeTex), float4 glitterShapeTex_ST)
 {
     // glitterParams1
     // x: Scale, y: Scale, z: Size, w: Contrast
@@ -1163,11 +1169,13 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
         float2 dd = fwidth(pos);
         float factor = frac(sin(dot(floor(pos/floor(dd + 3.0)),float2(12.9898,78.233))) * 46203.4357) + 0.5;
         float2 factor2 = floor(dd + factor * 0.5);
-        float4 near = lilVoronoi(pos/max(1.0,factor2) + glitterParams1.xy * factor2);
+        pos = pos/max(1.0,factor2) + glitterParams1.xy * factor2;
     #else
         float2 pos = uv * glitterParams1.xy + glitterParams1.xy;
-        float4 near = lilVoronoi(pos);
     #endif
+    float2 nearoffset;
+    float4 near = lilVoronoi(pos, nearoffset, glitterScaleRandomize);
+    
 
     #if GLITTER_DEBUG_MODE == 1
         // Voronoi
@@ -1192,6 +1200,24 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
         glitter = saturate(glitter * saturate(nh * glitterParams2.y + 1.0 - glitterParams2.y));
         // Random Color
         float3 glitterColor = glitter - glitter * frac(near.xyz*278.436) * glitterParams2.w;
+        // Shape
+        if(Exists_GlitterShapeTex)
+        {
+            float2 maskUV = pos - floor(pos) - nearoffset + 0.5 - near.xy;
+            maskUV = maskUV / glitterParams1.z * glitterShapeTex_ST.xy + glitterShapeTex_ST.zw;
+            if(glitterAngleRandomize)
+            {
+                float si,co;
+                sincos(near.z * 785.238, si, co);
+                maskUV = float2(
+                    maskUV.x * co - maskUV.y * si,
+                    maskUV.x * si + maskUV.y * co
+                );
+            }
+            maskUV = lerp(maskUV, maskUV / sqrt(max(near.z, 0.001)), glitterScaleRandomize) + 0.5;
+            float4 shapeTex = glitterShapeTex.SampleGrad(sampler_trilinear_clamp, maskUV, ddx(pos), ddy(pos));
+            glitterColor *= shapeTex.rgb * shapeTex.a;
+        }
         return glitterColor;
     #endif
 }

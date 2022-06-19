@@ -14,205 +14,410 @@
 #endif
 
 SAMPLER(sampler_trilinear_repeat);
+SAMPLER(sampler_trilinear_clamp);
 //SAMPLER(sampler_linear_repeat);
-#define sampler_linear_repeat sampler_trilinear_repeat
 SAMPLER(sampler_linear_clamp);
+#define sampler_linear_repeat sampler_trilinear_repeat
 
 #if defined(LIL_BRP)
+    TEXTURE2D_SCREEN(_CameraDepthTexture);
     TEXTURE2D_SCREEN(_lilBackgroundTexture);
     TEXTURE2D_SCREEN(_GrabTexture);
     SAMPLER(sampler_lilBackgroundTexture);
     SAMPLER(sampler_GrabTexture);
     float4 _lilBackgroundTexture_TexelSize;
+    #define LIL_GET_DEPTH_TEX_CS(uv) LIL_SAMPLE_SCREEN_CS(_CameraDepthTexture, lilCameraDepthTexel(uv))
+    #define LIL_TO_LINEARDEPTH(z,uv) lilLinearEyeDepth(z, uv)
     #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN(_lilBackgroundTexture, sampler_lilBackgroundTexture, uv)
     #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN(_GrabTexture, sampler_GrabTexture, uv)
+    #define LIL_ENABLED_DEPTH_TEX IsScreenTex(_CameraDepthTexture)
 #elif defined(LIL_HDRP)
+    #define LIL_GET_DEPTH_TEX_CS(uv) SampleCameraDepth(uv/LIL_SCREENPARAMS.xy)
+    #define LIL_TO_LINEARDEPTH(z,uv) LinearEyeDepth(z, _ZBufferParams)
     #define LIL_GET_BG_TEX(uv,lod) SampleCameraColor(uv,lod)
     #define LIL_GET_GRAB_TEX(uv,lod) SampleCameraColor(uv,lod)
+    #define LIL_ENABLED_DEPTH_TEX IsScreenTex(_CameraDepthTexture)
 #else
+    TEXTURE2D_SCREEN(_CameraDepthTexture);
     TEXTURE2D_SCREEN(_CameraOpaqueTexture);
     SAMPLER(sampler_CameraOpaqueTexture);
+    #define LIL_GET_DEPTH_TEX_CS(uv) LIL_SAMPLE_SCREEN_CS(_CameraDepthTexture, uv)
+    #define LIL_TO_LINEARDEPTH(z,uv) LinearEyeDepth(z, _ZBufferParams)
     #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN_LOD(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv, lod)
     #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN_LOD(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv, lod)
+    #define LIL_ENABLED_DEPTH_TEX IsScreenTex(_CameraDepthTexture)
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Texture Exists
-#if defined(LIL_FEATURE_TEX_LAYER_MASK)
-    #define Exists_Main2ndBlendMask     true
-    #define Exists_Main3rdBlendMask     true
+#if defined(LIL_FEATURE_MainGradationTex)
+    #define Exists_MainGradationTex true
 #else
-    #define Exists_Main2ndBlendMask     false
-    #define Exists_Main3rdBlendMask     false
+    #define Exists_MainGradationTex false
 #endif
 
-#if defined(LIL_FEATURE_LAYER_DISSOLVE)
-    #define Exists_Main2ndDissolveMask    true
-    #define Exists_Main3rdDissolveMask    true
+#if defined(LIL_FEATURE_MainColorAdjustMask)
+    #define Exists_MainColorAdjustMask true
 #else
-    #define Exists_Main2ndDissolveMask    false
-    #define Exists_Main3rdDissolveMask    false
+    #define Exists_MainColorAdjustMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
-    #define Exists_Main2ndDissolveNoiseMask    true
-    #define Exists_Main3rdDissolveNoiseMask    true
+#if defined(LIL_FEATURE_Main2ndTex)
+    #define Exists_Main2ndTex true
 #else
-    #define Exists_Main2ndDissolveNoiseMask    false
-    #define Exists_Main3rdDissolveNoiseMask    false
+    #define Exists_Main2ndTex false
 #endif
 
-#if defined(LIL_FEATURE_TEX_NORMAL_MASK)
-    #define Exists_Bump2ndScaleMask     true
+#if defined(LIL_FEATURE_Main2ndBlendMask)
+    #define Exists_Main2ndBlendMask true
 #else
-    #define Exists_Bump2ndScaleMask     false
+    #define Exists_Main2ndBlendMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_SHADOW_BORDER)
-    #define Exists_ShadowBorderMask     true
+#if defined(LIL_FEATURE_Main2ndDissolveMask)
+    #define Exists_Main2ndDissolveMask true
 #else
-    #define Exists_ShadowBorderMask     false
+    #define Exists_Main2ndDissolveMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_SHADOW_BLUR)
-    #define Exists_ShadowBlurMask       true
+#if defined(LIL_FEATURE_Main2ndDissolveNoiseMask)
+    #define Exists_Main2ndDissolveNoiseMask true
 #else
-    #define Exists_ShadowBlurMask       false
+    #define Exists_Main2ndDissolveNoiseMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_SHADOW_STRENGTH)
-    #define Exists_ShadowStrengthMask   true
+#if defined(LIL_FEATURE_Main3rdTex)
+    #define Exists_Main3rdTex true
 #else
-    #define Exists_ShadowStrengthMask   false
+    #define Exists_Main3rdTex false
 #endif
 
-#if defined(LIL_FEATURE_TEX_SHADOW_1ST)
-    #define Exists_ShadowColorTex       true
+#if defined(LIL_FEATURE_Main3rdBlendMask)
+    #define Exists_Main3rdBlendMask true
 #else
-    #define Exists_ShadowColorTex       false
+    #define Exists_Main3rdBlendMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_SHADOW_2ND)
-    #define Exists_Shadow2ndColorTex    true
+#if defined(LIL_FEATURE_Main3rdDissolveMask)
+    #define Exists_Main3rdDissolveMask true
 #else
-    #define Exists_Shadow2ndColorTex    false
+    #define Exists_Main3rdDissolveMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_SHADOW_3RD)
-    #define Exists_Shadow3rdColorTex    true
+#if defined(LIL_FEATURE_Main3rdDissolveNoiseMask)
+    #define Exists_Main3rdDissolveNoiseMask true
 #else
-    #define Exists_Shadow3rdColorTex    false
+    #define Exists_Main3rdDissolveNoiseMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_REFLECTION_SMOOTHNESS)
-    #define Exists_SmoothnessTex        true
+#if defined(LIL_FEATURE_AlphaMask)
+    #define Exists_AlphaMask true
 #else
-    #define Exists_SmoothnessTex        true
+    #define Exists_AlphaMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_REFLECTION_METALLIC)
-    #define Exists_MetallicGlossMap     true
+#if defined(LIL_FEATURE_BumpMap)
+    #define Exists_BumpMap true
 #else
-    #define Exists_MetallicGlossMap     false
+    #define Exists_BumpMap false
 #endif
 
-#if defined(LIL_FEATURE_TEX_REFLECTION_COLOR)
-    #define Exists_ReflectionColorTex   true
+#if defined(LIL_FEATURE_Bump2ndMap)
+    #define Exists_Bump2ndMap true
 #else
-    #define Exists_ReflectionColorTex   false
+    #define Exists_Bump2ndMap false
 #endif
 
-#if defined(LIL_FEATURE_TEX_MATCAP_MASK)
-    #define Exists_MatCapBlendMask      true
-    #define Exists_MatCap2ndBlendMask   true
+#if defined(LIL_FEATURE_Bump2ndScaleMask)
+    #define Exists_Bump2ndScaleMask true
 #else
-    #define Exists_MatCapBlendMask      false
-    #define Exists_MatCap2ndBlendMask   false
+    #define Exists_Bump2ndScaleMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_RIMLIGHT_COLOR)
-    #define Exists_RimColorTex          true
+#if defined(LIL_FEATURE_AnisotropyTangentMap)
+    #define Exists_AnisotropyTangentMap true
 #else
-    #define Exists_RimColorTex          false
+    #define Exists_AnisotropyTangentMap false
 #endif
 
-#if defined(LIL_FEATURE_GLITTER)
-    #define Exists_GlitterColorTex      true
+#if defined(LIL_FEATURE_AnisotropyScaleMask)
+    #define Exists_AnisotropyScaleMask true
 #else
-    #define Exists_GlitterColorTex      false
+    #define Exists_AnisotropyScaleMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_EMISSION_MASK)
-    #define Exists_EmissionBlendMask    true
+#if defined(LIL_FEATURE_AnisotropyShiftNoiseMask)
+    #define Exists_AnisotropyShiftNoiseMask true
+#else
+    #define Exists_AnisotropyShiftNoiseMask false
+#endif
+
+#if defined(LIL_FEATURE_ShadowBorderMask)
+    #define Exists_ShadowBorderMask true
+#else
+    #define Exists_ShadowBorderMask false
+#endif
+
+#if defined(LIL_FEATURE_ShadowBlurMask)
+    #define Exists_ShadowBlurMask true
+#else
+    #define Exists_ShadowBlurMask false
+#endif
+
+#if defined(LIL_FEATURE_ShadowStrengthMask)
+    #define Exists_ShadowStrengthMask true
+#else
+    #define Exists_ShadowStrengthMask false
+#endif
+
+#if defined(LIL_FEATURE_ShadowColorTex)
+    #define Exists_ShadowColorTex true
+#else
+    #define Exists_ShadowColorTex false
+#endif
+
+#if defined(LIL_FEATURE_Shadow2ndColorTex)
+    #define Exists_Shadow2ndColorTex true
+#else
+    #define Exists_Shadow2ndColorTex false
+#endif
+
+#if defined(LIL_FEATURE_Shadow3rdColorTex)
+    #define Exists_Shadow3rdColorTex true
+#else
+    #define Exists_Shadow3rdColorTex false
+#endif
+
+#if defined(LIL_FEATURE_BacklightColorTex)
+    #define Exists_BacklightColorTex true
+#else
+    #define Exists_BacklightColorTex false
+#endif
+
+#if defined(LIL_FEATURE_SmoothnessTex)
+    #define Exists_SmoothnessTex true
+#else
+    #define Exists_SmoothnessTex false
+#endif
+
+#if defined(LIL_FEATURE_MetallicGlossMap)
+    #define Exists_MetallicGlossMap true
+#else
+    #define Exists_MetallicGlossMap false
+#endif
+
+#if defined(LIL_FEATURE_ReflectionColorTex)
+    #define Exists_ReflectionColorTex true
+#else
+    #define Exists_ReflectionColorTex false
+#endif
+
+#if defined(LIL_FEATURE_ReflectionCubeTex)
+    #define Exists_ReflectionCubeTex true
+#else
+    #define Exists_ReflectionCubeTex false
+#endif
+
+#if defined(LIL_FEATURE_MatCapTex)
+    #define Exists_MatCapTex true
+#else
+    #define Exists_MatCapTex false
+#endif
+
+#if defined(LIL_FEATURE_MatCapBlendMask)
+    #define Exists_MatCapBlendMask true
+#else
+    #define Exists_MatCapBlendMask false
+#endif
+
+#if defined(LIL_FEATURE_MatCapBumpMap)
+    #define Exists_MatCapBumpMap true
+#else
+    #define Exists_MatCapBumpMap false
+#endif
+
+#if defined(LIL_FEATURE_MatCap2ndTex)
+    #define Exists_MatCap2ndTex true
+#else
+    #define Exists_MatCap2ndTex false
+#endif
+
+#if defined(LIL_FEATURE_MatCap2ndBlendMask)
+    #define Exists_MatCap2ndBlendMask true
+#else
+    #define Exists_MatCap2ndBlendMask false
+#endif
+
+#if defined(LIL_FEATURE_MatCap2ndBumpMap)
+    #define Exists_MatCap2ndBumpMap true
+#else
+    #define Exists_MatCap2ndBumpMap false
+#endif
+
+#if defined(LIL_FEATURE_RimColorTex)
+    #define Exists_RimColorTex true
+#else
+    #define Exists_RimColorTex false
+#endif
+
+#if defined(LIL_FEATURE_GlitterColorTex)
+    #define Exists_GlitterColorTex true
+#else
+    #define Exists_GlitterColorTex false
+#endif
+
+#if defined(LIL_FEATURE_GlitterShapeTex)
+    #define Exists_GlitterShapeTex true
+#else
+    #define Exists_GlitterShapeTex false
+#endif
+
+#if defined(LIL_FEATURE_EmissionMap)
+    #define Exists_EmissionMap true
+#else
+    #define Exists_EmissionMap false
+#endif
+
+#if defined(LIL_FEATURE_EmissionBlendMask)
+    #define Exists_EmissionBlendMask true
+#else
+    #define Exists_EmissionBlendMask false
+#endif
+
+#if defined(LIL_FEATURE_EmissionGradTex)
+    #define Exists_EmissionGradTex true
+#else
+    #define Exists_EmissionGradTex false
+#endif
+
+#if defined(LIL_FEATURE_Emission2ndMap)
+    #define Exists_Emission2ndMap true
+#else
+    #define Exists_Emission2ndMap false
+#endif
+
+#if defined(LIL_FEATURE_Emission2ndBlendMask)
     #define Exists_Emission2ndBlendMask true
 #else
-    #define Exists_EmissionBlendMask    false
     #define Exists_Emission2ndBlendMask false
 #endif
 
-#if defined(LIL_FEATURE_AUDIOLINK)
-    #define Exists_AudioLinkMask        true
+#if defined(LIL_FEATURE_Emission2ndGradTex)
+    #define Exists_Emission2ndGradTex true
 #else
-    #define Exists_AudioLinkMask        false
+    #define Exists_Emission2ndGradTex false
 #endif
 
-#if defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
-    #define Exists_DissolveNoiseMask    true
+#if defined(LIL_FEATURE_ParallaxMap)
+    #define Exists_ParallaxMap true
 #else
-    #define Exists_DissolveNoiseMask    false
+    #define Exists_ParallaxMap false
 #endif
 
-#if defined(LIL_FEATURE_TEX_OUTLINE_COLOR)
-    #define Exists_OutlineTex           true
+#if defined(LIL_FEATURE_AudioLinkMask)
+    #define Exists_AudioLinkMask true
 #else
-    #define Exists_OutlineTex           false
+    #define Exists_AudioLinkMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_OUTLINE_WIDTH)
-    #define Exists_OutlineWidthMask     true
+#if defined(LIL_FEATURE_AudioLinkLocalMap)
+    #define Exists_AudioLinkLocalMap true
 #else
-    #define Exists_OutlineWidthMask     false
+    #define Exists_AudioLinkLocalMap false
 #endif
 
-#if defined(LIL_FEATURE_TEX_OUTLINE_NORMAL)
-    #define Exists_OutlineVectorTex     true
+#if defined(LIL_FEATURE_DissolveMask)
+    #define Exists_DissolveMask true
 #else
-    #define Exists_OutlineVectorTex     false
+    #define Exists_DissolveMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_FUR_MASK)
-    #define Exists_FurMask              true
+#if defined(LIL_FEATURE_DissolveNoiseMask)
+    #define Exists_DissolveNoiseMask true
 #else
-    #define Exists_FurMask              false
+    #define Exists_DissolveNoiseMask false
 #endif
 
-#if defined(LIL_FEATURE_TEX_FUR_LENGTH)
-    #define Exists_FurLengthMask        true
+#if defined(LIL_FEATURE_OutlineTex)
+    #define Exists_OutlineTex true
 #else
-    #define Exists_FurLengthMask        false
+    #define Exists_OutlineTex false
 #endif
 
-#if defined(LIL_FEATURE_TEX_FUR_NORMAL)
-    #define Exists_FurVectorTex         true
+#if defined(LIL_FEATURE_OutlineWidthMask)
+    #define Exists_OutlineWidthMask true
 #else
-    #define Exists_FurVectorTex         false
+    #define Exists_OutlineWidthMask false
+#endif
+
+#if defined(LIL_FEATURE_OutlineVectorTex)
+    #define Exists_OutlineVectorTex true
+#else
+    #define Exists_OutlineVectorTex false
+#endif
+
+#if defined(LIL_FEATURE_FurNoiseMask)
+    #define Exists_FurNoiseMask true
+#else
+    #define Exists_FurNoiseMask false
+#endif
+
+#if defined(LIL_FEATURE_FurMask)
+    #define Exists_FurMask true
+#else
+    #define Exists_FurMask false
+#endif
+
+#if defined(LIL_FEATURE_FurLengthMask)
+    #define Exists_FurLengthMask true
+#else
+    #define Exists_FurLengthMask false
+#endif
+
+#if defined(LIL_FEATURE_FurVectorTex)
+    #define Exists_FurVectorTex true
+#else
+    #define Exists_FurVectorTex false
 #endif
 
 #define Exists_MainTex              true
-#define Exists_Main2ndTex           true
-#define Exists_Main3rdTex           true
-#define Exists_BumpMap              true
-#define Exists_Bump2ndMap           true
-#define Exists_MatCapTex            true
-#define Exists_MatCap2ndTex         true
-#define Exists_EmissionMap          true
-#define Exists_EmissionGradTex      true
-#define Exists_Emission2ndMap       true
-#define Exists_Emission2ndGradTex   true
-#define Exists_ParallaxMap          true
-#define Exists_DissolveMask         true
-#define Exists_FurNoiseMask         true
 #define Exists_TriMask              true
+
+#if defined(LIL_LITE)
+    #if defined(Exists_TriMask)
+        #undef Exists_TriMask
+    #endif
+    #if defined(Exists_MainTex)
+        #undef Exists_MainTex
+    #endif
+    #if defined(Exists_ShadowColorTex)
+        #undef Exists_ShadowColorTex
+    #endif
+    #if defined(Exists_Shadow2ndColorTex)
+        #undef Exists_Shadow2ndColorTex
+    #endif
+    #if defined(Exists_MatCapTex)
+        #undef Exists_MatCapTex
+    #endif
+    #if defined(Exists_EmissionMap)
+        #undef Exists_EmissionMap
+    #endif
+    #if defined(Exists_OutlineTex)
+        #undef Exists_OutlineTex
+    #endif
+    #if defined(Exists_OutlineWidthMask)
+        #undef Exists_OutlineWidthMask
+    #endif
+
+    #define Exists_TriMask              true
+    #define Exists_MainTex              true
+    #define Exists_ShadowColorTex       true
+    #define Exists_Shadow2ndColorTex    true
+    #define Exists_MatCapTex            true
+    #define Exists_EmissionMap          true
+    #define Exists_OutlineTex           true
+    #define Exists_OutlineWidthMask     true
+#endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Input
@@ -227,8 +432,8 @@ SAMPLER(sampler_linear_clamp);
 //#define lilBool bool
 #define lilBool uint
 
+CBUFFER_START(UnityPerMaterial)
 #if defined(LIL_LITE)
-    CBUFFER_START(UnityPerMaterial)
     float4  _LightDirectionOverride;
     float4  _Color;
     float4  _MainTex_ST;
@@ -290,12 +495,7 @@ SAMPLER(sampler_linear_clamp);
     lilBool _UseRim;
     lilBool _UseEmission;
     lilBool _OutlineDeleteMesh;
-    #if defined(LIL_CUSTOM_PROPERTIES)
-        LIL_CUSTOM_PROPERTIES
-    #endif
-    CBUFFER_END
 #elif defined(LIL_FAKESHADOW)
-    CBUFFER_START(UnityPerMaterial)
     float4  _Color;
     float4  _MainTex_ST;
     float4  _FakeShadowVector;
@@ -306,12 +506,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_ENCRYPTION)
         lilBool _IgnoreEncryption;
     #endif
-    #if defined(LIL_CUSTOM_PROPERTIES)
-        LIL_CUSTOM_PROPERTIES
-    #endif
-    CBUFFER_END
 #elif defined(LIL_BAKER)
-    CBUFFER_START(UnityPerMaterial)
     float4  _Color;
     float4  _MainTex_ST;
     float4  _MainTexHSVG;
@@ -345,9 +540,7 @@ SAMPLER(sampler_linear_clamp);
     lilBool _Main3rdTexShouldFlipMirror;
     lilBool _Main3rdTexShouldFlipCopy;
     lilBool _Main3rdTexIsMSDF;
-    CBUFFER_END
 #elif defined(LIL_MULTI)
-    CBUFFER_START(UnityPerMaterial)
     float4  _LightDirectionOverride;
     float4  _BackfaceColor;
     float4  _Color;
@@ -454,6 +647,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         float4  _GlitterColor;
         float4  _GlitterColorTex_ST;
+        float4  _GlitterShapeTex_ST;
         float4  _GlitterParams1;
         float4  _GlitterParams2;
     #endif
@@ -644,6 +838,7 @@ SAMPLER(sampler_linear_clamp);
         float   _GlitterShadowMask;
         float   _GlitterVRParallaxStrength;
         float   _GlitterBackfaceMask;
+        float   _GlitterScaleRandomize;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION)
         float   _EmissionBlend;
@@ -733,6 +928,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         uint    _GlitterUVMode;
+        uint    _GlitterAngleRandomize;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION)
         uint    _EmissionMap_UVMode;
@@ -837,14 +1033,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_REFRACTION)
         lilBool _RefractionColorFromMain;
     #endif
-
-    #if defined(LIL_CUSTOM_PROPERTIES)
-        LIL_CUSTOM_PROPERTIES
-    #endif
-
-    CBUFFER_END
 #else
-    CBUFFER_START(UnityPerMaterial)
     //------------------------------------------------------------------------------------------------------------------------------
     // Vector
     float4  _LightDirectionOverride;
@@ -873,7 +1062,7 @@ SAMPLER(sampler_linear_clamp);
             float4  _Main2ndDissolveColor;
             float4  _Main2ndDissolveParams;
             float4  _Main2ndDissolvePos;
-            #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+            #if defined(LIL_FEATURE_Main2ndDissolveNoiseMask)
                 float4  _Main2ndDissolveNoiseMask_ST;
                 float4  _Main2ndDissolveNoiseMask_ScrollRotate;
             #endif
@@ -894,7 +1083,7 @@ SAMPLER(sampler_linear_clamp);
             float4  _Main3rdDissolveColor;
             float4  _Main3rdDissolveParams;
             float4  _Main3rdDissolvePos;
-            #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+            #if defined(LIL_FEATURE_Main3rdDissolveNoiseMask)
                 float4  _Main3rdDissolveNoiseMask_ST;
                 float4  _Main3rdDissolveNoiseMask_ScrollRotate;
             #endif
@@ -985,7 +1174,7 @@ SAMPLER(sampler_linear_clamp);
         float4  _MatCapTex_ST;
         float4  _MatCapBlendMask_ST;
         float4  _MatCapBlendUV1;
-        #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+        #if defined(LIL_FEATURE_MatCapBumpMap)
             float4  _MatCapBumpMap_ST;
         #endif
     #endif
@@ -996,7 +1185,7 @@ SAMPLER(sampler_linear_clamp);
         float4  _MatCap2ndTex_ST;
         float4  _MatCap2ndBlendMask_ST;
         float4  _MatCap2ndBlendUV1;
-        #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+        #if defined(LIL_FEATURE_MatCap2ndBumpMap)
             float4  _MatCap2ndBumpMap_ST;
         #endif
     #endif
@@ -1014,6 +1203,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_GLITTER)
         float4  _GlitterColor;
         float4  _GlitterColorTex_ST;
+        float4  _GlitterShapeTex_ST;
         float4  _GlitterParams1;
         float4  _GlitterParams2;
     #endif
@@ -1045,7 +1235,7 @@ SAMPLER(sampler_linear_clamp);
         float4  _DissolveColor;
         float4  _DissolveParams;
         float4  _DissolvePos;
-        #if defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
+        #if defined(LIL_FEATURE_DissolveNoiseMask)
             float4  _DissolveNoiseMask_ST;
             float4  _DissolveNoiseMask_ScrollRotate;
         #endif
@@ -1063,7 +1253,7 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_ANIMATE_OUTLINE_UV)
         float4  _OutlineTex_ScrollRotate;
     #endif
-    #if defined(LIL_FEATURE_TEX_OUTLINE_COLOR)
+    #if defined(LIL_FEATURE_OutlineTex)
         #if defined(LIL_FEATURE_OUTLINE_TONE_CORRECTION)
             float4  _OutlineTexHSVG;
         #endif
@@ -1110,14 +1300,14 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_FEATURE_MAIN2ND)
         float   _Main2ndTexAngle;
         float   _Main2ndEnableLighting;
-        #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+        #if defined(LIL_FEATURE_Main2ndDissolveNoiseMask)
             float   _Main2ndDissolveNoiseStrength;
         #endif
     #endif
     #if defined(LIL_FEATURE_MAIN3RD)
         float   _Main3rdTexAngle;
         float   _Main3rdEnableLighting;
-        #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+        #if defined(LIL_FEATURE_Main3rdDissolveNoiseMask)
             float   _Main3rdDissolveNoiseStrength;
         #endif
     #endif
@@ -1203,7 +1393,7 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCapLod;
         float   _MatCapNormalStrength;
         float   _MatCapMainStrength;
-        #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+        #if defined(LIL_FEATURE_MatCapBumpMap)
             float   _MatCapBumpScale;
         #endif
     #endif
@@ -1216,7 +1406,7 @@ SAMPLER(sampler_linear_clamp);
         float   _MatCap2ndLod;
         float   _MatCap2ndNormalStrength;
         float   _MatCap2ndMainStrength;
-        #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+        #if defined(LIL_FEATURE_MatCap2ndBumpMap)
             float   _MatCap2ndBumpScale;
         #endif
     #endif
@@ -1247,6 +1437,7 @@ SAMPLER(sampler_linear_clamp);
         float   _GlitterShadowMask;
         float   _GlitterVRParallaxStrength;
         float   _GlitterBackfaceMask;
+        float   _GlitterScaleRandomize;
     #endif
     #if defined(LIL_FEATURE_EMISSION_1ST)
         float   _EmissionBlend;
@@ -1274,7 +1465,7 @@ SAMPLER(sampler_linear_clamp);
         float   _AudioLink2EmissionGrad;
         float   _AudioLink2Emission2ndGrad;
     #endif
-    #if defined(LIL_FEATURE_DISSOLVE) &&  defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
+    #if defined(LIL_FEATURE_DISSOLVE) &&  defined(LIL_FEATURE_DissolveNoiseMask)
         float   _DissolveNoiseStrength;
     #endif
     float   _lilShadowCasterBias;
@@ -1346,6 +1537,7 @@ SAMPLER(sampler_linear_clamp);
     #endif
     #if defined(LIL_FEATURE_GLITTER)
         uint    _GlitterUVMode;
+        uint    _GlitterAngleRandomize;
     #endif
     #if defined(LIL_FEATURE_EMISSION_1ST)
         uint    _EmissionMap_UVMode;
@@ -1429,7 +1621,7 @@ SAMPLER(sampler_linear_clamp);
         lilBool _MatCapApplyTransparency;
         lilBool _MatCapPerspective;
         lilBool _MatCapZRotCancel;
-        #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+        #if defined(LIL_FEATURE_MatCapBumpMap)
             lilBool _MatCapCustomNormal;
         #endif
     #endif
@@ -1438,7 +1630,7 @@ SAMPLER(sampler_linear_clamp);
         lilBool _MatCap2ndApplyTransparency;
         lilBool _MatCap2ndPerspective;
         lilBool _MatCap2ndZRotCancel;
-        #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+        #if defined(LIL_FEATURE_MatCap2ndBumpMap)
             lilBool _MatCap2ndCustomNormal;
         #endif
     #endif
@@ -1502,15 +1694,12 @@ SAMPLER(sampler_linear_clamp);
     #if defined(LIL_REFRACTION)
         lilBool _RefractionColorFromMain;
     #endif
-
-    //------------------------------------------------------------------------------------------------------------------------------
-    // Custom properties
-    #if defined(LIL_CUSTOM_PROPERTIES)
-        LIL_CUSTOM_PROPERTIES
-    #endif
-
-    CBUFFER_END
 #endif
+
+#if defined(LIL_CUSTOM_PROPERTIES)
+    LIL_CUSTOM_PROPERTIES
+#endif
+CBUFFER_END
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Texture
@@ -1551,6 +1740,7 @@ TEXTURE2D(_MatCap2ndBlendMask);
 TEXTURE2D(_MatCap2ndBumpMap);
 TEXTURE2D(_RimColorTex);
 TEXTURE2D(_GlitterColorTex);
+TEXTURE2D(_GlitterShapeTex);
 TEXTURE2D(_EmissionMap);
 TEXTURE2D(_EmissionBlendMask);
 TEXTURE2D(_EmissionGradTex);
@@ -1587,7 +1777,7 @@ float4 _AudioTexture_TexelSize;
 #if defined(LIL_OUTLINE)
     #define sampler_MainTex sampler_OutlineTex
 #endif
-#if !defined(LIL_FEATURE_TEX_OUTLINE_COLOR)
+#if !defined(LIL_FEATURE_OutlineTex)
     #define sampler_OutlineTex sampler_linear_repeat
 #endif
 

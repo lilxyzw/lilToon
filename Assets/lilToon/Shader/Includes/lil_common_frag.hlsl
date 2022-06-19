@@ -114,6 +114,10 @@
     #define BEFORE_BLEND_EMISSION
 #endif
 
+#if !defined(BEFORE_DEPTH_FADE)
+    #define BEFORE_DEPTH_FADE
+#endif
+
 #if !defined(BEFORE_DISTANCE_FADE)
     #define BEFORE_DISTANCE_FADE
 #endif
@@ -329,14 +333,14 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Outline Color
-#if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FEATURE_TEX_OUTLINE_COLOR) || !defined(LIL_PASS_FORWARD_NORMAL_INCLUDED)
+#if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FEATURE_OutlineTex) || !defined(LIL_PASS_FORWARD_NORMAL_INCLUDED)
     #define LIL_GET_OUTLINE_TEX \
         fd.col = LIL_SAMPLE_2D(_OutlineTex, sampler_OutlineTex, fd.uvMain);
 #else
     #define LIL_GET_OUTLINE_TEX
 #endif
 
-#if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FEATURE_OUTLINE_TONE_CORRECTION)
+#if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_FEATURE_OutlineTex) && defined(LIL_FEATURE_OUTLINE_TONE_CORRECTION)
     #define LIL_APPLY_OUTLINE_TONECORRECTION \
         fd.col.rgb = lilToneCorrection(fd.col.rgb, _OutlineTexHSVG);
 #else
@@ -416,7 +420,7 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // Dissolve
 #if !defined(OVERRIDE_DISSOLVE)
-    #if defined(LIL_FEATURE_TEX_DISSOLVE_NOISE)
+    #if defined(LIL_FEATURE_DissolveNoiseMask)
         #define OVERRIDE_DISSOLVE \
             lilCalcDissolveWithNoise( \
                 fd.col.a, \
@@ -606,7 +610,7 @@
             if(Exists_Main2ndTex) color2nd *= LIL_GET_SUBTEX(_Main2ndTex, uv2nd);
             if(Exists_Main2ndBlendMask) color2nd.a *= LIL_SAMPLE_2D(_Main2ndBlendMask, samp, fd.uvMain).r;
             #if defined(LIL_FEATURE_LAYER_DISSOLVE)
-                #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+                #if defined(LIL_FEATURE_Main2ndDissolveNoiseMask)
                     lilCalcDissolveWithNoise(
                         color2nd.a,
                         main2ndDissolveAlpha,
@@ -679,7 +683,7 @@
             if(Exists_Main3rdTex) color3rd *= LIL_GET_SUBTEX(_Main3rdTex, uv3rd);
             if(Exists_Main3rdBlendMask) color3rd.a *= LIL_SAMPLE_2D(_Main3rdBlendMask, samp, fd.uvMain).r;
             #if defined(LIL_FEATURE_LAYER_DISSOLVE)
-                #if defined(LIL_FEATURE_TEX_LAYER_DISSOLVE_NOISE)
+                #if defined(LIL_FEATURE_Main3rdDissolveNoiseMask)
                     lilCalcDissolveWithNoise(
                         color3rd.a,
                         main3rdDissolveAlpha,
@@ -1239,7 +1243,7 @@
             #if defined(LIL_FEATURE_NORMAL_1ST) || defined(LIL_FEATURE_NORMAL_2ND)
                 N = lerp(fd.origN, fd.matcapN, _MatCapNormalStrength);
             #endif
-            #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+            #if defined(LIL_FEATURE_MatCapBumpMap)
                 LIL_BRANCH
                 if(_MatCapCustomNormal)
                 {
@@ -1305,7 +1309,7 @@
             #if defined(LIL_FEATURE_NORMAL_1ST) || defined(LIL_FEATURE_NORMAL_2ND)
                 N = lerp(fd.origN, fd.matcap2ndN, _MatCap2ndNormalStrength);
             #endif
-            #if defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP)
+            #if defined(LIL_FEATURE_MatCap2ndBumpMap)
                 LIL_BRANCH
                 if(_MatCap2ndCustomNormal)
                 {
@@ -1487,7 +1491,7 @@
             float4 glitterColor = _GlitterColor;
             if(Exists_GlitterColorTex) glitterColor *= LIL_SAMPLE_2D_ST(_GlitterColorTex, samp, fd.uvMain);
             float2 glitterPos = _GlitterUVMode ? fd.uv1 : fd.uv0;
-            glitterColor.rgb *= lilCalcGlitter(glitterPos, N, glitterViewDirection, glitterCameraDirection, fd.L, _GlitterParams1, _GlitterParams2, _GlitterPostContrast, _GlitterSensitivity);
+            glitterColor.rgb *= lilCalcGlitter(glitterPos, N, glitterViewDirection, glitterCameraDirection, fd.L, _GlitterParams1, _GlitterParams2, _GlitterPostContrast, _GlitterSensitivity, _GlitterScaleRandomize, _GlitterAngleRandomize, _GlitterShapeTex, _GlitterShapeTex_ST);
             glitterColor.rgb = lerp(glitterColor.rgb, glitterColor.rgb * fd.albedo, _GlitterMainStrength);
             #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                 if(_GlitterApplyTransparency) glitterColor.a *= fd.col.a;
@@ -1667,6 +1671,39 @@
         #define OVERRIDE_BLEND_EMISSION \
             fd.col.rgb += fd.emissionColor;
     #endif
+#endif
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Depth Fade
+#if defined(LIL_FEATURE_DEPTH_FADE) && LIL_RENDER == 2 && !defined(LIL_REFRACTION) && !defined(LIL_LITE)
+    void lilDepthFade(inout lilFragData fd)
+    {
+        if((_DepthFadeTransparency < 1) && LIL_ENABLED_DEPTH_TEX)
+        {
+            float depthObj = fd.positionCS.w;
+            float depthCam = LIL_GET_DEPTH_TEX_CS(fd.positionCS.xy);
+            #if UNITY_REVERSED_Z
+                if(depthCam == 0) return;
+            #else
+                if(depthCam == 1) return;
+            #endif
+            depthCam = LIL_TO_LINEARDEPTH(depthCam,fd.positionCS.xy);
+            float depthDiff = depthCam - depthObj;
+            float factor = saturate(depthDiff * _DepthFadeSharpness + _DepthFadeTransparency);
+            if(_DepthFadeToColor) fd.col.rgb *= lerp(_DepthFadeColor.rgb, fd.col.rgb, factor);
+            if(_DepthFadeToAlpha) fd.col.a *= factor;
+            //fd.col.a *= saturate(depthDiff * 20 + 0);
+        }
+        //float4 _DepthFadeColor;
+        //float _DepthFadeSharpness;
+        //float _DepthFadeTransparency;
+        //uint _DepthFadeToColor;
+        //uint _DepthFadeToAlpha;
+    }
+#endif
+
+#if !defined(OVERRIDE_DEPTH_FADE)
+    #define OVERRIDE_DEPTH_FADE lilDepthFade(fd);
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------

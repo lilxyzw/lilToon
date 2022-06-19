@@ -171,12 +171,20 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         // Alpha
         #if LIL_RENDER == 0
             // Opaque
+            fd.col.a = 1.0;
         #elif LIL_RENDER == 1
             // Cutout
             fd.col.a = saturate((fd.col.a - _Cutoff) / max(fwidth(fd.col.a), 0.0001) + 0.5);
         #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
             // Transparent
             clip(fd.col.a - _Cutoff);
+        #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Depth Fade
+        BEFORE_DEPTH_FADE
+        #if defined(LIL_FEATURE_DEPTH_FADE) && LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+            OVERRIDE_DEPTH_FADE
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -233,12 +241,20 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         // Alpha
         #if LIL_RENDER == 0
             // Opaque
+            fd.col.a = 1.0;
         #elif LIL_RENDER == 1
             // Cutout
             fd.col.a = saturate((fd.col.a - _Cutoff) / max(fwidth(fd.col.a), 0.0001) + 0.5);
         #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
             // Transparent
             clip(fd.col.a - _Cutoff);
+        #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Depth Fade
+        BEFORE_DEPTH_FADE
+        #if defined(LIL_FEATURE_DEPTH_FADE) && LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+            OVERRIDE_DEPTH_FADE
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------

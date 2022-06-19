@@ -143,6 +143,7 @@ namespace lilToon
             public bool isShowRimColorTex               = false;
             public bool isShowGlitter                   = false;
             public bool isShowGlitterColorTex           = false;
+            public bool isShowGlitterShapeTex           = false;
             public bool isShowGem                       = false;
             public bool isShowDissolveMask              = false;
             public bool isShowDissolveNoiseMask         = false;
@@ -547,7 +548,10 @@ namespace lilToon
             private readonly lilMaterialProperty glitterUVMode = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterColor = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterColorTex = new lilMaterialProperty();
+            private readonly lilMaterialProperty glitterShapeTex = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterMainStrength = new lilMaterialProperty();
+            private readonly lilMaterialProperty glitterScaleRandomize = new lilMaterialProperty();
+            private readonly lilMaterialProperty glitterAngleRandomize = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterParams1 = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterParams2 = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterPostContrast = new lilMaterialProperty();
@@ -2213,8 +2217,7 @@ namespace lilToon
                         EditorGUI.indentLevel--;
                         lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(gemVRParallaxStrength, GetLoc("sVRParallaxStrength"));
-                        if(shaderSetting.LIL_FEATURE_TEX_REFLECTION_SMOOTHNESS) m_MaterialEditor.TexturePropertySingleLine(smoothnessContent, smoothnessTex, smoothness);
-                        else                                                    m_MaterialEditor.ShaderProperty(smoothness, GetLoc("sSmoothness"));
+                        m_MaterialEditor.TexturePropertySingleLine(smoothnessContent, smoothnessTex, smoothness);
                         m_MaterialEditor.ShaderProperty(reflectance, GetLoc("sReflectance"));
                         m_MaterialEditor.TexturePropertySingleLine(new GUIContent("Cubemap Fallback"), reflectionCubeTex, reflectionCubeColor);
                         m_MaterialEditor.ShaderProperty(reflectionCubeOverride, "Override");
@@ -3218,7 +3221,10 @@ namespace lilToon
             glitterUVMode.p             = FindProperty("_GlitterUVMode", props, false);
             glitterColor.p              = FindProperty("_GlitterColor", props, false);
             glitterColorTex.p           = FindProperty("_GlitterColorTex", props, false);
+            glitterShapeTex.p           = FindProperty("_GlitterShapeTex", props, false);
             glitterMainStrength.p       = FindProperty("_GlitterMainStrength", props, false);
+            glitterScaleRandomize.p     = FindProperty("_GlitterScaleRandomize", props, false);
+            glitterAngleRandomize.p     = FindProperty("_GlitterAngleRandomize", props, false);
             glitterEnableLighting.p     = FindProperty("_GlitterEnableLighting", props, false);
             glitterShadowMask.p         = FindProperty("_GlitterShadowMask", props, false);
             glitterBackfaceMask.p       = FindProperty("_GlitterBackfaceMask", props, false);
@@ -3662,7 +3668,10 @@ namespace lilToon
                 glitterUVMode,
                 glitterColor,
                 glitterColorTex,
+                glitterShapeTex,
                 glitterMainStrength,
+                glitterScaleRandomize,
+                glitterAngleRandomize,
                 glitterParams1,
                 glitterParams2,
                 glitterPostContrast,
@@ -4233,6 +4242,8 @@ namespace lilToon
             AddBlock(PropertyBlock.Reflections, glitterUVMode);
             AddBlock(PropertyBlock.Reflections, glitterColor);
             AddBlock(PropertyBlock.Reflections, glitterMainStrength);
+            AddBlock(PropertyBlock.Reflections, glitterScaleRandomize);
+            AddBlock(PropertyBlock.Reflections, glitterAngleRandomize);
             AddBlock(PropertyBlock.Reflections, glitterParams1);
             AddBlock(PropertyBlock.Reflections, glitterParams2);
             AddBlock(PropertyBlock.Reflections, glitterPostContrast);
@@ -4273,6 +4284,7 @@ namespace lilToon
             AddBlock(PropertyBlock.Reflections, matcap2ndBumpMap, true);
             AddBlock(PropertyBlock.Reflections, rimColorTex, true);
             AddBlock(PropertyBlock.Reflections, glitterColorTex, true);
+            AddBlock(PropertyBlock.Reflections, glitterShapeTex, true);
             AddBlock(PropertyBlock.Reflections, backlightColorTex, true);
 
             AddBlock(PropertyBlock.Reflection, useReflection);
@@ -4410,6 +4422,8 @@ namespace lilToon
             AddBlock(PropertyBlock.Glitter, glitterUVMode);
             AddBlock(PropertyBlock.Glitter, glitterColor);
             AddBlock(PropertyBlock.Glitter, glitterMainStrength);
+            AddBlock(PropertyBlock.Glitter, glitterScaleRandomize);
+            AddBlock(PropertyBlock.Glitter, glitterAngleRandomize);
             AddBlock(PropertyBlock.Glitter, glitterParams1);
             AddBlock(PropertyBlock.Glitter, glitterParams2);
             AddBlock(PropertyBlock.Glitter, glitterPostContrast);
@@ -4421,6 +4435,7 @@ namespace lilToon
             AddBlock(PropertyBlock.Glitter, glitterVRParallaxStrength);
             AddBlock(PropertyBlock.Glitter, glitterNormalStrength);
             AddBlock(PropertyBlock.Glitter, glitterColorTex, true);
+            AddBlock(PropertyBlock.Glitter, glitterShapeTex, true);
 
             AddBlock(PropertyBlock.Backlight, useBacklight);
             AddBlock(PropertyBlock.Backlight, backlightColor);
@@ -5979,18 +5994,26 @@ namespace lilToon
                     if(isTransparent) m_MaterialEditor.ShaderProperty(glitterApplyTransparency, GetLoc("sApplyTransparency"));
                     EditorGUI.indentLevel--;
                     lilEditorGUI.DrawLine();
+                    TextureGUI(ref edSet.isShowGlitterShapeTex, customMaskContent, glitterShapeTex);
 
                     // Param1
                     Vector2 scale = new Vector2(256.0f/glitterParams1.vectorValue.x, 256.0f/glitterParams1.vectorValue.y);
                     float size = glitterParams1.vectorValue.z == 0.0f ? 0.0f : Mathf.Sqrt(glitterParams1.vectorValue.z);
                     float density = Mathf.Sqrt(1.0f / glitterParams1.vectorValue.w) / 1.5f;
                     float sensitivity = lilEditorGUI.RoundFloat1000000(glitterSensitivity.floatValue / density);
+                    density = lilEditorGUI.RoundFloat1000000(density);
                     EditorGUIUtility.wideMode = true;
 
                     EditorGUI.BeginChangeCheck();
                     EditorGUI.showMixedValue = glitterParams1.hasMixedValue || glitterSensitivity.hasMixedValue;
                     scale = EditorGUILayout.Vector2Field(GetLoc("sScale"), scale);
                     size = EditorGUILayout.Slider(GetLoc("sParticleSize"), size, 0.0f, 2.0f);
+                    EditorGUI.showMixedValue = false;
+
+                    m_MaterialEditor.ShaderProperty(glitterScaleRandomize, GetLoc("sRandomize") + " (Size)");
+                    m_MaterialEditor.ShaderProperty(glitterAngleRandomize, GetLoc("sRandomize") + " (Angle)");
+
+                    EditorGUI.showMixedValue = glitterParams1.hasMixedValue || glitterSensitivity.hasMixedValue;
                     density = EditorGUILayout.Slider(GetLoc("sDensity"), density, 0.001f, 1.0f);
                     sensitivity = EditorGUILayout.FloatField(GetLoc("sSensitivity"), sensitivity);
                     EditorGUI.showMixedValue = false;
@@ -6034,7 +6057,7 @@ namespace lilToon
                 {
                     EditorGUILayout.LabelField(GetLoc("sOutline"), customToggleFont);
                 }
-                if(isOutl)
+                if(!isLite && isOutl)
                 {
                     EditorGUILayout.BeginVertical(boxInnerHalf);
                     TextureGUI(ref edSet.isShowOutlineMap, mainColorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
@@ -6080,7 +6103,7 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(outlineVectorUVMode, "UV Mode|UV0|UV1|UV2|UV3", 1);
                     EditorGUILayout.EndVertical();
                 }
-                else if(isLite && isOutl)
+                else if(isOutl)
                 {
                     EditorGUILayout.BeginVertical(boxInnerHalf);
                     TextureGUI(ref edSet.isShowOutlineMap, mainColorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);

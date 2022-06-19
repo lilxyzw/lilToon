@@ -173,7 +173,7 @@
 // Optimization Macro
 
 // tangentWS / bitangentWS / normalWS
-#if defined(LIL_FEATURE_NORMAL_1ST) || defined(LIL_FEATURE_NORMAL_2ND) || defined(LIL_FEATURE_ANISOTROPY) || defined(LIL_FEATURE_TEX_MATCAP_NORMALMAP) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX)
+#if defined(LIL_FEATURE_NORMAL_1ST) || defined(LIL_FEATURE_NORMAL_2ND) || defined(LIL_FEATURE_ANISOTROPY) || defined(LIL_FEATURE_MatCapBumpMap) || defined(LIL_FEATURE_MatCap2ndBumpMap) || defined(LIL_FEATURE_EMISSION_1ST) || defined(LIL_FEATURE_EMISSION_2ND) || defined(LIL_FEATURE_PARALLAX)
     #define LIL_SHOULD_TBN
 #endif
 
@@ -200,6 +200,14 @@
 // uv1
 #if defined(LIL_FEATURE_MATCAP) || defined(LIL_FEATURE_MATCAP_2ND) || defined(LIL_FEATURE_GLITTER)
     #define LIL_SHOULD_UV1
+#endif
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Screen params
+#if defined(LIL_URP)
+    #define LIL_SCREENPARAMS    _ScaledScreenParams
+#else
+    #define LIL_SCREENPARAMS    _ScreenParams
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -261,11 +269,13 @@
     #define LIL_SAMPLE_1D(tex,samp,uv)                      tex2D(tex,float2(uv,0.5))
     #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)              tex2Dlod(tex,float4(uv,0.5,0,lod))
     #define LIL_SAMPLE_2D(tex,samp,uv)                      tex2D(tex,uv)
+    #define LIL_SAMPLE_2D_CS(tex,uv)                        tex2D(tex,uv/LIL_SCREENPARAMS.xy)
     #define LIL_SAMPLE_2D_ST(tex,samp,uv)                   tex2D(tex,uv*tex##_ST.xy+tex##_ST.zw)
     #define LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)              tex2Dlod(tex,float4(uv,0,lod))
     #define LIL_SAMPLE_2D_BIAS(tex,samp,uv,bias)            tex2Dbias(tex,float4(uv,0,bias))
     #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)           tex2Dgrad(tex,uv,dx,dy)
     #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)          tex2DArray(tex,float3(uv,index))
+    #define LIL_SAMPLE_2D_ARRAY_CS(tex,uv,index)            tex2DArray(tex,float3(uv/LIL_SCREENPARAMS.xy,index))
     #define LIL_SAMPLE_2D_ARRAY_LOD(tex,samp,uv,index,lod)  tex2DArraylod(tex,float4(uv,index,lod))
     #define LIL_SAMPLE_3D(tex,samp,uv)                      tex3D(tex,uv)
     #define LIL_SAMPLE_CUBE_LOD(tex,samp,uv,lod)            texCUBElod(tex,float4(uv,0,lod))
@@ -283,15 +293,37 @@
     {
         return false;
     }
+
+    bool IsEmpty(TEXTURE2D(tex))
+    {
+        return false;
+    }
+
+    bool IsEmpty(TEXTURE2D_ARRAY(tex))
+    {
+        return false;
+    }
+
+    bool IsScreenTex(TEXTURE2D(tex))
+    {
+        return false;
+    }
+
+    bool IsScreenTex(TEXTURE2D_ARRAY(tex))
+    {
+        return false;
+    }
 #else
     #define LIL_SAMPLE_1D(tex,samp,uv)                      tex.Sample(samp,uv)
     #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)              tex.SampleLevel(samp,uv,lod)
     #define LIL_SAMPLE_2D(tex,samp,uv)                      tex.Sample(samp,uv)
+    #define LIL_SAMPLE_2D_CS(tex,uv)                        tex[uint2(uv)]
     #define LIL_SAMPLE_2D_ST(tex,samp,uv)                   tex.Sample(samp,uv*tex##_ST.xy+tex##_ST.zw)
     #define LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)              tex.SampleLevel(samp,uv,lod)
     #define LIL_SAMPLE_2D_BIAS(tex,samp,uv,bias)            tex.SampleBias(samp,uv,bias)
     #define LIL_SAMPLE_2D_GRAD(tex,samp,uv,dx,dy)           tex.SampleGrad(samp,uv,dx,dy)
     #define LIL_SAMPLE_2D_ARRAY(tex,samp,uv,index)          tex.Sample(samp,float3(uv,index))
+    #define LIL_SAMPLE_2D_ARRAY_CS(tex,uv,index)            tex[uint3(uv,index)]
     #define LIL_SAMPLE_2D_ARRAY_LOD(tex,samp,uv,index,lod)  tex.SampleLevel(samp,float3(uv,index),lod)
     #define LIL_SAMPLE_3D(tex,samp,coord)                   tex.Sample(samp,coord)
     #define LIL_SAMPLE_CUBE_LOD(tex,samp,uv,lod)            tex.SampleLevel(samp,uv,lod)
@@ -310,6 +342,34 @@
         tex.GetDimensions(0, width, height, levels);
         return width < 15;
     }
+
+    bool IsEmpty(TEXTURE2D(tex))
+    {
+        uint width, height;
+        tex.GetDimensions(width, height);
+        return width < 15;
+    }
+
+    bool IsEmpty(TEXTURE2D_ARRAY(tex))
+    {
+        uint width, height, element;
+        tex.GetDimensions(width, height, element);
+        return width < 15;
+    }
+
+    bool IsScreenTex(TEXTURE2D(tex))
+    {
+        uint width, height;
+        tex.GetDimensions(width, height);
+        return (abs(width - LIL_SCREENPARAMS.x) + abs(height - LIL_SCREENPARAMS.y)) < 1;
+    }
+
+    bool IsScreenTex(TEXTURE2D_ARRAY(tex))
+    {
+        uint width, height, element;
+        tex.GetDimensions(width, height, element);
+        return (abs(width - LIL_SCREENPARAMS.x) + abs(height - LIL_SCREENPARAMS.y)) < 1;
+    }
 #endif
 
 #if defined(LIL_FEATURE_PARALLAX) && defined(LIL_FEATURE_POM)
@@ -322,19 +382,17 @@
     #define TEXTURE2D_SCREEN(tex)                   TEXTURE2D_ARRAY(tex)
     #define LIL_SAMPLE_SCREEN(tex,samp,uv)          LIL_SAMPLE_2D_ARRAY(tex,samp,uv,(float)unity_StereoEyeIndex)
     #define LIL_SAMPLE_SCREEN_LOD(tex,samp,uv,lod)  LIL_SAMPLE_2D_ARRAY_LOD(tex,samp,uv,(float)unity_StereoEyeIndex,lod)
+    #define LIL_SAMPLE_SCREEN_CS(tex,uv)            LIL_SAMPLE_2D_ARRAY_CS(tex,uv,unity_StereoEyeIndex)
+
 #else
     #define TEXTURE2D_SCREEN(tex)                   TEXTURE2D(tex)
     #define LIL_SAMPLE_SCREEN(tex,samp,uv)          LIL_SAMPLE_2D(tex,samp,uv)
     #define LIL_SAMPLE_SCREEN_LOD(tex,samp,uv,lod)  LIL_SAMPLE_2D_LOD(tex,samp,uv,lod)
+    #define LIL_SAMPLE_SCREEN_CS(tex,uv)            LIL_SAMPLE_2D_CS(tex,uv)
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Macro to absorb pipeline differences
-#if defined(LIL_URP)
-    #define LIL_SCREENPARAMS    _ScaledScreenParams
-#else
-    #define LIL_SCREENPARAMS    _ScreenParams
-#endif
 
 // Transform
 #if defined(LIL_BRP)
@@ -590,6 +648,35 @@ float3 lilBlendVRParallax(float3 a, float3 b, float c)
     #else
         return b;
     #endif
+}
+
+float lilLinearEyeDepth(float z)
+{
+    //return LIL_MATRIX_P._m23 / (z - LIL_MATRIX_P._m22 / LIL_MATRIX_P._m32);
+    return LIL_MATRIX_P._m23 / (z + LIL_MATRIX_P._m22);
+}
+
+float lilLinearEyeDepth(float z, float2 positionCS)
+{
+    float2 pos = positionCS / LIL_SCREENPARAMS.xy * 2.0 - 1.0;
+    #if UNITY_UV_STARTS_AT_TOP
+        pos.y = -pos.y;
+    #endif
+    return LIL_MATRIX_P._m23 / (z + LIL_MATRIX_P._m22
+        - LIL_MATRIX_P._m20 / LIL_MATRIX_P._m00 * (pos.x +LIL_MATRIX_P._m02)
+        - LIL_MATRIX_P._m21 / LIL_MATRIX_P._m11 * (pos.y +LIL_MATRIX_P._m12)
+    );
+}
+
+float2 lilCameraDepthTexel(float2 positionCS)
+{
+    float2 uv = positionCS.xy;
+    #if UNITY_UV_STARTS_AT_TOP
+        if(_ProjectionParams.x > 0) uv.y = LIL_SCREENPARAMS.y - uv.y;
+    #else
+        if(_ProjectionParams.x < 0) uv.y = LIL_SCREENPARAMS.y - uv.y;
+    #endif
+    return uv;
 }
 
 /*
