@@ -285,10 +285,12 @@ Shader "Hidden/lilToonTwoPassTransparent"
         [lilEnum]       _GlitterUVMode              ("UV Mode|UV0|UV1", Int) = 0
         [lilHDR]        _GlitterColor               ("Color", Color) = (1,1,1,1)
                         _GlitterColorTex            ("Texture", 2D) = "white" {}
-                        _GlitterShapeTex            ("Texture", 2D) = "white" {}
                         _GlitterMainStrength        ("Main Color Strength", Range(0, 1)) = 0
                         _GlitterNormalStrength      ("Normal Strength", Range(0, 1)) = 1.0
                         _GlitterScaleRandomize      ("Scale Randomize", Range(0, 1)) = 0
+        [lilToggle]     _GlitterApplyShape          ("Apply Shape", Int) = 0
+                        _GlitterShapeTex            ("Texture", 2D) = "white" {}
+        [lilVec2]       _GlitterAtras               ("Atras", Vector) = (1,1,0,0)
         [lilToggle]     _GlitterAngleRandomize      ("Angle Randomize", Int) = 0
         [lilGlitParam1] _GlitterParams1             ("Tiling|Particle Size|Contrast", Vector) = (256,256,0.16,50)
         [lilGlitParam2] _GlitterParams2             ("Blink Speed|Angle|Blend Light Direction|Color Randomness", Vector) = (0.25,0,0,0)

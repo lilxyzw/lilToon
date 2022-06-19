@@ -548,9 +548,11 @@ namespace lilToon
             private readonly lilMaterialProperty glitterUVMode = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterColor = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterColorTex = new lilMaterialProperty();
-            private readonly lilMaterialProperty glitterShapeTex = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterMainStrength = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterScaleRandomize = new lilMaterialProperty();
+            private readonly lilMaterialProperty glitterApplyShape = new lilMaterialProperty();
+            private readonly lilMaterialProperty glitterShapeTex = new lilMaterialProperty();
+            private readonly lilMaterialProperty glitterAtras = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterAngleRandomize = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterParams1 = new lilMaterialProperty();
             private readonly lilMaterialProperty glitterParams2 = new lilMaterialProperty();
@@ -3221,9 +3223,11 @@ namespace lilToon
             glitterUVMode.p             = FindProperty("_GlitterUVMode", props, false);
             glitterColor.p              = FindProperty("_GlitterColor", props, false);
             glitterColorTex.p           = FindProperty("_GlitterColorTex", props, false);
-            glitterShapeTex.p           = FindProperty("_GlitterShapeTex", props, false);
             glitterMainStrength.p       = FindProperty("_GlitterMainStrength", props, false);
             glitterScaleRandomize.p     = FindProperty("_GlitterScaleRandomize", props, false);
+            glitterApplyShape.p         = FindProperty("_GlitterApplyShape", props, false);
+            glitterShapeTex.p           = FindProperty("_GlitterShapeTex", props, false);
+            glitterAtras.p              = FindProperty("_GlitterAtras", props, false);
             glitterAngleRandomize.p     = FindProperty("_GlitterAngleRandomize", props, false);
             glitterEnableLighting.p     = FindProperty("_GlitterEnableLighting", props, false);
             glitterShadowMask.p         = FindProperty("_GlitterShadowMask", props, false);
@@ -3668,9 +3672,11 @@ namespace lilToon
                 glitterUVMode,
                 glitterColor,
                 glitterColorTex,
-                glitterShapeTex,
                 glitterMainStrength,
                 glitterScaleRandomize,
+                glitterApplyShape,
+                glitterShapeTex,
+                glitterAtras,
                 glitterAngleRandomize,
                 glitterParams1,
                 glitterParams2,
@@ -4243,6 +4249,8 @@ namespace lilToon
             AddBlock(PropertyBlock.Reflections, glitterColor);
             AddBlock(PropertyBlock.Reflections, glitterMainStrength);
             AddBlock(PropertyBlock.Reflections, glitterScaleRandomize);
+            AddBlock(PropertyBlock.Reflections, glitterApplyShape);
+            AddBlock(PropertyBlock.Reflections, glitterAtras);
             AddBlock(PropertyBlock.Reflections, glitterAngleRandomize);
             AddBlock(PropertyBlock.Reflections, glitterParams1);
             AddBlock(PropertyBlock.Reflections, glitterParams2);
@@ -4423,6 +4431,8 @@ namespace lilToon
             AddBlock(PropertyBlock.Glitter, glitterColor);
             AddBlock(PropertyBlock.Glitter, glitterMainStrength);
             AddBlock(PropertyBlock.Glitter, glitterScaleRandomize);
+            AddBlock(PropertyBlock.Glitter, glitterApplyShape);
+            AddBlock(PropertyBlock.Glitter, glitterAtras);
             AddBlock(PropertyBlock.Glitter, glitterAngleRandomize);
             AddBlock(PropertyBlock.Glitter, glitterParams1);
             AddBlock(PropertyBlock.Glitter, glitterParams2);
@@ -5994,7 +6004,16 @@ namespace lilToon
                     if(isTransparent) m_MaterialEditor.ShaderProperty(glitterApplyTransparency, GetLoc("sApplyTransparency"));
                     EditorGUI.indentLevel--;
                     lilEditorGUI.DrawLine();
-                    TextureGUI(ref edSet.isShowGlitterShapeTex, customMaskContent, glitterShapeTex);
+                    m_MaterialEditor.ShaderProperty(glitterApplyShape, "Shape");
+                    if(glitterApplyShape.floatValue > 0.5f)
+                    {
+                        EditorGUI.indentLevel++;
+                        TextureGUI(ref edSet.isShowGlitterShapeTex, customMaskContent, glitterShapeTex);
+                        m_MaterialEditor.ShaderProperty(glitterAtras, "Atras");
+                        m_MaterialEditor.ShaderProperty(glitterAngleRandomize, GetLoc("sRandomize") + " (Angle)");
+                        EditorGUI.indentLevel--;
+                    }
+                    lilEditorGUI.DrawLine();
 
                     // Param1
                     Vector2 scale = new Vector2(256.0f/glitterParams1.vectorValue.x, 256.0f/glitterParams1.vectorValue.y);
@@ -6011,7 +6030,6 @@ namespace lilToon
                     EditorGUI.showMixedValue = false;
 
                     m_MaterialEditor.ShaderProperty(glitterScaleRandomize, GetLoc("sRandomize") + " (Size)");
-                    m_MaterialEditor.ShaderProperty(glitterAngleRandomize, GetLoc("sRandomize") + " (Angle)");
 
                     EditorGUI.showMixedValue = glitterParams1.hasMixedValue || glitterSensitivity.hasMixedValue;
                     density = EditorGUILayout.Slider(GetLoc("sDensity"), density, 0.001f, 1.0f);

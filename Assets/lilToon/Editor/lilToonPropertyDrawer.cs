@@ -214,6 +214,30 @@ namespace lilToon
         }
     }
 
+    public class lilVec2Drawer : MaterialPropertyDrawer
+    {
+        // Draw vector4 as vector2
+        // [lilVec2]
+        public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
+        {
+            Vector2 vec = new Vector2(prop.vectorValue.x, prop.vectorValue.y);
+            float unused0 = prop.vectorValue.z;
+            float unused1 = prop.vectorValue.w;
+
+            EditorGUIUtility.wideMode = true;
+
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.showMixedValue = prop.hasMixedValue;
+            vec = EditorGUI.Vector2Field(position, label, vec);
+            EditorGUI.showMixedValue = false;
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.vectorValue = new Vector4(vec.x, vec.y, unused0, unused1);
+            }
+        }
+    }
+
     public class lilVec3Drawer : MaterialPropertyDrawer
     {
         // Draw vector4 as vector3

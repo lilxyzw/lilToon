@@ -1491,7 +1491,11 @@
             float4 glitterColor = _GlitterColor;
             if(Exists_GlitterColorTex) glitterColor *= LIL_SAMPLE_2D_ST(_GlitterColorTex, samp, fd.uvMain);
             float2 glitterPos = _GlitterUVMode ? fd.uv1 : fd.uv0;
-            glitterColor.rgb *= lilCalcGlitter(glitterPos, N, glitterViewDirection, glitterCameraDirection, fd.L, _GlitterParams1, _GlitterParams2, _GlitterPostContrast, _GlitterSensitivity, _GlitterScaleRandomize, _GlitterAngleRandomize, _GlitterShapeTex, _GlitterShapeTex_ST);
+            #if defined(LIL_FEATURE_GlitterShapeTex)
+                glitterColor.rgb *= lilCalcGlitter(glitterPos, N, glitterViewDirection, glitterCameraDirection, fd.L, _GlitterParams1, _GlitterParams2, _GlitterPostContrast, _GlitterSensitivity, _GlitterScaleRandomize, _GlitterAngleRandomize, _GlitterApplyShape, _GlitterShapeTex, _GlitterShapeTex_ST, _GlitterAtras);
+            #else
+                glitterColor.rgb *= lilCalcGlitter(glitterPos, N, glitterViewDirection, glitterCameraDirection, fd.L, _GlitterParams1, _GlitterParams2, _GlitterPostContrast, _GlitterSensitivity, _GlitterScaleRandomize, _GlitterAngleRandomize, false, _GlitterShapeTex, float4(0,0,0,0), float4(1,1,0,0));
+            #endif
             glitterColor.rgb = lerp(glitterColor.rgb, glitterColor.rgb * fd.albedo, _GlitterMainStrength);
             #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                 if(_GlitterApplyTransparency) glitterColor.a *= fd.col.a;

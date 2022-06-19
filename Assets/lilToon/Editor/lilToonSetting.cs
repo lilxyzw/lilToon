@@ -669,8 +669,13 @@ public class lilToonSetting : ScriptableObject
 
     internal static void SetupShaderSettingFromMaterial(Material material, ref lilToonSetting shaderSetting)
     {
-        if(material == null) return;
-        if(!material.shader.name.Contains("lilToon") || material.shader.name.Contains("Lite") || material.shader.name.Contains("Multi")) return;
+        if(material == null || material.shader == null) return;
+        if(material.shader.name.Contains("Lite") || material.shader.name.Contains("Multi")) return;
+        if(!material.shader.name.Contains("lilToon"))
+        {
+            string shaderPath = AssetDatabase.GetAssetPath(material.shader);
+            if(string.IsNullOrEmpty(shaderPath) || shaderPath.Contains("lilcontainer")) return;
+        }
 
         if(!shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV && material.HasProperty("_MainTex_ScrollRotate") && material.GetVector("_MainTex_ScrollRotate") != lilConstants.defaultScrollRotate)
         {

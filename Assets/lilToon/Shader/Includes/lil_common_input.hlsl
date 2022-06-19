@@ -647,9 +647,12 @@ CBUFFER_START(UnityPerMaterial)
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         float4  _GlitterColor;
         float4  _GlitterColorTex_ST;
-        float4  _GlitterShapeTex_ST;
         float4  _GlitterParams1;
         float4  _GlitterParams2;
+        #if defined(LIL_FEATURE_GlitterShapeTex)
+            float4  _GlitterShapeTex_ST;
+            float4  _GlitterAtras;
+        #endif
     #endif
     #if defined(LIL_MULTI_INPUTS_DISTANCE_FADE)
         float4  _DistanceFade;
@@ -928,7 +931,6 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         uint    _GlitterUVMode;
-        uint    _GlitterAngleRandomize;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION)
         uint    _EmissionMap_UVMode;
@@ -1006,6 +1008,10 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     #if defined(LIL_MULTI_INPUTS_GLITTER)
         lilBool _GlitterApplyTransparency;
+        #if defined(LIL_FEATURE_GlitterShapeTex)
+            lilBool _GlitterApplyShape;
+            lilBool _GlitterAngleRandomize;
+        #endif
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION)
         lilBool _EmissionUseGrad;
@@ -1203,9 +1209,12 @@ CBUFFER_START(UnityPerMaterial)
     #if defined(LIL_FEATURE_GLITTER)
         float4  _GlitterColor;
         float4  _GlitterColorTex_ST;
-        float4  _GlitterShapeTex_ST;
         float4  _GlitterParams1;
         float4  _GlitterParams2;
+        #if defined(LIL_FEATURE_GlitterShapeTex)
+            float4  _GlitterShapeTex_ST;
+            float4  _GlitterAtras;
+        #endif
     #endif
 
     // Distance Fade
@@ -1537,7 +1546,6 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     #if defined(LIL_FEATURE_GLITTER)
         uint    _GlitterUVMode;
-        uint    _GlitterAngleRandomize;
     #endif
     #if defined(LIL_FEATURE_EMISSION_1ST)
         uint    _EmissionMap_UVMode;
@@ -1641,6 +1649,10 @@ CBUFFER_START(UnityPerMaterial)
     #if defined(LIL_FEATURE_GLITTER)
         lilBool _UseGlitter;
         lilBool _GlitterApplyTransparency;
+        #if defined(LIL_FEATURE_GlitterShapeTex)
+            lilBool _GlitterApplyShape;
+            lilBool _GlitterAngleRandomize;
+        #endif
     #endif
     #if defined(LIL_FEATURE_EMISSION_1ST)
         lilBool _UseEmission;

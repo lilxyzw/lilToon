@@ -1153,7 +1153,7 @@ float4 lilVoronoi(float2 pos, out float2 nearoffset, float scaleRandomize)
     return near0.w < near1.w ? near0 : near1;
 }
 
-float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, float3 cameraDirection, float3 lightDirection, float4 glitterParams1, float4 glitterParams2, float glitterPostContrast, float glitterSensitivity, float glitterScaleRandomize, uint glitterAngleRandomize, TEXTURE2D(glitterShapeTex), float4 glitterShapeTex_ST)
+float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, float3 cameraDirection, float3 lightDirection, float4 glitterParams1, float4 glitterParams2, float glitterPostContrast, float glitterSensitivity, float glitterScaleRandomize, uint glitterAngleRandomize, bool glitterApplyShape, TEXTURE2D(glitterShapeTex), float4 glitterShapeTex_ST, float4 glitterAtras)
 {
     // glitterParams1
     // x: Scale, y: Scale, z: Size, w: Contrast
@@ -1187,13 +1187,13 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
         float glitter = dot(glitterNormal, cameraDirection);
         glitter = abs(frac(glitter * glitterSensitivity + glitterSensitivity) - 0.5) * 4.0 - 1.0;
         glitter = saturate(1.0 - (glitter * glitterParams1.w + glitterParams1.w));
+        glitter = pow(glitter, glitterPostContrast);
         // Circle
         #if GLITTER_ANTIALIAS == 1
             glitter *= saturate((glitterParams1.z-near.w) / fwidth(near.w));
         #else
             glitter = near.w < glitterParams1.z ? glitter : 0.0;
         #endif
-        glitter = pow(glitter, glitterPostContrast);
         // Angle
         float3 halfDirection = normalize(viewDirection + lightDirection * glitterParams2.z);
         float nh = saturate(dot(normalDirection, halfDirection));
@@ -1201,23 +1201,30 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
         // Random Color
         float3 glitterColor = glitter - glitter * frac(near.xyz*278.436) * glitterParams2.w;
         // Shape
-        if(Exists_GlitterShapeTex)
-        {
-            float2 maskUV = pos - floor(pos) - nearoffset + 0.5 - near.xy;
-            maskUV = maskUV / glitterParams1.z * glitterShapeTex_ST.xy + glitterShapeTex_ST.zw;
-            if(glitterAngleRandomize)
+        #if defined(LIL_FEATURE_GlitterShapeTex)
+            if(Exists_GlitterShapeTex && glitterApplyShape)
             {
-                float si,co;
-                sincos(near.z * 785.238, si, co);
-                maskUV = float2(
-                    maskUV.x * co - maskUV.y * si,
-                    maskUV.x * si + maskUV.y * co
-                );
+                float2 maskUV = pos - floor(pos) - nearoffset + 0.5 - near.xy;
+                maskUV = maskUV / glitterParams1.z * glitterShapeTex_ST.xy + glitterShapeTex_ST.zw;
+                if(glitterAngleRandomize)
+                {
+                    float si,co;
+                    sincos(near.z * 785.238, si, co);
+                    maskUV = float2(
+                        maskUV.x * co - maskUV.y * si,
+                        maskUV.x * si + maskUV.y * co
+                    );
+                }
+                float randomScale = lerp(1.0, 1.0 / sqrt(max(near.z, 0.001)), glitterScaleRandomize);
+                maskUV = maskUV * randomScale + 0.5;
+                bool clamp = maskUV.x == saturate(maskUV.x) && maskUV.y == saturate(maskUV.y);
+                maskUV = (maskUV + floor(near.xy * glitterAtras.xy)) / glitterAtras.xy;
+                float2 mipfactor = 0.125 / glitterParams1.z * glitterAtras.xy * glitterShapeTex_ST.xy * randomScale;
+                float4 shapeTex = LIL_SAMPLE_2D_GRAD(glitterShapeTex, sampler_trilinear_clamp, maskUV, ddx(pos) * mipfactor.x, ddy(pos) * mipfactor.y);
+                shapeTex.a = clamp ? shapeTex.a : 0;
+                glitterColor *= shapeTex.rgb * shapeTex.a;
             }
-            maskUV = lerp(maskUV, maskUV / sqrt(max(near.z, 0.001)), glitterScaleRandomize) + 0.5;
-            float4 shapeTex = glitterShapeTex.SampleGrad(sampler_trilinear_clamp, maskUV, ddx(pos), ddy(pos));
-            glitterColor *= shapeTex.rgb * shapeTex.a;
-        }
+        #endif
         return glitterColor;
     #endif
 }
