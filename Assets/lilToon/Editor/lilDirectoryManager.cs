@@ -43,7 +43,7 @@ namespace lilToon
         public static string GetShaderSettingPath()
         {
             string mainFolderPath = GetMainFolderPath();
-            if(mainFolderPath.Contains("Packages")) return "Assets/ShaderSetting.asset";
+            if(!mainFolderPath.Contains("Assets")) return "Assets/ShaderSetting.asset";
             return GetMainFolderPath() + "/ShaderSetting.asset";
         }
 
