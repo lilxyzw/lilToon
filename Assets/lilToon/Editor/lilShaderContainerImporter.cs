@@ -226,7 +226,7 @@ namespace lilToon
             sb.Replace(LIL_INSERT_USEPASS_PRE,      insertUsePassPre);
             sb.Replace(LIL_INSERT_USEPASS_POST,     insertUsePassPost);
 
-            sb.Replace("\"Includes",                "\"" + shaderLibsPath);
+            if(ctx != null) sb.Replace("\"Includes",                "\"" + shaderLibsPath);
             sb.Replace(LIL_SUBSHADER_INSERT,        insertText);
             sb.Replace(LIL_SUBSHADER_INSERT_POST,   insertPostText);
             sb.Replace(LIL_SHADER_SETTING,          shaderSettingText);

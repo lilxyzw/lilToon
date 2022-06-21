@@ -38,8 +38,14 @@ namespace lilToon
         public static string GetGUICustomBoxLightPath()     { return GUIDToPath("a1ed8756474bfd34f80fa22e6c43b2e5"); } // "Assets/lilToon/Editor/Resources/gui_custom_box_light.guiskin"
         public static string[] GetShaderFolderPaths()       { return new[] {GetShaderFolderPath()}; }
         public static string GetSettingFolderPath()         { return GetMainFolderPath(); }
-        public static string GetShaderSettingPath()         { return GetMainFolderPath() + "/ShaderSetting.asset"; }
         public static string GUIDToPath(string GUID)        { return AssetDatabase.GUIDToAssetPath(GUID); }
+
+        public static string GetShaderSettingPath()
+        {
+            string mainFolderPath = GetMainFolderPath();
+            if(mainFolderPath.Contains("Packages")) return "Assets/ShaderSetting.asset";
+            return GetMainFolderPath() + "/ShaderSetting.asset";
+        }
 
         public static bool ExistsEncryption() { return !string.IsNullOrEmpty(GetAvatarEncryptionPath()); }
     }

@@ -179,8 +179,8 @@ Shader "Hidden/ltsother_baker"
             // Shader
             #define LIL_BAKER
             #define LIL_WITHOUT_ANIMATION
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common_appdata.hlsl"
+            #include "Includes/lil_pipeline.hlsl"
+            #include "Includes/lil_common_appdata.hlsl"
 
             TEXTURE2D(_PackingTexture1);
             TEXTURE2D(_PackingTexture2);

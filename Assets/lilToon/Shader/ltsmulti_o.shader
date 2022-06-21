@@ -641,16 +641,16 @@ Shader "Hidden/lilToonMultiOutline"
             #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
 
             // Replace keywords
-            #include "Assets/lilToon/Shader/Includes/lil_replace_keywords.hlsl"
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline_brp.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             
 
-            #include "Assets/lilToon/Shader/Includes/lil_pass_forward.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             
             ENDHLSL
@@ -706,17 +706,17 @@ Shader "Hidden/lilToonMultiOutline"
             #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
 
             // Replace keywords
-            #include "Assets/lilToon/Shader/Includes/lil_replace_keywords.hlsl"
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline_brp.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             
 
-            #include "Assets/lilToon/Shader/Includes/lil_pass_forward.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             
             ENDHLSL
@@ -795,16 +795,16 @@ Shader "Hidden/lilToonMultiOutline"
             #pragma shader_feature_local _SUNDISK_HIGH_QUALITY
 
             // Replace keywords
-            #include "Assets/lilToon/Shader/Includes/lil_replace_keywords.hlsl"
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline_brp.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             
 
-            #include "Assets/lilToon/Shader/Includes/lil_pass_forward.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             
             ENDHLSL
@@ -859,17 +859,17 @@ Shader "Hidden/lilToonMultiOutline"
             #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
 
             // Replace keywords
-            #include "Assets/lilToon/Shader/Includes/lil_replace_keywords.hlsl"
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline_brp.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             
 
-            #include "Assets/lilToon/Shader/Includes/lil_pass_forward.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             
             ENDHLSL
@@ -905,17 +905,17 @@ Shader "Hidden/lilToonMultiOutline"
             #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
 
             // Replace keywords
-            #include "Assets/lilToon/Shader/Includes/lil_replace_keywords.hlsl"
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_OUTLINE
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline_brp.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             
 
-            #include "Assets/lilToon/Shader/Includes/lil_pass_shadowcaster.hlsl"
+            #include "Includes/lil_pass_shadowcaster.hlsl"
 
             
             ENDHLSL
@@ -944,16 +944,16 @@ Shader "Hidden/lilToonMultiOutline"
             #pragma shader_feature_local _SUNDISK_SIMPLE
 
             // Replace keywords
-            #include "Assets/lilToon/Shader/Includes/lil_replace_keywords.hlsl"
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline_brp.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             
 
-            #include "Assets/lilToon/Shader/Includes/lil_pass_meta.hlsl"
+            #include "Includes/lil_pass_meta.hlsl"
 
             
             ENDHLSL

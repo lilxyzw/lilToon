@@ -659,12 +659,12 @@ Shader "Hidden/lilToonRefractionBlur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline_brp.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             
 
-            #include "Assets/lilToon/Shader/Includes/lil_pass_forward_refblur.hlsl"
+            #include "Includes/lil_pass_forward_refblur.hlsl"
 
             
             ENDHLSL
@@ -712,12 +712,12 @@ Shader "Hidden/lilToonRefractionBlur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline_brp.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             
 
-            #include "Assets/lilToon/Shader/Includes/lil_pass_forward.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             
             ENDHLSL
@@ -765,12 +765,12 @@ Shader "Hidden/lilToonRefractionBlur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline_brp.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             
 
-            #include "Assets/lilToon/Shader/Includes/lil_pass_forward.hlsl"
+            #include "Includes/lil_pass_forward.hlsl"
 
             
             ENDHLSL
@@ -799,12 +799,12 @@ Shader "Hidden/lilToonRefractionBlur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline_brp.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             
 
-            #include "Assets/lilToon/Shader/Includes/lil_pass_shadowcaster.hlsl"
+            #include "Includes/lil_pass_shadowcaster.hlsl"
 
             
             ENDHLSL
@@ -828,12 +828,12 @@ Shader "Hidden/lilToonRefractionBlur"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline_brp.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             
 
-            #include "Assets/lilToon/Shader/Includes/lil_pass_meta.hlsl"
+            #include "Includes/lil_pass_meta.hlsl"
 
             
             ENDHLSL

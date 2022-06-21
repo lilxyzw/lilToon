@@ -205,12 +205,12 @@ Shader "_lil/[Optional] lilToonFakeShadow"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
-            #include "Assets/lilToon/Shader/Includes/lil_pipeline_brp.hlsl"
-            #include "Assets/lilToon/Shader/Includes/lil_common.hlsl"
+            #include "Includes/lil_pipeline_brp.hlsl"
+            #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
             
 
-            #include "Assets/lilToon/Shader/Includes/lil_pass_forward_fakeshadow.hlsl"
+            #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
             
             ENDHLSL
