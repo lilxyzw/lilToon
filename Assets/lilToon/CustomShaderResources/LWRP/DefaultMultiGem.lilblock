@@ -59,6 +59,11 @@
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #define LIL_GEM_PRE
+            #include "Includes/lil_pipeline_lwrp.hlsl"
+            #include "Includes/lil_common.hlsl"
+            // Insert functions and includes that depend on Unity here
+            *LIL_SUBSHADER_INSERT*
+
             #include "Includes/lil_pass_forward_gem.hlsl"
 
             *LIL_SUBSHADER_INSERT_POST*
