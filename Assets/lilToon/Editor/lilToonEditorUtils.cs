@@ -44,8 +44,6 @@ namespace lilToon
         [MenuItem(menuPathRefreshShaders, false, menuPriorityRefreshShaders)]
         private static void RefreshShaders()
         {
-            lilShaderRewriter.RewriteShaderRP();
-
             if(File.Exists(lilDirectoryManager.postBuildTempPath)) File.Delete(lilDirectoryManager.postBuildTempPath);
             lilToonSetting shaderSetting = null;
             lilToonSetting.InitializeShaderSetting(ref shaderSetting);

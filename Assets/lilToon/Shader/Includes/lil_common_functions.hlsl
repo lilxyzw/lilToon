@@ -314,10 +314,8 @@ void lilCalcOutlinePosition(inout float3 positionOS, float2 uvs[4], float4 color
     if(Exists_OutlineVectorTex) outlineN = lilGetOutlineVector(tbnOS, uvs[outlineVectorUVMode], outlineVectorScale, outlineVectorTex LIL_SAMP_IN(samp));
     if(outlineVertexR2Width == 2) outlineN = mul(color.rgb * 2.0 - 1.0, tbnOS);
     positionOS += outlineN * width;
-    #if !defined(LIL_PASS_SHADOWCASTER_INCLUDED) && !(defined(LIL_URP) && defined(LIL_PASS_DEPTHONLY_INCLUDED))
-        float3 V = lilIsPerspective() ? lilViewDirectionOS(positionOS) : mul((float3x3)LIL_MATRIX_I_M, LIL_MATRIX_V._m20_m21_m22);
-        positionOS -= normalize(V) * outlineZBias;
-    #endif
+    float3 V = lilIsPerspective() ? lilViewDirectionOS(positionOS) : mul((float3x3)LIL_MATRIX_I_M, LIL_MATRIX_V._m20_m21_m22);
+    positionOS -= normalize(V) * outlineZBias;
 }
 
 void lilCalcOutlinePositionLite(inout float3 positionOS, float2 uv, float4 color, float3 normalOS, float3x3 tbnOS, float outlineWidth, TEXTURE2D(outlineWidthMask), uint outlineVertexR2Width, float outlineFixWidth, float outlineZBias LIL_SAMP_IN_FUNC(samp))
@@ -327,10 +325,8 @@ void lilCalcOutlinePositionLite(inout float3 positionOS, float2 uv, float4 color
     float3 outlineN = normalOS;
     if(outlineVertexR2Width == 2) outlineN = mul(color.rgb * 2.0 - 1.0, tbnOS);
     positionOS += outlineN * width;
-    #if !defined(LIL_PASS_SHADOWCASTER_INCLUDED) && !(defined(LIL_URP) && defined(LIL_PASS_DEPTHONLY_INCLUDED))
-        float3 V = lilIsPerspective() ? lilViewDirectionOS(positionOS) : mul((float3x3)LIL_MATRIX_I_M, LIL_MATRIX_V._m20_m21_m22);
-        positionOS -= normalize(V) * outlineZBias;
-    #endif
+    float3 V = lilIsPerspective() ? lilViewDirectionOS(positionOS) : mul((float3x3)LIL_MATRIX_I_M, LIL_MATRIX_V._m20_m21_m22);
+    positionOS -= normalize(V) * outlineZBias;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -1202,7 +1198,7 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
         float3 glitterColor = glitter - glitter * frac(near.xyz*278.436) * glitterParams2.w;
         // Shape
         #if defined(LIL_FEATURE_GlitterShapeTex)
-            if(Exists_GlitterShapeTex && glitterApplyShape)
+            if(glitterApplyShape)
             {
                 float2 maskUV = pos - floor(pos) - nearoffset + 0.5 - near.xy;
                 maskUV = maskUV / glitterParams1.z * glitterShapeTex_ST.xy + glitterShapeTex_ST.zw;

@@ -197,9 +197,11 @@ namespace lilToon
                 case lilRenderPipeline.BRP:
                     sb = ReadContainerFile(assetPath, "BRP", ctx);
                     ReplaceMultiCompiles(ref sb, version, indent, false);
+                    RewriteForwardAdd(ref sb);
                     break;
                 case lilRenderPipeline.LWRP:
                     sb = ReadContainerFile(assetPath, "LWRP", ctx);
+                    ReplaceMultiCompiles(ref sb, version, indent, false);
                     break;
                 case lilRenderPipeline.URP:
                     sb = ReadContainerFile(assetPath, "URP", ctx);
@@ -770,6 +772,70 @@ namespace lilToon
             relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, '/');
 
             return relativePath;
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // ForwardAdd
+        public static void RewriteForwardAdd(ref StringBuilder sb)
+        {
+            bool enable = ShouldUseForwardAdd();
+
+            if(enable)
+            {
+                sb.Replace(
+                    "        // ForwardAdd Start\r\n        /*",
+                    "        // ForwardAdd Start\r\n        //");
+                sb.Replace(
+                    "        */\r\n        // ForwardAdd End",
+                    "        //\r\n        // ForwardAdd End");
+            }
+            else
+            {
+                sb.Replace(
+                    "        // ForwardAdd Start\r\n        //",
+                    "        // ForwardAdd Start\r\n        /*");
+                sb.Replace(
+                    "        //\r\n        // ForwardAdd End",
+                    "        */\r\n        // ForwardAdd End");
+            }
+
+            string[] lines = sb.ToString().Split('\n');
+            sb = new StringBuilder();
+            for(int i = 0; i < lines.Length; i++)
+            {
+                string line = lines[i];
+                line = line.Replace("\r", "");
+
+                if(line.Contains("UsePass") && line.Contains("FORWARD_ADD"))
+                {
+                    if(enable)
+                    {
+                        line = line.Replace(
+                            "        //UsePass",
+                            "        UsePass");
+                    }
+                    else
+                    {
+                        line = line.Replace(
+                            "        UsePass",
+                            "        //UsePass");
+                    }
+                }
+                sb.AppendLine(line);
+            }
+        }
+
+        private static bool ShouldUseForwardAdd()
+        {
+            Type type = typeof(lilToonSetting);
+            var field = type.GetField("LIL_OPTIMIZE_USE_FORWARDADD");
+            if(field == null) return true;
+
+            string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
+            lilToonSetting shaderSetting = AssetDatabase.LoadAssetAtPath<lilToonSetting>(shaderSettingPath);
+            if(shaderSetting == null) return true;
+
+            return (bool)field.GetValue(shaderSetting);
         }
 
         //------------------------------------------------------------------------------------------------------------------------------

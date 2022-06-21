@@ -1,0 +1,17 @@
+Shader "_lil/[Optional] lilToonOverlay"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultTransparent"
+    }
+
+    lilPassShaderName "Hidden/ltspass_transparent"
+    lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
+    lilSubShaderBRP "DefaultUsePassOverlay"
+    lilSubShaderLWRP "DefaultUsePassOverlay"
+    lilSubShaderURP "DefaultUsePassOverlay"
+    lilSubShaderHDRP "DefaultUsePassOverlay"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

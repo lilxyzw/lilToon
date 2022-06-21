@@ -18,7 +18,7 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Common
-#if defined(LIL_CUSTOM_SHADER) || defined(LIL_LITE) || defined(LIL_MULTI) || defined(LIL_IGNORE_SHADERSETTING)
+#if defined(LIL_LITE) || defined(LIL_MULTI) || defined(LIL_IGNORE_SHADERSETTING)
     #define LIL_OPTIMIZE_APPLY_SHADOW_FA
 #endif
 #include "lil_common_macro.hlsl"

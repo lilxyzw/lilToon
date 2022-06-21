@@ -1,4 +1,4 @@
-Shader "_lil/[Optional] lilToonFurOnly"
+Shader "_lil/[Optional] lilToonFurOnlyTransparent"
 {
     Properties
     {
@@ -23,7 +23,7 @@ Shader "_lil/[Optional] lilToonFurOnly"
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
-        [lilHDR]        _Color                      ("Color", Color) = (1,1,1,1)
+        [lilHDR] [MainColor] _Color                 ("Color", Color) = (1,1,1,1)
         [MainTexture]   _MainTex                    ("Texture", 2D) = "white" {}
         [lilUVAnim]     _MainTex_ScrollRotate       ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
         [lilHSVG]       _MainTexHSVG                ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
@@ -428,6 +428,48 @@ Shader "_lil/[Optional] lilToonFurOnly"
                         _Keys                       ("Keys", Vector) = (0,0,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Outline
+        [lilHDR]        _OutlineColor               ("Outline Color", Color) = (0.6,0.56,0.73,1)
+                        _OutlineTex                 ("Texture", 2D) = "white" {}
+        [lilUVAnim]     _OutlineTex_ScrollRotate    ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
+        [lilHSVG]       _OutlineTexHSVG             ("Hue|Saturation|Value|Gamma", Vector) = (0,1,1,1)
+        [lilHDR]        _OutlineLitColor            ("Lit Color", Color) = (1.0,0.2,0,0)
+        [lilToggle]     _OutlineLitApplyTex         ("Apply Tex", Int) = 0
+                        _OutlineLitScale            ("Scale", Float) = 10
+                        _OutlineLitOffset           ("Offset", Float) = -8
+        [lilOLWidth]    _OutlineWidth               ("Width", Range(0,1)) = 0.08
+        [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
+                        _OutlineFixWidth            ("Fix Width", Range(0,1)) = 0.5
+        [lilEnum]       _OutlineVertexR2Width       ("Vertex Color|None|R|RGBA", Int) = 0
+        [lilToggle]     _OutlineDeleteMesh          ("Delete Mesh", Int) = 0
+        [NoScaleOffset][Normal] _OutlineVectorTex   ("Vector", 2D) = "bump" {}
+        [lilEnum]       _OutlineVectorUVMode        ("UV Mode|UV0|UV1|UV2|UV3", Int) = 0
+                        _OutlineVectorScale         ("Vector scale", Range(-10,10)) = 1
+                        _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
+                        _OutlineZBias               ("Z Bias", Float) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Tessellation
+                        _TessEdge                   ("Tessellation Edge", Range(1, 100)) = 10
+                        _TessStrength               ("Tessellation Strength", Range(0, 1)) = 0.5
+                        _TessShrink                 ("Tessellation Shrink", Range(0, 1)) = 0.0
+        [IntRange]      _TessFactorMax              ("Tessellation Max", Range(1, 8)) = 3
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // For Multi
+        [lilToggleLeft] _UseOutline                 ("Use Outline", Int) = 0
+        [lilEnum]       _TransparentMode            ("Rendering Mode|Opaque|Cutout|Transparent|Refraction|Fur|FurCutout|Gem", Int) = 0
+        [lilToggle]     _UseClippingCanceller       ("Use Clipping Canceller", Int) = 0
+        [lilToggle]     _AsOverlay                  ("As Overlay", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Save (Unused)
+        [HideInInspector]                               _BaseColor          ("Color", Color) = (1,1,1,1)
+        [HideInInspector]                               _BaseMap            ("Texture", 2D) = "white" {}
+        [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
+        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilEnum]                                       _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
@@ -478,7 +520,7 @@ Shader "_lil/[Optional] lilToonFurOnly"
 
         //----------------------------------------------------------------------------------------------------------------------
         // Fur Advanced
-        [lilCullMode]                                   _FurCull                ("Cull Mode|Off|Front|Back", Int) = 0
+        [lilEnum]                                       _FurCull                ("Cull Mode|Off|Front|Back", Int) = 0
         [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlend            ("SrcBlend", Int) = 5
         [Enum(UnityEngine.Rendering.BlendMode)]         _FurDstBlend            ("DstBlend", Int) = 10
         [Enum(UnityEngine.Rendering.BlendMode)]         _FurSrcBlendAlpha       ("SrcBlendAlpha", Int) = 1
@@ -505,63 +547,18 @@ Shader "_lil/[Optional] lilToonFurOnly"
                                                         _FurOffsetUnits         ("Offset Units", Float) = 0
         [lilColorMask]                                  _FurColorMask           ("Color Mask", Int) = 15
         [lilToggle]                                     _FurAlphaToMask         ("AlphaToMask", Int) = 0
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Save (Unused)
-        [HideInInspector] [MainColor]                   _BaseColor          ("Color", Color) = (1,1,1,1)
-        [HideInInspector] [MainTexture]                 _BaseMap            ("Texture", 2D) = "white" {}
-        [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
-        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-// BRP Start
-//
     SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
+        Tags {"RenderType" = "TransparentCutout" "Queue" = "Transparent"}
+        
         UsePass "Hidden/lilToonFur/FORWARD_FUR"
         UsePass "Hidden/lilToonFur/FORWARD_ADD_FUR"
+        
     }
     Fallback "Unlit/Texture"
-//
-// BRP End
-
-//----------------------------------------------------------------------------------------------------------------------
-// LWRP Start
-/*
-    SubShader
-    {
-        Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
-        UsePass "Hidden/lilToonFur/FORWARD_FUR"
-    }
-    Fallback "Lightweight Render Pipeline/Unlit"
-*/
-// LWRP End
-
-//----------------------------------------------------------------------------------------------------------------------
-// URP Start
-/*
-    SubShader
-    {
-        Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
-        UsePass "Hidden/lilToonFur/FORWARD_FUR"
-    }
-    Fallback "Universal Render Pipeline/Unlit"
-*/
-// URP End
-
-//----------------------------------------------------------------------------------------------------------------------
-// HDRP Start
-/*
-    SubShader
-    {
-        Tags {"RenderType" = "HDLitShader" "Queue" = "Transparent"}
-        UsePass "Hidden/lilToonFur/FORWARD_FUR"
-    }
-    Fallback "HDRP/Unlit"
-*/
-// HDRP End
 
     CustomEditor "lilToon.lilToonInspector"
 }
+

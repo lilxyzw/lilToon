@@ -106,7 +106,7 @@ namespace lilToon
                 string[] parts = version.Split('.');
                 infos.Major = int.Parse(parts[0]);
                 infos.Minor = int.Parse(parts[1]);
-                infos.Patch = int.Parse(parts[2]);
+                infos.Patch = int.Parse(parts[2].Replace("-preview", ""));
             }
             return infos;
         }

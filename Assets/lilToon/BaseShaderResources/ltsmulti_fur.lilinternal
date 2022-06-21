@@ -1,0 +1,16 @@
+Shader "Hidden/lilToonMultiFur"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultFurTransparent"
+    }
+
+    lilSubShaderTags {"RenderType" = "Transparent" "Queue" = "Transparent"}
+    lilSubShaderBRP "DefaultMultiFur"
+    lilSubShaderLWRP "DefaultMultiFur"
+    lilSubShaderURP "DefaultMultiFur"
+    lilSubShaderHDRP "DefaultMultiFur"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

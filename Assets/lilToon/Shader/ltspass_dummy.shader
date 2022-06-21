@@ -1,8 +1,5 @@
 Shader "Hidden/ltspass_dummy"
 {
-//----------------------------------------------------------------------------------------------------------------------
-// BRP Start
-//
     SubShader
     {
         // ForwardAdd
@@ -26,6 +23,4 @@ Shader "Hidden/ltspass_dummy"
             ENDHLSL
         }
     }
-//
-// BRP End
 }

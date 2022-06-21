@@ -1,0 +1,17 @@
+Shader "_lil/[Optional] lilToonFurOnlyTwoPass"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultFurTransparent"
+    }
+
+    lilPassShaderName "Hidden/lilToonFurTwoPass"
+    lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "Transparent"}
+    lilSubShaderBRP "DefaultUsePassFurOnlyTwoPass"
+    lilSubShaderLWRP "DefaultUsePassFurOnly"
+    lilSubShaderURP "DefaultUsePassFurOnlyTwoPass"
+    lilSubShaderHDRP "DefaultUsePassFurOnlyTwoPass"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

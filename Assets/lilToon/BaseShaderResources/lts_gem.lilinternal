@@ -1,0 +1,20 @@
+Shader "Hidden/lilToonGem"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultGem"
+    }
+
+    HLSLINCLUDE
+        #define LIL_RENDER 2
+    ENDHLSL
+
+    lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
+    lilSubShaderBRP "DefaultGem"
+    lilSubShaderLWRP "DefaultGem"
+    lilSubShaderURP "DefaultGem"
+    lilSubShaderHDRP "DefaultGem"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

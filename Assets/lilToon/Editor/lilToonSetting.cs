@@ -364,50 +364,41 @@ public class lilToonSetting : ScriptableObject
         EditorUtility.SetDirty(shaderSetting);
         AssetDatabase.SaveAssets();
         string shaderSettingString = BuildShaderSettingString(shaderSetting, true);
-        string shaderSettingStringBuf = "";
-        string shaderSettingHLSLPath = lilDirectoryManager.GetShaderSettingHLSLPath();
-        if(File.Exists(shaderSettingHLSLPath))
-        {
-            StreamReader sr = new StreamReader(shaderSettingHLSLPath);
-            shaderSettingStringBuf = sr.ReadToEnd();
-            sr.Close();
-        }
 
-        if(shaderSettingString != shaderSettingStringBuf)
+        /*PackageVersionInfos version = lilRenderPipelineReader.GetRPInfos();
+        bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;
+        foreach (string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
         {
-            PackageVersionInfos version = lilRenderPipelineReader.GetRPInfos();
-            StreamWriter sw = new StreamWriter(shaderSettingHLSLPath,false);
-            sw.Write(shaderSettingString);
-            sw.Close();
-            string[] shaderFolderPaths = lilDirectoryManager.GetShaderFolderPaths();
-            bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;
-            var folders = new List<string>
-            {
-                lilDirectoryManager.GetShaderFolderPath()
-            };
-            foreach (string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
-            {
-                string shaderPath = lilDirectoryManager.GUIDToPath(shaderGuid);
-                lilShaderRewriter.RewriteReceiveShadow(shaderPath, isShadowReceive);
-                lilShaderRewriter.RewriteForwardAdd(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
-                lilShaderRewriter.RewriteVertexLight(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
-                lilShaderRewriter.RewriteLightmap(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
-                lilShaderRewriter.RewriteRPPass(shaderPath, version);
-            }
-            foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader"))
-            {
-                string shaderPath = lilDirectoryManager.GUIDToPath(shaderGuid);
-                if(!shaderPath.Contains(".lilcontainer")) continue;
-                string folder = Path.GetDirectoryName(shaderPath);
-                if(!folders.Contains(folder)) folders.Add(folder);
-            }
-            foreach(string folder in folders)
-            {
-                AssetDatabase.ImportAsset(folder, ImportAssetOptions.ImportRecursive);
-            }
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
+            string shaderPath = lilDirectoryManager.GUIDToPath(shaderGuid);
+            lilShaderRewriter.RewriteReceiveShadow(shaderPath, isShadowReceive);
+            lilShaderRewriter.RewriteForwardAdd(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
+            lilShaderRewriter.RewriteVertexLight(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
+            lilShaderRewriter.RewriteLightmap(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
+            lilShaderRewriter.RewriteRPPass(shaderPath, version);
+        }*/
+        string shaderFolderPath = lilDirectoryManager.GetShaderFolderPath();
+        var folders = new List<string>{shaderFolderPath};
+        string baseShaderFolderPath = lilDirectoryManager.GetBaseShaderFolderPath();
+        foreach(string shaderGuid in AssetDatabase.FindAssets("", new[] {baseShaderFolderPath}))
+        {
+            string baseShaderPath = lilDirectoryManager.GUIDToPath(shaderGuid);
+            if(!baseShaderPath.Contains(".lilinternal")) continue;
+            string shaderPath = shaderFolderPath + Path.AltDirectorySeparatorChar + Path.GetFileNameWithoutExtension(baseShaderPath) + ".shader";
+            File.WriteAllText(shaderPath, lilShaderContainer.UnpackContainer(baseShaderPath));
         }
+        foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader"))
+        {
+            string shaderPath = lilDirectoryManager.GUIDToPath(shaderGuid);
+            if(!shaderPath.Contains(".lilcontainer")) continue;
+            string folder = Path.GetDirectoryName(shaderPath);
+            if(!folders.Contains(folder)) folders.Add(folder);
+        }
+        foreach(string folder in folders)
+        {
+            AssetDatabase.ImportAsset(folder, ImportAssetOptions.ImportRecursive);
+        }
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
 
         if(!string.IsNullOrEmpty(reportTitle))
         {

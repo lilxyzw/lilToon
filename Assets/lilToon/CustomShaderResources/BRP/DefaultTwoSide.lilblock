@@ -17,7 +17,7 @@
         Pass
         {
             Name "FORWARD_BACK"
-            Tags {"LightMode" = "F*LIL_LIGHTMODE_FORWARD_0*"}
+            Tags {"LightMode" = "*LIL_LIGHTMODE_FORWARD_0*"}
 
             Stencil
             {

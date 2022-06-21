@@ -23,7 +23,7 @@ Shader "Hidden/lilToonLiteOnePassTransparentOutline"
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
-        [lilHDR]        _Color                      ("Color", Color) = (1,1,1,1)
+        [lilHDR] [MainColor] _Color                 ("Color", Color) = (1,1,1,1)
         [MainTexture]   _MainTex                    ("Texture", 2D) = "white" {}
         [lilUVAnim]     _MainTex_ScrollRotate       ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
 
@@ -69,9 +69,29 @@ Shader "Hidden/lilToonLiteOnePassTransparentOutline"
         [lilBlink]      _EmissionBlink              ("Blink Strength|Blink Type|Blink Speed|Blink Offset", Vector) = (0,0,3.141593,0)
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Outline
+        [lilHDR]        _OutlineColor               ("Outline Color", Color) = (0.8,0.85,0.9,1)
+                        _OutlineTex                 ("Texture", 2D) = "white" {}
+        [lilUVAnim]     _OutlineTex_ScrollRotate    ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
+        [lilOLWidth]    _OutlineWidth               ("Width", Range(0,1)) = 0.05
+        [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
+                        _OutlineFixWidth            ("Fix Width", Range(0,1)) = 1
+        [lilEnum]       _OutlineVertexR2Width       ("Vertex Color|None|R|RGBA", Int) = 0
+        [lilToggle]     _OutlineDeleteMesh          ("Delete Mesh", Int) = 0
+                        _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
+                        _OutlineZBias               ("Z Bias", Float) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Save (Unused)
+        [HideInInspector]                               _BaseColor          ("Color", Color) = (1,1,1,1)
+        [HideInInspector]                               _BaseMap            ("Texture", 2D) = "white" {}
+        [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
+        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilEnum]                                       _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 5
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 1
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 10
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlpha      ("SrcBlendAlpha", Int) = 1
         [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlpha      ("DstBlendAlpha", Int) = 10
@@ -98,19 +118,6 @@ Shader "Hidden/lilToonLiteOnePassTransparentOutline"
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
         [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
                                                         _lilShadowCasterBias ("Shadow Caster Bias", Float) = 0
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Outline
-        [lilHDR]        _OutlineColor               ("Outline Color", Color) = (0.8,0.85,0.9,1)
-                        _OutlineTex                 ("Texture", 2D) = "white" {}
-        [lilUVAnim]     _OutlineTex_ScrollRotate    ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
-        [lilOLWidth]    _OutlineWidth               ("Width", Range(0,1)) = 0.05
-        [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
-                        _OutlineFixWidth            ("Fix Width", Range(0,1)) = 1
-        [lilEnum]       _OutlineVertexR2Width       ("Vertex Color|None|R|RGBA", Int) = 0
-        [lilToggle]     _OutlineDeleteMesh          ("Delete Mesh", Int) = 0
-                        _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
-                        _OutlineZBias               ("Z Bias", Float) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Outline Advanced
@@ -141,80 +148,20 @@ Shader "Hidden/lilToonLiteOnePassTransparentOutline"
                                                         _OutlineOffsetUnits         ("Offset Units", Float) = 0
         [lilColorMask]                                  _OutlineColorMask           ("Color Mask", Int) = 15
         [lilToggle]                                     _OutlineAlphaToMask         ("AlphaToMask", Int) = 0
-
-        //----------------------------------------------------------------------------------------------------------------------
-        // Save (Unused)
-        [HideInInspector] [MainColor]                   _BaseColor          ("Color", Color) = (1,1,1,1)
-        [HideInInspector] [MainTexture]                 _BaseMap            ("Texture", 2D) = "white" {}
-        [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
-        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-// BRP Start
-//
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
+        
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
         UsePass "Hidden/ltspass_lite_transparent/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER_OUTLINE"
         UsePass "Hidden/ltspass_lite_transparent/META"
+        
     }
     Fallback "Unlit/Texture"
-//
-// BRP End
-
-//----------------------------------------------------------------------------------------------------------------------
-// LWRP Start
-/*
-    SubShader
-    {
-        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
-        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
-        UsePass "Hidden/ltspass_lite_transparent/FORWARD_OUTLINE"
-        UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_lite_transparent/DEPTHONLY"
-        UsePass "Hidden/ltspass_lite_transparent/META"
-    }
-    Fallback "Lightweight Render Pipeline/Unlit"
-*/
-// LWRP End
-
-//----------------------------------------------------------------------------------------------------------------------
-// URP Start
-/*
-    SubShader
-    {
-        Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
-        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
-        UsePass "Hidden/ltspass_lite_transparent/FORWARD_OUTLINE"
-        UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_lite_transparent/DEPTHONLY"
-        UsePass "Hidden/ltspass_lite_transparent/DEPTHNORMALS"
-        UsePass "Hidden/ltspass_lite_transparent/UNIVERSAL2D"
-        UsePass "Hidden/ltspass_lite_transparent/META"
-    }
-    Fallback "Universal Render Pipeline/Unlit"
-*/
-// URP End
-
-//----------------------------------------------------------------------------------------------------------------------
-// HDRP Start
-/*
-    SubShader
-    {
-        Tags {"RenderType" = "HDLitShader" "Queue" = "Transparent"}
-        UsePass "Hidden/ltspass_lite_transparent/FORWARD"
-        UsePass "Hidden/ltspass_lite_transparent/FORWARD_OUTLINE"
-        UsePass "Hidden/ltspass_lite_transparent/SHADOW_CASTER"
-        UsePass "Hidden/ltspass_lite_transparent/DEPTHONLY_OUTLINE"
-        UsePass "Hidden/ltspass_lite_transparent/MOTIONVECTORS_OUTLINE"
-        UsePass "Hidden/ltspass_lite_transparent/META"
-    }
-    Fallback "HDRP/Unlit"
-*/
-// HDRP End
 
     CustomEditor "lilToon.lilToonInspector"
 }
+

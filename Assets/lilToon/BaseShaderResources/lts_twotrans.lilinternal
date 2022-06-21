@@ -1,0 +1,17 @@
+Shader "Hidden/lilToonTwoPassTransparent"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultTransparent"
+    }
+
+    lilPassShaderName "Hidden/ltspass_transparent"
+    lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
+    lilSubShaderBRP "DefaultUsePassNoForwardAddTwo"
+    lilSubShaderLWRP "DefaultUsePass"
+    lilSubShaderURP "DefaultUsePassTwoSide"
+    lilSubShaderHDRP "DefaultUsePassTwoSide"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

@@ -1,0 +1,17 @@
+Shader "Hidden/lilToonLiteOutline"
+{
+    Properties
+    {
+        lilProperties "DefaultLite"
+        lilProperties "DefaultOpaque"
+    }
+
+    lilPassShaderName "Hidden/ltspass_lite_opaque"
+    lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Geometry"}
+    lilSubShaderBRP "DefaultUsePassOutline"
+    lilSubShaderLWRP "DefaultUsePassOutline"
+    lilSubShaderURP "DefaultUsePassOutline"
+    lilSubShaderHDRP "DefaultUsePassOutline"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

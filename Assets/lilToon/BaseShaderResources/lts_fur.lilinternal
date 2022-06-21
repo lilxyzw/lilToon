@@ -1,0 +1,20 @@
+Shader "Hidden/lilToonFur"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultFurTransparent"
+    }
+
+    HLSLINCLUDE
+        #define LIL_RENDER 2
+    ENDHLSL
+
+    lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "Transparent"}
+    lilSubShaderBRP "DefaultFur"
+    lilSubShaderLWRP "DefaultFur"
+    lilSubShaderURP "DefaultFur"
+    lilSubShaderHDRP "DefaultFur"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

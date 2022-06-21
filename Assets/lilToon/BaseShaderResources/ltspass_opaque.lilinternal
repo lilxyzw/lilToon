@@ -1,0 +1,11 @@
+Shader "Hidden/ltspass_opaque"
+{
+    HLSLINCLUDE
+        #define LIL_RENDER 0
+    ENDHLSL
+
+    lilSubShaderBRP "Default"
+    lilSubShaderLWRP "Default"
+    lilSubShaderURP "Default"
+    lilSubShaderHDRP "Default"
+}

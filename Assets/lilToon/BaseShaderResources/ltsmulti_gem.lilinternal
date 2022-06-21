@@ -1,0 +1,16 @@
+Shader "Hidden/lilToonMultiGem"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultGem"
+    }
+
+    lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
+    lilSubShaderBRP "DefaultMultiGem"
+    lilSubShaderLWRP "DefaultMultiGem"
+    lilSubShaderURP "DefaultMultiGem"
+    lilSubShaderHDRP "DefaultMultiGem"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

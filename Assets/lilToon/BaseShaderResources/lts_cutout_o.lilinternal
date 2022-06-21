@@ -1,0 +1,17 @@
+Shader "Hidden/lilToonCutoutOutline"
+{
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultCutout"
+    }
+
+    lilPassShaderName "Hidden/ltspass_cutout"
+    lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
+    lilSubShaderBRP "DefaultUsePassOutline"
+    lilSubShaderLWRP "DefaultUsePassOutline"
+    lilSubShaderURP "DefaultUsePassOutline"
+    lilSubShaderHDRP "DefaultUsePassOutline"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}

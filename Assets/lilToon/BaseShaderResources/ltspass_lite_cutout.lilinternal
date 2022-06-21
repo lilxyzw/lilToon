@@ -1,0 +1,11 @@
+Shader "Hidden/ltspass_lite_cutout"
+{
+    HLSLINCLUDE
+        #define LIL_RENDER 1
+    ENDHLSL
+
+    lilSubShaderBRP "DefaultLite"
+    lilSubShaderLWRP "DefaultLite"
+    lilSubShaderURP "DefaultLite"
+    lilSubShaderHDRP "DefaultLite"
+}

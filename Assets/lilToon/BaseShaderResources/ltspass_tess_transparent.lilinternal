@@ -1,0 +1,11 @@
+Shader "Hidden/ltspass_tess_transparent"
+{
+    HLSLINCLUDE
+        #define LIL_RENDER 2
+    ENDHLSL
+
+    lilSubShaderBRP "DefaultTessellationTwoSide"
+    lilSubShaderLWRP "DefaultTessellation"
+    lilSubShaderURP "DefaultTessellationTwoSide"
+    lilSubShaderHDRP "DefaultTessellationTwoSide"
+}

@@ -1645,14 +1645,34 @@ float2 lilCameraDepthTexel(float2 positionCS)
         #define LIL_APPLY_FOG_BASE(col,fogCoord)                 col.rgb = lerp(unity_FogColor.rgb,col.rgb,fogCoord)
         #define LIL_APPLY_FOG_COLOR_BASE(col,fogCoord,fogColor)  col.rgb = lerp(fogColor.rgb,col.rgb,fogCoord)
     #endif
-    float lilCalcFogFactor(float depth)
-    {
-        #if defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)
-            return ComputeFogIntensity(ComputeFogFactor(depth));
-        #else
-            return 1.0;
-        #endif
-    }
+    #if VERSION_GREATER_EQUAL(7, 1)
+        float lilCalcFogFactor(float depth)
+        {
+            #if defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)
+                return ComputeFogIntensity(ComputeFogFactor(depth));
+            #else
+                return 1.0;
+            #endif
+        }
+    #else
+        float lilCalcFogFactor(float depth)
+        {
+            #if defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)
+                float factor = ComputeFogFactor(depth);
+                #if defined(FOG_EXP)
+                    return saturate(exp2(-factor));
+                #elif defined(FOG_EXP2)
+                    return saturate(exp2(-factor*factor));
+                #elif defined(FOG_LINEAR)
+                    return factor;
+                #else
+                    return 0.0;
+                #endif
+            #else
+                return 1.0;
+            #endif
+        }
+    #endif
 #endif
 
 // Meta

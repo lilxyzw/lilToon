@@ -1,0 +1,17 @@
+Shader "Hidden/lilToonLiteTwoPassTransparentOutline"
+{
+    Properties
+    {
+        lilProperties "DefaultLite"
+        lilProperties "DefaultTransparent"
+    }
+
+    lilPassShaderName "Hidden/ltspass_lite_transparent"
+    lilSubShaderTags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
+    lilSubShaderBRP "DefaultUsePassOutlineNoForwardAddTwo"
+    lilSubShaderLWRP "DefaultUsePassOutline"
+    lilSubShaderURP "DefaultUsePassOutlineTwoSide"
+    lilSubShaderHDRP "DefaultUsePassOutlineTwoSide"
+
+    CustomEditor "*LIL_EDITOR_NAME*"
+}
