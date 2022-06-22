@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed to save `Setup from FBX` presets in shader settings
 - Changed to preserve `Light Direction Override` property in `Fix lighting`
 - Retune fur preset
+- Improved lighting with Spot Light and Point Light in URP
 
 ### Fixed
 - Fixed an issue where fog wasn't working well in URP

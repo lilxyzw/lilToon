@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fix lighting`で`ライト方向のオーバーライド`のマテリアルの設定が保持されるように変更
 - ファーのプリセットを再調整
 - いくつかのプロパティの表示名で`背面`になっていた部分を`裏面`に統一
+- URPのSpot Light、Point Lightでのライティングを改善
 
 ### 修正
 - URPでフォグがうまく動作していなかった問題を修正

@@ -830,7 +830,7 @@ float3 lilGetLightDirection(float4 lightDirectionOverride)
     #endif
 }
 
-float3 lilGetFixedLightDirection(float4 lightDirectionOverride)
+float3 lilGetFixedLightDirection(float4 lightDirectionOverride, bool doNormalise)
 {
     #if LIL_LIGHT_DIRECTION_MODE == 0
         return normalize(LIL_MAINLIGHT_DIRECTION + lilGetCustomLightDirection(lightDirectionOverride));
@@ -839,8 +839,13 @@ float3 lilGetFixedLightDirection(float4 lightDirectionOverride)
         L.y = abs(L.y);
         L += LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR);
         L += lilGetCustomLightDirection(lightDirectionOverride);
-        return normalize(L);
+        return doNormalise ? normalize(L) : L;
     #endif
+}
+
+float3 lilGetFixedLightDirection(float4 lightDirectionOverride)
+{
+    return lilGetFixedLightDirection(lightDirectionOverride, true);
 }
 
 float3 lilGetLightDirection()

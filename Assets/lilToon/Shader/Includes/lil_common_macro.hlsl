@@ -50,12 +50,18 @@
 // 1 : On
 
 // Additional Lights Mode (Default : 1)
-#define LIL_ADDITIONAL_LIGHT_MODE 1
+//#define LIL_ADDITIONAL_LIGHT_MODE 1
 // 0 : Off
 // 1 : In Vertex Shader
 // 2 : In Fragment Shader
 // 3 : Add to main light
 // 4 : Add to main light with direction
+#if defined(LIL_BRP)
+    #define LIL_ADDITIONAL_LIGHT_MODE 1
+#else
+    #define LIL_ADDITIONAL_LIGHT_MODE 4
+#endif
+
 
 // Near clip threshold for clipping canceller (Default : 0.1)
 #define LIL_NEARCLIP_THRESHOLD 0.1
@@ -1566,23 +1572,27 @@ float3 lilGetObjectPosition()
     #define LIL_MAINLIGHT_DIRECTION                     _MainLightPosition.xyz
 
     // Shadow
+    float4 GetShadowCoord(float3 positionWS, float4 positionCS)
+    {
+        VertexPositionInputs vertexInput = (VertexPositionInputs)0;
+        vertexInput.positionWS = positionWS;
+        vertexInput.positionCS = positionCS;
+        return GetShadowCoord(vertexInput);
+    }
+
     #if defined(LIL_USE_SHADOW)
         #if defined(_MAIN_LIGHT_SHADOWS_SCREEN)
             #define LIL_SHADOW_COORDS(idx)              float4 shadowCoord : TEXCOORD##idx;
-            #define LIL_TRANSFER_SHADOW(vi,uv,o)        o.shadowCoord = ComputeScreenPos(vi.positionCS);
-            #define LIL_LIGHT_ATTENUATION(atten,i) \
-                atten = MainLightRealtimeShadow(i.shadowCoord)
-        #elif defined(_MAIN_LIGHT_SHADOWS)
-            #define LIL_SHADOW_COORDS(idx)              float4 shadowCoord : TEXCOORD##idx;
-            #define LIL_TRANSFER_SHADOW(vi,uv,o)        o.shadowCoord = TransformWorldToShadowCoord(vi.positionWS);
-            #define LIL_LIGHT_ATTENUATION(atten,i) \
-                atten = MainLightRealtimeShadow(i.shadowCoord)
-        #else
+            #define LIL_TRANSFER_SHADOW(vi,uv,o)        o.shadowCoord = GetShadowCoord(vi.positionWS, vi.positionCS);
+            #define LIL_LIGHT_ATTENUATION(atten,i)      atten = MainLightRealtimeShadow(i.shadowCoord)
+        #elif defined(_MAIN_LIGHT_SHADOWS_CASCADE) && !defined(_MAIN_LIGHT_SHADOWS)
             #define LIL_SHADOW_COORDS(idx)
             #define LIL_TRANSFER_SHADOW(vi,uv,o)
-            #define LIL_LIGHT_ATTENUATION(atten,i) \
-                float4 shadowCoord = TransformWorldToShadowCoord(i.positionWS); \
-                atten = MainLightRealtimeShadow(shadowCoord)
+            #define LIL_LIGHT_ATTENUATION(atten,i)      atten = MainLightRealtimeShadow(TransformWorldToShadowCoord(i.positionWS))
+        #else
+            #define LIL_SHADOW_COORDS(idx)              float4 shadowCoord : TEXCOORD##idx;
+            #define LIL_TRANSFER_SHADOW(vi,uv,o)        o.shadowCoord = GetShadowCoord(vi.positionWS, vi.positionCS);
+            #define LIL_LIGHT_ATTENUATION(atten,i)      atten = MainLightRealtimeShadow(i.shadowCoord)
         #endif
     #else
         #define LIL_SHADOW_COORDS(idx)
@@ -1704,7 +1714,7 @@ float3 lilGetObjectPosition()
                 lightColor += light.color * light.distanceAttenuation;
 
                 Light objLight = GetAdditionalLight(lightIndex, objPositionWS);
-                lightDirection += dot(objLight.color * objLight.distanceAttenuation, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * objLight.direction;
+                lightDirection += dot(objLight.color, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * objLight.distanceAttenuation * objLight.direction;
             }
 
             #if defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
@@ -1925,7 +1935,6 @@ struct lilLightData
         lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(LIL_SCREENPARAMS.xy,1.0,1.0), o.lightColor, additionalLightDirection)
 #elif defined(LIL_USE_ADDITIONALLIGHT_MAINDIR)
     #define LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o) \
-        o.lightDirection *= dot(o.lightColor, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)); \
         lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(LIL_SCREENPARAMS.xy,1.0,1.0), o.lightColor, o.lightDirection); \
         o.lightDirection = normalize(o.lightDirection)
 #else
@@ -1947,7 +1956,7 @@ struct lilLightData
 #endif
 
 #if LIL_SHLIGHT_DIRECTION_MODE == 1
-    #define LIL_CORRECT_LIGHTDIR(dir) dir = lilGetFixedLightDirection(_LightDirectionOverride)
+    #define LIL_CORRECT_LIGHTDIR(dir) dir = lilGetFixedLightDirection(_LightDirectionOverride, false)
 #else
     #define LIL_CORRECT_LIGHTDIR(dir)
 #endif
@@ -1986,7 +1995,8 @@ struct lilLightData
         LIL_CALC_TWOLIGHT(i,o); \
         LIL_CORRECT_LIGHTDIR(o.lightDirection); \
         LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o); \
-        LIL_CORRECT_LIGHTCOLOR_VS(o.lightColor)
+        LIL_CORRECT_LIGHTCOLOR_VS(o.lightColor); \
+        o.lightDirection = normalize(o.lightDirection)
 #endif
 
 // Main Light in PS (Color / Direction / Attenuation)
