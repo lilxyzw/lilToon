@@ -47,13 +47,9 @@ namespace lilToon
             if(File.Exists(lilDirectoryManager.postBuildTempPath)) File.Delete(lilDirectoryManager.postBuildTempPath);
             lilToonSetting shaderSetting = null;
             lilToonSetting.InitializeShaderSetting(ref shaderSetting);
-            if(shaderSetting != null)
-            {
-                lilToonSetting.TurnOnAllShaderSetting(ref shaderSetting);
-                EditorUtility.SetDirty(shaderSetting);
-                AssetDatabase.SaveAssets();
-                lilToonSetting.ApplyShaderSetting(shaderSetting);
-            }
+            lilToonSetting.TurnOnAllShaderSetting(ref shaderSetting);
+            lilToonSetting.SaveShaderSetting(shaderSetting);
+            lilToonSetting.ApplyShaderSetting(shaderSetting);
 
             AssetDatabase.Refresh();
         }

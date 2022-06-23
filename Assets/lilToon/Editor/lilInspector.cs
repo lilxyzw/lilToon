@@ -4896,7 +4896,7 @@ namespace lilToon
         private void DrawOptimizationButton(Material material, bool isnormal)
         {
             #if VRC_SDK_VRCSDK3 && UDON
-                if(isnormal && EditorButton(GetLoc("sOptimizeForEvents"))) RemoveUnusedTexture(material);
+                if(isnormal && lilEditorGUI.EditorButton(GetLoc("sOptimizeForEvents"))) lilMaterialUtils.RemoveUnusedTexture(material);
             #endif
         }
         #endregion

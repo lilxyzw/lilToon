@@ -553,7 +553,6 @@ public class lilToonSetting : ScriptableObject
     {
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
-        if(shaderSetting == null) return "";
         return BuildShaderSettingString(shaderSetting, isFile);
     }
 
@@ -561,8 +560,6 @@ public class lilToonSetting : ScriptableObject
     {
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
-        if(shaderSetting == null) return;
-
         TurnOffAllShaderSetting(ref shaderSetting);
 
         // Get materials
@@ -592,8 +589,6 @@ public class lilToonSetting : ScriptableObject
 
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
-        if(shaderSetting == null) return;
-
         TurnOffAllShaderSetting(ref shaderSetting);
 
         // Get materials
@@ -658,7 +653,6 @@ public class lilToonSetting : ScriptableObject
         File.Delete(lilDirectoryManager.postBuildTempPath);
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
-        if(shaderSetting == null) return;
         TurnOnAllShaderSetting(ref shaderSetting);
         SaveShaderSetting(shaderSetting);
         ApplyShaderSetting(shaderSetting, "[lilToon] PostprocessBuild");
