@@ -1032,6 +1032,7 @@ CBUFFER_START(UnityPerMaterial)
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
         lilBool _OutlineLitApplyTex;
         lilBool _OutlineDeleteMesh;
+        lilBool _OutlineDisableInVR;
     #endif
     #if defined(LIL_FUR)
         lilBool _VertexColor2FurVector;
@@ -1699,6 +1700,7 @@ CBUFFER_START(UnityPerMaterial)
 
     lilBool _OutlineLitApplyTex;
     lilBool _OutlineDeleteMesh;
+    lilBool _OutlineDisableInVR;
 
     #if defined(LIL_FUR)
         lilBool _VertexColor2FurVector;

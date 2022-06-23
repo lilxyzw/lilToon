@@ -613,6 +613,7 @@ namespace lilToon
             private readonly lilMaterialProperty outlineVectorScale = new lilMaterialProperty();
             private readonly lilMaterialProperty outlineEnableLighting = new lilMaterialProperty();
             private readonly lilMaterialProperty outlineZBias = new lilMaterialProperty();
+            private readonly lilMaterialProperty outlineDisableInVR = new lilMaterialProperty();
             private readonly lilMaterialProperty outlineCull = new lilMaterialProperty();
             private readonly lilMaterialProperty outlineSrcBlend = new lilMaterialProperty();
             private readonly lilMaterialProperty outlineDstBlend = new lilMaterialProperty();
@@ -3069,6 +3070,7 @@ namespace lilToon
             outlineVectorScale.p        = FindProperty("_OutlineVectorScale", props, false);
             outlineEnableLighting.p     = FindProperty("_OutlineEnableLighting", props, false);
             outlineZBias.p              = FindProperty("_OutlineZBias", props, false);
+            outlineDisableInVR.p        = FindProperty("_OutlineDisableInVR", props, false);
             outlineCull.p               = FindProperty("_OutlineCull", props, false);
             outlineSrcBlend.p           = FindProperty("_OutlineSrcBlend", props, false);
             outlineDstBlend.p           = FindProperty("_OutlineDstBlend", props, false);
@@ -3736,6 +3738,7 @@ namespace lilToon
                 outlineVectorScale,
                 outlineEnableLighting,
                 outlineZBias,
+                outlineDisableInVR,
                 outlineCull,
                 outlineSrcBlend,
                 outlineDstBlend,
@@ -4485,6 +4488,7 @@ namespace lilToon
             AddBlock(PropertyBlock.Outline, outlineVectorScale);
             AddBlock(PropertyBlock.Outline, outlineEnableLighting);
             AddBlock(PropertyBlock.Outline, outlineZBias);
+            AddBlock(PropertyBlock.Outline, outlineDisableInVR);
             AddBlock(PropertyBlock.Outline, outlineTex, true);
             AddBlock(PropertyBlock.Outline, outlineWidthMask, true);
             AddBlock(PropertyBlock.Outline, outlineVectorTex, true);
@@ -6116,6 +6120,7 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(outlineVertexR2Width, sOutlineVertexColorUsages);
                     m_MaterialEditor.ShaderProperty(outlineDeleteMesh, GetLoc("sDeleteMesh0"));
                     m_MaterialEditor.ShaderProperty(outlineZBias, "Z Bias");
+                    m_MaterialEditor.ShaderProperty(outlineDisableInVR, GetLoc("sDisableInVR"));
                     EditorGUI.indentLevel--;
                     m_MaterialEditor.TexturePropertySingleLine(normalMapContent, outlineVectorTex, outlineVectorScale);
                     m_MaterialEditor.ShaderProperty(outlineVectorUVMode, "UV Mode|UV0|UV1|UV2|UV3", 1);

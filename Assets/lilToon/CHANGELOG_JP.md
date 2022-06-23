@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 追加
 - 2影・3影に`影を受け取る`を追加
 - 影のマスク方法に`Flat`を追加
-- 輪郭線に`Z Bias`と`ハイライト`と`太さ0の頂点を削除`を追加
+- 輪郭線に`Z Bias`と`ハイライト`と`太さ0の頂点を削除`と`VR時に非表示`を追加
 - レンダリング設定に`Shadow Caster Bias`を追加
 - ファーのメッシュ分割方法を追加
 - 反射に`GSAA`と`合成モード`を追加

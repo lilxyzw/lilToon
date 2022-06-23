@@ -63,15 +63,23 @@ LIL_V2F_TYPE vert(appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Invisible
+    #if defined(LIL_OUTLINE) && !defined(LIL_LITE) && defined(USING_STEREO_MATRICES)
+        #define LIL_VERTEX_CONDITION (_Invisible || _OutlineDisableInVR)
+    #elif defined(LIL_OUTLINE) && !defined(LIL_LITE)
+        #define LIL_VERTEX_CONDITION (_Invisible || _OutlineDisableInVR && (abs(UNITY_MATRIX_P._m02) > 0.000001))
+    #else
+        #define LIL_VERTEX_CONDITION (_Invisible)
+    #endif
+
+    LIL_BRANCH
     #if defined(LIL_TESSELLATION) || defined(LIL_CUSTOM_SAFEVERT)
-        LIL_BRANCH
-        if(!_Invisible)
+        if(!LIL_VERTEX_CONDITION)
         {
     #else
-        // In the tessellation shader this gives a warning
-        LIL_BRANCH
-        if(_Invisible) return LIL_V2F_OUT;
+        if(LIL_VERTEX_CONDITION) return LIL_V2F_OUT;
     #endif
+
+    #undef LIL_VERTEX_CONDITION
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Single Pass Instanced rendering

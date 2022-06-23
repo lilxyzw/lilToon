@@ -194,6 +194,7 @@ sFixWidth	Fix width by distance	距離に応じた太さ補正	거리에 따른 
 sVertexR2Width	R -> Width	R -> Width	R -> Width	R -> Width	R -> Width
 sVertexRGBA2Normal	RGBA -> Normal & Width	RGBA -> Normal & Width	RGBA -> Normal & Width	RGBA -> Normal & Width	RGBA -> Normal & Width
 sDeleteMesh0	Remove zero width vertices	太さ0の頂点を削除	굵기 0의 꼭짓점 삭제	删除宽度0的顶点	刪除寬度0的頂點
+sDisableInVR	Disable in VR	VR時に非表示	VR에서 사용 안 함	在 VR 中禁用	在 VR 中禁用
 sRefractionSetting	Refraction	屈折設定	굴절 설정	折射设置	折射設置
 sRefractionTips	You can set the refraction strength and color.	屈折の強さや色の設定ができます	굴절의 강도나 색을 설정할 수 있습니다	你可以设置折射强度和颜色。	你可以設置折射強度和顏色。
 sRefraction	Refraction	屈折	굴절	折射	折射

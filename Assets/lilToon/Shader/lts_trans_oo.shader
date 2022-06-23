@@ -447,6 +447,7 @@ Shader "_lil/[Optional] lilToonOutlineOnlyTransparent"
                         _OutlineVectorScale         ("Vector scale", Range(-10,10)) = 1
                         _OutlineEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
                         _OutlineZBias               ("Z Bias", Float) = 0
+        [lilToggle]     _OutlineDisableInVR         ("Disable in VR", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Tessellation
