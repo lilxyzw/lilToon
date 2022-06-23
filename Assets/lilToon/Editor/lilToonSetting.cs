@@ -128,11 +128,25 @@ public class lilToonSetting : ScriptableObject
     public lilToonPreset presetHair;
     public lilToonPreset presetCloth;
 
-    public static void InitializeShaderSetting(ref lilToonSetting shaderSetting)
+    public static void SaveShaderSetting(lilToonSetting shaderSetting)
+    {
+        string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
+        StreamWriter sw = new StreamWriter(shaderSettingPath, false);
+        sw.Write(JsonUtility.ToJson(shaderSetting));
+        sw.Close();
+    }
+
+    internal static void LoadShaderSetting(ref lilToonSetting shaderSetting)
+    {
+        string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
+        if(shaderSetting == null) shaderSetting = ScriptableObject.CreateInstance<lilToonSetting>();
+        if(File.Exists(shaderSettingPath)) JsonUtility.FromJsonOverwrite(File.ReadAllText(shaderSettingPath), shaderSetting);
+    }
+
+    internal static void InitializeShaderSetting(ref lilToonSetting shaderSetting)
     {
         if(shaderSetting != null) return;
-        string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
-        shaderSetting = AssetDatabase.LoadAssetAtPath<lilToonSetting>(shaderSettingPath);
+        LoadShaderSetting(ref shaderSetting);
         if(shaderSetting == null)
         {
             foreach(string guid in AssetDatabase.FindAssets("t:lilToonSetting"))
@@ -144,14 +158,14 @@ public class lilToonSetting : ScriptableObject
                 {
                     Debug.Log("[lilToon] Migrate settings from: " + path);
                     TurnOnAllShaderSetting(ref shaderSetting);
-                    AssetDatabase.CreateAsset(shaderSetting, shaderSettingPath);
+                    SaveShaderSetting(shaderSetting);
                     ApplyShaderSetting(shaderSetting);
                     AssetDatabase.Refresh();
                     return;
                 }
             }
             shaderSetting = ScriptableObject.CreateInstance<lilToonSetting>();
-            AssetDatabase.CreateAsset(shaderSetting, shaderSettingPath);
+            SaveShaderSetting(shaderSetting);
             AssetDatabase.Refresh();
         }
     }
@@ -365,17 +379,6 @@ public class lilToonSetting : ScriptableObject
         AssetDatabase.SaveAssets();
         string shaderSettingString = BuildShaderSettingString(shaderSetting, true);
 
-        /*PackageVersionInfos version = lilRenderPipelineReader.GetRPInfos();
-        bool isShadowReceive = (shaderSetting.LIL_FEATURE_SHADOW && shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) || shaderSetting.LIL_FEATURE_BACKLIGHT;
-        foreach (string shaderGuid in AssetDatabase.FindAssets("t:shader", shaderFolderPaths))
-        {
-            string shaderPath = lilDirectoryManager.GUIDToPath(shaderGuid);
-            lilShaderRewriter.RewriteReceiveShadow(shaderPath, isShadowReceive);
-            lilShaderRewriter.RewriteForwardAdd(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
-            lilShaderRewriter.RewriteVertexLight(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
-            lilShaderRewriter.RewriteLightmap(shaderPath, shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
-            lilShaderRewriter.RewriteRPPass(shaderPath, version);
-        }*/
         string shaderFolderPath = lilDirectoryManager.GetShaderFolderPath();
         var folders = new List<string>{shaderFolderPath};
         string baseShaderFolderPath = lilDirectoryManager.GetBaseShaderFolderPath();
@@ -577,6 +580,7 @@ public class lilToonSetting : ScriptableObject
         }
 
         // Apply
+        SaveShaderSetting(shaderSetting);
         ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
         AssetDatabase.Refresh();
     }
@@ -636,6 +640,7 @@ public class lilToonSetting : ScriptableObject
         #endif
 
         // Apply
+        SaveShaderSetting(shaderSetting);
         ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
         AssetDatabase.Refresh();
     }
@@ -655,6 +660,7 @@ public class lilToonSetting : ScriptableObject
         InitializeShaderSetting(ref shaderSetting);
         if(shaderSetting == null) return;
         TurnOnAllShaderSetting(ref shaderSetting);
+        SaveShaderSetting(shaderSetting);
         ApplyShaderSetting(shaderSetting, "[lilToon] PostprocessBuild");
     }
 

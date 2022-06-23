@@ -643,7 +643,7 @@ Shader "Hidden/lilToonRefractionBlur"
                 Fail [_StencilFail]
                 ZFail [_StencilZFail]
             }
-		    Cull [_Cull]
+            Cull [_Cull]
             Blend One Zero
             ZWrite [_ZWrite]
             ZTest [_ZTest]
@@ -743,8 +743,8 @@ Shader "Hidden/lilToonRefractionBlur"
                 Fail [_StencilFail]
                 ZFail [_StencilZFail]
             }
-		    Cull [_Cull]
-			ZWrite Off
+            Cull [_Cull]
+            ZWrite Off
             ZTest LEqual
             ColorMask [_ColorMask]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -785,7 +785,7 @@ Shader "Hidden/lilToonRefractionBlur"
             Name "SHADOW_CASTER"
             Tags {"LightMode" = "ShadowCaster"}
             Offset 1, 1
-		    Cull [_Cull]
+            Cull [_Cull]
 
             HLSLPROGRAM
 

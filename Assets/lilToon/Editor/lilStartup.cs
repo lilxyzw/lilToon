@@ -60,6 +60,29 @@ namespace lilToon
             }
 
             //------------------------------------------------------------------------------------------------------------------------------
+            // Shader setting
+            string currentRPPath = lilDirectoryManager.GetCurrentRPPath();
+            if(File.Exists(currentRPPath))
+            {
+                StreamReader srRP = new StreamReader(currentRPPath);
+                string shaderRP = srRP.ReadToEnd();
+                srRP.Close();
+
+                string projectRP = lilRenderPipelineReader.GetRP().ToString();
+
+                if(shaderRP != projectRP)
+                {
+                    Debug.Log("[lilToon] Switch " + shaderRP + " to " + projectRP);
+                    StreamWriter swRP = new StreamWriter(currentRPPath,false);
+                    swRP.Write(projectRP);
+                    swRP.Close();
+                    lilToonSetting shaderSetting = null;
+                    lilToonSetting.InitializeShaderSetting(ref shaderSetting);
+                    lilToonSetting.ApplyShaderSetting(shaderSetting);
+                }
+            }
+
+            //------------------------------------------------------------------------------------------------------------------------------
             // Version check
             if(!File.Exists(lilDirectoryManager.versionInfoTempPath))
             {

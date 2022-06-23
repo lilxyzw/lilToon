@@ -36,16 +36,11 @@ namespace lilToon
         public static string GetGUIBoxOutLightPath()        { return GUIDToPath("16cc103a658d8404894e66dd8f35cb77"); } // "Assets/lilToon/Editor/Resources/gui_box_outer_light.guiskin"
         public static string GetGUICustomBoxDarkPath()      { return GUIDToPath("45dfb1bafd2c7d34ab453c29c0b1f46e"); } // "Assets/lilToon/Editor/Resources/gui_custom_box_dark.guiskin"
         public static string GetGUICustomBoxLightPath()     { return GUIDToPath("a1ed8756474bfd34f80fa22e6c43b2e5"); } // "Assets/lilToon/Editor/Resources/gui_custom_box_light.guiskin"
+        public static string GetCurrentRPPath()             { return GUIDToPath("142b3aeca72105442a83089b616e92b8"); } // "Assets/lilToon/Editor/CurrentRP.txt"
+        public static string GetShaderSettingPath()         { return "ProjectSettings/lilToonSetting.json";          } // "ProjectSettings/lilToonSetting.json"
         public static string[] GetShaderFolderPaths()       { return new[] {GetShaderFolderPath()}; }
         public static string GetSettingFolderPath()         { return GetMainFolderPath(); }
         public static string GUIDToPath(string GUID)        { return AssetDatabase.GUIDToAssetPath(GUID); }
-
-        public static string GetShaderSettingPath()
-        {
-            string mainFolderPath = GetMainFolderPath();
-            if(!mainFolderPath.Contains("Assets")) return "Assets/ShaderSetting.asset";
-            return GetMainFolderPath() + "/ShaderSetting.asset";
-        }
 
         public static bool ExistsEncryption() { return !string.IsNullOrEmpty(GetAvatarEncryptionPath()); }
     }

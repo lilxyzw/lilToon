@@ -127,7 +127,7 @@ v2f domain(lilTessellationFactors hsConst, const OutputPatch<appdata, 3> input, 
         LIL_TRI_INTERPOLATION(input,output,bary,tangentOS);
     #endif
     #if defined(LIL_APP_VERTEXID)
-		output.vertexID = input[0].vertexID;
+        output.vertexID = input[0].vertexID;
     #endif
     #if defined(LIL_APP_PREVPOS)
         LIL_TRI_INTERPOLATION(input,output,bary,previousPositionOS);

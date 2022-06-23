@@ -105,7 +105,7 @@ struct appdata
         float4 tangentOS    : TANGENT;
     #endif
     #if defined(LIL_APP_VERTEXID)
-		uint vertexID       : SV_VertexID;
+        uint vertexID       : SV_VertexID;
     #endif
     #if defined(LIL_APP_PREVPOS)
         float3 previousPositionOS : TEXCOORD4;
@@ -155,7 +155,7 @@ struct appdataCopy
         float4 tangentOS    : TANGENT;
     #endif
     #if defined(LIL_APP_VERTEXID)
-		uint vertexID       : TEXCOORD8; // avoid error
+        uint vertexID       : TEXCOORD8; // avoid error
     #endif
     #if defined(LIL_APP_PREVPOS)
         float3 previousPositionOS : TEXCOORD4;
@@ -206,7 +206,7 @@ appdataCopy appdataOriginalToCopy(appdata i)
         o.tangentOS = i.tangentOS;
     #endif
     #if defined(LIL_APP_VERTEXID)
-		o.vertexID = i.vertexID;
+        o.vertexID = i.vertexID;
     #endif
     #if defined(LIL_APP_PREVPOS)
         o.previousPositionOS = i.previousPositionOS;
@@ -258,7 +258,7 @@ appdata appdataCopyToOriginal(appdataCopy i)
         o.tangentOS = i.tangentOS;
     #endif
     #if defined(LIL_APP_VERTEXID)
-		o.vertexID = i.vertexID;
+        o.vertexID = i.vertexID;
     #endif
     #if defined(LIL_APP_PREVPOS)
         o.previousPositionOS = i.previousPositionOS;

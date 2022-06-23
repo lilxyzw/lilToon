@@ -1,6 +1,6 @@
 {
-	"name": "lilToon.Editor",
-	"includePlatforms": [
+    "name": "lilToon.Editor",
+    "includePlatforms": [
         "Editor"
     ]
 }

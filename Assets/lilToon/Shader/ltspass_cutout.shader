@@ -237,9 +237,9 @@ Shader "Hidden/ltspass_cutout"
                 Fail [_StencilFail]
                 ZFail [_StencilZFail]
             }
-		    Cull [_Cull]
+            Cull [_Cull]
             ZClip [_ZClip]
-			ZWrite Off
+            ZWrite Off
             ZTest LEqual
             ColorMask [_ColorMask]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -289,7 +289,7 @@ Shader "Hidden/ltspass_cutout"
             }
             Cull [_OutlineCull]
             ZClip [_OutlineZClip]
-			ZWrite Off
+            ZWrite Off
             ZTest LEqual
             ColorMask [_OutlineColorMask]
             Offset [_OutlineOffsetFactor], [_OutlineOffsetUnits]
@@ -331,7 +331,7 @@ Shader "Hidden/ltspass_cutout"
             Name "SHADOW_CASTER"
             Tags {"LightMode" = "ShadowCaster"}
             Offset 1, 1
-		    Cull [_Cull]
+            Cull [_Cull]
 
             HLSLPROGRAM
 
@@ -362,7 +362,7 @@ Shader "Hidden/ltspass_cutout"
             Name "SHADOW_CASTER_OUTLINE"
             Tags {"LightMode" = "ShadowCaster"}
             Offset 1, 1
-		    Cull [_Cull]
+            Cull [_Cull]
 
             HLSLPROGRAM
 

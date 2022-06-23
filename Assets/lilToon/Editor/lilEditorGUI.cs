@@ -36,8 +36,8 @@ namespace lilToon
         public static bool Foldout(string title, string help, bool display)
         {
             Rect rect = GUILayoutUtility.GetRect(16f, 20f, foldout);
-			rect.width += 8f;
-			rect.x -= 8f;
+            rect.width += 8f;
+            rect.x -= 8f;
             GUI.Box(rect, new GUIContent(title, help), foldout);
 
             Event e = Event.current;

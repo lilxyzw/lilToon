@@ -748,14 +748,14 @@ namespace lilToon
         // GUI
         #region
         public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] props)
-	    {
+        {
             isCustomEditor = false;
             isMultiVariants = false;
             DrawAllGUI(materialEditor, props, (Material)materialEditor.target);
         }
 
         public void DrawAllGUI(MaterialEditor materialEditor, MaterialProperty[] props, Material material)
-	    {
+        {
             //------------------------------------------------------------------------------------------------------------------------------
             // EditorAssets
             lilEditorGUI.InitializeGUIStyles();
@@ -818,7 +818,7 @@ namespace lilToon
                 CopyMainColorProperties();
                 SaveEditorSettingTemp();
             }
-	    }
+        }
 
         private void DrawSimpleGUI(Material material)
         {
@@ -2843,29 +2843,29 @@ namespace lilToon
                 ShaderSettingOptimizationGUI();
                 EditorGUILayout.EndVertical();
             }
-
-            edSet.isShowDefaultValueSetting = lilEditorGUI.Foldout(GetLoc("sSettingDefaultValue"), edSet.isShowDefaultValueSetting);
-            if(edSet.isShowDefaultValueSetting)
-            {
-                EditorGUILayout.BeginVertical(customBox);
-                ShaderSettingDefaultValueGUI();
-                EditorGUILayout.EndVertical();
-            }
             if(EditorGUI.EndChangeCheck())
             {
                 if(shaderSetting.isDebugOptimize)
                 {
-                    EditorUtility.SetDirty(shaderSetting);
-                    AssetDatabase.SaveAssets();
+                    lilToonSetting.SaveShaderSetting(shaderSetting);
                     lilToonSetting.ApplyShaderSettingOptimized();
                 }
                 else
                 {
                     lilToonSetting.TurnOnAllShaderSetting(ref shaderSetting);
-                    EditorUtility.SetDirty(shaderSetting);
-                    AssetDatabase.SaveAssets();
+                    lilToonSetting.SaveShaderSetting(shaderSetting);
                     lilToonSetting.ApplyShaderSetting(shaderSetting);
                 }
+            }
+
+            edSet.isShowDefaultValueSetting = lilEditorGUI.Foldout(GetLoc("sSettingDefaultValue"), edSet.isShowDefaultValueSetting);
+            if(edSet.isShowDefaultValueSetting)
+            {
+                EditorGUI.BeginChangeCheck();
+                EditorGUILayout.BeginVertical(customBox);
+                ShaderSettingDefaultValueGUI();
+                EditorGUILayout.EndVertical();
+                if(EditorGUI.EndChangeCheck()) lilToonSetting.SaveShaderSetting(shaderSetting);
             }
         }
         #endregion

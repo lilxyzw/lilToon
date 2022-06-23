@@ -757,9 +757,9 @@ Shader "Hidden/lilToonMultiFur"
                 Fail [_StencilFail]
                 ZFail [_StencilZFail]
             }
-		    Cull [_Cull]
+            Cull [_Cull]
             ZClip [_ZClip]
-			ZWrite Off
+            ZWrite Off
             ZTest LEqual
             ColorMask [_ColorMask]
             Offset [_OffsetFactor], [_OffsetUnits]
@@ -841,9 +841,9 @@ Shader "Hidden/lilToonMultiFur"
                 Fail [_FurStencilFail]
                 ZFail [_FurStencilZFail]
             }
-		    Cull [_FurCull]
+            Cull [_FurCull]
             ZClip [_FurZClip]
-			ZWrite Off
+            ZWrite Off
             ZTest LEqual
             ColorMask [_FurColorMask]
             Offset [_FurOffsetFactor], [_FurOffsetUnits]
@@ -895,7 +895,7 @@ Shader "Hidden/lilToonMultiFur"
             Name "SHADOW_CASTER"
             Tags {"LightMode" = "ShadowCaster"}
             Offset 1, 1
-		    Cull [_Cull]
+            Cull [_Cull]
 
             HLSLPROGRAM
 

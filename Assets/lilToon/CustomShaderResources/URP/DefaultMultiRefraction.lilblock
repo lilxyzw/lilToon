@@ -121,7 +121,7 @@
         {
             Name "SHADOW_CASTER"
             Tags {"LightMode" = "ShadowCaster"}
-		    Cull [_Cull]
+            Cull [_Cull]
 
             HLSLPROGRAM
 
@@ -156,7 +156,7 @@
         {
             Name "DEPTHONLY"
             Tags {"LightMode" = "DepthOnly"}
-		    Cull [_Cull]
+            Cull [_Cull]
             ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
@@ -194,7 +194,7 @@
         {
             Name "DEPTHNORMALS"
             Tags {"LightMode" = "DepthNormals"}
-		    Cull [_Cull]
+            Cull [_Cull]
             ZClip [_ZClip]
             ZWrite [_ZWrite]
             ZTest [_ZTest]
