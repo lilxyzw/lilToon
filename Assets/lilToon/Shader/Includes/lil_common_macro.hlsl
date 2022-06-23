@@ -518,11 +518,16 @@
 
 // Stereo
 #if defined(LIL_HDRP)
-    #define LIL_STEREO_MATRIX_V        _XRViewMatrix
-    #define LIL_STEREO_CAMERA_POS      _XRWorldSpaceCameraPos
+    #if VERSION_GREATER_EQUAL(7, 1)
+        #define LIL_STEREO_MATRIX_V(i)     _XRViewMatrix[i]
+        #define LIL_STEREO_CAMERA_POS(i)   _XRWorldSpaceCameraPos[i]
+    #else
+        #define LIL_STEREO_MATRIX_V(i)     _XRViewConstants[i].viewMatrix
+        #define LIL_STEREO_CAMERA_POS(i)   _XRViewConstants[i].worldSpaceCameraPos
+    #endif
 #else
-    #define LIL_STEREO_MATRIX_V        unity_StereoMatrixV
-    #define LIL_STEREO_CAMERA_POS      unity_StereoWorldSpaceCameraPos
+    #define LIL_STEREO_MATRIX_V(i)     unity_StereoMatrixV[i]
+    #define LIL_STEREO_CAMERA_POS(i)   unity_StereoWorldSpaceCameraPos[i]
 #endif
 
 float3 lilToAbsolutePositionWS(float3 positionRWS)
@@ -582,7 +587,7 @@ float3 lilViewDirection(float3 positionWS)
 float3 lilHeadDirection(float3 positionWS)
 {
     #if defined(USING_STEREO_MATRICES)
-        return (LIL_STEREO_CAMERA_POS[0].xyz + LIL_STEREO_CAMERA_POS[1].xyz) * 0.5 - positionWS;
+        return (LIL_STEREO_CAMERA_POS(0).xyz + LIL_STEREO_CAMERA_POS(1).xyz) * 0.5 - positionWS;
     #else
         return lilViewDirection(positionWS);
     #endif
@@ -591,7 +596,7 @@ float3 lilHeadDirection(float3 positionWS)
 float3 lilCameraDirection()
 {
     #if defined(USING_STEREO_MATRICES)
-        return normalize(LIL_STEREO_MATRIX_V[0]._m20_m21_m22 + LIL_STEREO_MATRIX_V[1]._m20_m21_m22);
+        return normalize(LIL_STEREO_MATRIX_V(0)._m20_m21_m22 + LIL_STEREO_MATRIX_V(1)._m20_m21_m22);
     #else
         return LIL_MATRIX_V._m20_m21_m22;
     #endif
@@ -623,7 +628,7 @@ float3 lilViewDirectionOS(float3 positionOS)
 float3 lilHeadDirectionOS(float3 positionOS)
 {
     #if defined(USING_STEREO_MATRICES)
-        return lilTransformWStoOS((LIL_STEREO_CAMERA_POS[0].xyz + LIL_STEREO_CAMERA_POS[1].xyz) * 0.5) - positionOS;
+        return lilTransformWStoOS((LIL_STEREO_CAMERA_POS(0).xyz + LIL_STEREO_CAMERA_POS(1).xyz) * 0.5) - positionOS;
     #else
         return lilViewDirectionOS(positionOS);
     #endif
@@ -641,8 +646,8 @@ float2 lilCStoGrabUV(float4 positionCS)
 float3 lilTransformDirWStoVSCenter(float3 directionWS, bool doNormalize)
 {
     #if defined(USING_STEREO_MATRICES)
-        if(doNormalize) return normalize(mul((float3x3)LIL_STEREO_MATRIX_V[0], directionWS) + mul((float3x3)LIL_STEREO_MATRIX_V[1], directionWS));
-        else            return mul((float3x3)LIL_STEREO_MATRIX_V[0], directionWS) + mul((float3x3)LIL_STEREO_MATRIX_V[1], directionWS);
+        if(doNormalize) return normalize(mul((float3x3)LIL_STEREO_MATRIX_V(0), directionWS) + mul((float3x3)LIL_STEREO_MATRIX_V(1), directionWS));
+        else            return mul((float3x3)LIL_STEREO_MATRIX_V(0), directionWS) + mul((float3x3)LIL_STEREO_MATRIX_V(1), directionWS);
     #else
         if(doNormalize) return normalize(mul((float3x3)LIL_MATRIX_V, directionWS));
         else            return mul((float3x3)LIL_MATRIX_V, directionWS);
