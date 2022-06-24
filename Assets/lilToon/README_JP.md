@@ -6,7 +6,7 @@ Version 1.3.0
 - 簡単（プリセットからワンクリック設定＆自作プリセットの保存、色調補正機能による色替え＆テクスチャ書き出し）
 - 美麗（白飛び防止、水中などでの透け防止、アンチエイリアスシェーディング）
 - 軽量（エディタが自動でシェーダーを書き換えて機能をオンオフ）
-- 長期間、様々な環境で利用可能（Unity2018～2021、BRP/LWRP/URP/HDRP）
+- 長期間、様々な環境で利用可能（Unity2018～2022、BRP/LWRP/URP/HDRP）
 - Unityの全ライティングに対応しStandardShaderに近い明るさに
 
 # 対応状況
@@ -31,9 +31,9 @@ Unityバージョン
 
 レンダリングパイプライン
 - Built-in Render Pipeline
-- Lightweight Render Pipeline 4.0.0 - 6.9.1
-- Universal Render Pipeline 7.0.0 - 13.1.7
-- High Definition Render Pipeline 4.0.0 - 13.1.7
+- Lightweight Render Pipeline 4.0.0 - 6.9.2
+- Universal Render Pipeline 7.0.0 - 13.1.8
+- High Definition Render Pipeline 4.0.0 - 13.1.8
 
 # 主な機能
 - メインカラーx3レイヤー（デカール、レイヤーマスク、Gifアニメーション、通常・加算・乗算・スクリーン合成対応）
@@ -55,32 +55,25 @@ Unityバージョン
 - メッシュの暗号化 (別途[AvatarEncryption](https://github.com/lilxyzw/AvaterEncryption)の導入が必要です)
 
 # ライセンス
-MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください。  
-サードパーティーのライセンスについては[Third Party Notices.md](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/Third%20Party%20Notices.md)をご確認ください。
+MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください。サードパーティーのライセンスについては[Third Party Notices.md](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/Third%20Party%20Notices.md)をご確認ください。
 
 # 使い方 - 新規セットアップ
 1. 下記いずれかの方法でUnityにlilToonをインポート  
     i. unitypackageをUnityウィンドウにドラッグ＆ドロップでインポート  
-    ii. UPMから```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master```をインポート
+    ii. UPMから`https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master`をインポート
 2. Projectからマテリアルを選択
 3. Inspector上部の`Shader`から`lilToon`を選択
 4. (エディタの言語が異なる場合のみ) `Language`を`Japanese`に変更
 5. テクスチャが反映されていない場合は`メインカラー`にテクスチャを設定
 6. テクスチャを透過する場合は`Rendering Mode(透過モード)`を`カットアウト`または`半透明`に変更
 
-より詳しい設定については[マニュアル](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/MANUAL_JP.md)を参照してください。
+より詳しい設定については[マニュアル](https://lilxyzw.github.io/lilToon/)を参照してください。
 
 # 使い方 - アップデート
 0. 1.1.8以前から1.2.0以降にアップデートする場合はインポート前にlilToonフォルダを削除
 1. 下記いずれかの方法でUnityにlilToonをインポート  
     i. unitypackageをUnityウィンドウにドラッグ＆ドロップでインポート  
-    ii. UPMから```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master```をインポート  
-2. 上部メニューバーの`Assets/lilToon/Refresh Shaders`をクリック
-
-# シェーダーバリエーション
-- lilToon : 通常のシェーダーです。
-- lilToonLite : 機能が固定・制限された軽量版です。[詳細](#liteバージョンについて)
-- lilToonMulti : ローカルシェーダーキーワードを使用するバージョンです。[詳細](#multiバージョンについて)
+    ii. UPMから`https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master`をインポート
 
 # lilToonを用いた制作物の配布手順について
 - シェーダーを同梱する場合は、[BOOTH](https://booth.pm/ja/items/3087170)や[GitHub](https://github.com/lilxyzw/lilToon/releases)のダウンロードページへのショートカットを同梱する方法か、ダウンロードしてきたそのままのシェーダーのunitypackageを同梱する方法がオススメです
@@ -114,8 +107,7 @@ MIT Licenseで公開しています。同梱の`LICENSE`をご確認ください
   #define SHADER_LIBRARY_VERSION_MINOR 8
   ```
 
-これ以外でトラブルが発生し不具合であることが疑われる場合は[Twitter](https://twitter.com/lil_xyzw)、[GitHub](https://github.com/lilxyzw/lilToon)、[BOOTH](https://lilxyzw.booth.pm/)のいずれかにご連絡いただければ幸いです。  
-以下にテンプレートも用意させていただきましたのでバグ報告の際の参考にご活用下さい。
+これ以外でトラブルが発生し不具合であることが疑われる場合は[Twitter](https://twitter.com/lil_xyzw)、[GitHub](https://github.com/lilxyzw/lilToon)、[BOOTH](https://lilxyzw.booth.pm/)のいずれかにご連絡いただければ幸いです。以下にテンプレートも用意させていただきましたのでバグ報告の際の参考にご活用下さい。
 ```
 バグ: 
 再現方法: 
@@ -126,9 +118,3 @@ VRChatのワールド:
 スクリーンショット: 
 コンソールログ: 
 ```
-
-# Liteバージョンについて
-通常版の見た目をある程度維持しつつ大幅に軽量化したものです。Lite版から直接マテリアルを設定せず、通常版で作成したものを変換するとより直感的にマテリアル設定が可能です。
-
-# Multiバージョンについて
-シェーダーキーワードを利用したバージョンです。  通常版からワンクリックで変換できるようになっています。デフォルトの状態ではUnity 2018以前では使用不可ですが、シェーダー内の`shader_feature_local`を`shader_feature`に書き換えることで使用可能になります。AvatarEncryptionを利用する場合は`lil_replace_keywords.hlsl`内の`//#define LIL_FEATURE_ENCRYPTION`を`#define LIL_FEATURE_ENCRYPTION`に書き換えてください。

@@ -6,7 +6,7 @@ This shader is developed for services using avatars (VRChat, etc.) and has the f
 - Easy to use (One-click settings from presets, Saving your own presets, Color correction and exporting textures)
 - Beautiful (Prevent overexposure, Anti-aliased shading)
 - Lightweight (Automatically rewrites shaders and turns features on / off)
-- Available in various versions (Unity 2018-2021, BRP/LWRP/URP/HDRP)
+- Available in various versions (Unity 2018-2022, BRP/LWRP/URP/HDRP)
 - Compatible with all lighting and similar in brightness to StandardShader
 
 # Support
@@ -31,9 +31,9 @@ Supported Shader Models
 
 Supported Rendering Pipelines
 - Built-in Render Pipeline
-- Lightweight Render Pipeline 4.0.0 - 6.9.1
-- Universal Render Pipeline 7.0.0 - 13.1.7
-- High Definition Render Pipeline 4.0.0 - 13.1.7
+- Lightweight Render Pipeline 4.0.0 - 6.9.2
+- Universal Render Pipeline 7.0.0 - 13.1.8
+- High Definition Render Pipeline 4.0.0 - 13.1.8
 
 # Features
 - Main color x3 layers (Decal, Layer mask, Gif animation, Normal / Additive / Multiplicative / Screen blending)
@@ -55,13 +55,12 @@ Supported Rendering Pipelines
 - Mesh Encryption ([AvatarEncryption](https://github.com/lilxyzw/AvaterEncryption) is required)
 
 # License
-lilToon is available under the MIT License. Please refer to the `LICENSE` included in the package.  
-For more information about third party licenses, please see [Third Party Notices.md](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/Third%20Party%20Notices.md).
+lilToon is available under the MIT License. Please refer to the `LICENSE` included in the package. For more information about third party licenses, please see [Third Party Notices.md](https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/Third%20Party%20Notices.md).
 
 # Usage - Material Setup
 1. Import lilToon into Unity using one of the following methods.  
     i. Drag and drop unitypackage to the Unity window to import it.  
-    ii. Import ```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master``` from UPM.
+    ii. Import `https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master` from UPM.
 2. Select a material from Project.
 3. Select `lilToon` from `Shader` at the top of Inspector.
 4. If no texture has been applied, set the texture to `Main Color`.
@@ -73,13 +72,7 @@ Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Asse
 0. If you are updating from 1.1.8 or earlier to 1.2.0 or later, delete the lilToon folder before importing
 1. Import lilToon into Unity using one of the following methods.  
     i. Drag and drop unitypackage to the Unity window to import it.  
-    ii. Import ```https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master``` from UPM.  
-2. Click `Assets/lilToon/Refresh Shaders` in the top menu bar.
-
-# Shader variations
-- lilToon : This is the normal version. Optimizes shaders by using the shader settings instead of the shader keywords.
-- lilToonLite : This is a lightweight version with fixed and limited features. It is not affected by shader settings. [Details](#about-lite-version)
-- lilToonMulti : This is the version that uses the local shader keyword. It is not affected by shader settings. [Details](#about-multi-version)
+    ii. Import `https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master` from UPM.
 
 # How to distribute your works that use lilToon
 - If you want to include shaders, it is recommended to include a shortcut to the [BOOTH](https://booth.pm/ja/items/3087170) or [GitHub](https://github.com/lilxyzw/lilToon/releases) download page, or to include the shader unitypackage as a separate file.
@@ -113,8 +106,7 @@ Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Asse
   #define SHADER_LIBRARY_VERSION_MINOR 8
   ```
 
-If you have any other problems and suspect a bug, please contact me on [Twitter](https://twitter.com/lil_xyzw), [GitHub](https://github.com/lilxyzw/lilToon), or [BOOTH](https://lilxyzw.booth.pm/).  
-Please refer to the following template when reporting a bug.
+If you have any other problems and suspect a bug, please contact me on [Twitter](https://twitter.com/lil_xyzw), [GitHub](https://github.com/lilxyzw/lilToon), or [BOOTH](https://lilxyzw.booth.pm/). Please refer to the following template when reporting a bug.
 ```
 Bug: 
 Reproduction method: 
@@ -125,9 +117,3 @@ VRChat World:
 Screenshots: 
 Console logs: 
 ```
-
-# About Lite version
-Lite version is a greatly optimized version that maintains the appearance of the normal version to some extent. It is recommended to convert materials created with Normal version to the Lite version instead of setting materials directly from Lite version for more intuitive material setting.
-
-# About Multi version
-This is the version that uses the shader keyword. You can convert from the normal version to the Mutli version with one click. It is not available in Unity 2018 and earlier, but you can use it by rewriting `shader_feature_local` to `shader_feature` in the shader. If you use AvatarEncryption, replace `//#define LIL_FEATURE_ENCRYPTION` in `lil_replace_keywords.hlsl` with `#define LIL_FEATURE_ENCRYPTION`.
