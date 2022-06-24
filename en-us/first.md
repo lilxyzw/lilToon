@@ -81,7 +81,7 @@ Unity等で3DCGを扱う際に登場する用語です。これらを把握し�
 </div>
 </div>
 
-## lilToonを用いた制作物の配布について
+## How to distribute your works that use lilToon
 - シェーダーを同梱する場合は、[BOOTH](https://booth.pm/ja/items/3087170)や[GitHub](https://github.com/lilxyzw/lilToon/releases)のダウンロードページへのショートカットを同梱する方法か、ダウンロードしてきたそのままのシェーダーのunitypackageを同梱する方法がオススメです
 - シェーダー本体と制作物を1つのunitypackageにまとめる方法は、ユーザーがインポート時に古いバージョンで上書きしてしまう問題が発生する可能性があるため非推奨です
 
