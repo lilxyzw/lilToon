@@ -45,11 +45,11 @@
     <div class="flex3">
         <h3>Unityバージョン</h3>
         <ul>
-            <li>2017.1 - 2017.4</li>
             <li>2018.1 - 2018.4</li>
             <li>2019.1 - 2019.4</li>
             <li>2020.1 - 2020.3</li>
-            <li>2021.1 - 2021.2</li>
+            <li>2021.1 - 2021.3</li>
+            <li>2022.1</li>
         </ul>
     </div>
     <div class="flex3">
@@ -75,14 +75,14 @@
 <div class="small-container">
 
 ※ 動作確認環境
-- Unity 2017.1.0f3
-- Unity 2018.4.20f1 (Built-in RP / LWRP 4.0.0 / HDRP 4.0.0)
-- Unity 2019.2.0f1 (Built-in RP / LWRP 6.9.0 / HDRP 6.9.0)
-- Unity 2019.3.0f6 (Built-in RP / URP 7.1.8 / HDRP 7.1.8)
+- Unity 2018.1.0f2 (Built-in RP)
+- Unity 2018.4.20f1 (Built-in RP / LWRP 4.10.0 / HDRP 4.10.0)
+- Unity 2019.2.21f1 (Built-in RP / LWRP 6.9.2 / HDRP 6.9.2)
+- Unity 2019.3.0f6  (Built-in RP / URP 7.1.8 / HDRP 7.1.8)
 - Unity 2019.4.31f1 (Built-in RP / URP 7.7.1 / HDRP 7.7.1)
-- Unity 2020.3.20f1 (Built-in RP / URP 10.6.0 / HDRP 10.6.0)
-- Unity 2021.1.24f1 (Built-in RP / URP 11.0.0 / HDRP 11.0.0)
-- Unity 2021.2.9f1 (Built-in RP / URP 12.1.4 / HDRP 12.1.4)
+- Unity 2020.3.36f1 (Built-in RP / URP 10.9.0 / HDRP 10.9.0)
+- Unity 2021.3.4f1 (Built-in RP / URP 12.1.7 / HDRP 12.1.7)
+- Unity 2022.1.5f1 (Built-in RP / URP 13.1.8 / HDRP 13.1.8)
 
 </div>
 </div>
