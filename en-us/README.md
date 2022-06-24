@@ -1,3 +1,5 @@
+<div class="window_info">&#x26a0; Translation is in progress</div>
+
 # Overview
 
 <div class="align-center">
