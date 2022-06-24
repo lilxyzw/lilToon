@@ -268,6 +268,7 @@ public class lilToonSetting : ScriptableObject
         shaderSetting.LIL_FEATURE_FurMask = false;
         shaderSetting.LIL_FEATURE_FurLengthMask = false;
         shaderSetting.LIL_FEATURE_FurVectorTex = false;
+        shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT = false;
         EditorUtility.SetDirty(shaderSetting);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -371,6 +372,7 @@ public class lilToonSetting : ScriptableObject
         shaderSetting.LIL_FEATURE_FurMask = true;
         shaderSetting.LIL_FEATURE_FurLengthMask = true;
         shaderSetting.LIL_FEATURE_FurVectorTex = true;
+        shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT = true;
     }
 
     internal static void ApplyShaderSetting(lilToonSetting shaderSetting, string reportTitle = null)
@@ -703,7 +705,9 @@ public class lilToonSetting : ScriptableObject
             if(!shaderSetting.LIL_FEATURE_FUR_COLLISION && material.HasProperty("_FurTouchStrength") && material.GetFloat("_FurTouchStrength") != 0.0f)
             {
                 Debug.Log("[lilToon] LIL_FEATURE_FUR_COLLISION : " + AssetDatabase.GetAssetPath(material));
+                Debug.Log("[lilToon] LIL_OPTIMIZE_USE_VERTEXLIGHT : " + AssetDatabase.GetAssetPath(material));
                 shaderSetting.LIL_FEATURE_FUR_COLLISION = true;
+                shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT = true;
             }
         }
 
@@ -884,6 +888,12 @@ public class lilToonSetting : ScriptableObject
                 Debug.Log("[lilToon] LIL_FEATURE_OUTLINE_TONE_CORRECTION : " + AssetDatabase.GetAssetPath(material));
                 shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = true;
             }
+        }
+
+        if(!shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT && material.HasProperty("_VertexLightStrength") && material.GetFloat("_VertexLightStrength") != 0.0f)
+        {
+            Debug.Log("[lilToon] LIL_OPTIMIZE_USE_VERTEXLIGHT : " + AssetDatabase.GetAssetPath(material));
+            shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT = true;
         }
 
         // Texture
@@ -1071,6 +1081,8 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.LIL_FEATURE_FurMask                    = shaderSetting.LIL_FEATURE_FurMask                  || propname.Contains("_FurMask");
             shaderSetting.LIL_FEATURE_FurLengthMask              = shaderSetting.LIL_FEATURE_FurLengthMask            || propname.Contains("_FurLengthMask");
             shaderSetting.LIL_FEATURE_FurVectorTex               = shaderSetting.LIL_FEATURE_FurVectorTex             || propname.Contains("_FurVectorTex");
+
+            shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT = shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT || shaderSetting.LIL_FEATURE_FUR_COLLISION || propname.Contains("_VertexLightStrength");
         }
     }
 }

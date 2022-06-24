@@ -4686,7 +4686,6 @@ namespace lilToon
                 ToggleGUI(GetLoc("sSettingApplyShadowFA"), ref shaderSetting.LIL_OPTIMIZE_APPLY_SHADOW_FA);
                 ToggleGUI(GetLoc("sSettingUseForwardAdd"), ref shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD);
             }
-            ToggleGUI(GetLoc("sSettingUseVertexLight"), ref shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT);
             ToggleGUI(GetLoc("sSettingUseLightmap"), ref shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
         }
 
