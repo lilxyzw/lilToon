@@ -4,320 +4,362 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2022-06-25
+### Added
+- `Receive Shadow` to 2nd / 3rd shadows
+- `Flat` to shadow mask type
+- `Z Bias`, `Highlight`, `Remove 0 width vertices` and `Disable in VR` to outline
+- `Shadow Caster Bias` to rendering settings
+- Fur mesh division type
+- `GSAA` and `Blending Mode` to reflection
+- `LOD` to strength / blur / AO mask of shadows
+- `Main Color Power` to backlight, MatCaps, rim light, emissions
+- `Mask` for shape and `Randomize` for particle size to glitter
+- The function to fill the backface with a single color
+- Metal MatCap and preset
+- Circular tangent map
+- Shape textures for glitter
+- Avoid errors when overwriting with an older version
+- Extension of custom shader function
+- URP and HDRP compatible 2 pass fur shader
+
+### Changed
+- Improved alpha mask GUI
+- Changed the `Fix width by distance` of the outline to be adjustable steplessly
+- Adjusted the initial value of `Light Direction Override`
+- Changed to set shader settings automatically
+- Split `Contrast` into `Density` and `Sensitivity`
+- Changed POM to parameter
+- Expanded preset
+- Changed to save `Setup from FBX` presets in shader settings
+- Changed to preserve `Light Direction Override` property in `Fix lighting`
+- Retune fur preset
+- Improved lighting with Spot Light and Point Light in URP
+
+### Fixed
+- Fixed an issue where fog wasn't working well in URP
+- Fixed baking process when using other than PNG / JPG format for texture
+- Added `[MainTexture]` to the `_MainTex` property
+- Fixed an issue where `Light Direction Override` was affecting ShadeSH9 calculations
+- Fixed an issue where lilToonMulti shader variants were being reduced too much at build
+- Fixed outline mask not working well in lilToonLite
+
+### Removed
+- Support for Unity 2017
+
 ## [1.2.12] - 2022-03-31
-### 修正
-- `Unity 2019.4.10f1`以前でカスタムシェーダーがエラーになる問題を修正
-- カスタムシェーダーでForwardAddパスがうまく動作しない問題を修正
+### Fixed
+- Fixed an issue where custom shaders would give an error in `Unity 2019.4.10f1` and earlier
+- Fixed an issue where the ForwardAdd path did not work well in custom shaders
 
 ## [1.2.11] - 2022-03-28
-### 追加
-- AO Mapに`影範囲設定を無視して適用`を追加（影のトゥーン処理後にAO Mapを合成）
-- ラメに`コントラスト（後処理）`を追加
-- メインカラー2nd・3rdに`UV Mode`を追加
-- 輪郭線に頂点カラーを利用して法線方向を決める機能を追加
-- カスタムシェーダー用に独自フォーマットを追加
+### Added
+- `Ignore border properties` property for AO Map (blend AO Map after toon processing)
+- `Post Contrast` property for glitter
+- `UV Mode` property for main color 2nd / 3rd
+- An option to determine the normal direction using vertex color for outline
+- New format for custom shaders
 
-### 変更
-- 開発者向けドキュメントの内容をドキュメントサイトに移行
-- 古いカスタムシェーダー用テンプレートを削除
+### Changed
+- Migrated the contents of developer documentation to online
+- Removed template for legacy custom shaders
 
-### 修正
-- lilToonMultiのForwardAddパスで影が適用されていなかったのを修正
-- 宝石シェーダーでリムライトやマットキャップの`ノーマルマップ強度`がうまく動いていなかったのを修正
-- ポイントライト・スポットライト環境下のファーの見た目を修正
-- 2パスファーのZファイティングを修正
-- テッセレーションシェーダーが視界端でポリゴンが消える場合があるのを修正
-- URP、HDRPのVR環境での挙動を修正
-- `Remove unused properties`の方式をSerializedObject経由に変更
+### Fixed
+- Fixed shadows not being applied in the ForwardAdd pass of lilToonMulti
+- Fixed the `Normal Map Strength` of rim light and MatCap not working well in gem
+- Fixed the appearance of fur in ForwardAdd
+- Fixed Z-fighting for 2 pass fur
+- Fixed an issue where polygons might disappear at the edge of the field of view in the tessellation shader
+- Fixed behavior in VR (URP / HDRP)
+- Changed the method of`Remove unused properties` to via SerializedObject
 
 ## [1.2.10] - 2022-03-06
-### 追加
-- 複数シェーダーバリエーションを同時に編集できるウィンドウを追加（`Window/_lil/[Beta] lilToon Multi-Editor`）
+### Added
+- Added an editor (`Window/_lil/[Beta] lilToon Multi-Editor`) that allows editing multiple shader variants at the same time
 
-### 変更
-- Near clipが極端に大きい場合（意図的に消している場合）に`距離クリッピングキャンセラー`を無効化するようにした
-- `UnpackNormalScale()`を`lilUnpackNormalScale()`に置き換え
-- SHライトの方向を補正するように変更
+### Changed
+- Disable the `Distance Clipping Canceller` when the near clip value is large
+- Replace `UnpackNormalScale()` to `lilUnpackNormalScale()`
+- Changed to correct the SH light direction
 
-### 修正
-- ファーシェーダーでノーマルマップのスケールが適用されていなかった問題を修正
-- いくつかのプロパティの同時編集の修正
-- lilToonMultiで変更したRenderQueueがUnityEditorの再起動時に元に戻る問題を修正
-- Remove Unused PropertiesでCustom Safety Fallbackの設定がコピーされない問題を修正
-- `VRCFallback`タグが保存されない場合があるのを修正
+### Fixed
+- Fixed an issue where the normal map scale was not applied in the fur shader
+- Fixed the multi-editing of some properties
+- Fixed an issue where RenderQueue changed in lilToonMulti would revert back when restarting UnityEditor
+- Fixed an issue where `Custom Safety Fallback` settings were not copied in `Remove Unused Properties`
+- Fixed `VRCFallback` tag not being saved in some cases
 
 ## [1.2.9] - 2022-02-04
-### 追加
-- Cubemapのフォールバック・オーバーライド機能を追加
-- MatCapのUV設定に一括設定ボタンを追加
+### Added
+- Added cubemap fallback / override
+- Added preset button to MatCap UV settings
 
-### 変更
-- シェーダー設定をタブとして再配置
+### Changed
+- Moved shader settings to tab
 
-### 修正
-- `Fix lighting`が右クリックメニューに表示されていなかった問題を修正
-- 屈折シェーダーがForwardAddで明るくなりすぎていたのを修正
+### Fixed
+- Fixed an issue where `Fix lighting` wasn't showing up in the right-click menu
+- Fixed refraction shader getting too bright in ForwardAdd
 
 ## [1.2.8] - 2022-01-30
-### 追加
-- 3影を追加
-- ファーに`ランダム化`プロパティを追加
-- ファーに通常のシェーダーと同じプロパティを追加
-- `イベント入稿用に最適化`ボタンとビルド時に自動でシェーダー設定を最適化する機能を追加（ワールド用VRCSDK導入時のみ）
-- シェーダーキーワードを使用するシェーダーのビルドサイズを削減
-- 2パス（カットアウト+透過）ファーシェーダーを追加
-- `[lilToon] Fix Lighting`で適用されるマテリアルのパラメーターの初期値の設定を追加
-- ビルドサイズ削減用のシェーダー設定を追加
-- ライト方向のオーバーライドに`オブジェクトに追従`を追加
+### Added
+- 3rd shadow
+- `Randomize` property for fur
+- Add the same properties to the fur as a normal shader
+- `Optimize for submission to the event` button and the function to automatically optimize shader settings before build (only available when VRCSDK for world is imported)
+- Reduce the build size of shaders that use shader keywords
+- 2 pass (cutout & transparent) fur shader
+- Default settings for material parameters applied by`[lilToon] Fix Lighting`
+- Added shader settings to reduce build size
+- Added `Object following` to light direction override
 
-### 変更
-- 影のぼかし量マスクでGチャンネルを影色2のぼかし量として使えるように変更
-- lilToonMultiの距離クリッピングキャンセラーをパラメーター化
-- 透過ファーシェーダーでもスポットライトの形状を考慮するようになった
-- アウトラインにも加算パスを適用するように変更
-- `頂点ライトの強度`の初期値を0に変更
-- `明るさの下限`の初期値を0.05に変更
-- ライティングプリセットの名称を`安定`から`半モノクロ`に変更
-- 加算パスでも影を計算するように変更
-- UIを微調整
-- シェーダー設定のメニューを折りたたんだ際に自動でシェーダー設定を適用するように変更（押し忘れ対策）
-- カットアウトの値の範囲を-0.001～1.001に変更
-- 右クリックメニューを整理
-- 輪郭線がDOFでボケないようにした
+### Changed
+- Changed to use G channel of shadow blur map as strength of 2nd shadow blur
+- Changed distance clipping canceller of lilToonMulti to parameter
+- Changed to apply spotlight shape even with transparent fur shader
+- Changed to apply the ForwardAdd pass to the outline
+- Changed the default value of `Vertex Light Strength` to 0
+- Changed the default value of `Lower brightness limit` to 0.05
+- Changed the name of the lighting preset from `Stable` to `Semi-monochrome`
+- Changed to apply shadow even in ForwardAdd pass
+- Adjusted GUI a little
+- Changed to apply shader settings automatically when the shader settings menu is closed
+- Changed the cutout value range from -0.001 to 1.001
+- Organized the right-click menu
+- Changed the outline so that it is not blurred by DOF
 
-### 修正
-- 加算パスで`ライトの上限`が変更できていなかったのを修正
-- ぼかし屈折シェーダーのぼかし具合がClipping距離で変わってしまっていたのを修正
+### Fixed
+- Fixed the `Upper brightness limit` not being able to be changed in ForwardAdd pass
+- Fixed an issue where the refraction shader blur strength had changed with the Clipping distance
 
 ## [1.2.7] - 2021-12-13
-### 追加
-- 輪郭線を押し出す方向を調整できるノーマルマップを追加
-- 輪郭線のみ、ファーのみのシェーダーを追加
-- リムライトにVR時の視差の強さを調整する機能を追加
+### Added
+- Normal map for adjusting the direction of pushing out the outline
+- Outline / Fur only shader
+- Property to adjust the strength of parallax during VR to rim light
 
-### 変更
-- Render Queueを基本設定にも表示
-- HDRPでステンシルを無効化
-- HDRPでファーの影が濃く出るように変更
+### Changed
+- Show render queue in base settings as well
+- Disable stencil in HDRP
+- Changed so that fur shadows appear stronger in HDRP
 
-### 修正
-- Single Pass Instanced環境での屈折シェーダーの動作を修正
-- HDRPでの透過シェーダーのRender Queueを修正
-- HDRPでのモーションベクターの出力を修正
+### Fixed
+- Fixed refraction shader behavior in Single Pass Instanced
+- Fixed render queue for transparent shaders in HDRP
+- Fixed motion vector in HDRP
 
 ## [1.2.6] - 2021-12-01
-### 追加
-- いくつかのテクスチャにカスタムUVを追加
-- 各機能に`ノーマルマップ強度`プロパティを追加
-- マットキャップに`ぼかし`プロパティの追加
-- アルファマスク、AOマスクに調整用プロパティを追加
-- AudioLink非対応ワールドでの挙動調整用のプロパティの追加
-- AudioLinkにスペクトラム表示を追加
-- VRChatでセーフティー発動時のシェーダーのフォールバック先をカスタマイズする機能の追加
+### Added
+- Custom UV for some textures
+- `Normal Map Strength` to each function
+- `Blur` properties for MatCap
+- Adjustment properties to alpha mask and AO mask
+- Properties for non-AudioLink compatible worlds
+- Spectrum display for AudioLink
+- A feature to customize shader safety fallback in VRChat
 
-### 変更
-- AOマップでGチャンネルを影色2の範囲として使えるように変更
-- マットキャップのマスクでRGBチャンネルそれぞれを使えるように変更
-- シェーダー設定から負荷に影響がほぼなかったカスタムUVを削除し常に有効化するように変更
-- 汎用サンプラーをTrilinear化
+### Changed
+- Changed to use G channel of AO map as range of 2nd shadow color
+- Changed to use each RGB channel of a MatCap mask
+- Changed to remove custom UVs that had little impact on performance from shader settings and always enable them
+- Changed sampler to trilinear
 
-### 修正
-- 屈折シェーダーのForwardAddパスで透明度が反映されていなかったのを修正
-- 屈折・宝石シェーダーの描画を修正
-- テッセレーションシェーダーでフォグの処理がうまくできていなかったのを修正
-- HDRPでのLiteバージョンのMatCapのUVのプロジェクションを修正
+### Fixed
+- Fixed an issue where the ForwardAdd path did not reflect the transparency of the refraction shader
+- Fixed refraction / gem shader rendering
+- Fixed an issue where the tessellation shader wasn't handling fogs well
+- Fixed an issue where MatCap uv calculation of lite version wasn't working well in HDRP
 
 ## [1.2.5] - 2021-11-21
-### 修正
-- ファーシェーダーでフォグの処理がうまくできていなかったのを修正
+### Fixed
+- Fixed an issue where the fur shader wasn't handling fogs well
 
 ## [1.2.4] - 2021-11-20
-### 追加
-- 光沢のタイプのトゥーンに`範囲`と`ぼかし`プロパティを追加
-- 発光に様々なUVモードを追加
-- カスタムシェーダー作成時のappdata構造体の入力に`uint vertexID : SV_VertexID`を追加
-- Light Layersに対応 (URP)
+### Added
+- `Border` and `Blur` properties for toon specular
+- UV Mode in Emission
+- `uint vertexID : SV_VertexID` to the input of the appdata structure
+- Support for Light Layers (URP)
 
-### 変更
-- マテリアル・アニメーションからシェーダー設定をスキャンする機能のダイアログの表示タイミングを変更
-- GUIを微調整
-- interpolatorを削減
-- トゥーンの光沢のタイプのアルゴリズムを変更
-- lilToonMultiの輪郭線スキップ時の関数を変更
+### Changed
+- Changed the display timing of the dialog for the function to scan shader settings from material animation
+- Adjusted GUI a little
+- Reduced the number of interpolators
+- Changed algorithm for toon specular
+- Changed function when skipping outline of lilToonMulti
 
-### 修正
-- AudioLink非対応ワールドの判定がうまくできていなかった問題の修正
-- ファーシェーダーで環境光の強度プロパティが適用されていなかったのを修正
-- lilToonMultiの透過ファーシェーダーで描画モード切り替え時にZWriteがオフになっていたのを修正
-- UVのスクロールと回転を併用した際の挙動を修正
+### Fixed
+- Fixed an issue where the worlds that do not support AudioLink could not be determined properly
+- Fixed an issue where the environment light strength property was not applied in the fur shader
+- Fixed ZWrite being turned off when switching rendering mode in transparent fur shader of lilToonMulti
+- Fixed behavior when UV scrolling and rotation are used together
 
 ## [1.2.3] - 2021-10-30
-### 追加
-- マットキャップのUV関係の機能を拡張
-- 異方性反射を追加
-- メインカラーのプロパティを_BaseMapと_BaseColorMapと_BaseColorにも保存されるように変更
-- `複数ライトから光沢を生成`プロパティの追加
-- マットキャップ、リムライト、ラメ、逆光ライトに`裏面で無効化`プロパティの追加
+### Added
+- Extended UV settings for MatCap
+- Anisotropic reflection
+- Changed main color properties to be saved in _BaseMap, _BaseColorMap and _BaseColor
+- `Multi Light Specular` property
+- `Backface Mask` property to MatCap, rim light, glitter, and backlight
 
-### 変更
-- Stencil設定ボタンでOpaqueマテリアルのRenderQueueをAlphaTestに合わせるように変更
+### Changed
+- Changed the RenderQueue of the opaque material in the Stencil settings button to match AlphaTest
 
-### 修正
-- プリセットのRenderQueueがうまく適用されていなかったのを修正
-- ファーのマスクをファーの処理後に適用されるように修正
-- UPM版でシェーダー書き換えが適切に行われていなかった問題の修正
-- ローカライゼーション対応漏れを修正
-- HDRPでExposure使用時、Planer Reflection内で暗くなる問題を修正 (HDRP 11.0.0以降)
-- 距離フェード機能に視差が発生しないように修正
+### Fixed
+- Fixed an issue where the preset RenderQueue was not being applied
+- Fixed fur masking to be applied after fur processing
+- Fixed an issue where shader rewriting was not being done properly in the UPM version
+- Fixed missing localization
+- Fixed an issue where a material would become dark in Planer Reflection when using Exposure in HDRP (HDRP 11.0.0 or later)
+- Fixed an issue that caused parallax in distance fade
 
 ## [1.2.2] - 2021-10-18
-### 追加
-- ライティングの設定をワンクリックで切り替える機能の追加
+### Added
+- Add a button to change lighting settings with one click
 
-### 修正
-- マットキャップのカスタムノーマルマップが機能していなかった問題の修正
-- 遠距離でテッセレーションの分割が入る問題の修正
-- シェーダーの自動設定で一部プロパティがスキャンされない可能性があった問題の修正
+### Fixed
+- Fixed an issue where MatCap's custom normal map was not working
+- Fixed an issue with tessellation splitting at long range
+- Fixed an issue where some properties might not be scanned in the auto shader setting
 
 ## [1.2.1] - 2021-10-17
-### 修正
-- ファーの長さプロパティが機能していなかった問題の修正
-- ログの日付を修正
+### Fixed
+- Fixed an issue where the fur length property was not working
+- Fixed log date
 
 ## [1.2.0] - 2021-10-17
-### 追加
-- HDRPに対応
-- `明るさの上限`、`ライトのモノクロ化`、`ライト方向のオーバーライド`プロパティの追加
-- 逆光ライト機能の追加
-- ファーシェーダーに`根本の太さ`プロパティの追加
-- マットキャップに`影部分で無効化`、`視差の強さ`プロパティの追加
-- プロパティブロックにメニューを追加 (プロパティを一括コピー、ペーストできるようになりました)
-- 裏面のUVをずらす機能を追加
-- 透過シェーダーのバリエーションに1パス・2パスの追加
-- シェーダーキーワードを利用するバリエーションの追加 (_lil/lilToonMulti)
-- プリセット保存画面を開いている状態でマテリアルを選択した際の警告を追加
-- カスタムシェーダー作成用のマクロを追加
-- カスタムシェーダーのテンプレートを追加
+### Added
+- New support for HDRP
+- `Upper brightness limit` and `Monochrome lighting` and `Light Direction Override` properties
+- Backlight function
+- `Root Width` property to fur shader
+- `Shadow Mask` and `VR Parallax Strength` property to MatCap
+- Menu to the property blocks (multiple properties can now be copied and pasted at once)
+- Function for shifting the backface UV
+- One pass / two pass variations to the transparent shader
+- Shader variation that use shader keywords
+- Warning when selecting anything other than a material while the preset save window is open
+- Macros for creating custom shaders
+- Template of custom shader
 
-### 変更
-- 透過シェーダーのRenderQueueを2460に変更 (ステンシル用に余裕を持たせた)
-- 屈折シェーダーのRenderQueueを2900に変更 (透過マテリアル越しの透けを回避)
-- 屈折の強度に負の値を設定可能に変更
-- 画面端でもマットキャップのUVが正面になるように変更
-- `透過モード`を`描画モード`に改名
-- 影設定の`メインカラーの強度`を`コントラスト`に改名
-- `AlphaToMask`の切り替えに対応
-- 透過シェーダーの`RenderType`を`TransparentCutout`に変更
-- `影色への環境光影響度`のデフォルト値を0に変更
-- 変更ログを`CHANGELOG.md`と`CHANGELOG_JP.md`に移動
+### Changed
+- Changed RenderQueue of transparent shader to 2460 (added space for stencil)
+- Changed RenderQueue of refraction shader to 2900 (avoid hiding through transparent materials)
+- Changed to allow negative values for refraction strength
+- Changed MatCap UVs to face the front even at the edge of the screen
+- Renamed `Main Color Power` to` Contrast` in Shadow Setting
+- Supports switching of `AlphaToMask`
+- Changed `RenderType` of transparent shader to` Transparent Cutout`
+- Changed the default value of `Environment strength on shadow color` to 0
+- Move change log to `CHANGELOG.md` and `CHANGELOG_JP.md`
 
-### 修正
-- PlayモードでParent Constraintが編集できない問題を修正
-- 屈折シェーダーが特定条件下で一部アセットに干渉する可能性がある問題の修正
-- メインテクスチャのSamplerStateをうまく取得できていなかった問題の修正
+### Fixed
+- Fixed an issue where Parent Constraint could not be edited in play mode
+- Fixed an issue where refraction shaders could interfere with some assets under certain conditions
+- Fixed an issue where the SamplerState of the main texture was not being retrieved properly
 
-### 削除
-- いくつかのhlslファイル
+### Removed
+- Some hlsl files
 
 ## [1.1.8] - 2021-08-31
-### 追加
-- 宝石シェーダー、FakeShadowシェーダーの追加
-- ラメにUV1を参照するモードを追加
-- ラメにVR時の視差の強さを調整する機能を追加
+### Added
+- lilToonGem and lilToonFakeShadow
+- UV1 for glitter
+- Property to adjust the strength of parallax during VR to glitter
 
-### 修正
-- 発光のカラースペースを修正
-- インポート時にラメのプロパティがスキャンされない問題を修正
-- AvaterEncryption使用時に一部パスでメッシュが復号化されない問題を修正
+### Fixed
+- Fixed emission color space
+- Fixed an issue where glitter properties were not scanned when importing
+- Fixed an issue where meshes were not decrypted on some paths when using Avater Encryption
 
 ## [1.1.7] - 2021-08-29
-### 追加
-- HDRカラーピッカーの隣にカラーコードを追加 (Unity2019以降)
-- メインカラーの色調補正にマスクを追加
-- メインカラー2nd・3rdに距離フェードを追加
-- ラメ機能の追加
+### Added
+- Color code next to HDR color picker (Unity 2019 or later)
+- Mask to main color correction
+- Distance fade to main color 2nd / 3rd
+- Glitter function
 
-### 変更
-- メインカラーのカラーピッカーをHDR化
-- 行列計算の変更
-- いくつかの処理を頂点シェーダーに移動し最適化
+### Changed
+- Changed main color's color picker to HDR
+- Changed transform calculation
+- Moved some processing to the vertex shader for optimization
 
-### 修正
-- UPMインポートの修正
-- `距離フェード`と`Dissolve`の透過を修正
-- Unity 2019のURPでうまく動作しない問題を修正
+### Fixed
+- Fixed UPM import
+- Fixed `Distance Fade` and `Dissolve` transparency
+- Fixed error in Unity 2019 URP
 
 ## [1.1.6] - 2021-08-17
-### 追加
-- ヘルプボックスに自動修正ボタンを追加
+### Added
+- `Fix Now` button to help box
 
-### 変更
-- 輪郭線のZTestのデフォルト値をLessEqualからLessに変更
+### Changed
+- Changed the default value of ZTest in outline from LessEqual to Less
 
-### 修正
-- 明るさの下限設定で影が弱くなる問題の修正
+### Fixed
+- Fixed an issue where shadows were weakened when using `Lower brightness limit`
 
 ## [1.1.5] - 2021-08-08
-### 追加
-- `困ったときは…`を追加
-- マットキャップのZ軸回転キャンセル機能のオンオフを追加
+### Added
+- Added `When in trouble...`
+- Added on / off of Z-axis rotation cancellation of MatCap
 
-### 変更
-- 透過処理を改善
-- UIを整理
+### Changed
+- Improved transparency processing
+- Organize the UI
 
-### 修正
-- フォルダを移動可能にしました
-- 不透明マテリアルにアルファマスクのプロパティが存在していた点を修正
-- 一部翻訳を修正
+### Fixed
+- Fixed shader folder to be movable
+- Fixed an issue where opaque materials would show alpha mask properties
+- Fixed some translations
 
 ## [1.1.4] - 2021-07-31
-### 追加
-- unitypackageインポート時のマテリアル・アニメーションの自動スキャン機能を追加
-- `Auto shader setting`を追加、プロジェクト内の全マテリアル・アニメーションをスキャンし自動でシェーダー設定を最適化します
-- `Remove unused properties`を追加、シェーダー設定を追加でオンにしても見た目に影響が出ないようにマテリアルを最適化します
-- `Setup from FBX`を追加、FBXファイルから自動でマテリアルの生成、プリセットの適用、輪郭線マスク、影マスクの適用を行います
-- ファーシェーダーに長さ調整用のマスクを追加
-- `シェーダー設定`のロックを追加
+### Added
+- Auto-scan materials and animations when importing unitypackage
+- `Auto shader setting`, which scans all materials and animations in the project and automatically optimizes Shader Setting
+- `Remove unused properties`, optimizes materials so that turning on additional shader settings does not affect their appearance
+- `Setup from FBX`, automatically generate materials from FBX files, apply presets, outline mask, and shadow mask
+- Length mask to fur shader
+- Lock for `Shader Setting`
 
-### 変更
-- 一部プロパティの表示名の変更 (`環境光の強さ`→`影色への環境光影響度`、`太さを補正`→`距離に応じた太さ補正`)
-- 再生ボタンを押してもInspectorの状態が維持されるように変更
-- ファーシェーダーの`Unlit化`のプロパティをスライダー化
+### Changed
+- Changed the display name of some properties (`Environment Strength` → `Environment strength on shadow color`, `Fix Width` → `Fix width by distance`)
+- Inspector will be preserved in play mode
+- Changed the `As Unlit` parameter of the fur shader to a slider
 
 ## [1.1.3] - 2021-07-24
-### 修正
-- バージョンチェック失敗時にInspectorが表示されない問題の修正
-- `[lilToon] Fix Lighting`でClothコンポーネントがある、もしくはボーンが無い場合に壊れる問題の修正
+### Fixed
+- Fixed problem with Inspector not showing up when version check fails
+- Fixed `[lilToon] Fix Lighting` breaking when an object has a Cloth component or no bones
 
 ## [1.1.2] - 2021-07-20
-### 追加
-- マットキャップにカスタムノーマルマップを追加
-- リムライトにライト方向によるカスタマイズ機能を追加
-- メッシュ・マテリアルのライティングを一括設定する機能を追加
+### Added
+- Custom normal map for MatCap
+- Customization of Rim Light by light direction
+- One-click lighting settings for meshes and materials
 
-### 変更
-- 輪郭線の太さに任意の値を設定可能に
-- アルファマスクが輪郭線にも適用されるように変更
+### Changed
+- Outline width can now be set to any value
+- Alpha masks can now be applied to outline
 
 ## [1.1.1] - 2021-07-16
-### 追加
-- シェーダーリフレッシュの追加
-- プロパティのアルファが0のときに警告を表示
+### Added
+- Shader Refresh in menu
+- Show warning when property alpha is 0
 
-### 修正
-- エディターのテーマ変更に対応
+### Fixed
+- Support for changing editor theme
 
 ## [1.1] - 2021-07-15
-### 追加
-- アルファマスクの追加
-- マットキャップ2ndの追加
-- 明るさの下限や頂点ライトの強度を調整可能に
-- 負荷が比較的高い機能に警告を追加 (屈折・POM)
+### Added
+- Alpha Mask
+- MatCap 2nd
+- Properties to adjust Lower brightness limit and vertex light strength
+- Warnings for high-load functions (refraction / POM)
 
-### 修正
-- URPにおいてCascadeShadowがうまく動作していなかった点
-- マットキャップの"ライティングを適用"が正しく動作していなかった点
-- 参考文献の追記
+### Fixed
+- Fixed a bug where CascadeShadow was not working properly in URP
+- Fixed a bug in MatCap where "Apply Lighting" was not working properly
+- Added references
 
 ## [1.0] - 2021-07-12 [YANKED]
