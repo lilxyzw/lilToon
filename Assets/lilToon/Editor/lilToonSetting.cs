@@ -158,7 +158,6 @@ public class lilToonSetting : ScriptableObject
                 {
                     Debug.Log("[lilToon] Migrate settings from: " + path);
                     TurnOnAllShaderSetting(ref shaderSetting);
-                    SaveShaderSetting(shaderSetting);
                     ApplyShaderSetting(shaderSetting);
                     AssetDatabase.Refresh();
                     return;
@@ -316,69 +315,71 @@ public class lilToonSetting : ScriptableObject
         shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = true;
         shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = true;
         shaderSetting.LIL_FEATURE_FUR_COLLISION = true;
-
-        shaderSetting.LIL_FEATURE_MainGradationTex = true;
-        shaderSetting.LIL_FEATURE_MainColorAdjustMask = true;
-        shaderSetting.LIL_FEATURE_Main2ndTex = true;
-        shaderSetting.LIL_FEATURE_Main2ndBlendMask = true;
-        shaderSetting.LIL_FEATURE_Main2ndDissolveMask = true;
-        shaderSetting.LIL_FEATURE_Main2ndDissolveNoiseMask = true;
-        shaderSetting.LIL_FEATURE_Main3rdTex = true;
-        shaderSetting.LIL_FEATURE_Main3rdBlendMask = true;
-        shaderSetting.LIL_FEATURE_Main3rdDissolveMask = true;
-        shaderSetting.LIL_FEATURE_Main3rdDissolveNoiseMask = true;
-        shaderSetting.LIL_FEATURE_AlphaMask = true;
-        shaderSetting.LIL_FEATURE_BumpMap = true;
-        shaderSetting.LIL_FEATURE_Bump2ndMap = true;
-        shaderSetting.LIL_FEATURE_Bump2ndScaleMask = true;
-        shaderSetting.LIL_FEATURE_AnisotropyTangentMap = true;
-        shaderSetting.LIL_FEATURE_AnisotropyScaleMask = true;
-        shaderSetting.LIL_FEATURE_AnisotropyShiftNoiseMask = true;
-        shaderSetting.LIL_FEATURE_ShadowBorderMask = true;
-        shaderSetting.LIL_FEATURE_ShadowBlurMask = true;
-        shaderSetting.LIL_FEATURE_ShadowStrengthMask = true;
-        shaderSetting.LIL_FEATURE_ShadowColorTex = true;
-        shaderSetting.LIL_FEATURE_Shadow2ndColorTex = true;
-        shaderSetting.LIL_FEATURE_Shadow3rdColorTex = true;
-        shaderSetting.LIL_FEATURE_BacklightColorTex = true;
-        shaderSetting.LIL_FEATURE_SmoothnessTex = true;
-        shaderSetting.LIL_FEATURE_MetallicGlossMap = true;
-        shaderSetting.LIL_FEATURE_ReflectionColorTex = true;
-        shaderSetting.LIL_FEATURE_ReflectionCubeTex = true;
-        shaderSetting.LIL_FEATURE_MatCapTex = true;
-        shaderSetting.LIL_FEATURE_MatCapBlendMask = true;
-        shaderSetting.LIL_FEATURE_MatCapBumpMap = true;
-        shaderSetting.LIL_FEATURE_MatCap2ndTex = true;
-        shaderSetting.LIL_FEATURE_MatCap2ndBlendMask = true;
-        shaderSetting.LIL_FEATURE_MatCap2ndBumpMap = true;
-        shaderSetting.LIL_FEATURE_RimColorTex = true;
-        shaderSetting.LIL_FEATURE_GlitterColorTex = true;
-        shaderSetting.LIL_FEATURE_GlitterShapeTex = true;
-        shaderSetting.LIL_FEATURE_EmissionMap = true;
-        shaderSetting.LIL_FEATURE_EmissionBlendMask = true;
-        shaderSetting.LIL_FEATURE_EmissionGradTex = true;
-        shaderSetting.LIL_FEATURE_Emission2ndMap = true;
-        shaderSetting.LIL_FEATURE_Emission2ndBlendMask = true;
-        shaderSetting.LIL_FEATURE_Emission2ndGradTex = true;
-        shaderSetting.LIL_FEATURE_ParallaxMap = true;
-        shaderSetting.LIL_FEATURE_AudioLinkMask = true;
-        shaderSetting.LIL_FEATURE_AudioLinkLocalMap = true;
-        shaderSetting.LIL_FEATURE_DissolveMask = true;
-        shaderSetting.LIL_FEATURE_DissolveNoiseMask = true;
-        shaderSetting.LIL_FEATURE_OutlineTex = true;
-        shaderSetting.LIL_FEATURE_OutlineWidthMask = true;
-        shaderSetting.LIL_FEATURE_OutlineVectorTex = true;
-        shaderSetting.LIL_FEATURE_FurNoiseMask = true;
-        shaderSetting.LIL_FEATURE_FurMask = true;
-        shaderSetting.LIL_FEATURE_FurLengthMask = true;
-        shaderSetting.LIL_FEATURE_FurVectorTex = true;
         shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT = true;
+
+        if(!lilShaderAPI.IsTextureLimitedAPI())
+        {
+            shaderSetting.LIL_FEATURE_MainGradationTex = true;
+            shaderSetting.LIL_FEATURE_MainColorAdjustMask = true;
+            shaderSetting.LIL_FEATURE_Main2ndTex = true;
+            shaderSetting.LIL_FEATURE_Main2ndBlendMask = true;
+            shaderSetting.LIL_FEATURE_Main2ndDissolveMask = true;
+            shaderSetting.LIL_FEATURE_Main2ndDissolveNoiseMask = true;
+            shaderSetting.LIL_FEATURE_Main3rdTex = true;
+            shaderSetting.LIL_FEATURE_Main3rdBlendMask = true;
+            shaderSetting.LIL_FEATURE_Main3rdDissolveMask = true;
+            shaderSetting.LIL_FEATURE_Main3rdDissolveNoiseMask = true;
+            shaderSetting.LIL_FEATURE_AlphaMask = true;
+            shaderSetting.LIL_FEATURE_BumpMap = true;
+            shaderSetting.LIL_FEATURE_Bump2ndMap = true;
+            shaderSetting.LIL_FEATURE_Bump2ndScaleMask = true;
+            shaderSetting.LIL_FEATURE_AnisotropyTangentMap = true;
+            shaderSetting.LIL_FEATURE_AnisotropyScaleMask = true;
+            shaderSetting.LIL_FEATURE_AnisotropyShiftNoiseMask = true;
+            shaderSetting.LIL_FEATURE_ShadowBorderMask = true;
+            shaderSetting.LIL_FEATURE_ShadowBlurMask = true;
+            shaderSetting.LIL_FEATURE_ShadowStrengthMask = true;
+            shaderSetting.LIL_FEATURE_ShadowColorTex = true;
+            shaderSetting.LIL_FEATURE_Shadow2ndColorTex = true;
+            shaderSetting.LIL_FEATURE_Shadow3rdColorTex = true;
+            shaderSetting.LIL_FEATURE_BacklightColorTex = true;
+            shaderSetting.LIL_FEATURE_SmoothnessTex = true;
+            shaderSetting.LIL_FEATURE_MetallicGlossMap = true;
+            shaderSetting.LIL_FEATURE_ReflectionColorTex = true;
+            shaderSetting.LIL_FEATURE_ReflectionCubeTex = true;
+            shaderSetting.LIL_FEATURE_MatCapTex = true;
+            shaderSetting.LIL_FEATURE_MatCapBlendMask = true;
+            shaderSetting.LIL_FEATURE_MatCapBumpMap = true;
+            shaderSetting.LIL_FEATURE_MatCap2ndTex = true;
+            shaderSetting.LIL_FEATURE_MatCap2ndBlendMask = true;
+            shaderSetting.LIL_FEATURE_MatCap2ndBumpMap = true;
+            shaderSetting.LIL_FEATURE_RimColorTex = true;
+            shaderSetting.LIL_FEATURE_GlitterColorTex = true;
+            shaderSetting.LIL_FEATURE_GlitterShapeTex = true;
+            shaderSetting.LIL_FEATURE_EmissionMap = true;
+            shaderSetting.LIL_FEATURE_EmissionBlendMask = true;
+            shaderSetting.LIL_FEATURE_EmissionGradTex = true;
+            shaderSetting.LIL_FEATURE_Emission2ndMap = true;
+            shaderSetting.LIL_FEATURE_Emission2ndBlendMask = true;
+            shaderSetting.LIL_FEATURE_Emission2ndGradTex = true;
+            shaderSetting.LIL_FEATURE_ParallaxMap = true;
+            shaderSetting.LIL_FEATURE_AudioLinkMask = true;
+            shaderSetting.LIL_FEATURE_AudioLinkLocalMap = true;
+            shaderSetting.LIL_FEATURE_DissolveMask = true;
+            shaderSetting.LIL_FEATURE_DissolveNoiseMask = true;
+            shaderSetting.LIL_FEATURE_OutlineTex = true;
+            shaderSetting.LIL_FEATURE_OutlineWidthMask = true;
+            shaderSetting.LIL_FEATURE_OutlineVectorTex = true;
+            shaderSetting.LIL_FEATURE_FurNoiseMask = true;
+            shaderSetting.LIL_FEATURE_FurMask = true;
+            shaderSetting.LIL_FEATURE_FurLengthMask = true;
+            shaderSetting.LIL_FEATURE_FurVectorTex = true;
+        }
     }
 
     internal static void ApplyShaderSetting(lilToonSetting shaderSetting, string reportTitle = null)
     {
-        EditorUtility.SetDirty(shaderSetting);
-        AssetDatabase.SaveAssets();
+        SaveShaderSetting(shaderSetting);
         string shaderSettingString = BuildShaderSettingString(shaderSetting, true);
 
         string shaderFolderPath = lilDirectoryManager.GetShaderFolderPath();
@@ -579,7 +580,6 @@ public class lilToonSetting : ScriptableObject
         }
 
         // Apply
-        SaveShaderSetting(shaderSetting);
         ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
         AssetDatabase.Refresh();
     }
@@ -637,7 +637,6 @@ public class lilToonSetting : ScriptableObject
         #endif
 
         // Apply
-        SaveShaderSetting(shaderSetting);
         ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
         AssetDatabase.Refresh();
     }
@@ -655,9 +654,15 @@ public class lilToonSetting : ScriptableObject
         File.Delete(lilDirectoryManager.postBuildTempPath);
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
-        TurnOnAllShaderSetting(ref shaderSetting);
-        SaveShaderSetting(shaderSetting);
-        ApplyShaderSetting(shaderSetting, "[lilToon] PostprocessBuild");
+        if(shaderSetting.isDebugOptimize)
+        {
+            ApplyShaderSettingOptimized();
+        }
+        else
+        {
+            TurnOnAllShaderSetting(ref shaderSetting);
+            ApplyShaderSetting(shaderSetting, "[lilToon] PostprocessBuild");
+        }
     }
 
     internal static void SetupShaderSettingFromMaterial(Material material, ref lilToonSetting shaderSetting)
@@ -897,68 +902,7 @@ public class lilToonSetting : ScriptableObject
         }
 
         // Texture
-        CheckTexture(ref shaderSetting.LIL_FEATURE_MainGradationTex          , "_MainGradationTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_MainColorAdjustMask       , "_MainColorAdjustMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Main2ndTex                , "_Main2ndTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Main2ndBlendMask          , "_Main2ndBlendMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Main2ndDissolveMask       , "_Main2ndDissolveMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Main2ndDissolveNoiseMask  , "_Main2ndDissolveNoiseMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Main3rdTex                , "_Main3rdTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Main3rdBlendMask          , "_Main3rdBlendMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Main3rdDissolveMask       , "_Main3rdDissolveMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Main3rdDissolveNoiseMask  , "_Main3rdDissolveNoiseMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_AlphaMask                 , "_AlphaMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_BumpMap                   , "_BumpMap", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Bump2ndMap                , "_Bump2ndMap", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Bump2ndScaleMask          , "_Bump2ndScaleMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_AnisotropyTangentMap      , "_AnisotropyTangentMap", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_AnisotropyScaleMask       , "_AnisotropyScaleMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_AnisotropyShiftNoiseMask  , "_AnisotropyShiftNoiseMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_ShadowBorderMask          , "_ShadowBorderMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_ShadowBlurMask            , "_ShadowBlurMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_ShadowStrengthMask        , "_ShadowStrengthMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_ShadowColorTex            , "_ShadowColorTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Shadow2ndColorTex         , "_Shadow2ndColorTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Shadow3rdColorTex         , "_Shadow3rdColorTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_BacklightColorTex         , "_BacklightColorTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_SmoothnessTex             , "_SmoothnessTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_MetallicGlossMap          , "_MetallicGlossMap", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_ReflectionColorTex        , "_ReflectionColorTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_ReflectionCubeTex         , "_ReflectionCubeTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_MatCapTex                 , "_MatCapTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_MatCapBlendMask           , "_MatCapBlendMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_MatCapBumpMap             , "_MatCapBumpMap", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_MatCap2ndTex              , "_MatCap2ndTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_MatCap2ndBlendMask        , "_MatCap2ndBlendMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_MatCap2ndBumpMap          , "_MatCap2ndBumpMap", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_RimColorTex               , "_RimColorTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_GlitterColorTex           , "_GlitterColorTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_GlitterShapeTex           , "_GlitterShapeTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_EmissionMap               , "_EmissionMap", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_EmissionBlendMask         , "_EmissionBlendMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_EmissionGradTex           , "_EmissionGradTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Emission2ndMap            , "_Emission2ndMap", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Emission2ndBlendMask      , "_Emission2ndBlendMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_Emission2ndGradTex        , "_Emission2ndGradTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_ParallaxMap               , "_ParallaxMap", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_AudioLinkMask             , "_AudioLinkMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_AudioLinkLocalMap         , "_AudioLinkLocalMap", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_DissolveMask              , "_DissolveMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_DissolveNoiseMask         , "_DissolveNoiseMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_OutlineTex                , "_OutlineTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_OutlineWidthMask          , "_OutlineWidthMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_OutlineVectorTex          , "_OutlineVectorTex", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_FurNoiseMask              , "_FurNoiseMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_FurMask                   , "_FurMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_FurLengthMask             , "_FurLengthMask", material);
-        CheckTexture(ref shaderSetting.LIL_FEATURE_FurVectorTex              , "_FurVectorTex", material);
-    }
-
-    private static void CheckTexture(ref bool LIL_FEATURE_Tex, string propname, Material material)
-    {
-        if(LIL_FEATURE_Tex || !material.HasProperty(propname) || material.GetTexture(propname) == null) return;
-        Debug.Log("[lilToon] " + propname + " : " + AssetDatabase.GetAssetPath(material));
-        LIL_FEATURE_Tex = true;
+        CheckTextures(ref shaderSetting, material);
     }
 
     private static void SetupShaderSettingFromAnimationClip(AnimationClip clip, ref lilToonSetting shaderSetting, bool shouldCheckMaterial = false)
@@ -1025,65 +969,159 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV || propname.Contains("_OutlineTex_ScrollRotate");
             shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION || propname.Contains("_OutlineTexHSVG");
 
-            // Texture
-            shaderSetting.LIL_FEATURE_MainGradationTex           = shaderSetting.LIL_FEATURE_MainGradationTex         || propname.Contains("_MainGradationTex");
-            shaderSetting.LIL_FEATURE_MainColorAdjustMask        = shaderSetting.LIL_FEATURE_MainColorAdjustMask      || propname.Contains("_MainColorAdjustMask");
-            shaderSetting.LIL_FEATURE_Main2ndTex                 = shaderSetting.LIL_FEATURE_Main2ndTex               || propname.Contains("_Main2ndTex");
-            shaderSetting.LIL_FEATURE_Main2ndBlendMask           = shaderSetting.LIL_FEATURE_Main2ndBlendMask         || propname.Contains("_Main2ndBlendMask");
-            shaderSetting.LIL_FEATURE_Main2ndDissolveMask        = shaderSetting.LIL_FEATURE_Main2ndDissolveMask      || propname.Contains("_Main2ndDissolveMask");
-            shaderSetting.LIL_FEATURE_Main2ndDissolveNoiseMask   = shaderSetting.LIL_FEATURE_Main2ndDissolveNoiseMask || propname.Contains("_Main2ndDissolveNoiseMask");
-            shaderSetting.LIL_FEATURE_Main3rdTex                 = shaderSetting.LIL_FEATURE_Main3rdTex               || propname.Contains("_Main3rdTex");
-            shaderSetting.LIL_FEATURE_Main3rdBlendMask           = shaderSetting.LIL_FEATURE_Main3rdBlendMask         || propname.Contains("_Main3rdBlendMask");
-            shaderSetting.LIL_FEATURE_Main3rdDissolveMask        = shaderSetting.LIL_FEATURE_Main3rdDissolveMask      || propname.Contains("_Main3rdDissolveMask");
-            shaderSetting.LIL_FEATURE_Main3rdDissolveNoiseMask   = shaderSetting.LIL_FEATURE_Main3rdDissolveNoiseMask || propname.Contains("_Main3rdDissolveNoiseMask");
-            shaderSetting.LIL_FEATURE_AlphaMask                  = shaderSetting.LIL_FEATURE_AlphaMask                || propname.Contains("_AlphaMask");
-            shaderSetting.LIL_FEATURE_BumpMap                    = shaderSetting.LIL_FEATURE_BumpMap                  || propname.Contains("_BumpMap");
-            shaderSetting.LIL_FEATURE_Bump2ndMap                 = shaderSetting.LIL_FEATURE_Bump2ndMap               || propname.Contains("_Bump2ndMap");
-            shaderSetting.LIL_FEATURE_Bump2ndScaleMask           = shaderSetting.LIL_FEATURE_Bump2ndScaleMask         || propname.Contains("_Bump2ndScaleMask");
-            shaderSetting.LIL_FEATURE_AnisotropyTangentMap       = shaderSetting.LIL_FEATURE_AnisotropyTangentMap     || propname.Contains("_AnisotropyTangentMap");
-            shaderSetting.LIL_FEATURE_AnisotropyScaleMask        = shaderSetting.LIL_FEATURE_AnisotropyScaleMask      || propname.Contains("_AnisotropyScaleMask");
-            shaderSetting.LIL_FEATURE_AnisotropyShiftNoiseMask   = shaderSetting.LIL_FEATURE_AnisotropyShiftNoiseMask || propname.Contains("_AnisotropyShiftNoiseMask");
-            shaderSetting.LIL_FEATURE_ShadowBorderMask           = shaderSetting.LIL_FEATURE_ShadowBorderMask         || propname.Contains("_ShadowBorderMask");
-            shaderSetting.LIL_FEATURE_ShadowBlurMask             = shaderSetting.LIL_FEATURE_ShadowBlurMask           || propname.Contains("_ShadowBlurMask");
-            shaderSetting.LIL_FEATURE_ShadowStrengthMask         = shaderSetting.LIL_FEATURE_ShadowStrengthMask       || propname.Contains("_ShadowStrengthMask");
-            shaderSetting.LIL_FEATURE_ShadowColorTex             = shaderSetting.LIL_FEATURE_ShadowColorTex           || propname.Contains("_ShadowColorTex");
-            shaderSetting.LIL_FEATURE_Shadow2ndColorTex          = shaderSetting.LIL_FEATURE_Shadow2ndColorTex        || propname.Contains("_Shadow2ndColorTex");
-            shaderSetting.LIL_FEATURE_Shadow3rdColorTex          = shaderSetting.LIL_FEATURE_Shadow3rdColorTex        || propname.Contains("_Shadow3rdColorTex");
-            shaderSetting.LIL_FEATURE_BacklightColorTex          = shaderSetting.LIL_FEATURE_BacklightColorTex        || propname.Contains("_BacklightColorTex");
-            shaderSetting.LIL_FEATURE_SmoothnessTex              = shaderSetting.LIL_FEATURE_SmoothnessTex            || propname.Contains("_SmoothnessTex");
-            shaderSetting.LIL_FEATURE_MetallicGlossMap           = shaderSetting.LIL_FEATURE_MetallicGlossMap         || propname.Contains("_MetallicGlossMap");
-            shaderSetting.LIL_FEATURE_ReflectionColorTex         = shaderSetting.LIL_FEATURE_ReflectionColorTex       || propname.Contains("_ReflectionColorTex");
-            shaderSetting.LIL_FEATURE_ReflectionCubeTex          = shaderSetting.LIL_FEATURE_ReflectionCubeTex        || propname.Contains("_ReflectionCubeTex");
-            shaderSetting.LIL_FEATURE_MatCapTex                  = shaderSetting.LIL_FEATURE_MatCapTex                || propname.Contains("_MatCapTex");
-            shaderSetting.LIL_FEATURE_MatCapBlendMask            = shaderSetting.LIL_FEATURE_MatCapBlendMask          || propname.Contains("_MatCapBlendMask");
-            shaderSetting.LIL_FEATURE_MatCapBumpMap              = shaderSetting.LIL_FEATURE_MatCapBumpMap            || propname.Contains("_MatCapBumpMap");
-            shaderSetting.LIL_FEATURE_MatCap2ndTex               = shaderSetting.LIL_FEATURE_MatCap2ndTex             || propname.Contains("_MatCap2ndTex");
-            shaderSetting.LIL_FEATURE_MatCap2ndBlendMask         = shaderSetting.LIL_FEATURE_MatCap2ndBlendMask       || propname.Contains("_MatCap2ndBlendMask");
-            shaderSetting.LIL_FEATURE_MatCap2ndBumpMap           = shaderSetting.LIL_FEATURE_MatCap2ndBumpMap         || propname.Contains("_MatCap2ndBumpMap");
-            shaderSetting.LIL_FEATURE_RimColorTex                = shaderSetting.LIL_FEATURE_RimColorTex              || propname.Contains("_RimColorTex");
-            shaderSetting.LIL_FEATURE_GlitterColorTex            = shaderSetting.LIL_FEATURE_GlitterColorTex          || propname.Contains("_GlitterColorTex");
-            shaderSetting.LIL_FEATURE_GlitterShapeTex            = shaderSetting.LIL_FEATURE_GlitterShapeTex          || propname.Contains("_GlitterShapeTex");
-            shaderSetting.LIL_FEATURE_EmissionMap                = shaderSetting.LIL_FEATURE_EmissionMap              || propname.Contains("_EmissionMap");
-            shaderSetting.LIL_FEATURE_EmissionBlendMask          = shaderSetting.LIL_FEATURE_EmissionBlendMask        || propname.Contains("_EmissionBlendMask");
-            shaderSetting.LIL_FEATURE_EmissionGradTex            = shaderSetting.LIL_FEATURE_EmissionGradTex          || propname.Contains("_EmissionGradTex");
-            shaderSetting.LIL_FEATURE_Emission2ndMap             = shaderSetting.LIL_FEATURE_Emission2ndMap           || propname.Contains("_Emission2ndMap");
-            shaderSetting.LIL_FEATURE_Emission2ndBlendMask       = shaderSetting.LIL_FEATURE_Emission2ndBlendMask     || propname.Contains("_Emission2ndBlendMask");
-            shaderSetting.LIL_FEATURE_Emission2ndGradTex         = shaderSetting.LIL_FEATURE_Emission2ndGradTex       || propname.Contains("_Emission2ndGradTex");
-            shaderSetting.LIL_FEATURE_ParallaxMap                = shaderSetting.LIL_FEATURE_ParallaxMap              || propname.Contains("_ParallaxMap");
-            shaderSetting.LIL_FEATURE_AudioLinkMask              = shaderSetting.LIL_FEATURE_AudioLinkMask            || propname.Contains("_AudioLinkMask");
-            shaderSetting.LIL_FEATURE_AudioLinkLocalMap          = shaderSetting.LIL_FEATURE_AudioLinkLocalMap        || propname.Contains("_AudioLinkLocalMap");
-            shaderSetting.LIL_FEATURE_DissolveMask               = shaderSetting.LIL_FEATURE_DissolveMask             || propname.Contains("_DissolveMask");
-            shaderSetting.LIL_FEATURE_DissolveNoiseMask          = shaderSetting.LIL_FEATURE_DissolveNoiseMask        || propname.Contains("_DissolveNoiseMask");
-            shaderSetting.LIL_FEATURE_OutlineTex                 = shaderSetting.LIL_FEATURE_OutlineTex               || propname.Contains("_OutlineTex");
-            shaderSetting.LIL_FEATURE_OutlineWidthMask           = shaderSetting.LIL_FEATURE_OutlineWidthMask         || propname.Contains("_OutlineWidthMask");
-            shaderSetting.LIL_FEATURE_OutlineVectorTex           = shaderSetting.LIL_FEATURE_OutlineVectorTex         || propname.Contains("_OutlineVectorTex");
-            shaderSetting.LIL_FEATURE_FurNoiseMask               = shaderSetting.LIL_FEATURE_FurNoiseMask             || propname.Contains("_FurNoiseMask");
-            shaderSetting.LIL_FEATURE_FurMask                    = shaderSetting.LIL_FEATURE_FurMask                  || propname.Contains("_FurMask");
-            shaderSetting.LIL_FEATURE_FurLengthMask              = shaderSetting.LIL_FEATURE_FurLengthMask            || propname.Contains("_FurLengthMask");
-            shaderSetting.LIL_FEATURE_FurVectorTex               = shaderSetting.LIL_FEATURE_FurVectorTex             || propname.Contains("_FurVectorTex");
-
             shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT = shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT || shaderSetting.LIL_FEATURE_FUR_COLLISION || propname.Contains("_VertexLightStrength");
+
+            // Texture
+            CheckTextures(ref shaderSetting, propname);
         }
+    }
+
+    internal static void CheckTextures(ref lilToonSetting shaderSetting)
+    {
+        // Get materials
+        foreach(string guid in AssetDatabase.FindAssets("t:material"))
+        {
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
+            CheckTextures(ref shaderSetting, material);
+        }
+
+        // Get animations
+        foreach(string guid in AssetDatabase.FindAssets("t:animationclip"))
+        {
+            AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(lilDirectoryManager.GUIDToPath(guid));
+            foreach(EditorCurveBinding binding in AnimationUtility.GetCurveBindings(clip))
+            {
+                string propname = binding.propertyName;
+                if(string.IsNullOrEmpty(propname) || !propname.Contains("material.")) continue;
+
+                CheckTextures(ref shaderSetting, propname);
+            }
+        }
+    }
+
+    internal static void CheckTextures(ref lilToonSetting shaderSetting, Material material)
+    {
+        CheckTexture(ref shaderSetting.LIL_FEATURE_MainGradationTex          , "_MainGradationTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_MainColorAdjustMask       , "_MainColorAdjustMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Main2ndTex                , "_Main2ndTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Main2ndBlendMask          , "_Main2ndBlendMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Main2ndDissolveMask       , "_Main2ndDissolveMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Main2ndDissolveNoiseMask  , "_Main2ndDissolveNoiseMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Main3rdTex                , "_Main3rdTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Main3rdBlendMask          , "_Main3rdBlendMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Main3rdDissolveMask       , "_Main3rdDissolveMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Main3rdDissolveNoiseMask  , "_Main3rdDissolveNoiseMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_AlphaMask                 , "_AlphaMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_BumpMap                   , "_BumpMap", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Bump2ndMap                , "_Bump2ndMap", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Bump2ndScaleMask          , "_Bump2ndScaleMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_AnisotropyTangentMap      , "_AnisotropyTangentMap", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_AnisotropyScaleMask       , "_AnisotropyScaleMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_AnisotropyShiftNoiseMask  , "_AnisotropyShiftNoiseMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_ShadowBorderMask          , "_ShadowBorderMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_ShadowBlurMask            , "_ShadowBlurMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_ShadowStrengthMask        , "_ShadowStrengthMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_ShadowColorTex            , "_ShadowColorTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Shadow2ndColorTex         , "_Shadow2ndColorTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Shadow3rdColorTex         , "_Shadow3rdColorTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_BacklightColorTex         , "_BacklightColorTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_SmoothnessTex             , "_SmoothnessTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_MetallicGlossMap          , "_MetallicGlossMap", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_ReflectionColorTex        , "_ReflectionColorTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_ReflectionCubeTex         , "_ReflectionCubeTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_MatCapTex                 , "_MatCapTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_MatCapBlendMask           , "_MatCapBlendMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_MatCapBumpMap             , "_MatCapBumpMap", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_MatCap2ndTex              , "_MatCap2ndTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_MatCap2ndBlendMask        , "_MatCap2ndBlendMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_MatCap2ndBumpMap          , "_MatCap2ndBumpMap", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_RimColorTex               , "_RimColorTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_GlitterColorTex           , "_GlitterColorTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_GlitterShapeTex           , "_GlitterShapeTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_EmissionMap               , "_EmissionMap", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_EmissionBlendMask         , "_EmissionBlendMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_EmissionGradTex           , "_EmissionGradTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Emission2ndMap            , "_Emission2ndMap", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Emission2ndBlendMask      , "_Emission2ndBlendMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_Emission2ndGradTex        , "_Emission2ndGradTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_ParallaxMap               , "_ParallaxMap", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_AudioLinkMask             , "_AudioLinkMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_AudioLinkLocalMap         , "_AudioLinkLocalMap", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_DissolveMask              , "_DissolveMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_DissolveNoiseMask         , "_DissolveNoiseMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_OutlineTex                , "_OutlineTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_OutlineWidthMask          , "_OutlineWidthMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_OutlineVectorTex          , "_OutlineVectorTex", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_FurNoiseMask              , "_FurNoiseMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_FurMask                   , "_FurMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_FurLengthMask             , "_FurLengthMask", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_FurVectorTex              , "_FurVectorTex", material);
+    }
+
+    internal static void CheckTextures(ref lilToonSetting shaderSetting, string propname)
+    {
+        shaderSetting.LIL_FEATURE_MainGradationTex           = shaderSetting.LIL_FEATURE_MainGradationTex         || propname.Contains("_MainGradationTex");
+        shaderSetting.LIL_FEATURE_MainColorAdjustMask        = shaderSetting.LIL_FEATURE_MainColorAdjustMask      || propname.Contains("_MainColorAdjustMask");
+        shaderSetting.LIL_FEATURE_Main2ndTex                 = shaderSetting.LIL_FEATURE_Main2ndTex               || propname.Contains("_Main2ndTex");
+        shaderSetting.LIL_FEATURE_Main2ndBlendMask           = shaderSetting.LIL_FEATURE_Main2ndBlendMask         || propname.Contains("_Main2ndBlendMask");
+        shaderSetting.LIL_FEATURE_Main2ndDissolveMask        = shaderSetting.LIL_FEATURE_Main2ndDissolveMask      || propname.Contains("_Main2ndDissolveMask");
+        shaderSetting.LIL_FEATURE_Main2ndDissolveNoiseMask   = shaderSetting.LIL_FEATURE_Main2ndDissolveNoiseMask || propname.Contains("_Main2ndDissolveNoiseMask");
+        shaderSetting.LIL_FEATURE_Main3rdTex                 = shaderSetting.LIL_FEATURE_Main3rdTex               || propname.Contains("_Main3rdTex");
+        shaderSetting.LIL_FEATURE_Main3rdBlendMask           = shaderSetting.LIL_FEATURE_Main3rdBlendMask         || propname.Contains("_Main3rdBlendMask");
+        shaderSetting.LIL_FEATURE_Main3rdDissolveMask        = shaderSetting.LIL_FEATURE_Main3rdDissolveMask      || propname.Contains("_Main3rdDissolveMask");
+        shaderSetting.LIL_FEATURE_Main3rdDissolveNoiseMask   = shaderSetting.LIL_FEATURE_Main3rdDissolveNoiseMask || propname.Contains("_Main3rdDissolveNoiseMask");
+        shaderSetting.LIL_FEATURE_AlphaMask                  = shaderSetting.LIL_FEATURE_AlphaMask                || propname.Contains("_AlphaMask");
+        shaderSetting.LIL_FEATURE_BumpMap                    = shaderSetting.LIL_FEATURE_BumpMap                  || propname.Contains("_BumpMap");
+        shaderSetting.LIL_FEATURE_Bump2ndMap                 = shaderSetting.LIL_FEATURE_Bump2ndMap               || propname.Contains("_Bump2ndMap");
+        shaderSetting.LIL_FEATURE_Bump2ndScaleMask           = shaderSetting.LIL_FEATURE_Bump2ndScaleMask         || propname.Contains("_Bump2ndScaleMask");
+        shaderSetting.LIL_FEATURE_AnisotropyTangentMap       = shaderSetting.LIL_FEATURE_AnisotropyTangentMap     || propname.Contains("_AnisotropyTangentMap");
+        shaderSetting.LIL_FEATURE_AnisotropyScaleMask        = shaderSetting.LIL_FEATURE_AnisotropyScaleMask      || propname.Contains("_AnisotropyScaleMask");
+        shaderSetting.LIL_FEATURE_AnisotropyShiftNoiseMask   = shaderSetting.LIL_FEATURE_AnisotropyShiftNoiseMask || propname.Contains("_AnisotropyShiftNoiseMask");
+        shaderSetting.LIL_FEATURE_ShadowBorderMask           = shaderSetting.LIL_FEATURE_ShadowBorderMask         || propname.Contains("_ShadowBorderMask");
+        shaderSetting.LIL_FEATURE_ShadowBlurMask             = shaderSetting.LIL_FEATURE_ShadowBlurMask           || propname.Contains("_ShadowBlurMask");
+        shaderSetting.LIL_FEATURE_ShadowStrengthMask         = shaderSetting.LIL_FEATURE_ShadowStrengthMask       || propname.Contains("_ShadowStrengthMask");
+        shaderSetting.LIL_FEATURE_ShadowColorTex             = shaderSetting.LIL_FEATURE_ShadowColorTex           || propname.Contains("_ShadowColorTex");
+        shaderSetting.LIL_FEATURE_Shadow2ndColorTex          = shaderSetting.LIL_FEATURE_Shadow2ndColorTex        || propname.Contains("_Shadow2ndColorTex");
+        shaderSetting.LIL_FEATURE_Shadow3rdColorTex          = shaderSetting.LIL_FEATURE_Shadow3rdColorTex        || propname.Contains("_Shadow3rdColorTex");
+        shaderSetting.LIL_FEATURE_BacklightColorTex          = shaderSetting.LIL_FEATURE_BacklightColorTex        || propname.Contains("_BacklightColorTex");
+        shaderSetting.LIL_FEATURE_SmoothnessTex              = shaderSetting.LIL_FEATURE_SmoothnessTex            || propname.Contains("_SmoothnessTex");
+        shaderSetting.LIL_FEATURE_MetallicGlossMap           = shaderSetting.LIL_FEATURE_MetallicGlossMap         || propname.Contains("_MetallicGlossMap");
+        shaderSetting.LIL_FEATURE_ReflectionColorTex         = shaderSetting.LIL_FEATURE_ReflectionColorTex       || propname.Contains("_ReflectionColorTex");
+        shaderSetting.LIL_FEATURE_ReflectionCubeTex          = shaderSetting.LIL_FEATURE_ReflectionCubeTex        || propname.Contains("_ReflectionCubeTex");
+        shaderSetting.LIL_FEATURE_MatCapTex                  = shaderSetting.LIL_FEATURE_MatCapTex                || propname.Contains("_MatCapTex");
+        shaderSetting.LIL_FEATURE_MatCapBlendMask            = shaderSetting.LIL_FEATURE_MatCapBlendMask          || propname.Contains("_MatCapBlendMask");
+        shaderSetting.LIL_FEATURE_MatCapBumpMap              = shaderSetting.LIL_FEATURE_MatCapBumpMap            || propname.Contains("_MatCapBumpMap");
+        shaderSetting.LIL_FEATURE_MatCap2ndTex               = shaderSetting.LIL_FEATURE_MatCap2ndTex             || propname.Contains("_MatCap2ndTex");
+        shaderSetting.LIL_FEATURE_MatCap2ndBlendMask         = shaderSetting.LIL_FEATURE_MatCap2ndBlendMask       || propname.Contains("_MatCap2ndBlendMask");
+        shaderSetting.LIL_FEATURE_MatCap2ndBumpMap           = shaderSetting.LIL_FEATURE_MatCap2ndBumpMap         || propname.Contains("_MatCap2ndBumpMap");
+        shaderSetting.LIL_FEATURE_RimColorTex                = shaderSetting.LIL_FEATURE_RimColorTex              || propname.Contains("_RimColorTex");
+        shaderSetting.LIL_FEATURE_GlitterColorTex            = shaderSetting.LIL_FEATURE_GlitterColorTex          || propname.Contains("_GlitterColorTex");
+        shaderSetting.LIL_FEATURE_GlitterShapeTex            = shaderSetting.LIL_FEATURE_GlitterShapeTex          || propname.Contains("_GlitterShapeTex");
+        shaderSetting.LIL_FEATURE_EmissionMap                = shaderSetting.LIL_FEATURE_EmissionMap              || propname.Contains("_EmissionMap");
+        shaderSetting.LIL_FEATURE_EmissionBlendMask          = shaderSetting.LIL_FEATURE_EmissionBlendMask        || propname.Contains("_EmissionBlendMask");
+        shaderSetting.LIL_FEATURE_EmissionGradTex            = shaderSetting.LIL_FEATURE_EmissionGradTex          || propname.Contains("_EmissionGradTex");
+        shaderSetting.LIL_FEATURE_Emission2ndMap             = shaderSetting.LIL_FEATURE_Emission2ndMap           || propname.Contains("_Emission2ndMap");
+        shaderSetting.LIL_FEATURE_Emission2ndBlendMask       = shaderSetting.LIL_FEATURE_Emission2ndBlendMask     || propname.Contains("_Emission2ndBlendMask");
+        shaderSetting.LIL_FEATURE_Emission2ndGradTex         = shaderSetting.LIL_FEATURE_Emission2ndGradTex       || propname.Contains("_Emission2ndGradTex");
+        shaderSetting.LIL_FEATURE_ParallaxMap                = shaderSetting.LIL_FEATURE_ParallaxMap              || propname.Contains("_ParallaxMap");
+        shaderSetting.LIL_FEATURE_AudioLinkMask              = shaderSetting.LIL_FEATURE_AudioLinkMask            || propname.Contains("_AudioLinkMask");
+        shaderSetting.LIL_FEATURE_AudioLinkLocalMap          = shaderSetting.LIL_FEATURE_AudioLinkLocalMap        || propname.Contains("_AudioLinkLocalMap");
+        shaderSetting.LIL_FEATURE_DissolveMask               = shaderSetting.LIL_FEATURE_DissolveMask             || propname.Contains("_DissolveMask");
+        shaderSetting.LIL_FEATURE_DissolveNoiseMask          = shaderSetting.LIL_FEATURE_DissolveNoiseMask        || propname.Contains("_DissolveNoiseMask");
+        shaderSetting.LIL_FEATURE_OutlineTex                 = shaderSetting.LIL_FEATURE_OutlineTex               || propname.Contains("_OutlineTex");
+        shaderSetting.LIL_FEATURE_OutlineWidthMask           = shaderSetting.LIL_FEATURE_OutlineWidthMask         || propname.Contains("_OutlineWidthMask");
+        shaderSetting.LIL_FEATURE_OutlineVectorTex           = shaderSetting.LIL_FEATURE_OutlineVectorTex         || propname.Contains("_OutlineVectorTex");
+        shaderSetting.LIL_FEATURE_FurNoiseMask               = shaderSetting.LIL_FEATURE_FurNoiseMask             || propname.Contains("_FurNoiseMask");
+        shaderSetting.LIL_FEATURE_FurMask                    = shaderSetting.LIL_FEATURE_FurMask                  || propname.Contains("_FurMask");
+        shaderSetting.LIL_FEATURE_FurLengthMask              = shaderSetting.LIL_FEATURE_FurLengthMask            || propname.Contains("_FurLengthMask");
+        shaderSetting.LIL_FEATURE_FurVectorTex               = shaderSetting.LIL_FEATURE_FurVectorTex             || propname.Contains("_FurVectorTex");
+    }
+
+    private static void CheckTexture(ref bool LIL_FEATURE_Tex, string propname, Material material)
+    {
+        if(LIL_FEATURE_Tex || !material.HasProperty(propname) || material.GetTexture(propname) == null) return;
+        Debug.Log("[lilToon] " + propname + " : " + AssetDatabase.GetAssetPath(material));
+        LIL_FEATURE_Tex = true;
     }
 }
 #endif

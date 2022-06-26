@@ -18,17 +18,19 @@
 
         // Mask (R:Delay G:Band B:Strength)
         float4 audioLinkMask = 1.0;
-        if(_AudioLinkVertexUVMode == 3 && Exists_AudioLinkMask)
-        {
-            audioLinkMask = LIL_SAMPLE_2D_LOD(_AudioLinkMask, sampler_linear_repeat, uvMain, 0);
-            audioLinkUV = audioLinkMask.rg;
-        }
+        #if defined(Use_AudioLinkMask)
+            if(_AudioLinkVertexUVMode == 3)
+            {
+                audioLinkMask = LIL_SAMPLE_2D_LOD(_AudioLinkMask, sampler_linear_repeat, uvMain, 0);
+                audioLinkUV = audioLinkMask.rg;
+            }
+        #endif
 
         // Init value
         float audioLinkValue = saturate(_AudioLinkDefaultValue.x - saturate(frac(LIL_TIME * _AudioLinkDefaultValue.z - audioLinkUV.x)+_AudioLinkDefaultValue.w) * _AudioLinkDefaultValue.y * _AudioLinkDefaultValue.x);
 
         // Local
-        #if defined(LIL_FEATURE_AUDIOLINK_LOCAL)
+        #if defined(LIL_FEATURE_AUDIOLINK_LOCAL) && defined(LIL_FEATURE_AudioLinkLocalMap)
             if(_AudioLinkAsLocal)
             {
                 audioLinkUV.x += frac(-LIL_TIME * _AudioLinkLocalMapParams.r / 60 * _AudioLinkLocalMapParams.g) + _AudioLinkLocalMapParams.b;

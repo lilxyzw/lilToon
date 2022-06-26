@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2022-06-27
+### Fixed
+- Fixed a problem that drawing cannot be done correctly when the texture import setting is Clamp in the main color 2nd and 3rd.
+- Fixed an issue where the maximum number of textures was exceeded when using `OpenGLES2`,` OpenGLES3`, and `OpenGLCore` for the API on the editor.
+
 ## [1.3.0] - 2022-06-25
 ### Added
 - `Receive Shadow` to 2nd / 3rd shadows

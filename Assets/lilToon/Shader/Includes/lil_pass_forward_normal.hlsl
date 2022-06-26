@@ -175,6 +175,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         #elif LIL_RENDER == 1
             // Cutout
             fd.col.a = saturate((fd.col.a - _Cutoff) / max(fwidth(fd.col.a), 0.0001) + 0.5);
+            if(fd.col.a == 0) discard;
         #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
             // Transparent
             clip(fd.col.a - _Cutoff);
@@ -245,6 +246,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         #elif LIL_RENDER == 1
             // Cutout
             fd.col.a = saturate((fd.col.a - _Cutoff) / max(fwidth(fd.col.a), 0.0001) + 0.5);
+            if(fd.col.a == 0) discard;
         #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
             // Transparent
             clip(fd.col.a - _Cutoff);
@@ -397,7 +399,9 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         #if defined(LIL_REFRACTION) && !defined(LIL_PASS_FORWARDADD)
             #if defined(LIL_REFRACTION_BLUR2) && defined(LIL_FEATURE_REFLECTION)
                 fd.smoothness = _Smoothness;
-                if(Exists_SmoothnessTex) fd.smoothness *= LIL_SAMPLE_2D_ST(_SmoothnessTex, sampler_MainTex, fd.uvMain).r;
+                #if defined(LIL_FEATURE_SmoothnessTex)
+                    fd.smoothness *= LIL_SAMPLE_2D_ST(_SmoothnessTex, sampler_MainTex, fd.uvMain).r;
+                #endif
                 fd.perceptualRoughness = fd.perceptualRoughness - fd.smoothness * fd.perceptualRoughness;
                 fd.roughness = fd.perceptualRoughness * fd.perceptualRoughness;
             #endif

@@ -286,7 +286,9 @@ lilVertexNormalInputs lilGetVertexNormalInputs(float3 normalOS, float4 tangentOS
 float lilGetOutlineWidth(float2 uv, float4 color, float outlineWidth, TEXTURE2D(outlineWidthMask), uint outlineVertexR2Width LIL_SAMP_IN_FUNC(samp))
 {
     outlineWidth *= 0.01;
-    if(Exists_OutlineWidthMask) outlineWidth *= LIL_SAMPLE_2D_LOD(outlineWidthMask, samp, uv, 0).r;
+    #if defined(LIL_FEATURE_OutlineWidthMask)
+        outlineWidth *= LIL_SAMPLE_2D_LOD(outlineWidthMask, samp, uv, 0).r;
+    #endif
     if(outlineVertexR2Width == 1) outlineWidth *= color.r;
     if(outlineVertexR2Width == 2) outlineWidth *= color.a;
     return outlineWidth;
@@ -311,7 +313,9 @@ void lilCalcOutlinePosition(inout float3 positionOS, float2 uvs[4], float4 color
     float3 positionWS = lilToAbsolutePositionWS(lilOptMul(LIL_MATRIX_M, positionOS).xyz);
     float width = lilGetOutlineWidth(positionOS, positionWS, uvs[0], color, outlineWidth, outlineWidthMask, outlineVertexR2Width, outlineFixWidth LIL_SAMP_IN(samp));
     float3 outlineN = normalOS;
-    if(Exists_OutlineVectorTex) outlineN = lilGetOutlineVector(tbnOS, uvs[outlineVectorUVMode], outlineVectorScale, outlineVectorTex LIL_SAMP_IN(samp));
+    #if defined(LIL_FEATURE_OutlineVectorTex)
+        outlineN = lilGetOutlineVector(tbnOS, uvs[outlineVectorUVMode], outlineVectorScale, outlineVectorTex LIL_SAMP_IN(samp));
+    #endif
     if(outlineVertexR2Width == 2) outlineN = mul(color.rgb * 2.0 - 1.0, tbnOS);
     positionOS += outlineN * width;
     float3 V = lilIsPerspective() ? lilViewDirectionOS(positionOS) : mul((float3x3)LIL_MATRIX_I_M, LIL_MATRIX_V._m20_m21_m22);
@@ -544,7 +548,7 @@ float2 lilCalcAtlasAnimation(float2 uv, float4 decalAnimation, float4 decalSubPa
     uint offsetX = animTime % (uint)decalAnimation.x;
     uint offsetY = animTime / (uint)decalAnimation.x;
     outuv = (outuv + float2(offsetX,offsetY)) * decalSubParam.xy / decalAnimation.xy;
-    outuv.y = -outuv.y;
+    outuv.y = 1.0-outuv.y;
     return outuv;
 }
 
@@ -733,7 +737,6 @@ bool lilCheckAudioLink()
 //------------------------------------------------------------------------------------------------------------------------------
 // Sub Texture
 float4 lilGetSubTex(
-    bool existsTex,
     TEXTURE2D(tex),
     float4 uv_ST,
     float angle,
@@ -758,8 +761,7 @@ float4 lilGetSubTex(
         #else
             float2 uv2samp = uv2;
         #endif
-        float4 outCol = 1.0;
-        if(existsTex) outCol = LIL_SAMPLE_2D(tex,samp,uv2samp);
+        float4 outCol = LIL_SAMPLE_2D(tex,samp,uv2samp);
         LIL_BRANCH
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
         LIL_BRANCH
@@ -767,8 +769,7 @@ float4 lilGetSubTex(
         return outCol;
     #else
         float2 uv2 = lilCalcUV(uv, uv_ST, angle);
-        float4 outCol = 1.0;
-        if(existsTex) outCol = LIL_SAMPLE_2D(tex,samp,uv2);
+        float4 outCol = LIL_SAMPLE_2D(tex,samp,uv2);
         LIL_BRANCH
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
         return outCol;
@@ -776,7 +777,6 @@ float4 lilGetSubTex(
 }
 
 float4 lilGetSubTexWithoutAnimation(
-    bool existsTex,
     TEXTURE2D(tex),
     float4 uv_ST,
     float angle,
@@ -794,8 +794,7 @@ float4 lilGetSubTexWithoutAnimation(
 {
     #if defined(LIL_FEATURE_DECAL)
         float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
-        float4 outCol = 1.0;
-        if(existsTex) outCol = LIL_SAMPLE_2D(tex,samp,uv2);
+        float4 outCol = LIL_SAMPLE_2D(tex,samp,uv2);
         LIL_BRANCH
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
         LIL_BRANCH
@@ -803,8 +802,7 @@ float4 lilGetSubTexWithoutAnimation(
         return outCol;
     #else
         float2 uv2 = lilCalcUV(uv, uv_ST, angle);
-        float4 outCol = 1.0;
-        if(existsTex) outCol = LIL_SAMPLE_2D(tex,samp,uv2);
+        float4 outCol = LIL_SAMPLE_2D(tex,samp,uv2);
         LIL_BRANCH
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
         return outCol;

@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -746,7 +747,7 @@ namespace lilToon
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
-        // GUI
+        // Main GUI
         #region
         public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] props)
         {
@@ -817,6 +818,18 @@ namespace lilToon
                     else        lilMaterialUtils.RemoveShaderKeywords(material);
                 }
                 CopyMainColorProperties();
+
+                if(lilShaderAPI.IsTextureLimitedAPI())
+                {
+                    string shaderSettingString = lilToonSetting.BuildShaderSettingString(shaderSetting, true);
+                    lilToonSetting.CheckTextures(ref shaderSetting, material);
+                    string newShaderSettingString = lilToonSetting.BuildShaderSettingString(shaderSetting, true);
+                    if(shaderSettingString != newShaderSettingString)
+                    {
+                        lilToonSetting.ApplyShaderSetting(shaderSetting);
+                    }
+                }
+
                 SaveEditorSettingTemp();
             }
         }
@@ -2848,13 +2861,11 @@ namespace lilToon
             {
                 if(shaderSetting.isDebugOptimize)
                 {
-                    lilToonSetting.SaveShaderSetting(shaderSetting);
                     lilToonSetting.ApplyShaderSettingOptimized();
                 }
                 else
                 {
                     lilToonSetting.TurnOnAllShaderSetting(ref shaderSetting);
-                    lilToonSetting.SaveShaderSetting(shaderSetting);
                     lilToonSetting.ApplyShaderSetting(shaderSetting);
                 }
             }

@@ -146,6 +146,7 @@ float4 frag(v2f input) : SV_Target
     #if LIL_RENDER == 1 || defined(LIL_FUR_PRE)
         // Cutout
         fd.col.a = saturate(fd.col.a*5.0-2.0);
+        if(fd.col.a == 0) discard;
     #else
         // Transparent
         clip(fd.col.a - _Cutoff);

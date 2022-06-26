@@ -468,7 +468,7 @@ Shader "_lil/[Optional] lilToonOutlineOnlyCutout"
         [HideInInspector]                               _BaseColor          ("Color", Color) = (1,1,1,1)
         [HideInInspector]                               _BaseMap            ("Texture", 2D) = "white" {}
         [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
-        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0
+        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 27
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced
@@ -498,7 +498,7 @@ Shader "_lil/[Optional] lilToonOutlineOnlyCutout"
                                                         _OffsetFactor       ("Offset Factor", Float) = 0
                                                         _OffsetUnits        ("Offset Units", Float) = 0
         [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
-        [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
+        [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 1
                                                         _lilShadowCasterBias ("Shadow Caster Bias", Float) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
