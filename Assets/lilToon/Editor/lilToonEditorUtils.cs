@@ -659,7 +659,7 @@ namespace lilToon
 
 public class lilToonBuildProcessor : IPreprocessBuildWithReport, IPostprocessBuildWithReport
 {
-    public int callbackOrder { get { return 0; } }
+    public int callbackOrder { get { return 100; } }
 
     public void OnPreprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
     {
@@ -677,7 +677,7 @@ public class lilToonBuildProcessor : IPreprocessBuildWithReport, IPostprocessBui
     // VRChat
     public class lilToonVRCBuildCallback : IVRCSDKBuildRequestedCallback, IVRCSDKPreprocessAvatarCallback, IVRCSDKPostprocessAvatarCallback
     {
-        public int callbackOrder { get { return 0; } }
+        public int callbackOrder { get { return 100; } }
 
         #if UDON
             public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)

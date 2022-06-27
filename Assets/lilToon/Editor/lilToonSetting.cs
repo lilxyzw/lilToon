@@ -587,7 +587,7 @@ public class lilToonSetting : ScriptableObject
 
     internal static void SetShaderSettingBeforeBuild(GameObject gameObject)
     {
-        if(File.Exists(lilDirectoryManager.postBuildTempPath) || !ShouldOptimization()) return;
+        if(!ShouldOptimization()) return;
         File.Create(lilDirectoryManager.postBuildTempPath);
 
         lilToonSetting shaderSetting = null;
@@ -644,7 +644,7 @@ public class lilToonSetting : ScriptableObject
 
     internal static void SetShaderSettingBeforeBuild()
     {
-        if(File.Exists(lilDirectoryManager.postBuildTempPath) || !ShouldOptimization()) return;
+        if(!ShouldOptimization()) return;
         File.Create(lilDirectoryManager.postBuildTempPath);
         ApplyShaderSettingOptimized();
     }
@@ -1135,11 +1135,16 @@ public class lilToonSetting : ScriptableObject
 
     internal static bool ShouldOptimization()
     {
+        if(File.Exists(lilDirectoryManager.postBuildTempPath)) return false;
         if(File.Exists(lilDirectoryManager.forceOptimizeBuildTempPath)) return true;
 
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
-        return shaderSetting.isOptimizeInTestBuild || shaderSetting.isDebugOptimize;
+        #if VRC_SDK_VRCSDK3 && !UDON
+            return shaderSetting.isOptimizeInTestBuild && !shaderSetting.isDebugOptimize;
+        #else
+            return !shaderSetting.isDebugOptimize;
+        #endif
     }
 }
 #endif
