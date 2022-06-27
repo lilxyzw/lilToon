@@ -587,45 +587,37 @@ public class lilToonSetting : ScriptableObject
 
     internal static void SetShaderSettingBeforeBuild(GameObject gameObject)
     {
-        if(!ShouldOptimization()) return;
-        File.Create(lilDirectoryManager.postBuildTempPath);
-
-        lilToonSetting shaderSetting = null;
-        InitializeShaderSetting(ref shaderSetting);
-        TurnOffAllShaderSetting(ref shaderSetting);
-
-        // Get materials
-        foreach(var renderer in gameObject.GetComponentsInChildren<Renderer>(true))
+        try
         {
-            foreach(var material in renderer.sharedMaterials)
-            {
-                SetupShaderSettingFromMaterial(material, ref shaderSetting);
-            }
-        }
+            if(!ShouldOptimization()) return;
+            File.Create(lilDirectoryManager.postBuildTempPath);
 
-        // Get animations
-        foreach(var animator in gameObject.GetComponentsInChildren<Animator>(true))
-        {
-            if(animator.runtimeAnimatorController == null) continue;
-            foreach(var clip in animator.runtimeAnimatorController.animationClips)
+            lilToonSetting shaderSetting = null;
+            InitializeShaderSetting(ref shaderSetting);
+            TurnOffAllShaderSetting(ref shaderSetting);
+
+            // Get materials
+            foreach(var renderer in gameObject.GetComponentsInChildren<Renderer>(true))
             {
-                SetupShaderSettingFromAnimationClip(clip, ref shaderSetting, true);
-            }
-        }
-        #if VRC_SDK_VRCSDK3 && !UDON
-            foreach(var descriptor in gameObject.GetComponentsInChildren<VRCAvatarDescriptor>(true))
-            {
-                foreach(var layer in descriptor.specialAnimationLayers)
+                foreach(var material in renderer.sharedMaterials)
                 {
-                    if(layer.animatorController == null) continue;
-                    foreach(var clip in layer.animatorController.animationClips)
-                    {
-                        SetupShaderSettingFromAnimationClip(clip, ref shaderSetting, true);
-                    }
+                    SetupShaderSettingFromMaterial(material, ref shaderSetting);
                 }
-                if(descriptor.customizeAnimationLayers)
+            }
+
+            // Get animations
+            foreach(var animator in gameObject.GetComponentsInChildren<Animator>(true))
+            {
+                if(animator.runtimeAnimatorController == null) continue;
+                foreach(var clip in animator.runtimeAnimatorController.animationClips)
                 {
-                    foreach(var layer in descriptor.baseAnimationLayers)
+                    SetupShaderSettingFromAnimationClip(clip, ref shaderSetting, true);
+                }
+            }
+            #if VRC_SDK_VRCSDK3 && !UDON
+                foreach(var descriptor in gameObject.GetComponentsInChildren<VRCAvatarDescriptor>(true))
+                {
+                    foreach(var layer in descriptor.specialAnimationLayers)
                     {
                         if(layer.animatorController == null) continue;
                         foreach(var clip in layer.animatorController.animationClips)
@@ -633,28 +625,50 @@ public class lilToonSetting : ScriptableObject
                             SetupShaderSettingFromAnimationClip(clip, ref shaderSetting, true);
                         }
                     }
+                    if(descriptor.customizeAnimationLayers)
+                    {
+                        foreach(var layer in descriptor.baseAnimationLayers)
+                        {
+                            if(layer.animatorController == null) continue;
+                            foreach(var clip in layer.animatorController.animationClips)
+                            {
+                                SetupShaderSettingFromAnimationClip(clip, ref shaderSetting, true);
+                            }
+                        }
+                    }
                 }
-            }
-        #endif
+            #endif
 
-        // Apply
-        ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
-        AssetDatabase.Refresh();
+            // Apply
+            ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
+            AssetDatabase.Refresh();
+        }
+        catch
+        {
+            Debug.Log("[lilToon] Optimization failed");
+        }
     }
 
     internal static void SetShaderSettingBeforeBuild()
     {
-        if(!ShouldOptimization()) return;
-        File.Create(lilDirectoryManager.postBuildTempPath);
-        ApplyShaderSettingOptimized();
+        try
+        {
+            if(!ShouldOptimization()) return;
+            File.Create(lilDirectoryManager.postBuildTempPath);
+            ApplyShaderSettingOptimized();
+        }
+        catch
+        {
+            Debug.Log("[lilToon] Optimization failed");
+        }
     }
 
     internal static void SetShaderSettingAfterBuild()
     {
-        if(File.Exists(lilDirectoryManager.forceOptimizeBuildTempPath)) File.Delete(lilDirectoryManager.forceOptimizeBuildTempPath);
         if(!File.Exists(lilDirectoryManager.postBuildTempPath)) return;
         File.Delete(lilDirectoryManager.postBuildTempPath);
         if(!ShouldOptimization()) return;
+        if(File.Exists(lilDirectoryManager.forceOptimizeBuildTempPath)) File.Delete(lilDirectoryManager.forceOptimizeBuildTempPath);
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
         if(shaderSetting.isDebugOptimize)
