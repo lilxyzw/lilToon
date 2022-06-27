@@ -679,11 +679,19 @@ public class lilToonBuildProcessor : IPreprocessBuildWithReport, IPostprocessBui
     {
         public int callbackOrder { get { return 0; } }
 
-        public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
-        {
-            lilToonSetting.SetShaderSettingBeforeBuild();
-            return true;
-        }
+        #if UDON
+            public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
+            {
+                lilToonSetting.SetShaderSettingBeforeBuild();
+                return true;
+            }
+        #else
+            public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
+            {
+                lilToonSetting.ForceOptimization();
+                return true;
+            }
+        #endif
 
         public bool OnPreprocessAvatar(GameObject avatarGameObject)
         {

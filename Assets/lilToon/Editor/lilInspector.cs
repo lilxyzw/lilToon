@@ -2838,8 +2838,14 @@ namespace lilToon
             applyButton.normal.textColor = Color.red;
             applyButton.fontStyle = FontStyle.Bold;
 
+            #if VRC_SDK_VRCSDK3 && !UDON
+                EditorGUI.BeginChangeCheck();
+                ToggleGUI(GetLoc("sShaderSettingOptimizeInTestBuild"), ref shaderSetting.isOptimizeInTestBuild);
+                if(EditorGUI.EndChangeCheck()) lilToonSetting.SaveShaderSetting(shaderSetting);
+            #endif
+
             EditorGUI.BeginChangeCheck();
-            ToggleGUI("[Debug] Apply optimization on the editor", ref shaderSetting.isDebugOptimize);
+            ToggleGUI(GetLoc("sShaderSettingOptimizeInEditor"), ref shaderSetting.isDebugOptimize);
             edSet.isShowShaderSetting = lilEditorGUI.Foldout(GetLoc("sShaderSetting"), edSet.isShowShaderSetting);
             lilEditorGUI.DrawHelpButton(GetLoc("sAnchorShaderSetting"));
             if(edSet.isShowShaderSetting)

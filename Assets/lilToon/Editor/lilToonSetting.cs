@@ -114,6 +114,7 @@ public class lilToonSetting : ScriptableObject
 
     public bool isLocked = false;
     public bool isDebugOptimize = false;
+    public bool isOptimizeInTestBuild = false;
 
     public float defaultAsUnlit = 0.0f;
     public float defaultVertexLightStrength = 0.0f;
@@ -586,7 +587,7 @@ public class lilToonSetting : ScriptableObject
 
     internal static void SetShaderSettingBeforeBuild(GameObject gameObject)
     {
-        if(File.Exists(lilDirectoryManager.postBuildTempPath)) return;
+        if(File.Exists(lilDirectoryManager.postBuildTempPath) || !ShouldOptimization()) return;
         File.Create(lilDirectoryManager.postBuildTempPath);
 
         lilToonSetting shaderSetting = null;
@@ -643,15 +644,17 @@ public class lilToonSetting : ScriptableObject
 
     internal static void SetShaderSettingBeforeBuild()
     {
-        if(File.Exists(lilDirectoryManager.postBuildTempPath)) return;
+        if(File.Exists(lilDirectoryManager.postBuildTempPath) || !ShouldOptimization()) return;
         File.Create(lilDirectoryManager.postBuildTempPath);
         ApplyShaderSettingOptimized();
     }
 
     internal static void SetShaderSettingAfterBuild()
     {
+        if(File.Exists(lilDirectoryManager.forceOptimizeBuildTempPath)) File.Delete(lilDirectoryManager.forceOptimizeBuildTempPath);
         if(!File.Exists(lilDirectoryManager.postBuildTempPath)) return;
         File.Delete(lilDirectoryManager.postBuildTempPath);
+        if(!ShouldOptimization()) return;
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
         if(shaderSetting.isDebugOptimize)
@@ -1122,6 +1125,21 @@ public class lilToonSetting : ScriptableObject
         if(LIL_FEATURE_Tex || !material.HasProperty(propname) || material.GetTexture(propname) == null) return;
         Debug.Log("[lilToon] " + propname + " : " + AssetDatabase.GetAssetPath(material));
         LIL_FEATURE_Tex = true;
+    }
+
+    internal static void ForceOptimization()
+    {
+        if(File.Exists(lilDirectoryManager.forceOptimizeBuildTempPath)) return;
+        File.Create(lilDirectoryManager.forceOptimizeBuildTempPath);
+    }
+
+    internal static bool ShouldOptimization()
+    {
+        if(File.Exists(lilDirectoryManager.forceOptimizeBuildTempPath)) return true;
+
+        lilToonSetting shaderSetting = null;
+        InitializeShaderSetting(ref shaderSetting);
+        return shaderSetting.isOptimizeInTestBuild || shaderSetting.isDebugOptimize;
     }
 }
 #endif
