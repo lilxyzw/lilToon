@@ -8,5 +8,6 @@
   "changelogUrl": "https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/CHANGELOG.md",
   "licensesUrl": "https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/LICENSE",
   "license": "MIT",
-  "keywords": ["Toon", "Shader", "Material"]
+  "keywords": ["Toon", "Shader", "Material"],
+  "url" : "https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master"
 }
