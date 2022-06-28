@@ -168,3 +168,6 @@ lilToonのGUIStyleとして以下のものが利用できます。
 |void DrawLine()|区切り線の描画|
 |void DrawWebButton(string text, string URL)|ウェブボタンの描画|
 |void LoadCustomLanguage(string langFileGUID)|カスタム言語ファイルの追加読み込み|
+
+## 作例
+- [ジオメトリシェーダー利用例（lilToonGeometryFX.unitypackage）](https://github.com/lilxyzw/lilToon/raw/Document/files/lilToonGeometryFX.unitypackage)
