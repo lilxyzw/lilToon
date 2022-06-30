@@ -3,14 +3,8 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Variables from Unity
-#if !defined(SPOT) && !defined(POINT_COOKIE) && LIL_VERTEXLIGHT_MODE == 4
-    TEXTURE2D(_LightTextureB0);
-    SAMPLER(sampler_LightTextureB0);
-#endif
-
 #if !defined(SHADER_API_GLES)
     TEXTURE3D(_DitherMaskLOD);
-    SAMPLER(sampler_DitherMaskLOD);
 #endif
 
 SAMPLER(sampler_trilinear_repeat);

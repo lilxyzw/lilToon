@@ -15,29 +15,9 @@
 // 1 : Dither
 #define LIL_SUBPASS_TRANSPARENT_MODE 0
 
-// Premultiply on ForwardAdd (Default : 1)
-// 0 : Off
-// 1 : On (for BlendOp Max)
-#define LIL_PREMULTIPLY_FA 1
-
-// Light direction mode (Default : 1)
-// 0 : Directional light Only
-// 1 : Blend SH light
-#define LIL_LIGHT_DIRECTION_MODE 1
-
-// SH light direction mode (Default : 1)
-// 0 : Raw
-// 1 : abs(direction.y)
-#define LIL_SHLIGHT_DIRECTION_MODE 1
-
 // Refraction blur
 #define LIL_REFRACTION_SAMPNUM 8
 #define LIL_REFRACTION_GAUSDIST(i) exp(-(float)i*(float)i/(LIL_REFRACTION_SAMPNUM*LIL_REFRACTION_SAMPNUM/2.0))
-
-// MatCap mode (Default : 1)
-// 0 : Simple
-// 1 : Fix Z-Rotation
-#define LIL_MATCAP_MODE 1
 
 // Antialias mode (Default : 1)
 // 0 : Off
@@ -49,19 +29,20 @@
 // 0 : Off
 // 1 : On
 
-// Additional Lights Mode (Default : 1)
-//#define LIL_ADDITIONAL_LIGHT_MODE 1
+// Additional Lights Mode (Default : 3 or 4)
 // 0 : Off
 // 1 : In Vertex Shader
 // 2 : In Fragment Shader
 // 3 : Add to main light
 // 4 : Add to main light with direction
+// 5 : Add to main light with direction in Fragment Shader
 #if defined(LIL_BRP)
-    #define LIL_ADDITIONAL_LIGHT_MODE 1
+    #define LIL_ADDITIONAL_LIGHT_MODE 3
+#elif defined(LIL_HDRP)
+    #define LIL_ADDITIONAL_LIGHT_MODE 5
 #else
     #define LIL_ADDITIONAL_LIGHT_MODE 4
 #endif
-
 
 // Near clip threshold for clipping canceller (Default : 0.1)
 #define LIL_NEARCLIP_THRESHOLD 0.1
@@ -93,6 +74,8 @@
         #define SHADER_LIBRARY_VERSION_MAJOR 11
     #elif UNITY_VERSION < 202120
         #define SHADER_LIBRARY_VERSION_MAJOR 12
+    #elif UNITY_VERSION < 202210
+        #define SHADER_LIBRARY_VERSION_MAJOR 13
     #else
         #define SHADER_LIBRARY_VERSION_MAJOR 0
     #endif
@@ -120,6 +103,9 @@
 // Gamma
 #if defined(UNITY_COLORSPACE_GAMMA)
     #define LIL_COLORSPACE_GAMMA
+    float lilLuminance(float3 rgb) { return dot(rgb, float3(0.22, 0.707, 0.071)); }
+#else
+    float lilLuminance(float3 rgb) { return dot(rgb, float3(0.0396819152, 0.458021790, 0.00609653955)); }
 #endif
 
 // Initialize struct
@@ -140,6 +126,8 @@
         #define LIL_USE_ADDITIONALLIGHT_MAIN
     #elif LIL_ADDITIONAL_LIGHT_MODE == 4
         #define LIL_USE_ADDITIONALLIGHT_MAINDIR
+    #elif LIL_ADDITIONAL_LIGHT_MODE == 5
+        #define LIL_USE_ADDITIONALLIGHT_MAINDIR_PS
     #endif
 #endif
 
@@ -325,6 +313,11 @@
     {
         return false;
     }
+
+    float lilSampleDither(TEXTURE3D(tex), float2 positionCS, float alpha)
+    {
+        return tex3D(tex, float3(positionCS*0.25,alpha*0.9375)).a;
+    }
 #else
     #define LIL_SAMPLE_1D(tex,samp,uv)                      tex.Sample(samp,uv)
     #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)              tex.SampleLevel(samp,uv,lod)
@@ -381,6 +374,13 @@
         uint width, height, element;
         tex.GetDimensions(width, height, element);
         return (abs(width - LIL_SCREENPARAMS.x) + abs(height - LIL_SCREENPARAMS.y)) < 1;
+    }
+
+    float lilSampleDither(TEXTURE3D(tex), float2 positionCS, float alpha)
+    {
+        uint3 uv = uint3(positionCS, alpha*0.9375*16);
+        uv.xy = uv.xy % 4;
+        return tex[uv].a;
     }
 #endif
 
@@ -863,7 +863,7 @@ float3 lilGetObjectPosition()
     #define LIL_SHADOW_CASTER_FRAGMENT(i)           SHADOW_CASTER_FRAGMENT(i)
 
     // Additional Light
-    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
+    void lilGetAdditionalLights(float3 positionWS, float4 positionCS, inout float3 lightColor, inout float3 lightDirection)
     {
         float4 toLightX = unity_4LightPosX0 - positionWS.x;
         float4 toLightY = unity_4LightPosY0 - positionWS.y;
@@ -876,35 +876,23 @@ float3 lilGetObjectPosition()
         //float4 atten = 1.0 / (1.0 + lengthSq * unity_4LightAtten0);
         float4 atten = saturate(saturate((25.0 - lengthSq * unity_4LightAtten0) * 0.111375) / (0.987725 + lengthSq * unity_4LightAtten0));
 
-        float3 additionalLightColor;
-        additionalLightColor =                                 unity_LightColor[0].rgb * atten.x;
-        additionalLightColor =          additionalLightColor + unity_LightColor[1].rgb * atten.y;
-        additionalLightColor =          additionalLightColor + unity_LightColor[2].rgb * atten.z;
-        additionalLightColor = saturate(additionalLightColor + unity_LightColor[3].rgb * atten.w);
+        lightColor += unity_LightColor[0].rgb * atten.x;
+        lightColor += unity_LightColor[1].rgb * atten.y;
+        lightColor += unity_LightColor[2].rgb * atten.z;
+        lightColor += unity_LightColor[3].rgb * atten.w;
 
-        return additionalLightColor;
+        lightDirection += lilLuminance(unity_LightColor[0].rgb) * atten.x / sqrt(lengthSq.x) * float3(toLightX.x, toLightY.x, toLightZ.x);
+        lightDirection += lilLuminance(unity_LightColor[1].rgb) * atten.y / sqrt(lengthSq.y) * float3(toLightX.y, toLightY.y, toLightZ.y);
+        lightDirection += lilLuminance(unity_LightColor[2].rgb) * atten.z / sqrt(lengthSq.z) * float3(toLightX.z, toLightY.z, toLightZ.z);
+        lightDirection += lilLuminance(unity_LightColor[3].rgb) * atten.w / sqrt(lengthSq.w) * float3(toLightX.w, toLightY.w, toLightZ.w);
     }
 
-    void lilGetAdditionalLights(float3 positionWS, float4 positionCS, inout float3 lightColor, inout float3 lightDirection)
+    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
     {
-        lightColor + lilGetAdditionalLights(positionWS, positionCS);
-
-        float3 objPositionWS = lilGetObjectPosition();
-        float4 toLightX = unity_4LightPosX0 - objPositionWS.x;
-        float4 toLightY = unity_4LightPosY0 - objPositionWS.y;
-        float4 toLightZ = unity_4LightPosZ0 - objPositionWS.z;
-
-        float4 lengthSq = toLightX * toLightX + 0.000001;
-        lengthSq += toLightY * toLightY;
-        lengthSq += toLightZ * toLightZ;
-
-        //float4 atten = 1.0 / (1.0 + lengthSq * unity_4LightAtten0);
-        float4 atten = saturate(saturate((25.0 - lengthSq * unity_4LightAtten0) * 0.111375) / (0.987725 + lengthSq * unity_4LightAtten0));
-
-        lightDirection += dot(unity_LightColor[0].rgb, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * atten.x / sqrt(lengthSq.x) * float3(toLightX.x, toLightY.x, toLightZ.x);
-        lightDirection += dot(unity_LightColor[1].rgb, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * atten.y / sqrt(lengthSq.y) * float3(toLightX.y, toLightY.y, toLightZ.y);
-        lightDirection += dot(unity_LightColor[2].rgb, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * atten.z / sqrt(lengthSq.z) * float3(toLightX.z, toLightY.z, toLightZ.z);
-        lightDirection += dot(unity_LightColor[3].rgb, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * atten.w / sqrt(lengthSq.w) * float3(toLightX.w, toLightY.w, toLightZ.w);
+        float3 lightColor = 0.0;
+        float3 lightDirection = 0.0;
+        lilGetAdditionalLights(positionWS, positionCS, lightColor, lightDirection);
+        return saturate(lightColor);
     }
 
     // Lightmap
@@ -1179,7 +1167,7 @@ float3 lilGetObjectPosition()
     {
         lilNPRLightingData lightingData;
         lightingData.color = 0.0;
-        lightingData.direction = float3(0.0, 0.001, 0.0);
+        lightingData.direction = 0.0;
         if(featureFlags & LIGHTFEATUREFLAGS_DIRECTIONAL)
         {
             for(uint i = 0; i < _DirectionalLightCount; ++i)
@@ -1192,7 +1180,7 @@ float3 lilGetObjectPosition()
             }
         }
 
-        lightingData.direction = normalize(lightingData.direction);
+        lightingData.direction = dot(lightingData.direction,lightingData.direction) < 0.000001 ? 0 : normalize(lightingData.direction);
 
         #ifdef LIGHT_SIMULATE_HQ
             lightingData.color = 0.0;
@@ -1278,9 +1266,8 @@ float3 lilGetObjectPosition()
         return lighting;
     }
 
-    float3 lilGetPunctualLightColor(float3 positionWS, uint renderingLayers, uint featureFlags)
+    void lilGetPunctualLightColor(inout lilNPRLightingData dst, float3 positionWS, uint renderingLayers, uint featureFlags)
     {
-        float3 lightColor = 0.0;
         if(featureFlags & LIGHTFEATUREFLAGS_PUNCTUAL)
         {
             uint lightStart = 0;
@@ -1309,36 +1296,42 @@ float3 lilGetObjectPosition()
                     lightListOffset++;
                     if((lightData.lightLayers & renderingLayers) != 0)
                     {
-                        lilNPRLightingData lighting = lilGetNPRPunctualLight(positionWS, lightData);
-                        lightColor += lighting.color;
+                        lilNPRLightingData src = lilGetNPRPunctualLight(positionWS, lightData);
+                        lilBlendlilNPRLightingData(dst, src);
                     }
                 }
             }
         }
-
-        return lightColor;
     }
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Area Light (Line / Rectangle)
-    float3 lilGetLineLightColor(float3 positionWS, LightData lightData)
+    lilNPRLightingData lilGetLineLightColor(float3 positionWS, LightData lightData)
     {
-        float3 lightColor = 0.0;
+        lilNPRLightingData lighting = (lilNPRLightingData)0;
+        float3 unL = lightData.positionRWS - positionWS;
         float intensity = EllipsoidalDistanceAttenuation(
-            lightData.positionRWS - positionWS,
+            unL,
             lightData.right,
-            saturate(lightData.range / (lightData.range + (0.5 * lightData.size.x))),
+            saturate(lightData.range / (lightData.range + 0.5 * lightData.size.x)),
             lightData.rangeAttenuationScale,
             lightData.rangeAttenuationBias);
             #if !defined(LIL_HDRP_IGNORE_LIGHTDIMMER)
                 intensity *= lightData.diffuseDimmer;
             #endif
-        lightColor = lightData.color * intensity;
-        return lightColor;
+        lighting.color = lightData.color * intensity;
+
+        float halfLength = 0.5 * lightData.size.x;
+        //float3 nearestPoint = lightData.positionRWS - lightData.right * clamp(dot(unL, lightData.right), -halfLength, halfLength);
+        float3 nearestPoint = lightData.positionRWS - lightData.right * clamp(dot(unL, lightData.right), -halfLength, halfLength) * 0.75;
+        lighting.direction = normalize(nearestPoint - positionWS);
+
+        return lighting;
     }
 
-    float3 lilGetRectLightColor(float3 positionWS, LightData lightData)
+    lilNPRLightingData lilGetRectLightColor(float3 positionWS, LightData lightData)
     {
+        lilNPRLightingData lighting = (lilNPRLightingData)0;
         float3 lightColor = 0.0;
         #if SHADEROPTIONS_BARN_DOOR
             RectangularLightApplyBarnDoor(lightData, positionWS);
@@ -1347,26 +1340,32 @@ float3 lilGetObjectPosition()
         if(dot(lightData.forward, unL) < FLT_EPS)
         {
             float3x3 lightToWorld = float3x3(lightData.right, lightData.up, -lightData.forward);
-            unL = mul(unL, transpose(lightToWorld));
+            float3 unL2 = mul(unL, transpose(lightToWorld));
             float halfWidth  = lightData.size.x * 0.5;
             float halfHeight = lightData.size.y * 0.5;
+
             float3 invHalfDim = rcp(float3(lightData.range + halfWidth, lightData.range + halfHeight, lightData.range));
             #ifdef ELLIPSOIDAL_ATTENUATION
-                float intensity = EllipsoidalDistanceAttenuation(unL, invHalfDim, lightData.rangeAttenuationScale, lightData.rangeAttenuationBias);
+                float intensity = EllipsoidalDistanceAttenuation(unL2, invHalfDim, lightData.rangeAttenuationScale, lightData.rangeAttenuationBias);
             #else
-                float intensity = BoxDistanceAttenuation(unL, invHalfDim, lightData.rangeAttenuationScale, lightData.rangeAttenuationBias);
+                float intensity = BoxDistanceAttenuation(unL2, invHalfDim, lightData.rangeAttenuationScale, lightData.rangeAttenuationBias);
             #endif
             #if !defined(LIL_HDRP_IGNORE_LIGHTDIMMER)
                 intensity *= lightData.diffuseDimmer;
             #endif
-            lightColor = lightData.color * intensity;
+            lighting.color = lightData.color * intensity;
+
+            float2 halfLength = 0.5 * lightData.size.xy;
+            float3 nearestPoint = lightData.positionRWS
+                - lightData.right * clamp(dot(unL, lightData.right), -halfLength.x, halfLength.x) * 0.75
+                - lightData.up * clamp(dot(unL, lightData.up), -halfLength.y, halfLength.y) * 0.75;
+            lighting.direction = normalize(nearestPoint - positionWS);
         }
-        return lightColor;
+        return lighting;
     }
 
-    float3 lilGetAreaLightColor(float3 positionWS, uint renderingLayers, uint featureFlags)
+    void lilGetAreaLightColor(inout lilNPRLightingData dst, float3 positionWS, uint renderingLayers, uint featureFlags)
     {
-        float3 lightColor = 0.0;
         #if SHADEROPTIONS_AREA_LIGHTS
             if(featureFlags & LIGHTFEATUREFLAGS_AREA)
             {
@@ -1384,7 +1383,8 @@ float3 lilGetObjectPosition()
                         #endif
                         if((lightData.lightLayers & renderingLayers) != 0)
                         {
-                            lightColor += lilGetLineLightColor(positionWS, lightData);
+                            lilNPRLightingData lighting = lilGetLineLightColor(positionWS, lightData);
+                            lilBlendlilNPRLightingData(dst, lighting);
                         }
                         lightData = FetchLight(_PunctualLightCount, min(++i, last));
                     }
@@ -1394,14 +1394,14 @@ float3 lilGetObjectPosition()
                         lightData.lightType = GPULIGHTTYPE_RECTANGLE;
                         if((lightData.lightLayers & renderingLayers) != 0)
                         {
-                            lightColor += lilGetRectLightColor(positionWS, lightData);
+                            lilNPRLightingData lighting = lilGetRectLightColor(positionWS, lightData);
+                            lilBlendlilNPRLightingData(dst, lighting);
                         }
                         lightData = FetchLight(_PunctualLightCount, min(++i, last));
                     }
                 }
             }
         #endif
-        return lightColor;
     }
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -1502,30 +1502,25 @@ float3 lilGetObjectPosition()
     #define LIL_SHADOW_CASTER_FRAGMENT(i)
 
     // Additional Light
-    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
-    {
-        uint renderingLayers = lilGetRenderingLayer();
-        uint featureFlags = LIGHT_FEATURE_MASK_FLAGS_OPAQUE;
-
-        float3 additionalLightColor = 0.0;
-        additionalLightColor += lilGetPunctualLightColor(positionWS, renderingLayers, featureFlags);
-        additionalLightColor += lilGetAreaLightColor(positionWS, renderingLayers, featureFlags);
-        additionalLightColor *= 0.75 * GetCurrentExposureMultiplier();
-
-        return additionalLightColor;
-    }
-
     void lilGetAdditionalLights(float3 positionWS, float4 positionCS, inout float3 lightColor, inout float3 lightDirection)
     {
         uint renderingLayers = lilGetRenderingLayer();
         uint featureFlags = LIGHT_FEATURE_MASK_FLAGS_OPAQUE;
 
-        float3 additionalLightColor = 0.0;
-        additionalLightColor += lilGetPunctualLightColor(positionWS, renderingLayers, featureFlags);
-        additionalLightColor += lilGetAreaLightColor(positionWS, renderingLayers, featureFlags);
-        additionalLightColor *= 0.75 * GetCurrentExposureMultiplier();
+        lilNPRLightingData lighting;
+        LIL_INITIALIZE_STRUCT(lilNPRLightingData, lighting);
+        lilGetPunctualLightColor(lighting, positionWS, renderingLayers, featureFlags);
+        lilGetAreaLightColor(lighting, positionWS, renderingLayers, featureFlags);
+        lightColor += lighting.color * 0.75 * GetCurrentExposureMultiplier();
+        lightDirection += lighting.direction * 0.75;
+    }
 
-        lightColor += additionalLightColor;
+    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
+    {
+        float3 lightColor = 0.0;
+        float3 lightDirection = 0.0;
+        lilGetAdditionalLights(positionWS, positionCS, lightColor, lightDirection);
+        return lightColor;
     }
 
     // Lightmap
@@ -1639,55 +1634,6 @@ float3 lilGetObjectPosition()
     #define LIL_SHADOW_CASTER_FRAGMENT(i)       return 0
 
     // Additional Light
-    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
-    {
-        float3 additionalLightColor = 0.0;
-        uint renderingLayers = lilGetRenderingLayer();
-
-        #if defined(_ADDITIONAL_LIGHTS) || defined(_ADDITIONAL_LIGHTS_VERTEX)
-            uint lightsCount = GetAdditionalLightsCount();
-            #if defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
-                ClusteredLightLoop cll = ClusteredLightLoopInit(GetNormalizedScreenSpaceUV(positionCS), positionWS);
-                while(ClusteredLightLoopNextWord(cll))
-                {
-                    while(ClusteredLightLoopNextLight(cll))
-                    {
-                        uint lightIndex = ClusteredLightLoopGetLightIndex(cll);
-            #elif defined(_USE_WEBGL1_LIGHTS) && _USE_WEBGL1_LIGHTS
-                for(uint lightIndex = 0; lightIndex < _WEBGL1_MAX_LIGHTS; lightIndex++)
-                {
-                    if(lightIndex >= lightsCount) break;
-            #else
-                for(uint lightIndex = 0; lightIndex < lightsCount; lightIndex++)
-                {
-            #endif
-
-                Light light = GetAdditionalLight(lightIndex, positionWS);
-                #if VERSION_GREATER_EQUAL(12, 0)
-                    if((light.layerMask & renderingLayers) != 0)
-                #endif
-                additionalLightColor += light.color * light.distanceAttenuation;
-            }
-
-            #if defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
-                }
-            #endif
-        #endif
-
-        #if defined(_ADDITIONAL_LIGHTS) && defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
-            for(uint lightIndex = 0; lightIndex < min(_AdditionalLightsDirectionalCount, MAX_VISIBLE_LIGHTS); lightIndex++)
-            {
-                Light light = GetAdditionalLight(lightIndex, positionWS);
-                #if VERSION_GREATER_EQUAL(12, 0)
-                    if((light.layerMask & renderingLayers) != 0)
-                #endif
-                additionalLightColor += light.color * light.distanceAttenuation;
-            }
-        #endif
-
-        return additionalLightColor;
-    }
-
     void lilGetAdditionalLights(float3 positionWS, float4 positionCS, inout float3 lightColor, inout float3 lightDirection)
     {
         uint renderingLayers = lilGetRenderingLayer();
@@ -1716,9 +1662,7 @@ float3 lilGetObjectPosition()
                     if((light.layerMask & renderingLayers) != 0)
                 #endif
                 lightColor += light.color * light.distanceAttenuation;
-
-                Light objLight = GetAdditionalLight(lightIndex, objPositionWS);
-                lightDirection += dot(objLight.color, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * objLight.distanceAttenuation * objLight.direction;
+                lightDirection += dot(light.color, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * light.distanceAttenuation * light.direction;
             }
 
             #if defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
@@ -1736,6 +1680,14 @@ float3 lilGetObjectPosition()
                 lightColor += light.color * light.distanceAttenuation;
             }
         #endif
+    }
+
+    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
+    {
+        float3 lightColor = 0.0;
+        float3 lightDirection = 0.0;
+        lilGetAdditionalLights(positionWS, positionCS, lightColor, lightDirection);
+        return lightColor;
     }
 
     // Lightmap
@@ -1937,15 +1889,20 @@ struct lilLightData
     #define LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o) \
         float3 additionalLightDirection = 0.0; \
         lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(LIL_SCREENPARAMS.xy,1.0,1.0), o.lightColor, additionalLightDirection)
+    #define LIL_CORRECT_LIGHTDIRECTION_PS(lightDirection) lightDirection = normalize(lightDirection)
 #elif defined(LIL_USE_ADDITIONALLIGHT_MAINDIR)
     #define LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o) \
-        lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(LIL_SCREENPARAMS.xy,1.0,1.0), o.lightColor, o.lightDirection); \
-        o.lightDirection = normalize(o.lightDirection)
+        lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(LIL_SCREENPARAMS.xy,1.0,1.0), o.lightColor, o.lightDirection)
+    #define LIL_CORRECT_LIGHTDIRECTION_PS(lightDirection) lightDirection = normalize(lightDirection)
+#elif defined(LIL_USE_ADDITIONALLIGHT_MAINDIR_PS)
+    #define LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o)
+    #define LIL_CORRECT_LIGHTDIRECTION_PS(lightDirection) lightDirection = normalize(lightDirection)
 #else
     #define LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o)
+    #define LIL_CORRECT_LIGHTDIRECTION_PS(lightDirection)
 #endif
 
-#if defined(LIL_USE_LIGHTMAP)
+#if defined(LIL_USE_LIGHTMAP) || defined(LIL_USE_ADDITIONALLIGHT_MAINDIR_PS)
     #define LIL_CORRECT_LIGHTCOLOR_VS(lightColor)
     #define LIL_CORRECT_LIGHTCOLOR_PS(lightColor) \
         lightColor = clamp(lightColor, _LightMinLimit, _LightMaxLimit); \
@@ -1959,12 +1916,6 @@ struct lilLightData
     #define LIL_CORRECT_LIGHTCOLOR_PS(lightColor)
 #endif
 
-#if LIL_SHLIGHT_DIRECTION_MODE == 1
-    #define LIL_CORRECT_LIGHTDIR(dir) dir = lilGetFixedLightDirection(_LightDirectionOverride, false)
-#else
-    #define LIL_CORRECT_LIGHTDIR(dir)
-#endif
-
 #if defined(LIL_PASS_FORWARDADD)
     #define LIL_CALC_MAINLIGHT(i,o)
 #elif defined(LIL_HDRP)
@@ -1973,10 +1924,11 @@ struct lilLightData
         lilGetLightDirectionAndColor(o.lightDirection, o.lightColor, posInput); \
         o.lightColor *= _lilDirectionalLightStrength; \
         float3 lightDirectionCopy = o.lightDirection; \
-        o.lightDirection = normalize(o.lightDirection * Luminance(o.lightColor) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + lilGetCustomLightDirection(_LightDirectionOverride)); \
-        float3 shLightColor = lilShadeSH9(float4(o.lightDirection * 0.666666, 1.0)); \
-        o.lightColor += shLightColor; \
-        o.indLightColor = lilShadeSH9(float4(-o.lightDirection * 0.666666, 1.0)); \
+        o.lightDirection = o.lightDirection * Luminance(o.lightColor) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333; \
+        float3 lightDirectionSH = dot(o.lightDirection,o.lightDirection) < 0.000001 ? 0 : normalize(o.lightDirection); \
+        o.lightDirection += lilGetCustomLightDirection(_LightDirectionOverride); \
+        o.lightColor += lilShadeSH9(float4(lightDirectionSH * 0.666666, 1.0)); \
+        o.indLightColor = lilShadeSH9(float4(-lightDirectionSH * 0.666666, 1.0)); \
         o.indLightColor = saturate(o.indLightColor / Luminance(o.lightColor)); \
         o.lightColor = min(o.lightColor, _BeforeExposureLimit); \
         o.lightColor *= GetCurrentExposureMultiplier(); \
@@ -1995,12 +1947,11 @@ struct lilLightData
 #else
     #define LIL_CALC_MAINLIGHT(i,o) \
         lilLightData o; \
-        o.lightDirection = lilGetLightDirection(_LightDirectionOverride); \
+        o.lightDirection = normalize(LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR) + unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333); \
         LIL_CALC_TWOLIGHT(i,o); \
-        LIL_CORRECT_LIGHTDIR(o.lightDirection); \
+        o.lightDirection = lilGetFixedLightDirection(_LightDirectionOverride, false); \
         LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o); \
-        LIL_CORRECT_LIGHTCOLOR_VS(o.lightColor); \
-        o.lightDirection = normalize(o.lightDirection)
+        LIL_CORRECT_LIGHTCOLOR_VS(o.lightColor)
 #endif
 
 // Main Light in PS (Color / Direction / Attenuation)
@@ -2019,7 +1970,8 @@ struct lilLightData
         lc = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc += lightmapColor * GetCurrentExposureMultiplier(); \
-        LIL_CORRECT_LIGHTCOLOR_PS(lc)
+        LIL_CORRECT_LIGHTCOLOR_PS(lc); \
+        LIL_CORRECT_LIGHTDIRECTION_PS(ld)
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SHADOWMASK)
     // Mixed Lightmap (Shadowmask)
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
@@ -2028,6 +1980,7 @@ struct lilLightData
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc = max(lc, lightmapColor); \
         LIL_CORRECT_LIGHTCOLOR_PS(lc); \
+        LIL_CORRECT_LIGHTDIRECTION_PS(ld); \
         atten = min(atten, LIL_SAMPLE_LIGHTMAP(LIL_SHADOWMAP_TEX,LIL_LIGHTMAP_SAMP,fd.uv1).r)
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE) && defined(LIL_USE_DYNAMICLIGHTMAP)
     // Mixed Lightmap (Subtractive)
@@ -2039,6 +1992,7 @@ struct lilLightData
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc = max(lc, lightmapColor); \
         LIL_CORRECT_LIGHTCOLOR_PS(lc); \
+        LIL_CORRECT_LIGHTDIRECTION_PS(ld); \
         float3 lightmapShadowThreshold = LIL_MAINLIGHT_COLOR*0.5; \
         float3 lightmapS = (lightmapColor - lightmapShadowThreshold) / (LIL_MAINLIGHT_COLOR - lightmapShadowThreshold); \
         float lightmapAttenuation = saturate((lightmapS.r+lightmapS.g+lightmapS.b)/3.0); \
@@ -2052,6 +2006,7 @@ struct lilLightData
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc = max(lc, lightmapColor); \
         LIL_CORRECT_LIGHTCOLOR_PS(lc); \
+        LIL_CORRECT_LIGHTDIRECTION_PS(ld); \
         float3 lightmapS = (lightmapColor - lilShadeSH9(input.normalWS)) / LIL_MAINLIGHT_COLOR; \
         float lightmapAttenuation = saturate((lightmapS.r+lightmapS.g+lightmapS.b)/3.0); \
         atten = min(atten, lightmapAttenuation)
@@ -2064,7 +2019,8 @@ struct lilLightData
         float3 lightmapDirection = lilGetLightMapDirection(input.uv1); \
         lc = saturate(lc + lightmapColor); \
         LIL_CORRECT_LIGHTCOLOR_PS(lc); \
-        ld = normalize(ld + lightmapDirection * lilLuminance(lightmapColor))
+        ld = normalize(ld + lightmapDirection * lilLuminance(lightmapColor)); \
+        LIL_CORRECT_LIGHTDIRECTION_PS(ld)
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_SHADOW)
     // Mixed Lightmap (Baked Indirect) with shadow
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
@@ -2072,7 +2028,8 @@ struct lilLightData
         lc = LIL_MAINLIGHT_COLOR; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc = saturate(lc + max(lightmapColor,lilGetSHToon(_LightDirectionOverride))); \
-        LIL_CORRECT_LIGHTCOLOR_PS(lc)
+        LIL_CORRECT_LIGHTCOLOR_PS(lc); \
+        LIL_CORRECT_LIGHTDIRECTION_PS(ld)
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_DYNAMICLIGHTMAP)
     // Mixed Lightmap (Baked Indirect) or Lightmap (Non-Directional)
     #undef LIL_USE_DYNAMICLIGHTMAP
@@ -2081,7 +2038,8 @@ struct lilLightData
         lc = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc = saturate(lc + lightmapColor); \
-        LIL_CORRECT_LIGHTCOLOR_PS(lc)
+        LIL_CORRECT_LIGHTCOLOR_PS(lc); \
+        LIL_CORRECT_LIGHTDIRECTION_PS(ld)
 #elif defined(LIL_USE_LIGHTMAP)
     // Mixed Lightmap (Baked Indirect) or Lightmap (Non-Directional)
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
@@ -2089,12 +2047,28 @@ struct lilLightData
         lc = LIL_MAINLIGHT_COLOR; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc = saturate(lc + lightmapColor); \
-        LIL_CORRECT_LIGHTCOLOR_PS(lc)
+        LIL_CORRECT_LIGHTCOLOR_PS(lc); \
+        LIL_CORRECT_LIGHTDIRECTION_PS(ld)
+#elif defined(LIL_USE_ADDITIONALLIGHT_MAINDIR_PS)
+    // Realtime
+    #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
+        LIL_LIGHT_ATTENUATION(atten, input); \
+        lc = input.lightColor; \
+        lilGetAdditionalLights(input.positionWS, input.positionCS, lc, ld); \
+        LIL_CORRECT_LIGHTCOLOR_PS(lc); \
+        LIL_CORRECT_LIGHTDIRECTION_PS(ld)
+#elif defined(LIL_USE_ADDITIONALLIGHT_MAINDIR)
+    // Realtime
+    #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
+        LIL_LIGHT_ATTENUATION(atten, input); \
+        lc = input.lightColor; \
+        LIL_CORRECT_LIGHTDIRECTION_PS(ld)
 #else
     // Realtime
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
         LIL_LIGHT_ATTENUATION(atten, input); \
-        lc = input.lightColor;
+        lc = input.lightColor; \
+        LIL_CORRECT_LIGHTDIRECTION_PS(ld)
 #endif
 
 // Additional Light VS and Fog

@@ -53,12 +53,12 @@
             fd.col.a = saturate(fd.col.a*5.0);
         #endif
         #if LIL_SUBPASS_TRANSPARENT_MODE == 1 || defined(SHADERPASS) && (SHADERPASS ==  SHADERPASS_SHADOWS)
-            alphaRef = LIL_SAMPLE_3D(_DitherMaskLOD, sampler_DitherMaskLOD, float3(input.positionCS.xy*0.25,fd.col.a*0.9375)).a;
+            alphaRef = lilSampleDither(_DitherMaskLOD, input.positionCS.xy, fd.col.a);
         #elif LIL_SUBPASS_TRANSPARENT_MODE == 0 && defined(LIL_PASS_SHADOWCASTER_INCLUDED)
             #if defined(SHADOWS_DEPTH)
                 if(LIL_MATRIX_P._m33 != 0.0)
             #endif
-            alphaRef = LIL_SAMPLE_3D(_DitherMaskLOD, sampler_DitherMaskLOD, float3(input.positionCS.xy*0.25,fd.col.a*0.9375)).a;
+            alphaRef = lilSampleDither(_DitherMaskLOD, input.positionCS.xy, fd.col.a);
         #endif
         clip(alphaRef - _SubpassCutoff);
     #endif

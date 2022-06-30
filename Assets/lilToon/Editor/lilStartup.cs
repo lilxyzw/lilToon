@@ -156,7 +156,8 @@ namespace lilToon
         private static void MigrateMaterial(Material material)
         {
             if(material.shader == null || !material.shader.name.Contains("lilToon")) return;
-            int version = material.HasProperty("_lilToonVersion") ? (int)material.GetFloat("_lilToonVersion") : 0;
+            int version = 0;
+            if(material.HasProperty("_lilToonVersion")) version = (int)material.GetFloat("_lilToonVersion");
             if(version >= lilConstants.currentVersionValue) return;
             Debug.Log("[lilToon]Run migration: " + material.name);
             material.SetFloat("_lilToonVersion", lilConstants.currentVersionValue);
