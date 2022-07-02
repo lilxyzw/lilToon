@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.3.2] - 2022-06-xx
+### Added
+- ノーマルマップ2ndに`UV Mode`を追加
+
 ### 変更
 - ノーマルマップ2ndのサンプラーを`Repeat`に変更
 - HDRPでポイントライト・スポットライト・エリアライトの計算をピクセルシェーダーに移動し、ライト方向の計算も行うようにした

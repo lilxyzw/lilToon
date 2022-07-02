@@ -416,7 +416,6 @@ CBUFFER_START(UnityPerMaterial)
         float   _BumpScale;
     #endif
     #if defined(LIL_MULTI_INPUTS_NORMAL_2ND)
-        uint    _Bump2ndMap_UVMode;
         float   _Bump2ndScale;
     #endif
     #if defined(LIL_MULTI_INPUTS_ANISOTROPY)
@@ -570,6 +569,9 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     #if defined(LIL_MULTI_INPUTS_SHADOW)
         uint    _ShadowMaskType;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_NORMAL_2ND)
+        uint    _Bump2ndMap_UVMode;
     #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION)
         uint    _ReflectionBlendMode;
@@ -1017,7 +1019,6 @@ CBUFFER_START(UnityPerMaterial)
         float   _BumpScale;
     #endif
     #if defined(LIL_FEATURE_NORMAL_2ND)
-        uint    _Bump2ndMap_UVMode;
         float   _Bump2ndScale;
     #endif
     #if defined(LIL_FEATURE_ANISOTROPY)
@@ -1187,6 +1188,9 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     #if defined(LIL_FEATURE_SHADOW)
         uint    _ShadowMaskType;
+    #endif
+    #if defined(LIL_FEATURE_NORMAL_2ND)
+        uint    _Bump2ndMap_UVMode;
     #endif
     #if defined(LIL_FEATURE_REFLECTION)
         uint    _ReflectionBlendMode;

@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.3.2] - 2022-06-xx
+### Added
+- `UV Mode` for normal map 2nd
+
 ### Changed
 - Changed the sampler of the normal map 2nd to `Repeat`
 - Changed to move the calculation of point light, spot light and area light to the pixel shader in HDRP and also calculate the light direction

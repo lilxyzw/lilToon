@@ -1941,7 +1941,7 @@ namespace lilToon
                     if(useBump2ndMap.floatValue == 1)
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                        TextureGUI(ref edSet.isShowBump2ndMap, normalMapContent, bump2ndMap, bump2ndScale, null, bump2ndMap_UVMode, true, false);
+                        TextureGUI(ref edSet.isShowBump2ndMap, normalMapContent, bump2ndMap, bump2ndScale, bump2ndMap_UVMode, "UV Mode|UV0|UV1|UV2|UV3");
                         lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowBump2ndScaleMask, maskStrengthContent, bump2ndScaleMask);
                         EditorGUILayout.EndVertical();
@@ -5901,7 +5901,6 @@ namespace lilToon
                     {
                         m_MaterialEditor.TexturePropertySingleLine(maskBlendContent, shadowStrengthMask);
                         EditorGUI.indentLevel += 2;
-                            m_MaterialEditor.ShaderProperty(shadowStrengthMaskLOD, "LOD");
                             m_MaterialEditor.ShaderProperty(shadowFlatBorder, GetLoc("sBorder"));
                             m_MaterialEditor.ShaderProperty(shadowFlatBlur, GetLoc("sBlur"));
                         EditorGUI.indentLevel -= 2;
@@ -5910,14 +5909,12 @@ namespace lilToon
                     else
                     {
                         m_MaterialEditor.TexturePropertySingleLine(maskStrengthContent, shadowStrengthMask, shadowStrength);
-                        m_MaterialEditor.ShaderProperty(shadowStrengthMaskLOD, "LOD", 2);
                     }
                     lilEditorGUI.DrawLine();
                     m_MaterialEditor.TexturePropertySingleLine(shadow1stColorRGBAContent, shadowColorTex, shadowColor);
                     EditorGUI.indentLevel += 2;
                         m_MaterialEditor.ShaderProperty(shadowBorder, GetLoc("sBorder"));
                         m_MaterialEditor.ShaderProperty(shadowBlur, GetLoc("sBlur"));
-                        m_MaterialEditor.ShaderProperty(shadowNormalStrength, GetLoc("sNormalStrength"));
                         m_MaterialEditor.ShaderProperty(shadowReceive, GetLoc("sReceiveShadow"));
                     EditorGUI.indentLevel -= 2;
                     lilEditorGUI.DrawLine();
@@ -5928,7 +5925,6 @@ namespace lilToon
                         {
                             m_MaterialEditor.ShaderProperty(shadow2ndBorder, GetLoc("sBorder"));
                             m_MaterialEditor.ShaderProperty(shadow2ndBlur, GetLoc("sBlur"));
-                            m_MaterialEditor.ShaderProperty(shadow2ndNormalStrength, GetLoc("sNormalStrength"));
                             m_MaterialEditor.ShaderProperty(shadow2ndReceive, GetLoc("sReceiveShadow"));
                         }
                     EditorGUI.indentLevel -= 2;
@@ -5940,7 +5936,6 @@ namespace lilToon
                         {
                             m_MaterialEditor.ShaderProperty(shadow3rdBorder, GetLoc("sBorder"));
                             m_MaterialEditor.ShaderProperty(shadow3rdBlur, GetLoc("sBlur"));
-                            m_MaterialEditor.ShaderProperty(shadow3rdNormalStrength, GetLoc("sNormalStrength"));
                             m_MaterialEditor.ShaderProperty(shadow3rdReceive, GetLoc("sReceiveShadow"));
                         }
                     EditorGUI.indentLevel -= 2;
@@ -5949,7 +5944,6 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(shadowBorderRange, GetLoc("sShadowBorderRange"));
                     lilEditorGUI.DrawLine();
                     m_MaterialEditor.ShaderProperty(shadowMainStrength, GetLoc("sContrast"));
-                    m_MaterialEditor.ShaderProperty(shadowEnvStrength, GetLoc("sShadowEnvStrength"));
                     EditorGUILayout.EndVertical();
                 }
                 else if(useShadow.floatValue == 1)
@@ -6561,6 +6555,11 @@ namespace lilToon
         private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba)
         {
             lilEditorGUI.TextureGUI(m_MaterialEditor, isCustomEditor, ref isShow, guiContent, textureName, rgba);
+        }
+
+        private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty uvMode, string sUVMode)
+        {
+            lilEditorGUI.TextureGUI(m_MaterialEditor, isCustomEditor, ref isShow, guiContent, textureName, rgba, uvMode, sUVMode);
         }
 
         private void TextureGUI(ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate)

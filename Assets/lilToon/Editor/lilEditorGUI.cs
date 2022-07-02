@@ -504,6 +504,18 @@ namespace lilToon
             }
         }
 
+        public static void TextureGUI(MaterialEditor m_MaterialEditor, bool isCustomEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty uvMode, string sUVMode)
+        {
+            isShow = DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
+            if(isShow)
+            {
+                EditorGUI.indentLevel++;
+                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
+                m_MaterialEditor.ShaderProperty(uvMode, sUVMode);
+                EditorGUI.indentLevel--;
+            }
+        }
+
         public static void TextureGUI(MaterialEditor m_MaterialEditor, bool isCustomEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate)
         {
             isShow = DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
