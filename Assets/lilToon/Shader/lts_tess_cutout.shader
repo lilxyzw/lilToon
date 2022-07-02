@@ -104,6 +104,7 @@ Shader "Hidden/lilToonTessellationCutout"
         // NormalMap 2nd
         [lilToggleLeft] _UseBump2ndMap              ("Use Normal Map 2nd", Int) = 0
         [Normal]        _Bump2ndMap                 ("Normal Map", 2D) = "bump" {}
+        [lilEnum]       _Bump2ndMap_UVMode          ("UV Mode|UV0|UV1|UV2|UV3|Rim", Int) = 0
                         _Bump2ndScale               ("Scale", Range(-10,10)) = 1
         [NoScaleOffset] _Bump2ndScaleMask           ("Mask", 2D) = "white" {}
 

@@ -521,7 +521,12 @@
             LIL_BRANCH \
             if(_UseBump2ndMap) \
             { \
-                float4 normal2ndTex = LIL_SAMPLE_2D_ST(_Bump2ndMap, sampler_linear_repeat, fd.uvMain); \
+                float2 uvBump2nd = fd.uv0; \
+                if(_Bump2ndMap_UVMode == 1) uvBump2nd = fd.uv1; \
+                if(_Bump2ndMap_UVMode == 2) uvBump2nd = fd.uv2; \
+                if(_Bump2ndMap_UVMode == 3) uvBump2nd = fd.uv3; \
+                if(_Bump2ndMap_UVMode == 4) uvBump2nd = fd.uvMat; \
+                float4 normal2ndTex = LIL_SAMPLE_2D_ST(_Bump2ndMap, sampler_linear_repeat, uvBump2nd); \
                 float bump2ndScale = _Bump2ndScale; \
                 LIL_SAMPLE_Bump2ndScaleMask; \
                 normalmap = lilBlendNormal(normalmap, lilUnpackNormalScale(normal2ndTex, bump2ndScale)); \
