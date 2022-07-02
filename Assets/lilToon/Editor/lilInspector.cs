@@ -441,6 +441,7 @@ namespace lilToon
             private readonly lilMaterialProperty bumpScale = new lilMaterialProperty();
         private readonly lilMaterialProperty useBump2ndMap = new lilMaterialProperty();
             private readonly lilMaterialProperty bump2ndMap = new lilMaterialProperty();
+            private readonly lilMaterialProperty bump2ndMap_UVMode = new lilMaterialProperty();
             private readonly lilMaterialProperty bump2ndScale = new lilMaterialProperty();
             private readonly lilMaterialProperty bump2ndScaleMask = new lilMaterialProperty();
         private readonly lilMaterialProperty useAnisotropy = new lilMaterialProperty();
@@ -1945,7 +1946,7 @@ namespace lilToon
                     if(useBump2ndMap.floatValue == 1)
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                        TextureGUI(ref edSet.isShowBump2ndMap, normalMapContent, bump2ndMap, bump2ndScale);
+                        TextureGUI(ref edSet.isShowBump2ndMap, normalMapContent, bump2ndMap, bump2ndScale, null, bump2ndMap_UVMode, true, false);
                         lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowBump2ndScaleMask, maskStrengthContent, bump2ndScaleMask);
                         EditorGUILayout.EndVertical();
@@ -3124,6 +3125,7 @@ namespace lilToon
             // Normal Map 2nd
             useBump2ndMap.p     = FindProperty("_UseBump2ndMap", props, false);
             bump2ndMap.p        = FindProperty("_Bump2ndMap", props, false);
+            bump2ndMap_UVMode.p = FindProperty("_Bump2ndMap_UVMode", props, false);
             bump2ndScale.p      = FindProperty("_Bump2ndScale", props, false);
             bump2ndScaleMask.p  = FindProperty("_Bump2ndScaleMask", props, false);
             
@@ -3583,6 +3585,7 @@ namespace lilToon
                 bumpScale,
                 useBump2ndMap,
                 bump2ndMap,
+                bump2ndMap_UVMode,
                 bump2ndScale,
                 bump2ndScaleMask,
                 useAnisotropy,
@@ -4158,6 +4161,7 @@ namespace lilToon
             AddBlock(PropertyBlock.NormalMap, anisotropy2MatCap2nd);
             AddBlock(PropertyBlock.NormalMap, bumpMap, true);
             AddBlock(PropertyBlock.NormalMap, bump2ndMap, true);
+            AddBlock(PropertyBlock.NormalMap, bump2ndMap_UVMode);
             AddBlock(PropertyBlock.NormalMap, bump2ndScaleMask, true);
             AddBlock(PropertyBlock.NormalMap, anisotropyTangentMap, true);
             AddBlock(PropertyBlock.NormalMap, anisotropyScaleMask, true);
