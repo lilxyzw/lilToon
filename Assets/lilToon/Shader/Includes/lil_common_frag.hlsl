@@ -521,7 +521,7 @@
             LIL_BRANCH \
             if(_UseBump2ndMap) \
             { \
-                float4 normal2ndTex = LIL_SAMPLE_2D_ST(_Bump2ndMap, sampler_MainTex, fd.uvMain); \
+                float4 normal2ndTex = LIL_SAMPLE_2D_ST(_Bump2ndMap, sampler_trilinear_repeat, fd.uvMain); \
                 float bump2ndScale = _Bump2ndScale; \
                 LIL_SAMPLE_Bump2ndScaleMask; \
                 normalmap = lilBlendNormal(normalmap, lilUnpackNormalScale(normal2ndTex, bump2ndScale)); \
