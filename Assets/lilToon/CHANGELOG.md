@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - 2022-06-xx
+### Changed
+- Changed the sampler of the normal map 2nd to `Repeat`
+- Changed to move the calculation of point light, spot light and area light to the pixel shader in HDRP and also calculate the light direction
+- Adjusted GUI a little
+
+### Fixed
+- Fixed a error in gem shader's GUI
+
 ## [1.3.1] - 2022-06-28
 ### Added
 - Option to not optimize during VRChat avatar test build

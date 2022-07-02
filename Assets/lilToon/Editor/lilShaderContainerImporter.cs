@@ -246,6 +246,8 @@ namespace lilToon
             sb.Replace(SKIP_VARIANTS_LIGHTLISTS,        GetSkipVariantsLightLists());
             sb.Replace(SKIP_VARIANTS_REFLECTIONS,       GetSkipVariantsReflections());
 
+            sb.Replace("(\"Version\", Int) = 0", "(\"Version\", Int) = " + lilConstants.currentVersionValue.ToString());
+
             switch(version.RP)
             {
                 case lilRenderPipeline.BRP:

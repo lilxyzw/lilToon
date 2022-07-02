@@ -388,15 +388,6 @@ float3 lilBlendColor(float3 dstCol, float3 srcCol, float srcA, uint blendMode)
     return lilBlendColor(dstCol, srcCol, float3(srcA,srcA,srcA), blendMode);
 }
 
-float lilLuminance(float3 rgb)
-{
-    #ifdef LIL_COLORSPACE_GAMMA
-        return dot(rgb, float3(0.22, 0.707, 0.071));
-    #else
-        return dot(rgb, float3(0.0396819152, 0.458021790, 0.00609653955));
-    #endif
-}
-
 float lilGray(float3 rgb)
 {
     return dot(rgb, float3(1.0/3.0, 1.0/3.0, 1.0/3.0));
@@ -555,22 +546,19 @@ float2 lilCalcAtlasAnimation(float2 uv, float4 decalAnimation, float4 decalSubPa
 // MatCap
 float2 lilCalcMatCapUV(float2 uv1, float3 normalWS, float3 viewDirection, float3 headDirection, float4 matcap_ST, float2 matcapBlendUV1, bool zRotCancel, bool matcapPerspective, float matcapVRParallaxStrength)
 {
-    #if LIL_MATCAP_MODE == 0
-        // Simple
-        return mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5 + 0.5;
-    #elif LIL_MATCAP_MODE == 1
-        float3 normalVD = lilBlendVRParallax(headDirection, viewDirection, matcapVRParallaxStrength);
-        normalVD = lilIsPerspective() && matcapPerspective ? normalVD : lilCameraDirection();
-        float3 bitangentVD = zRotCancel ? float3(0,1,0) : LIL_MATRIX_V._m10_m11_m12;
-        bitangentVD = lilOrthoNormalize(bitangentVD, normalVD);
-        float3 tangentVD = cross(normalVD, bitangentVD);
-        float3x3 tbnVD = float3x3(tangentVD, bitangentVD, normalVD);
-        float2 uvMat = mul(tbnVD, normalWS).xy;
-        uvMat = lerp(uvMat, uv1*2-1, matcapBlendUV1);
-        uvMat = uvMat * matcap_ST.xy + matcap_ST.zw;
-        uvMat = uvMat * 0.5 + 0.5;
-        return uvMat;
-    #endif
+    // Simple
+    //return mul((float3x3)LIL_MATRIX_V, normalWS).xy * 0.5 + 0.5;
+    float3 normalVD = lilBlendVRParallax(headDirection, viewDirection, matcapVRParallaxStrength);
+    normalVD = lilIsPerspective() && matcapPerspective ? normalVD : lilCameraDirection();
+    float3 bitangentVD = zRotCancel ? float3(0,1,0) : LIL_MATRIX_V._m10_m11_m12;
+    bitangentVD = lilOrthoNormalize(bitangentVD, normalVD);
+    float3 tangentVD = cross(normalVD, bitangentVD);
+    float3x3 tbnVD = float3x3(tangentVD, bitangentVD, normalVD);
+    float2 uvMat = mul(tbnVD, normalWS).xy;
+    uvMat = lerp(uvMat, uv1*2-1, matcapBlendUV1);
+    uvMat = uvMat * matcap_ST.xy + matcap_ST.zw;
+    uvMat = uvMat * 0.5 + 0.5;
+    return uvMat;
 }
 
 // Panorama
@@ -819,26 +807,18 @@ float3 lilGetCustomLightDirection(float4 lightDirectionOverride)
 
 float3 lilGetLightDirection(float4 lightDirectionOverride)
 {
-    #if LIL_LIGHT_DIRECTION_MODE == 0
-        return normalize(LIL_MAINLIGHT_DIRECTION + lilGetCustomLightDirection(lightDirectionOverride));
-    #else
-        return normalize(LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR) + 
-                        unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + 
-                        lilGetCustomLightDirection(lightDirectionOverride));
-    #endif
+    return normalize(LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR) + 
+                    unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + 
+                    lilGetCustomLightDirection(lightDirectionOverride));
 }
 
 float3 lilGetFixedLightDirection(float4 lightDirectionOverride, bool doNormalise)
 {
-    #if LIL_LIGHT_DIRECTION_MODE == 0
-        return normalize(LIL_MAINLIGHT_DIRECTION + lilGetCustomLightDirection(lightDirectionOverride));
-    #else
-        float3 L = unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333;
-        L.y = abs(L.y);
-        L += LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR);
-        L += lilGetCustomLightDirection(lightDirectionOverride);
-        return doNormalise ? normalize(L) : L;
-    #endif
+    float3 L = unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333;
+    L.y = abs(L.y);
+    L += LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR);
+    L += lilGetCustomLightDirection(lightDirectionOverride);
+    return doNormalise ? normalize(L) : L;
 }
 
 float3 lilGetFixedLightDirection(float4 lightDirectionOverride)
@@ -1219,7 +1199,7 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
                 bool clamp = maskUV.x == saturate(maskUV.x) && maskUV.y == saturate(maskUV.y);
                 maskUV = (maskUV + floor(near.xy * glitterAtras.xy)) / glitterAtras.xy;
                 float2 mipfactor = 0.125 / glitterParams1.z * glitterAtras.xy * glitterShapeTex_ST.xy * randomScale;
-                float4 shapeTex = LIL_SAMPLE_2D_GRAD(glitterShapeTex, sampler_trilinear_clamp, maskUV, ddx(pos) * mipfactor.x, ddy(pos) * mipfactor.y);
+                float4 shapeTex = LIL_SAMPLE_2D_GRAD(glitterShapeTex, sampler_linear_clamp, maskUV, ddx(pos) * mipfactor.x, ddy(pos) * mipfactor.y);
                 shapeTex.a = clamp ? shapeTex.a : 0;
                 glitterColor *= shapeTex.rgb * shapeTex.a;
             }

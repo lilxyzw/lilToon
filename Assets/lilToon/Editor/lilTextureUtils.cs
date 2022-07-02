@@ -30,6 +30,7 @@ namespace lilToon
                 }
             #endif
             GUILayout.BeginHorizontal();
+            GUILayout.Space(EditorGUI.indentLevel * 16);
             if(GUILayout.Button("Test"))
             {
                 texprop.textureValue = GradientToTexture(ingrad, setLinear);
@@ -62,6 +63,7 @@ namespace lilToon
             #endif
             GradientToMaterial(material, emissionName, ingrad);
             GUILayout.BeginHorizontal();
+            GUILayout.Space(EditorGUI.indentLevel * 16);
             if(GUILayout.Button("Test"))
             {
                 texprop.textureValue = GradientToTexture(ingrad, setLinear);

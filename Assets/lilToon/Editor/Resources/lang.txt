@@ -158,8 +158,8 @@ sMainColorAlpha	Main Color / Alpha	メインカラー / 透過	메인 컬러 / �
 sMainColor	Main Color	メインカラー	메인 컬러	主色	主色
 sMainColor2nd	Main Color 2nd	メインカラー2nd	메인 컬러 2nd	主色2nd	主色2nd
 sMainColor3rd	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	主色3rd	主色3rd
+sColorAdjust	Color Adjust	色調補正	색조 보정	色调校正	色調校正
 sGradationMap	Gradation Map	グラデーションマップ	그라디언트 맵	渐变映射	漸變映射
-sColorAdjustMask	Color Adjust Mask	色調補正マスク	색조 보정 마스크	色调校正蒙版	色調校正蒙版
 sNotAlphaIsTransparency	This texture is not marked as AlphaIsTransparency	このテクスチャはAlphaIsTransparencyとして設定されていません	이 텍스처는 Alpha Is Transparency로 설정되어 있지 않습니다	此纹理未被设置为AlphaIsTransparency	此紋理未被設置為AlphaIsTransparency
 sAlphaMask	Alpha Mask	アルファマスク	알파 마스크	Alpha蒙版	Alpha蒙版
 sAlphaMaskWarnOpaque	If you want to use Alpha Mask, you need to change the "Rendering Mode" to Cutout or Transparent.	アルファマスクを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。	알파 마스크를 사용하려면 "렌더링 모드"를 단편 또는 반투명로 변경해야합니다.	如果要使用Alpha蒙版，则需要将“Rendering Mode”更改为镂空或透明。	如果要使用Alpha蒙版，則需要將“Rendering Mode”更改為鏤空或透明。
