@@ -8,9 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 変更
 - ノーマルマップ2ndのサンプラーを`Repeat`に変更
 - HDRPでポイントライト・スポットライト・エリアライトの計算をピクセルシェーダーに移動し、ライト方向の計算も行うようにした
+- GUIを微調整
 
 ### 修正
-- 宝石シェーダーのUIのエラーを修正
+- 宝石シェーダーのGUIのエラーを修正
 
 ## [1.3.1] - 2022-06-28
 ### 追加

@@ -8,8 +8,6 @@
 #endif
 
 SAMPLER(sampler_trilinear_repeat);
-SAMPLER(sampler_trilinear_clamp);
-//SAMPLER(sampler_linear_repeat);
 SAMPLER(sampler_linear_clamp);
 #define sampler_linear_repeat sampler_trilinear_repeat
 
@@ -17,13 +15,11 @@ SAMPLER(sampler_linear_clamp);
     TEXTURE2D_SCREEN(_CameraDepthTexture);
     TEXTURE2D_SCREEN(_lilBackgroundTexture);
     TEXTURE2D_SCREEN(_GrabTexture);
-    SAMPLER(sampler_lilBackgroundTexture);
-    SAMPLER(sampler_GrabTexture);
     float4 _lilBackgroundTexture_TexelSize;
     #define LIL_GET_DEPTH_TEX_CS(uv) LIL_SAMPLE_SCREEN_CS(_CameraDepthTexture, lilCameraDepthTexel(uv))
     #define LIL_TO_LINEARDEPTH(z,uv) lilLinearEyeDepth(z, uv)
-    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN(_lilBackgroundTexture, sampler_lilBackgroundTexture, uv)
-    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN(_GrabTexture, sampler_GrabTexture, uv)
+    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN(_lilBackgroundTexture, sampler_linear_clamp, uv)
+    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN(_GrabTexture, sampler_linear_clamp, uv)
     #define LIL_ENABLED_DEPTH_TEX IsScreenTex(_CameraDepthTexture)
 #elif defined(LIL_HDRP)
     #define LIL_GET_DEPTH_TEX_CS(uv) SampleCameraDepth(uv/LIL_SCREENPARAMS.xy)
@@ -34,11 +30,10 @@ SAMPLER(sampler_linear_clamp);
 #else
     TEXTURE2D_SCREEN(_CameraDepthTexture);
     TEXTURE2D_SCREEN(_CameraOpaqueTexture);
-    SAMPLER(sampler_CameraOpaqueTexture);
     #define LIL_GET_DEPTH_TEX_CS(uv) LIL_SAMPLE_SCREEN_CS(_CameraDepthTexture, uv)
     #define LIL_TO_LINEARDEPTH(z,uv) LinearEyeDepth(z, _ZBufferParams)
-    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN_LOD(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv, lod)
-    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN_LOD(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, uv, lod)
+    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN_LOD(_CameraOpaqueTexture, sampler_linear_clamp, uv, lod)
+    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN_LOD(_CameraOpaqueTexture, sampler_linear_clamp, uv, lod)
     #define LIL_ENABLED_DEPTH_TEX IsScreenTex(_CameraDepthTexture)
 #endif
 

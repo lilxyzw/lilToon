@@ -162,7 +162,6 @@ namespace lilToon
             maskStrengthContent = new GUIContent(GetLoc("sStrengthMask"), GetLoc("sStrengthR"));
             normalMapContent = new GUIContent(GetLoc("sNormalMap"), GetLoc("sNormalRGB"));
             noiseMaskContent = new GUIContent(GetLoc("sNoise"), GetLoc("sNoiseR"));
-            adjustMaskContent = new GUIContent(GetLoc("sColorAdjustMask"), GetLoc("sBlendR"));
             matcapContent = new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA"));
             gradationContent = new GUIContent(GetLoc("sGradation"), GetLoc("sTextureRGBA"));
             gradSpeedContent = new GUIContent(GetLoc("sGradTexSpeed"), GetLoc("sTextureRGBA"));
