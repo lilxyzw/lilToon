@@ -340,6 +340,7 @@ namespace lilToon
             private readonly lilMaterialProperty mainColor2nd = new lilMaterialProperty();
             private readonly lilMaterialProperty main2ndTex = new lilMaterialProperty();
             private readonly lilMaterialProperty main2ndTex_UVMode = new lilMaterialProperty();
+            private readonly lilMaterialProperty main2ndTex_Cull = new lilMaterialProperty();
             private readonly lilMaterialProperty main2ndTexAngle = new lilMaterialProperty();
             private readonly lilMaterialProperty main2ndTexDecalAnimation = new lilMaterialProperty();
             private readonly lilMaterialProperty main2ndTexDecalSubParam = new lilMaterialProperty();
@@ -365,6 +366,7 @@ namespace lilToon
             private readonly lilMaterialProperty mainColor3rd = new lilMaterialProperty();
             private readonly lilMaterialProperty main3rdTex = new lilMaterialProperty();
             private readonly lilMaterialProperty main3rdTex_UVMode = new lilMaterialProperty();
+            private readonly lilMaterialProperty main3rdTex_Cull = new lilMaterialProperty();
             private readonly lilMaterialProperty main3rdTexAngle = new lilMaterialProperty();
             private readonly lilMaterialProperty main3rdTexDecalAnimation = new lilMaterialProperty();
             private readonly lilMaterialProperty main3rdTexDecalSubParam = new lilMaterialProperty();
@@ -1716,6 +1718,7 @@ namespace lilToon
                             EditorGUI.indentLevel += 2;
                             lilEditorGUI.DrawColorAsAlpha(mainColor2nd);
                             m_MaterialEditor.ShaderProperty(main2ndTexIsMSDF, GetLoc("sAsMSDF"));
+                            m_MaterialEditor.ShaderProperty(main2ndTex_Cull, sCullModes);
                             EditorGUI.indentLevel -= 2;
                             m_MaterialEditor.ShaderProperty(main2ndEnableLighting, GetLoc("sEnableLighting"));
                             m_MaterialEditor.ShaderProperty(main2ndTexBlendMode, sBlendModes);
@@ -1757,6 +1760,7 @@ namespace lilToon
                             EditorGUI.indentLevel += 2;
                             lilEditorGUI.DrawColorAsAlpha(mainColor3rd);
                             m_MaterialEditor.ShaderProperty(main3rdTexIsMSDF, GetLoc("sAsMSDF"));
+                            m_MaterialEditor.ShaderProperty(main3rdTex_Cull, sCullModes);
                             EditorGUI.indentLevel -= 2;
                             m_MaterialEditor.ShaderProperty(main3rdEnableLighting, GetLoc("sEnableLighting"));
                             m_MaterialEditor.ShaderProperty(main3rdTexBlendMode, sBlendModes);
@@ -2843,6 +2847,7 @@ namespace lilToon
             mainColor2nd.p                          = FindProperty("_Color2nd", props, false);
             main2ndTex.p                            = FindProperty("_Main2ndTex", props, false);
             main2ndTex_UVMode.p                     = FindProperty("_Main2ndTex_UVMode", props, false);
+            main2ndTex_Cull.p                       = FindProperty("_Main2ndTex_Cull", props, false);
             main2ndTexAngle.p                       = FindProperty("_Main2ndTexAngle", props, false);
             main2ndTexDecalAnimation.p              = FindProperty("_Main2ndTexDecalAnimation", props, false);
             main2ndTexDecalSubParam.p               = FindProperty("_Main2ndTexDecalSubParam", props, false);
@@ -2870,6 +2875,7 @@ namespace lilToon
             mainColor3rd.p                          = FindProperty("_Color3rd", props, false);
             main3rdTex.p                            = FindProperty("_Main3rdTex", props, false);
             main3rdTex_UVMode.p                     = FindProperty("_Main3rdTex_UVMode", props, false);
+            main3rdTex_Cull.p                       = FindProperty("_Main3rdTex_Cull", props, false);
             main3rdTexAngle.p                       = FindProperty("_Main3rdTexAngle", props, false);
             main3rdTexDecalAnimation.p              = FindProperty("_Main3rdTexDecalAnimation", props, false);
             main3rdTexDecalSubParam.p               = FindProperty("_Main3rdTexDecalSubParam", props, false);
@@ -3363,6 +3369,7 @@ namespace lilToon
                 mainColor2nd,
                 main2ndTex,
                 main2ndTex_UVMode,
+                main2ndTex_Cull,
                 main2ndTexAngle,
                 main2ndTexDecalAnimation,
                 main2ndTexDecalSubParam,
@@ -3388,6 +3395,7 @@ namespace lilToon
                 mainColor3rd,
                 main3rdTex,
                 main3rdTex_UVMode,
+                main3rdTex_Cull,
                 main3rdTexAngle,
                 main3rdTexDecalAnimation,
                 main3rdTexDecalSubParam,
@@ -3796,6 +3804,7 @@ namespace lilToon
             AddBlock(PropertyBlock.MainColor, useMain2ndTex);
             AddBlock(PropertyBlock.MainColor, mainColor2nd);
             AddBlock(PropertyBlock.MainColor, main2ndTex_UVMode);
+            AddBlock(PropertyBlock.MainColor, main2ndTex_Cull);
             AddBlock(PropertyBlock.MainColor, main2ndTexAngle);
             AddBlock(PropertyBlock.MainColor, main2ndTexDecalAnimation);
             AddBlock(PropertyBlock.MainColor, main2ndTexDecalSubParam);
@@ -3817,6 +3826,7 @@ namespace lilToon
             AddBlock(PropertyBlock.MainColor, useMain3rdTex);
             AddBlock(PropertyBlock.MainColor, mainColor3rd);
             AddBlock(PropertyBlock.MainColor, main3rdTex_UVMode);
+            AddBlock(PropertyBlock.MainColor, main3rdTex_Cull);
             AddBlock(PropertyBlock.MainColor, main3rdTexAngle);
             AddBlock(PropertyBlock.MainColor, main3rdTexDecalAnimation);
             AddBlock(PropertyBlock.MainColor, main3rdTexDecalSubParam);
@@ -3863,6 +3873,7 @@ namespace lilToon
             AddBlock(PropertyBlock.MainColor2nd, useMain2ndTex);
             AddBlock(PropertyBlock.MainColor2nd, mainColor2nd);
             AddBlock(PropertyBlock.MainColor2nd, main2ndTex_UVMode);
+            AddBlock(PropertyBlock.MainColor2nd, main2ndTex_Cull);
             AddBlock(PropertyBlock.MainColor2nd, main2ndTexAngle);
             AddBlock(PropertyBlock.MainColor2nd, main2ndTexDecalAnimation);
             AddBlock(PropertyBlock.MainColor2nd, main2ndTexDecalSubParam);
@@ -3889,6 +3900,7 @@ namespace lilToon
             AddBlock(PropertyBlock.MainColor3rd, useMain3rdTex);
             AddBlock(PropertyBlock.MainColor3rd, mainColor3rd);
             AddBlock(PropertyBlock.MainColor3rd, main3rdTex_UVMode);
+            AddBlock(PropertyBlock.MainColor3rd, main3rdTex_Cull);
             AddBlock(PropertyBlock.MainColor3rd, main3rdTexAngle);
             AddBlock(PropertyBlock.MainColor3rd, main3rdTexDecalAnimation);
             AddBlock(PropertyBlock.MainColor3rd, main3rdTexDecalSubParam);

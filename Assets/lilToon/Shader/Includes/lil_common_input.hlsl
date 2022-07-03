@@ -559,10 +559,12 @@ CBUFFER_START(UnityPerMaterial)
     #if defined(LIL_MULTI_INPUTS_MAIN2ND)
         uint    _Main2ndTexBlendMode;
         uint    _Main2ndTex_UVMode;
+        uint    _Main2ndTex_Cull;
     #endif
     #if defined(LIL_MULTI_INPUTS_MAIN3RD)
         uint    _Main3rdTexBlendMode;
         uint    _Main3rdTex_UVMode;
+        uint    _Main3rdTex_Cull;
     #endif
     #if defined(LIL_MULTI_INPUTS_ALPHAMASK)
         uint    _AlphaMaskMode;
@@ -1178,10 +1180,12 @@ CBUFFER_START(UnityPerMaterial)
     #if defined(LIL_FEATURE_MAIN2ND)
         uint    _Main2ndTexBlendMode;
         uint    _Main2ndTex_UVMode;
+        uint    _Main2ndTex_Cull;
     #endif
     #if defined(LIL_FEATURE_MAIN3RD)
         uint    _Main3rdTexBlendMode;
         uint    _Main3rdTex_UVMode;
+        uint    _Main3rdTex_Cull;
     #endif
     #if defined(LIL_FEATURE_ALPHAMASK)
         uint    _AlphaMaskMode;

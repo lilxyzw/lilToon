@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.2] - 2022-06-xx
 ### Added
 - `UV Mode` for normal map 2nd
+- `Cull Mode` for main color 2nd / 3rd
 
 ### Changed
 - Changed the sampler of the normal map 2nd to `Repeat`

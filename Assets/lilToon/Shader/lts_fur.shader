@@ -37,6 +37,7 @@ Shader "Hidden/lilToonFur"
         [lilHDR]        _Color2nd                   ("Color", Color) = (1,1,1,1)
                         _Main2ndTex                 ("Texture", 2D) = "white" {}
         [lilEnum]       _Main2ndTex_UVMode          ("UV Mode|UV0|UV1|UV2|UV3|MatCap", Int) = 0
+        [lilEnum]       _Main2ndTex_Cull            ("Cull Mode|Off|Front|Back", Int) = 0
         [lilAngle]      _Main2ndTexAngle            ("Angle", Float) = 0
         [lilDecalAnim]  _Main2ndTexDecalAnimation   ("Animation|X Size|Y Size|Frames|FPS", Vector) = (1,1,1,30)
         [lilDecalSub]   _Main2ndTexDecalSubParam    ("Ratio X|Ratio Y|Fix Border", Vector) = (1,1,0,1)
@@ -66,6 +67,7 @@ Shader "Hidden/lilToonFur"
                         _Main3rdTex                 ("Texture", 2D) = "white" {}
         [lilAngle]      _Main3rdTexAngle            ("Angle", Float) = 0
         [lilEnum]       _Main3rdTex_UVMode          ("UV Mode|UV0|UV1|UV2|UV3|MatCap", Int) = 0
+        [lilEnum]       _Main3rdTex_Cull            ("Cull Mode|Off|Front|Back", Int) = 0
         [lilDecalAnim]  _Main3rdTexDecalAnimation   ("Animation|X Size|Y Size|Frames|FPS", Vector) = (1,1,1,30)
         [lilDecalSub]   _Main3rdTexDecalSubParam    ("Ratio X|Ratio Y|Fix Border", Vector) = (1,1,0,1)
         [lilToggle]     _Main3rdTexIsDecal          ("As Decal", Int) = 0

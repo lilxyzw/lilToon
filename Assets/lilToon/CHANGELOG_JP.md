@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.2] - 2022-06-xx
 ### Added
 - ノーマルマップ2ndに`UV Mode`を追加
+- メインカラー2nd・3rdに`Cull Mode`を追加
 
 ### 変更
 - ノーマルマップ2ndのサンプラーを`Repeat`に変更
