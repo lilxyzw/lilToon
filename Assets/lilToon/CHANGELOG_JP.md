@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 修正
 - 宝石シェーダーのGUIのエラーを修正
+- マットキャップ2ndのマスクがRチャンネルのみ使用されていたのをRGBチャンネルを使うように修正
+- ツールチップの表記を修正
 
 ## [1.3.1] - 2022-06-28
 ### 追加

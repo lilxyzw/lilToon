@@ -32,6 +32,8 @@ namespace lilToon
         public static GUIContent colorRGBAContent;
         public static GUIContent colorAlphaRGBAContent;
         public static GUIContent maskBlendContent;
+        public static GUIContent maskBlendRGBContent;
+        public static GUIContent maskBlendRGBAContent;
         public static GUIContent colorMaskRGBAContent;
         public static GUIContent alphaMaskContent;
         public static GUIContent maskStrengthContent;
@@ -44,6 +46,8 @@ namespace lilToon
         public static GUIContent smoothnessContent;
         public static GUIContent metallicContent;
         public static GUIContent parallaxContent;
+        public static GUIContent audioLinkMaskContent;
+        public static GUIContent audioLinkMaskSpectrumContent;
         public static GUIContent customMaskContent;
         public static GUIContent shadow1stColorRGBAContent;
         public static GUIContent shadow2ndColorRGBAContent;
@@ -138,40 +142,44 @@ namespace lilToon
 
         private static void InitializeLabels()
         {
-            sCullModes = BuildParams(GetLoc("sCullMode"), GetLoc("sCullModeOff"), GetLoc("sCullModeFront"), GetLoc("sCullModeBack"));
-            sBlendModes = BuildParams(GetLoc("sBlendMode"), GetLoc("sBlendModeNormal"), GetLoc("sBlendModeAdd"), GetLoc("sBlendModeScreen"), GetLoc("sBlendModeMul"));
-            sAlphaMaskModes = BuildParams(GetLoc("sAlphaMask"), GetLoc("sAlphaMaskModeNone"), GetLoc("sAlphaMaskModeReplace"), GetLoc("sAlphaMaskModeMul"));
-            blinkSetting = BuildParams(GetLoc("sBlinkStrength"), GetLoc("sBlinkType"), GetLoc("sBlinkSpeed"), GetLoc("sBlinkOffset"));
-            sDistanceFadeSetting = BuildParams(GetLoc("sStartDistance"), GetLoc("sEndDistance"), GetLoc("sStrength"), GetLoc("sBackfaceForceShadow"));
-            sDissolveParams = BuildParams(GetLoc("sDissolveMode"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"), GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"));
-            sDissolveParamsMode = BuildParams(GetLoc("sDissolve"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"));
-            sDissolveParamsOther = BuildParams(GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"), "Dummy");
-            sGlitterParams1 = BuildParams("Tiling", GetLoc("sParticleSize"), GetLoc("sContrast"));
-            sGlitterParams2 = BuildParams(GetLoc("sBlinkSpeed"), GetLoc("sAngleLimit"), GetLoc("sRimLightDirection"), GetLoc("sColorRandomness"));
-            sTransparentMode = BuildParams(GetLoc("sRenderingMode"), GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout"), GetLoc("sRenderingModeGem"));
-            sRenderingModeList = new[]{GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeRefractionBlur"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout"), GetLoc("sRenderingModeFurTwoPass"), GetLoc("sRenderingModeGem")};
-            sRenderingModeListLite = new[]{GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent")};
-            sTransparentModeList = new[]{GetLoc("sTransparentModeNormal"), GetLoc("sTransparentModeOnePass"), GetLoc("sTransparentModeTwoPass")};
-            sOutlineVertexColorUsages = BuildParams(GetLoc("sVertexColor"), GetLoc("sNone"), GetLoc("sVertexR2Width"), GetLoc("sVertexRGBA2Normal"));
-            sShadowMaskTypes = BuildParams(GetLoc("sMaskType"), GetLoc("sStrength"), GetLoc("sFlat"));
-            colorRGBAContent = new GUIContent(GetLoc("sColor"), GetLoc("sTextureRGBA"));
-            colorAlphaRGBAContent = new GUIContent(GetLoc("sColorAlpha"), GetLoc("sTextureRGBA"));
-            maskBlendContent = new GUIContent(GetLoc("sMask"), GetLoc("sBlendR"));
-            colorMaskRGBAContent = new GUIContent(GetLoc("sColor") + " / " + GetLoc("sMask"), GetLoc("sTextureRGBA"));
-            alphaMaskContent = new GUIContent(GetLoc("sAlphaMask"), GetLoc("sAlphaR"));
-            maskStrengthContent = new GUIContent(GetLoc("sStrengthMask"), GetLoc("sStrengthR"));
-            normalMapContent = new GUIContent(GetLoc("sNormalMap"), GetLoc("sNormalRGB"));
-            noiseMaskContent = new GUIContent(GetLoc("sNoise"), GetLoc("sNoiseR"));
-            matcapContent = new GUIContent(GetLoc("sMatCap"), GetLoc("sTextureRGBA"));
-            gradationContent = new GUIContent(GetLoc("sGradation"), GetLoc("sTextureRGBA"));
-            gradSpeedContent = new GUIContent(GetLoc("sGradTexSpeed"), GetLoc("sTextureRGBA"));
-            smoothnessContent = new GUIContent(GetLoc("sSmoothness"), GetLoc("sSmoothnessR"));
-            metallicContent = new GUIContent(GetLoc("sMetallic"), GetLoc("sMetallicR"));
-            parallaxContent = new GUIContent(GetLoc("sParallax"), GetLoc("sParallaxR"));
-            customMaskContent = new GUIContent(GetLoc("sMask"), "");
-            shadow1stColorRGBAContent = new GUIContent(GetLoc("sShadow1stColor"), GetLoc("sTextureRGBA"));
-            shadow2ndColorRGBAContent = new GUIContent(GetLoc("sShadow2ndColor"), GetLoc("sTextureRGBA"));
-            shadow3rdColorRGBAContent = new GUIContent(GetLoc("sShadow3rdColor"), GetLoc("sTextureRGBA"));
+            sCullModes                      = BuildParams(GetLoc("sCullMode"), GetLoc("sCullModeOff"), GetLoc("sCullModeFront"), GetLoc("sCullModeBack"));
+            sBlendModes                     = BuildParams(GetLoc("sBlendMode"), GetLoc("sBlendModeNormal"), GetLoc("sBlendModeAdd"), GetLoc("sBlendModeScreen"), GetLoc("sBlendModeMul"));
+            sAlphaMaskModes                 = BuildParams(GetLoc("sAlphaMask"), GetLoc("sAlphaMaskModeNone"), GetLoc("sAlphaMaskModeReplace"), GetLoc("sAlphaMaskModeMul"));
+            blinkSetting                    = BuildParams(GetLoc("sBlinkStrength"), GetLoc("sBlinkType"), GetLoc("sBlinkSpeed"), GetLoc("sBlinkOffset"));
+            sDistanceFadeSetting            = BuildParams(GetLoc("sStartDistance"), GetLoc("sEndDistance"), GetLoc("sStrength"), GetLoc("sBackfaceForceShadow"));
+            sDissolveParams                 = BuildParams(GetLoc("sDissolveMode"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"), GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"));
+            sDissolveParamsMode             = BuildParams(GetLoc("sDissolve"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"));
+            sDissolveParamsOther            = BuildParams(GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"), "Dummy");
+            sGlitterParams1                 = BuildParams("Tiling", GetLoc("sParticleSize"), GetLoc("sContrast"));
+            sGlitterParams2                 = BuildParams(GetLoc("sBlinkSpeed"), GetLoc("sAngleLimit"), GetLoc("sRimLightDirection"), GetLoc("sColorRandomness"));
+            sTransparentMode                = BuildParams(GetLoc("sRenderingMode"), GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout"), GetLoc("sRenderingModeGem"));
+            sRenderingModeList              = new[]{GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeRefractionBlur"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout"), GetLoc("sRenderingModeFurTwoPass"), GetLoc("sRenderingModeGem")};
+            sRenderingModeListLite          = new[]{GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent")};
+            sTransparentModeList            = new[]{GetLoc("sTransparentModeNormal"), GetLoc("sTransparentModeOnePass"), GetLoc("sTransparentModeTwoPass")};
+            sOutlineVertexColorUsages       = BuildParams(GetLoc("sVertexColor"), GetLoc("sNone"), GetLoc("sVertexR2Width"), GetLoc("sVertexRGBA2Normal"));
+            sShadowMaskTypes                = BuildParams(GetLoc("sMaskType"), GetLoc("sStrength"), GetLoc("sFlat"));
+            colorRGBAContent                = new GUIContent(GetLoc("sColor"),                              GetLoc("sTextureRGBA"));
+            colorAlphaRGBAContent           = new GUIContent(GetLoc("sColorAlpha"),                         GetLoc("sTextureRGBA"));
+            maskBlendContent                = new GUIContent(GetLoc("sMask"),                               GetLoc("sBlendR"));
+            maskBlendRGBContent             = new GUIContent(GetLoc("sMask"),                               GetLoc("sTextureRGB"));
+            maskBlendRGBAContent            = new GUIContent(GetLoc("sMask"),                               GetLoc("sTextureRGBA"));
+            colorMaskRGBAContent            = new GUIContent(GetLoc("sColor") + " / " + GetLoc("sMask"),    GetLoc("sTextureRGBA"));
+            alphaMaskContent                = new GUIContent(GetLoc("sAlphaMask"),                          GetLoc("sAlphaR"));
+            maskStrengthContent             = new GUIContent(GetLoc("sStrengthMask"),                       GetLoc("sStrengthR"));
+            normalMapContent                = new GUIContent(GetLoc("sNormalMap"),                          GetLoc("sNormalRGB"));
+            noiseMaskContent                = new GUIContent(GetLoc("sNoise"),                              GetLoc("sNoiseR"));
+            matcapContent                   = new GUIContent(GetLoc("sMatCap"),                             GetLoc("sTextureRGBA"));
+            gradationContent                = new GUIContent(GetLoc("sGradation"),                          GetLoc("sTextureRGBA"));
+            gradSpeedContent                = new GUIContent(GetLoc("sGradTexSpeed"),                       GetLoc("sTextureRGBA"));
+            smoothnessContent               = new GUIContent(GetLoc("sSmoothness"),                         GetLoc("sSmoothnessR"));
+            metallicContent                 = new GUIContent(GetLoc("sMetallic"),                           GetLoc("sMetallicR"));
+            parallaxContent                 = new GUIContent(GetLoc("sParallax"),                           GetLoc("sParallaxR"));
+            audioLinkMaskContent            = new GUIContent(GetLoc("sMask"),                               GetLoc("sAudioLinkMaskRGB"));
+            audioLinkMaskSpectrumContent    = new GUIContent(GetLoc("sMask"),                               GetLoc("sAudioLinkMaskRGBSpectrum"));
+            customMaskContent               = new GUIContent(GetLoc("sMask"),                               "");
+            shadow1stColorRGBAContent       = new GUIContent(GetLoc("sShadow1stColor"),                     GetLoc("sTextureRGBA"));
+            shadow2ndColorRGBAContent       = new GUIContent(GetLoc("sShadow2ndColor"),                     GetLoc("sTextureRGBA"));
+            shadow3rdColorRGBAContent       = new GUIContent(GetLoc("sShadow3rdColor"),                     GetLoc("sTextureRGBA"));
         }
     }
 }

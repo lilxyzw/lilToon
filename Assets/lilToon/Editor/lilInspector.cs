@@ -214,42 +214,46 @@ namespace lilToon
             latest_vertion_value = 0
         };
 
-        protected static string     sMainColorBranch            { get { return lilLanguageManager.sMainColorBranch         ; } private set { lilLanguageManager.sMainColorBranch          = value; } }
-        protected static string     sCullModes                  { get { return lilLanguageManager.sCullModes               ; } private set { lilLanguageManager.sCullModes                = value; } }
-        protected static string     sBlendModes                 { get { return lilLanguageManager.sBlendModes              ; } private set { lilLanguageManager.sBlendModes               = value; } }
-        protected static string     sAlphaMaskModes             { get { return lilLanguageManager.sAlphaMaskModes          ; } private set { lilLanguageManager.sAlphaMaskModes           = value; } }
-        protected static string     blinkSetting                { get { return lilLanguageManager.blinkSetting             ; } private set { lilLanguageManager.blinkSetting              = value; } }
-        protected static string     sDistanceFadeSetting        { get { return lilLanguageManager.sDistanceFadeSetting     ; } private set { lilLanguageManager.sDistanceFadeSetting      = value; } }
-        protected static string     sDissolveParams             { get { return lilLanguageManager.sDissolveParams          ; } private set { lilLanguageManager.sDissolveParams           = value; } }
-        protected static string     sDissolveParamsMode         { get { return lilLanguageManager.sDissolveParamsMode      ; } private set { lilLanguageManager.sDissolveParamsMode       = value; } }
-        protected static string     sDissolveParamsOther        { get { return lilLanguageManager.sDissolveParamsOther     ; } private set { lilLanguageManager.sDissolveParamsOther      = value; } }
-        protected static string     sGlitterParams1             { get { return lilLanguageManager.sGlitterParams1          ; } private set { lilLanguageManager.sGlitterParams1           = value; } }
-        protected static string     sGlitterParams2             { get { return lilLanguageManager.sGlitterParams2          ; } private set { lilLanguageManager.sGlitterParams2           = value; } }
-        protected static string     sTransparentMode            { get { return lilLanguageManager.sTransparentMode         ; } private set { lilLanguageManager.sTransparentMode          = value; } }
-        protected static string     sOutlineVertexColorUsages   { get { return lilLanguageManager.sOutlineVertexColorUsages; } private set { lilLanguageManager.sOutlineVertexColorUsages = value; } }
-        protected static string     sShadowMaskTypes            { get { return lilLanguageManager.sShadowMaskTypes         ; } private set { lilLanguageManager.sShadowMaskTypes          = value; } }
-        protected static string[]   sRenderingModeList          { get { return lilLanguageManager.sRenderingModeList       ; } private set { lilLanguageManager.sRenderingModeList        = value; } }
-        protected static string[]   sRenderingModeListLite      { get { return lilLanguageManager.sRenderingModeListLite   ; } private set { lilLanguageManager.sRenderingModeListLite    = value; } }
-        protected static string[]   sTransparentModeList        { get { return lilLanguageManager.sTransparentModeList     ; } private set { lilLanguageManager.sTransparentModeList      = value; } }
-        protected static GUIContent mainColorRGBAContent        { get { return lilLanguageManager.mainColorRGBAContent     ; } private set { lilLanguageManager.mainColorRGBAContent      = value; } }
-        protected static GUIContent colorRGBAContent            { get { return lilLanguageManager.colorRGBAContent         ; } private set { lilLanguageManager.colorRGBAContent          = value; } }
-        protected static GUIContent colorAlphaRGBAContent       { get { return lilLanguageManager.colorAlphaRGBAContent    ; } private set { lilLanguageManager.colorAlphaRGBAContent     = value; } }
-        protected static GUIContent maskBlendContent            { get { return lilLanguageManager.maskBlendContent         ; } private set { lilLanguageManager.maskBlendContent          = value; } }
-        protected static GUIContent colorMaskRGBAContent        { get { return lilLanguageManager.colorMaskRGBAContent     ; } private set { lilLanguageManager.colorMaskRGBAContent      = value; } }
-        protected static GUIContent alphaMaskContent            { get { return lilLanguageManager.alphaMaskContent         ; } private set { lilLanguageManager.alphaMaskContent          = value; } }
-        protected static GUIContent maskStrengthContent         { get { return lilLanguageManager.maskStrengthContent      ; } private set { lilLanguageManager.maskStrengthContent       = value; } }
-        protected static GUIContent normalMapContent            { get { return lilLanguageManager.normalMapContent         ; } private set { lilLanguageManager.normalMapContent          = value; } }
-        protected static GUIContent noiseMaskContent            { get { return lilLanguageManager.noiseMaskContent         ; } private set { lilLanguageManager.noiseMaskContent          = value; } }
-        protected static GUIContent matcapContent               { get { return lilLanguageManager.matcapContent            ; } private set { lilLanguageManager.matcapContent             = value; } }
-        protected static GUIContent gradationContent            { get { return lilLanguageManager.gradationContent         ; } private set { lilLanguageManager.gradationContent          = value; } }
-        protected static GUIContent gradSpeedContent            { get { return lilLanguageManager.gradSpeedContent         ; } private set { lilLanguageManager.gradSpeedContent          = value; } }
-        protected static GUIContent smoothnessContent           { get { return lilLanguageManager.smoothnessContent        ; } private set { lilLanguageManager.smoothnessContent         = value; } }
-        protected static GUIContent metallicContent             { get { return lilLanguageManager.metallicContent          ; } private set { lilLanguageManager.metallicContent           = value; } }
-        protected static GUIContent parallaxContent             { get { return lilLanguageManager.parallaxContent          ; } private set { lilLanguageManager.parallaxContent           = value; } }
-        protected static GUIContent customMaskContent           { get { return lilLanguageManager.customMaskContent        ; } private set { lilLanguageManager.customMaskContent         = value; } }
-        protected static GUIContent shadow1stColorRGBAContent   { get { return lilLanguageManager.shadow1stColorRGBAContent; } private set { lilLanguageManager.shadow1stColorRGBAContent = value; } }
-        protected static GUIContent shadow2ndColorRGBAContent   { get { return lilLanguageManager.shadow2ndColorRGBAContent; } private set { lilLanguageManager.shadow2ndColorRGBAContent = value; } }
-        protected static GUIContent shadow3rdColorRGBAContent   { get { return lilLanguageManager.shadow3rdColorRGBAContent; } private set { lilLanguageManager.shadow3rdColorRGBAContent = value; } }
+        protected static string     sMainColorBranch                { get { return lilLanguageManager.sMainColorBranch              ; } private set { lilLanguageManager.sMainColorBranch               = value; } }
+        protected static string     sCullModes                      { get { return lilLanguageManager.sCullModes                    ; } private set { lilLanguageManager.sCullModes                     = value; } }
+        protected static string     sBlendModes                     { get { return lilLanguageManager.sBlendModes                   ; } private set { lilLanguageManager.sBlendModes                    = value; } }
+        protected static string     sAlphaMaskModes                 { get { return lilLanguageManager.sAlphaMaskModes               ; } private set { lilLanguageManager.sAlphaMaskModes                = value; } }
+        protected static string     blinkSetting                    { get { return lilLanguageManager.blinkSetting                  ; } private set { lilLanguageManager.blinkSetting                   = value; } }
+        protected static string     sDistanceFadeSetting            { get { return lilLanguageManager.sDistanceFadeSetting          ; } private set { lilLanguageManager.sDistanceFadeSetting           = value; } }
+        protected static string     sDissolveParams                 { get { return lilLanguageManager.sDissolveParams               ; } private set { lilLanguageManager.sDissolveParams                = value; } }
+        protected static string     sDissolveParamsMode             { get { return lilLanguageManager.sDissolveParamsMode           ; } private set { lilLanguageManager.sDissolveParamsMode            = value; } }
+        protected static string     sDissolveParamsOther            { get { return lilLanguageManager.sDissolveParamsOther          ; } private set { lilLanguageManager.sDissolveParamsOther           = value; } }
+        protected static string     sGlitterParams1                 { get { return lilLanguageManager.sGlitterParams1               ; } private set { lilLanguageManager.sGlitterParams1                = value; } }
+        protected static string     sGlitterParams2                 { get { return lilLanguageManager.sGlitterParams2               ; } private set { lilLanguageManager.sGlitterParams2                = value; } }
+        protected static string     sTransparentMode                { get { return lilLanguageManager.sTransparentMode              ; } private set { lilLanguageManager.sTransparentMode               = value; } }
+        protected static string     sOutlineVertexColorUsages       { get { return lilLanguageManager.sOutlineVertexColorUsages     ; } private set { lilLanguageManager.sOutlineVertexColorUsages      = value; } }
+        protected static string     sShadowMaskTypes                { get { return lilLanguageManager.sShadowMaskTypes              ; } private set { lilLanguageManager.sShadowMaskTypes               = value; } }
+        protected static string[]   sRenderingModeList              { get { return lilLanguageManager.sRenderingModeList            ; } private set { lilLanguageManager.sRenderingModeList             = value; } }
+        protected static string[]   sRenderingModeListLite          { get { return lilLanguageManager.sRenderingModeListLite        ; } private set { lilLanguageManager.sRenderingModeListLite         = value; } }
+        protected static string[]   sTransparentModeList            { get { return lilLanguageManager.sTransparentModeList          ; } private set { lilLanguageManager.sTransparentModeList           = value; } }
+        protected static GUIContent mainColorRGBAContent            { get { return lilLanguageManager.mainColorRGBAContent          ; } private set { lilLanguageManager.mainColorRGBAContent           = value; } }
+        protected static GUIContent colorRGBAContent                { get { return lilLanguageManager.colorRGBAContent              ; } private set { lilLanguageManager.colorRGBAContent               = value; } }
+        protected static GUIContent colorAlphaRGBAContent           { get { return lilLanguageManager.colorAlphaRGBAContent         ; } private set { lilLanguageManager.colorAlphaRGBAContent          = value; } }
+        protected static GUIContent maskBlendContent                { get { return lilLanguageManager.maskBlendContent              ; } private set { lilLanguageManager.maskBlendContent               = value; } }
+        protected static GUIContent maskBlendRGBContent             { get { return lilLanguageManager.maskBlendRGBContent           ; } private set { lilLanguageManager.maskBlendRGBContent            = value; } }
+        protected static GUIContent maskBlendRGBAContent            { get { return lilLanguageManager.maskBlendRGBAContent          ; } private set { lilLanguageManager.maskBlendRGBAContent           = value; } }
+        protected static GUIContent colorMaskRGBAContent            { get { return lilLanguageManager.colorMaskRGBAContent          ; } private set { lilLanguageManager.colorMaskRGBAContent           = value; } }
+        protected static GUIContent alphaMaskContent                { get { return lilLanguageManager.alphaMaskContent              ; } private set { lilLanguageManager.alphaMaskContent               = value; } }
+        protected static GUIContent maskStrengthContent             { get { return lilLanguageManager.maskStrengthContent           ; } private set { lilLanguageManager.maskStrengthContent            = value; } }
+        protected static GUIContent normalMapContent                { get { return lilLanguageManager.normalMapContent              ; } private set { lilLanguageManager.normalMapContent               = value; } }
+        protected static GUIContent noiseMaskContent                { get { return lilLanguageManager.noiseMaskContent              ; } private set { lilLanguageManager.noiseMaskContent               = value; } }
+        protected static GUIContent matcapContent                   { get { return lilLanguageManager.matcapContent                 ; } private set { lilLanguageManager.matcapContent                  = value; } }
+        protected static GUIContent gradationContent                { get { return lilLanguageManager.gradationContent              ; } private set { lilLanguageManager.gradationContent               = value; } }
+        protected static GUIContent gradSpeedContent                { get { return lilLanguageManager.gradSpeedContent              ; } private set { lilLanguageManager.gradSpeedContent               = value; } }
+        protected static GUIContent smoothnessContent               { get { return lilLanguageManager.smoothnessContent             ; } private set { lilLanguageManager.smoothnessContent              = value; } }
+        protected static GUIContent metallicContent                 { get { return lilLanguageManager.metallicContent               ; } private set { lilLanguageManager.metallicContent                = value; } }
+        protected static GUIContent parallaxContent                 { get { return lilLanguageManager.parallaxContent               ; } private set { lilLanguageManager.parallaxContent                = value; } }
+        protected static GUIContent audioLinkMaskContent            { get { return lilLanguageManager.audioLinkMaskContent          ; } private set { lilLanguageManager.audioLinkMaskContent           = value; } }
+        protected static GUIContent audioLinkMaskSpectrumContent    { get { return lilLanguageManager.audioLinkMaskSpectrumContent  ; } private set { lilLanguageManager.audioLinkMaskSpectrumContent   = value; } }
+        protected static GUIContent customMaskContent               { get { return lilLanguageManager.customMaskContent             ; } private set { lilLanguageManager.customMaskContent              = value; } }
+        protected static GUIContent shadow1stColorRGBAContent       { get { return lilLanguageManager.shadow1stColorRGBAContent     ; } private set { lilLanguageManager.shadow1stColorRGBAContent      = value; } }
+        protected static GUIContent shadow2ndColorRGBAContent       { get { return lilLanguageManager.shadow2ndColorRGBAContent     ; } private set { lilLanguageManager.shadow2ndColorRGBAContent      = value; } }
+        protected static GUIContent shadow3rdColorRGBAContent       { get { return lilLanguageManager.shadow3rdColorRGBAContent     ; } private set { lilLanguageManager.shadow3rdColorRGBAContent      = value; } }
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -969,7 +973,7 @@ namespace lilToon
                         lilEditorGUI.DrawColorAsAlpha(emissionColor);
                         m_MaterialEditor.ShaderProperty(emissionMainStrength, GetLoc("sMainColorPower"));
                         lilEditorGUI.DrawLine();
-                        TextureGUI(ref edSet.isShowEmissionBlendMask, maskBlendContent, emissionBlendMask, emissionBlend, emissionBlendMask_ScrollRotate, true, true);
+                        TextureGUI(ref edSet.isShowEmissionBlendMask, maskBlendRGBAContent, emissionBlendMask, emissionBlend, emissionBlendMask_ScrollRotate, true, true);
                         lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emissionFluorescence, GetLoc("sFluorescence"));
                         EditorGUILayout.EndVertical();
@@ -987,7 +991,7 @@ namespace lilToon
                         lilEditorGUI.DrawColorAsAlpha(emission2ndColor);
                         m_MaterialEditor.ShaderProperty(emission2ndMainStrength, GetLoc("sMainColorPower"));
                         lilEditorGUI.DrawLine();
-                        TextureGUI(ref edSet.isShowEmission2ndBlendMask, maskBlendContent, emission2ndBlendMask, emission2ndBlend, emission2ndBlendMask_ScrollRotate, true, true);
+                        TextureGUI(ref edSet.isShowEmission2ndBlendMask, maskBlendRGBAContent, emission2ndBlendMask, emission2ndBlend, emission2ndBlendMask_ScrollRotate, true, true);
                         lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emission2ndFluorescence, GetLoc("sFluorescence"));
                         EditorGUILayout.EndVertical();
@@ -1030,7 +1034,7 @@ namespace lilToon
                         if(useBump2ndMap.floatValue == 1)
                         {
                             EditorGUILayout.BeginVertical(boxInnerHalf);
-                            TextureGUI(ref edSet.isShowBump2ndMap, normalMapContent, bump2ndMap, bump2ndScale);
+                            TextureGUI(ref edSet.isShowBump2ndMap, normalMapContent, bump2ndMap, bump2ndScale, bump2ndMap_UVMode, "UV Mode|UV0|UV1|UV2|UV3");
                             lilEditorGUI.DrawLine();
                             TextureGUI(ref edSet.isShowBump2ndScaleMask, maskStrengthContent, bump2ndScaleMask);
                             EditorGUILayout.EndVertical();
@@ -1862,7 +1866,7 @@ namespace lilToon
                         lilEditorGUI.DrawColorAsAlpha(emissionColor);
                         m_MaterialEditor.ShaderProperty(emissionMainStrength, GetLoc("sMainColorPower"));
                         lilEditorGUI.DrawLine();
-                        TextureGUI(ref edSet.isShowEmissionBlendMask, maskBlendContent, emissionBlendMask, emissionBlend, emissionBlendMask_ScrollRotate, true, true);
+                        TextureGUI(ref edSet.isShowEmissionBlendMask, maskBlendRGBAContent, emissionBlendMask, emissionBlend, emissionBlendMask_ScrollRotate, true, true);
                         lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emissionBlink, blinkSetting);
                         lilEditorGUI.DrawLine();
@@ -1892,7 +1896,7 @@ namespace lilToon
                         lilEditorGUI.DrawColorAsAlpha(emission2ndColor);
                         m_MaterialEditor.ShaderProperty(emission2ndMainStrength, GetLoc("sMainColorPower"));
                         lilEditorGUI.DrawLine();
-                        TextureGUI(ref edSet.isShowEmission2ndBlendMask, maskBlendContent, emission2ndBlendMask, emission2ndBlend, emission2ndBlendMask_ScrollRotate, true, true);
+                        TextureGUI(ref edSet.isShowEmission2ndBlendMask, maskBlendRGBAContent, emission2ndBlendMask, emission2ndBlend, emission2ndBlendMask_ScrollRotate, true, true);
                         lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emission2ndBlink, blinkSetting);
                         lilEditorGUI.DrawLine();
@@ -2195,10 +2199,10 @@ namespace lilToon
                         if(audioLinkUVMode.floatValue == 0) m_MaterialEditor.ShaderProperty(audioLinkUVParams, sALParamsNone);
                         if(audioLinkUVMode.floatValue == 1) m_MaterialEditor.ShaderProperty(audioLinkUVParams, sALParamsPos);
                         if(audioLinkUVMode.floatValue == 2) m_MaterialEditor.ShaderProperty(audioLinkUVParams, sALParamsUV);
-                        if(audioLinkUVMode.floatValue == 3) m_MaterialEditor.TexturePropertySingleLine(customMaskContent, audioLinkMask);
+                        if(audioLinkUVMode.floatValue == 3) m_MaterialEditor.TexturePropertySingleLine(audioLinkMaskContent, audioLinkMask);
                         if(audioLinkUVMode.floatValue == 4)
                         {
-                            m_MaterialEditor.TexturePropertySingleLine(customMaskContent, audioLinkMask);
+                            m_MaterialEditor.TexturePropertySingleLine(audioLinkMaskSpectrumContent, audioLinkMask);
                             lilEditorGUI.DrawVectorAs4Float(audioLinkUVParams, "Volume", "Base Boost", "Treble Boost", "Line Width");
                         }
                         if(audioLinkUVMode.floatValue == 5)
@@ -2229,7 +2233,7 @@ namespace lilToon
                             if(audioLinkVertexUVMode.floatValue == 0) m_MaterialEditor.ShaderProperty(audioLinkVertexUVParams, sALParamsNone);
                             if(audioLinkVertexUVMode.floatValue == 1) m_MaterialEditor.ShaderProperty(audioLinkVertexUVParams, sALParamsPos);
                             if(audioLinkVertexUVMode.floatValue == 2) m_MaterialEditor.ShaderProperty(audioLinkVertexUVParams, sALParamsUV);
-                            if(audioLinkVertexUVMode.floatValue == 3) m_MaterialEditor.TexturePropertySingleLine(customMaskContent, audioLinkMask);
+                            if(audioLinkVertexUVMode.floatValue == 3) m_MaterialEditor.TexturePropertySingleLine(audioLinkMaskContent, audioLinkMask);
                             if(audioLinkVertexUVMode.floatValue == 1) m_MaterialEditor.ShaderProperty(audioLinkVertexStart, GetLoc("sAudioLinkStartPosition"));
                             lilEditorGUI.DrawLine();
                             m_MaterialEditor.ShaderProperty(audioLinkVertexStrength, BuildParams(GetLoc("sAudioLinkMovingVector"), GetLoc("sAudioLinkNormalStrength")));
@@ -4066,6 +4070,7 @@ namespace lilToon
             AddBlock(PropertyBlock.NormalMap2nd, useBump2ndMap);
             AddBlock(PropertyBlock.NormalMap2nd, bump2ndScale);
             AddBlock(PropertyBlock.NormalMap2nd, bump2ndMap, true);
+            AddBlock(PropertyBlock.NormalMap2nd, bump2ndMap_UVMode, true);
             AddBlock(PropertyBlock.NormalMap2nd, bump2ndScaleMask, true);
 
             AddBlock(PropertyBlock.Anisotropy, useAnisotropy);
@@ -5825,10 +5830,10 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(shadowEnvStrength, GetLoc("sShadowEnvStrength"));
                     m_MaterialEditor.ShaderProperty(lilShadowCasterBias, "Shadow Caster Bias");
                     lilEditorGUI.DrawLine();
-                    m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sBlurMask"), GetLoc("sBlurR")), shadowBlurMask);
+                    m_MaterialEditor.TexturePropertySingleLine(new GUIContent(GetLoc("sBlurMask"), GetLoc("sBlurRGB")), shadowBlurMask);
                     m_MaterialEditor.ShaderProperty(shadowBlurMaskLOD, "LOD", 2);
                     lilEditorGUI.DrawLine();
-                    edSet.isShowShadowAO = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, new GUIContent("AO Map", GetLoc("sBorderR")), shadowBorderMask, edSet.isShowShadowAO, isCustomEditor);
+                    edSet.isShowShadowAO = lilEditorGUI.DrawSimpleFoldout(m_MaterialEditor, new GUIContent("AO Map", GetLoc("sBorderRGB")), shadowBorderMask, edSet.isShowShadowAO, isCustomEditor);
                     if(edSet.isShowShadowAO)
                     {
                         EditorGUI.indentLevel += 1;
@@ -6003,7 +6008,7 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(matcapMainStrength, GetLoc("sMainColorPower"));
                         m_MaterialEditor.ShaderProperty(matcapNormalStrength, GetLoc("sNormalStrength"));
                         lilEditorGUI.DrawLine();
-                        TextureGUI(ref edSet.isShowMatCapBlendMask, maskBlendContent, matcapBlendMask, matcapBlend);
+                        TextureGUI(ref edSet.isShowMatCapBlendMask, maskBlendRGBContent, matcapBlendMask, matcapBlend);
                         m_MaterialEditor.ShaderProperty(matcapEnableLighting, GetLoc("sEnableLighting"));
                         m_MaterialEditor.ShaderProperty(matcapShadowMask, GetLoc("sShadowMask"));
                         m_MaterialEditor.ShaderProperty(matcapBackfaceMask, GetLoc("sBackfaceMask"));
@@ -6037,7 +6042,7 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(matcap2ndMainStrength, GetLoc("sMainColorPower"));
                         m_MaterialEditor.ShaderProperty(matcap2ndNormalStrength, GetLoc("sNormalStrength"));
                         lilEditorGUI.DrawLine();
-                        TextureGUI(ref edSet.isShowMatCap2ndBlendMask, maskBlendContent, matcap2ndBlendMask, matcap2ndBlend);
+                        TextureGUI(ref edSet.isShowMatCap2ndBlendMask, maskBlendRGBContent, matcap2ndBlendMask, matcap2ndBlend);
                         m_MaterialEditor.ShaderProperty(matcap2ndEnableLighting, GetLoc("sEnableLighting"));
                         m_MaterialEditor.ShaderProperty(matcap2ndShadowMask, GetLoc("sShadowMask"));
                         m_MaterialEditor.ShaderProperty(matcap2ndBackfaceMask, GetLoc("sBackfaceMask"));
@@ -6094,7 +6099,7 @@ namespace lilToon
                         MatCapTextureGUI(ref edSet.isShowMatCapUV, matcapContent, matcapTex, matcapColor, matcapBlendUV1, matcapZRotCancel, matcapPerspective, matcapVRParallaxStrength);
                         lilEditorGUI.DrawColorAsAlpha(matcapColor);
                         lilEditorGUI.DrawLine();
-                        TextureGUI(ref edSet.isShowMatCapBlendMask, maskBlendContent, matcapBlendMask, matcapBlend);
+                        TextureGUI(ref edSet.isShowMatCapBlendMask, maskBlendRGBContent, matcapBlendMask, matcapBlend);
                         m_MaterialEditor.ShaderProperty(matcapEnableLighting, GetLoc("sEnableLighting"));
                         m_MaterialEditor.ShaderProperty(matcapBlendMode, sBlendModes);
                         if(matcapEnableLighting.floatValue != 0.0f && matcapBlendMode.floatValue == 3.0f && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))
@@ -6116,7 +6121,7 @@ namespace lilToon
                         MatCapTextureGUI(ref edSet.isShowMatCap2ndUV, matcapContent, matcap2ndTex, matcap2ndColor, matcap2ndBlendUV1, matcap2ndZRotCancel, matcap2ndPerspective, matcap2ndVRParallaxStrength);
                         lilEditorGUI.DrawColorAsAlpha(matcap2ndColor);
                         lilEditorGUI.DrawLine();
-                        TextureGUI(ref edSet.isShowMatCap2ndBlendMask, maskBlendContent, matcap2ndBlendMask, matcap2ndBlend);
+                        TextureGUI(ref edSet.isShowMatCap2ndBlendMask, maskBlendRGBContent, matcap2ndBlendMask, matcap2ndBlend);
                         m_MaterialEditor.ShaderProperty(matcap2ndEnableLighting, GetLoc("sEnableLighting"));
                         m_MaterialEditor.ShaderProperty(matcap2ndBlendMode, sBlendModes);
                         if(matcap2ndEnableLighting.floatValue != 0.0f && matcap2ndBlendMode.floatValue == 3.0f && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpMatCapBlending")))

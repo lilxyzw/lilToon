@@ -19,6 +19,7 @@ sStrengthR	Strength (R)	強度 (R)	강도 (R)	强度 (R)	強度 (R)
 sLength	Length	長さ	길이	长度	長度
 sLengthMask	Length Mask	長さマスク	길이 마스크	长度蒙版	長度蒙版
 sTexture	Texture	テクスチャ	텍스처	纹理	紋理
+sTextureRGB	Color (RGB)	色(RGB)	색 (RGB)	颜色 (RGB)	顏色 (RGB)
 sTextureRGBA	Color (RGB) and Transparency (A)	色(RGB)と透明度(A)	색 (RGB) 과 투명도 (A)	颜色 (RGB) & 透明度 (A)	顏色 (RGB) & 透明度 (A)
 sMask	Mask	マスク	마스크	蒙版	蒙版
 sMaskType	Mask Type	マスクタイプ	마스크 타입	蒙版类型	蒙版類型
@@ -31,8 +32,10 @@ sBlendModeMul	Multiply	乗算	곱하기	Multiply	Multiply
 sBorder	Border	範囲	범위	边界	邊界
 sBorderAO	AO & Border	AOと影範囲	AO과 그림자 범위	AO & 边界	AO & 邊界
 sBorderR	Border (R)	範囲 (R)	범위 (R)	边界 (R)	邊界 (R)
+sBorderRGB	Border (RGB = 1st/2nd/3rd)	範囲 (RGB = 1st/2nd/3rd)	범위 (RGB = 1st/2nd/3rd)	边界 (RGB = 1st/2nd/3rd)	邊界 (RGB = 1st/2nd/3rd)
 sBlur	Blur	ぼかし	흐리게	模糊	模糊
 sBlurR	Blur (R)	ぼかし (R)	흐리게 (R)	模糊 (R)	模糊 (R)
+sBlurRGB	Blur (RGB = 1st/2nd/3rd)	ぼかし (RGB = 1st/2nd/3rd)	흐리게 (RGB = 1st/2nd/3rd)	模糊 (RGB = 1st/2nd/3rd)	模糊 (RGB = 1st/2nd/3rd)
 sBlurMask	Blur Mask	ぼかし量マスク	흐림 효과 마스크	模糊掩码	模糊掩碼
 sAlphaR	Alpha (R)	透明度 (R)	투명도 (R)	透明度 (R)	透明度 (R)
 sMainColorPower	Main Color Power	メインカラーの強度	메인 컬러의 강도	主色功率	主色功率
@@ -244,6 +247,8 @@ sAudioLinkUVModeRim	Rim	Rim	Rim	Rim	Rim
 sAudioLinkUVModeUV	UV	UV	UV	UV	UV
 sAudioLinkUVModeMask	Mask	マスク	마스크	蒙版	蒙版
 sAudioLinkUVModePosition	Position	座標	좌표	职位	職位
+sAudioLinkMaskRGB	RGB = Delay / Band / Strength	RGB = 遅延 / 帯域 / 強度	RGB = Delay / Band / Strength	RGB = Delay / Band / Strength	RGB = Delay / Band / Strength
+sAudioLinkMaskRGBSpectrum	RGB = Volume / Band / Strength	RGB = 音量 / 帯域 / 強度	RGB = Volume / Band / Strength	RGB = Volume / Band / Strength	RGB = Volume / Band / Strength
 sAudioLinkBand	Band	帯域	Band	Band	Band
 sAudioLinkBandBass	Bass	Bass	Bass	Bass	Bass
 sAudioLinkBandLowMid	Low Mid	Low Mid	Low Mid	Low Mid	Low Mid

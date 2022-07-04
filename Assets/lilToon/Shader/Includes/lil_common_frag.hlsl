@@ -1434,7 +1434,7 @@
             matCap2ndColor.a = fd.facing < (_MatCap2ndBackfaceMask-1.0) ? 0.0 : matCap2ndColor.a;
             float3 matCapMask = 1.0;
             #if defined(LIL_FEATURE_MatCap2ndBlendMask)
-                matCapMask = LIL_SAMPLE_2D_ST(_MatCap2ndBlendMask, samp, fd.uvMain).r;
+                matCapMask = LIL_SAMPLE_2D_ST(_MatCap2ndBlendMask, samp, fd.uvMain).rgb;
             #endif
 
             // Blend
@@ -1631,11 +1631,7 @@
         {
             float4 emissionColor = _EmissionColor;
             // UV
-            #if defined(LIL_FEATURE_ANIMATE_EMISSION_UV)
-                float2 emissionUV = fd.uv0;
-            #else
-                float2 emissionUV = fd.uvMain;
-            #endif
+            float2 emissionUV = fd.uv0;
             if(_EmissionMap_UVMode == 1) emissionUV = fd.uv1;
             if(_EmissionMap_UVMode == 2) emissionUV = fd.uv2;
             if(_EmissionMap_UVMode == 3) emissionUV = fd.uv3;
@@ -1716,11 +1712,7 @@
         {
             float4 emission2ndColor = _Emission2ndColor;
             // UV
-            #if defined(LIL_FEATURE_ANIMATE_EMISSION_UV)
-                float2 emission2ndUV = fd.uv0;
-            #else
-                float2 emission2ndUV = fd.uvMain;
-            #endif
+            float2 emission2ndUV = fd.uv0;
             if(_Emission2ndMap_UVMode == 1) emission2ndUV = fd.uv1;
             if(_Emission2ndMap_UVMode == 2) emission2ndUV = fd.uv2;
             if(_Emission2ndMap_UVMode == 3) emission2ndUV = fd.uv3;
