@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace lilToon
     {
         public MaterialProperty p;
         public List<PropertyBlock> blocks;
+        public string propertyName;
         public bool isTexture;
 
         // Values
@@ -91,11 +93,41 @@ namespace lilToon
             private set { }
         }
 
+        public void FindProperty(MaterialProperty[] props)
+        {
+            for(var i = 0; i < props.Length; i++)
+            {
+                if(props[i] != null && props[i].name == propertyName)
+                {
+                    p = props[i];
+                    return;
+                }
+            }
+            p = null;
+        }
+
         public lilMaterialProperty()
         {
             p = null;
             blocks = new List<PropertyBlock>();
             isTexture = false;
+            propertyName = null;
+        }
+
+        public lilMaterialProperty(string name, params PropertyBlock[] inBrocks)
+        {
+            p = null;
+            blocks = inBrocks.ToList();
+            isTexture = false;
+            propertyName = name;
+        }
+
+        public lilMaterialProperty(string name, bool isTex, params PropertyBlock[] inBrocks)
+        {
+            p = null;
+            blocks = inBrocks.ToList();
+            isTexture = isTex;
+            propertyName = name;
         }
 
         public lilMaterialProperty(MaterialProperty prop)
