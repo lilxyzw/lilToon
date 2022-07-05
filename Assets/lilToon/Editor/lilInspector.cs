@@ -4182,7 +4182,7 @@ namespace lilToon
 
             if(material.shader != shader && shader != null)
             {
-                int renderQueue = material.renderQueue == material.shader.renderQueue ? -1 : material.renderQueue;
+                int renderQueue = lilMaterialUtils.GetTrueRenderQueue(material);
                 material.shader = shader;
                 material.renderQueue = renderQueue;
             }

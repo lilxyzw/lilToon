@@ -9,6 +9,7 @@ namespace lilToon
     {
         internal static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess, bool ismulti)
         {
+            int renderQueue = GetTrueRenderQueue(material);
             RenderingMode rend = renderingMode;
             lilRenderPipeline RP = lilRenderPipelineReader.GetRP();
             if(ismulti)
@@ -253,7 +254,7 @@ namespace lilToon
                     material.SetInt("_AlphaToMask", 0);
                     break;
             }
-            if(isstencil) material.renderQueue = material.shader.renderQueue - 1;
+            if(!ismulti) material.renderQueue = renderQueue;
             FixTransparentRenderQueue(material, renderingMode);
             material.SetInt("_ZWrite", 1);
             if(rend == RenderingMode.Gem)
@@ -631,6 +632,12 @@ namespace lilToon
                     props.DeleteArrayElementAtIndex(i);
                 }
             }
+        }
+
+        public static int GetTrueRenderQueue(Material material)
+        {
+            var so = new SerializedObject(material);
+            return so.FindProperty("m_CustomRenderQueue").intValue;
         }
     }
 }
