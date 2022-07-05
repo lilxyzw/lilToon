@@ -11,6 +11,8 @@ using System.IO;
     using VRC.SDKBase.Editor.BuildPipeline;
 #endif
 
+using Object = UnityEngine.Object;
+
 namespace lilToon
 {
     public static class lilToonEditorUtils
@@ -105,8 +107,8 @@ namespace lilToon
             lilTextureUtils.SaveTextureToPng(path, "_conv", outTexture);
             AssetDatabase.Refresh();
 
-            UnityEngine.Object.DestroyImmediate(hsvgMaterial);
-            UnityEngine.Object.DestroyImmediate(srcTexture);
+            Object.DestroyImmediate(hsvgMaterial);
+            Object.DestroyImmediate(srcTexture);
         }
 
         [MenuItem(menuPathConvertNormal, true, menuPriorityConvertNormal)]
@@ -190,7 +192,7 @@ namespace lilToon
             Shader lts = Shader.Find("lilToon");
             if(lts == null) EditorUtility.DisplayDialog("Setup From FBX",GetLoc("sUtilShaderNotFound"),GetLoc("sCancel"));
             Undo.RecordObjects(Selection.objects, "Setup From FBX");
-            foreach(UnityEngine.Object selectionObj in Selection.objects)
+            foreach(Object selectionObj in Selection.objects)
             {
                 string path = AssetDatabase.GetAssetPath(selectionObj);
                 if(!path.EndsWith(".fbx", StringComparison.OrdinalIgnoreCase)) continue;
@@ -237,7 +239,7 @@ namespace lilToon
                 }
 
                 // Materials in model
-                foreach(UnityEngine.Object obj in AssetDatabase.LoadAllAssetsAtPath(path))
+                foreach(Object obj in AssetDatabase.LoadAllAssetsAtPath(path))
                 {
                     if(obj == null || !(obj is Material)) continue;
                     Material material = new Material((Material)obj);
@@ -359,10 +361,6 @@ namespace lilToon
             {
                 lilMaterialUtils.SetupMaterialWithRenderingMode(material, RenderingMode.Transparent, TransparentMode.Normal, isOutl, false, false, false, false);
             }
-            //else
-            //{
-            //    lilToonInspector.SetupMaterialWithRenderingMode(material, RenderingMode.Opaque, TransparentMode.Normal, isOutl, false, false, false, false);
-            //}
 
             EditorUtility.SetDirty(material);
         }
@@ -378,8 +376,7 @@ namespace lilToon
             MeshRenderer[] meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>(true);
             SkinnedMeshRenderer[] skinnedMeshRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>(true);
 
-            List<UnityEngine.Object> recordObjects = new List<UnityEngine.Object>();
-            recordObjects.Add(gameObject);
+            var recordObjects = new List<Object>{gameObject};
             recordObjects.AddRange(meshRenderers);
             recordObjects.AddRange(skinnedMeshRenderers);
 
@@ -410,7 +407,6 @@ namespace lilToon
 
             Vector3 centerPosition = new Vector3((minX + maxX) / 2.0f, (minY + maxY) / 2.0f, (minZ + maxZ) / 2.0f);
 
-            //anchorObject.transform.position = centerPosition;
             anchorObject.transform.position = new Vector3(gameObject.transform.position.x, centerPosition.y, gameObject.transform.position.z);
             anchorObject.transform.parent = gameObject.transform;
 
@@ -440,7 +436,7 @@ namespace lilToon
                     // Fix vertex light
                     foreach(Material material in meshRenderer.sharedMaterials)
                     {
-                        if(material.shader.name.Contains("lilToon") && shaderSetting != null)
+                        if(material != null && material.shader != null && material.shader.name.Contains("lilToon") && shaderSetting != null)
                         {
                             Undo.RecordObject(material, "[lilToon] Fix lighting");
                             material.SetFloat("_AsUnlit", shaderSetting.defaultAsUnlit);
@@ -456,11 +452,11 @@ namespace lilToon
 
                     // Fix renderer settings
                     meshRenderer.probeAnchor = anchorObject.transform;
-                    meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.BlendProbes;
-                    meshRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.BlendProbes;
-                    if(meshRenderer.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.Off)
+                    meshRenderer.lightProbeUsage = LightProbeUsage.BlendProbes;
+                    meshRenderer.reflectionProbeUsage = ReflectionProbeUsage.BlendProbes;
+                    if(meshRenderer.shadowCastingMode == ShadowCastingMode.Off)
                     {
-                        meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+                        meshRenderer.shadowCastingMode = ShadowCastingMode.On;
                     }
                 }
             }
@@ -489,11 +485,11 @@ namespace lilToon
 
                     // Fix renderer settings
                     skinnedMeshRenderer.probeAnchor = anchorObject.transform;
-                    skinnedMeshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.BlendProbes;
-                    skinnedMeshRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.BlendProbes;
-                    if(skinnedMeshRenderer.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.Off)
+                    skinnedMeshRenderer.lightProbeUsage = LightProbeUsage.BlendProbes;
+                    skinnedMeshRenderer.reflectionProbeUsage = ReflectionProbeUsage.BlendProbes;
+                    if(skinnedMeshRenderer.shadowCastingMode == ShadowCastingMode.Off)
                     {
-                        skinnedMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+                        skinnedMeshRenderer.shadowCastingMode = ShadowCastingMode.On;
                     }
 
                     // Fix bounds
@@ -562,16 +558,6 @@ namespace lilToon
                         data.RemoveAt(i);
                         continue;
                     }
-                    //foreach(Material material in materials)
-                    //{
-                    //    if(IsMatchKeywords(material, data[i].shaderKeywordSet, shader, keywords))
-                    //    {
-                    //        isMatch = true;
-                    //        break;
-                    //    }
-                    //}
-                    //if(isMatch) continue;
-                    //data.RemoveAt(i);
                 }
             }
         }

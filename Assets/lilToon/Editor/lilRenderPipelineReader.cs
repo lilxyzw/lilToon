@@ -2,6 +2,7 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace lilToon
 {
@@ -15,9 +16,9 @@ namespace lilToon
             // URP : Universal.UniversalRenderPipelineAsset
             // HDRP : HighDefinition.HDRenderPipelineAsset
             string renderPipelineName = "";
-            if(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset != null)
+            if(GraphicsSettings.renderPipelineAsset != null)
             {
-                renderPipelineName = UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.ToString();
+                renderPipelineName = GraphicsSettings.renderPipelineAsset.ToString();
             }
             if(renderPipelineName.Contains("Universal"))
             {
@@ -37,9 +38,9 @@ namespace lilToon
         public static PackageVersionInfos GetRPInfos()
         {
             string renderPipelineName = "";
-            if(UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset != null)
+            if(GraphicsSettings.renderPipelineAsset != null)
             {
-                renderPipelineName = UnityEngine.Rendering.GraphicsSettings.renderPipelineAsset.ToString();
+                renderPipelineName = GraphicsSettings.renderPipelineAsset.ToString();
             }
             if(renderPipelineName.Contains("Universal"))
             {
@@ -115,14 +116,6 @@ namespace lilToon
         {
             public string version = "";
         }
-    }
-
-    public enum lilRenderPipeline
-    {
-        BRP,
-        LWRP,
-        URP,
-        HDRP
     }
 
     public struct PackageVersionInfos

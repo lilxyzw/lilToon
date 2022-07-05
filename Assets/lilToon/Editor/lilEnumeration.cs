@@ -1,8 +1,4 @@
 #if UNITY_EDITOR
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace lilToon
 {
     public enum EditorMode
@@ -86,6 +82,14 @@ namespace lilToon
         Rendering,
         Tessellation,
         Other
+    }
+
+    public enum lilRenderPipeline
+    {
+        BRP,
+        LWRP,
+        URP,
+        HDRP
     }
 }
 #endif

@@ -7,6 +7,8 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
+using Object = UnityEngine.Object;
+
 namespace lilToon
 {
     public class lilTextureUtils
@@ -196,7 +198,7 @@ namespace lilToon
             else                 path = EditorUtility.SaveFilePanel("Save Texture", "Assets", tex.name + ".png", "png");
             if(!string.IsNullOrEmpty(path)) {
                 File.WriteAllBytes(path, tex.EncodeToPNG());
-                UnityEngine.Object.DestroyImmediate(tex);
+                Object.DestroyImmediate(tex);
                 AssetDatabase.Refresh();
                 return AssetDatabase.LoadAssetAtPath<Texture2D>(path.Substring(path.IndexOf("Assets")));
             }
@@ -213,7 +215,7 @@ namespace lilToon
             else                 path = EditorUtility.SaveFilePanel("Save Texture", "Assets", tex.name + "_alpha.png", "png");
             if(!string.IsNullOrEmpty(path)) {
                 File.WriteAllBytes(path, tex.EncodeToPNG());
-                UnityEngine.Object.DestroyImmediate(tex);
+                Object.DestroyImmediate(tex);
                 AssetDatabase.Refresh();
                 return AssetDatabase.LoadAssetAtPath<Texture2D>(path.Substring(path.IndexOf("Assets")));
             }
@@ -231,7 +233,7 @@ namespace lilToon
             if(!string.IsNullOrEmpty(path))
             {
                 File.WriteAllBytes(path, tex.EncodeToPNG());
-                UnityEngine.Object.DestroyImmediate(tex);
+                Object.DestroyImmediate(tex);
                 AssetDatabase.Refresh();
                 return AssetDatabase.LoadAssetAtPath<Texture2D>(path.Substring(path.IndexOf("Assets")));
             }
@@ -253,14 +255,14 @@ namespace lilToon
         // Gif to Atlas
         #region
         #if SYSTEM_DRAWING
-            public static string ConvertGifToAtlas(UnityEngine.Object tex)
+            public static string ConvertGifToAtlas(Object tex)
             {
                 int frameCount, loopXY, duration;
                 float xScale, yScale;
                 return ConvertGifToAtlas(tex, out frameCount, out loopXY, out duration, out xScale, out yScale);
             }
 
-            public static string ConvertGifToAtlas(UnityEngine.Object tex, out int frameCount, out int loopXY, out int duration, out float xScale, out float yScale)
+            public static string ConvertGifToAtlas(Object tex, out int frameCount, out int loopXY, out int duration, out float xScale, out float yScale)
             {
                     string path = AssetDatabase.GetAssetPath(tex);
                     System.Drawing.Image origGif = System.Drawing.Image.FromFile(path);
@@ -281,8 +283,8 @@ namespace lilToon
                         finalHeight = origGif.Height * loopXY;
                     }
                     Texture2D atlasTexture = new Texture2D(finalWidth, finalHeight);
-                    xScale = (float)(origGif.Width * loopXY) / (float)finalWidth;
-                    yScale = (float)(origGif.Height * loopXY) / (float)finalHeight;
+                    xScale = (float)(origGif.Width * loopXY) / finalWidth;
+                    yScale = (float)(origGif.Height * loopXY) / finalHeight;
                     for(int x = 0; x < finalWidth; x++)
                     {
                         for(int y = 0; y < finalHeight; y++)
@@ -315,14 +317,14 @@ namespace lilToon
                     return savePath;
             }
         #else
-            public static string ConvertGifToAtlas(UnityEngine.Object tex)
+            public static string ConvertGifToAtlas(Object tex)
             {
                 int frameCount, loopXY, duration;
                 float xScale, yScale;
                 return ConvertGifToAtlas(tex, out frameCount, out loopXY, out duration, out xScale, out yScale);
             }
 
-            public static string ConvertGifToAtlas(UnityEngine.Object tex, out int frameCount, out int loopXY, out int duration, out float xScale, out float yScale)
+            public static string ConvertGifToAtlas(Object tex, out int frameCount, out int loopXY, out int duration, out float xScale, out float yScale)
             {
                 frameCount = 0;
                 loopXY = 0;

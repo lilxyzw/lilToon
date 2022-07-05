@@ -424,10 +424,10 @@ namespace lilToon
 
         public static void SetAlphaIsTransparencyGUI(MaterialProperty tex)
         {
-            if(tex.textureValue != null && !((Texture2D)tex.textureValue).alphaIsTransparency && lilEditorGUI.AutoFixHelpBox(GetLoc("sNotAlphaIsTransparency")))
+            if(tex.textureValue != null && !((Texture2D)tex.textureValue).alphaIsTransparency && AutoFixHelpBox(GetLoc("sNotAlphaIsTransparency")))
             {
                 string path = AssetDatabase.GetAssetPath(tex.textureValue);
-                TextureImporter textureImporter = (TextureImporter)TextureImporter.GetAtPath(path);
+                TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(path);
                 textureImporter.alphaIsTransparency = true;
                 AssetDatabase.ImportAsset(path);
             }
@@ -660,7 +660,7 @@ namespace lilToon
                     string savePath = lilTextureUtils.ConvertGifToAtlas(tex.textureValue, out frameCount, out loopXY, out duration, out xScale, out yScale);
 
                     tex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(savePath);
-                    decalAnimation.vectorValue = new Vector4(loopXY,loopXY,(float)frameCount,100.0f/(float)duration);
+                    decalAnimation.vectorValue = new Vector4(loopXY,loopXY,frameCount,100.0f/duration);
                     decalSubParam.vectorValue = new Vector4(xScale,yScale,decalSubParam.vectorValue.z,decalSubParam.vectorValue.w);
                     isDecal.floatValue = 1.0f;
                 }

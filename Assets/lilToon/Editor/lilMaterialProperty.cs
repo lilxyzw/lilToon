@@ -13,13 +13,6 @@ namespace lilToon
         public string propertyName;
         public bool isTexture;
 
-        // Values
-        //public int intValue
-        //{
-        //    get { return p.intValue; }
-        //    set { p.intValue = value; }
-        //}
-
         public float floatValue
         {
             get { return p.floatValue; }
@@ -75,7 +68,7 @@ namespace lilToon
             private set { }
         }
 
-        public UnityEngine.Object[] targets
+        public Object[] targets
         {
             get { return p.targets; }
             private set { }

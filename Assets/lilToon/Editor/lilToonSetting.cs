@@ -140,7 +140,7 @@ public class lilToonSetting : ScriptableObject
     internal static void LoadShaderSetting(ref lilToonSetting shaderSetting)
     {
         string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
-        if(shaderSetting == null) shaderSetting = ScriptableObject.CreateInstance<lilToonSetting>();
+        if(shaderSetting == null) shaderSetting = CreateInstance<lilToonSetting>();
         if(File.Exists(shaderSettingPath)) JsonUtility.FromJsonOverwrite(File.ReadAllText(shaderSettingPath), shaderSetting);
     }
 
@@ -154,7 +154,7 @@ public class lilToonSetting : ScriptableObject
             {
                 string path = lilDirectoryManager.GUIDToPath(guid);
                 var shaderSettingOld = AssetDatabase.LoadAssetAtPath<lilToonSetting>(path);
-                shaderSetting = UnityEngine.Object.Instantiate(shaderSettingOld);
+                shaderSetting = Instantiate(shaderSettingOld);
                 if(shaderSetting != null)
                 {
                     Debug.Log("[lilToon] Migrate settings from: " + path);
@@ -164,7 +164,7 @@ public class lilToonSetting : ScriptableObject
                     return;
                 }
             }
-            shaderSetting = ScriptableObject.CreateInstance<lilToonSetting>();
+            shaderSetting = CreateInstance<lilToonSetting>();
             SaveShaderSetting(shaderSetting);
             AssetDatabase.Refresh();
         }
@@ -590,7 +590,6 @@ public class lilToonSetting : ScriptableObject
         try
         {
             if(!ShouldOptimization()) return;
-            File.Create(lilDirectoryManager.postBuildTempPath);
 
             lilToonSetting shaderSetting = null;
             InitializeShaderSetting(ref shaderSetting);
@@ -640,6 +639,7 @@ public class lilToonSetting : ScriptableObject
             #endif
 
             // Apply
+            File.Create(lilDirectoryManager.postBuildTempPath);
             ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
             AssetDatabase.Refresh();
         }

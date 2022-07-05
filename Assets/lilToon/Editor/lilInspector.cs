@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
+using Object = UnityEngine.Object;
+
 namespace lilToon
 {
     //------------------------------------------------------------------------------------------------------------------------------
@@ -3773,7 +3775,7 @@ namespace lilToon
                             if(lilEditorGUI.EditorButton(showName))
                             {
                                 var objs = m_MaterialEditor.targets.Where(obj => obj is Material);
-                                foreach(UnityEngine.Object obj in objs)
+                                foreach(Object obj in objs)
                                 {
                                     lilToonPreset.ApplyPreset((Material)obj, presets[j], isMulti);
                                 }
@@ -5511,12 +5513,12 @@ namespace lilToon
 
                 material.SetTexture(mainTex.name, outTexture);
 
-                UnityEngine.Object.DestroyImmediate(hsvgMaterial);
-                UnityEngine.Object.DestroyImmediate(srcTexture);
-                UnityEngine.Object.DestroyImmediate(srcMain2);
-                UnityEngine.Object.DestroyImmediate(srcMain3);
-                UnityEngine.Object.DestroyImmediate(srcMask2);
-                UnityEngine.Object.DestroyImmediate(srcMask3);
+                Object.DestroyImmediate(hsvgMaterial);
+                Object.DestroyImmediate(srcTexture);
+                Object.DestroyImmediate(srcMain2);
+                Object.DestroyImmediate(srcMain3);
+                Object.DestroyImmediate(srcMask2);
+                Object.DestroyImmediate(srcMask3);
             }
         }
 
@@ -5647,12 +5649,12 @@ namespace lilToon
                     CopyTextureSetting(bufMainTexture, outTexture);
                 }
 
-                UnityEngine.Object.DestroyImmediate(hsvgMaterial);
-                UnityEngine.Object.DestroyImmediate(srcTexture);
-                UnityEngine.Object.DestroyImmediate(srcMain2);
-                UnityEngine.Object.DestroyImmediate(srcMain3);
-                UnityEngine.Object.DestroyImmediate(srcMask2);
-                UnityEngine.Object.DestroyImmediate(srcMask3);
+                Object.DestroyImmediate(hsvgMaterial);
+                Object.DestroyImmediate(srcTexture);
+                Object.DestroyImmediate(srcMain2);
+                Object.DestroyImmediate(srcMain3);
+                Object.DestroyImmediate(srcMask2);
+                Object.DestroyImmediate(srcMask3);
 
                 return outTexture;
             }
@@ -5750,10 +5752,10 @@ namespace lilToon
                     CopyTextureSetting(bufMainTexture, outTexture);
                 }
 
-                UnityEngine.Object.DestroyImmediate(hsvgMaterial);
-                UnityEngine.Object.DestroyImmediate(srcTexture);
-                UnityEngine.Object.DestroyImmediate(srcMain2);
-                UnityEngine.Object.DestroyImmediate(srcMask2);
+                Object.DestroyImmediate(hsvgMaterial);
+                Object.DestroyImmediate(srcTexture);
+                Object.DestroyImmediate(srcMain2);
+                Object.DestroyImmediate(srcMask2);
 
                 return outTexture;
             }
@@ -5799,8 +5801,8 @@ namespace lilToon
                     CopyTextureSetting(bufMainTexture, outTexture);
                 }
 
-                UnityEngine.Object.DestroyImmediate(hsvgMaterial);
-                UnityEngine.Object.DestroyImmediate(srcTexture);
+                Object.DestroyImmediate(hsvgMaterial);
+                Object.DestroyImmediate(srcTexture);
 
                 return outTexture;
             }
@@ -5869,8 +5871,8 @@ namespace lilToon
                     CopyTextureSetting(bufMainTexture, outTexture);
                 }
 
-                UnityEngine.Object.DestroyImmediate(hsvgMaterial);
-                UnityEngine.Object.DestroyImmediate(srcTexture);
+                Object.DestroyImmediate(hsvgMaterial);
+                Object.DestroyImmediate(srcTexture);
 
                 return outTexture;
             }
@@ -5933,8 +5935,8 @@ namespace lilToon
                 AssetDatabase.ImportAsset(savePath);
             }
 
-            UnityEngine.Object.DestroyImmediate(hsvgMaterial);
-            UnityEngine.Object.DestroyImmediate(srcTexture);
+            Object.DestroyImmediate(hsvgMaterial);
+            Object.DestroyImmediate(srcTexture);
 
             return outTexture;
         }
@@ -5975,8 +5977,8 @@ namespace lilToon
                     CopyTextureSetting(bufMainTexture, outTexture);
                 }
 
-                UnityEngine.Object.DestroyImmediate(hsvgMaterial);
-                UnityEngine.Object.DestroyImmediate(srcTexture);
+                Object.DestroyImmediate(hsvgMaterial);
+                Object.DestroyImmediate(srcTexture);
 
                 return outTexture;
             }
@@ -6027,8 +6029,8 @@ namespace lilToon
                 CopyTextureSetting(bufMainTexture, outTexture);
             }
 
-            UnityEngine.Object.DestroyImmediate(hsvgMaterial);
-            UnityEngine.Object.DestroyImmediate(srcTexture);
+            Object.DestroyImmediate(hsvgMaterial);
+            Object.DestroyImmediate(srcTexture);
         }
 
         public static void RunBake(ref Texture2D outTexture, Texture2D srcTexture, Material material, Texture2D referenceTexture = null)
@@ -6093,7 +6095,7 @@ namespace lilToon
 
             private void OnGUI()
             {
-                UnityEngine.Object[] objects = Selection.GetFiltered<Material>(SelectionMode.DeepAssets).Where(obj => obj.shader != null).Where(obj => obj.shader.name.Contains("lilToon")).ToArray();
+                Object[] objects = Selection.GetFiltered<Material>(SelectionMode.DeepAssets).Where(obj => obj.shader != null).Where(obj => obj.shader.name.Contains("lilToon")).ToArray();
                 if(objects.Length == 0) return;
 
                 props = MaterialEditor.GetMaterialProperties(objects);
@@ -6247,14 +6249,14 @@ namespace lilToon
             return lilTextureUtils.SaveTextureToPng(path, add, tex);
         }
 
-        [Obsolete("Use \"lilTextureUtils.ConvertGifToAtlas(UnityEngine.Object tex)\" instead.")]
-        public static string ConvertGifToAtlas(UnityEngine.Object tex)
+        [Obsolete("Use \"lilTextureUtils.ConvertGifToAtlas(Object tex)\" instead.")]
+        public static string ConvertGifToAtlas(Object tex)
         {
             return lilTextureUtils.ConvertGifToAtlas(tex);
         }
 
-        [Obsolete("Use \"lilTextureUtils.ConvertGifToAtlas(UnityEngine.Object tex, out int frameCount, out int loopXY, out int duration, out float xScale, out float yScale)\" instead.")]
-        public static string ConvertGifToAtlas(UnityEngine.Object tex, out int frameCount, out int loopXY, out int duration, out float xScale, out float yScale)
+        [Obsolete("Use \"lilTextureUtils.ConvertGifToAtlas(Object tex, out int frameCount, out int loopXY, out int duration, out float xScale, out float yScale)\" instead.")]
+        public static string ConvertGifToAtlas(Object tex, out int frameCount, out int loopXY, out int duration, out float xScale, out float yScale)
         {
             return lilTextureUtils.ConvertGifToAtlas(tex, out frameCount, out loopXY, out duration, out xScale, out yScale);
         }

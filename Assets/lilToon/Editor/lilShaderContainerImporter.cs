@@ -343,9 +343,8 @@ namespace lilToon
             }
             AddDependency(ctx, path);
             StreamReader sr = new StreamReader(path);
-            string line = "";
-
-            while((line = sr.ReadLine()) != null)
+            string line;
+            while ((line = sr.ReadLine()) != null)
             {
                 if(line.Contains(csdShaderNameTag))
                 {
@@ -440,22 +439,22 @@ namespace lilToon
 
         private static void GetInsert(ref string insertPass, string line, string rpname, AssetImportContext ctx)
         {
-            string subpath = "";
             int first = line.IndexOf('"') + 1;
             int second = line.IndexOf('"', first);
             int third = line.IndexOf('"', second + 1) + 1;
-            if(third > 1)
+            string subpath;
+            if (third > 1)
             {
                 int fourth = line.IndexOf('"', third);
                 string name = line.Substring(first, second - first);
-                if(name.StartsWith("!"))
+                if (name.StartsWith("!"))
                 {
-                    if(origShaderName.Contains(name.Substring(1)))
+                    if (origShaderName.Contains(name.Substring(1)))
                     {
                         return;
                     }
                 }
-                else if(!origShaderName.Contains(name))
+                else if (!origShaderName.Contains(name))
                 {
                     return;
                 }
@@ -491,9 +490,9 @@ namespace lilToon
         {
             StringBuilder sb = new StringBuilder();
             StreamReader sr = new StreamReader(path);
-            string line = "";
+            string line;
 
-            while((line = sr.ReadLine()) != null)
+            while ((line = sr.ReadLine()) != null)
             {
                 if(!isOrigShaderNameLoaded && line.StartsWith("Shader"))
                 {
