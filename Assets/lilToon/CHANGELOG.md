@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed a error in gem shader's GUI
 - Fixed to use RGB channel in matcap 2nd mask
 - Fixed toolchips
+- Fixed the material not being fixed in `Fix Lighting`
 
 ## [1.3.1] - 2022-06-28
 ### Added

@@ -425,8 +425,8 @@ namespace lilToon
             avatarWidth =  maxZ > avatarWidth ?  maxZ : avatarWidth;
             avatarWidth *= 2.5f;
 
-            string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
-            lilToonSetting shaderSetting = AssetDatabase.LoadAssetAtPath<lilToonSetting>(shaderSettingPath);
+            lilToonSetting shaderSetting = null;
+            lilToonSetting.InitializeShaderSetting(ref shaderSetting);
 
             // MeshRenderer
             if(meshRenderers.Length != 0)
