@@ -50,6 +50,7 @@
             #pragma domain domain
             #pragma require tesshw tessellation
             #pragma lil_multi_compile_forward
+            #pragma lil_skip_variants_base_shadows
             #pragma multi_compile_domain _ VERTEXLIGHT_ON
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -101,7 +102,7 @@
             #pragma domain domain
             #pragma require tesshw tessellation
             #pragma lil_multi_compile_forward
-            #pragma lil_skip_variants_shadows
+            #pragma lil_skip_variants_outline_shadows
             #pragma multi_compile_domain _ VERTEXLIGHT_ON
 
             //----------------------------------------------------------------------------------------------------------------------

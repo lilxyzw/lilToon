@@ -45,6 +45,7 @@
             #pragma vertex vert
             #pragma fragment frag
             #pragma lil_multi_compile_forward
+            #pragma lil_skip_variants_base_shadows
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -89,6 +90,7 @@
             #pragma vertex vert
             #pragma fragment frag
             #pragma lil_multi_compile_forward
+            #pragma lil_skip_variants_base_shadows
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -133,7 +135,7 @@
             #pragma vertex vert
             #pragma fragment frag
             #pragma lil_multi_compile_forward
-            #pragma lil_skip_variants_shadows
+            #pragma lil_skip_variants_outline_shadows
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass

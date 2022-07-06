@@ -599,6 +599,7 @@ namespace lilToon
         private readonly lilMaterialProperty outlineLitApplyTex         = new lilMaterialProperty("_OutlineLitApplyTex", PropertyBlock.Outline);
         private readonly lilMaterialProperty outlineLitScale            = new lilMaterialProperty("_OutlineLitScale", PropertyBlock.Outline);
         private readonly lilMaterialProperty outlineLitOffset           = new lilMaterialProperty("_OutlineLitOffset", PropertyBlock.Outline);
+        private readonly lilMaterialProperty outlineLitShadowReceive    = new lilMaterialProperty("_OutlineLitShadowReceive", PropertyBlock.Outline);
         private readonly lilMaterialProperty outlineWidth               = new lilMaterialProperty("_OutlineWidth", PropertyBlock.Outline);
         private readonly lilMaterialProperty outlineWidthMask           = new lilMaterialProperty("_OutlineWidthMask", true, PropertyBlock.Outline);
         private readonly lilMaterialProperty outlineFixWidth            = new lilMaterialProperty("_OutlineFixWidth", PropertyBlock.Outline);
@@ -1097,6 +1098,7 @@ namespace lilToon
                 outlineLitApplyTex,
                 outlineLitScale,
                 outlineLitOffset,
+                outlineLitShadowReceive,
                 outlineWidth,
                 outlineWidthMask,
                 outlineFixWidth,
@@ -5110,6 +5112,7 @@ namespace lilToon
                             outlineLitScale.floatValue = lilEditorGUI.GetRemapScaleValue(min, max);
                             outlineLitOffset.floatValue = lilEditorGUI.GetRemapOffsetValue(min, max);
                         }
+                        m_MaterialEditor.ShaderProperty(outlineLitShadowReceive, GetLoc("sReceiveShadow"));
                     }
                     EditorGUI.indentLevel--;
                     lilEditorGUI.DrawLine();

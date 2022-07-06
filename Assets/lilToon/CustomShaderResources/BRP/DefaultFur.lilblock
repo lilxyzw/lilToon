@@ -7,6 +7,7 @@
             #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_FUR
 
+            #pragma lil_skip_variants_shadows
             #pragma lil_skip_variants_decals
             #pragma lil_skip_variants_addlightshadows
             #pragma lil_skip_variants_probevolumes
@@ -48,7 +49,6 @@
             #pragma vertex vert
             #pragma fragment frag
             #pragma lil_multi_compile_forward
-            #pragma lil_skip_variants_shadows
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -97,7 +97,6 @@
             #pragma geometry geom
             #pragma fragment frag
             #pragma lil_multi_compile_forward
-            #pragma lil_skip_variants_shadows
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass

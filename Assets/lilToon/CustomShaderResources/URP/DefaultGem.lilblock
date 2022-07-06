@@ -7,6 +7,7 @@
             #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_GEM
 
+            #pragma lil_skip_variants_shadows
             #pragma lil_skip_variants_decals
             #pragma lil_skip_variants_addlightshadows
             #pragma lil_skip_variants_probevolumes
@@ -92,7 +93,6 @@
             #pragma vertex vert
             #pragma fragment frag
             #pragma lil_multi_compile_forward
-            #pragma lil_skip_variants_shadows
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass

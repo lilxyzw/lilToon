@@ -440,6 +440,7 @@ Shader "Hidden/lilToonTwoPassTransparent"
         [lilToggle]     _OutlineLitApplyTex         ("Apply Tex", Int) = 0
                         _OutlineLitScale            ("Scale", Float) = 10
                         _OutlineLitOffset           ("Offset", Float) = -8
+        [lilToggle]     _OutlineLitShadowReceive    ("Receive Shadow", Int) = 0
         [lilOLWidth]    _OutlineWidth               ("Width", Range(0,1)) = 0.08
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
                         _OutlineFixWidth            ("Fix Width", Range(0,1)) = 0.5

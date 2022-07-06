@@ -686,6 +686,7 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
         lilBool _OutlineLitApplyTex;
+        lilBool _OutlineLitShadowReceive;
         lilBool _OutlineDeleteMesh;
         lilBool _OutlineDisableInVR;
     #endif
@@ -1359,6 +1360,7 @@ CBUFFER_START(UnityPerMaterial)
     #endif
 
     lilBool _OutlineLitApplyTex;
+    lilBool _OutlineLitShadowReceive;
     lilBool _OutlineDeleteMesh;
     lilBool _OutlineDisableInVR;
 

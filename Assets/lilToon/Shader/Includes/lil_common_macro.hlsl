@@ -1781,7 +1781,7 @@ float3 lilGetObjectPosition()
 #endif
 
 // Do not apply shadow
-#if (defined(LIL_LITE) || defined(LIL_OUTLINE) || defined(LIL_FUR) || defined(LIL_GEM)) && !defined(LIL_PASS_FORWARDADD)
+#if (defined(LIL_LITE) || defined(LIL_FUR) || defined(LIL_GEM)) && !defined(LIL_PASS_FORWARDADD)
     #undef LIL_SHADOW_COORDS
     #undef LIL_TRANSFER_SHADOW
     #undef LIL_LIGHT_ATTENUATION

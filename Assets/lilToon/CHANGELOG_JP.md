@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - ノーマルマップ2ndに`UV Mode`を追加
 - メインカラー2nd・3rdに`Cull Mode`を追加
+- 輪郭線のハイライトに`影を受け取る`を追加
 
 ### 変更
 - ノーマルマップ2ndのサンプラーを`Repeat`に変更

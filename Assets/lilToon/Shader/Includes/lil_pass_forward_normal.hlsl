@@ -17,7 +17,7 @@
     #if defined(LIL_V2F_FORCE_POSITION_OS) || defined(LIL_SHOULD_POSITION_OS)
         #define LIL_V2F_POSITION_OS
     #endif
-    #if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
+    #if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_OUTLINE_RECEIVE_SHADOW) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
         #define LIL_V2F_POSITION_WS
     #endif
     #if defined(LIL_V2F_FORCE_NORMAL) || defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE) || defined(LIL_HDRP)
@@ -28,6 +28,9 @@
     #endif
     #define LIL_V2F_VERTEXLIGHT_FOG
     #define LIL_V2F_NDOTL
+    #if !defined(LIL_PASS_FORWARDADD) && defined(LIL_FEATURE_OUTLINE_RECEIVE_SHADOW)
+        #define LIL_V2F_SHADOW
+    #endif
 
     struct v2f
     {
@@ -46,7 +49,10 @@
         float NdotL         : TEXCOORD5;
         LIL_LIGHTCOLOR_COORDS(6)
         LIL_VERTEXLIGHT_FOG_COORDS(7)
-        LIL_CUSTOM_V2F_MEMBER(8,9,10,11,12,13,14,15)
+        #if !defined(LIL_PASS_FORWARDADD) && defined(LIL_FEATURE_OUTLINE_RECEIVE_SHADOW)
+            LIL_SHADOW_COORDS(8)
+        #endif
+        LIL_CUSTOM_V2F_MEMBER(9,10,11,12,13,14,15,16)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
@@ -99,7 +105,9 @@
         LIL_LIGHTDIRECTION_COORDS(7)
         LIL_INDLIGHTCOLOR_COORDS(8)
         LIL_VERTEXLIGHT_FOG_COORDS(9)
-        LIL_SHADOW_COORDS(10)
+        #if !defined(LIL_PASS_FORWARDADD) && (defined(LIL_FEATURE_SHADOW) || defined(LIL_FEATURE_BACKLIGHT))
+            LIL_SHADOW_COORDS(10)
+        #endif
         LIL_CUSTOM_V2F_MEMBER(11,12,13,14,15,16,17,18)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO

@@ -440,6 +440,7 @@ Shader "Hidden/lilToonMultiOutline"
         [lilToggle]     _OutlineLitApplyTex         ("Apply Tex", Int) = 0
                         _OutlineLitScale            ("Scale", Float) = 10
                         _OutlineLitOffset           ("Offset", Float) = -8
+        [lilToggle]     _OutlineLitShadowReceive    ("Receive Shadow", Int) = 0
         [lilOLWidth]    _OutlineWidth               ("Width", Range(0,1)) = 0.08
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
                         _OutlineFixWidth            ("Fix Width", Range(0,1)) = 0.5
@@ -696,7 +697,6 @@ Shader "Hidden/lilToonMultiOutline"
             #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #define LIL_PASS_FORWARD
-            #pragma skip_variants SHADOWS_SCREEN _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN _ADDITIONAL_LIGHT_SHADOWS SCREEN_SPACE_SHADOWS_ON SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH SHADOW_VERY_HIGH
 
             // Transparent mode
             #pragma shader_feature_local UNITY_UI_ALPHACLIP

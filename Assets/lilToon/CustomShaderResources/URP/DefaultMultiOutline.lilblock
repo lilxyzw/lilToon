@@ -153,7 +153,6 @@
             #pragma vertex vert
             #pragma fragment frag
             #pragma lil_multi_compile_forward
-            #pragma lil_skip_variants_shadows
 
             // Transparent mode
             #pragma shader_feature_local UNITY_UI_ALPHACLIP

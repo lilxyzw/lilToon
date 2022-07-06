@@ -440,6 +440,7 @@ Shader "Hidden/lilToonRefractionBlur"
         [lilToggle]     _OutlineLitApplyTex         ("Apply Tex", Int) = 0
                         _OutlineLitScale            ("Scale", Float) = 10
                         _OutlineLitOffset           ("Offset", Float) = -8
+        [lilToggle]     _OutlineLitShadowReceive    ("Receive Shadow", Int) = 0
         [lilOLWidth]    _OutlineWidth               ("Width", Range(0,1)) = 0.08
         [NoScaleOffset] _OutlineWidthMask           ("Width", 2D) = "white" {}
                         _OutlineFixWidth            ("Fix Width", Range(0,1)) = 0.5
@@ -555,6 +556,7 @@ Shader "Hidden/lilToonRefractionBlur"
             #define LIL_FEATURE_AUDIOLINK_LOCAL
             #define LIL_FEATURE_DISSOLVE
             #define LIL_FEATURE_OUTLINE_TONE_CORRECTION
+            #define LIL_FEATURE_OUTLINE_RECEIVE_SHADOW
             #define LIL_FEATURE_ANIMATE_OUTLINE_UV
             #define LIL_FEATURE_FUR_COLLISION
             #define LIL_FEATURE_MainGradationTex

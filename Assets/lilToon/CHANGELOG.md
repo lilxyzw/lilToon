@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `UV Mode` for normal map 2nd
 - `Cull Mode` for main color 2nd / 3rd
+- `Receive Shadow` to outline highlight
 
 ### Changed
 - Changed the sampler of the normal map 2nd to `Repeat`

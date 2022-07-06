@@ -88,6 +88,8 @@ namespace lilToon
         private const string SKIP_VARIANTS_AO               = "#pragma lil_skip_variants_ao";
         private const string SKIP_VARIANTS_LIGHTLISTS       = "#pragma lil_skip_variants_lightlists";
         private const string SKIP_VARIANTS_REFLECTIONS      = "#pragma lil_skip_variants_reflections";
+        private const string SKIP_VARIANTS_BASE_SHADOWS     = "#pragma lil_skip_variants_base_shadows";
+        private const string SKIP_VARIANTS_OUTLINE_SHADOWS  = "#pragma lil_skip_variants_outline_shadows";
 
         private const string LIL_SHADER_NAME                = "*LIL_SHADER_NAME*";
         private const string LIL_EDITOR_NAME                = "*LIL_EDITOR_NAME*";
@@ -158,6 +160,8 @@ namespace lilToon
         private static string editorName = "";
         private static string origShaderName = "";
         private static bool isOrigShaderNameLoaded = false;
+        private static bool useBaseShadow = false;
+        private static bool useOutlineShadow = false;
 
         private static string insertPassPre = "";
         private static string insertPassPost = "";
@@ -169,6 +173,8 @@ namespace lilToon
 
         public static string UnpackContainer(string assetPath, AssetImportContext ctx = null)
         {
+            useBaseShadow = false;
+            useOutlineShadow = false;
             passShaderName = "";
             subShaderTags = "";
             insertText = "";
@@ -177,7 +183,7 @@ namespace lilToon
             assetFolderPath = Path.GetDirectoryName(assetPath) + "/";
             shaderLibsPath = lilDirectoryManager.GetShaderFolderPath() + "/Includes";
             assetName = Path.GetFileName(assetPath);
-            shaderSettingText = BuildShaderSettingString(false).Replace("\r\n", "\r\n            ");
+            shaderSettingText = BuildShaderSettingString(false, ref useBaseShadow, ref useOutlineShadow).Replace("\r\n", "\r\n            ");
             shaderName = "";
             editorName = "";
             origShaderName = "";
@@ -235,6 +241,12 @@ namespace lilToon
 
             sb.Replace(LIL_SHADER_NAME,             shaderName);
             sb.Replace(LIL_EDITOR_NAME,             editorName);
+
+            if(useBaseShadow)       sb.Replace(SKIP_VARIANTS_BASE_SHADOWS, "");
+            else                    sb.Replace(SKIP_VARIANTS_BASE_SHADOWS, SKIP_VARIANTS_SHADOWS);
+
+            if(useOutlineShadow)    sb.Replace(SKIP_VARIANTS_OUTLINE_SHADOWS, "");
+            else                    sb.Replace(SKIP_VARIANTS_OUTLINE_SHADOWS, SKIP_VARIANTS_SHADOWS);
 
             sb.Replace(SKIP_VARIANTS_SHADOWS,           GetSkipVariantsShadows());
             sb.Replace(SKIP_VARIANTS_LIGHTMAPS,         GetSkipVariantsLightmaps());
@@ -1375,14 +1387,19 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Avoid Errors
-        public static string BuildShaderSettingString(bool isFile)
+        public static string BuildShaderSettingString(bool isFile, ref bool useBaseShadow, ref bool useOutlineShadow)
         {
             Type type = typeof(lilToonSetting);
             var methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public);
             foreach(var method in methods)
             {
-                if(method.Name != "BuildShaderSettingString" || method.GetParameters()[0].ParameterType != typeof(bool)) continue;
-                return (string)method.Invoke(null, new object[]{isFile});
+                var methodParams = method.GetParameters();
+                if(method.Name != "BuildShaderSettingString" || methodParams.Length != 3 || methodParams[0].ParameterType != typeof(bool)) continue;
+                var objs = new object[]{isFile,useBaseShadow,useOutlineShadow};
+                string outstr = (string)method.Invoke(null, objs);
+                useBaseShadow = (bool)objs[1];
+                useOutlineShadow = (bool)objs[2];
+                return outstr;
             }
             return "";
         }

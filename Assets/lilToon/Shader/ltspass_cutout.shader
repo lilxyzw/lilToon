@@ -42,6 +42,7 @@ Shader "Hidden/ltspass_cutout"
             #define LIL_FEATURE_AUDIOLINK_LOCAL
             #define LIL_FEATURE_DISSOLVE
             #define LIL_FEATURE_OUTLINE_TONE_CORRECTION
+            #define LIL_FEATURE_OUTLINE_RECEIVE_SHADOW
             #define LIL_FEATURE_ANIMATE_OUTLINE_UV
             #define LIL_FEATURE_FUR_COLLISION
             #define LIL_FEATURE_MainGradationTex
@@ -151,6 +152,7 @@ Shader "Hidden/ltspass_cutout"
             #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #define LIL_PASS_FORWARD
+            
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -201,7 +203,7 @@ Shader "Hidden/ltspass_cutout"
             #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #define LIL_PASS_FORWARD
-            #pragma skip_variants SHADOWS_SCREEN _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN _ADDITIONAL_LIGHT_SHADOWS SCREEN_SPACE_SHADOWS_ON SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH SHADOW_VERY_HIGH
+            
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass

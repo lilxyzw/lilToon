@@ -27,6 +27,7 @@
             #define LIL_MULTI_INPUTS_AUDIOLINK
             #define LIL_MULTI_INPUTS_DISSOLVE
 
+            #pragma lil_skip_variants_shadows
             #pragma lil_skip_variants_decals
             #pragma lil_skip_variants_addlightshadows
             #pragma lil_skip_variants_probevolumes
@@ -68,7 +69,6 @@
             #pragma vertex vert
             #pragma fragment frag
             #pragma lil_multi_compile_forward
-            #pragma lil_skip_variants_shadows
 
             // Transparent mode
             #pragma shader_feature_local UNITY_UI_ALPHACLIP
@@ -155,7 +155,6 @@
             #pragma geometry geom
             #pragma fragment frag
             #pragma lil_multi_compile_forward
-            #pragma lil_skip_variants_shadows
 
             // Transparent mode
             #pragma shader_feature_local UNITY_UI_CLIP_RECT
