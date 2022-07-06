@@ -134,7 +134,7 @@ public class lilToonSetting : ScriptableObject
     {
         string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
         StreamWriter sw = new StreamWriter(shaderSettingPath, false);
-        sw.Write(JsonUtility.ToJson(shaderSetting));
+        sw.Write(JsonUtility.ToJson(shaderSetting, true));
         sw.Close();
     }
 

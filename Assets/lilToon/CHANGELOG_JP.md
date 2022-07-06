@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - HDRPでポイントライト・スポットライト・エリアライトの計算をピクセルシェーダーに移動し、ライト方向の計算も行うようにした
 - GUIを微調整
 - ビルド時間を最適化
+- `lilToonSetting.json`でフォーマットを行うようにした
 
 ### 修正
 - 宝石シェーダーのGUIのエラーを修正
