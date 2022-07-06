@@ -310,7 +310,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
-        // AudioLink (https://github.com/llealloo/vrc-udon-audio-link)
+        // AudioLink
         BEFORE_AUDIOLINK
         #if defined(LIL_FEATURE_AUDIOLINK)
             OVERRIDE_AUDIOLINK

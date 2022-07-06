@@ -1,54 +1,7 @@
 #ifndef LIL_FUNCTIONS_INCLUDED
 #define LIL_FUNCTIONS_INCLUDED
 
-//------------------------------------------------------------------------------------------------------------------------------
-// Optimized inverse trigonometric function
-// https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/
-float lilAcos(float x)
-{
-    #if 0
-        float res = sqrt(1.0 - abs(x)) * LIL_HALF_PI;
-        return (x >= 0.0) ? res : LIL_PI - res;
-    #else
-        float ox = abs(x);
-        float res = -0.156583 * ox + LIL_HALF_PI;
-        res *= sqrt(1.0 - ox);
-        return (x >= 0.0) ? res : LIL_PI - res;
-    #endif
-}
-
-float lilAsin(float x)
-{
-    return LIL_HALF_PI - lilAcos(x);
-}
-
-float lilAtanPos(float x)
-{
-    #if 1
-        float t0 = (x < 1.0f) ? x : 1.0f / x;
-        float t1 = (-0.269408 * t0 + 1.05863) * t0;
-        return (x < 1.0f) ? t1 : LIL_HALF_PI - t1;
-    #else
-        float t0 = (x < 1.0) ? x : 1.0 / x;
-        float t1 = t0 * t0;
-        float poly = 0.0872929;
-        poly = -0.301895 + poly * t1;
-        poly = 1.0f + poly * t1;
-        poly = poly * t0;
-        return (x < 1.0) ? poly : LIL_HALF_PI - poly;
-    #endif
-}
-
-float lilAtan(float x)
-{
-    float t0 = lilAtanPos(abs(x));
-    return (x < 0.0) ? -t0 : t0;
-}
-
-float lilAtan(float x, float y)
-{
-    return lilAtan(x/y) + LIL_PI * (y<0) * (x<0?-1:1);
-}
+#include "lil_common_functions_thirdparty.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Math
@@ -334,43 +287,7 @@ void lilCalcOutlinePositionLite(inout float3 positionOS, float2 uv, float4 color
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Encryption (https://github.com/rygo6/GTAvaCrypt)
-#if !defined(LIL_LITE) && !defined(LIL_BAKER) &&  defined(LIL_FEATURE_ENCRYPTION)
-float4 vertexDecode(float4 positionOS, float3 normalOS, float2 uv6, float2 uv7)
-{
-    if(_IgnoreEncryption) return positionOS;
-
-    float4 keys = floor(_Keys + 0.5);
-    keys = keys.x == 0 ? float4(0,0,0,0) : floor(keys / 3) * 3 + 1;
-
-    keys.x *= 1;
-    keys.y *= 2;
-    keys.z *= 3;
-    keys.w *= 4;
-
-    positionOS.xyz -= normalOS * uv6.x * (sin((keys.z - keys.y) * 2) * cos(keys.w - keys.x));
-    positionOS.xyz -= normalOS * uv6.y * (sin((keys.w - keys.x) * 3) * cos(keys.z - keys.y));
-    positionOS.xyz -= normalOS * uv7.x * (sin((keys.x - keys.w) * 4) * cos(keys.y - keys.z));
-    positionOS.xyz -= normalOS * uv7.y * (sin((keys.y - keys.z) * 5) * cos(keys.x - keys.w));
-
-    return positionOS;
-}
-#endif
-
-//------------------------------------------------------------------------------------------------------------------------------
 // Color
-
-// http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html?m=1
-float3 lilLinearToSRGB(float3 col)
-{
-    return saturate(1.055 * pow(abs(col), 0.416666667) - 0.055);
-}
-
-float3 lilSRGBToLinear(float3 col)
-{
-    return col * (col * (col * 0.305306011 + 0.682171111) + 0.012522878);
-}
-
 float3 lilBlendColor(float3 dstCol, float3 srcCol, float3 srcA, uint blendMode)
 {
     float3 ad = dstCol + srcCol;
@@ -705,21 +622,6 @@ void lilCalcDissolveWithNoise(
         }
         alpha *= dissolveMaskVal;
     }
-}
-
-bool lilCheckAudioLink()
-{
-    #if defined(LIL_FEATURE_AUDIOLINK)
-        #if defined(LIL_LWTEX)
-            return _AudioTexture_TexelSize.z > 16;
-        #else
-            int width, height;
-            _AudioTexture.GetDimensions(width, height);
-            return width > 16;
-        #endif
-    #else
-        return false;
-    #endif
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -1100,22 +1002,12 @@ float4 lilVoronoi(float2 pos, out float2 nearoffset, float scaleRandomize)
         float3 noise1 = frac(sin(dot(q2.zy,float2(12.9898,78.233))) * float3(M1, M2, M3));
         float3 noise2 = frac(sin(dot(q2.xw,float2(12.9898,78.233))) * float3(M1, M2, M3));
         float3 noise3 = frac(sin(dot(q2.zw,float2(12.9898,78.233))) * float3(M1, M2, M3));
+        #undef M1
+        #undef M2
+        #undef M3
     #else
-        // Hash
-        // https://www.shadertoy.com/view/MdcfDj
-        #define M1 1597334677U
-        #define M2 3812015801U
-        #define M3 2912667907U
-        uint2 q = (uint2)pos;
-        uint4 q2 = uint4(q.x, q.y, q.x+1, q.y+1) * uint4(M1, M2, M1, M2);
-        uint3 n0 = (q2.x ^ q2.y) * uint3(M1, M2, M3);
-        uint3 n1 = (q2.z ^ q2.y) * uint3(M1, M2, M3);
-        uint3 n2 = (q2.x ^ q2.w) * uint3(M1, M2, M3);
-        uint3 n3 = (q2.z ^ q2.w) * uint3(M1, M2, M3);
-        float3 noise0 = float3(n0) * (1.0/float(0xffffffffU));
-        float3 noise1 = float3(n1) * (1.0/float(0xffffffffU));
-        float3 noise2 = float3(n2) * (1.0/float(0xffffffffU));
-        float3 noise3 = float3(n3) * (1.0/float(0xffffffffU));
+        float3 noise0, noise1, noise2, noise3;
+        lilHashRGB4(pos, noise0, noise1, noise2, noise3);
     #endif
 
     // Get the nearest position

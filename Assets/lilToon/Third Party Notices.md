@@ -23,35 +23,6 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-## Arktoon-Shaders
-Component Name: Arktoon-Shaders
-
-License Type: "MIT"
-
-[Arktoon-Shaders License](https://github.com/synqark/Arktoon-Shaders/blob/master/LICENSE)
-
-MIT License
-
-Copyright (c) 2018 synqark
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
 ## GTAvaCrypt
 Component Name: GTAvaCrypt
 
@@ -81,7 +52,43 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+# Other references
+These are not included in the asset or do not require a license to be listed, but will list licenses and articles for developers.
+
+## Arktoon-Shaders
+I referred to it in the early stages of development.
+
+Component Name: Arktoon-Shaders
+
+License Type: "MIT"
+
+[Arktoon-Shaders License](https://github.com/synqark/Arktoon-Shaders/blob/master/LICENSE)
+
+MIT License
+
+Copyright (c) 2018 synqark
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
 ## msdfgen
+Textures converted using this tool are available.
+
 Component Name: msdfgen
 
 License Type: "MIT"
@@ -110,9 +117,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-# Other references
 ## MToon
-MToon is not included in the package or code, but I compared the parameters when creating the conversion feature.
+I compared the parameters when creating the conversion feature.
 
 Component Name: MToon
 
@@ -144,12 +150,14 @@ SOFTWARE.
 
 ## Article
 - [Physically Based Rendering in Filament](https://google.github.io/filament/Filament.html)
-- [Optimized inverse trigonometric function (seblagarde)](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
 - [視差オクルージョンマッピング(parallax occlution mapping) (コポコポ)](https://coposuke.hateblo.jp/entry/2019/01/20/043042)
 - [Udon AudioLink](https://github.com/llealloo/vrc-udon-audio-link)
-- [sRGB Approximations for HLSL](http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html?m=1)
 - [『崩壊3rd』開発者が語るアニメ風レンダリングの極意](https://learning.unity3d.jp/570/)
+- [Optimized inverse trigonometric function (seblagarde)](https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/)
+- [Simplest Fastest 2D Hash](https://www.shadertoy.com/view/MdcfDj)
+- [sRGB Approximations for HLSL](http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html?m=1)
 - [【Unity】【シェーダ】使っていないけどシリアライズされてしまっているシェーダプロパティを削除する](https://light11.hatenadiary.com/entry/2018/12/04/224253)
+- [CoroutineHandler.cs](https://github.com/Unity-Technologies/EndlessRunnerSampleGame/blob/master/Assets/Scripts/CoroutineHandler.cs)
 
 ## Assets
 - [Wooden Lounge HDRI • Poly Haven](https://polyhaven.com/a/wooden_lounge)
