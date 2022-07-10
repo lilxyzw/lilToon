@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ノーマルマップ2ndに`UV Mode`を追加
 - メインカラー2nd・3rdに`Cull Mode`を追加
 - 輪郭線のハイライトに`影を受け取る`を追加
+- 2パス透過シェーダーを拡張
 
 ### 変更
 - ノーマルマップ2ndのサンプラーを`Repeat`に変更
@@ -16,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GUIを微調整
 - ビルド時間を最適化
 - `lilToonSetting.json`でフォーマットを行うようにした
+- 2パス透過シェーダーでForwardAddパスを使用するように変更
 
 ### 修正
 - 宝石シェーダーのGUIのエラーを修正

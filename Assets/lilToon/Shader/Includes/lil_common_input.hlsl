@@ -701,6 +701,9 @@ CBUFFER_START(UnityPerMaterial)
     // Vector
     float4  _LightDirectionOverride;
     float4  _BackfaceColor;
+    #if LIL_RENDER == 2 && !defined(LIL_FUR) && !defined(LIL_GEM) && !defined(LIL_REFRACTION)
+        float4  _PreColor;
+    #endif
     // Main
     float4  _Color;
     float4  _MainTex_ST;
@@ -946,6 +949,9 @@ CBUFFER_START(UnityPerMaterial)
     // Float
     float   _AsUnlit;
     float   _Cutoff;
+    #if LIL_RENDER == 2 && !defined(LIL_FUR) && !defined(LIL_GEM) && !defined(LIL_REFRACTION)
+        float   _PreCutoff;
+    #endif
     float   _SubpassCutoff;
     float   _FlipNormal;
     float   _ShiftBackfaceUV;
@@ -1178,6 +1184,9 @@ CBUFFER_START(UnityPerMaterial)
     // Int
     uint    _Cull;
     uint    _OutlineCull;
+    #if LIL_RENDER == 2 && !defined(LIL_FUR) && !defined(LIL_GEM) && !defined(LIL_REFRACTION)
+        uint    _PreOutType;
+    #endif
     #if defined(LIL_FEATURE_MAIN2ND)
         uint    _Main2ndTexBlendMode;
         uint    _Main2ndTex_UVMode;

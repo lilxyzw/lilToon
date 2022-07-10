@@ -148,6 +148,39 @@ Shader "_lil/[Optional] lilToonLiteOverlayOnePass"
                                                         _OutlineOffsetUnits         ("Offset Units", Float) = 0
         [lilColorMask]                                  _OutlineColorMask           ("Color Mask", Int) = 15
         [lilToggle]                                     _OutlineAlphaToMask         ("AlphaToMask", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Pre
+        [lilHDR] [MainColor]                            _PreColor               ("Pre Color", Color) = (1,1,1,1)
+        [lilEnum]                                       _PreOutType             ("Out Type|Normal|Flat|Mono", Int) = 0
+                                                        _PreCutoff              ("Pre Cutoff", Range(-0.001,1.001)) = 0.5
+        [lilEnum]                                       _PreCull                ("Cull Mode|Off|Front|Back", Int) = 2
+        [Enum(UnityEngine.Rendering.BlendMode)]         _PreSrcBlend            ("SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _PreDstBlend            ("DstBlend", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendMode)]         _PreSrcBlendAlpha       ("SrcBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _PreDstBlendAlpha       ("DstBlendAlpha", Int) = 10
+        [Enum(UnityEngine.Rendering.BlendOp)]           _PreBlendOp             ("BlendOp", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendOp)]           _PreBlendOpAlpha        ("BlendOpAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _PreSrcBlendFA          ("ForwardAdd SrcBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _PreDstBlendFA          ("ForwardAdd DstBlend", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _PreSrcBlendAlphaFA     ("ForwardAdd SrcBlendAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _PreDstBlendAlphaFA     ("ForwardAdd DstBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendOp)]           _PreBlendOpFA           ("ForwardAdd BlendOp", Int) = 4
+        [Enum(UnityEngine.Rendering.BlendOp)]           _PreBlendOpAlphaFA      ("ForwardAdd BlendOpAlpha", Int) = 4
+        [lilToggle]                                     _PreZClip               ("ZClip", Int) = 1
+        [lilToggle]                                     _PreZWrite              ("ZWrite", Int) = 1
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _PreZTest               ("ZTest", Int) = 4
+        [IntRange]                                      _PreStencilRef          ("Stencil Reference Value", Range(0, 255)) = 0
+        [IntRange]                                      _PreStencilReadMask     ("Stencil ReadMask Value", Range(0, 255)) = 255
+        [IntRange]                                      _PreStencilWriteMask    ("Stencil WriteMask Value", Range(0, 255)) = 255
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _PreStencilComp         ("Stencil Compare Function", Float) = 8
+        [Enum(UnityEngine.Rendering.StencilOp)]         _PreStencilPass         ("Stencil Pass", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _PreStencilFail         ("Stencil Fail", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _PreStencilZFail        ("Stencil ZFail", Float) = 0
+                                                        _PreOffsetFactor        ("Offset Factor", Float) = 0
+                                                        _PreOffsetUnits         ("Offset Units", Float) = 0
+        [lilColorMask]                                  _PreColorMask           ("Color Mask", Int) = 15
+        [lilToggle]                                     _PreAlphaToMask         ("AlphaToMask", Int) = 0
     }
 
     SubShader

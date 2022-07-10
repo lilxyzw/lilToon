@@ -25,23 +25,23 @@
 
             Stencil
             {
-                Ref [_StencilRef]
-                ReadMask [_StencilReadMask]
-                WriteMask [_StencilWriteMask]
-                Comp [_StencilComp]
-                Pass [_StencilPass]
-                Fail [_StencilFail]
-                ZFail [_StencilZFail]
+                Ref [_PreStencilRef]
+                ReadMask [_PreStencilReadMask]
+                WriteMask [_PreStencilWriteMask]
+                Comp [_PreStencilComp]
+                Pass [_PreStencilPass]
+                Fail [_PreStencilFail]
+                ZFail [_PreStencilZFail]
             }
-            Cull Front
-            ZClip [_ZClip]
-            ZWrite [_ZWrite]
-            ZTest [_ZTest]
-            ColorMask [_ColorMask]
-            Offset [_OffsetFactor], [_OffsetUnits]
-            BlendOp [_BlendOp], [_BlendOpAlpha]
-            Blend [_SrcBlend] [_DstBlend], [_SrcBlendAlpha] [_DstBlendAlpha]
-            AlphaToMask [_AlphaToMask]
+            Cull [_PreCull]
+            ZClip [_PreZClip]
+            ZWrite [_PreZWrite]
+            ZTest [_PreZTest]
+            ColorMask [_PreColorMask]
+            Offset [_PreOffsetFactor], [_PreOffsetUnits]
+            BlendOp [_PreBlendOp], [_PreBlendOpAlpha]
+            Blend [_PreSrcBlend] [_PreDstBlend], [_PreSrcBlendAlpha] [_PreDstBlendAlpha]
+            AlphaToMask [_PreAlphaToMask]
 
             HLSLPROGRAM
 
@@ -53,6 +53,7 @@
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
+            #define LIL_TRANSPARENT_PRE
             #include "Includes/lil_pipeline_urp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here

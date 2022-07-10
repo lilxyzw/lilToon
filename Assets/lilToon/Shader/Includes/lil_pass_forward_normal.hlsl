@@ -257,7 +257,13 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             if(fd.col.a == 0) discard;
         #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)
             // Transparent
-            clip(fd.col.a - _Cutoff);
+            #if defined(LIL_TRANSPARENT_PRE)
+                fd.col *= _PreColor;
+                clip(fd.col.a - _PreCutoff);
+                if(_PreOutType) return _PreOutType == 2 ? fd.col : _PreColor;
+            #else
+                clip(fd.col.a - _Cutoff);
+            #endif
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
