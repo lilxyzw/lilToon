@@ -645,6 +645,16 @@ namespace lilToon
             return min / (min - max);
         }
 
+        public static float Radian2Degree(float val)
+        {
+            return RoundFloat1000000(val / Mathf.PI * 180.0f);
+        }
+
+        public static float Degree2Radian(float val)
+        {
+            return val * Mathf.PI / 180.0f;
+        }
+
         public static float RoundFloat1000000(float val)
         {
             return Mathf.Floor(val * 1000000.0f + 0.5f) * 0.000001f;
