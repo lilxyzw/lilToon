@@ -121,6 +121,15 @@ sCullModeBack	Back	Back (前面のみ描画)	Back	Back	Back
 sFlipBackfaceNormal	Flip Backface Normal	裏面の法線を反転	뒷면의 법선을 반전	翻转背影法线	翻轉背影法線
 sShiftBackfaceUV	Shift Backface UV	裏面のUVをずらす	뒷면의 UV를 드티다	移动背面的UV	移動背面的UV
 sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면에 그림자를 드리우다	背面的力量阴影	背面的力量陰影
+sTransparentPresetsPreWriteDepth	Pre-write depth	深度を事前に書き込み	심도를 사전에 기입하다	预先写入深度	預先寫入深度
+sTransparentPresetsColorTransparent	Color Transparent	色付き透過	색 투과	彩色透明	彩色透明
+sTransparentPresetsBackAndFront	Back and Front	裏面 & 表面	이면 & 표면	背面 & 表面	背面 & 表面
+sTransparentPresetsCutoutAndTransparent	Cutout and Transparent	カットアウト & 透過	컷아웃 & 투명한	镂空 & 透明	鏤空 & 透明
+sTransparentPresetsFadeStencil	Fade Stencil	透過ステンシル	페이드 스텐실	淡出Stencil	淡出Stencil
+sOutType	Out Type	出力タイプ	출력 유형	输出类型	輸出類型
+sOutTypeNormal	Normal	通常	Normal	Normal	Normal
+sOutTypeFlat	Flat	フラット	Flat	Flat	Flat
+sOutTypeMono	Mono	単色	Mono	Mono	Mono
 sLightingSettings	Lighting	ライティング・明るさ設定	라이팅 설정	照明设置	照明設置
 sVertexLightStrength	Vertex Light Strength	頂点ライトの強度	꼭지점 라이트의 강도	顶点灯的强度	頂點燈的強度
 sLightMinLimit	Lower brightness limit	明るさの下限	밝기의 하한	亮度下限	亮度下限

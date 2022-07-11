@@ -3503,19 +3503,19 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Material Setup
         #region
-        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess, bool ismulti)
+        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool istess, bool ismulti)
         {
-            if(!isMultiVariants) lilMaterialUtils.SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess, ismulti);
+            if(!isMultiVariants) lilMaterialUtils.SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, istess, ismulti);
         }
 
-        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess)
+        public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool istess)
         {
-            SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess, isMulti);
+            SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, istess, isMulti);
         }
 
         public static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode)
         {
-            SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isOutl, isLite, isStWr, isTess);
+            SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isOutl, isLite, isTess);
         }
         #endregion
 
@@ -4106,12 +4106,126 @@ namespace lilToon
                     }
                 EditorGUILayout.EndVertical();
 
+                EditorGUILayout.LabelField("簡易ステンシル設定");
+                EditorGUILayout.BeginVertical(customBox);
+                    int stencilMode = -1;
+                    if(stencilComp.floatValue == (float)UnityEngine.Rendering.CompareFunction.Always    && stencilPass.floatValue == (float)UnityEngine.Rendering.StencilOp.Keep)       stencilMode = 0; // Normal
+                    if(stencilComp.floatValue == (float)UnityEngine.Rendering.CompareFunction.Always    && stencilPass.floatValue == (float)UnityEngine.Rendering.StencilOp.Replace)    stencilMode = 1; // Writer
+                    if(stencilComp.floatValue == (float)UnityEngine.Rendering.CompareFunction.NotEqual  && stencilPass.floatValue == (float)UnityEngine.Rendering.StencilOp.Keep)       stencilMode = 2; // Reader
+                    if(stencilComp.floatValue == (float)UnityEngine.Rendering.CompareFunction.Equal     && stencilPass.floatValue == (float)UnityEngine.Rendering.StencilOp.Keep)       stencilMode = 3; // Reader (Invert)
+                    if(transparentModeBuf == TransparentMode.TwoPass &&
+                    stencilComp.floatValue == (float)UnityEngine.Rendering.CompareFunction.Always    && stencilPass.floatValue == (float)UnityEngine.Rendering.StencilOp.Keep &&
+                    preStencilComp.floatValue == (float)UnityEngine.Rendering.CompareFunction.Equal && preStencilPass.floatValue == (float)UnityEngine.Rendering.StencilOp.Keep
+                    ) stencilMode = 4; // Reader (Fade)
+
+                    bool isOutlineStencil = isOutl && stencilComp.floatValue == outlineStencilComp.floatValue && stencilPass.floatValue == outlineStencilPass.floatValue;
+
+                    EditorGUI.BeginChangeCheck();
+                    if(transparentModeBuf == TransparentMode.TwoPass)   stencilMode = EditorGUILayout.Popup("Mode", stencilMode, new[]{GetLoc("sOutTypeNormal"),"Writer","Reader","Reader (Invert)","Reader (Fade)"});
+                    else                                                stencilMode = EditorGUILayout.Popup("Mode", stencilMode, new[]{GetLoc("sOutTypeNormal"),"Writer","Reader","Reader (Invert)"});
+                    if(isOutl && stencilMode > 0) isOutlineStencil = EditorGUILayout.Toggle("Outline Stencil", isOutlineStencil);
+                    if(EditorGUI.EndChangeCheck())
+                    {
+                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
+                        int shaderRenderQueue = isMulti ? material.renderQueue : material.shader.renderQueue;
+                        switch(stencilMode)
+                        {
+                            case 0:
+                                stencilRef.floatValue = 0;
+                                stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Always;
+                                stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                                if(!isMulti) material.renderQueue = -1;
+                                break;
+                            case 1: // Writer
+                                stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Always;
+                                stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Replace;
+                                material.renderQueue = shaderRenderQueue > 2451 ? -1 : 2451;
+                                break;
+                            case 2: // Reader
+                                stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.NotEqual;
+                                stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                                material.renderQueue = shaderRenderQueue > 2452 ? -1 : 2452;
+                                break;
+                            case 3: // Reader (Invert)
+                                stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Equal;
+                                stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                                material.renderQueue = shaderRenderQueue > 2452 ? -1 : 2452;
+                                break;
+                            case 4: // Reader (Fade)
+                                stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Always;
+                                stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                                material.renderQueue = shaderRenderQueue > 2452 ? -1 : 2452;
+                                break;
+                            default:
+                                break;
+                        }
+                        if(stencilMode != 0 && stencilRef.floatValue == 0) stencilRef.floatValue = 1;
+                        stencilReadMask.floatValue = 255.0f;
+                        stencilWriteMask.floatValue = 255.0f;
+                        stencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                        stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                        if(isOutl && isOutlineStencil)
+                        {
+                            outlineStencilRef.floatValue = stencilRef.floatValue;
+                            outlineStencilComp.floatValue = stencilComp.floatValue;
+                            outlineStencilPass.floatValue = stencilPass.floatValue;
+                            outlineStencilReadMask.floatValue = stencilReadMask.floatValue;
+                            outlineStencilWriteMask.floatValue = stencilWriteMask.floatValue;
+                            outlineStencilFail.floatValue = stencilFail.floatValue;
+                            outlineStencilZFail.floatValue = stencilZFail.floatValue;
+                        }
+                        else if(isOutl)
+                        {
+                            outlineStencilRef.floatValue = 0.0f;
+                            outlineStencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Always;
+                            outlineStencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
+                            outlineStencilReadMask.floatValue = stencilReadMask.floatValue;
+                            outlineStencilWriteMask.floatValue = stencilWriteMask.floatValue;
+                            outlineStencilFail.floatValue = stencilFail.floatValue;
+                            outlineStencilZFail.floatValue = stencilZFail.floatValue;
+                        }
+                        if(isFur)
+                        {
+                            furStencilRef.floatValue = stencilRef.floatValue;
+                            furStencilComp.floatValue = stencilComp.floatValue;
+                            furStencilPass.floatValue = stencilPass.floatValue;
+                            furStencilReadMask.floatValue = stencilReadMask.floatValue;
+                            furStencilWriteMask.floatValue = stencilWriteMask.floatValue;
+                            furStencilFail.floatValue = stencilFail.floatValue;
+                            furStencilZFail.floatValue = stencilZFail.floatValue;
+                        }
+                        if(transparentModeBuf == TransparentMode.TwoPass)
+                        {
+                            preStencilRef.floatValue = stencilRef.floatValue;
+                            preStencilComp.floatValue = stencilMode == 4 ? (float)UnityEngine.Rendering.CompareFunction.Equal : stencilComp.floatValue;
+                            preStencilPass.floatValue = stencilPass.floatValue;
+                            preStencilReadMask.floatValue = stencilReadMask.floatValue;
+                            preStencilWriteMask.floatValue = stencilWriteMask.floatValue;
+                            preStencilFail.floatValue = stencilFail.floatValue;
+                            preStencilZFail.floatValue = stencilZFail.floatValue;
+                        }
+                    }
+                    if(stencilMode > 0)
+                    {
+                        EditorGUI.BeginChangeCheck();
+                        m_MaterialEditor.ShaderProperty(stencilRef, "Ref");
+                        if(EditorGUI.EndChangeCheck())
+                        {
+                            if(isOutl && isOutlineStencil) outlineStencilRef.floatValue = stencilRef.floatValue;
+                            if(isFur) furStencilRef.floatValue = stencilRef.floatValue;
+                            if(transparentModeBuf == TransparentMode.TwoPass) preStencilRef.floatValue = stencilRef.floatValue;
+                        }
+                        m_MaterialEditor.RenderQueueField();
+                    }
+                EditorGUILayout.EndVertical();
+
                 if(transparentModeBuf == TransparentMode.TwoPass)
                 {
                     EditorGUILayout.LabelField("PrePass");
                     EditorGUILayout.BeginVertical(customBox);
+                    m_MaterialEditor.ShaderProperty(preOutType, BuildParams(GetLoc("sOutType"), GetLoc("sOutTypeNormal"), GetLoc("sOutTypeFlat"), GetLoc("sOutTypeMono")));
                     m_MaterialEditor.ShaderProperty(preColor, GetLoc("sColor"));
-                    m_MaterialEditor.ShaderProperty(preOutType, "Out Type|Normal|Flat|Mono");
+                    lilEditorGUI.DrawColorAsAlpha(preColor);
                     m_MaterialEditor.ShaderProperty(preCutoff, GetLoc("sCutoff"));
                     m_MaterialEditor.ShaderProperty(preCull, sCullModes);
                     m_MaterialEditor.ShaderProperty(preZwrite, GetLoc("sZWrite"));
@@ -4151,45 +4265,76 @@ namespace lilToon
                     if(edSet.isShowPrePreset)
                     {
                         EditorGUI.indentLevel++;
-                        if(lilEditorGUI.EditorButton("Ghost Transparent"))
+                        if(lilEditorGUI.EditorButton(GetLoc("sTransparentPresetsPreWriteDepth")))
                         {
                             preColor.colorValue = Color.white;
                             preOutType.floatValue = 2.0f;
                             preCutoff.floatValue = -0.001f;
                             preSrcBlend.floatValue = 0.0f;
                             preDstBlend.floatValue = 3.0f;
+                            preZwrite.floatValue = 1.0f;
+                            preCull.floatValue = cull.floatValue;
+                            preStencilRef.floatValue = stencilRef.floatValue;
+                            preStencilComp.floatValue = stencilComp.floatValue;
+                            mainColor.colorValue = new Color(mainColor.colorValue.r, mainColor.colorValue.g, mainColor.colorValue.b, 1.0f);
+                            ztest.floatValue = (float)UnityEngine.Rendering.CompareFunction.LessEqual;
                         }
-                        if(lilEditorGUI.EditorButton("Color Transparent"))
+                        if(lilEditorGUI.EditorButton(GetLoc("sTransparentPresetsColorTransparent")))
                         {
-                            preColor.colorValue = new Color(0.5f,0.0f,0.0f,1.0f);
-                            preOutType.floatValue = 2.0f;
+                            preColor.colorValue = new Color(0.75f,0.0f,0.0f,1.0f);
+                            preOutType.floatValue = 1.0f;
                             preCutoff.floatValue = -0.001f;
                             preSrcBlend.floatValue = 0.0f;
                             preDstBlend.floatValue = 3.0f;
+                            preZwrite.floatValue = 0.0f;
+                            preCull.floatValue = cull.floatValue;
+                            preStencilRef.floatValue = stencilRef.floatValue;
+                            preStencilComp.floatValue = stencilComp.floatValue;
+                            mainColor.colorValue = new Color(mainColor.colorValue.r, mainColor.colorValue.g, mainColor.colorValue.b, 0.0f);
+                            ztest.floatValue = (float)UnityEngine.Rendering.CompareFunction.LessEqual;
                         }
-                        if(lilEditorGUI.EditorButton("Back and Front"))
+                        if(lilEditorGUI.EditorButton(GetLoc("sTransparentPresetsBackAndFront")))
                         {
                             preColor.colorValue = Color.white;
                             preOutType.floatValue = 0.0f;
                             preCutoff.floatValue = cutoff.floatValue;
                             preSrcBlend.floatValue = 1.0f;
                             preDstBlend.floatValue = 10.0f;
+                            preZwrite.floatValue = 1.0f;
+                            preCull.floatValue = 1.0f;
+                            preStencilRef.floatValue = stencilRef.floatValue;
+                            preStencilComp.floatValue = stencilComp.floatValue;
+                            mainColor.colorValue = new Color(mainColor.colorValue.r, mainColor.colorValue.g, mainColor.colorValue.b, 1.0f);
+                            cull.floatValue = 0.0f;
+                            ztest.floatValue = (float)UnityEngine.Rendering.CompareFunction.Less;
                         }
-                        if(lilEditorGUI.EditorButton("Cutout and Transparent"))
+                        if(lilEditorGUI.EditorButton(GetLoc("sTransparentPresetsCutoutAndTransparent")))
                         {
                             preColor.colorValue = Color.white;
                             preOutType.floatValue = 0.0f;
-                            preCutoff.floatValue = 0.999f;
+                            preCutoff.floatValue = 0.95f;
                             preSrcBlend.floatValue = 1.0f;
                             preDstBlend.floatValue = 10.0f;
+                            preZwrite.floatValue = 1.0f;
+                            preCull.floatValue = cull.floatValue;
+                            preStencilRef.floatValue = stencilRef.floatValue;
+                            preStencilComp.floatValue = stencilComp.floatValue;
+                            mainColor.colorValue = new Color(mainColor.colorValue.r, mainColor.colorValue.g, mainColor.colorValue.b, 1.0f);
+                            ztest.floatValue = (float)UnityEngine.Rendering.CompareFunction.LessEqual;
                         }
-                        if(lilEditorGUI.EditorButton("Fade Stencil"))
+                        if(lilEditorGUI.EditorButton(GetLoc("sTransparentPresetsFadeStencil")))
                         {
                             preColor.colorValue = new Color(1.0f,1.0f,1.0f,0.5f);
                             preOutType.floatValue = 0.0f;
                             preCutoff.floatValue = cutoff.floatValue;
                             preSrcBlend.floatValue = 1.0f;
                             preDstBlend.floatValue = 10.0f;
+                            preZwrite.floatValue = 1.0f;
+                            preCull.floatValue = cull.floatValue;
+                            preStencilRef.floatValue = stencilRef.floatValue;
+                            preStencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Equal;
+                            mainColor.colorValue = new Color(mainColor.colorValue.r, mainColor.colorValue.g, mainColor.colorValue.b, 1.0f);
+                            ztest.floatValue = (float)UnityEngine.Rendering.CompareFunction.Less;
                         }
                         EditorGUI.indentLevel--;
                     }
@@ -5131,92 +5276,6 @@ namespace lilToon
             DrawMenuButton(GetLoc("sAnchorStencil"), PropertyBlock.Stencil);
             if(edSet.isShowStencil)
             {
-                if(lilEditorGUI.EditorButton("Set Writer"))
-                {
-                    isStWr = true;
-                    stencilRef.floatValue = 1;
-                    stencilReadMask.floatValue = 255.0f;
-                    stencilWriteMask.floatValue = 255.0f;
-                    stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Always;
-                    stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Replace;
-                    stencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                    stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                    if(transparentModeBuf == TransparentMode.TwoPass)
-                    {
-                        preStencilRef.floatValue = 1;
-                        preStencilReadMask.floatValue = 255.0f;
-                        preStencilWriteMask.floatValue = 255.0f;
-                        preStencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Always;
-                        preStencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Replace;
-                        preStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                        preStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                    }
-                    if(isOutl)
-                    {
-                        outlineStencilRef.floatValue = 1;
-                        outlineStencilReadMask.floatValue = 255.0f;
-                        outlineStencilWriteMask.floatValue = 255.0f;
-                        outlineStencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Always;
-                        outlineStencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Replace;
-                        outlineStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                        outlineStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                    }
-                    if(isFur)
-                    {
-                        furStencilRef.floatValue = 1;
-                        furStencilReadMask.floatValue = 255.0f;
-                        furStencilWriteMask.floatValue = 255.0f;
-                        furStencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.Always;
-                        furStencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Replace;
-                        furStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                        furStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                    }
-                    SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
-                    if(renderingModeBuf == RenderingMode.Opaque || renderingModeBuf == RenderingMode.Cutout) material.renderQueue = 2451;
-                }
-                if(lilEditorGUI.EditorButton("Set Reader"))
-                {
-                    isStWr = false;
-                    stencilRef.floatValue = 1;
-                    stencilReadMask.floatValue = 255.0f;
-                    stencilWriteMask.floatValue = 255.0f;
-                    stencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.NotEqual;
-                    stencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                    stencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                    stencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                    if(transparentModeBuf == TransparentMode.TwoPass)
-                    {
-                        preStencilRef.floatValue = 1;
-                        preStencilReadMask.floatValue = 255.0f;
-                        preStencilWriteMask.floatValue = 255.0f;
-                        preStencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.NotEqual;
-                        preStencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                        preStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                        preStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                    }
-                    if(isOutl)
-                    {
-                        outlineStencilRef.floatValue = 1;
-                        outlineStencilReadMask.floatValue = 255.0f;
-                        outlineStencilWriteMask.floatValue = 255.0f;
-                        outlineStencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.NotEqual;
-                        outlineStencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                        outlineStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                        outlineStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                    }
-                    if(isFur)
-                    {
-                        furStencilRef.floatValue = 1;
-                        furStencilReadMask.floatValue = 255.0f;
-                        furStencilWriteMask.floatValue = 255.0f;
-                        furStencilComp.floatValue = (float)UnityEngine.Rendering.CompareFunction.NotEqual;
-                        furStencilPass.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                        furStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                        furStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
-                    }
-                    SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
-                    if(renderingModeBuf == RenderingMode.Opaque || renderingModeBuf == RenderingMode.Cutout) material.renderQueue = 2451;
-                }
                 if(lilEditorGUI.EditorButton("Reset"))
                 {
                     isStWr = false;
@@ -5257,8 +5316,6 @@ namespace lilToon
                         furStencilFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                         furStencilZFail.floatValue = (float)UnityEngine.Rendering.StencilOp.Keep;
                     }
-                    SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
-                    material.renderQueue = -1;
                 }
 
                 EditorGUILayout.BeginVertical(customBox);

@@ -267,8 +267,8 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // DDX and DDY
 #define OVERRIDE_CALC_DDX_DDY \
-    fd.ddxMain = ddx(fd.uvMain); \
-    fd.ddyMain = ddy(fd.uvMain);
+    fd.ddxMain = abs(ddx(fd.uvMain)); \
+    fd.ddyMain = abs(ddy(fd.uvMain));
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Parallax
@@ -454,40 +454,36 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // Dissolve
 #if !defined(OVERRIDE_DISSOLVE)
-    #if defined(LIL_FEATURE_DissolveMask)
-        #if defined(LIL_FEATURE_DissolveNoiseMask)
-            #define OVERRIDE_DISSOLVE \
-                lilCalcDissolveWithNoise( \
-                    fd.col.a, \
-                    dissolveAlpha, \
-                    fd.uv0, \
-                    fd.positionOS, \
-                    _DissolveParams, \
-                    _DissolvePos, \
-                    _DissolveMask, \
-                    _DissolveMask_ST, \
-                    _DissolveNoiseMask, \
-                    _DissolveNoiseMask_ST, \
-                    _DissolveNoiseMask_ScrollRotate, \
-                    _DissolveNoiseStrength \
-                    LIL_SAMP_IN(sampler_MainTex) \
-                );
-        #else
-            #define OVERRIDE_DISSOLVE \
-                lilCalcDissolve( \
-                    fd.col.a, \
-                    dissolveAlpha, \
-                    fd.uv0, \
-                    fd.positionOS, \
-                    _DissolveParams, \
-                    _DissolvePos, \
-                    _DissolveMask, \
-                    _DissolveMask_ST \
-                    LIL_SAMP_IN(sampler_MainTex) \
-                );
-        #endif
+    #if defined(LIL_FEATURE_DissolveNoiseMask)
+        #define OVERRIDE_DISSOLVE \
+            lilCalcDissolveWithNoise( \
+                fd.col.a, \
+                dissolveAlpha, \
+                fd.uv0, \
+                fd.positionOS, \
+                _DissolveParams, \
+                _DissolvePos, \
+                _DissolveMask, \
+                _DissolveMask_ST, \
+                _DissolveNoiseMask, \
+                _DissolveNoiseMask_ST, \
+                _DissolveNoiseMask_ScrollRotate, \
+                _DissolveNoiseStrength \
+                LIL_SAMP_IN(sampler_MainTex) \
+            );
     #else
-        #define OVERRIDE_DISSOLVE
+        #define OVERRIDE_DISSOLVE \
+            lilCalcDissolve( \
+                fd.col.a, \
+                dissolveAlpha, \
+                fd.uv0, \
+                fd.positionOS, \
+                _DissolveParams, \
+                _DissolvePos, \
+                _DissolveMask, \
+                _DissolveMask_ST \
+                LIL_SAMP_IN(sampler_MainTex) \
+            );
     #endif
 #endif
 

@@ -625,6 +625,62 @@ namespace lilToon
             }
         }
 
+        public static void BitEditor8(MaterialProperty prop, string label)
+        {
+            int val = (int)prop.floatValue;
+            val = IntClamp(val, 0, 255);
+            bool[] b = {
+                val / 1   % 2 != 0,
+                val / 2   % 2 != 0,
+                val / 4   % 2 != 0,
+                val / 8   % 2 != 0,
+                val / 16  % 2 != 0,
+                val / 32  % 2 != 0,
+                val / 64  % 2 != 0,
+                val / 128 % 2 != 0
+            };
+            EditorGUI.BeginChangeCheck();
+            Rect position = EditorGUILayout.GetControlRect();
+            Rect labelRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, position.height);
+            Rect toggleRect = new Rect(labelRect.x + labelRect.width + 2, position.y, position.height, position.height);
+            EditorGUI.PrefixLabel(labelRect, new GUIContent(label));
+            b[7] = EditorGUI.Toggle(toggleRect,b[7]); toggleRect.x += position.height;
+            b[6] = EditorGUI.Toggle(toggleRect,b[6]); toggleRect.x += position.height;
+            b[5] = EditorGUI.Toggle(toggleRect,b[5]); toggleRect.x += position.height;
+            b[4] = EditorGUI.Toggle(toggleRect,b[4]); toggleRect.x += position.height;
+            b[3] = EditorGUI.Toggle(toggleRect,b[3]); toggleRect.x += position.height;
+            b[2] = EditorGUI.Toggle(toggleRect,b[2]); toggleRect.x += position.height;
+            b[1] = EditorGUI.Toggle(toggleRect,b[1]); toggleRect.x += position.height;
+            b[0] = EditorGUI.Toggle(toggleRect,b[0]); toggleRect.x += position.height;
+            if(EditorGUI.EndChangeCheck())
+            {
+                val = 0;
+                if(b[0]) val += 1;
+                if(b[1]) val += 2;
+                if(b[2]) val += 4;
+                if(b[3]) val += 8;
+                if(b[4]) val += 16;
+                if(b[5]) val += 32;
+                if(b[6]) val += 64;
+                if(b[7]) val += 128;
+                prop.floatValue = val;
+            }
+
+            EditorGUI.BeginChangeCheck();
+            Rect numRect = new Rect(toggleRect.x, position.y, position.width - toggleRect.x + position.height + 2, position.height);
+            val = EditorGUI.IntField(numRect, val);
+            if(EditorGUI.EndChangeCheck())
+            {
+                val = IntClamp(val, 0, 255);
+                prop.floatValue = val;
+            }
+        }
+
+        private static int IntClamp(int val, int min, int max)
+        {
+            return val < min ? min : (val > max ? max : val);
+        }
+
         public static float GetRemapMinValue(float scale, float offset)
         {
             return RoundFloat1000000(Mathf.Clamp(-offset / scale, -0.01f, 1.01f));

@@ -7,7 +7,7 @@ namespace lilToon
 {
     public class lilMaterialUtils
     {
-        internal static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool isstencil, bool istess, bool ismulti)
+        internal static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool istess, bool ismulti)
         {
             int renderQueue = GetTrueRenderQueue(material);
             RenderingMode rend = renderingMode;
@@ -256,13 +256,19 @@ namespace lilToon
             }
             if(!ismulti) material.renderQueue = renderQueue;
             FixTransparentRenderQueue(material, renderingMode);
-            material.SetInt("_ZWrite", 1);
             if(rend == RenderingMode.Gem)
             {
                 material.SetInt("_Cull", 0);
                 material.SetInt("_ZWrite", 0);
             }
-            material.SetInt("_ZTest", 4);
+            else
+            {
+                material.SetInt("_ZWrite", 1);
+            }
+            if(transparentMode != TransparentMode.TwoPass)
+            {
+                material.SetInt("_ZTest", 4);
+            }
             material.SetFloat("_OffsetFactor", 0.0f);
             material.SetFloat("_OffsetUnits", 0.0f);
             material.SetInt("_ColorMask", 15);

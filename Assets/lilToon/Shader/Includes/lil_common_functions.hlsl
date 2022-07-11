@@ -555,7 +555,11 @@ void lilCalcDissolve(
         float dissolveMaskVal = 1.0;
         if(dissolveParams.r == 1.0)
         {
-            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, samp, lilCalcUV(uv, dissolveMask_ST)).r;
+            #if defined(LIL_FEATURE_DissolveMask)
+                dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, samp, lilCalcUV(uv, dissolveMask_ST)).r;
+            #else
+                dissolveMaskVal = 1.0f;
+            #endif
         }
         if(dissolveParams.r == 1.0)
         {
@@ -599,7 +603,11 @@ void lilCalcDissolveWithNoise(
         float dissolveNoise = 0.0;
         if(dissolveParams.r == 1.0)
         {
-            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, samp, lilCalcUV(uv, dissolveMask_ST)).r;
+            #if defined(LIL_FEATURE_DissolveMask)
+                dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, samp, lilCalcUV(uv, dissolveMask_ST)).r;
+            #else
+                dissolveMaskVal = 1.0f;
+            #endif
         }
         dissolveNoise = LIL_SAMPLE_2D(dissolveNoiseMask, samp, lilCalcUV(uv, dissolveNoiseMask_ST, dissolveNoiseMask_ScrollRotate.xy)).r - 0.5;
         dissolveNoise *= dissolveNoiseStrength;
@@ -944,8 +952,8 @@ void lilGetLightColorDouble(float3 lightDirection, out float3 lightColor, out fl
 // Geometric Specular Antialiasing
 void GSAA(inout float roughness, float3 N, float strength)
 {
-    float3 dx = ddx(N);
-    float3 dy = ddy(N);
+    float3 dx = abs(ddx(N));
+    float3 dy = abs(ddy(N));
     float dxy = max(dot(dx,dx), dot(dy,dy));
     float roughnessGSAA = dxy / (dxy * 5 + 0.002) * strength;
     roughness = max(roughness, roughnessGSAA);
@@ -1091,7 +1099,7 @@ float3 lilCalcGlitter(float2 uv, float3 normalDirection, float3 viewDirection, f
                 bool clamp = maskUV.x == saturate(maskUV.x) && maskUV.y == saturate(maskUV.y);
                 maskUV = (maskUV + floor(near.xy * glitterAtras.xy)) / glitterAtras.xy;
                 float2 mipfactor = 0.125 / glitterParams1.z * glitterAtras.xy * glitterShapeTex_ST.xy * randomScale;
-                float4 shapeTex = LIL_SAMPLE_2D_GRAD(glitterShapeTex, sampler_linear_clamp, maskUV, ddx(pos) * mipfactor.x, ddy(pos) * mipfactor.y);
+                float4 shapeTex = LIL_SAMPLE_2D_GRAD(glitterShapeTex, sampler_linear_clamp, maskUV, abs(ddx(pos)) * mipfactor.x, abs(ddy(pos)) * mipfactor.y);
                 shapeTex.a = clamp ? shapeTex.a : 0;
                 glitterColor *= shapeTex.rgb * shapeTex.a;
             }

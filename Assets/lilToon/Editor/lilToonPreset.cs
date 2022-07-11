@@ -68,7 +68,6 @@ public class lilToonPreset : ScriptableObject
         if(preset.shader != null) material.shader = preset.shader;
         bool isoutl         = preset.outline == -1 ? material.shader.name.Contains("Outline") : (preset.outline == 1);
         bool istess         = preset.tessellation == -1 ? material.shader.name.Contains("Tessellation") : (preset.tessellation == 1);
-        bool isstencil      = material.GetFloat("_StencilPass") == (float)UnityEngine.Rendering.StencilOp.Replace;
 
         bool islite         = material.shader.name.Contains("Lite");
         bool iscutout       = material.shader.name.Contains("Cutout");
@@ -101,7 +100,7 @@ public class lilToonPreset : ScriptableObject
         if(isonepass)           transparentMode = TransparentMode.OnePass;
         if(!isfur && istwopass) transparentMode = TransparentMode.TwoPass;
 
-        lilMaterialUtils.SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, isstencil, istess, ismulti);
+        lilMaterialUtils.SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, istess, ismulti);
         if(preset.renderQueue != -2) material.renderQueue = preset.renderQueue;
 
         for(int i = 0; i < preset.colors.Length;   i++) material.SetColor(preset.colors[i].name, preset.colors[i].value);
