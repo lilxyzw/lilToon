@@ -121,6 +121,12 @@ sCullModeBack	Back	Back (前面のみ描画)	Back	Back	Back
 sFlipBackfaceNormal	Flip Backface Normal	裏面の法線を反転	뒷면의 법선을 반전	翻转背影法线	翻轉背影法線
 sShiftBackfaceUV	Shift Backface UV	裏面のUVをずらす	뒷면의 UV를 드티다	移动背面的UV	移動背面的UV
 sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면에 그림자를 드리우다	背面的力量阴影	背面的力量陰影
+sSimpleStencilSettings	Simple Stencil Settings	簡易ステンシル設定	간이 스텐실 설정	简单Stencil设置	簡單Stencil設置
+sStencilModeNormal	Normal	通常	Normal	Normal	Normal
+sStencilModeWriter	Writer	Writer	Writer	Writer	Writer
+sStencilModeReader	Reader	Reader	Reader	Reader	Reader
+sStencilModeReaderInvert	Reader (Invert)	Reader (反転)	Reader (반전)	Reader (翻转)	Reader (翻轉)
+sStencilModeReaderFade	Reader (Fade)	Reader (半透明)	Reader (투명한)	Reader (透明)	Reader (透明)
 sTransparentPresetsPreWriteDepth	Pre-write depth	深度を事前に書き込み	심도를 사전에 기입하다	预先写入深度	預先寫入深度
 sTransparentPresetsColorTransparent	Color Transparent	色付き透過	색 투과	彩色透明	彩色透明
 sTransparentPresetsBackAndFront	Back and Front	裏面 & 表面	이면 & 표면	背面 & 表面	背面 & 表面

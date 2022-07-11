@@ -2902,8 +2902,6 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(preAlphaToMask, GetLoc("sAlphaToMask"));
                         lilEditorGUI.DrawLine();
                         BlendSettingGUI(ref edSet.isShowBlendPre, GetLoc("sForward"), preSrcBlend, preDstBlend, preSrcBlendAlpha, preDstBlendAlpha, preBlendOp, preBlendOpAlpha);
-                        lilEditorGUI.DrawLine();
-                        BlendSettingGUI(ref edSet.isShowBlendAddPre, GetLoc("sForwardAdd"), preSrcBlendFA, preDstBlendFA, preSrcBlendAlphaFA, preDstBlendAlphaFA, preBlendOpFA, preBlendOpAlphaFA);
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
@@ -4106,7 +4104,7 @@ namespace lilToon
                     }
                 EditorGUILayout.EndVertical();
 
-                EditorGUILayout.LabelField("簡易ステンシル設定");
+                EditorGUILayout.LabelField(GetLoc("sSimpleStencilSettings"));
                 EditorGUILayout.BeginVertical(customBox);
                     int stencilMode = -1;
                     if(stencilComp.floatValue == (float)UnityEngine.Rendering.CompareFunction.Always    && stencilPass.floatValue == (float)UnityEngine.Rendering.StencilOp.Keep)       stencilMode = 0; // Normal
@@ -4121,8 +4119,8 @@ namespace lilToon
                     bool isOutlineStencil = isOutl && stencilComp.floatValue == outlineStencilComp.floatValue && stencilPass.floatValue == outlineStencilPass.floatValue;
 
                     EditorGUI.BeginChangeCheck();
-                    if(transparentModeBuf == TransparentMode.TwoPass)   stencilMode = EditorGUILayout.Popup("Mode", stencilMode, new[]{GetLoc("sOutTypeNormal"),"Writer","Reader","Reader (Invert)","Reader (Fade)"});
-                    else                                                stencilMode = EditorGUILayout.Popup("Mode", stencilMode, new[]{GetLoc("sOutTypeNormal"),"Writer","Reader","Reader (Invert)"});
+                    if(transparentModeBuf == TransparentMode.TwoPass)   stencilMode = EditorGUILayout.Popup("Mode", stencilMode, new[]{GetLoc("sStencilModeNormal"),GetLoc("sStencilModeWriter"),GetLoc("sStencilModeReader"),GetLoc("sStencilModeReaderInvert"),GetLoc("sStencilModeReaderFade")});
+                    else                                                stencilMode = EditorGUILayout.Popup("Mode", stencilMode, new[]{GetLoc("sStencilModeNormal"),GetLoc("sStencilModeWriter"),GetLoc("sStencilModeReader"),GetLoc("sStencilModeReaderInvert")});
                     if(isOutl && stencilMode > 0) isOutlineStencil = EditorGUILayout.Toggle("Outline Stencil", isOutlineStencil);
                     if(EditorGUI.EndChangeCheck())
                     {
@@ -4196,6 +4194,7 @@ namespace lilToon
                         }
                         if(transparentModeBuf == TransparentMode.TwoPass)
                         {
+                            ztest.floatValue = stencilMode == 4 ? (float)UnityEngine.Rendering.CompareFunction.Less : (float)UnityEngine.Rendering.CompareFunction.LessEqual;
                             preStencilRef.floatValue = stencilRef.floatValue;
                             preStencilComp.floatValue = stencilMode == 4 ? (float)UnityEngine.Rendering.CompareFunction.Equal : stencilComp.floatValue;
                             preStencilPass.floatValue = stencilPass.floatValue;
