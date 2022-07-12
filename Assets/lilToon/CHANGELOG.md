@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Cull Mode` for main color 2nd / 3rd
 - `Receive Shadow` to outline highlight
 - Extended 2 pass transparent shader
+- Function to make variables constant in VRChat avatar builds
 
 ### Changed
 - Changed the sampler of the normal map 2nd to `Repeat`

@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using lilToon;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -644,6 +645,8 @@ public class lilToonSetting : ScriptableObject
             InitializeShaderSetting(ref shaderSetting);
             TurnOffAllShaderSetting(ref shaderSetting);
 
+            lilOptimizer.OptimizeInputHLSL(gameObject);
+
             // Get materials
             foreach(var renderer in gameObject.GetComponentsInChildren<Renderer>(true))
             {
@@ -695,9 +698,10 @@ public class lilToonSetting : ScriptableObject
             ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild", shaders);
             AssetDatabase.Refresh();
         }
-        catch
+        catch(Exception e)
         {
-            Debug.Log("[lilToon] Optimization failed");
+            Debug.LogException(e);
+            Debug.Log("[lilToon] SetShaderSettingBeforeBuild() failed");
         }
     }
 
@@ -726,6 +730,8 @@ public class lilToonSetting : ScriptableObject
             if(File.Exists(lilDirectoryManager.forceOptimizeBuildTempPath)) File.Delete(lilDirectoryManager.forceOptimizeBuildTempPath);
             lilToonSetting shaderSetting = null;
             InitializeShaderSetting(ref shaderSetting);
+
+            lilOptimizer.ResetInputHLSL();
 
             var shaders = new List<Shader>();
             if(shaderNames.Length > 0)
@@ -1287,7 +1293,15 @@ public class lilToonSetting : ScriptableObject
         {
             string path = AssetDatabase.GetAssetPath(shaders[i]);
             if(string.IsNullOrEmpty(path)) continue;
-            StreamReader sr = new StreamReader(path);
+            TextReader sr;
+            if(path.Contains(".lilcontainer"))
+            {
+                sr = new StringReader(lilShaderContainer.UnpackContainer(path));
+            }
+            else
+            {
+                sr = new StreamReader(path);
+            }
             string line;
             while((line = sr.ReadLine()) != null)
             {
