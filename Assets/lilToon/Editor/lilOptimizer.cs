@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -13,7 +14,7 @@ namespace lilToon
 {
     public class lilOptimizer
     {
-        const int TYPE_OFFSET = 8;
+        private const int TYPE_OFFSET = 8;
 
         internal static void OptimizeInputHLSL(GameObject gameObject)
         {
@@ -214,7 +215,7 @@ namespace lilToon
             string pathBase = AssetDatabase.GUIDToAssetPath("8ff7f7d9c86e1154fb3aac5a8a8681bb");
             string pathOpt = AssetDatabase.GUIDToAssetPath("571051a232e4af44a98389bda858df27");
             if(string.IsNullOrEmpty(pathBase) || string.IsNullOrEmpty(pathOpt) || !File.Exists(pathBase) || !File.Exists(pathOpt)) return;
-            var sw = new StreamWriter(pathOpt, false);
+            var sb = new StringBuilder();
             var sr = new StreamReader(pathBase);
             string line;
             while((line = sr.ReadLine()) != null)
@@ -222,7 +223,7 @@ namespace lilToon
                 int indEND = line.IndexOf(";");
                 if(indEND <= 0)
                 {
-                    sw.WriteLine(line);
+                    sb.AppendLine(line);
                     continue;
                 }
 
@@ -242,7 +243,7 @@ namespace lilToon
                         if(dicD.ContainsKey(texname) && !dicD[texname].isVariable)
                         {
                             var v = dicD[texname];
-                            sw.WriteLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + v.s.x + "," + v.s.y + "," + v.o.x + "," + v.o.y + ")");
+                            sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + v.s.x + "," + v.s.y + "," + v.o.x + "," + v.o.y + ")");
                             continue;
                         }
                     }
@@ -252,7 +253,7 @@ namespace lilToon
                         if(dicC.ContainsKey(name) && !dicC[name].isVariable)
                         {
                             var v = dicC[name];
-                            sw.WriteLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + v.c.r + "," + v.c.g + "," + v.c.b + "," + v.c.a + ")");
+                            sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + v.c.r + "," + v.c.g + "," + v.c.b + "," + v.c.a + ")");
                             continue;
                         }
                     }
@@ -264,7 +265,7 @@ namespace lilToon
                     string name = line.Substring(indF, indEND - indF);
                     if(dicF.ContainsKey(name) && !dicF[name].isVariable)
                     {
-                        sw.WriteLine(GetIndent(indF - 8) + "#define " + name + " (" + dicF[name].f + ")");
+                        sb.AppendLine(GetIndent(indF - 8) + "#define " + name + " (" + dicF[name].f + ")");
                         continue;
                     }
                 }
@@ -275,7 +276,7 @@ namespace lilToon
                     string name = line.Substring(indI, indEND - indI);
                     if(dicF.ContainsKey(name) && !dicF[name].isVariable)
                     {
-                        sw.WriteLine(GetIndent(indI - 8) + "#define " + name + " (" + (uint)dicF[name].f + ")");
+                        sb.AppendLine(GetIndent(indI - 8) + "#define " + name + " (" + (uint)dicF[name].f + ")");
                         continue;
                     }
                 }
@@ -286,12 +287,16 @@ namespace lilToon
                     string name = line.Substring(indB, indEND - indB);
                     if(dicF.ContainsKey(name) && !dicF[name].isVariable)
                     {
-                        sw.WriteLine(GetIndent(indB - 8) + "#define " + name + " (" + (uint)dicF[name].f + ")");
+                        sb.AppendLine(GetIndent(indB - 8) + "#define " + name + " (" + (uint)dicF[name].f + ")");
                         continue;
                     }
                 }
-                sw.WriteLine(line);
+                sb.AppendLine(line);
             }
+            string optHLSL = sb.ToString();
+            Debug.Log(optHLSL);
+            var sw = new StreamWriter(pathOpt, false);
+            sw.Write(optHLSL);
             sw.Close();
             sr.Close();
         }

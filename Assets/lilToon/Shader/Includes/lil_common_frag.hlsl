@@ -851,7 +851,12 @@
                 float shadow3rdBlur = _Shadow3rdBlur;
             #endif
             #if defined(LIL_FEATURE_ShadowBlurMask)
-                float4 shadowBlurMask = LIL_SAMPLE_2D_GRAD(_ShadowBlurMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBlurMaskLOD), max(fd.ddyMain, _ShadowBlurMaskLOD));
+                #if defined(_ShadowBlurMaskLOD)
+                    float4 shadowBlurMask = LIL_SAMPLE_2D(_ShadowBlurMask, sampler_linear_repeat, fd.uvMain);
+                    if(_ShadowBlurMaskLOD) shadowBlurMask = LIL_SAMPLE_2D_GRAD(_ShadowBlurMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBlurMaskLOD), max(fd.ddyMain, _ShadowBlurMaskLOD));
+                #else
+                    float4 shadowBlurMask = LIL_SAMPLE_2D_GRAD(_ShadowBlurMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBlurMaskLOD), max(fd.ddyMain, _ShadowBlurMaskLOD));
+                #endif
                 shadowBlur *= shadowBlurMask.r;
                 shadow2ndBlur *= shadowBlurMask.g;
                 #if defined(LIL_FEATURE_SHADOW_3RD)
@@ -861,7 +866,12 @@
 
             // AO Map & Toon
             #if defined(LIL_FEATURE_ShadowBorderMask)
-                float4 shadowBorderMask = LIL_SAMPLE_2D_GRAD(_ShadowBorderMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBorderMaskLOD), max(fd.ddyMain, _ShadowBorderMaskLOD));
+                #if defined(_ShadowBorderMaskLOD)
+                    float4 shadowBorderMask = LIL_SAMPLE_2D(_ShadowBorderMask, sampler_linear_repeat, fd.uvMain);
+                    if(_ShadowBorderMaskLOD) shadowBorderMask = LIL_SAMPLE_2D_GRAD(_ShadowBorderMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBorderMaskLOD), max(fd.ddyMain, _ShadowBorderMaskLOD));
+                #else
+                    float4 shadowBorderMask = LIL_SAMPLE_2D_GRAD(_ShadowBorderMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBorderMaskLOD), max(fd.ddyMain, _ShadowBorderMaskLOD));
+                #endif
                 shadowBorderMask.r = saturate(shadowBorderMask.r * _ShadowAOShift.x + _ShadowAOShift.y);
                 shadowBorderMask.g = saturate(shadowBorderMask.g * _ShadowAOShift.z + _ShadowAOShift.w);
                 #if defined(LIL_FEATURE_SHADOW_3RD)
@@ -907,7 +917,12 @@
             #endif
             float shadowStrengthMask = 1;
             #if defined(LIL_FEATURE_ShadowStrengthMask)
-                shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).r;
+                #if defined(_ShadowStrengthMaskLOD)
+                    shadowStrengthMask = LIL_SAMPLE_2D(_ShadowStrengthMask, sampler_linear_repeat, fd.uvMain).r;
+                    if(_ShadowStrengthMaskLOD) shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).r;
+                #else
+                    shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).r;
+                #endif
             #endif
             if(_ShadowMaskType)
             {
