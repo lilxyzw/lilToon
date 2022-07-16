@@ -80,7 +80,7 @@ namespace lilToon
 
         private static void CheckMaterial(Material material, Dictionary<string, TexProp> dicT, Dictionary<string, STProp> dicD, Dictionary<string, FloatProp> dicF, Dictionary<string, ColorProp> dicC)
         {
-            if(material == null) return;
+            if(material == null || !CheckShaderIslilToon(material.shader)) return;
             var so = new SerializedObject(material);
             var savedProps = so.FindProperty("m_SavedProperties");
 
@@ -212,6 +212,7 @@ namespace lilToon
 
         private static void RewriteInputHLSL(Dictionary<string, TexProp> dicT, Dictionary<string, STProp> dicD, Dictionary<string, FloatProp> dicF, Dictionary<string, ColorProp> dicC)
         {
+            if(dicT.Count == 0 && dicD.Count == 0 && dicF.Count == 0 && dicC.Count == 0) return;
             string pathBase = AssetDatabase.GUIDToAssetPath("8ff7f7d9c86e1154fb3aac5a8a8681bb");
             string pathOpt = AssetDatabase.GUIDToAssetPath("571051a232e4af44a98389bda858df27");
             if(string.IsNullOrEmpty(pathBase) || string.IsNullOrEmpty(pathOpt) || !File.Exists(pathBase) || !File.Exists(pathOpt)) return;
@@ -316,6 +317,14 @@ namespace lilToon
         private static string GetIndent(int indent)
         {
             return new string(' ', indent);
+        }
+
+        private static bool CheckShaderIslilToon(Shader shader)
+        {
+            if(shader == null) return false;
+            if(shader.name.Contains("lilToon")) return true;
+            string shaderPath = AssetDatabase.GetAssetPath(shader);
+            return !string.IsNullOrEmpty(shaderPath) && shaderPath.Contains(".lilcontainer");
         }
 
         private struct TexProp

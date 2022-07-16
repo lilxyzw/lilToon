@@ -39,7 +39,7 @@ namespace lilToon
                 if(GUILayout.Button("Export Shader"))
                 {
                     string assetPath = AssetDatabase.GetAssetPath(target);
-                    string shaderText = lilShaderContainer.UnpackContainer(assetPath, null);
+                    string shaderText = lilShaderContainer.UnpackContainer(assetPath);
                     string exportPath = EditorUtility.SaveFilePanel("Export Shader", Path.GetDirectoryName(assetPath), Path.GetFileNameWithoutExtension(assetPath), "shader");
                     if(string.IsNullOrEmpty(exportPath)) return;
                     File.WriteAllText(exportPath, shaderText);
@@ -90,6 +90,11 @@ namespace lilToon
         private const string SKIP_VARIANTS_REFLECTIONS      = "#pragma lil_skip_variants_reflections";
         private const string SKIP_VARIANTS_BASE_SHADOWS     = "#pragma lil_skip_variants_base_shadows";
         private const string SKIP_VARIANTS_OUTLINE_SHADOWS  = "#pragma lil_skip_variants_outline_shadows";
+
+        private const string INCLUDE_BRP                    = "Includes/lil_pipeline_brp.hlsl\"";
+        private const string INCLUDE_LWRP                   = "Includes/lil_pipeline_lwrp.hlsl\"";
+        private const string INCLUDE_URP                    = "Includes/lil_pipeline_urp.hlsl\"";
+        private const string INCLUDE_HDRP                   = "Includes/lil_pipeline_hdrp.hlsl\"";
 
         private const string LIL_SHADER_NAME                = "*LIL_SHADER_NAME*";
         private const string LIL_EDITOR_NAME                = "*LIL_EDITOR_NAME*";
@@ -171,7 +176,7 @@ namespace lilToon
         private static PackageVersionInfos version = new PackageVersionInfos();
         private static int indent = 12;
 
-        public static string UnpackContainer(string assetPath, AssetImportContext ctx = null)
+        public static string UnpackContainer(string assetPath, AssetImportContext ctx, bool doOptimize)
         {
             useBaseShadow = false;
             useOutlineShadow = false;
@@ -341,7 +346,40 @@ namespace lilToon
 
             FixIncludeForOldUnity(ref sb);
 
+            if(doOptimize && !assetName.Contains("ltsmulti") && !assetName.Contains("ltspass_lite") && !assetName.Contains("ltsl"))
+            {
+                string pathOpt = AssetDatabase.GUIDToAssetPath("571051a232e4af44a98389bda858df27");
+                if(!string.IsNullOrEmpty(pathOpt))
+                {
+                    StringBuilder sbInput = new StringBuilder();
+                    sbInput.AppendLine("");
+                    sbInput.AppendLine("            CBUFFER_START(UnityPerMaterial)");
+                    sbInput.Append    ("            #include \"");
+                    sbInput.Append    (pathOpt);
+                    sbInput.AppendLine("\"");
+                    sbInput.AppendLine("            #if defined(LIL_CUSTOM_PROPERTIES)");
+                    sbInput.AppendLine("                LIL_CUSTOM_PROPERTIES");
+                    sbInput.AppendLine("            #endif");
+                    sbInput.Append("            CBUFFER_END");
+                    string inputText = sbInput.ToString();
+                    sb.Replace(INCLUDE_BRP , INCLUDE_BRP  + inputText);
+                    sb.Replace(INCLUDE_LWRP, INCLUDE_LWRP + inputText);
+                    sb.Replace(INCLUDE_URP , INCLUDE_URP  + inputText);
+                    sb.Replace(INCLUDE_HDRP, INCLUDE_HDRP + inputText);
+                }
+            }
+
             return sb.ToString();
+        }
+
+        public static string UnpackContainer(string assetPath, AssetImportContext ctx = null)
+        {
+            bool doOptimize = false;
+            if(File.Exists(lilDirectoryManager.postBuildTempPath))
+            {
+                doOptimize = !string.IsNullOrEmpty(File.ReadAllText(lilDirectoryManager.postBuildTempPath));
+            }
+            return UnpackContainer(assetPath, ctx, doOptimize);
         }
 
         private static void ReadDataFile(AssetImportContext ctx)

@@ -79,8 +79,11 @@ SAMPLER(sampler_linear_clamp);
 // BlendMode        0:normal 1:add 2:screen 3:multiply
 
 // bool does not work in cbuffer
-//#define lilBool bool
-#define lilBool uint
+#if !defined(lilBool)
+    #define lilBool uint
+#endif
+
+#ifndef LIL_INPUT_BASE_INCLUDED
 
 CBUFFER_START(UnityPerMaterial)
 #if defined(LIL_LITE)
@@ -697,13 +700,15 @@ CBUFFER_START(UnityPerMaterial)
         lilBool _RefractionColorFromMain;
     #endif
 #else
-    #include "lil_common_input_opt.hlsl"
+    #include "lil_common_input_base.hlsl"
 #endif
 
 #if defined(LIL_CUSTOM_PROPERTIES)
     LIL_CUSTOM_PROPERTIES
 #endif
 CBUFFER_END
+
+#endif // LIL_INPUT_BASE_INCLUDED
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Texture

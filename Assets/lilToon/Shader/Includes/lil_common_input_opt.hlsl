@@ -1,6 +1,10 @@
 #ifndef LIL_INPUT_BASE_INCLUDED
 #define LIL_INPUT_BASE_INCLUDED
 
+#if !defined(lilBool)
+    #define lilBool uint
+#endif
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Vector
 float4  _LightDirectionOverride;
