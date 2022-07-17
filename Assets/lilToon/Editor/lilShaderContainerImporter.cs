@@ -6,8 +6,9 @@ using System.Text;
 using UnityEngine;
 using UnityEditor;
 using System.Reflection;
+using System.Text.RegularExpressions;
 #if UNITY_2020_2_OR_NEWER
-    using UnityEditor.AssetImporters;
+using UnityEditor.AssetImporters;
 #else
     using UnityEditor.Experimental.AssetImporters;
 #endif
@@ -206,23 +207,23 @@ namespace lilToon
             switch(version.RP)
             {
                 case lilRenderPipeline.BRP:
-                    sb = ReadContainerFile(assetPath, "BRP", ctx);
+                    sb = ReadContainerFile(assetPath, "BRP", ctx, doOptimize);
                     ReplaceMultiCompiles(ref sb, version, indent, false);
                     RewriteForwardAdd(ref sb);
                     break;
                 case lilRenderPipeline.LWRP:
-                    sb = ReadContainerFile(assetPath, "LWRP", ctx);
+                    sb = ReadContainerFile(assetPath, "LWRP", ctx, doOptimize);
                     ReplaceMultiCompiles(ref sb, version, indent, false);
                     break;
                 case lilRenderPipeline.URP:
-                    sb = ReadContainerFile(assetPath, "URP", ctx);
+                    sb = ReadContainerFile(assetPath, "URP", ctx, doOptimize);
                     break;
                 case lilRenderPipeline.HDRP:
-                    sb = ReadContainerFile(assetPath, "HDRP", ctx);
+                    sb = ReadContainerFile(assetPath, "HDRP", ctx, doOptimize);
                     ReplaceMultiCompiles(ref sb, version, indent, false);
                     break;
                 default:
-                    sb = ReadContainerFile(assetPath, "BRP", ctx);
+                    sb = ReadContainerFile(assetPath, "BRP", ctx, doOptimize);
                     ReplaceMultiCompiles(ref sb, version, indent, false);
                     break;
             }
@@ -346,7 +347,13 @@ namespace lilToon
 
             FixIncludeForOldUnity(ref sb);
 
-            if(doOptimize && !assetName.Contains("ltsmulti") && !assetName.Contains("ltspass_lite") && !assetName.Contains("ltsl"))
+            if(
+                doOptimize &&
+                !assetName.Contains("ltsmulti") &&
+                !assetName.Contains("ltspass_lite") &&
+                !assetName.Contains("ltsl") &&
+                File.Exists(lilDirectoryManager.postBuildTempPath)
+            )
             {
                 string pathOpt = AssetDatabase.GUIDToAssetPath("571051a232e4af44a98389bda858df27");
                 if(!string.IsNullOrEmpty(pathOpt))
@@ -374,11 +381,7 @@ namespace lilToon
 
         public static string UnpackContainer(string assetPath, AssetImportContext ctx = null)
         {
-            bool doOptimize = false;
-            if(File.Exists(lilDirectoryManager.postBuildTempPath))
-            {
-                doOptimize = !string.IsNullOrEmpty(File.ReadAllText(lilDirectoryManager.postBuildTempPath));
-            }
+            bool doOptimize = File.Exists(lilDirectoryManager.postBuildTempPath);
             return UnpackContainer(assetPath, ctx, doOptimize);
         }
 
@@ -536,7 +539,7 @@ namespace lilToon
             insertPass = ReadTextFile(subpath);
         }
 
-        private static StringBuilder ReadContainerFile(string path, string rpname, AssetImportContext ctx)
+        private static StringBuilder ReadContainerFile(string path, string rpname, AssetImportContext ctx, bool doOptimize)
         {
             StringBuilder sb = new StringBuilder();
             StreamReader sr = new StreamReader(path);
@@ -572,7 +575,7 @@ namespace lilToon
                     }
                     if(line.Contains("lilProperties"))
                     {
-                        GetProperties(path, rpname, sb, line, ctx);
+                        GetProperties(path, rpname, sb, line, ctx, doOptimize);
                         continue;
                     }
                     if(line.Contains("lilSubShader"))
@@ -699,7 +702,7 @@ namespace lilToon
             insertPostText = ReadTextFile(subpath);
         }
 
-        private static void GetProperties(string path, string rpname, StringBuilder sb, string line, AssetImportContext ctx)
+        private static void GetProperties(string path, string rpname, StringBuilder sb, string line, AssetImportContext ctx, bool doOptimize)
         {
             int first = line.IndexOf('"') + 1;
             int second = line.IndexOf('"', first);
@@ -725,7 +728,18 @@ namespace lilToon
                 return;
             }
             AddDependency(ctx, subpath);
-            sb.AppendLine(ReadTextFile(subpath));
+            string propText = ReadTextFile(subpath);
+            if(doOptimize)
+            {
+                propText = Regex.Replace(propText, @"\(""[^""]*""", "(\"\"");       // Display name
+                propText = Regex.Replace(propText, @"\[lil[^\]]*\]", "");           // [lil*]
+                propText = Regex.Replace(propText, @"\[Enum[^\]]*\]", "");          // [Enum(*)]
+                propText = Regex.Replace(propText, @"\[PowerSlider[^\]]*\]", "");   // [PowerSlider(*)]
+                propText = propText.Replace("[NoScaleOffset]", "");
+                propText = propText.Replace("[HideInInspector]", "");
+                propText = propText.Replace("[IntRange]", "");
+            }
+            sb.AppendLine(propText);
         }
 
         private static void GetPassShaderName(string path, string rpname, StringBuilder sb, string line)

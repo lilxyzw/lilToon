@@ -669,6 +669,10 @@ public class lilToonBuildProcessor : IPreprocessBuildWithReport, IPostprocessBui
             public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
             {
                 lilToonSetting.SetShaderSettingBeforeBuild();
+                EditorApplication.delayCall += () =>
+                {
+                    lilToonSetting.SetShaderSettingAfterBuild();
+                };
                 return true;
             }
         #else

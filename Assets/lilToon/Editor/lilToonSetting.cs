@@ -430,7 +430,6 @@ public class lilToonSetting : ScriptableObject
         string shaderSettingString = BuildShaderSettingString(shaderSetting, true);
 
         string baseShaderFolderPath = lilDirectoryManager.GetBaseShaderFolderPath();
-        string shaderFolderPath = lilDirectoryManager.GetShaderFolderPath();
         var shaderPathes = new List<string>();
         foreach(Shader shader in shaders)
         {
@@ -609,7 +608,7 @@ public class lilToonSetting : ScriptableObject
         return shaderSettingString;
     }
 
-    internal static void ApplyShaderSettingOptimized()
+    internal static void ApplyShaderSettingOptimized(List<Shader> shaders = null)
     {
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
@@ -630,7 +629,7 @@ public class lilToonSetting : ScriptableObject
         }
 
         // Apply
-        ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild");
+        ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild", shaders);
         AssetDatabase.Refresh();
     }
 
@@ -642,7 +641,6 @@ public class lilToonSetting : ScriptableObject
             var shaders = GetShaderListFromGameObject(gameObject);
             if(shaders.Count() == 0) return;
 
-            StringBuilder sb = new StringBuilder();
             var shaderNames = new List<string>();
             foreach(Shader shader in shaders) shaderNames.Add(shader.name);
             File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaderNames));
@@ -712,11 +710,17 @@ public class lilToonSetting : ScriptableObject
         try
         {
             if(!ShouldOptimization()) return;
-            File.Create(lilDirectoryManager.postBuildTempPath);
-            ApplyShaderSettingOptimized();
+            var shaders = GetShaderListFromProject();
+
+            var shaderNames = new List<string>();
+            foreach(Shader shader in shaders) shaderNames.Add(shader.name);
+            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaderNames));
+
+            ApplyShaderSettingOptimized(shaders);
         }
-        catch
+        catch(Exception e)
         {
+            Debug.LogException(e);
             Debug.Log("[lilToon] Optimization failed");
         }
     }
@@ -1246,6 +1250,19 @@ public class lilToonSetting : ScriptableObject
         #endif
     }
 
+    private static List<Shader> GetShaderListFromProject()
+    {
+        var shaders = new List<Shader>();
+
+        foreach(string guid in AssetDatabase.FindAssets("t:material"))
+        {
+            Material material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
+            if(material != null && CheckShaderIslilToon(material.shader)) shaders.Add(material.shader);
+        }
+
+        return GetTrueShaderLists(shaders);
+    }
+
     private static List<Shader> GetShaderListFromGameObject(GameObject gameObject)
     {
         var shaders = new List<Shader>();
@@ -1291,6 +1308,11 @@ public class lilToonSetting : ScriptableObject
             }
         #endif
 
+        return GetTrueShaderLists(shaders);
+    }
+
+    private static List<Shader> GetTrueShaderLists(List<Shader> shaders)
+    {
         shaders = shaders.Distinct().ToList();
         for(int i = 0; i < shaders.Count(); i++)
         {
@@ -1320,9 +1342,7 @@ public class lilToonSetting : ScriptableObject
             }
             sr.Close();
         }
-        shaders = shaders.Distinct().ToList();
-
-        return shaders;
+        return shaders.Distinct().ToList();
     }
 
     private static void CheckAnimationClip(AnimationClip clip, List<Shader> shaders)
