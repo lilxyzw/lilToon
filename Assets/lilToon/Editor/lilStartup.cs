@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine.Networking;
 using System.IO;
 using System.Collections;
+using System.Reflection;
 
 namespace lilToon
 {
@@ -16,6 +17,9 @@ namespace lilToon
             // Variables
             lilToonInspector.ApplyEditorSettingTemp();
             lilLanguageManager.InitializeLanguage();
+
+            AssetDatabase.importPackageStarted -= PackageVersionChecker;
+            AssetDatabase.importPackageStarted += PackageVersionChecker;
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Create files
@@ -173,6 +177,56 @@ namespace lilToon
                 }
             }
         }
+
+        private static void PackageVersionChecker(string packageName)
+        {
+            int indexlil = packageName.IndexOf("lilToon_");
+            if(indexlil < 0) return;
+            string packageVerString = packageName.Substring(indexlil + 8);
+
+            int[] semPackage = ReadSemVer(packageVerString);
+            int[] semCurrent = ReadSemVer(lilConstants.currentVersionName);
+            if(semPackage == null || semCurrent == null) return;
+
+            if(
+                semPackage[0] < semCurrent[0] ||
+                semPackage[0] == semCurrent[0] && semPackage[1] < semCurrent[1] ||
+                semPackage[0] == semCurrent[0] && semPackage[1] == semCurrent[1] && semPackage[2] < semCurrent[2]
+            )
+            {
+                if(EditorUtility.DisplayDialog("lilToon", lilLanguageManager.GetLoc("sDialogImportOldVer"), lilLanguageManager.GetLoc("sYes"), lilLanguageManager.GetLoc("sNo"))) return;
+                CoroutineHandler.StartStaticCoroutine(ClosePackageImportWindow());
+            }
+        }
+
+        private static IEnumerator ClosePackageImportWindow()
+        {
+            var type = typeof(Editor).Assembly.GetType("UnityEditor.PackageImport");
+            var method = typeof(EditorWindow).GetMethod(nameof(EditorWindow.HasOpenInstances), BindingFlags.Static | BindingFlags.Public)?.MakeGenericMethod(type);
+            while(!(bool)method.Invoke(null,null))
+            {
+                yield return null;
+            }
+            EditorWindow.GetWindow(type).Close();
+        }
+
+        private static int[] ReadSemVer(string sem)
+        {
+            string[] parts = sem.Split('.');
+            if(parts.Length < 3) return null;
+            int major, minor, patch;
+            try
+            {
+                major = int.Parse(parts[0]);
+                minor = int.Parse(parts[1]);
+                patch = int.Parse(parts[2]);
+            }
+            catch
+            {
+                return null;
+            }
+            return new[]{major,minor,patch};
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -180,8 +234,8 @@ namespace lilToon
     // https://github.com/Unity-Technologies/EndlessRunnerSampleGame/blob/master/Assets/Scripts/CoroutineHandler.cs
     public class CoroutineHandler : MonoBehaviour
     {
-        static protected CoroutineHandler m_Instance;
-        static public CoroutineHandler Instance
+        protected static CoroutineHandler m_Instance;
+        public static CoroutineHandler Instance
         {
             get
             {
@@ -203,7 +257,7 @@ namespace lilToon
             if(m_Instance) Destroy(m_Instance.gameObject);
         }
 
-        static public Coroutine StartStaticCoroutine(IEnumerator coroutine)
+        public static Coroutine StartStaticCoroutine(IEnumerator coroutine)
         {
             return Instance.StartCoroutine(coroutine);
         }

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 輪郭線のハイライトに`影を受け取る`を追加
 - 2パス透過シェーダーを拡張
 - VRChatのアバタービルドで変数を定数化する機能を追加
+- 古いパッケージをインポートしようとした際のダイアログを追加
 
 ### 変更
 - ノーマルマップ2ndのサンプラーを`Repeat`に変更

@@ -153,7 +153,7 @@ v2g vert(appdata input)
     #if defined(LIL_V2G_FURVECTOR)
         float3 bitangentOS = normalize(cross(input.normalOS, input.tangentOS.xyz)) * (input.tangentOS.w * length(input.normalOS));
         float3x3 tbnOS = float3x3(input.tangentOS.xyz, bitangentOS, input.normalOS);
-        output.furVector = _FurVector.xyz;
+        output.furVector = _FurVector.xyz + float3(0,0,0.001);
         if(_VertexColor2FurVector) output.furVector = lilBlendNormal(output.furVector, input.color.xyz);
         #if defined(LIL_FEATURE_FurVectorTex)
             output.furVector = lilBlendNormal(output.furVector, lilUnpackNormalScale(LIL_SAMPLE_2D_LOD(_FurVectorTex, sampler_linear_repeat, uvMain, 0), _FurVectorScale));

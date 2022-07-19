@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Receive Shadow` to outline highlight
 - Extended 2 pass transparent shader
 - Function to make variables constant in VRChat avatar builds
+- Dialog if old package is imported
 
 ### Changed
 - Changed the sampler of the normal map 2nd to `Repeat`

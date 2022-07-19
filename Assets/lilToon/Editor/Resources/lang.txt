@@ -407,6 +407,7 @@ sDialogBakeTriMask	Do you want to bake TriMask (Mask of Matcap / Rim / Emission)
 sDialogBakeOutline	Do you want to bake outline texture?	輪郭線の色のテクスチャをベイクしますか?	윤곽선 색의 질감을 구워 하시겠습니까?	你想烘烤轮廓纹理吗？	你想烘烤輪廓紋理嗎？
 sDialogGifToAtlas	Convert Gif to Atlas	Gifをアトラス化	Gif를 아틀라스 화	将Gif转换成Atlas	將Gif轉換成Atlas
 sDialogTexPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャ全体の解像度を2の累乗に合わせますか?	텍스처 전체 해상도를 2의 거듭 제곱에 맞게 하시겠습니까?	你想把纹理分辨率调整为2的幂吗？	你想把紋理分辨率調整為2的冪嗎？
+sDialogImportOldVer	The package you are importing is an older version than the already imported lilToon. Do you want to continue?	インポートしようとしているパッケージは既にインポートされているlilToonよりも古いバージョンです。続行しますか？	Import하고 있는 패키지는 이미 Import된 lilToon보다 오래된 버전입니다.속행할까요?	您要导入的包的版本早于已导入的lilToon。是否继续？	您要導入的包的版本早於已導入的lilToon。是否繼續？
 sPresets	Presets	プリセット	프리셋	预设	預設
 sPresetsNotAvailable	Presets are not available for this shader.	プリセットはこのシェーダーでは利用できません。	사전 설정이 쉐이더를 사용할 수 없습니다.	预设在此着色器中不可用。	預設在此著色器中不可用。
 sPresetIsMaterial	Currently selected is not a Material.	マテリアル以外が選択されています。	머티리얼 이외를 선택하고 있습니다.	选择Material以外的	選擇Material以外的
