@@ -4,6 +4,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - 2022-07-20
+### Added
+- `UV Mode` for normal map 2nd
+- `Cull Mode` for main color 2nd / 3rd
+- `Receive Shadow` to outline highlight
+- Extended 2 pass transparent shader
+- Function to make variables constant in VRChat avatar builds
+- Dialog if old package is imported
+
+### Changed
+- Changed the sampler of the normal map 2nd to `Repeat`
+- Changed to move the calculation of point light, spot light and area light to the pixel shader in HDRP and also calculate the light direction
+- Adjusted GUI a little
+- Optimized build time
+- Formatted `lilToonSetting.json`
+- Changed to use ForwardAdd pass in 2 pass transparent shader
+- Unified file names for texture baking
+
+### Fixed
+- Fixed a error in gem shader's GUI
+- Fixed to use RGB channel in matcap 2nd mask
+- Fixed toolchips
+- Fixed the material not being fixed in `Fix Lighting`
+- Fixed dissolve sometimes being removed during shader optimization
+
+## [1.3.1] - 2022-06-28
+### Added
+- Option to not optimize during VRChat avatar test build
+
+### Fixed
+- Fixed a problem that drawing cannot be done correctly when the texture import setting is Clamp in the main color 2nd and 3rd.
+- Fixed an issue where the maximum number of textures was exceeded when using `OpenGLES2`,` OpenGLES3`, and `OpenGLCore` for the API on the editor.
+
 ## [1.3.0] - 2022-06-25
 ### Added
 - `Receive Shadow` to 2nd / 3rd shadows

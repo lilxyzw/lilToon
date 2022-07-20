@@ -4,6 +4,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - 2022-07-20
+### 追加
+- ノーマルマップ2ndに`UV Mode`を追加
+- メインカラー2nd・3rdに`Cull Mode`を追加
+- 輪郭線のハイライトに`影を受け取る`を追加
+- 2パス透過シェーダーを拡張
+- VRChatのアバタービルドで変数を定数化する機能を追加
+- 古いパッケージをインポートしようとした際のダイアログを追加
+
+### 変更
+- ノーマルマップ2ndのサンプラーを`Repeat`に変更
+- HDRPでポイントライト・スポットライト・エリアライトの計算をピクセルシェーダーに移動し、ライト方向の計算も行うようにした
+- GUIを微調整
+- ビルド時間を最適化
+- `lilToonSetting.json`でフォーマットを行うようにした
+- 2パス透過シェーダーでForwardAddパスを使用するように変更
+- テクスチャベイク時のファイル名を統一
+
+### 修正
+- 宝石シェーダーのGUIのエラーを修正
+- マットキャップ2ndのマスクがRチャンネルのみ使用されていたのをRGBチャンネルを使うように修正
+- ツールチップの表記を修正
+- `Fix Lighting`でマテリアルに対して修正が適用されていなかったのを修正
+- シェーダー最適化時にDissolveが削減される場合があったのを修正
+
+## [1.3.1] - 2022-06-28
+### 追加
+- VRChatのアバターのテストビルド時に最適化を行わないようなオプションを追加
+
+### 修正
+- メインカラー2nd・3rdでテクスチャのインポート設定がClampになっている場合にうまく描画できない問題を修正
+- エディタ上のAPIに`OpenGLES2`、`OpenGLES3`、`OpenGLCore`を使用している場合のテクスチャ数不足を修正
+
 ## [1.3.0] - 2022-06-25
 ### 追加
 - 2影・3影に`影を受け取る`を追加
