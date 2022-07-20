@@ -781,12 +781,23 @@ float3 lilGetObjectPosition()
         #else
             #define LIL_CALC_LIGHT_COORDS(o,i)
         #endif
-        #define LIL_SHADOW_COORDS(idx)
-        #define LIL_TRANSFER_SHADOW(vi,uv,o)
+
+        #define LIL_SHADOW_COORDS(idx) UNITY_SHADOW_COORDS(idx)
+        #if defined(SHADOWS_DEPTH) && defined(SPOT) || defined(SHADOWS_SCREEN) && defined(UNITY_NO_SCREENSPACE_SHADOWS)
+            #define LIL_TRANSFER_SHADOW(vi,uv,o) o._ShadowCoord = mul(unity_WorldToShadow[0], float4(vi.positionWS.xyz, 1));
+        #elif defined(SHADOWS_CUBE)
+            #define LIL_TRANSFER_SHADOW(vi,uv,o) o._ShadowCoord.xyz = fd.positionWS.xyz - _LightPositionRange.xyz;
+        #elif defined(SHADOWS_SCREEN)
+            #define LIL_TRANSFER_SHADOW(vi,uv,o) o._ShadowCoord = float4(vi.positionCS.xy / LIL_SCREENPARAMS.xy, 1, 1);
+        #else
+            #define LIL_TRANSFER_SHADOW(vi,uv,o)
+        #endif
+
         #define LIL_LIGHT_ATTENUATION(atten,i) \
             BRPShadowCoords brpShadowCoords; \
             brpShadowCoords.pos = i.positionCS; \
             LIL_CALC_LIGHT_COORDS(brpShadowCoords,i) \
+            LIL_TRANSFER_SHADOW(fd,fd.uv1,brpShadowCoords) \
             UNITY_LIGHT_ATTENUATION(attenuationOrig, brpShadowCoords, i.positionWS); \
             atten = attenuationOrig
     #endif
@@ -840,22 +851,6 @@ float3 lilGetObjectPosition()
 
             return mul(UNITY_MATRIX_VP, positionWS);
         }
-        /*void lilApplyLinearShadowBias(inout float4 positionCS, float bias)
-        {
-            #if defined(SHADOWS_DEPTH)
-                if(LIL_MATRIX_P._m33 == 0.0) bias = 0;
-            #endif
-            #if defined(UNITY_REVERSED_Z)
-                #if !(defined(SHADOWS_CUBE) && defined(SHADOWS_CUBE_IN_DEPTH_TEX))
-                    positionCS.z += max(-1, min((unity_LightShadowBias.x - bias * 0.01) / positionCS.w, 0));
-                #endif
-                float clamped = min(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
-            #else
-                positionCS.z += saturate((unity_LightShadowBias.x + bias * 0.01)/positionCS.w);
-                float clamped = max(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
-            #endif
-            positionCS.z = lerp(positionCS.z, clamped, unity_LightShadowBias.y);
-        }*/
         #define LIL_TRANSFER_SHADOW_CASTER(v,o) \
             o.positionCS = lilClipSpaceShadowCasterPos(v.positionOS, v.normalOS, _lilShadowCasterBias); \
             o.positionCS = UnityApplyLinearShadowBias(o.positionCS)

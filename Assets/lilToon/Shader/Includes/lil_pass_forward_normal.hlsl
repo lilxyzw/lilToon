@@ -25,12 +25,12 @@
     #endif
     #if !defined(LIL_PASS_FORWARDADD)
         #define LIL_V2F_LIGHTCOLOR
+        #if defined(LIL_FEATURE_OUTLINE_RECEIVE_SHADOW)
+            #define LIL_V2F_SHADOW
+        #endif
     #endif
     #define LIL_V2F_VERTEXLIGHT_FOG
     #define LIL_V2F_NDOTL
-    #if defined(LIL_FEATURE_OUTLINE_RECEIVE_SHADOW)
-        #define LIL_V2F_SHADOW
-    #endif
 
     struct v2f
     {
@@ -49,7 +49,9 @@
         float NdotL         : TEXCOORD5;
         LIL_LIGHTCOLOR_COORDS(6)
         LIL_VERTEXLIGHT_FOG_COORDS(7)
-        LIL_SHADOW_COORDS(8)
+        #if defined(LIL_V2F_SHADOW)
+            LIL_SHADOW_COORDS(8)
+        #endif
         LIL_CUSTOM_V2F_MEMBER(9,10,11,12,13,14,15,16)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
@@ -103,7 +105,9 @@
         LIL_LIGHTDIRECTION_COORDS(7)
         LIL_INDLIGHTCOLOR_COORDS(8)
         LIL_VERTEXLIGHT_FOG_COORDS(9)
-        LIL_SHADOW_COORDS(10)
+        #if defined(LIL_V2F_SHADOW)
+            LIL_SHADOW_COORDS(10)
+        #endif
         LIL_CUSTOM_V2F_MEMBER(11,12,13,14,15,16,17,18)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO

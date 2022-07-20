@@ -210,6 +210,7 @@ namespace lilToon
                     sb = ReadContainerFile(assetPath, "BRP", ctx, doOptimize);
                     ReplaceMultiCompiles(ref sb, version, indent, false);
                     RewriteForwardAdd(ref sb);
+                    RewriteForwardAddShadow(ref sb);
                     break;
                 case lilRenderPipeline.LWRP:
                     sb = ReadContainerFile(assetPath, "LWRP", ctx, doOptimize);
@@ -890,17 +891,52 @@ namespace lilToon
             }
         }
 
+        public static void RewriteForwardAddShadow(ref StringBuilder sb)
+        {
+            bool enable = ShouldUseForwardAddShadow();
+
+            if(enable)
+            {
+                sb.Replace(
+                    "#pragma multi_compile_fragment POINT DIRECTIONAL SPOT POINT_COOKIE DIRECTIONAL_COOKIE",
+                    "#pragma multi_compile_fwdadd_fullshadows");
+            }
+        }
+
         private static bool ShouldUseForwardAdd()
         {
             Type type = typeof(lilToonSetting);
             var field = type.GetField("LIL_OPTIMIZE_USE_FORWARDADD");
             if(field == null) return true;
 
-            string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
-            lilToonSetting shaderSetting = AssetDatabase.LoadAssetAtPath<lilToonSetting>(shaderSettingPath);
+            lilToonSetting shaderSetting = InitSetting();
             if(shaderSetting == null) return true;
 
             return (bool)field.GetValue(shaderSetting);
+        }
+
+        private static bool ShouldUseForwardAddShadow()
+        {
+            Type type = typeof(lilToonSetting);
+            var field = type.GetField("LIL_OPTIMIZE_USE_FORWARDADD_SHADOW");
+            if(field == null) return false;
+
+            lilToonSetting shaderSetting = InitSetting();
+            if(shaderSetting == null) return false;
+
+            return (bool)field.GetValue(shaderSetting);
+        }
+
+        private static lilToonSetting InitSetting()
+        {
+            Type type = typeof(lilToonSetting);
+            var method = type.GetMethod("InitializeShaderSetting", BindingFlags.Static | BindingFlags.NonPublic);
+            if(method == null) return null;
+
+            lilToonSetting shaderSetting = null;
+            var objs = new object[]{shaderSetting};
+            method.Invoke(null, objs);
+            return (lilToonSetting)objs[0];
         }
 
         //------------------------------------------------------------------------------------------------------------------------------

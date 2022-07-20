@@ -469,6 +469,7 @@ sSettingDefaultValue	Default Value (used for "Fix Lighting" and lighting presets
 sSettingBuildSizeOptimization	Build size optimization (for all materials)	ビルドサイズの最適化 (全マテリアル共通)	빌드 사이즈 최적화 (전체 재료 공통)	优化构建大小（用于所有材质）	優化構建大小（用於所有材質）
 sSettingApplyShadowFA	Enable shadow in ForwardAdd	ForwardAddパスで影を有効化	ForwardAdd로 그림자 활성화	通过ForwardAdd启用阴影	通過ForwardAdd啟用陰影
 sSettingUseForwardAdd	Use ForwardAdd	ForwardAddパスを使用	ForwardAdd 사용	使用ForwardAdd	使用ForwardAdd
+sSettingUseForwardAddShadow	Receive shadow in ForwardAdd	ForwardAddパスで影を受け取り	ForwardAdd 패스로 그림자를 받아	在ForwardAdd路径中接收阴影	在ForwardAdd路徑中接收陰影
 sSettingUseVertexLight	Use vertex light	頂点ライトを使用	꼭지점 라이트 사용	使用顶点灯	使用頂點燈
 sSettingUseLightmap	Use lightmap	ライトマップを使用	라이트 맵 사용	使用照明图	使用照明圖
 sManualURL	https://lilxyzw.github.io/lilToon/#/en-us/	https://lilxyzw.github.io/lilToon/#/ja-jp/	https://lilxyzw.github.io/lilToon/#/en-us/	https://lilxyzw.github.io/lilToon/#/en-us/	https://lilxyzw.github.io/lilToon/#/en-us/

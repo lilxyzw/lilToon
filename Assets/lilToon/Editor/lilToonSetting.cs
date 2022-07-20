@@ -112,6 +112,7 @@ public class lilToonSetting : ScriptableObject
 
     public bool LIL_OPTIMIZE_APPLY_SHADOW_FA = true;
     public bool LIL_OPTIMIZE_USE_FORWARDADD = true;
+    public bool LIL_OPTIMIZE_USE_FORWARDADD_SHADOW = false;
     public bool LIL_OPTIMIZE_USE_VERTEXLIGHT = true;
     public bool LIL_OPTIMIZE_USE_LIGHTMAP = false;
 
@@ -578,6 +579,7 @@ public class lilToonSetting : ScriptableObject
 
         if(shaderSetting.LIL_OPTIMIZE_APPLY_SHADOW_FA) sb.Append("#define LIL_OPTIMIZE_APPLY_SHADOW_FA\r\n");
         if(shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD) sb.Append("#define LIL_OPTIMIZE_USE_FORWARDADD\r\n");
+        if(shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD_SHADOW) sb.Append("#define LIL_OPTIMIZE_USE_FORWARDADD_SHADOW\r\n");
         if(shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT) sb.Append("#define LIL_OPTIMIZE_USE_VERTEXLIGHT\r\n");
         if(shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP) sb.Append("#define LIL_OPTIMIZE_USE_LIGHTMAP\r\n");
         if(isFile) sb.Append("\r\n#endif");
