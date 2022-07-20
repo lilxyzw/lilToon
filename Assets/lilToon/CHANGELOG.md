@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optimized build time
 - Formatted `lilToonSetting.json`
 - Changed to use ForwardAdd pass in 2 pass transparent shader
+- Unified file names for texture baking
 
 ### Fixed
 - Fixed a error in gem shader's GUI

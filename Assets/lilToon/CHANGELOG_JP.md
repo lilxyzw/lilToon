@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ビルド時間を最適化
 - `lilToonSetting.json`でフォーマットを行うようにした
 - 2パス透過シェーダーでForwardAddパスを使用するように変更
+- テクスチャベイク時のファイル名を統一
 
 ### 修正
 - 宝石シェーダーのGUIのエラーを修正

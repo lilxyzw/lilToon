@@ -6142,7 +6142,7 @@ namespace lilToon
             {
                 int shadowType = propName.Contains("2nd") ? 2 : 1;
                 shadowType = propName.Contains("3rd") ? 3 : shadowType;
-                AutoBakeShadowTexture(material, (Texture2D)mainTex.textureValue, shadowType);
+                AutoBakeShadowTexture(material, (Texture2D)mainTex.textureValue, shadowType, false);
                 return;
             }
 
@@ -6169,8 +6169,8 @@ namespace lilToon
             Texture2D outTexture = null;
             RunBake(ref outTexture, srcTexture, hsvgMaterial);
 
-            if(!string.IsNullOrEmpty(path)) path = Path.GetDirectoryName(path) + "/Baked_" + material.name + "_" + propName;
-            else                            path = "Assets/Baked_" + material.name + "_" + propName;
+            if(!string.IsNullOrEmpty(path)) path = Path.GetDirectoryName(path) + "/" + material.name + "_" + propName;
+            else                            path = "Assets/" + material.name + "_" + propName;
             outTexture = lilTextureUtils.SaveTextureToPng(outTexture, path);
             if(outTexture != bufMainTexture)
             {
