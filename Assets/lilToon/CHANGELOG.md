@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.3] - 2022-07-xx
 ### Fixed
 - Fixed that the main color 2nd and 3rd dissolve may not work properly after optimization
+- Fixed ambient lighting in URP
 
 ## [1.3.2] - 2022-07-20
 ### Added

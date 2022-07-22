@@ -709,19 +709,26 @@ float3 lilGetCustomLightDirection(float4 lightDirectionOverride)
     return lightDirectionOverride.w ? customDir : lightDirectionOverride.xyz;
 }
 
+float3 lilGetLightDirectionForSH9()
+{
+    float3 mainDir = LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR);
+    float3 sh9Dir = unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333;
+    float3 lightDirectionForSH9 = sh9Dir + mainDir;
+    return dot(lightDirectionForSH9,lightDirectionForSH9) < 0.000001 ? 0 : normalize(lightDirectionForSH9);
+}
+
 float3 lilGetLightDirection(float4 lightDirectionOverride)
 {
-    return normalize(LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR) + 
-                    unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333 + 
-                    lilGetCustomLightDirection(lightDirectionOverride));
+    float3 mainDir = LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR);
+    float3 sh9Dir = unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333;
+    return normalize(mainDir + sh9Dir + lilGetCustomLightDirection(lightDirectionOverride));
 }
 
 float3 lilGetFixedLightDirection(float4 lightDirectionOverride, bool doNormalise)
 {
-    float3 L = unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333;
-    L.y = abs(L.y);
-    L += LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR);
-    L += lilGetCustomLightDirection(lightDirectionOverride);
+    float3 mainDir = LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR);
+    float3 sh9Dir = unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333;
+    float3 L = float3(sh9Dir.x, abs(sh9Dir.y), sh9Dir.z) + mainDir + lilGetCustomLightDirection(lightDirectionOverride);
     return doNormalise ? normalize(L) : L;
 }
 
@@ -732,7 +739,7 @@ float3 lilGetFixedLightDirection(float4 lightDirectionOverride)
 
 float3 lilGetLightDirection()
 {
-    return lilGetLightDirection(float4(0.0,0.001,0.0,0.0));
+    return lilGetLightDirection(float4(0.001,0.002,0.001,0.0));
 }
 
 float3 lilGetLightDirection(float3 positionWS)
@@ -808,44 +815,24 @@ float3 lilShadeSH9LPPV(float3 normalWS, float3 positionWS)
     return lilShadeSH9LPPV(float4(normalWS,1.0), positionWS);
 }
 
-float3 lilGetSHToon(float4 lightDirectionOverride)
-{
-    return lilShadeSH9(lilGetLightDirection(lightDirectionOverride) * 0.666666);
-}
-
 float3 lilGetSHToon()
 {
-    return lilGetSHToon(float4(0.0,0.001,0.0,0.0));
-}
-
-float3 lilGetSHToon(float3 positionWS, float4 lightDirectionOverride)
-{
-    return lilShadeSH9LPPV(lilGetLightDirection(lightDirectionOverride) * 0.666666, positionWS);
+    return lilShadeSH9(lilGetLightDirectionForSH9() * 0.666666);
 }
 
 float3 lilGetSHToon(float3 positionWS)
 {
-    return lilGetSHToon(positionWS, float4(0.0,0.001,0.0,0.0));
-}
-
-float3 lilGetSHToonMin(float4 lightDirectionOverride)
-{
-    return lilShadeSH9(-lilGetLightDirection(lightDirectionOverride) * 0.666666);
+    return lilShadeSH9LPPV(lilGetLightDirectionForSH9() * 0.666666, positionWS);
 }
 
 float3 lilGetSHToonMin()
 {
-    return lilGetSHToonMin(float4(0.0,0.001,0.0,0.0));
-}
-
-float3 lilGetSHToonMin(float3 positionWS, float4 lightDirectionOverride)
-{
-    return lilShadeSH9LPPV(-lilGetLightDirection(lightDirectionOverride) * 0.666666, positionWS);
+    return lilShadeSH9(-lilGetLightDirectionForSH9() * 0.666666);
 }
 
 float3 lilGetSHToonMin(float3 positionWS)
 {
-    return lilGetSHToonMin(positionWS, float4(0.0,0.001,0.0,0.0));
+    return lilShadeSH9LPPV(-lilGetLightDirectionForSH9() * 0.666666, positionWS);
 }
 
 void lilGetToonSHDouble(float3 lightDirection, out float3 shMax, out float3 shMin)
@@ -934,10 +921,10 @@ float3 lilGetIndirLightColor(float3 positionWS)
     return saturate(lilGetSHToonMin(positionWS));
 }
 
-void lilGetLightColorDouble(float3 lightDirection, out float3 lightColor, out float3 indLightColor)
+void lilGetLightColorDouble(out float3 lightColor, out float3 indLightColor)
 {
     float3 shMax, shMin;
-    lilGetToonSHDouble(lightDirection, shMax, shMin);
+    lilGetToonSHDouble(lilGetLightDirectionForSH9(), shMax, shMin);
     lightColor = LIL_MAINLIGHT_COLOR + shMax;
     indLightColor = saturate(shMin);
 }

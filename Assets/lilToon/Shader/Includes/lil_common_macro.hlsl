@@ -1861,9 +1861,9 @@ float3 lilGetLightMapDirection(float2 uv)
 
 // Dir light & indir light
 #if defined(LIL_USE_LPPV) && (defined(LIL_FEATURE_SHADOW) || defined(LIL_LITE))
-    #define LIL_CALC_TWOLIGHT(i,o) lilGetLightColorDouble(o.lightDirection, i.positionWS, o.lightColor, o.indLightColor)
+    #define LIL_CALC_TWOLIGHT(i,o) lilGetLightColorDouble(i.positionWS, o.lightColor, o.indLightColor)
 #elif defined(LIL_FEATURE_SHADOW) || defined(LIL_LITE)
-    #define LIL_CALC_TWOLIGHT(i,o) lilGetLightColorDouble(o.lightDirection, o.lightColor, o.indLightColor)
+    #define LIL_CALC_TWOLIGHT(i,o) lilGetLightColorDouble(o.lightColor, o.indLightColor)
 #elif defined(LIL_USE_LPPV)
     #define LIL_CALC_TWOLIGHT(i,o) o.lightColor = lilGetLightColor(i.positionWS)
 #else
@@ -2022,7 +2022,7 @@ struct lilLightData
         LIL_LIGHT_ATTENUATION(atten, input); \
         lc = LIL_MAINLIGHT_COLOR; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
-        lc = saturate(lc + max(lightmapColor,lilGetSHToon(_LightDirectionOverride))); \
+        lc = saturate(lc + max(lightmapColor,lilGetSHToon())); \
         LIL_CORRECT_LIGHTCOLOR_PS(lc); \
         LIL_CORRECT_LIGHTDIRECTION_PS(ld)
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_DYNAMICLIGHTMAP)
