@@ -454,6 +454,12 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // Dissolve
 #if !defined(OVERRIDE_DISSOLVE)
+    #if defined(LIL_FEATURE_DissolveMask)
+        #define _DissolveMaskEnabled true
+    #else
+        #define _DissolveMaskEnabled false
+    #endif
+
     #if defined(LIL_FEATURE_DissolveNoiseMask)
         #define OVERRIDE_DISSOLVE \
             lilCalcDissolveWithNoise( \
@@ -465,6 +471,7 @@
                 _DissolvePos, \
                 _DissolveMask, \
                 _DissolveMask_ST, \
+                _DissolveMaskEnabled, \
                 _DissolveNoiseMask, \
                 _DissolveNoiseMask_ST, \
                 _DissolveNoiseMask_ScrollRotate, \
@@ -481,7 +488,8 @@
                 _DissolveParams, \
                 _DissolvePos, \
                 _DissolveMask, \
-                _DissolveMask_ST \
+                _DissolveMask_ST, \
+                _DissolveMaskEnabled \
                 LIL_SAMP_IN(sampler_MainTex) \
             );
     #endif
@@ -680,7 +688,14 @@
             #if defined(LIL_FEATURE_Main2ndBlendMask)
                 color2nd.a *= LIL_SAMPLE_2D(_Main2ndBlendMask, samp, fd.uvMain).r;
             #endif
-            #if defined(LIL_FEATURE_LAYER_DISSOLVE) && defined(LIL_FEATURE_Main2ndDissolveMask)
+
+            #if defined(LIL_FEATURE_Main2ndDissolveMask)
+                #define _Main2ndDissolveMaskEnabled true
+            #else
+                #define _Main2ndDissolveMaskEnabled false
+            #endif
+
+            #if defined(LIL_FEATURE_LAYER_DISSOLVE)
                 #if defined(LIL_FEATURE_Main2ndDissolveNoiseMask)
                     lilCalcDissolveWithNoise(
                         color2nd.a,
@@ -691,6 +706,7 @@
                         _Main2ndDissolvePos,
                         _Main2ndDissolveMask,
                         _Main2ndDissolveMask_ST,
+                        _Main2ndDissolveMaskEnabled,
                         _Main2ndDissolveNoiseMask,
                         _Main2ndDissolveNoiseMask_ST,
                         _Main2ndDissolveNoiseMask_ScrollRotate,
@@ -707,6 +723,7 @@
                         _Main2ndDissolvePos,
                         _Main2ndDissolveMask,
                         _Main2ndDissolveMask_ST,
+                        _Main2ndDissolveMaskEnabled,
                         samp
                     );
                 #endif
@@ -758,7 +775,14 @@
             #if defined(LIL_FEATURE_Main3rdBlendMask)
                 color3rd.a *= LIL_SAMPLE_2D(_Main3rdBlendMask, samp, fd.uvMain).r;
             #endif
-            #if defined(LIL_FEATURE_LAYER_DISSOLVE) && defined(LIL_FEATURE_Main3rdDissolveMask)
+
+            #if defined(LIL_FEATURE_Main3rdDissolveMask)
+                #define _Main3rdDissolveMaskEnabled true
+            #else
+                #define _Main3rdDissolveMaskEnabled false
+            #endif
+
+            #if defined(LIL_FEATURE_LAYER_DISSOLVE)
                 #if defined(LIL_FEATURE_Main3rdDissolveNoiseMask)
                     lilCalcDissolveWithNoise(
                         color3rd.a,
@@ -769,6 +793,7 @@
                         _Main3rdDissolvePos,
                         _Main3rdDissolveMask,
                         _Main3rdDissolveMask_ST,
+                        _Main3rdDissolveMaskEnabled,
                         _Main3rdDissolveNoiseMask,
                         _Main3rdDissolveNoiseMask_ST,
                         _Main3rdDissolveNoiseMask_ScrollRotate,
@@ -785,6 +810,7 @@
                         _Main3rdDissolvePos,
                         _Main3rdDissolveMask,
                         _Main3rdDissolveMask_ST,
+                        _Main3rdDissolveMaskEnabled,
                         samp
                     );
                 #endif

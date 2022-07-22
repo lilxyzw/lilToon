@@ -547,19 +547,16 @@ void lilCalcDissolve(
     float4 dissolveParams,
     float4 dissolvePos,
     TEXTURE2D(dissolveMask),
-    float4 dissolveMask_ST
+    float4 dissolveMask_ST,
+    bool dissolveMaskEnabled
     LIL_SAMP_IN_FUNC(samp))
 {
     if(dissolveParams.r)
     {
         float dissolveMaskVal = 1.0;
-        if(dissolveParams.r == 1.0)
+        if(dissolveParams.r == 1.0 && dissolveMaskEnabled)
         {
-            #if defined(LIL_FEATURE_DissolveMask)
-                dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, samp, lilCalcUV(uv, dissolveMask_ST)).r;
-            #else
-                dissolveMaskVal = 1.0f;
-            #endif
+            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, samp, lilCalcUV(uv, dissolveMask_ST)).r;
         }
         if(dissolveParams.r == 1.0)
         {
@@ -591,6 +588,7 @@ void lilCalcDissolveWithNoise(
     float4 dissolvePos,
     TEXTURE2D(dissolveMask),
     float4 dissolveMask_ST,
+    bool dissolveMaskEnabled,
     TEXTURE2D(dissolveNoiseMask),
     float4 dissolveNoiseMask_ST,
     float4 dissolveNoiseMask_ScrollRotate,
@@ -601,13 +599,9 @@ void lilCalcDissolveWithNoise(
     {
         float dissolveMaskVal = 1.0;
         float dissolveNoise = 0.0;
-        if(dissolveParams.r == 1.0)
+        if(dissolveParams.r == 1.0 && dissolveMaskEnabled)
         {
-            #if defined(LIL_FEATURE_DissolveMask)
-                dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, samp, lilCalcUV(uv, dissolveMask_ST)).r;
-            #else
-                dissolveMaskVal = 1.0f;
-            #endif
+            dissolveMaskVal = LIL_SAMPLE_2D(dissolveMask, samp, lilCalcUV(uv, dissolveMask_ST)).r;
         }
         dissolveNoise = LIL_SAMPLE_2D(dissolveNoiseMask, samp, lilCalcUV(uv, dissolveNoiseMask_ST, dissolveNoiseMask_ScrollRotate.xy)).r - 0.5;
         dissolveNoise *= dissolveNoiseStrength;
