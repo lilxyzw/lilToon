@@ -1949,7 +1949,6 @@ struct lilLightData
 #if defined(LIL_PASS_FORWARDADD)
     // Point Light & Spot Light (ForwardAdd)
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
         ld = lilGetLightDirection(input.positionWS); \
         lc = min(LIL_MAINLIGHT_COLOR * atten, _LightMaxLimit); \
         lc = lerp(lc, lilGray(lc), _MonochromeLighting); \
@@ -1957,7 +1956,6 @@ struct lilLightData
 #elif defined(LIL_HDRP) && defined(LIL_USE_LIGHTMAP)
     // HDRP with lightmap
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
         lc = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc += lightmapColor * GetCurrentExposureMultiplier(); \
@@ -1966,7 +1964,6 @@ struct lilLightData
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SHADOWMASK)
     // Mixed Lightmap (Shadowmask)
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
         lc = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc = max(lc, lightmapColor); \
@@ -1978,7 +1975,6 @@ struct lilLightData
     // Use Lightmap as Shadowmask
     #undef LIL_USE_DYNAMICLIGHTMAP
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
         lc = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc = max(lc, lightmapColor); \
@@ -1992,7 +1988,6 @@ struct lilLightData
     // Mixed Lightmap (Subtractive)
     // Use Lightmap as Shadowmask
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
         lc = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc = max(lc, lightmapColor); \
@@ -2004,7 +1999,6 @@ struct lilLightData
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_DIRLIGHTMAP)
     // Lightmap (Directional)
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
         lc = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         float3 lightmapDirection = lilGetLightMapDirection(input.uv1); \
@@ -2015,7 +2009,6 @@ struct lilLightData
 #elif defined(LIL_USE_LIGHTMAP) && defined(LIL_USE_SHADOW)
     // Mixed Lightmap (Baked Indirect) with shadow
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
         lc = LIL_MAINLIGHT_COLOR; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc = saturate(lc + max(lightmapColor,lilGetSHToon())); \
@@ -2025,7 +2018,6 @@ struct lilLightData
     // Mixed Lightmap (Baked Indirect) or Lightmap (Non-Directional)
     #undef LIL_USE_DYNAMICLIGHTMAP
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
         lc = input.lightColor; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc = saturate(lc + lightmapColor); \
@@ -2034,7 +2026,6 @@ struct lilLightData
 #elif defined(LIL_USE_LIGHTMAP)
     // Mixed Lightmap (Baked Indirect) or Lightmap (Non-Directional)
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
         lc = LIL_MAINLIGHT_COLOR; \
         float3 lightmapColor = lilGetLightMapColor(fd.uv1,fd.uv2); \
         lc = saturate(lc + lightmapColor); \
@@ -2043,7 +2034,6 @@ struct lilLightData
 #elif defined(LIL_USE_ADDITIONALLIGHT_MAINDIR_PS)
     // Realtime
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
         lc = input.lightColor; \
         lilGetAdditionalLights(input.positionWS, input.positionCS, lc, ld); \
         LIL_CORRECT_LIGHTCOLOR_PS(lc); \
@@ -2051,13 +2041,11 @@ struct lilLightData
 #elif defined(LIL_USE_ADDITIONALLIGHT_MAINDIR)
     // Realtime
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
         lc = input.lightColor; \
         LIL_CORRECT_LIGHTDIRECTION_PS(ld)
 #else
     // Realtime
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
-        LIL_LIGHT_ATTENUATION(atten, input); \
         lc = input.lightColor; \
         LIL_CORRECT_LIGHTDIRECTION_PS(ld)
 #endif

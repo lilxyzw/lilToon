@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 一部条件で最適化時にうまく動作しないことがあるのを修正
 - URPでの環境光の扱いを修正
 - Mac環境で改行コードが混在する問題を修正
+- lilToonMultiのエラーを修正
 
 ## [1.3.2] - 2022-07-20
 ### 追加

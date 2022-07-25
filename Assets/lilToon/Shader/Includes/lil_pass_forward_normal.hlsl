@@ -131,6 +131,9 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     OVERRIDE_UNPACK_V2F
     LIL_COPY_VFACE(fd.facing);
     LIL_GET_HDRPDATA(input,fd);
+    #if defined(LIL_V2F_SHADOW)
+        LIL_LIGHT_ATTENUATION(fd.attenuation, input);
+    #endif
     LIL_GET_LIGHTING_DATA(input,fd);
 
     //------------------------------------------------------------------------------------------------------------------------------
