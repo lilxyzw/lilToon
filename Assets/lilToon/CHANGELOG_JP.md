@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.3] - 2022-07-xx
 ### 修正
 - メインカラー2nd・3rdのDissolveが最適化時に正しく動作しなくなる場合がある問題を修正
+- 一部条件で最適化時にうまく動作しないことがあるのを修正
 - URPでの環境光の扱いを修正
 
 ## [1.3.2] - 2022-07-20

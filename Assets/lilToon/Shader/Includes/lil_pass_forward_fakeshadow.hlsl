@@ -30,7 +30,6 @@ v2f vert(appdata input)
     v2f output;
     LIL_INITIALIZE_STRUCT(v2f, output);
 
-    LIL_BRANCH
     if(_Invisible) return output;
 
     LIL_SETUP_INSTANCE_ID(input);

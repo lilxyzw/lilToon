@@ -71,7 +71,6 @@ LIL_V2F_TYPE vert(appdata input)
         #define LIL_VERTEX_CONDITION (_Invisible)
     #endif
 
-    LIL_BRANCH
     #if defined(LIL_TESSELLATION) || defined(LIL_CUSTOM_SAFEVERT)
         if(!LIL_VERTEX_CONDITION)
         {
@@ -368,7 +367,6 @@ LIL_V2F_TYPE vert(appdata input)
     {
         //------------------------------------------------------------------------------------------------------------------------------
         // Invisible
-        LIL_BRANCH
         if(_Invisible) return;
 
         v2f output[3];
@@ -387,7 +385,6 @@ LIL_V2F_TYPE vert(appdata input)
         }
 
         // Front
-        LIL_BRANCH
         if(_Cull != 1)
         {
             outStream.Append(output[0]);
@@ -397,7 +394,6 @@ LIL_V2F_TYPE vert(appdata input)
         }
 
         // Back
-        LIL_BRANCH
         if(_Cull != 2)
         {
             outStream.Append(output[2]);
@@ -417,7 +413,6 @@ LIL_V2F_TYPE vert(appdata input)
         }
 
         // Front
-        LIL_BRANCH
         if(_OutlineCull != 1)
         {
             outStream.Append(output[0]);
@@ -427,7 +422,6 @@ LIL_V2F_TYPE vert(appdata input)
         }
 
         // Back
-        LIL_BRANCH
         if(_OutlineCull != 2)
         {
             outStream.Append(output[2]);

@@ -487,7 +487,6 @@ float2 lilGetPanoramaUV(float3 viewDirection)
 // Parallax
 void lilParallax(inout float2 uvMain, inout float2 uv, lilBool useParallax, float2 parallaxOffset, TEXTURE2D(parallaxMap), float parallaxScale, float parallaxOffsetParam)
 {
-    LIL_BRANCH
     if(useParallax)
     {
         float height = (LIL_SAMPLE_2D_LOD(parallaxMap,sampler_linear_repeat,uvMain,0).r - parallaxOffsetParam) * parallaxScale;
@@ -499,7 +498,6 @@ void lilParallax(inout float2 uvMain, inout float2 uv, lilBool useParallax, floa
 void lilPOM(inout float2 uvMain, inout float2 uv, lilBool useParallax, float4 uv_st, float3 parallaxViewDirection, TEXTURE2D(parallaxMap), float parallaxScale, float parallaxOffsetParam)
 {
     #define LIL_POM_DETAIL 200
-    LIL_BRANCH
     if(useParallax)
     {
         float height;
@@ -654,15 +652,12 @@ float4 lilGetSubTex(
             float2 uv2samp = uv2;
         #endif
         float4 outCol = LIL_SAMPLE_2D(tex,samp,uv2samp);
-        LIL_BRANCH
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
-        LIL_BRANCH
         if(isDecal) outCol.a *= lilIsIn0to1(uv2, saturate(nv-0.05));
         return outCol;
     #else
         float2 uv2 = lilCalcUV(uv, uv_ST, angle);
         float4 outCol = LIL_SAMPLE_2D(tex,samp,uv2);
-        LIL_BRANCH
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
         return outCol;
     #endif
@@ -687,15 +682,12 @@ float4 lilGetSubTexWithoutAnimation(
     #if defined(LIL_FEATURE_DECAL)
         float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
         float4 outCol = LIL_SAMPLE_2D(tex,samp,uv2);
-        LIL_BRANCH
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
-        LIL_BRANCH
         if(isDecal) outCol.a *= lilIsIn0to1(uv2, saturate(nv-0.05));
         return outCol;
     #else
         float2 uv2 = lilCalcUV(uv, uv_ST, angle);
         float4 outCol = LIL_SAMPLE_2D(tex,samp,uv2);
-        LIL_BRANCH
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
         return outCol;
     #endif

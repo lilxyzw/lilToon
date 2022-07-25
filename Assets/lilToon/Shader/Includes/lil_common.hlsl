@@ -44,8 +44,6 @@
     #define _UseParallax true
     #define _UseAudioLink true
     #define _AudioLinkAsLocal true
-    #undef LIL_BRANCH
-    #define LIL_BRANCH
     #define LIL_MULTI_SHOULD_CLIPPING && _UseClippingCanceller
 #else
     #define LIL_MULTI_SHOULD_CLIPPING

@@ -91,7 +91,7 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Replace Macro
-#define LIL_BRANCH                                  UNITY_BRANCH
+#define LIL_BRANCH
 #define LIL_VERTEX_INPUT_INSTANCE_ID                UNITY_VERTEX_INPUT_INSTANCE_ID
 #define LIL_VERTEX_OUTPUT_STEREO                    UNITY_VERTEX_OUTPUT_STEREO
 #define LIL_SETUP_INSTANCE_ID(i)                    UNITY_SETUP_INSTANCE_ID(i)
@@ -243,16 +243,12 @@
 #if defined(SHADER_API_D3D9)
     #undef LIL_ANTIALIAS_MODE
     #define LIL_ANTIALIAS_MODE 0
-    #undef LIL_BRANCH
-    #define LIL_BRANCH
 #endif
 
 #if defined(SHADER_API_D3D11_9X)
     #define LIL_VFACE(facing)
     #define LIL_COPY_VFACE(o)
     #undef LIL_USE_LIGHTMAP
-    #undef LIL_BRANCH
-    #define LIL_BRANCH
 #elif defined(SHADER_API_GLCORE) || defined(SHADER_API_GLES) || defined(SHADER_API_D3D9)
     #define LIL_VFACE(facing) , float facing : VFACE
     #define LIL_COPY_VFACE(o) o = facing

@@ -35,7 +35,6 @@ v2g vert(appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Invisible
-    LIL_BRANCH
     if(_Invisible) return output;
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -327,7 +326,6 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
 {
     //------------------------------------------------------------------------------------------------------------------------------
     // Invisible
-    LIL_BRANCH
     if(_Invisible) return;
 
     LIL_SETUP_INSTANCE_ID(input[0]);
@@ -363,7 +361,6 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
         }
 
         // Front
-        LIL_BRANCH
         if(_Cull != 1)
         {
             outStream.Append(outputBase[0]);
@@ -373,7 +370,6 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
         }
 
         // Back
-        LIL_BRANCH
         if(_Cull != 2)
         {
             outStream.Append(outputBase[2]);

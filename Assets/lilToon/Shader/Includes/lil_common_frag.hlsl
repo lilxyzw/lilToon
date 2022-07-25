@@ -510,7 +510,6 @@
 #if !defined(OVERRIDE_NORMAL_1ST)
     #if defined(LIL_FEATURE_BumpMap)
         #define OVERRIDE_NORMAL_1ST \
-            LIL_BRANCH \
             if(_UseBumpMap) \
             { \
                 float4 normalTex = LIL_SAMPLE_2D_ST(_BumpMap, sampler_MainTex, fd.uvMain); \
@@ -530,7 +529,6 @@
 
     #if defined(LIL_FEATURE_Bump2ndMap)
         #define OVERRIDE_NORMAL_2ND \
-            LIL_BRANCH \
             if(_UseBump2ndMap) \
             { \
                 float2 uvBump2nd = fd.uv0; \
@@ -563,7 +561,6 @@
     #endif
 
     #define OVERRIDE_ANISOTROPY \
-        LIL_BRANCH \
         if(_UseAnisotropy) \
         { \
             float4 anisoTangentMap = float4(0.5,0.5,1.0,0.5); \
@@ -674,7 +671,6 @@
             bool _Main2ndTexShouldFlipCopy = false;
         #endif
         color2nd = _Color2nd;
-        LIL_BRANCH
         if(_UseMain2ndTex)
         {
             float2 uv2nd = fd.uv0;
@@ -761,7 +757,6 @@
             bool _Main3rdTexShouldFlipCopy = false;
         #endif
         color3rd = _Color3rd;
-        LIL_BRANCH
         if(_UseMain3rdTex)
         {
             float2 uv3rd = fd.uv0;
@@ -835,7 +830,6 @@
 #if defined(LIL_FEATURE_SHADOW) && !defined(LIL_LITE) && !defined(LIL_GEM)
     void lilGetShading(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
-        LIL_BRANCH
         if(_UseShadow)
         {
             // Normal
@@ -1019,7 +1013,6 @@
 #elif defined(LIL_LITE)
     void lilGetShading(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
-        LIL_BRANCH
         if(_UseShadow)
         {
             // Shade
@@ -1270,10 +1263,8 @@
     void lilReflection(inout lilFragData fd LIL_SAMP_IN_FUNC(samp) LIL_HDRP_POSITION_INPUT_ARGS)
     {
         #if defined(LIL_PASS_FORWARDADD)
-            LIL_BRANCH
             if(_UseReflection && _ApplySpecular && _ApplySpecularFA)
         #else
-            LIL_BRANCH
             if(_UseReflection)
         #endif
         {
@@ -1305,7 +1296,6 @@
             #endif
             // Specular
             #if !defined(LIL_PASS_FORWARDADD)
-                LIL_BRANCH
                 if(_ApplySpecular)
             #endif
             {
@@ -1327,7 +1317,6 @@
             }
             // Reflection
             #if !defined(LIL_PASS_FORWARDADD)
-                LIL_BRANCH
                 if(_ApplyReflection)
                 {
                     float3 N = fd.reflectionN;
@@ -1369,7 +1358,6 @@
 #if defined(LIL_FEATURE_MATCAP) && !defined(LIL_LITE)
     void lilGetMatCap(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
-        LIL_BRANCH
         if(_UseMatCap)
         {
             // Normal
@@ -1378,7 +1366,6 @@
                 N = lerp(fd.origN, fd.matcapN, _MatCapNormalStrength);
             #endif
             #if defined(LIL_FEATURE_MatCapBumpMap)
-                LIL_BRANCH
                 if(_MatCapCustomNormal)
                 {
                     float4 normalTex = LIL_SAMPLE_2D_ST(_MatCapBumpMap, samp, fd.uvMain);
@@ -1439,7 +1426,6 @@
 #if defined(LIL_FEATURE_MATCAP_2ND) && !defined(LIL_LITE)
     void lilGetMatCap2nd(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
-        LIL_BRANCH
         if(_UseMatCap2nd)
         {
             // Normal
@@ -1448,7 +1434,6 @@
                 N = lerp(fd.origN, fd.matcap2ndN, _MatCap2ndNormalStrength);
             #endif
             #if defined(LIL_FEATURE_MatCap2ndBumpMap)
-                LIL_BRANCH
                 if(_MatCap2ndCustomNormal)
                 {
                     float4 normalTex = LIL_SAMPLE_2D_ST(_MatCap2ndBumpMap, samp, fd.uvMain);
@@ -1499,7 +1484,6 @@
 #if defined(LIL_FEATURE_RIMLIGHT) && !defined(LIL_LITE)
     void lilGetRim(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
-        LIL_BRANCH
         if(_UseRim)
         {
             #if defined(LIL_FEATURE_RIMLIGHT_DIRECTION)
@@ -1591,7 +1575,6 @@
 #elif defined(LIL_LITE)
     void lilGetRim(inout lilFragData fd)
     {
-        LIL_BRANCH
         if(_UseRim)
         {
             float rim = pow(saturate(1.0 - fd.nvabs), _RimFresnelPower);
@@ -1617,7 +1600,6 @@
 #if defined(LIL_FEATURE_GLITTER) && !defined(LIL_LITE)
     void lilGlitter(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
-        LIL_BRANCH
         if(_UseGlitter)
         {
             // View direction
@@ -1671,7 +1653,6 @@
 #if defined(LIL_FEATURE_EMISSION_1ST) && !defined(LIL_LITE)
     void lilEmission(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
-        LIL_BRANCH
         if(_UseEmission)
         {
             float4 emissionColor = _EmissionColor;
@@ -1752,7 +1733,6 @@
 #if defined(LIL_FEATURE_EMISSION_2ND) && !defined(LIL_LITE)
     void lilEmission2nd(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
-        LIL_BRANCH
         if(_UseEmission2nd)
         {
             float4 emission2ndColor = _Emission2ndColor;
