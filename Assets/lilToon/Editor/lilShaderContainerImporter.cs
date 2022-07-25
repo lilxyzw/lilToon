@@ -189,7 +189,7 @@ namespace lilToon
             assetFolderPath = Path.GetDirectoryName(assetPath) + "/";
             shaderLibsPath = lilDirectoryManager.GetShaderFolderPath() + "/Includes";
             assetName = Path.GetFileName(assetPath);
-            shaderSettingText = BuildShaderSettingString(false, ref useBaseShadow, ref useOutlineShadow).Replace("\r\n", "\r\n            ");
+            shaderSettingText = BuildShaderSettingString(false, ref useBaseShadow, ref useOutlineShadow).Replace(Environment.NewLine, Environment.NewLine + "            ");
             shaderName = "";
             editorName = "";
             origShaderName = "";
@@ -645,15 +645,15 @@ namespace lilToon
                 StringBuilder sb2 = new StringBuilder(sb1.ToString());
 
                 sb1.Replace(LIL_DOTS_SM_TAGS, " \"ShaderModel\" = \"4.5\"");
-                sb1.Replace(LIL_DOTS_SM_4_5, "#pragma target 4.5\r\n            #pragma exclude_renderers gles gles3 glcore");
-                sb1.Replace(LIL_DOTS_SM_4_5_OR_3_5, "#pragma target 4.5\r\n            #pragma exclude_renderers gles gles3 glcore");
+                sb1.Replace(LIL_DOTS_SM_4_5, "#pragma target 4.5" + Environment.NewLine + "            #pragma exclude_renderers gles gles3 glcore");
+                sb1.Replace(LIL_DOTS_SM_4_5_OR_3_5, "#pragma target 4.5" + Environment.NewLine + "            #pragma exclude_renderers gles gles3 glcore");
                 ReplaceMultiCompiles(ref sb1, version, indent, true);
                 sb.AppendLine(sb1.ToString());
                 sb.AppendLine();
 
                 sb2.Replace(LIL_DOTS_SM_TAGS, "");
                 sb2.Replace(LIL_DOTS_SM_4_5, "#pragma only_renderers gles gles3 glcore d3d11");
-                sb2.Replace(LIL_DOTS_SM_4_5_OR_3_5, "#pragma target 3.5\r\n            #pragma only_renderers gles gles3 glcore d3d11");
+                sb2.Replace(LIL_DOTS_SM_4_5_OR_3_5, "#pragma target 3.5" + Environment.NewLine + "            #pragma only_renderers gles gles3 glcore d3d11");
                 ReplaceMultiCompiles(ref sb2, version, indent, false);
                 sb.AppendLine(sb2.ToString());
             }
@@ -779,7 +779,7 @@ namespace lilToon
 
         private static string FixNewlineCode(string text)
         {
-            return text.Replace("\\r\\n", "\r\n");
+            return text.Replace("\\r", "\r").Replace("\\n", "\n");
         }
 
         private static void FixIncludeForOldUnity(ref StringBuilder sb)
@@ -825,7 +825,7 @@ namespace lilToon
 
         private static string GenerateIndentText(int indent, params string[] texts)
         {
-            string ind = "\r\n" + GetIndent(indent);
+            string ind = Environment.NewLine + GetIndent(indent);
             return string.Join(ind, texts);
         }
 
@@ -849,20 +849,20 @@ namespace lilToon
             if(enable)
             {
                 sb.Replace(
-                    "        // ForwardAdd Start\r\n        /*",
-                    "        // ForwardAdd Start\r\n        //");
+                    "        // ForwardAdd Start" + Environment.NewLine + "        /*",
+                    "        // ForwardAdd Start" + Environment.NewLine + "        //");
                 sb.Replace(
-                    "        */\r\n        // ForwardAdd End",
-                    "        //\r\n        // ForwardAdd End");
+                    "        */" + Environment.NewLine + "        // ForwardAdd End",
+                    "        //" + Environment.NewLine + "        // ForwardAdd End");
             }
             else
             {
                 sb.Replace(
-                    "        // ForwardAdd Start\r\n        //",
-                    "        // ForwardAdd Start\r\n        /*");
+                    "        // ForwardAdd Start" + Environment.NewLine + "        //",
+                    "        // ForwardAdd Start" + Environment.NewLine + "        /*");
                 sb.Replace(
-                    "        //\r\n        // ForwardAdd End",
-                    "        */\r\n        // ForwardAdd End");
+                    "        //" + Environment.NewLine + "        // ForwardAdd End",
+                    "        */" + Environment.NewLine + "        // ForwardAdd End");
             }
 
             string[] lines = sb.ToString().Split('\n');

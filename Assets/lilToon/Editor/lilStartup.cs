@@ -34,7 +34,7 @@ namespace lilToon
                     if(!File.Exists(lilDirectoryManager.rspPath))
                     {
                         StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
-                        sw.Write("-r:System.Drawing.dll\n-define:SYSTEM_DRAWING");
+                        sw.Write("-r:System.Drawing.dll" + Environment.NewLine + "-define:SYSTEM_DRAWING");
                         sw.Close();
                         AssetDatabase.Refresh();
                         AssetDatabase.ImportAsset(editorPath);
@@ -47,7 +47,7 @@ namespace lilToon
                     if(!s.Contains("r:System.Drawing.dll"))
                     {
                         StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
-                        sw.Write("\n-r:System.Drawing.dll");
+                        sw.Write(Environment.NewLine + "-r:System.Drawing.dll");
                         sw.Close();
                         AssetDatabase.Refresh();
                         AssetDatabase.ImportAsset(editorPath);
@@ -55,7 +55,7 @@ namespace lilToon
                     if(!s.Contains("define:SYSTEM_DRAWING"))
                     {
                         StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
-                        sw.Write("\n-define:SYSTEM_DRAWING");
+                        sw.Write(Environment.NewLine + "-define:SYSTEM_DRAWING");
                         sw.Close();
                         AssetDatabase.Refresh();
                         AssetDatabase.ImportAsset(editorPath);

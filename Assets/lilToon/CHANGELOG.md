@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed that the main color 2nd and 3rd dissolve may not work properly after optimization
 - Fixed an issue where shaders might not work well after optimization under some conditions
 - Fixed ambient lighting in URP
+- Fixed an issue with mixed line feed codes on Mac
 
 ## [1.3.2] - 2022-07-20
 ### Added

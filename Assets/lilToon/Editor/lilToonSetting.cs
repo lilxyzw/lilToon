@@ -415,7 +415,7 @@ public class lilToonSetting : ScriptableObject
 
         if(!string.IsNullOrEmpty(reportTitle))
         {
-            Debug.Log(reportTitle + "\r\n" + shaderSettingString);
+            Debug.Log(reportTitle + Environment.NewLine + shaderSettingString);
         }
     }
 
@@ -451,75 +451,80 @@ public class lilToonSetting : ScriptableObject
 
         if(!string.IsNullOrEmpty(reportTitle))
         {
-            Debug.Log(reportTitle + "\r\n" + shaderSettingString);
+            Debug.Log(reportTitle + Environment.NewLine + shaderSettingString);
         }
     }
 
     public static string BuildShaderSettingString(lilToonSetting shaderSetting, bool isFile)
     {
         StringBuilder sb = new StringBuilder();
-        if(isFile) sb.Append("#ifndef LIL_SETTING_INCLUDED\r\n#define LIL_SETTING_INCLUDED\r\n\r\n");
-        if(shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV) sb.Append("#define LIL_FEATURE_ANIMATE_MAIN_UV\r\n");
-        if(shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION) sb.Append("#define LIL_FEATURE_MAIN_TONE_CORRECTION\r\n");
-        if(shaderSetting.LIL_FEATURE_MAIN_GRADATION_MAP) sb.Append("#define LIL_FEATURE_MAIN_GRADATION_MAP\r\n");
-        if(shaderSetting.LIL_FEATURE_MAIN2ND) sb.Append("#define LIL_FEATURE_MAIN2ND\r\n");
-        if(shaderSetting.LIL_FEATURE_MAIN3RD) sb.Append("#define LIL_FEATURE_MAIN3RD\r\n");
+        if(isFile)
+        {
+            sb.AppendLine("#ifndef LIL_SETTING_INCLUDED");
+            sb.AppendLine("#define LIL_SETTING_INCLUDED");
+            sb.AppendLine("");
+        }
+        if(shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV) sb.AppendLine("#define LIL_FEATURE_ANIMATE_MAIN_UV");
+        if(shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION) sb.AppendLine("#define LIL_FEATURE_MAIN_TONE_CORRECTION");
+        if(shaderSetting.LIL_FEATURE_MAIN_GRADATION_MAP) sb.AppendLine("#define LIL_FEATURE_MAIN_GRADATION_MAP");
+        if(shaderSetting.LIL_FEATURE_MAIN2ND) sb.AppendLine("#define LIL_FEATURE_MAIN2ND");
+        if(shaderSetting.LIL_FEATURE_MAIN3RD) sb.AppendLine("#define LIL_FEATURE_MAIN3RD");
         if(shaderSetting.LIL_FEATURE_MAIN2ND || shaderSetting.LIL_FEATURE_MAIN3RD)
         {
-            if(shaderSetting.LIL_FEATURE_DECAL) sb.Append("#define LIL_FEATURE_DECAL\r\n");
-            if(shaderSetting.LIL_FEATURE_ANIMATE_DECAL) sb.Append("#define LIL_FEATURE_ANIMATE_DECAL\r\n");
-            if(shaderSetting.LIL_FEATURE_LAYER_DISSOLVE) sb.Append("#define LIL_FEATURE_LAYER_DISSOLVE\r\n");
+            if(shaderSetting.LIL_FEATURE_DECAL) sb.AppendLine("#define LIL_FEATURE_DECAL");
+            if(shaderSetting.LIL_FEATURE_ANIMATE_DECAL) sb.AppendLine("#define LIL_FEATURE_ANIMATE_DECAL");
+            if(shaderSetting.LIL_FEATURE_LAYER_DISSOLVE) sb.AppendLine("#define LIL_FEATURE_LAYER_DISSOLVE");
         }
 
-        if(shaderSetting.LIL_FEATURE_ALPHAMASK) sb.Append("#define LIL_FEATURE_ALPHAMASK\r\n");
+        if(shaderSetting.LIL_FEATURE_ALPHAMASK) sb.AppendLine("#define LIL_FEATURE_ALPHAMASK");
 
         if(shaderSetting.LIL_FEATURE_SHADOW)
         {
-            sb.Append("#define LIL_FEATURE_SHADOW\r\n");
-            if(shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) sb.Append("#define LIL_FEATURE_RECEIVE_SHADOW\r\n");
-            if(shaderSetting.LIL_FEATURE_SHADOW_3RD) sb.Append("#define LIL_FEATURE_SHADOW_3RD\r\n");
+            sb.AppendLine("#define LIL_FEATURE_SHADOW");
+            if(shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) sb.AppendLine("#define LIL_FEATURE_RECEIVE_SHADOW");
+            if(shaderSetting.LIL_FEATURE_SHADOW_3RD) sb.AppendLine("#define LIL_FEATURE_SHADOW_3RD");
         }
 
-        if(shaderSetting.LIL_FEATURE_EMISSION_1ST) sb.Append("#define LIL_FEATURE_EMISSION_1ST\r\n");
-        if(shaderSetting.LIL_FEATURE_EMISSION_2ND) sb.Append("#define LIL_FEATURE_EMISSION_2ND\r\n");
+        if(shaderSetting.LIL_FEATURE_EMISSION_1ST) sb.AppendLine("#define LIL_FEATURE_EMISSION_1ST");
+        if(shaderSetting.LIL_FEATURE_EMISSION_2ND) sb.AppendLine("#define LIL_FEATURE_EMISSION_2ND");
         if(shaderSetting.LIL_FEATURE_EMISSION_1ST || shaderSetting.LIL_FEATURE_EMISSION_2ND)
         {
-            if(shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV) sb.Append("#define LIL_FEATURE_ANIMATE_EMISSION_UV\r\n");
-            if(shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_MASK_UV) sb.Append("#define LIL_FEATURE_ANIMATE_EMISSION_MASK_UV\r\n");
-            if(shaderSetting.LIL_FEATURE_EMISSION_GRADATION) sb.Append("#define LIL_FEATURE_EMISSION_GRADATION\r\n");
+            if(shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV) sb.AppendLine("#define LIL_FEATURE_ANIMATE_EMISSION_UV");
+            if(shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_MASK_UV) sb.AppendLine("#define LIL_FEATURE_ANIMATE_EMISSION_MASK_UV");
+            if(shaderSetting.LIL_FEATURE_EMISSION_GRADATION) sb.AppendLine("#define LIL_FEATURE_EMISSION_GRADATION");
         }
-        if(shaderSetting.LIL_FEATURE_NORMAL_1ST) sb.Append("#define LIL_FEATURE_NORMAL_1ST\r\n");
-        if(shaderSetting.LIL_FEATURE_NORMAL_2ND) sb.Append("#define LIL_FEATURE_NORMAL_2ND\r\n");
-        if(shaderSetting.LIL_FEATURE_ANISOTROPY) sb.Append("#define LIL_FEATURE_ANISOTROPY\r\n");
-        if(shaderSetting.LIL_FEATURE_REFLECTION) sb.Append("#define LIL_FEATURE_REFLECTION\r\n");
-        if(shaderSetting.LIL_FEATURE_MATCAP) sb.Append("#define LIL_FEATURE_MATCAP\r\n");
-        if(shaderSetting.LIL_FEATURE_MATCAP_2ND) sb.Append("#define LIL_FEATURE_MATCAP_2ND\r\n");
+        if(shaderSetting.LIL_FEATURE_NORMAL_1ST) sb.AppendLine("#define LIL_FEATURE_NORMAL_1ST");
+        if(shaderSetting.LIL_FEATURE_NORMAL_2ND) sb.AppendLine("#define LIL_FEATURE_NORMAL_2ND");
+        if(shaderSetting.LIL_FEATURE_ANISOTROPY) sb.AppendLine("#define LIL_FEATURE_ANISOTROPY");
+        if(shaderSetting.LIL_FEATURE_REFLECTION) sb.AppendLine("#define LIL_FEATURE_REFLECTION");
+        if(shaderSetting.LIL_FEATURE_MATCAP) sb.AppendLine("#define LIL_FEATURE_MATCAP");
+        if(shaderSetting.LIL_FEATURE_MATCAP_2ND) sb.AppendLine("#define LIL_FEATURE_MATCAP_2ND");
         if(shaderSetting.LIL_FEATURE_RIMLIGHT)
         {
-            sb.Append("#define LIL_FEATURE_RIMLIGHT\r\n");
-            if(shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION) sb.Append("#define LIL_FEATURE_RIMLIGHT_DIRECTION\r\n");
+            sb.AppendLine("#define LIL_FEATURE_RIMLIGHT");
+            if(shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION) sb.AppendLine("#define LIL_FEATURE_RIMLIGHT_DIRECTION");
         }
-        if(shaderSetting.LIL_FEATURE_GLITTER) sb.Append("#define LIL_FEATURE_GLITTER\r\n");
-        if(shaderSetting.LIL_FEATURE_BACKLIGHT) sb.Append("#define LIL_FEATURE_BACKLIGHT\r\n");
+        if(shaderSetting.LIL_FEATURE_GLITTER) sb.AppendLine("#define LIL_FEATURE_GLITTER");
+        if(shaderSetting.LIL_FEATURE_BACKLIGHT) sb.AppendLine("#define LIL_FEATURE_BACKLIGHT");
         if(shaderSetting.LIL_FEATURE_PARALLAX)
         {
-            sb.Append("#define LIL_FEATURE_PARALLAX\r\n");
-            if(shaderSetting.LIL_FEATURE_POM) sb.Append("#define LIL_FEATURE_POM\r\n");
+            sb.AppendLine("#define LIL_FEATURE_PARALLAX");
+            if(shaderSetting.LIL_FEATURE_POM) sb.AppendLine("#define LIL_FEATURE_POM");
         }
-        if(shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER) sb.Append("#define LIL_FEATURE_CLIPPING_CANCELLER\r\n");
-        if(shaderSetting.LIL_FEATURE_DISTANCE_FADE) sb.Append("#define LIL_FEATURE_DISTANCE_FADE\r\n");
+        if(shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER) sb.AppendLine("#define LIL_FEATURE_CLIPPING_CANCELLER");
+        if(shaderSetting.LIL_FEATURE_DISTANCE_FADE) sb.AppendLine("#define LIL_FEATURE_DISTANCE_FADE");
         if(shaderSetting.LIL_FEATURE_AUDIOLINK)
         {
-            sb.Append("#define LIL_FEATURE_AUDIOLINK\r\n");
-            if(shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX) sb.Append("#define LIL_FEATURE_AUDIOLINK_VERTEX\r\n");
-            if(shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL) sb.Append("#define LIL_FEATURE_AUDIOLINK_LOCAL\r\n");
+            sb.AppendLine("#define LIL_FEATURE_AUDIOLINK");
+            if(shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX) sb.AppendLine("#define LIL_FEATURE_AUDIOLINK_VERTEX");
+            if(shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL) sb.AppendLine("#define LIL_FEATURE_AUDIOLINK_LOCAL");
         }
-        if(shaderSetting.LIL_FEATURE_DISSOLVE) sb.Append("#define LIL_FEATURE_DISSOLVE\r\n");
-        if(shaderSetting.LIL_FEATURE_ENCRYPTION) sb.Append("#define LIL_FEATURE_ENCRYPTION\r\n");
-        if(shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION) sb.Append("#define LIL_FEATURE_OUTLINE_TONE_CORRECTION\r\n");
-        if(shaderSetting.LIL_FEATURE_OUTLINE_RECEIVE_SHADOW) sb.Append("#define LIL_FEATURE_OUTLINE_RECEIVE_SHADOW\r\n");
-        if(shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV) sb.Append("#define LIL_FEATURE_ANIMATE_OUTLINE_UV\r\n");
-        if(shaderSetting.LIL_FEATURE_FUR_COLLISION) sb.Append("#define LIL_FEATURE_FUR_COLLISION\r\n");
+        if(shaderSetting.LIL_FEATURE_DISSOLVE) sb.AppendLine("#define LIL_FEATURE_DISSOLVE");
+        if(shaderSetting.LIL_FEATURE_ENCRYPTION) sb.AppendLine("#define LIL_FEATURE_ENCRYPTION");
+        if(shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION) sb.AppendLine("#define LIL_FEATURE_OUTLINE_TONE_CORRECTION");
+        if(shaderSetting.LIL_FEATURE_OUTLINE_RECEIVE_SHADOW) sb.AppendLine("#define LIL_FEATURE_OUTLINE_RECEIVE_SHADOW");
+        if(shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV) sb.AppendLine("#define LIL_FEATURE_ANIMATE_OUTLINE_UV");
+        if(shaderSetting.LIL_FEATURE_FUR_COLLISION) sb.AppendLine("#define LIL_FEATURE_FUR_COLLISION");
 
         if(shaderSetting.LIL_FEATURE_MainGradationTex)           sb.AppendLine("#define LIL_FEATURE_MainGradationTex");
         if(shaderSetting.LIL_FEATURE_MainColorAdjustMask)        sb.AppendLine("#define LIL_FEATURE_MainColorAdjustMask");
@@ -577,18 +582,22 @@ public class lilToonSetting : ScriptableObject
         if(shaderSetting.LIL_FEATURE_FurLengthMask)              sb.AppendLine("#define LIL_FEATURE_FurLengthMask");
         if(shaderSetting.LIL_FEATURE_FurVectorTex)               sb.AppendLine("#define LIL_FEATURE_FurVectorTex");
 
-        if(shaderSetting.LIL_OPTIMIZE_APPLY_SHADOW_FA) sb.Append("#define LIL_OPTIMIZE_APPLY_SHADOW_FA\r\n");
-        if(shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD) sb.Append("#define LIL_OPTIMIZE_USE_FORWARDADD\r\n");
-        if(shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD_SHADOW) sb.Append("#define LIL_OPTIMIZE_USE_FORWARDADD_SHADOW\r\n");
-        if(shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT) sb.Append("#define LIL_OPTIMIZE_USE_VERTEXLIGHT\r\n");
-        if(shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP) sb.Append("#define LIL_OPTIMIZE_USE_LIGHTMAP\r\n");
-        if(isFile) sb.Append("\r\n#endif");
+        if(shaderSetting.LIL_OPTIMIZE_APPLY_SHADOW_FA) sb.AppendLine("#define LIL_OPTIMIZE_APPLY_SHADOW_FA");
+        if(shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD) sb.AppendLine("#define LIL_OPTIMIZE_USE_FORWARDADD");
+        if(shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD_SHADOW) sb.AppendLine("#define LIL_OPTIMIZE_USE_FORWARDADD_SHADOW");
+        if(shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT) sb.AppendLine("#define LIL_OPTIMIZE_USE_VERTEXLIGHT");
+        if(shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP) sb.AppendLine("#define LIL_OPTIMIZE_USE_LIGHTMAP");
+        if(isFile)
+        {
+            sb.AppendLine("");
+            sb.AppendLine("#endif");
+        }
 
         if(!isFile)
         {
-            if(!shaderSetting.LIL_FEATURE_REFLECTION) sb.Append("#pragma lil_skip_variants_reflections\r\n");
-            if(!shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT) sb.Append("#pragma lil_skip_variants_addlight\r\n");
-            if(!shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP) sb.Append("#pragma lil_skip_variants_lightmaps\r\n");
+            if(!shaderSetting.LIL_FEATURE_REFLECTION) sb.AppendLine("#pragma lil_skip_variants_reflections");
+            if(!shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT) sb.AppendLine("#pragma lil_skip_variants_addlight");
+            if(!shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP) sb.AppendLine("#pragma lil_skip_variants_lightmaps");
         }
         return sb.ToString();
     }
