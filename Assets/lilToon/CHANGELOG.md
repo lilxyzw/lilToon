@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed ambient lighting in URP
 - Fixed an issue with mixed line feed codes on Mac
 - Fixed an error in lilToonMulti
+- Fixed shader rewriting at startup not working properly in OpenGL
 
 ## [1.3.2] - 2022-07-20
 ### Added

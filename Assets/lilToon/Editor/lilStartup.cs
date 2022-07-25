@@ -97,7 +97,21 @@ namespace lilToon
                 {
                     lilToonSetting shaderSetting = null;
                     lilToonSetting.InitializeShaderSetting(ref shaderSetting);
-                    lilToonSetting.ApplyShaderSetting(shaderSetting);
+                    if(shaderSetting.isDebugOptimize)
+                    {
+                        lilToonSetting.ApplyShaderSettingOptimized();
+                    }
+                    else
+                    {
+                        if(lilShaderAPI.IsTextureLimitedAPI())
+                        {
+                            lilToonSetting.TurnOffAllShaderSetting(ref shaderSetting);
+                            lilToonSetting.CheckTextures(ref shaderSetting);
+                        }
+
+                        lilToonSetting.TurnOnAllShaderSetting(ref shaderSetting);
+                        lilToonSetting.ApplyShaderSetting(shaderSetting);
+                    }
                 }
             }
 
