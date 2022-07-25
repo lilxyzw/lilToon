@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.3.3] - 2022-07-xx
+### 追加
+- ラメのマスクに`UV Mode`を追加
+
 ### 修正
 - メインカラー2nd・3rdのDissolveが最適化時に正しく動作しなくなる場合がある問題を修正
 - 一部条件で最適化時にうまく動作しないことがあるのを修正

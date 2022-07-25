@@ -288,6 +288,7 @@ Shader "Hidden/lilToonTessellationCutout"
         [lilEnum]       _GlitterUVMode              ("UV Mode|UV0|UV1", Int) = 0
         [lilHDR]        _GlitterColor               ("Color", Color) = (1,1,1,1)
                         _GlitterColorTex            ("Texture", 2D) = "white" {}
+        [lilEnum]       _GlitterColorTex_UVMode     ("UV Mode|UV0|UV1|UV2|UV3", Int) = 0
                         _GlitterMainStrength        ("Main Color Strength", Range(0, 1)) = 0
                         _GlitterNormalStrength      ("Normal Strength", Range(0, 1)) = 1.0
                         _GlitterScaleRandomize      ("Scale Randomize", Range(0, 1)) = 0

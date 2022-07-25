@@ -627,6 +627,7 @@ lilBool _Invisible;
 #endif
 #if defined(LIL_FEATURE_GLITTER)
     lilBool _UseGlitter;
+    lilBool _GlitterColorTex_UVMode;
     lilBool _GlitterApplyTransparency;
     #if defined(LIL_FEATURE_GlitterShapeTex)
         lilBool _GlitterApplyShape;

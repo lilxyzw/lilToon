@@ -574,6 +574,7 @@ namespace lilToon
         private readonly lilMaterialProperty glitterUVMode              = new lilMaterialProperty("_GlitterUVMode", PropertyBlock.Glitter);
         private readonly lilMaterialProperty glitterColor               = new lilMaterialProperty("_GlitterColor", PropertyBlock.Glitter);
         private readonly lilMaterialProperty glitterColorTex            = new lilMaterialProperty("_GlitterColorTex", true, PropertyBlock.Glitter);
+        private readonly lilMaterialProperty glitterColorTex_UVMode     = new lilMaterialProperty("_GlitterColorTex_UVMode", true, PropertyBlock.Glitter);
         private readonly lilMaterialProperty glitterMainStrength        = new lilMaterialProperty("_GlitterMainStrength", PropertyBlock.Glitter);
         private readonly lilMaterialProperty glitterScaleRandomize      = new lilMaterialProperty("_GlitterScaleRandomize", PropertyBlock.Glitter);
         private readonly lilMaterialProperty glitterApplyShape          = new lilMaterialProperty("_GlitterApplyShape", PropertyBlock.Glitter);
@@ -1104,6 +1105,7 @@ namespace lilToon
                 glitterUVMode,
                 glitterColor,
                 glitterColorTex,
+                glitterColorTex_UVMode,
                 glitterMainStrength,
                 glitterScaleRandomize,
                 glitterApplyShape,
@@ -5042,7 +5044,7 @@ namespace lilToon
                 {
                     EditorGUILayout.BeginVertical(boxInnerHalf);
                     m_MaterialEditor.ShaderProperty(glitterUVMode, "UV Mode|UV0|UV1");
-                    TextureGUI(ref edSet.isShowGlitterColorTex, colorMaskRGBAContent, glitterColorTex, glitterColor);
+                    TextureGUI(ref edSet.isShowGlitterColorTex, colorMaskRGBAContent, glitterColorTex, glitterColor, glitterColorTex_UVMode, "UV Mode|UV0|UV1|UV2|UV3");
                     EditorGUI.indentLevel++;
                     lilEditorGUI.DrawColorAsAlpha(glitterColor);
                     m_MaterialEditor.ShaderProperty(glitterMainStrength, GetLoc("sMainColorPower"));

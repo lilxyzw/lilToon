@@ -665,6 +665,7 @@ CBUFFER_START(UnityPerMaterial)
         lilBool _RimApplyTransparency;
     #endif
     #if defined(LIL_MULTI_INPUTS_GLITTER)
+        lilBool _GlitterColorTex_UVMode;
         lilBool _GlitterApplyTransparency;
         #if defined(LIL_FEATURE_GlitterShapeTex)
             lilBool _GlitterApplyShape;

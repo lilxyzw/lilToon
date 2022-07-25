@@ -1615,7 +1615,11 @@
             // Color
             float4 glitterColor = _GlitterColor;
             #if defined(LIL_FEATURE_GlitterColorTex)
-                glitterColor *= LIL_SAMPLE_2D_ST(_GlitterColorTex, samp, fd.uvMain);
+                float2 uvGlitterColor = fd.uvMain; //fd.uv0;
+                if(_GlitterColorTex_UVMode == 1) uvGlitterColor = fd.uv1;
+                if(_GlitterColorTex_UVMode == 2) uvGlitterColor = fd.uv2;
+                if(_GlitterColorTex_UVMode == 3) uvGlitterColor = fd.uv3;
+                glitterColor *= LIL_SAMPLE_2D_ST(_GlitterColorTex, samp, uvGlitterColor);
             #endif
             float2 glitterPos = _GlitterUVMode ? fd.uv1 : fd.uv0;
             #if defined(LIL_FEATURE_GlitterShapeTex)
