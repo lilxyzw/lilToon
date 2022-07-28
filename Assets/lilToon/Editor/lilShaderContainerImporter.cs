@@ -377,6 +377,9 @@ namespace lilToon
                 }
             }
 
+            sb.Replace("\r", "");
+            sb.Replace("\n", Environment.NewLine);
+
             return sb.ToString();
         }
 
