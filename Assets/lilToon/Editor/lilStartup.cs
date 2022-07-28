@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Networking;
+using System;
 using System.IO;
 using System.Collections;
 using System.Reflection;
@@ -216,12 +217,16 @@ namespace lilToon
         private static IEnumerator ClosePackageImportWindow()
         {
             var type = typeof(Editor).Assembly.GetType("UnityEditor.PackageImport");
-            var method = typeof(EditorWindow).GetMethod(nameof(EditorWindow.HasOpenInstances), BindingFlags.Static | BindingFlags.Public)?.MakeGenericMethod(type);
-            while(!(bool)method.Invoke(null,null))
+            var method = typeof(EditorWindow).GetMethod("HasOpenInstances", BindingFlags.Static | BindingFlags.Public);
+            if(method != null)
             {
-                yield return null;
+                var genmethod = method.MakeGenericMethod(type);
+                while(!(bool)genmethod.Invoke(null,null))
+                {
+                    yield return null;
+                }
+                EditorWindow.GetWindow(type).Close();
             }
-            EditorWindow.GetWindow(type).Close();
         }
 
         private static int[] ReadSemVer(string sem)

@@ -513,6 +513,13 @@ namespace lilToon
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
+        // Debug
+        //[MenuItem("GameObject/lilToon/[Debug] Optimization", false, menuPriorityFixLighting+1)]
+        //private static void DebugOptimization() { lilToonSetting.SetShaderSettingBeforeBuild(Selection.activeGameObject); }
+        //[MenuItem("GameObject/lilToon/[Debug] Undo Optimization", false, menuPriorityFixLighting+2)]
+        //private static void UndoDebugOptimization() { lilToonSetting.SetShaderSettingAfterBuild(); }
+
+        //------------------------------------------------------------------------------------------------------------------------------
         // Format checker
         private static bool CheckExtension(string extension)
         {

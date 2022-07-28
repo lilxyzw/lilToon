@@ -86,7 +86,7 @@ Shader "Hidden/lilToonLiteTwoPassTransparentOutline"
         [HideInInspector]                               _BaseColor          ("Color", Color) = (1,1,1,1)
         [HideInInspector]                               _BaseMap            ("Texture", 2D) = "white" {}
         [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
-        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 29
+        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 30
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced

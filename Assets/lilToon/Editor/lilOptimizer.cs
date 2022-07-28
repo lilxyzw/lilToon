@@ -248,9 +248,17 @@ namespace lilToon
                             continue;
                         }
                     }
-                    else
+                    else if(line.Contains("Color") && !line.Contains("Emission"))
                     {
                         // Color
+                        var v = dicC[name];
+                        Color c = PlayerSettings.colorSpace == ColorSpace.Linear ? v.c.linear : v.c;
+                        sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")");
+                        continue;
+                    }
+                    else
+                    {
+                        // Vector
                         if(dicC.ContainsKey(name) && !dicC[name].isVariable)
                         {
                             var v = dicC[name];
