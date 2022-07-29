@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed an issue that could cause script errors
 - Fixed color value after optimization
 - Fixed ForwardAdd lighting
+- Fixed an issue where additional lights would not work after build on URP
 
 ## [1.3.3] - 2022-07-27
 ### Added

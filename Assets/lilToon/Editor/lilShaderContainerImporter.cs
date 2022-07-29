@@ -1448,7 +1448,8 @@ namespace lilToon
 
         private static string GetSkipVariantsAddLight()
         {
-            return "#pragma skip_variants VERTEXLIGHT_ON LIGHTPROBE_SH _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS";
+            //return "#pragma skip_variants VERTEXLIGHT_ON LIGHTPROBE_SH _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS";
+            return "#pragma skip_variants VERTEXLIGHT_ON LIGHTPROBE_SH";
         }
 
         private static string GetSkipVariantsAddLightShadows()
