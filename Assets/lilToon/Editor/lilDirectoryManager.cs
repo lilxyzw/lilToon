@@ -38,12 +38,14 @@ namespace lilToon
         public static string GetGUICustomBoxDarkPath()      { return GUIDToPath("45dfb1bafd2c7d34ab453c29c0b1f46e"); } // "Assets/lilToon/Editor/Resources/gui_custom_box_dark.guiskin"
         public static string GetGUICustomBoxLightPath()     { return GUIDToPath("a1ed8756474bfd34f80fa22e6c43b2e5"); } // "Assets/lilToon/Editor/Resources/gui_custom_box_light.guiskin"
         public static string GetCurrentRPPath()             { return GUIDToPath("142b3aeca72105442a83089b616e92b8"); } // "Assets/lilToon/Editor/CurrentRP.txt"
+        public static string GetClusterCreatorKitPath()     { return GUIDToPath("6f11c0d5c326e4a6c851aa1c02ff11ee"); } // "ClusterCreatorKit/package.json"
         public static string GetShaderSettingPath()         { return "ProjectSettings/lilToonSetting.json";          } // "ProjectSettings/lilToonSetting.json"
         public static string[] GetShaderFolderPaths()       { return new[] {GetShaderFolderPath()}; }
         public static string GetSettingFolderPath()         { return GetMainFolderPath(); }
         public static string GUIDToPath(string GUID)        { return AssetDatabase.GUIDToAssetPath(GUID); }
 
         public static bool ExistsEncryption() { return !string.IsNullOrEmpty(GetAvatarEncryptionPath()); }
+        public static bool ExistsClusterCreatorKit() { return !string.IsNullOrEmpty(GetClusterCreatorKitPath()); }
     }
 }
 #endif

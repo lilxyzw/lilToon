@@ -4041,6 +4041,17 @@ namespace lilToon
                         vertexLightStrength.floatValue = 1.0f;
                     }
                 }
+                if(lilDirectoryManager.ExistsClusterCreatorKit())
+                {
+                    if(renderingModeBuf == RenderingMode.Refraction || renderingModeBuf == RenderingMode.RefractionBlur || renderingModeBuf == RenderingMode.Gem)
+                    {
+                        EditorGUILayout.HelpBox(GetLoc("sHelpGrabPass"), MessageType.Warning);
+                    }
+                    if(renderingModeBuf == RenderingMode.Fur || renderingModeBuf == RenderingMode.FurCutout || renderingModeBuf == RenderingMode.FurTwoPass)
+                    {
+                        EditorGUILayout.HelpBox(GetLoc("sHelpGeometryShader"), MessageType.Warning);
+                    }
+                }
             }
         }
 
@@ -6362,18 +6373,6 @@ namespace lilToon
         public static void ApplyShaderSettingOptimized()
         {
             lilToonSetting.ApplyShaderSettingOptimized();
-        }
-
-        [Obsolete("Use \"lilToonSetting.SetShaderSettingBeforeBuild(GameObject gameObject)\" instead.")]
-        public static void SetShaderSettingBeforeBuild(GameObject gameObject)
-        {
-            lilToonSetting.SetShaderSettingBeforeBuild(gameObject);
-        }
-
-        [Obsolete("Use \"lilToonSetting.SetShaderSettingBeforeBuild()\" instead.")]
-        public static void SetShaderSettingBeforeBuild()
-        {
-            lilToonSetting.SetShaderSettingBeforeBuild();
         }
 
         [Obsolete("Use \"lilToonSetting.SetShaderSettingAfterBuild()\" instead.")]

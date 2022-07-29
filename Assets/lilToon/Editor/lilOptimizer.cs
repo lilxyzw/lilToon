@@ -6,9 +6,6 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
-#if VRC_SDK_VRCSDK3 && !UDON
-    using VRC.SDK3.Avatars.Components;
-#endif
 
 namespace lilToon
 {
@@ -16,7 +13,7 @@ namespace lilToon
     {
         private const int TYPE_OFFSET = 8;
 
-        internal static void OptimizeInputHLSL(GameObject gameObject)
+        internal static void OptimizeInputHLSL(Material[] materials, AnimationClip[] clips)
         {
             try
             {
@@ -26,47 +23,16 @@ namespace lilToon
                 var dicC = new Dictionary<string, ColorProp>();
 
                 // Get materials
-                foreach(var renderer in gameObject.GetComponentsInChildren<Renderer>(true))
+                foreach(var material in materials)
                 {
-                    foreach(var material in renderer.sharedMaterials)
-                    {
-                        CheckMaterial(material, dicT, dicD, dicF, dicC);
-                    }
+                    CheckMaterial(material, dicT, dicD, dicF, dicC);
                 }
 
                 // Get animations
-                foreach(var animator in gameObject.GetComponentsInChildren<Animator>(true))
+                foreach(var clip in clips)
                 {
-                    if(animator.runtimeAnimatorController == null) continue;
-                    foreach(var clip in animator.runtimeAnimatorController.animationClips)
-                    {
-                        CheckAnimationClip(clip, dicT, dicD, dicF, dicC);
-                    }
+                    CheckAnimationClip(clip, dicT, dicD, dicF, dicC);
                 }
-                #if VRC_SDK_VRCSDK3 && !UDON
-                    foreach(var descriptor in gameObject.GetComponentsInChildren<VRCAvatarDescriptor>(true))
-                    {
-                        foreach(var layer in descriptor.specialAnimationLayers)
-                        {
-                            if(layer.animatorController == null) continue;
-                            foreach(var clip in layer.animatorController.animationClips)
-                            {
-                                CheckAnimationClip(clip, dicT, dicD, dicF, dicC);
-                            }
-                        }
-                        if(descriptor.customizeAnimationLayers)
-                        {
-                            foreach(var layer in descriptor.baseAnimationLayers)
-                            {
-                                if(layer.animatorController == null) continue;
-                                foreach(var clip in layer.animatorController.animationClips)
-                                {
-                                    CheckAnimationClip(clip, dicT, dicD, dicF, dicC);
-                                }
-                            }
-                        }
-                    }
-                #endif
 
                 // Apply
                 RewriteInputHLSL(dicT, dicD, dicF, dicC);
@@ -248,23 +214,12 @@ namespace lilToon
                             continue;
                         }
                     }
-                    else if(line.Contains("Color") && !line.Contains("Emission"))
+                    else if(dicC.ContainsKey(name) && !dicC[name].isVariable)
                     {
-                        // Color
                         var v = dicC[name];
-                        Color c = PlayerSettings.colorSpace == ColorSpace.Linear ? v.c.linear : v.c;
+                        Color c = line.Contains("Color") && !line.Contains("Emission") && PlayerSettings.colorSpace == ColorSpace.Linear ? v.c.linear : v.c;
                         sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")");
                         continue;
-                    }
-                    else
-                    {
-                        // Vector
-                        if(dicC.ContainsKey(name) && !dicC[name].isVariable)
-                        {
-                            var v = dicC[name];
-                            sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + v.c.r + "," + v.c.g + "," + v.c.b + "," + v.c.a + ")");
-                            continue;
-                        }
                     }
                 }
                 else if(indF >= 0)

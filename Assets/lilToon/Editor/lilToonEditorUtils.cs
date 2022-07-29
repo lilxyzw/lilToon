@@ -7,9 +7,6 @@ using UnityEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using System.IO;
-#if VRC_SDK_VRCSDK3
-    using VRC.SDKBase.Editor.BuildPipeline;
-#endif
 
 using Object = UnityEngine.Object;
 
@@ -515,7 +512,7 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Debug
         //[MenuItem("GameObject/lilToon/[Debug] Optimization", false, menuPriorityFixLighting+1)]
-        //private static void DebugOptimization() { lilToonSetting.SetShaderSettingBeforeBuild(Selection.activeGameObject); }
+        //private static void DebugOptimization() { lilToonSetting.SetShaderSettingBeforeBuild(); }
         //[MenuItem("GameObject/lilToon/[Debug] Undo Optimization", false, menuPriorityFixLighting+2)]
         //private static void UndoDebugOptimization() { lilToonSetting.SetShaderSettingAfterBuild(); }
 
@@ -650,57 +647,19 @@ namespace lilToon
     }
 #endif
 
-public class lilToonBuildProcessor : IPreprocessBuildWithReport, IPostprocessBuildWithReport
-{
-    public int callbackOrder { get { return 100; } }
-
-    public void OnPreprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
-    {
-        lilToonSetting.SetShaderSettingBeforeBuild();
-    }
-
-    public void OnPostprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
-    {
-        lilToonSetting.SetShaderSettingAfterBuild();
-    }
-}
-
-#if VRC_SDK_VRCSDK3
-    //------------------------------------------------------------------------------------------------------------------------------
-    // VRChat
-    public class lilToonVRCBuildCallback : IVRCSDKBuildRequestedCallback, IVRCSDKPreprocessAvatarCallback, IVRCSDKPostprocessAvatarCallback
+    public class lilToonBuildProcessor : IPreprocessBuildWithReport, IPostprocessBuildWithReport
     {
         public int callbackOrder { get { return 100; } }
 
-        #if UDON
-            public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
-            {
-                lilToonSetting.SetShaderSettingBeforeBuild();
-                EditorApplication.delayCall += () =>
-                {
-                    lilToonSetting.SetShaderSettingAfterBuild();
-                };
-                return true;
-            }
-        #else
-            public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
-            {
-                lilToonSetting.ForceOptimization();
-                return true;
-            }
-        #endif
-
-        public bool OnPreprocessAvatar(GameObject avatarGameObject)
+        public void OnPreprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
         {
-            lilToonSetting.SetShaderSettingBeforeBuild(avatarGameObject);
-            return true;
+            lilToonSetting.SetShaderSettingBeforeBuild();
         }
 
-        public void OnPostprocessAvatar()
+        public void OnPostprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
         {
             lilToonSetting.SetShaderSettingAfterBuild();
         }
     }
-#endif
 }
 #endif

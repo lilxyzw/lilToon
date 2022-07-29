@@ -8,7 +8,7 @@ using UnityEditor;
 using System.Reflection;
 using System.Text.RegularExpressions;
 #if UNITY_2020_2_OR_NEWER
-using UnityEditor.AssetImporters;
+    using UnityEditor.AssetImporters;
 #else
     using UnityEditor.Experimental.AssetImporters;
 #endif

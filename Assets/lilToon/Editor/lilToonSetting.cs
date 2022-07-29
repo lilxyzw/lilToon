@@ -7,9 +7,6 @@ using System.Linq;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
-#if VRC_SDK_VRCSDK3 && !UDON
-    using VRC.SDK3.Avatars.Components;
-#endif
 
 public class lilToonSetting : ScriptableObject
 {
@@ -644,12 +641,12 @@ public class lilToonSetting : ScriptableObject
         AssetDatabase.Refresh();
     }
 
-    internal static void SetShaderSettingBeforeBuild(GameObject gameObject)
+    internal static void SetShaderSettingBeforeBuild(Material[] materials, AnimationClip[] clips)
     {
         try
         {
             if(!ShouldOptimization()) return;
-            var shaders = GetShaderListFromGameObject(gameObject);
+            var shaders = GetShaderListFromGameObject(materials, clips);
             if(shaders.Count() == 0) return;
 
             var shaderNames = new List<string>();
@@ -660,50 +657,19 @@ public class lilToonSetting : ScriptableObject
             InitializeShaderSetting(ref shaderSetting);
             TurnOffAllShaderSetting(ref shaderSetting);
 
-            lilOptimizer.OptimizeInputHLSL(gameObject);
+            lilOptimizer.OptimizeInputHLSL(materials, clips);
 
             // Get materials
-            foreach(var renderer in gameObject.GetComponentsInChildren<Renderer>(true))
+            foreach(var material in materials)
             {
-                foreach(var material in renderer.sharedMaterials)
-                {
-                    SetupShaderSettingFromMaterial(material, ref shaderSetting);
-                }
+                SetupShaderSettingFromMaterial(material, ref shaderSetting);
             }
 
             // Get animations
-            foreach(var animator in gameObject.GetComponentsInChildren<Animator>(true))
+            foreach(var clip in clips)
             {
-                if(animator.runtimeAnimatorController == null) continue;
-                foreach(var clip in animator.runtimeAnimatorController.animationClips)
-                {
-                    SetupShaderSettingFromAnimationClip(clip, ref shaderSetting, true);
-                }
+                SetupShaderSettingFromAnimationClip(clip, ref shaderSetting, true);
             }
-            #if VRC_SDK_VRCSDK3 && !UDON
-                foreach(var descriptor in gameObject.GetComponentsInChildren<VRCAvatarDescriptor>(true))
-                {
-                    foreach(var layer in descriptor.specialAnimationLayers)
-                    {
-                        if(layer.animatorController == null) continue;
-                        foreach(var clip in layer.animatorController.animationClips)
-                        {
-                            SetupShaderSettingFromAnimationClip(clip, ref shaderSetting, true);
-                        }
-                    }
-                    if(descriptor.customizeAnimationLayers)
-                    {
-                        foreach(var layer in descriptor.baseAnimationLayers)
-                        {
-                            if(layer.animatorController == null) continue;
-                            foreach(var clip in layer.animatorController.animationClips)
-                            {
-                                SetupShaderSettingFromAnimationClip(clip, ref shaderSetting, true);
-                            }
-                        }
-                    }
-                }
-            #endif
 
             // Apply
             ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild", shaders, true);
@@ -1274,50 +1240,19 @@ public class lilToonSetting : ScriptableObject
         return GetTrueShaderLists(shaders);
     }
 
-    private static List<Shader> GetShaderListFromGameObject(GameObject gameObject)
+    private static List<Shader> GetShaderListFromGameObject(Material[] materials, AnimationClip[] clips)
     {
         var shaders = new List<Shader>();
-        foreach(var renderer in gameObject.GetComponentsInChildren<Renderer>(true))
+
+        foreach(var material in materials)
         {
-            foreach(var material in renderer.sharedMaterials)
-            {
-                if(material != null && CheckShaderIslilToon(material.shader)) shaders.Add(material.shader);
-            }
+            if(material != null && CheckShaderIslilToon(material.shader)) shaders.Add(material.shader);
         }
 
-        foreach(var animator in gameObject.GetComponentsInChildren<Animator>(true))
+        foreach(var clip in clips)
         {
-            if(animator.runtimeAnimatorController == null) continue;
-            foreach(var clip in animator.runtimeAnimatorController.animationClips)
-            {
-                CheckAnimationClip(clip, shaders);
-            }
+            CheckAnimationClip(clip, shaders);
         }
-
-        #if VRC_SDK_VRCSDK3 && !UDON
-            foreach(var descriptor in gameObject.GetComponentsInChildren<VRCAvatarDescriptor>(true))
-            {
-                foreach(var layer in descriptor.specialAnimationLayers)
-                {
-                    if(layer.animatorController == null) continue;
-                    foreach(var clip in layer.animatorController.animationClips)
-                    {
-                        CheckAnimationClip(clip, shaders);
-                    }
-                }
-                if(descriptor.customizeAnimationLayers)
-                {
-                    foreach(var layer in descriptor.baseAnimationLayers)
-                    {
-                        if(layer.animatorController == null) continue;
-                        foreach(var clip in layer.animatorController.animationClips)
-                        {
-                            CheckAnimationClip(clip, shaders);
-                        }
-                    }
-                }
-            }
-        #endif
 
         return GetTrueShaderLists(shaders);
     }
