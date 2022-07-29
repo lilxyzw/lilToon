@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 修正
 - 一部スクリプトエラーになることがあるのを修正
 - 最適化後の色の値を修正
+- ForwardAddパスのライティングを修正
 
 ## [1.3.3] - 2022-07-27
 ### 追加

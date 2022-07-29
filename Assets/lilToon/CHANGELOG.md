@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed an issue that could cause script errors
 - Fixed color value after optimization
+- Fixed ForwardAdd lighting
 
 ## [1.3.3] - 2022-07-27
 ### Added
