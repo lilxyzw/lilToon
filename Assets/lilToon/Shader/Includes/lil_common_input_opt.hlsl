@@ -224,15 +224,17 @@ float4  _MainTex_ST;
 #endif
 
 // Outline
-float4  _OutlineColor;
-float4  _OutlineLitColor;
-float4  _OutlineTex_ST;
-#if defined(LIL_FEATURE_ANIMATE_OUTLINE_UV)
-    float4  _OutlineTex_ScrollRotate;
-#endif
-#if defined(LIL_FEATURE_OutlineTex)
-    #if defined(LIL_FEATURE_OUTLINE_TONE_CORRECTION)
-        float4  _OutlineTexHSVG;
+#if !defined(LIL_FUR) && !defined(LIL_REFRACTION) && !defined(LIL_GEM)
+    float4  _OutlineColor;
+    float4  _OutlineLitColor;
+    float4  _OutlineTex_ST;
+    #if defined(LIL_FEATURE_ANIMATE_OUTLINE_UV)
+        float4  _OutlineTex_ScrollRotate;
+    #endif
+    #if defined(LIL_FEATURE_OutlineTex)
+        #if defined(LIL_FEATURE_OUTLINE_TONE_CORRECTION)
+            float4  _OutlineTexHSVG;
+        #endif
     #endif
 #endif
 
@@ -450,13 +452,15 @@ float   _MonochromeLighting;
 #endif
 float   _lilShadowCasterBias;
 
-float   _OutlineLitScale;
-float   _OutlineLitOffset;
-float   _OutlineWidth;
-float   _OutlineEnableLighting;
-float   _OutlineVectorScale;
-float   _OutlineFixWidth;
-float   _OutlineZBias;
+#if !defined(LIL_FUR) && !defined(LIL_REFRACTION) && !defined(LIL_GEM)
+    float   _OutlineLitScale;
+    float   _OutlineLitOffset;
+    float   _OutlineWidth;
+    float   _OutlineEnableLighting;
+    float   _OutlineVectorScale;
+    float   _OutlineFixWidth;
+    float   _OutlineZBias;
+#endif
 
 #if defined(LIL_FUR)
     float   _FurVectorScale;
@@ -491,7 +495,9 @@ float   _OutlineZBias;
 //------------------------------------------------------------------------------------------------------------------------------
 // Int
 uint    _Cull;
-uint    _OutlineCull;
+#if !defined(LIL_FUR) && !defined(LIL_REFRACTION) && !defined(LIL_GEM)
+    uint    _OutlineCull;
+#endif
 #if LIL_RENDER == 2 && !defined(LIL_FUR) && !defined(LIL_GEM) && !defined(LIL_REFRACTION)
     uint    _PreOutType;
 #endif
@@ -538,8 +544,10 @@ uint    _OutlineCull;
         uint    _AudioLinkVertexUVMode;
     #endif
 #endif
-uint    _OutlineVertexR2Width;
-uint    _OutlineVectorUVMode;
+#if !defined(LIL_FUR) && !defined(LIL_REFRACTION) && !defined(LIL_GEM)
+    uint    _OutlineVertexR2Width;
+    uint    _OutlineVectorUVMode;
+#endif
 #if defined(LIL_FUR)
     uint    _FurLayerNum;
     uint    _FurMeshType;
@@ -677,10 +685,12 @@ lilBool _Invisible;
     lilBool _IgnoreEncryption;
 #endif
 
-lilBool _OutlineLitApplyTex;
-lilBool _OutlineLitShadowReceive;
-lilBool _OutlineDeleteMesh;
-lilBool _OutlineDisableInVR;
+#if !defined(LIL_FUR) && !defined(LIL_REFRACTION) && !defined(LIL_GEM)
+    lilBool _OutlineLitApplyTex;
+    lilBool _OutlineLitShadowReceive;
+    lilBool _OutlineDeleteMesh;
+    lilBool _OutlineDisableInVR;
+#endif
 
 #if defined(LIL_FUR)
     lilBool _VertexColor2FurVector;
