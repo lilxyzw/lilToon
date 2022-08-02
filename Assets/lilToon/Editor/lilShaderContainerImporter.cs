@@ -276,6 +276,13 @@ namespace lilToon
 
             sb.Replace("(\"Version\", Int) = 0", "(\"Version\", Int) = " + lilConstants.currentVersionValue.ToString());
 
+            LightModeOverride(ref sb, "FORWARD",            GetStringField("mainLightModeName"));
+            LightModeOverride(ref sb, "FORWARD_OUTLINE",    GetStringField("outlineLightModeName"));
+            LightModeOverride(ref sb, "FORWARD_BACK",       GetStringField("preLightModeName"));
+            LightModeOverride(ref sb, "FORWARD_FUR",        GetStringField("furLightModeName"));
+            LightModeOverride(ref sb, "FORWARD_FUR_PRE",    GetStringField("furPreLightModeName"));
+            LightModeOverride(ref sb, "FORWARD_PRE",        GetStringField("gemPreLightModeName"));
+
             switch(version.RP)
             {
                 case lilRenderPipeline.BRP:
@@ -852,11 +859,30 @@ namespace lilToon
             return relativePath;
         }
 
+        private static void LightModeOverride(ref StringBuilder sb, string passName, string lightModeName)
+        {
+            if(!string.IsNullOrEmpty(lightModeName))
+            {
+                sb.Replace(
+                    "            Name \"" + passName + "\"" + Environment.NewLine + "            Tags {\"LightMode\" = \"" + LIL_LIGHTMODE_FORWARD_0 + "\"}",
+                    "            Name \"" + passName + "\"" + Environment.NewLine + "            Tags {\"LightMode\" = \"" + lightModeName + "\"}"
+                );
+                sb.Replace(
+                    "            Name \"" + passName + "\"" + Environment.NewLine + "            Tags {\"LightMode\" = \"" + LIL_LIGHTMODE_FORWARD_1 + "\"}",
+                    "            Name \"" + passName + "\"" + Environment.NewLine + "            Tags {\"LightMode\" = \"" + lightModeName + "\"}"
+                );
+                sb.Replace(
+                    "            Name \"" + passName + "\"" + Environment.NewLine + "            Tags {\"LightMode\" = \"" + LIL_LIGHTMODE_FORWARD_2 + "\"}",
+                    "            Name \"" + passName + "\"" + Environment.NewLine + "            Tags {\"LightMode\" = \"" + lightModeName + "\"}"
+                );
+            }
+        }
+
         //------------------------------------------------------------------------------------------------------------------------------
         // ForwardAdd
         public static void RewriteForwardAdd(ref StringBuilder sb)
         {
-            bool enable = ShouldUseForwardAdd();
+            bool enable = GetBoolField("LIL_OPTIMIZE_USE_FORWARDADD", true);
 
             if(enable)
             {
@@ -905,7 +931,7 @@ namespace lilToon
 
         public static void RewriteForwardAddShadow(ref StringBuilder sb)
         {
-            bool enable = ShouldUseForwardAddShadow();
+            bool enable = GetBoolField("LIL_OPTIMIZE_USE_FORWARDADD_SHADOW");
 
             if(enable)
             {
@@ -913,42 +939,6 @@ namespace lilToon
                     "#pragma multi_compile_fragment POINT DIRECTIONAL SPOT POINT_COOKIE DIRECTIONAL_COOKIE",
                     "#pragma multi_compile_fwdadd_fullshadows");
             }
-        }
-
-        private static bool ShouldUseForwardAdd()
-        {
-            Type type = typeof(lilToonSetting);
-            var field = type.GetField("LIL_OPTIMIZE_USE_FORWARDADD");
-            if(field == null) return true;
-
-            lilToonSetting shaderSetting = InitSetting();
-            if(shaderSetting == null) return true;
-
-            return (bool)field.GetValue(shaderSetting);
-        }
-
-        private static bool ShouldUseForwardAddShadow()
-        {
-            Type type = typeof(lilToonSetting);
-            var field = type.GetField("LIL_OPTIMIZE_USE_FORWARDADD_SHADOW");
-            if(field == null) return false;
-
-            lilToonSetting shaderSetting = InitSetting();
-            if(shaderSetting == null) return false;
-
-            return (bool)field.GetValue(shaderSetting);
-        }
-
-        private static lilToonSetting InitSetting()
-        {
-            Type type = typeof(lilToonSetting);
-            var method = type.GetMethod("InitializeShaderSetting", BindingFlags.Static | BindingFlags.NonPublic);
-            if(method == null) return null;
-
-            lilToonSetting shaderSetting = null;
-            var objs = new object[]{shaderSetting};
-            method.Invoke(null, objs);
-            return (lilToonSetting)objs[0];
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -1503,6 +1493,42 @@ namespace lilToon
                 return outstr;
             }
             return "";
+        }
+
+        private static bool GetBoolField(string name, bool def = false)
+        {
+            var val = GetFieldValue(name);
+            return val == null ? def : (bool)val;
+        }
+
+        private static string GetStringField(string name)
+        {
+            var val = GetFieldValue(name);
+            return val == null ? "" : (string)val;
+        }
+
+        private static object GetFieldValue(string name)
+        {
+            Type type = typeof(lilToonSetting);
+            var field = type.GetField(name);
+            if(field == null) return null;
+
+            lilToonSetting shaderSetting = InitSetting();
+            if(shaderSetting == null) return null;
+
+            return field.GetValue(shaderSetting);
+        }
+
+        private static lilToonSetting InitSetting()
+        {
+            Type type = typeof(lilToonSetting);
+            var method = type.GetMethod("InitializeShaderSetting", BindingFlags.Static | BindingFlags.NonPublic);
+            if(method == null) return null;
+
+            lilToonSetting shaderSetting = null;
+            var objs = new object[]{shaderSetting};
+            method.Invoke(null, objs);
+            return (lilToonSetting)objs[0];
         }
 
         private static void AddDependency(AssetImportContext ctx, string path)

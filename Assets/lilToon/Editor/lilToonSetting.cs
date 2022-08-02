@@ -125,6 +125,13 @@ public class lilToonSetting : ScriptableObject
     public float defaultMonochromeLighting = 0.0f;
     public float defaultlilDirectionalLightStrength = 1.0f;
 
+    public string mainLightModeName = "";
+    public string outlineLightModeName = "";
+    public string preLightModeName = "";
+    public string furLightModeName = "";
+    public string furPreLightModeName = "";
+    public string gemPreLightModeName = "";
+
     public lilToonPreset presetSkin;
     public lilToonPreset presetFace;
     public lilToonPreset presetHair;
