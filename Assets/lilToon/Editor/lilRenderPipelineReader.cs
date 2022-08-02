@@ -57,7 +57,7 @@ namespace lilToon
             return new PackageVersionInfos()
             {
                 RP = lilRenderPipeline.BRP,
-                Major = 12,
+                Major = 0,
                 Minor = 0,
                 Patch = 0
             };
@@ -98,7 +98,7 @@ namespace lilToon
             infos.RP = lilRenderPipeline.BRP;
             if(string.IsNullOrEmpty(version))
             {
-                infos.Major = 12;
+                infos.Major = 0;
                 infos.Minor = 0;
                 infos.Patch = 0;
             }

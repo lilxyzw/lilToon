@@ -1,5 +1,11 @@
 Shader "Hidden/ltspass_tess_opaque"
 {
+    Properties
+    {
+        lilProperties "Default"
+        lilProperties "DefaultOpaque"
+    }
+
     HLSLINCLUDE
         #define LIL_RENDER 0
     ENDHLSL

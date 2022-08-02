@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.5] - 2022-07-xx
 ### 修正
 - VRChatのワールドSDKでのエラーを修正
+- URPのライトレイヤーを修正
 
 ## [1.3.4] - 2022-07-30
 ### 追加

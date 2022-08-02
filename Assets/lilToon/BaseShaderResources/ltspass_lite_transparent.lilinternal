@@ -1,5 +1,11 @@
 Shader "Hidden/ltspass_lite_transparent"
 {
+    Properties
+    {
+        lilProperties "DefaultLite"
+        lilProperties "DefaultTransparent"
+    }
+
     HLSLINCLUDE
         #define LIL_RENDER 2
     ENDHLSL

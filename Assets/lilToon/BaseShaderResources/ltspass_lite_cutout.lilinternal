@@ -1,5 +1,11 @@
 Shader "Hidden/ltspass_lite_cutout"
 {
+    Properties
+    {
+        lilProperties "DefaultLite"
+        lilProperties "DefaultCutout"
+    }
+
     HLSLINCLUDE
         #define LIL_RENDER 1
     ENDHLSL

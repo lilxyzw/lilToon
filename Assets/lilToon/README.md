@@ -97,14 +97,6 @@ Please refer to the [manual](https://github.com/lilxyzw/lilToon/blob/master/Asse
   → You can specify a mask texture in `Mask & Width` to partially remove outline or adjust the thickness.
 - Shadows are weak in bright places.  
   → `Environment Strength` value affects the strength of shadows in bright places.
-- Errors occur in a specific version of SRP  
-  → SRP 7.0.0 or earlier cannot pick up the version number, so the shader cannot perform detailed version determination.  
-  If the error occurs, you need to specify the detailed version in `lilToon/Shader/Includes/lil_common_macro.hlsl` or update to the latest version.  
-  Example: HDRP 4.8.0
-  ```HLSL
-  #define SHADER_LIBRARY_VERSION_MAJOR 4
-  #define SHADER_LIBRARY_VERSION_MINOR 8
-  ```
 
 If you have any other problems and suspect a bug, please contact me on [Twitter](https://twitter.com/lil_xyzw), [GitHub](https://github.com/lilxyzw/lilToon), or [BOOTH](https://lilxyzw.booth.pm/). Please refer to the following template when reporting a bug.
 ```

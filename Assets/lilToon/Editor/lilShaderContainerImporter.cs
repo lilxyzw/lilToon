@@ -229,6 +229,15 @@ namespace lilToon
                     break;
             }
 
+            if(version.RP != lilRenderPipeline.BRP && version.Major > 0)
+            {
+                shaderSettingText +=
+                    Environment.NewLine +
+                    "            #define LIL_SRP_VERSION_MAJOR " + version.Major + Environment.NewLine +
+                    "            #define LIL_SRP_VERSION_MINOR " + version.Minor + Environment.NewLine +
+                    "            #define LIL_SRP_VERSION_PATCH " + version.Patch + Environment.NewLine;
+            }
+
             ReadDataFile(ctx);
             ReplaceMultiCompiles(ref insertPassPre, version, indent, false);
             ReplaceMultiCompiles(ref insertPassPost, version, indent, false);

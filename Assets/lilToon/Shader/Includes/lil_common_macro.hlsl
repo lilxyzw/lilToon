@@ -7,8 +7,8 @@
 // The version of SRP is automatically determined, but an error may occur in a specific version.
 // In that case, define the version.
 // Example: HDRP 4.8.0
-// #define SHADER_LIBRARY_VERSION_MAJOR 4
-// #define SHADER_LIBRARY_VERSION_MINOR 8
+// #define LIL_SRP_VERSION_MAJOR 4
+// #define LIL_SRP_VERSION_MINOR 8
 
 // Transparent mode on subpass (Default : 0)
 // 0 : Cutout
@@ -49,44 +49,46 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Version
-#if !defined(SHADER_LIBRARY_VERSION_MAJOR)
-    #if UNITY_VERSION < 201820
-        #define SHADER_LIBRARY_VERSION_MAJOR 1
+#if !defined(LIL_SRP_VERSION_MAJOR)
+    #if UNITY_VERSION < 201810
+        #define LIL_SRP_VERSION_MAJOR 0
+    #elif UNITY_VERSION < 201820
+        #define LIL_SRP_VERSION_MAJOR 1
     #elif UNITY_VERSION < 201830
-        #define SHADER_LIBRARY_VERSION_MAJOR 2
+        #define LIL_SRP_VERSION_MAJOR 2
     #elif UNITY_VERSION < 201840
-        #define SHADER_LIBRARY_VERSION_MAJOR 3
+        #define LIL_SRP_VERSION_MAJOR 3
     #elif UNITY_VERSION < 201910
-        #define SHADER_LIBRARY_VERSION_MAJOR 4
+        #define LIL_SRP_VERSION_MAJOR 4
     #elif UNITY_VERSION < 201920
-        #define SHADER_LIBRARY_VERSION_MAJOR 5
+        #define LIL_SRP_VERSION_MAJOR 5
     #elif UNITY_VERSION < 201930
-        #define SHADER_LIBRARY_VERSION_MAJOR 6
+        #define LIL_SRP_VERSION_MAJOR 6
     #elif UNITY_VERSION < 201940
-        #define SHADER_LIBRARY_VERSION_MAJOR 7
+        #define LIL_SRP_VERSION_MAJOR 7
     #elif UNITY_VERSION < 202010
-        #define SHADER_LIBRARY_VERSION_MAJOR 8
+        #define LIL_SRP_VERSION_MAJOR 8
     #elif UNITY_VERSION < 202020
-        #define SHADER_LIBRARY_VERSION_MAJOR 9
+        #define LIL_SRP_VERSION_MAJOR 9
     #elif UNITY_VERSION < 202030
-        #define SHADER_LIBRARY_VERSION_MAJOR 10
+        #define LIL_SRP_VERSION_MAJOR 10
     #elif UNITY_VERSION < 202110
-        #define SHADER_LIBRARY_VERSION_MAJOR 11
+        #define LIL_SRP_VERSION_MAJOR 11
     #elif UNITY_VERSION < 202120
-        #define SHADER_LIBRARY_VERSION_MAJOR 12
+        #define LIL_SRP_VERSION_MAJOR 12
     #elif UNITY_VERSION < 202210
-        #define SHADER_LIBRARY_VERSION_MAJOR 13
+        #define LIL_SRP_VERSION_MAJOR 13
     #else
-        #define SHADER_LIBRARY_VERSION_MAJOR 0
+        #define LIL_SRP_VERSION_MAJOR 14
     #endif
 #endif
-#if !defined(SHADER_LIBRARY_VERSION_MINOR)
-    #define SHADER_LIBRARY_VERSION_MINOR 99
+#if !defined(LIL_SRP_VERSION_MINOR)
+    #define LIL_SRP_VERSION_MINOR 99
 #endif
-#if !defined(VERSION_GREATER_EQUAL)
-    #define VERSION_GREATER_EQUAL(major, minor) ((SHADER_LIBRARY_VERSION_MAJOR > major) || ((SHADER_LIBRARY_VERSION_MAJOR == major) && (SHADER_LIBRARY_VERSION_MINOR >= minor)))
-    #define VERSION_LOWER(major, minor) ((SHADER_LIBRARY_VERSION_MAJOR < major) || ((SHADER_LIBRARY_VERSION_MAJOR == major) && (SHADER_LIBRARY_VERSION_MINOR < minor)))
-    #define VERSION_EQUAL(major, minor) ((SHADER_LIBRARY_VERSION_MAJOR == major) && (SHADER_LIBRARY_VERSION_MINOR == minor))
+#if !defined(LIL_SRP_VERSION_GREATER_EQUAL)
+    #define LIL_SRP_VERSION_GREATER_EQUAL(major, minor) ((LIL_SRP_VERSION_MAJOR > major) || ((LIL_SRP_VERSION_MAJOR == major) && (LIL_SRP_VERSION_MINOR >= minor)))
+    #define LIL_SRP_VERSION_LOWER(major, minor) ((LIL_SRP_VERSION_MAJOR < major) || ((LIL_SRP_VERSION_MAJOR == major) && (LIL_SRP_VERSION_MINOR < minor)))
+    #define LIL_SRP_VERSION_EQUAL(major, minor) ((LIL_SRP_VERSION_MAJOR == major) && (LIL_SRP_VERSION_MINOR == minor))
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -135,7 +137,7 @@
 #if defined(LIGHTMAP_ON)
     #define LIL_USE_LIGHTMAP
 #endif
-#if defined(DYNAMICLIGHTMAP_ON) && !(defined(LIL_URP) && VERSION_LOWER(12, 0))
+#if defined(DYNAMICLIGHTMAP_ON) && !(defined(LIL_URP) && LIL_SRP_VERSION_LOWER(12, 0))
     #define LIL_USE_DYNAMICLIGHTMAP
 #endif
 #if defined(DIRLIGHTMAP_COMBINED)
@@ -513,7 +515,7 @@
 
 // Stereo
 #if defined(LIL_HDRP)
-    #if VERSION_GREATER_EQUAL(7, 1)
+    #if LIL_SRP_VERSION_GREATER_EQUAL(7, 1)
         #define LIL_STEREO_MATRIX_V(i)     _XRViewMatrix[i]
         #define LIL_STEREO_CAMERA_POS(i)   _XRWorldSpaceCameraPos[i]
     #else
@@ -959,7 +961,7 @@ float3 lilGetObjectPosition()
     #define LIGHT_SIMULATE_HQ
 
     // Support for old version
-    #if VERSION_LOWER(4, 1)
+    #if LIL_SRP_VERSION_LOWER(4, 1)
         #define LIL_HDRP_IGNORE_LIGHTDIMMER
         float4 EvaluateAtmosphericScattering(PositionInputs posInput, float3 viewDirection, float4 col)
         {
@@ -967,33 +969,33 @@ float3 lilGetObjectPosition()
         }
     #endif
 
-    #if VERSION_LOWER(4, 2)
+    #if LIL_SRP_VERSION_LOWER(4, 2)
         float GetDirectionalShadowAttenuation(HDShadowContext shadowContext, float2 positionSS, float3 positionWS, float3 normalWS, int shadowIndex, float3 L)
         {
             return GetDirectionalShadowAttenuation(shadowContext, positionWS, normalWS, shadowIndex, L, positionSS);
         }
     #endif
 
-    #if VERSION_LOWER(5, 3)
+    #if LIL_SRP_VERSION_LOWER(5, 3)
         float GetCurrentExposureMultiplier()
         {
             return 1.0;
         }
     #endif
 
-    #if VERSION_LOWER(6, 6)
+    #if LIL_SRP_VERSION_LOWER(6, 6)
         float3 SampleCameraColor(float2 uv, float lod)
         {
             return LIL_SAMPLE_2D_LOD(_ColorPyramidTexture, s_trilinear_clamp_sampler, uv, lod).rgb;
         }
     #endif
 
-    #if VERSION_LOWER(6, 8)
+    #if LIL_SRP_VERSION_LOWER(6, 8)
         float4 EvaluateLight_Directional(LightLoopContext lightLoopContext, PositionInputs posInput, DirectionalLightData light)
         {
             float4 color = float4(light.color, 1.0);
 
-            #if VERSION_GREATER_EQUAL(4, 1)
+            #if LIL_SRP_VERSION_GREATER_EQUAL(4, 1)
                 float cosZenithAngle = -light.forward.y;
                 float fragmentHeight = posInput.positionWS.y;
                 color.a = TransmittanceHeightFog(_HeightFogBaseExtinction, _HeightFogBaseHeight, _HeightFogExponents, cosZenithAngle, fragmentHeight);
@@ -1016,7 +1018,7 @@ float3 lilGetObjectPosition()
         }
     #endif
 
-    #if VERSION_LOWER(7, 1)
+    #if LIL_SRP_VERSION_LOWER(7, 1)
         float3 TransformPreviousObjectToWorld(float3 positionOS)
         {
             float4x4 previousModelMatrix = ApplyCameraTranslationToMatrix(unity_MatrixPreviousM);
@@ -1024,7 +1026,7 @@ float3 lilGetObjectPosition()
         }
     #endif
 
-    #if VERSION_LOWER(11, 0)
+    #if LIL_SRP_VERSION_LOWER(11, 0)
         #define LIL_HDRP_DEEXPOSURE(col)
         #define LIL_HDRP_INVDEEXPOSURE(col)
     #else
@@ -1034,9 +1036,9 @@ float3 lilGetObjectPosition()
 
     float4 SampleEnv(LightLoopContext lightLoopContext, PositionInputs posInput, EnvLightData lightData, float3 reflUVW, float lod)
     {
-        #if VERSION_GREATER_EQUAL(10, 1)
+        #if LIL_SRP_VERSION_GREATER_EQUAL(10, 1)
             float4 reflectionCol = SampleEnv(lightLoopContext, lightData.envIndex, reflUVW, lod * lightData.roughReflections, lightData.rangeCompressionFactorCompensation, posInput.positionNDC);
-        #elif VERSION_GREATER_EQUAL(7, 1)
+        #elif LIL_SRP_VERSION_GREATER_EQUAL(7, 1)
             float4 reflectionCol = SampleEnv(lightLoopContext, lightData.envIndex, reflUVW, lod, lightData.rangeCompressionFactorCompensation);
         #else
             float4 reflectionCol = SampleEnv(lightLoopContext, lightData.envIndex, reflUVW, lod);
@@ -1208,14 +1210,14 @@ float3 lilGetObjectPosition()
         float4 color = float4(light.color, 1.0);
         color.a *= PunctualLightAttenuation(distances, light.rangeAttenuationScale, light.rangeAttenuationBias, light.angleScale, light.angleOffset);
 
-        #if !defined(LIGHT_EVALUATION_NO_HEIGHT_FOG) && VERSION_GREATER_EQUAL(4, 1)
+        #if !defined(LIGHT_EVALUATION_NO_HEIGHT_FOG) && LIL_SRP_VERSION_GREATER_EQUAL(4, 1)
             float cosZenithAngle = L.y;
             float distToLight = (light.lightType == GPULIGHTTYPE_PROJECTOR_BOX) ? distances.w : distances.x;
             float fragmentHeight = positionWS.y;
             color.a *= TransmittanceHeightFog(_HeightFogBaseExtinction, _HeightFogBaseHeight, _HeightFogExponents, cosZenithAngle, fragmentHeight, distToLight);
         #endif
 
-        #if VERSION_LOWER(7, 2)
+        #if LIL_SRP_VERSION_LOWER(7, 2)
             if(light.cookieIndex >= 0)
         #else
             if(light.cookieMode != COOKIEMODE_NONE)
@@ -1534,7 +1536,12 @@ float3 lilGetObjectPosition()
 #else
     // Support for old version
     // HDRP Data
-    #if VERSION_GREATER_EQUAL(12, 0)
+    #if LIL_SRP_VERSION_GREATER_EQUAL(14, 0)
+        uint lilGetRenderingLayer()
+        {
+            return asuint(unity_RenderingLayer.x);
+        }
+    #elif LIL_SRP_VERSION_GREATER_EQUAL(12, 0)
         uint lilGetRenderingLayer()
         {
             #if defined(_LIGHT_LAYERS)
@@ -1554,7 +1561,7 @@ float3 lilGetObjectPosition()
     #define LIL_HDRP_INVDEEXPOSURE(col)
 
     // Main light
-    #if VERSION_GREATER_EQUAL(12, 0) && defined(_LIGHT_LAYERS)
+    #if LIL_SRP_VERSION_GREATER_EQUAL(12, 0) && defined(_LIGHT_LAYERS)
         #define LIL_MAINLIGHT_COLOR                         ((_MainLightLayerMask & lilGetRenderingLayer()) != 0 ? _MainLightColor.rgb : 0.0)
     #else
         #define LIL_MAINLIGHT_COLOR                         _MainLightColor.rgb
@@ -1606,7 +1613,7 @@ float3 lilGetObjectPosition()
 
         positionWS -= lightDirectionWS * bias;
 
-        #if VERSION_GREATER_EQUAL(5, 1)
+        #if LIL_SRP_VERSION_GREATER_EQUAL(5, 1)
             float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, lightDirectionWS));
         #else
             float4 positionCS = TransformWorldToHClip(positionWS);
@@ -1649,11 +1656,13 @@ float3 lilGetObjectPosition()
             #endif
 
                 Light light = GetAdditionalLight(lightIndex, positionWS);
-                #if VERSION_GREATER_EQUAL(12, 0)
+                #if LIL_SRP_VERSION_GREATER_EQUAL(12, 0) && defined(_LIGHT_LAYERS)
                     if((light.layerMask & renderingLayers) != 0)
                 #endif
-                lightColor += light.color * light.distanceAttenuation;
-                lightDirection += dot(light.color, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * light.distanceAttenuation * light.direction;
+                {
+                    lightColor += light.color * light.distanceAttenuation;
+                    lightDirection += dot(light.color, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * light.distanceAttenuation * light.direction;
+                }
             }
 
             #if defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
@@ -1665,7 +1674,7 @@ float3 lilGetObjectPosition()
             for(uint lightIndex = 0; lightIndex < min(_AdditionalLightsDirectionalCount, MAX_VISIBLE_LIGHTS); lightIndex++)
             {
                 Light light = GetAdditionalLight(lightIndex, positionWS);
-                #if VERSION_GREATER_EQUAL(12, 0)
+                #if LIL_SRP_VERSION_GREATER_EQUAL(12, 0) && defined(_LIGHT_LAYERS)
                     if((light.layerMask & renderingLayers) != 0)
                 #endif
                 lightColor += light.color * light.distanceAttenuation;
@@ -1699,7 +1708,7 @@ float3 lilGetObjectPosition()
         #define LIL_APPLY_FOG_BASE(col,fogCoord)                 col.rgb = lerp(unity_FogColor.rgb,col.rgb,fogCoord)
         #define LIL_APPLY_FOG_COLOR_BASE(col,fogCoord,fogColor)  col.rgb = lerp(fogColor.rgb,col.rgb,fogCoord)
     #endif
-    #if VERSION_GREATER_EQUAL(7, 1)
+    #if LIL_SRP_VERSION_GREATER_EQUAL(7, 1)
         float lilCalcFogFactor(float depth)
         {
             #if defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)
@@ -1730,7 +1739,7 @@ float3 lilGetObjectPosition()
 #endif
 
 // Meta
-#if !defined(LIL_BRP) && (VERSION_LOWER(5, 14))
+#if !defined(LIL_BRP) && (LIL_SRP_VERSION_LOWER(5, 14))
     #define LIL_TRANSFER_METAPASS(input,output) \
         output.positionCS = MetaVertexPosition(input.positionOS, input.uv1, input.uv2, unity_LightmapST)
 #else
