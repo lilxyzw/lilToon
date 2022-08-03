@@ -379,6 +379,7 @@ CBUFFER_START(UnityPerMaterial)
         float   _Main3rdDissolveNoiseStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_ALPHAMASK)
+        float4  _AlphaMask_ST;
         float   _AlphaMaskScale;
         float   _AlphaMaskValue;
     #endif

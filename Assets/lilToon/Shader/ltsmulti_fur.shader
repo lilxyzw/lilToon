@@ -92,7 +92,7 @@ Shader "Hidden/lilToonMultiFur"
         //----------------------------------------------------------------------------------------------------------------------
         // Alpha Mask
         [lilEnumLabel]  _AlphaMaskMode              ("AlphaMask|", Int) = 0
-        [NoScaleOffset] _AlphaMask                  ("AlphaMask", 2D) = "white" {}
+                        _AlphaMask                  ("AlphaMask", 2D) = "white" {}
                         _AlphaMaskScale             ("Scale", Float) = 1
                         _AlphaMaskValue             ("Offset", Float) = 0
 
