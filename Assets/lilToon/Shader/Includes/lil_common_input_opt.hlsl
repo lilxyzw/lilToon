@@ -294,6 +294,7 @@ float   _MonochromeLighting;
     #endif
 #endif
 #if defined(LIL_FEATURE_ALPHAMASK)
+    float4  _AlphaMask_ST;
     float   _AlphaMaskScale;
     float   _AlphaMaskValue;
 #endif

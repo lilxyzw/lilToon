@@ -47,7 +47,7 @@ Shader "Hidden/ltsother_baker"
         //----------------------------------------------------------------------------------------------------------------------
         // Alpha Mask
         [lilEnumLabel]  _AlphaMaskMode              ("AlphaMask|", Int) = 0
-        [NoScaleOffset] _AlphaMask                  ("AlphaMask", 2D) = "white" {}
+                        _AlphaMask                  ("AlphaMask", 2D) = "white" {}
                         _AlphaMaskScale             ("Scale", Float) = 1
                         _AlphaMaskValue             ("Offset", Float) = 0
 
@@ -127,7 +127,13 @@ Shader "Hidden/ltsother_baker"
                     float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv0);
                     float alphaMask = LIL_SAMPLE_2D(_AlphaMask,sampler_MainTex,input.uv0).r;
                     alphaMask = saturate(alphaMask * _AlphaMaskScale + _AlphaMaskValue);
-                    col.a = _AlphaMaskMode == 1 ? alphaMask : col.a * alphaMask;
+                    switch(_AlphaMaskMode){
+                        case 0: break;
+                        case 1: col.a = alphaMask; break;
+                        case 2: col.a = col.a * alphaMask; break;
+                        case 3: col.a = saturate(col.a + alphaMask); break;
+                        case 4: col.a = saturate(col.a - alphaMask); break;
+                    }
                 #elif defined(_NORMAL_DXGL)
                     float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv0);
                     col.g = 1.0 - col.g;

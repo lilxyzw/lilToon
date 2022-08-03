@@ -4504,6 +4504,7 @@ namespace lilToon
                 {
                     EditorGUILayout.BeginVertical(boxInnerHalf);
                     m_MaterialEditor.TexturePropertySingleLine(alphaMaskContent, alphaMask);
+                    m_MaterialEditor.TextureScaleOffsetProperty(alphaMask);
 
                     bool invertAlphaMask = alphaMaskScale.floatValue < 0;
                     float transparency = alphaMaskValue.floatValue - (invertAlphaMask ? 1.0f : 0.0f);

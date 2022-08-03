@@ -436,7 +436,7 @@
 // Alpha Mask
 #if !defined(OVERRIDE_ALPHAMASK)
     #if defined(LIL_FEATURE_AlphaMask)
-        #define LIL_SAMPLE_AlphaMask alphaMask = LIL_SAMPLE_2D(_AlphaMask, sampler_MainTex, fd.uvMain).r
+        #define LIL_SAMPLE_AlphaMask alphaMask = LIL_SAMPLE_2D_ST(_AlphaMask, sampler_MainTex, fd.uvMain).r
     #else
         #define LIL_SAMPLE_AlphaMask
     #endif
@@ -447,7 +447,13 @@
             float alphaMask = 1.0; \
             LIL_SAMPLE_AlphaMask; \
             alphaMask = saturate(alphaMask * _AlphaMaskScale + _AlphaMaskValue); \
-            fd.col.a = _AlphaMaskMode == 1 ? alphaMask : fd.col.a * alphaMask; \
+            switch(_AlphaMaskMode){ \
+            case 0: break; \
+            case 1: fd.col.a = alphaMask; break; \
+            case 2: fd.col.a = fd.col.a * alphaMask; break; \
+            case 3: fd.col.a = saturate(fd.col.a + alphaMask); break; \
+            case 4: fd.col.a = saturate(fd.col.a - alphaMask); break; \
+            } \
         }
 #endif
 
