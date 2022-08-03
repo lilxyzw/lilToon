@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.5] - 2022-07-xx
 ### 追加
 - LightModeのオーバーライドを追加
+- アルファマスクに`Tiling & Offset`と`合成モード (加算 / 減算)`を追加
 
 ### 修正
 - VRChatのワールドSDKでのエラーを修正
