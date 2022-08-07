@@ -654,6 +654,8 @@ namespace lilToon
         public void OnPreprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
         {
             lilToonSetting.SetShaderSettingBeforeBuild();
+            EditorApplication.delayCall -= lilToonSetting.SetShaderSettingAfterBuild;
+            EditorApplication.delayCall += lilToonSetting.SetShaderSettingAfterBuild;
         }
 
         public void OnPostprocessBuild(UnityEditor.Build.Reporting.BuildReport report)

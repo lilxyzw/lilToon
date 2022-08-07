@@ -136,10 +136,8 @@ namespace lilToon
             // Turn on all settings when auto
             if(File.Exists(lilDirectoryManager.postBuildTempPath)) 
             {
-                EditorApplication.delayCall += () =>
-                {
-                    lilToonSetting.SetShaderSettingAfterBuild();
-                };
+                EditorApplication.delayCall -= lilToonSetting.SetShaderSettingAfterBuild;
+                EditorApplication.delayCall += lilToonSetting.SetShaderSettingAfterBuild;
             }
         }
 

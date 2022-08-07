@@ -23,10 +23,8 @@ namespace lilToon
                 try
                 {
                     SetShaderSettingBeforeBuild();
-                    EditorApplication.delayCall += () =>
-                    {
-                        SetShaderSettingAfterBuild();
-                    };
+                    EditorApplication.delayCall -= SetShaderSettingAfterBuild;
+                    EditorApplication.delayCall += SetShaderSettingAfterBuild;
                 }
                 catch(Exception e)
                 {

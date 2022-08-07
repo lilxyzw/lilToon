@@ -34,10 +34,8 @@ namespace lilToon
                 Debug.Log("[lilToon] OnBuildRequested() failed");
             }
 
-            EditorApplication.delayCall += () =>
-            {
-                SetShaderSettingAfterBuild();
-            };
+            EditorApplication.delayCall -= SetShaderSettingAfterBuild;
+            EditorApplication.delayCall += SetShaderSettingAfterBuild;
         }
 
         private static Material[] GetMaterialsFromGameObject(GameObject gameObject)
