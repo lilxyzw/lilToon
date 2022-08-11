@@ -4,8 +4,10 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using VRC.SDK3.Avatars.Components;
 using VRC.SDKBase.Editor.BuildPipeline;
+#if !UDON
+using VRC.SDK3.Avatars.Components;
+#endif
 
 namespace lilToon
 {
