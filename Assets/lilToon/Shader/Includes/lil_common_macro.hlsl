@@ -38,10 +38,13 @@
 // 5 : Add to main light with direction in Fragment Shader
 #if defined(LIL_BRP)
     #define LIL_ADDITIONAL_LIGHT_MODE 3
+    #define LIL_ADDITIONAL_LIGHT_STRENGTH _VertexLightStrength
 #elif defined(LIL_HDRP)
     #define LIL_ADDITIONAL_LIGHT_MODE 5
+    #define LIL_ADDITIONAL_LIGHT_STRENGTH 1
 #else
     #define LIL_ADDITIONAL_LIGHT_MODE 4
+    #define LIL_ADDITIONAL_LIGHT_STRENGTH 1
 #endif
 
 // Near clip threshold for clipping canceller (Default : 0.1)
@@ -856,7 +859,7 @@ float3 lilGetObjectPosition()
     #define LIL_SHADOW_CASTER_FRAGMENT(i)           SHADOW_CASTER_FRAGMENT(i)
 
     // Additional Light
-    void lilGetAdditionalLights(float3 positionWS, float4 positionCS, inout float3 lightColor, inout float3 lightDirection)
+    void lilGetAdditionalLights(float3 positionWS, float4 positionCS, float strength, inout float3 lightColor, inout float3 lightDirection)
     {
         float4 toLightX = unity_4LightPosX0 - positionWS.x;
         float4 toLightY = unity_4LightPosY0 - positionWS.y;
@@ -867,7 +870,7 @@ float3 lilGetObjectPosition()
         lengthSq += toLightZ * toLightZ;
 
         //float4 atten = 1.0 / (1.0 + lengthSq * unity_4LightAtten0);
-        float4 atten = saturate(saturate((25.0 - lengthSq * unity_4LightAtten0) * 0.111375) / (0.987725 + lengthSq * unity_4LightAtten0));
+        float4 atten = saturate(saturate((25.0 - lengthSq * unity_4LightAtten0) * 0.111375) / (0.987725 + lengthSq * unity_4LightAtten0)) * strength;
 
         lightColor += unity_LightColor[0].rgb * atten.x;
         lightColor += unity_LightColor[1].rgb * atten.y;
@@ -880,11 +883,11 @@ float3 lilGetObjectPosition()
         lightDirection += lilLuminance(unity_LightColor[3].rgb) * atten.w / sqrt(lengthSq.w) * float3(toLightX.w, toLightY.w, toLightZ.w);
     }
 
-    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
+    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS, float strength)
     {
         float3 lightColor = 0.0;
         float3 lightDirection = 0.0;
-        lilGetAdditionalLights(positionWS, positionCS, lightColor, lightDirection);
+        lilGetAdditionalLights(positionWS, positionCS, strength, lightColor, lightDirection);
         return saturate(lightColor);
     }
 
@@ -1495,7 +1498,7 @@ float3 lilGetObjectPosition()
     #define LIL_SHADOW_CASTER_FRAGMENT(i)
 
     // Additional Light
-    void lilGetAdditionalLights(float3 positionWS, float4 positionCS, inout float3 lightColor, inout float3 lightDirection)
+    void lilGetAdditionalLights(float3 positionWS, float4 positionCS, float strength, inout float3 lightColor, inout float3 lightDirection)
     {
         uint renderingLayers = lilGetRenderingLayer();
         uint featureFlags = LIGHT_FEATURE_MASK_FLAGS_OPAQUE;
@@ -1504,15 +1507,15 @@ float3 lilGetObjectPosition()
         LIL_INITIALIZE_STRUCT(lilNPRLightingData, lighting);
         lilGetPunctualLightColor(lighting, positionWS, renderingLayers, featureFlags);
         lilGetAreaLightColor(lighting, positionWS, renderingLayers, featureFlags);
-        lightColor += lighting.color * 0.75 * GetCurrentExposureMultiplier();
-        lightDirection += lighting.direction * 0.75;
+        lightColor += lighting.color * 0.75 * GetCurrentExposureMultiplier() * strength;
+        lightDirection += lighting.direction * 0.75 * strength;
     }
 
-    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
+    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS, float strength)
     {
         float3 lightColor = 0.0;
         float3 lightDirection = 0.0;
-        lilGetAdditionalLights(positionWS, positionCS, lightColor, lightDirection);
+        lilGetAdditionalLights(positionWS, positionCS, strength, lightColor, lightDirection);
         return lightColor;
     }
 
@@ -1632,7 +1635,7 @@ float3 lilGetObjectPosition()
     #define LIL_SHADOW_CASTER_FRAGMENT(i)       return 0
 
     // Additional Light
-    void lilGetAdditionalLights(float3 positionWS, float4 positionCS, inout float3 lightColor, inout float3 lightDirection)
+    void lilGetAdditionalLights(float3 positionWS, float4 positionCS, float strength, inout float3 lightColor, inout float3 lightDirection)
     {
         uint renderingLayers = lilGetRenderingLayer();
         float3 objPositionWS = lilGetObjectPosition();
@@ -1660,8 +1663,8 @@ float3 lilGetObjectPosition()
                     if((light.layerMask & renderingLayers) != 0)
                 #endif
                 {
-                    lightColor += light.color * light.distanceAttenuation;
-                    lightDirection += dot(light.color, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * light.distanceAttenuation * light.direction;
+                    lightColor += light.color * light.distanceAttenuation * strength;
+                    lightDirection += dot(light.color, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * light.distanceAttenuation * strength * light.direction;
                 }
             }
 
@@ -1677,16 +1680,16 @@ float3 lilGetObjectPosition()
                 #if LIL_SRP_VERSION_GREATER_EQUAL(12, 0) && defined(_LIGHT_LAYERS)
                     if((light.layerMask & renderingLayers) != 0)
                 #endif
-                lightColor += light.color * light.distanceAttenuation;
+                lightColor += light.color * light.distanceAttenuation * strength;
             }
         #endif
     }
 
-    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS)
+    float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS, float strength)
     {
         float3 lightColor = 0.0;
         float3 lightDirection = 0.0;
-        lilGetAdditionalLights(positionWS, positionCS, lightColor, lightDirection);
+        lilGetAdditionalLights(positionWS, positionCS, strength, lightColor, lightDirection);
         return lightColor;
     }
 
@@ -1888,11 +1891,11 @@ struct lilLightData
 #if defined(LIL_USE_ADDITIONALLIGHT_MAIN)
     #define LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o) \
         float3 additionalLightDirection = 0.0; \
-        lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(LIL_SCREENPARAMS.xy,1.0,1.0), o.lightColor, additionalLightDirection)
+        lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(LIL_SCREENPARAMS.xy,1.0,1.0), LIL_ADDITIONAL_LIGHT_STRENGTH, o.lightColor, additionalLightDirection)
     #define LIL_CORRECT_LIGHTDIRECTION_PS(lightDirection) lightDirection = normalize(lightDirection)
 #elif defined(LIL_USE_ADDITIONALLIGHT_MAINDIR)
     #define LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o) \
-        lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(LIL_SCREENPARAMS.xy,1.0,1.0), o.lightColor, o.lightDirection)
+        lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(LIL_SCREENPARAMS.xy,1.0,1.0), LIL_ADDITIONAL_LIGHT_STRENGTH, o.lightColor, o.lightDirection)
     #define LIL_CORRECT_LIGHTDIRECTION_PS(lightDirection) lightDirection = normalize(lightDirection)
 #elif defined(LIL_USE_ADDITIONALLIGHT_MAINDIR_PS)
     #define LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o)
@@ -2044,7 +2047,7 @@ struct lilLightData
     // Realtime
     #define LIL_GET_MAINLIGHT(input,lc,ld,atten) \
         lc = input.lightColor; \
-        lilGetAdditionalLights(input.positionWS, input.positionCS, lc, ld); \
+        lilGetAdditionalLights(input.positionWS, input.positionCS, LIL_ADDITIONAL_LIGHT_STRENGTH, lc, ld); \
         LIL_CORRECT_LIGHTCOLOR_PS(lc); \
         LIL_CORRECT_LIGHTDIRECTION_PS(ld)
 #elif defined(LIL_USE_ADDITIONALLIGHT_MAINDIR)
@@ -2082,7 +2085,7 @@ struct lilLightData
 
 #if defined(LIL_USE_ADDITIONALLIGHT_VS) && (defined(VERTEXLIGHT_ON) || !defined(LIL_BRP))
     #define LIL_CALC_VERTEXLIGHT(i,o) \
-        o.vlf.rgb = lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(LIL_SCREENPARAMS.xy,1.0,1.0)) * _VertexLightStrength; \
+        o.vlf.rgb = lilGetAdditionalLights(i.positionWS, i.positionCS/float4(i.positionCS.www,1.0)*float4(LIL_SCREENPARAMS.xy,1.0,1.0), LIL_ADDITIONAL_LIGHT_STRENGTH); \
         o.vlf.rgb = lerp(o.vlf.rgb, lilGray(o.vlf.rgb), _MonochromeLighting); \
         o.vlf.rgb = lerp(o.vlf.rgb, 0.0, _AsUnlit)
 #elif defined(LIL_USE_ADDITIONALLIGHT_VS)
@@ -2096,7 +2099,7 @@ struct lilLightData
 // Additional Light PS
 #if defined(LIL_USE_ADDITIONALLIGHT_PS)
     #define LIL_GET_ADDITIONALLIGHT(i,o) \
-        o = lilGetAdditionalLights(i.positionWS, i.positionCS) * _VertexLightStrength; \
+        o = lilGetAdditionalLights(i.positionWS, i.positionCS, LIL_ADDITIONAL_LIGHT_STRENGTH); \
         o = lerp(o, lilGray(o), _MonochromeLighting); \
         o = lerp(o, 0.0, _AsUnlit)
 #elif defined(LIL_USE_ADDITIONALLIGHT_VS)
