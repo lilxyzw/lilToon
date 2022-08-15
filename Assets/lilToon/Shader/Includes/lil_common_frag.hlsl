@@ -447,13 +447,10 @@
             float alphaMask = 1.0; \
             LIL_SAMPLE_AlphaMask; \
             alphaMask = saturate(alphaMask * _AlphaMaskScale + _AlphaMaskValue); \
-            switch(_AlphaMaskMode){ \
-            case 0: break; \
-            case 1: fd.col.a = alphaMask; break; \
-            case 2: fd.col.a = fd.col.a * alphaMask; break; \
-            case 3: fd.col.a = saturate(fd.col.a + alphaMask); break; \
-            case 4: fd.col.a = saturate(fd.col.a - alphaMask); break; \
-            } \
+            if(_AlphaMaskMode == 1) fd.col.a = alphaMask; \
+            if(_AlphaMaskMode == 2) fd.col.a = fd.col.a * alphaMask; \
+            if(_AlphaMaskMode == 3) fd.col.a = saturate(fd.col.a + alphaMask); \
+            if(_AlphaMaskMode == 4) fd.col.a = saturate(fd.col.a - alphaMask); \
         }
 #endif
 
