@@ -23,6 +23,7 @@ namespace lilToon
         private const string menuPathConvertNormal          = menuPathAssets + "[Texture] Convert normal map (DirectX <-> OpenGL)";
         private const string menuPathPixelArtReduction      = menuPathAssets + "[Texture] Pixel art reduction";
         private const string menuPathConvertGifToAtlas      = menuPathAssets + "[Texture] Convert Gif to Atlas";
+        private const string menuPathConvertLUTToPNG        = menuPathAssets + "[Texture] Convert LUT to PNG";
         private const string menuPathSetupFromFBX           = menuPathAssets + "[Model] Setup from FBX";
         private const string menuPathFixLighting            = menuPathGameObject + "[GameObject] Fix lighting";
 
@@ -33,7 +34,8 @@ namespace lilToon
         private const int menuPriorityConvertNormal             = menuPriorityAssets + 21;
         private const int menuPriorityPixelArtReduction         = menuPriorityAssets + 22;
         private const int menuPriorityConvertGifToAtlas         = menuPriorityAssets + 23;
-        private const int menuPrioritySetupFromFBX              = menuPriorityAssets + 24;
+        private const int menuPriorityConvertLUTToPNG           = menuPriorityAssets + 24;
+        private const int menuPrioritySetupFromFBX              = menuPriorityAssets + 25;
         private const int menuPriorityFixLighting               = menuPriorityGameObject;
 
         private const string anchorName = "AutoAnchorObject";
@@ -130,6 +132,24 @@ namespace lilToon
                 return CheckExtension(".gif");
             }
         #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Assets/lilToon/Convert LUT to PNG
+        [MenuItem(menuPathConvertLUTToPNG, false, menuPriorityConvertLUTToPNG)]
+        private static void ConvertLUTToPNG()
+        {
+            if(Selection.objects.Length == 0) return;
+            for(int i = 0; i < Selection.objects.Length; i++)
+            {
+                lilTextureUtils.ConvertLUTToPNG(Selection.objects[i]);
+            }
+        }
+
+        [MenuItem(menuPathConvertLUTToPNG, true, menuPriorityConvertLUTToPNG)]
+        private static bool CheckConvertLUTToPNG()
+        {
+            return CheckExtension(".cube");
+        }
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Assets/lilToon/Dot texture reduction

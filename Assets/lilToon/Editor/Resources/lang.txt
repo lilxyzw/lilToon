@@ -186,8 +186,6 @@ sAlphaMaskWarnOpaque	If you want to use Alpha Mask, you need to change the "Rend
 sAlphaMaskModeNone	None	None	None	None	None
 sAlphaMaskModeReplace	Replace	置き換え	Replace	Replace	Replace
 sAlphaMaskModeMul	Multiply	乗算	Multiply	Multiply	Multiply
-sAlphaMaskModeAdd	Add	加算	Add	Add	Add
-sAlphaMaskModeSub	Subtract	減算	Subtract	Subtract	Subtract
 sShadowSetting	Shadow	影設定	그림자 설정	阴影设置	陰影設置
 sShadowTips	You can set the color and range of the shadow.	影の色や範囲の設定ができます	그림자의 색상과 범위를 설정할 수 있습니다	你可以设置阴影的颜色和范围。	你可以設置陰影的顏色和範圍。
 sShadow	Shadow	影	그림자	阴影	陰影
@@ -516,3 +514,4 @@ sUtilDotTexRedRatio	Select a reduction ratio	縮小率を選択してくださ�
 sUtilShaderNotFound	Shader is not found.	シェーダーが見つかりません。	쉐이더가 없습니다.	未找到着色器。	未找到著色器。
 sUtilSelectPresets	Select presets	プリセットを選択してください。	사전 설정을 선택하십시오.	请选择一个预设。	請選擇一個預設。
 sUtilMaterialAlreadyExist	Materials may already exist. Are you sure you want to overwrite it?	マテリアルが既に存在している可能性があります。上書きしてもよろしいですか？	재료가 이미있을 수 있습니다. 덮어 하시겠습니까?	该材料可能已经存在。 您确定要覆盖它吗？	該材料可能已經存在。 您確定要覆蓋它嗎？
+sUtilInvalidFormat	Invalid format.	フォーマットが不正です。	Invalid format.	Invalid format.	Invalid format.

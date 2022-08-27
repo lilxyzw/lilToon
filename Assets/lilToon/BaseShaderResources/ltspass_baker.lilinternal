@@ -61,6 +61,12 @@ Shader "Hidden/ltsother_baker"
                         _PackingChannel2            ("Channel", Int) = 0
                         _PackingChannel3            ("Channel", Int) = 0
                         _PackingChannel4            ("Channel", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Texture3D
+        [NoScaleOffset] _MainTex3D                  ("Texture", 3D) = "white" {}
+        _ResX                                       ("ResX", Int) = 16
+        _ResY                                       ("ResY", Int) = 1
     }
 
     SubShader
@@ -77,7 +83,7 @@ Shader "Hidden/ltsother_baker"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma shader_feature _ _TRIMASK _ALPHAMASK _NORMAL_DXGL _TEXTURE_PACKING
+            #pragma shader_feature _ _TRIMASK _ALPHAMASK _NORMAL_DXGL _TEXTURE_PACKING _LUT3D_TO_2D
 
             //------------------------------------------------------------------------------------------------------------------
             // Shader
@@ -91,10 +97,13 @@ Shader "Hidden/ltsother_baker"
             TEXTURE2D(_PackingTexture2);
             TEXTURE2D(_PackingTexture3);
             TEXTURE2D(_PackingTexture4);
+            TEXTURE3D(_MainTex3D);
             uint _PackingChannel1;
             uint _PackingChannel2;
             uint _PackingChannel3;
             uint _PackingChannel4;
+            uint _ResX;
+            uint _ResY;
 
             struct v2f
             {
@@ -160,6 +169,20 @@ Shader "Hidden/ltsother_baker"
                     } else {
                         col.a = p1[_PackingChannel4];
                     }
+                #elif defined(_LUT3D_TO_2D)
+                    float4 col;
+                    float3 res = float3(_ResX, _ResY, _ResX * _ResY);
+                    float3 resInv = rcp(float3(res.x, -res.y, res.z));
+                    float resMin = res.z - 1;
+                    col.r =       ((uint)input.positionCS.x % (uint)res.z) / resMin;
+                    col.g = 1.0 - ((uint)input.positionCS.y % (uint)res.z) / resMin;
+                    col.b = ((uint)input.positionCS.x / (uint)res.z) / resMin + ((_ResY - 1 - (uint)input.positionCS.y / (uint)res.z) / resMin * _ResX);
+                    //col.rgb = (col.rgb - col.rgb * resInv.z) + 0.5 * resInv.z;
+                    uint w,h,d,l;
+                    _MainTex3D.GetDimensions(0,w,h,d,l);
+                    col.rgb = (col.rgb - col.rgb / (float)w) + 0.5 / (float)w;
+                    col.rgb = LIL_SAMPLE_3D(_MainTex3D, sampler_linear_clamp, col.rgb).rgb;
+                    col.a = 1;
                 #else
                     // Main
                     float4 col = LIL_SAMPLE_2D(_MainTex,sampler_MainTex,input.uv0);

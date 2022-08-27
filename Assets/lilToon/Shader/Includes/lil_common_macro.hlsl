@@ -861,6 +861,7 @@ float3 lilGetObjectPosition()
     // Additional Light
     void lilGetAdditionalLights(float3 positionWS, float4 positionCS, float strength, inout float3 lightColor, inout float3 lightDirection)
     {
+        #if defined(LIGHTPROBE_SH)
         float4 toLightX = unity_4LightPosX0 - positionWS.x;
         float4 toLightY = unity_4LightPosY0 - positionWS.y;
         float4 toLightZ = unity_4LightPosZ0 - positionWS.z;
@@ -881,6 +882,7 @@ float3 lilGetObjectPosition()
         lightDirection += lilLuminance(unity_LightColor[1].rgb) * atten.y / sqrt(lengthSq.y) * float3(toLightX.y, toLightY.y, toLightZ.y);
         lightDirection += lilLuminance(unity_LightColor[2].rgb) * atten.z / sqrt(lengthSq.z) * float3(toLightX.z, toLightY.z, toLightZ.z);
         lightDirection += lilLuminance(unity_LightColor[3].rgb) * atten.w / sqrt(lengthSq.w) * float3(toLightX.w, toLightY.w, toLightZ.w);
+        #endif
     }
 
     float3 lilGetAdditionalLights(float3 positionWS, float4 positionCS, float strength)
