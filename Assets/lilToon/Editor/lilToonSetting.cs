@@ -658,7 +658,7 @@ public class lilToonSetting : ScriptableObject
 
             var shaderNames = new List<string>();
             foreach(Shader shader in shaders) shaderNames.Add(shader.name);
-            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaderNames));
+            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaderNames.ToArray()));
 
             lilToonSetting shaderSetting = null;
             InitializeShaderSetting(ref shaderSetting);
@@ -698,7 +698,7 @@ public class lilToonSetting : ScriptableObject
 
             var shaderNames = new List<string>();
             foreach(Shader shader in shaders) shaderNames.Add(shader.name);
-            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaderNames));
+            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaderNames.ToArray()));
 
             ApplyShaderSettingOptimized(shaders);
         }
