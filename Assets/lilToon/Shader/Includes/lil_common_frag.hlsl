@@ -962,28 +962,48 @@
             }
             lns.x = lerp(1.0, lns.x, shadowStrength);
 
-            // Shadow Color 1
+            // Shadow Colors
             float4 shadowColorTex = 0.0;
-            #if defined(LIL_FEATURE_ShadowColorTex)
-                shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, fd.uvMain);
-            #endif
+            float4 shadow2ndColorTex = 0.0;
+            float4 shadow3rdColorTex = 0.0;
+            if(_ShadowColorType == 1)
+            {
+                float4 uvShadow;
+                float factor;
+                lilCalcLUTUV(fd.albedo, 16, 1, uvShadow, factor);
+                #if defined(LIL_FEATURE_ShadowColorTex)
+                    shadowColorTex = lilSampleLUT(uvShadow, factor, _ShadowColorTex);
+                #endif
+                #if defined(LIL_FEATURE_Shadow2ndColorTex)
+                    shadow2ndColorTex = lilSampleLUT(uvShadow, factor, _Shadow2ndColorTex);
+                #endif
+                #if defined(LIL_FEATURE_SHADOW_3RD) && defined(LIL_FEATURE_Shadow3rdColorTex)
+                    shadow3rdColorTex = lilSampleLUT(uvShadow, factor, _Shadow3rdColorTex);
+                #endif
+            }
+            else
+            {
+                #if defined(LIL_FEATURE_ShadowColorTex)
+                    shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, fd.uvMain);
+                #endif
+                #if defined(LIL_FEATURE_Shadow2ndColorTex)
+                    shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, fd.uvMain);
+                #endif
+                #if defined(LIL_FEATURE_SHADOW_3RD) && defined(LIL_FEATURE_Shadow3rdColorTex)
+                    shadow3rdColorTex = LIL_SAMPLE_2D(_Shadow3rdColorTex, samp, fd.uvMain);
+                #endif
+            }
+
+            // Shadow Color 1
             float3 indirectCol = lerp(fd.albedo, shadowColorTex.rgb, shadowColorTex.a) * _ShadowColor.rgb;
 
             // Shadow Color 2
-            float4 shadow2ndColorTex = 0.0;
-            #if defined(LIL_FEATURE_Shadow2ndColorTex)
-                shadow2ndColorTex = LIL_SAMPLE_2D(_Shadow2ndColorTex, samp, fd.uvMain);
-            #endif
             shadow2ndColorTex.rgb = lerp(fd.albedo, shadow2ndColorTex.rgb, shadow2ndColorTex.a) * _Shadow2ndColor.rgb;
             lns.y = _Shadow2ndColor.a - lns.y * _Shadow2ndColor.a;
             indirectCol = lerp(indirectCol, shadow2ndColorTex.rgb, lns.y);
 
             #if defined(LIL_FEATURE_SHADOW_3RD)
                 // Shadow Color 3
-                float4 shadow3rdColorTex = 0.0;
-                #if defined(LIL_FEATURE_Shadow3rdColorTex)
-                    shadow3rdColorTex = LIL_SAMPLE_2D(_Shadow3rdColorTex, samp, fd.uvMain);
-                #endif
                 shadow3rdColorTex.rgb = lerp(fd.albedo, shadow3rdColorTex.rgb, shadow3rdColorTex.a) * _Shadow3rdColor.rgb;
                 lns.z = _Shadow3rdColor.a - lns.z * _Shadow3rdColor.a;
                 indirectCol = lerp(indirectCol, shadow3rdColorTex.rgb, lns.z);

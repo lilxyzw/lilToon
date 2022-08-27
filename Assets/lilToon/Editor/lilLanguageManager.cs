@@ -24,6 +24,7 @@ namespace lilToon
         public static string sGlitterParams2;
         public static string sTransparentMode;
         public static string sOutlineVertexColorUsages;
+        public static string sShadowColorTypes;
         public static string sShadowMaskTypes;
         public static string[] sRenderingModeList;
         public static string[] sRenderingModeListLite;
@@ -159,6 +160,7 @@ namespace lilToon
             sTransparentModeList            = new[]{GetLoc("sTransparentModeNormal"), GetLoc("sTransparentModeOnePass"), GetLoc("sTransparentModeTwoPass")};
             sBlendModeList                  = new[]{GetLoc("sBlendModeNormal"), GetLoc("sBlendModeAdd"), GetLoc("sBlendModeScreen"), GetLoc("sBlendModeMul")};
             sOutlineVertexColorUsages       = BuildParams(GetLoc("sVertexColor"), GetLoc("sNone"), GetLoc("sVertexR2Width"), GetLoc("sVertexRGBA2Normal"));
+            sShadowColorTypes               = BuildParams(GetLoc("sColorType"), GetLoc("sColorTypeNormal"), GetLoc("sColorTypeLUT"));
             sShadowMaskTypes                = BuildParams(GetLoc("sMaskType"), GetLoc("sStrength"), GetLoc("sFlat"));
             colorRGBAContent                = new GUIContent(GetLoc("sColor"),                              GetLoc("sTextureRGBA"));
             colorAlphaRGBAContent           = new GUIContent(GetLoc("sColorAlpha"),                         GetLoc("sTextureRGBA"));

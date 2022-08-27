@@ -516,6 +516,7 @@ uint    _Cull;
     uint    _AlphaMaskMode;
 #endif
 #if defined(LIL_FEATURE_SHADOW)
+    uint    _ShadowColorType;
     uint    _ShadowMaskType;
 #endif
 #if defined(LIL_FEATURE_NORMAL_2ND)

@@ -248,6 +248,7 @@ namespace lilToon
         protected static string     sGlitterParams2                 { get { return lilLanguageManager.sGlitterParams2               ; } private set { lilLanguageManager.sGlitterParams2                = value; } }
         protected static string     sTransparentMode                { get { return lilLanguageManager.sTransparentMode              ; } private set { lilLanguageManager.sTransparentMode               = value; } }
         protected static string     sOutlineVertexColorUsages       { get { return lilLanguageManager.sOutlineVertexColorUsages     ; } private set { lilLanguageManager.sOutlineVertexColorUsages      = value; } }
+        protected static string     sShadowColorTypes               { get { return lilLanguageManager.sShadowColorTypes             ; } private set { lilLanguageManager.sShadowColorTypes               = value; } }
         protected static string     sShadowMaskTypes                { get { return lilLanguageManager.sShadowMaskTypes              ; } private set { lilLanguageManager.sShadowMaskTypes               = value; } }
         protected static string[]   sRenderingModeList              { get { return lilLanguageManager.sRenderingModeList            ; } private set { lilLanguageManager.sRenderingModeList             = value; } }
         protected static string[]   sRenderingModeListLite          { get { return lilLanguageManager.sRenderingModeListLite        ; } private set { lilLanguageManager.sRenderingModeListLite         = value; } }
@@ -384,6 +385,7 @@ namespace lilToon
         private readonly lilMaterialProperty shadowAOShift              = new lilMaterialProperty("_ShadowAOShift", PropertyBlock.Shadow);
         private readonly lilMaterialProperty shadowAOShift2             = new lilMaterialProperty("_ShadowAOShift2", PropertyBlock.Shadow);
         private readonly lilMaterialProperty shadowPostAO               = new lilMaterialProperty("_ShadowPostAO", PropertyBlock.Shadow);
+        private readonly lilMaterialProperty shadowColorType            = new lilMaterialProperty("_ShadowColorType", PropertyBlock.Shadow);
         private readonly lilMaterialProperty shadowColor                = new lilMaterialProperty("_ShadowColor", PropertyBlock.Shadow);
         private readonly lilMaterialProperty shadowColorTex             = new lilMaterialProperty("_ShadowColorTex", true, PropertyBlock.Shadow);
         private readonly lilMaterialProperty shadowNormalStrength       = new lilMaterialProperty("_ShadowNormalStrength", PropertyBlock.Shadow);
@@ -915,6 +917,7 @@ namespace lilToon
                 shadowAOShift,
                 shadowAOShift2,
                 shadowPostAO,
+                shadowColorType,
                 shadowColor,
                 shadowColorTex,
                 shadowNormalStrength,
@@ -4566,6 +4569,7 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(shadowStrengthMaskLOD, "LOD", 2);
                     }
                     lilEditorGUI.DrawLine();
+                    m_MaterialEditor.ShaderProperty(shadowColorType, sShadowColorTypes);
                     m_MaterialEditor.TexturePropertySingleLine(shadow1stColorRGBAContent, shadowColorTex, shadowColor);
                     EditorGUI.indentLevel += 2;
                         m_MaterialEditor.ShaderProperty(shadowBorder, GetLoc("sBorder"));
@@ -4703,6 +4707,7 @@ namespace lilToon
                         m_MaterialEditor.TexturePropertySingleLine(maskStrengthContent, shadowStrengthMask, shadowStrength);
                     }
                     lilEditorGUI.DrawLine();
+                    m_MaterialEditor.ShaderProperty(shadowColorType, sShadowColorTypes);
                     m_MaterialEditor.TexturePropertySingleLine(shadow1stColorRGBAContent, shadowColorTex, shadowColor);
                     EditorGUI.indentLevel += 2;
                         m_MaterialEditor.ShaderProperty(shadowBorder, GetLoc("sBorder"));

@@ -111,6 +111,9 @@ sTransparentMode	Transparent Mode	透過モード	투명 모드	Transparent Mode
 sTransparentModeNormal	Normal	通常	Normal	Normal	Normal
 sTransparentModeOnePass	One Pass	1パス	One Pass	One Pass	One Pass
 sTransparentModeTwoPass	Two Pass	2パス	Two Pass	Two Pass	Two Pass
+sColorType	Color Type	カラータイプ	Color Type	Color Type	Color Type
+sColorTypeNormal	Normal	通常	Normal	Normal	Normal
+sColorTypeLUT	LUT	LUT	LUT	LUT	LUT
 sAsOverlay	As Overlay	Overlayマテリアル	As Overlay	As Overlay	As Overlay
 sCutoff	Cutoff	Cutoff (完全透明にする範囲)	Cutoff	Cutoff	Cutoff
 sSubpassCutoff	Subpass Cutoff	Subpass Cutoff (完全透明にする範囲)	Subpass Cutoff	Subpass Cutoff	Subpass Cutoff

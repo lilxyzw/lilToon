@@ -158,6 +158,7 @@ Shader "Hidden/lilToonOnePassTransparent"
         [lilFFFF]       _ShadowAOShift              ("1st Scale|1st Offset|2nd Scale|2nd Offset", Vector) = (1,0,1,0)
         [lilFF]         _ShadowAOShift2             ("3rd Scale|3rd Offset", Vector) = (1,0,1,0)
         [lilToggle]     _ShadowPostAO               ("Post AO", Int) = 0
+        [lilEnum]       _ShadowColorType            ("Color Type|Normal|LUT", Int) = 0
                         _ShadowColor                ("Shadow Color", Color) = (0.82,0.76,0.85,1.0)
         [NoScaleOffset] _ShadowColorTex             ("Shadow Color", 2D) = "black" {}
                         _ShadowNormalStrength       ("Normal Strength", Range(0, 1)) = 1.0

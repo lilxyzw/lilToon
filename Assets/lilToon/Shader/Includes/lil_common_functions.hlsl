@@ -356,6 +356,28 @@ float3 lilDecodeHDR(float4 data, float4 hdr)
     #endif
 }
 
+void lilCalcLUTUV(float3 col, float resX, float resY, inout float4 uv, inout float factor)
+{
+    #if !defined(UNITY_COLORSPACE_GAMMA)
+        col = lilLinearToSRGB(col);
+    #endif
+    float3 res = float3(resX, resY, resX * resY);
+    float3 resInv = float3(1.0, -1.0, 1.0) / res;
+
+    float3 col2 = (col - col * resInv.z) + 0.5 * resInv.z;
+    float4 b2 = saturate(col2.b + resInv.z * float2(-0.5, 0.5)).xxyy * res.zyzy;
+    float4 b3 = floor(b2);
+    uv = float4(0,1,0,1) + (col2.rgrg + b3) * resInv.xyxy;
+    factor = abs(b2.x - b3.x);
+}
+
+float4 lilSampleLUT(float4 uv, float factor, TEXTURE2D(lutTex))
+{
+    float4 a = LIL_SAMPLE_2D_LOD(lutTex, sampler_linear_clamp, uv.xy, 0);
+    float4 b = LIL_SAMPLE_2D_LOD(lutTex, sampler_linear_clamp, uv.zw, 0);
+    return lerp(a, b, factor);
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // UV
 

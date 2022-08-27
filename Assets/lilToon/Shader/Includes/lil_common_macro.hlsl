@@ -861,7 +861,7 @@ float3 lilGetObjectPosition()
     // Additional Light
     void lilGetAdditionalLights(float3 positionWS, float4 positionCS, float strength, inout float3 lightColor, inout float3 lightDirection)
     {
-        #if defined(LIGHTPROBE_SH)
+        #if defined(LIGHTPROBE_SH) && defined(VERTEXLIGHT_ON)
         float4 toLightX = unity_4LightPosX0 - positionWS.x;
         float4 toLightY = unity_4LightPosY0 - positionWS.y;
         float4 toLightZ = unity_4LightPosZ0 - positionWS.z;

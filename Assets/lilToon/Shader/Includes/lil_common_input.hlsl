@@ -574,6 +574,7 @@ CBUFFER_START(UnityPerMaterial)
         uint    _AlphaMaskMode;
     #endif
     #if defined(LIL_MULTI_INPUTS_SHADOW)
+        uint    _ShadowColorType;
         uint    _ShadowMaskType;
     #endif
     #if defined(LIL_MULTI_INPUTS_NORMAL_2ND)
