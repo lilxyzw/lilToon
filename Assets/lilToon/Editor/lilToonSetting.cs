@@ -22,6 +22,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_SHADOW = true;
     public bool LIL_FEATURE_RECEIVE_SHADOW = true;
     public bool LIL_FEATURE_SHADOW_3RD = true;
+    public bool LIL_FEATURE_SHADOW_LUT = true;
     public bool LIL_FEATURE_EMISSION_1ST = true;
     public bool LIL_FEATURE_EMISSION_2ND = true;
     public bool LIL_FEATURE_ANIMATE_EMISSION_UV = true;
@@ -192,6 +193,7 @@ public class lilToonSetting : ScriptableObject
         shaderSetting.LIL_FEATURE_ALPHAMASK = false;
         shaderSetting.LIL_FEATURE_SHADOW = false;
         shaderSetting.LIL_FEATURE_SHADOW_3RD = false;
+        shaderSetting.LIL_FEATURE_SHADOW_LUT = false;
         shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = false;
         shaderSetting.LIL_FEATURE_EMISSION_1ST = false;
         shaderSetting.LIL_FEATURE_EMISSION_2ND = false;
@@ -297,6 +299,7 @@ public class lilToonSetting : ScriptableObject
         shaderSetting.LIL_FEATURE_ALPHAMASK = true;
         shaderSetting.LIL_FEATURE_SHADOW = true;
         shaderSetting.LIL_FEATURE_SHADOW_3RD = true;
+        shaderSetting.LIL_FEATURE_SHADOW_LUT = true;
         shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = true;
         shaderSetting.LIL_FEATURE_EMISSION_1ST = true;
         shaderSetting.LIL_FEATURE_EMISSION_2ND = true;
@@ -487,6 +490,7 @@ public class lilToonSetting : ScriptableObject
             sb.AppendLine("#define LIL_FEATURE_SHADOW");
             if(shaderSetting.LIL_FEATURE_RECEIVE_SHADOW) sb.AppendLine("#define LIL_FEATURE_RECEIVE_SHADOW");
             if(shaderSetting.LIL_FEATURE_SHADOW_3RD) sb.AppendLine("#define LIL_FEATURE_SHADOW_3RD");
+            if(shaderSetting.LIL_FEATURE_SHADOW_LUT) sb.AppendLine("#define LIL_FEATURE_SHADOW_LUT");
         }
 
         if(shaderSetting.LIL_FEATURE_EMISSION_1ST) sb.AppendLine("#define LIL_FEATURE_EMISSION_1ST");
@@ -788,6 +792,11 @@ public class lilToonSetting : ScriptableObject
             Debug.Log("[lilToon] LIL_FEATURE_SHADOW_3RD : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_SHADOW_3RD = true;
         }
+        if(!shaderSetting.LIL_FEATURE_SHADOW_LUT && material.HasProperty("_ShadowColorType") && material.GetFloat("_ShadowColorType") != 0.0f)
+        {
+            Debug.Log("[lilToon] LIL_FEATURE_SHADOW_LUT : " + AssetDatabase.GetAssetPath(material));
+            shaderSetting.LIL_FEATURE_SHADOW_LUT = true;
+        }
 
         if(material.shader.name.Contains("Fur"))
         {
@@ -1022,6 +1031,7 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = shaderSetting.LIL_FEATURE_RECEIVE_SHADOW || propname.Contains("_ShadowReceive") || propname.Contains("_Shadow2ndReceive") || propname.Contains("_Shadow3rdReceive");
             shaderSetting.LIL_FEATURE_DISTANCE_FADE = shaderSetting.LIL_FEATURE_DISTANCE_FADE || propname.Contains("_DistanceFade");
             shaderSetting.LIL_FEATURE_SHADOW_3RD = shaderSetting.LIL_FEATURE_SHADOW_3RD || propname.Contains("_Shadow3rdColor");
+            shaderSetting.LIL_FEATURE_SHADOW_LUT = shaderSetting.LIL_FEATURE_SHADOW_LUT || propname.Contains("_ShadowColorType");
 
             shaderSetting.LIL_FEATURE_FUR_COLLISION = shaderSetting.LIL_FEATURE_FUR_COLLISION || propname.Contains("_FurTouchStrength");
 

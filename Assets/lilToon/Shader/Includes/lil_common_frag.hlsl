@@ -966,22 +966,24 @@
             float4 shadowColorTex = 0.0;
             float4 shadow2ndColorTex = 0.0;
             float4 shadow3rdColorTex = 0.0;
-            if(_ShadowColorType == 1)
-            {
-                float4 uvShadow;
-                float factor;
-                lilCalcLUTUV(fd.albedo, 16, 1, uvShadow, factor);
-                #if defined(LIL_FEATURE_ShadowColorTex)
-                    shadowColorTex = lilSampleLUT(uvShadow, factor, _ShadowColorTex);
-                #endif
-                #if defined(LIL_FEATURE_Shadow2ndColorTex)
-                    shadow2ndColorTex = lilSampleLUT(uvShadow, factor, _Shadow2ndColorTex);
-                #endif
-                #if defined(LIL_FEATURE_SHADOW_3RD) && defined(LIL_FEATURE_Shadow3rdColorTex)
-                    shadow3rdColorTex = lilSampleLUT(uvShadow, factor, _Shadow3rdColorTex);
-                #endif
-            }
-            else
+            #if defined(LIL_FEATURE_SHADOW_LUT)
+                if(_ShadowColorType == 1)
+                {
+                    float4 uvShadow;
+                    float factor;
+                    lilCalcLUTUV(fd.albedo, 16, 1, uvShadow, factor);
+                    #if defined(LIL_FEATURE_ShadowColorTex)
+                        shadowColorTex = lilSampleLUT(uvShadow, factor, _ShadowColorTex);
+                    #endif
+                    #if defined(LIL_FEATURE_Shadow2ndColorTex)
+                        shadow2ndColorTex = lilSampleLUT(uvShadow, factor, _Shadow2ndColorTex);
+                    #endif
+                    #if defined(LIL_FEATURE_SHADOW_3RD) && defined(LIL_FEATURE_Shadow3rdColorTex)
+                        shadow3rdColorTex = lilSampleLUT(uvShadow, factor, _Shadow3rdColorTex);
+                    #endif
+                }
+                else
+            #endif
             {
                 #if defined(LIL_FEATURE_ShadowColorTex)
                     shadowColorTex = LIL_SAMPLE_2D(_ShadowColorTex, samp, fd.uvMain);
