@@ -1644,7 +1644,11 @@ float3 lilGetObjectPosition()
 
         #if defined(_ADDITIONAL_LIGHTS) || defined(_ADDITIONAL_LIGHTS_VERTEX)
             uint lightsCount = GetAdditionalLightsCount();
-            #if defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
+            #if defined(USE_FORWARD_PLUS) && USE_FORWARD_PLUS
+                ClusteredLightLoop cll = ClusteredLightLoopInit(GetNormalizedScreenSpaceUV(positionCS), positionWS);
+                while (ClusteredLightLoopNext(cll)) {
+                    uint lightIndex = ClusteredLightLoopGetLightIndex(cll);
+            #elif defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
                 ClusteredLightLoop cll = ClusteredLightLoopInit(GetNormalizedScreenSpaceUV(positionCS), positionWS);
                 while(ClusteredLightLoopNextWord(cll))
                 {
@@ -1675,7 +1679,7 @@ float3 lilGetObjectPosition()
             #endif
         #endif
 
-        #if defined(_ADDITIONAL_LIGHTS) && defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
+        #if defined(_ADDITIONAL_LIGHTS) && (defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING || defined(USE_FORWARD_PLUS) && USE_FORWARD_PLUS)
             for(uint lightIndex = 0; lightIndex < min(_AdditionalLightsDirectionalCount, MAX_VISIBLE_LIGHTS); lightIndex++)
             {
                 Light light = GetAdditionalLight(lightIndex, positionWS);
@@ -1683,6 +1687,7 @@ float3 lilGetObjectPosition()
                     if((light.layerMask & renderingLayers) != 0)
                 #endif
                 lightColor += light.color * light.distanceAttenuation * strength;
+                lightDirection += dot(light.color, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * light.distanceAttenuation * strength * light.direction;
             }
         #endif
     }

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - LightMode override
 - `Tiling & Offset` and `Blend Mode (Add / Subtract)` for alpha mask
 - `LUT` for shadow color
+- Support for `Forward+` (URP)
 
 ### Fixed
 - Fixed error in VRChat World SDK
