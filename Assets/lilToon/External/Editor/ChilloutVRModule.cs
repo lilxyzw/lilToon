@@ -7,7 +7,7 @@ using System.Reflection;
 using ABI.CCK.Components;
 using ABI.CCK.Scripts.Editor;
 
-namespace lilToon
+namespace lilToon.External
 {
     //------------------------------------------------------------------------------------------------------------------------------
     // ChilloutVR

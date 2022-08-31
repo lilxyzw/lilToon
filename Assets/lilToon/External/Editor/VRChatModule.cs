@@ -4,12 +4,12 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using VRC.SDKBase.Editor.BuildPipeline;
 #if !UDON
     using VRC.SDK3.Avatars.Components;
 #endif
-using VRC.SDKBase.Editor.BuildPipeline;
 
-namespace lilToon
+namespace lilToon.External
 {
     //------------------------------------------------------------------------------------------------------------------------------
     // VRChat
