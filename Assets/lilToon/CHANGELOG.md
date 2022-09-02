@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.5] - 2022-07-xx
+## [1.3.5] - 2022-09-xx
 ### Added
 - LightMode override
 - `Tiling & Offset` and `Blend Mode (Add / Subtract)` for alpha mask
 - `LUT` for shadow color
 - Support for `Forward+` (URP)
+- Added option to reflect light emission in lightbake
 
 ### Fixed
 - Fixed error in VRChat World SDK

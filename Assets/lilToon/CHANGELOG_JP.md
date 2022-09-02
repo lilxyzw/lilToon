@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.5] - 2022-07-xx
+## [1.3.5] - 2022-09-xx
 ### 追加
 - LightModeのオーバーライドを追加
 - アルファマスクに`Tiling & Offset`と`合成モード (加算 / 減算)`を追加
 - 影色のサンプリング方法に`LUT`を追加
 - URPの`Forward+`をサポート
+- 発光をライトベイクに反映するオプションを追加
 
 ### 修正
 - VRChatのワールドSDKでのエラーを修正

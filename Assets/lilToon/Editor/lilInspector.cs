@@ -161,6 +161,7 @@ namespace lilToon
             public bool isShowFur                       = false;
             public bool isShowTess                      = false;
             public bool isShowRendering                 = false;
+            public bool isShowLightBake                 = false;
             public bool isShowOptimization              = false;
             public bool isShowBlend                     = false;
             public bool isShowBlendAdd                  = false;
@@ -1873,6 +1874,21 @@ namespace lilToon
                 }
 
                 //------------------------------------------------------------------------------------------------------------------------------
+                // Light Bake
+                edSet.isShowLightBake = lilEditorGUI.Foldout(GetLoc("sLightBakeSetting"), edSet.isShowLightBake);
+                //DrawMenuButton(GetLoc("sAnchorLightBake"), PropertyBlock.LightBake);
+                if(edSet.isShowLightBake)
+                {
+                    EditorGUILayout.BeginVertical(boxOuter);
+                    EditorGUILayout.LabelField(GetLoc("sLightBakeSetting"), customToggleFont);
+                    EditorGUILayout.BeginVertical(boxInner);
+                    if(!isCustomEditor) m_MaterialEditor.DoubleSidedGIField();
+                    if(!isCustomEditor) m_MaterialEditor.LightmapEmissionFlagsProperty(0, true, true);
+                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.EndVertical();
+                }
+
+                //------------------------------------------------------------------------------------------------------------------------------
                 // Optimization
                 if(!isMultiVariants)
                 {
@@ -2105,6 +2121,21 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
+                }
+
+                //------------------------------------------------------------------------------------------------------------------------------
+                // Light Bake
+                edSet.isShowLightBake = lilEditorGUI.Foldout(GetLoc("sLightBakeSetting"), edSet.isShowLightBake);
+                //DrawMenuButton(GetLoc("sAnchorLightBake"), PropertyBlock.LightBake);
+                if(edSet.isShowLightBake)
+                {
+                    EditorGUILayout.BeginVertical(boxOuter);
+                    EditorGUILayout.LabelField(GetLoc("sLightBakeSetting"), customToggleFont);
+                    EditorGUILayout.BeginVertical(boxInner);
+                    if(!isCustomEditor) m_MaterialEditor.DoubleSidedGIField();
+                    if(!isCustomEditor) m_MaterialEditor.LightmapEmissionFlagsProperty(0, true, true);
+                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.EndVertical();
                 }
 
                 //------------------------------------------------------------------------------------------------------------------------------
@@ -2884,7 +2915,6 @@ namespace lilToon
                         BlendSettingGUI(ref edSet.isShowBlendAdd, GetLoc("sForwardAdd"), srcBlendFA, dstBlendFA, srcBlendAlphaFA, dstBlendAlphaFA, blendOpFA, blendOpAlphaFA);
                         lilEditorGUI.DrawLine();
                         if(!isCustomEditor) m_MaterialEditor.EnableInstancingField();
-                        if(!isCustomEditor) m_MaterialEditor.DoubleSidedGIField();
                         m_MaterialEditor.RenderQueueField();
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
@@ -2956,6 +2986,21 @@ namespace lilToon
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
+                }
+
+                //------------------------------------------------------------------------------------------------------------------------------
+                // Light Bake
+                edSet.isShowLightBake = lilEditorGUI.Foldout(GetLoc("sLightBakeSetting"), edSet.isShowLightBake);
+                //DrawMenuButton(GetLoc("sAnchorLightBake"), PropertyBlock.LightBake);
+                if(edSet.isShowLightBake)
+                {
+                    EditorGUILayout.BeginVertical(boxOuter);
+                    EditorGUILayout.LabelField(GetLoc("sLightBakeSetting"), customToggleFont);
+                    EditorGUILayout.BeginVertical(boxInner);
+                    if(!isCustomEditor) m_MaterialEditor.DoubleSidedGIField();
+                    if(!isCustomEditor) m_MaterialEditor.LightmapEmissionFlagsProperty(0, true, true);
+                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.EndVertical();
                 }
 
                 //------------------------------------------------------------------------------------------------------------------------------

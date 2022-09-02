@@ -367,6 +367,7 @@ sDstBlendAlpha	DstBlend Alpha	DstBlend Alpha	DstBlend Alpha	DstBlend Alpha	DstBl
 sBlendOpRGB	BlendOp RGB	BlendOp RGB	BlendOp RGB	BlendOp RGB	BlendOp RGB
 sBlendOpAlpha	BlendOp Alpha	BlendOp Alpha	BlendOp Alpha	BlendOp Alpha	BlendOp Alpha
 sRenderingReset	Reset Rendering Properties	レンダリング設定を初期化	렌더링 설정을 초기화	重置渲染设置	重置渲染設置
+sLightBakeSetting	Light Bake	ライトベイク設定	Light Bake	Light Bake	Light Bake
 sOptimization	Optimization	最適化	최적화	优化	優化
 sOptimizationTips	You can optimize the material to reduce the load.	マテリアルを最適化して負荷を低減できます	머티리얼을최적화하여부하를저감할수있습니다	你可以对材料进行优化，以减少负荷。	你可以對材料進行優化，以減少負荷。
 sCustomProperties	Custom Properties	カスタムプロパティ	커스텀 프로퍼티	自定义属性	自定義屬性
