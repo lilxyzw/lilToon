@@ -645,6 +645,20 @@ namespace lilToon
             var so = new SerializedObject(material);
             return so.FindProperty("m_CustomRenderQueue").intValue;
         }
+
+        public static bool CheckShaderIslilToon(Material material)
+        {
+            if(material == null) return false;
+            return CheckShaderIslilToon(material.shader);
+        }
+
+        public static bool CheckShaderIslilToon(Shader shader)
+        {
+            if(shader == null) return false;
+            if(shader.name.Contains("lilToon") || shader.name.Contains("lts_pass")) return true;
+            string shaderPath = AssetDatabase.GetAssetPath(shader);
+            return !string.IsNullOrEmpty(shaderPath) && shaderPath.Contains(".lilcontainer");
+        }
     }
 }
 #endif

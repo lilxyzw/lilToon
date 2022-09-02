@@ -757,11 +757,7 @@ public class lilToonSetting : ScriptableObject
     {
         if(material == null || material.shader == null) return;
         if(material.shader.name.Contains("Lite") || material.shader.name.Contains("Multi")) return;
-        if(!material.shader.name.Contains("lilToon"))
-        {
-            string shaderPath = AssetDatabase.GetAssetPath(material.shader);
-            if(string.IsNullOrEmpty(shaderPath) || shaderPath.Contains("lilcontainer")) return;
-        }
+        if(!lilMaterialUtils.CheckShaderIslilToon(material.shader)) return;
 
         if(!shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV && material.HasProperty("_MainTex_ScrollRotate") && material.GetVector("_MainTex_ScrollRotate") != lilConstants.defaultScrollRotate)
         {
@@ -1251,7 +1247,7 @@ public class lilToonSetting : ScriptableObject
         foreach(string guid in AssetDatabase.FindAssets("t:material"))
         {
             Material material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
-            if(material != null && CheckShaderIslilToon(material.shader)) shaders.Add(material.shader);
+            if(lilMaterialUtils.CheckShaderIslilToon(material)) shaders.Add(material.shader);
         }
 
         return GetTrueShaderLists(shaders);
@@ -1263,7 +1259,7 @@ public class lilToonSetting : ScriptableObject
 
         foreach(var material in materials)
         {
-            if(material != null && CheckShaderIslilToon(material.shader)) shaders.Add(material.shader);
+            if(lilMaterialUtils.CheckShaderIslilToon(material)) shaders.Add(material.shader);
         }
 
         foreach(var clip in clips)
@@ -1314,20 +1310,12 @@ public class lilToonSetting : ScriptableObject
         {
             foreach(ObjectReferenceKeyframe frame in AnimationUtility.GetObjectReferenceCurve(clip, binding))
             {
-                if(frame.value is Material && CheckShaderIslilToon(((Material)frame.value).shader))
+                if(frame.value is Material && lilMaterialUtils.CheckShaderIslilToon((Material)frame.value))
                 {
                     shaders.Add(((Material)frame.value).shader);
                 }
             }
         }
-    }
-
-    private static bool CheckShaderIslilToon(Shader shader)
-    {
-        if(shader == null) return false;
-        if(shader.name.Contains("lilToon")) return true;
-        string shaderPath = AssetDatabase.GetAssetPath(shader);
-        return !string.IsNullOrEmpty(shaderPath) && shaderPath.Contains(".lilcontainer");
     }
 }
 #endif

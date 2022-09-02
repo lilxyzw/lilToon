@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed error in VRChat World SDK
 - Fixed `Vertex Light Strength` being ignored
+- Fixed custom shaders not being scanned during optimization
 - Fixed light layers in URP
 
 ## [1.3.4] - 2022-07-30

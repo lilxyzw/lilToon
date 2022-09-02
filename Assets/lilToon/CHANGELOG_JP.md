@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 修正
 - VRChatのワールドSDKでのエラーを修正
 - `頂点ライトの強度`が無視されていたのを修正
+- カスタムシェーダーが最適化時にスキャンされていなかったのを修正
 - URPのライトレイヤーを修正
 
 ## [1.3.4] - 2022-07-30

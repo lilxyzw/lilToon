@@ -453,7 +453,7 @@ namespace lilToon
                     // Fix vertex light
                     foreach(Material material in meshRenderer.sharedMaterials)
                     {
-                        if(material != null && material.shader != null && material.shader.name.Contains("lilToon") && shaderSetting != null)
+                        if(lilMaterialUtils.CheckShaderIslilToon(material) && shaderSetting != null)
                         {
                             Undo.RecordObject(material, "[lilToon] Fix lighting");
                             material.SetFloat("_AsUnlit", shaderSetting.defaultAsUnlit);
@@ -486,7 +486,7 @@ namespace lilToon
                     // Fix vertex light
                     foreach(Material material in skinnedMeshRenderer.sharedMaterials)
                     {
-                        if(material != null && material.shader != null && material.shader.name.Contains("lilToon") && shaderSetting != null)
+                        if(lilMaterialUtils.CheckShaderIslilToon(material) && shaderSetting != null)
                         {
                             Undo.RecordObject(material, "[lilToon] Fix lighting");
                             material.SetFloat("_AsUnlit", shaderSetting.defaultAsUnlit);
