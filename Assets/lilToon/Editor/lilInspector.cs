@@ -1883,7 +1883,7 @@ namespace lilToon
                     EditorGUILayout.LabelField(GetLoc("sLightBakeSetting"), customToggleFont);
                     EditorGUILayout.BeginVertical(boxInner);
                     if(!isCustomEditor) m_MaterialEditor.DoubleSidedGIField();
-                    if(!isCustomEditor) m_MaterialEditor.LightmapEmissionFlagsProperty(0, true, true);
+                    if(!isCustomEditor) DrawGIFragGUI();
                     EditorGUILayout.EndVertical();
                     EditorGUILayout.EndVertical();
                 }
@@ -2133,7 +2133,7 @@ namespace lilToon
                     EditorGUILayout.LabelField(GetLoc("sLightBakeSetting"), customToggleFont);
                     EditorGUILayout.BeginVertical(boxInner);
                     if(!isCustomEditor) m_MaterialEditor.DoubleSidedGIField();
-                    if(!isCustomEditor) m_MaterialEditor.LightmapEmissionFlagsProperty(0, true, true);
+                    if(!isCustomEditor) DrawGIFragGUI();
                     EditorGUILayout.EndVertical();
                     EditorGUILayout.EndVertical();
                 }
@@ -2998,7 +2998,7 @@ namespace lilToon
                     EditorGUILayout.LabelField(GetLoc("sLightBakeSetting"), customToggleFont);
                     EditorGUILayout.BeginVertical(boxInner);
                     if(!isCustomEditor) m_MaterialEditor.DoubleSidedGIField();
-                    if(!isCustomEditor) m_MaterialEditor.LightmapEmissionFlagsProperty(0, true, true);
+                    if(!isCustomEditor) DrawGIFragGUI();
                     EditorGUILayout.EndVertical();
                     EditorGUILayout.EndVertical();
                 }
@@ -3378,6 +3378,15 @@ namespace lilToon
         {
             #if VRC_SDK_VRCSDK3 && UDON
                 if(isnormal && lilEditorGUI.EditorButton(GetLoc("sOptimizeForEvents"))) lilMaterialUtils.RemoveUnusedTexture(material);
+            #endif
+        }
+
+        private void DrawGIFragGUI()
+        {
+            #if NITY_2019_1_OR_NEWER
+                m_MaterialEditor.LightmapEmissionFlagsProperty(0, true, true);
+            #else
+                m_MaterialEditor.LightmapEmissionFlagsProperty(0, true);
             #endif
         }
         #endregion
