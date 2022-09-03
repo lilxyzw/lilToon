@@ -153,14 +153,12 @@ Shader "Hidden/lilToonLiteOutline"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Geometry"}
-        
         UsePass "Hidden/ltspass_lite_opaque/FORWARD"
         UsePass "Hidden/ltspass_lite_opaque/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_lite_opaque/FORWARD_ADD"
         UsePass "Hidden/ltspass_lite_opaque/FORWARD_ADD_OUTLINE"
         UsePass "Hidden/ltspass_lite_opaque/SHADOW_CASTER_OUTLINE"
         UsePass "Hidden/ltspass_lite_opaque/META"
-        
     }
     Fallback "Unlit/Texture"
 

@@ -541,14 +541,12 @@ Shader "Hidden/lilToonCutoutOutline"
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
-        
         UsePass "Hidden/ltspass_cutout/FORWARD"
         UsePass "Hidden/ltspass_cutout/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_cutout/FORWARD_ADD"
         UsePass "Hidden/ltspass_cutout/FORWARD_ADD_OUTLINE"
         UsePass "Hidden/ltspass_cutout/SHADOW_CASTER_OUTLINE"
         UsePass "Hidden/ltspass_cutout/META"
-        
     }
     Fallback "Unlit/Texture"
 

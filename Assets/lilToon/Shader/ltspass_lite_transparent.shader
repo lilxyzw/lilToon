@@ -202,7 +202,6 @@ Shader "Hidden/ltspass_lite_transparent"
             #pragma skip_variants _REFLECTION_PROBE_BLENDING _REFLECTION_PROBE_BOX_PROJECTION
         ENDHLSL
 
-        
 
         // Forward Back
         Pass
@@ -247,11 +246,9 @@ Shader "Hidden/ltspass_lite_transparent"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -297,11 +294,9 @@ Shader "Hidden/ltspass_lite_transparent"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -348,11 +343,9 @@ Shader "Hidden/ltspass_lite_transparent"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -402,11 +395,9 @@ Shader "Hidden/ltspass_lite_transparent"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -453,11 +444,9 @@ Shader "Hidden/ltspass_lite_transparent"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -487,11 +476,9 @@ Shader "Hidden/ltspass_lite_transparent"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -519,11 +506,9 @@ Shader "Hidden/ltspass_lite_transparent"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -548,15 +533,12 @@ Shader "Hidden/ltspass_lite_transparent"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_meta.hlsl"
 
-            
             ENDHLSL
         }
 
-        
     }
     Fallback "Unlit/Texture"
 }

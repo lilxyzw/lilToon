@@ -643,7 +643,6 @@ Shader "Hidden/ltspass_tess_opaque"
             #define LIL_OPTIMIZE_USE_FORWARDADD
             #define LIL_OPTIMIZE_USE_VERTEXLIGHT
             #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK DIRLIGHTMAP_COMBINED _MIXED_LIGHTING_SUBTRACTIVE
-            
             #pragma target 5.0
             #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_TESSELLATION
@@ -654,7 +653,6 @@ Shader "Hidden/ltspass_tess_opaque"
             #pragma skip_variants _SCREEN_SPACE_OCCLUSION
         ENDHLSL
 
-        
 
         // Forward
         Pass
@@ -695,7 +693,6 @@ Shader "Hidden/ltspass_tess_opaque"
             #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #define LIL_PASS_FORWARD
-            
             #pragma multi_compile_domain _ VERTEXLIGHT_ON
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -703,11 +700,9 @@ Shader "Hidden/ltspass_tess_opaque"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -750,7 +745,6 @@ Shader "Hidden/ltspass_tess_opaque"
             #pragma multi_compile_domain _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #define LIL_PASS_FORWARD
-            
             #pragma multi_compile_domain _ VERTEXLIGHT_ON
 
             //----------------------------------------------------------------------------------------------------------------------
@@ -759,11 +753,9 @@ Shader "Hidden/ltspass_tess_opaque"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -816,11 +808,9 @@ Shader "Hidden/ltspass_tess_opaque"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -870,11 +860,9 @@ Shader "Hidden/ltspass_tess_opaque"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -904,11 +892,9 @@ Shader "Hidden/ltspass_tess_opaque"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -936,11 +922,9 @@ Shader "Hidden/ltspass_tess_opaque"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -965,15 +949,12 @@ Shader "Hidden/ltspass_tess_opaque"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_meta.hlsl"
 
-            
             ENDHLSL
         }
 
-        
     }
     Fallback "Unlit/Texture"
 }

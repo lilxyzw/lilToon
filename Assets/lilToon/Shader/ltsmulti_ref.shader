@@ -553,7 +553,6 @@ Shader "Hidden/lilToonMultiRefraction"
         // GrabPass
         GrabPass {"_lilBackgroundTexture"}
 
-        
 
         // Forward
         Pass
@@ -631,11 +630,9 @@ Shader "Hidden/lilToonMultiRefraction"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -715,11 +712,9 @@ Shader "Hidden/lilToonMultiRefraction"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -756,11 +751,9 @@ Shader "Hidden/lilToonMultiRefraction"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -794,15 +787,12 @@ Shader "Hidden/lilToonMultiRefraction"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_meta.hlsl"
 
-            
             ENDHLSL
         }
 
-        
     }
     Fallback "Unlit/Texture"
 

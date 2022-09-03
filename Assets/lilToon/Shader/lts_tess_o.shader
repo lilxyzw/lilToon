@@ -541,14 +541,12 @@ Shader "Hidden/lilToonTessellationOutline"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Geometry"}
-        
         UsePass "Hidden/ltspass_tess_opaque/FORWARD"
         UsePass "Hidden/ltspass_tess_opaque/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_tess_opaque/FORWARD_ADD"
         UsePass "Hidden/ltspass_tess_opaque/FORWARD_ADD_OUTLINE"
         UsePass "Hidden/ltspass_tess_opaque/SHADOW_CASTER_OUTLINE"
         UsePass "Hidden/ltspass_tess_opaque/META"
-        
     }
     Fallback "Unlit/Texture"
 

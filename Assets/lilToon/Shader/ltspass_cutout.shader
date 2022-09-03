@@ -643,7 +643,6 @@ Shader "Hidden/ltspass_cutout"
             #define LIL_OPTIMIZE_USE_FORWARDADD
             #define LIL_OPTIMIZE_USE_VERTEXLIGHT
             #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK DIRLIGHTMAP_COMBINED _MIXED_LIGHTING_SUBTRACTIVE
-            
             #pragma target 3.5
             #pragma fragmentoption ARB_precision_hint_fastest
 
@@ -653,7 +652,6 @@ Shader "Hidden/ltspass_cutout"
             #pragma skip_variants _SCREEN_SPACE_OCCLUSION
         ENDHLSL
 
-        
 
         // Forward
         Pass
@@ -691,18 +689,15 @@ Shader "Hidden/ltspass_cutout"
             #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #define LIL_PASS_FORWARD
-            
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -742,7 +737,6 @@ Shader "Hidden/ltspass_cutout"
             #pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2
             #pragma multi_compile_instancing
             #define LIL_PASS_FORWARD
-            
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
@@ -750,11 +744,9 @@ Shader "Hidden/ltspass_cutout"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -804,11 +796,9 @@ Shader "Hidden/ltspass_cutout"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -855,11 +845,9 @@ Shader "Hidden/ltspass_cutout"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -889,11 +877,9 @@ Shader "Hidden/ltspass_cutout"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -921,11 +907,9 @@ Shader "Hidden/ltspass_cutout"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -950,15 +934,12 @@ Shader "Hidden/ltspass_cutout"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_meta.hlsl"
 
-            
             ENDHLSL
         }
 
-        
     }
     Fallback "Unlit/Texture"
 }

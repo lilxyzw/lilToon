@@ -574,7 +574,6 @@ Shader "Hidden/lilToonTwoPassTransparentOutline"
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
-        
         UsePass "Hidden/ltspass_transparent/FORWARD_BACK"
         UsePass "Hidden/ltspass_transparent/FORWARD"
         UsePass "Hidden/ltspass_transparent/FORWARD_OUTLINE"
@@ -582,7 +581,6 @@ Shader "Hidden/lilToonTwoPassTransparentOutline"
         UsePass "Hidden/ltspass_transparent/FORWARD_ADD_OUTLINE"
         UsePass "Hidden/ltspass_transparent/SHADOW_CASTER_OUTLINE"
         UsePass "Hidden/ltspass_transparent/META"
-        
     }
     Fallback "Unlit/Texture"
 

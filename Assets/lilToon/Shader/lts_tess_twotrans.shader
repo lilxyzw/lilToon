@@ -574,13 +574,11 @@ Shader "Hidden/lilToonTessellationTwoPassTransparent"
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
-        
         UsePass "Hidden/ltspass_tess_transparent/FORWARD_BACK"
         UsePass "Hidden/ltspass_tess_transparent/FORWARD"
         UsePass "Hidden/ltspass_tess_transparent/FORWARD_ADD"
         UsePass "Hidden/ltspass_tess_transparent/SHADOW_CASTER"
         UsePass "Hidden/ltspass_tess_transparent/META"
-        
     }
     Fallback "Unlit/Texture"
 

@@ -628,7 +628,6 @@ Shader "Hidden/lilToonGem"
             #define LIL_OPTIMIZE_USE_FORWARDADD
             #define LIL_OPTIMIZE_USE_VERTEXLIGHT
             #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK DIRLIGHTMAP_COMBINED _MIXED_LIGHTING_SUBTRACTIVE
-            
             #pragma target 3.5
             #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_GEM
@@ -642,7 +641,6 @@ Shader "Hidden/lilToonGem"
 
         GrabPass {"_lilBackgroundTexture"}
 
-        
 
         // Forward Pre
         Pass
@@ -676,11 +674,9 @@ Shader "Hidden/lilToonGem"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward_gem.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -726,11 +722,9 @@ Shader "Hidden/lilToonGem"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward_gem.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -757,11 +751,9 @@ Shader "Hidden/lilToonGem"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -786,15 +778,12 @@ Shader "Hidden/lilToonGem"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_meta.hlsl"
 
-            
             ENDHLSL
         }
 
-        
     }
     Fallback "Unlit/Texture"
 

@@ -559,12 +559,10 @@ Shader "_lil/[Optional] lilToonFurOnlyTwoPass"
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "Transparent"}
-        
         UsePass "Hidden/lilToonFurTwoPass/FORWARD_FUR_PRE"
         UsePass "Hidden/lilToonFurTwoPass/FORWARD_FUR"
         UsePass "Hidden/lilToonFurTwoPass/FORWARD_ADD_FUR_PRE"
         UsePass "Hidden/lilToonFurTwoPass/FORWARD_ADD_FUR"
-        
     }
     Fallback "Unlit/Texture"
 

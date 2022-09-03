@@ -186,9 +186,7 @@ Shader "_lil/[Optional] lilToonLiteOverlayOnePass"
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
-        
         UsePass "Hidden/ltspass_lite_transparent/FORWARD"
-        
     }
     Fallback "Unlit/Texture"
 

@@ -393,8 +393,13 @@ namespace lilToon
                 }
             }
 
-            sb.Replace("\r", "");
-            sb.Replace("\n", Environment.NewLine);
+            sb.Replace("\r\n", "\r");
+            sb.Replace("\n", "\r");
+            sb.Replace("\r", "\r\n");
+
+            sb.Replace("\r\n    \r\n", "\r\n");
+            sb.Replace("\r\n        \r\n", "\r\n");
+            sb.Replace("\r\n            \r\n", "\r\n");
 
             return sb.ToString();
         }
@@ -664,15 +669,19 @@ namespace lilToon
                 StringBuilder sb2 = new StringBuilder(sb1.ToString());
 
                 sb1.Replace(LIL_DOTS_SM_TAGS, " \"ShaderModel\" = \"4.5\"");
-                sb1.Replace(LIL_DOTS_SM_4_5, "#pragma target 4.5" + Environment.NewLine + "            #pragma exclude_renderers gles gles3 glcore");
-                sb1.Replace(LIL_DOTS_SM_4_5_OR_3_5, "#pragma target 4.5" + Environment.NewLine + "            #pragma exclude_renderers gles gles3 glcore");
+                //sb1.Replace(LIL_DOTS_SM_4_5, "#pragma target 4.5" + Environment.NewLine + "            #pragma exclude_renderers gles gles3 glcore");
+                //sb1.Replace(LIL_DOTS_SM_4_5_OR_3_5, "#pragma target 4.5" + Environment.NewLine + "            #pragma exclude_renderers gles gles3 glcore");
+                sb1.Replace(LIL_DOTS_SM_4_5, "#pragma target 4.5");
+                sb1.Replace(LIL_DOTS_SM_4_5_OR_3_5, "#pragma target 4.5");
                 ReplaceMultiCompiles(ref sb1, version, indent, true);
                 sb.AppendLine(sb1.ToString());
                 sb.AppendLine();
 
                 sb2.Replace(LIL_DOTS_SM_TAGS, "");
-                sb2.Replace(LIL_DOTS_SM_4_5, "#pragma only_renderers gles gles3 glcore d3d11");
-                sb2.Replace(LIL_DOTS_SM_4_5_OR_3_5, "#pragma target 3.5" + Environment.NewLine + "            #pragma only_renderers gles gles3 glcore d3d11");
+                //sb2.Replace(LIL_DOTS_SM_4_5, "#pragma only_renderers gles gles3 glcore d3d11");
+                //sb2.Replace(LIL_DOTS_SM_4_5_OR_3_5, "#pragma target 3.5" + Environment.NewLine + "            #pragma only_renderers gles gles3 glcore d3d11");
+                sb2.Replace(LIL_DOTS_SM_4_5, "");
+                sb2.Replace(LIL_DOTS_SM_4_5_OR_3_5, "#pragma target 3.5");
                 ReplaceMultiCompiles(ref sb2, version, indent, false);
                 sb.AppendLine(sb2.ToString());
             }

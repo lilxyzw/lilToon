@@ -541,12 +541,10 @@ Shader "lilToon"
     SubShader
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Geometry"}
-        
         UsePass "Hidden/ltspass_opaque/FORWARD"
         UsePass "Hidden/ltspass_opaque/FORWARD_ADD"
         UsePass "Hidden/ltspass_opaque/SHADOW_CASTER"
         UsePass "Hidden/ltspass_opaque/META"
-        
     }
     Fallback "Unlit/Texture"
 

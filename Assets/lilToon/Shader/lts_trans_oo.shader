@@ -574,10 +574,8 @@ Shader "_lil/[Optional] lilToonOutlineOnlyTransparent"
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest+10"}
-        
         UsePass "Hidden/ltspass_transparent/FORWARD_OUTLINE"
         UsePass "Hidden/ltspass_transparent/FORWARD_ADD_OUTLINE"
-        
     }
     Fallback "Unlit/Texture"
 

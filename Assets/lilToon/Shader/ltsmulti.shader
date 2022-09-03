@@ -572,7 +572,6 @@ Shader "_lil/lilToonMulti"
             #pragma skip_variants _SCREEN_SPACE_OCCLUSION
         ENDHLSL
 
-        
 
         // Forward
         Pass
@@ -654,11 +653,9 @@ Shader "_lil/lilToonMulti"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -742,11 +739,9 @@ Shader "_lil/lilToonMulti"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -787,11 +782,9 @@ Shader "_lil/lilToonMulti"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -825,15 +818,12 @@ Shader "_lil/lilToonMulti"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_meta.hlsl"
 
-            
             ENDHLSL
         }
 
-        
     }
     Fallback "Unlit/Texture"
 

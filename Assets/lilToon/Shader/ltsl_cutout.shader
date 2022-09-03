@@ -153,12 +153,10 @@ Shader "Hidden/lilToonLiteCutout"
     SubShader
     {
         Tags {"RenderType" = "TransparentCutout" "Queue" = "AlphaTest"}
-        
         UsePass "Hidden/ltspass_lite_cutout/FORWARD"
         UsePass "Hidden/ltspass_lite_cutout/FORWARD_ADD"
         UsePass "Hidden/ltspass_lite_cutout/SHADOW_CASTER"
         UsePass "Hidden/ltspass_lite_cutout/META"
-        
     }
     Fallback "Unlit/Texture"
 

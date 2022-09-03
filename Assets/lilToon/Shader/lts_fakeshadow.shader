@@ -158,7 +158,6 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             #define LIL_OPTIMIZE_USE_FORWARDADD
             #define LIL_OPTIMIZE_USE_VERTEXLIGHT
             #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK DIRLIGHTMAP_COMBINED _MIXED_LIGHTING_SUBTRACTIVE
-            
             #pragma target 3.5
             #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_FAKESHADOW
@@ -173,7 +172,6 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             #pragma skip_variants _REFLECTION_PROBE_BLENDING _REFLECTION_PROBE_BOX_PROJECTION
         ENDHLSL
 
-        
 
         Pass
         {
@@ -216,15 +214,12 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward_fakeshadow.hlsl"
 
-            
             ENDHLSL
         }
 
-        
     }
     Fallback "Unlit/Texture"
 

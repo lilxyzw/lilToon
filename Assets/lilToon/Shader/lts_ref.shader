@@ -621,7 +621,6 @@ Shader "Hidden/lilToonRefraction"
             #define LIL_OPTIMIZE_USE_FORWARDADD
             #define LIL_OPTIMIZE_USE_VERTEXLIGHT
             #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK DIRLIGHTMAP_COMBINED _MIXED_LIGHTING_SUBTRACTIVE
-            
             #pragma target 3.5
             #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_REFRACTION
@@ -635,7 +634,6 @@ Shader "Hidden/lilToonRefraction"
         // GrabPass
         GrabPass {"_lilBackgroundTexture"}
 
-        
 
         // Forward
         Pass
@@ -679,11 +677,9 @@ Shader "Hidden/lilToonRefraction"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -732,11 +728,9 @@ Shader "Hidden/lilToonRefraction"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_forward.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -766,11 +760,9 @@ Shader "Hidden/lilToonRefraction"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_shadowcaster.hlsl"
 
-            
             ENDHLSL
         }
 
@@ -795,15 +787,12 @@ Shader "Hidden/lilToonRefraction"
             #include "Includes/lil_pipeline_brp.hlsl"
             #include "Includes/lil_common.hlsl"
             // Insert functions and includes that depend on Unity here
-            
 
             #include "Includes/lil_pass_meta.hlsl"
 
-            
             ENDHLSL
         }
 
-        
     }
     Fallback "Unlit/Texture"
 

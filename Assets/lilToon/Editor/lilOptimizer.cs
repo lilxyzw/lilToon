@@ -257,6 +257,10 @@ namespace lilToon
                 }
                 sb.AppendLine(line);
             }
+
+            sb.Replace("\r\n", "\r");
+            sb.Replace("\n", "\r");
+            sb.Replace("\r", "\r\n");
             string optHLSL = sb.ToString();
             Debug.Log(optHLSL);
             var sw = new StreamWriter(pathOpt, false);
