@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed `Vertex Light Strength` being ignored
 - Fixed custom shaders not being scanned during optimization
 - Fixed light layers in URP
+- Fixed UV calculation when resolution is changed with `ScalableBufferManager.ResizeBuffers()`
 
 ## [1.3.4] - 2022-07-30
 ### Added

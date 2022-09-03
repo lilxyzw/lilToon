@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `頂点ライトの強度`が無視されていたのを修正
 - カスタムシェーダーが最適化時にスキャンされていなかったのを修正
 - URPのライトレイヤーを修正
+- `ScalableBufferManager.ResizeBuffers()`で解像度が変更された際のUV計算を修正
 
 ## [1.3.4] - 2022-07-30
 ### 追加

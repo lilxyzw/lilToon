@@ -192,10 +192,18 @@
         #define LIL_SCREEN_UV_STEREO_FIX(i,o)
     #endif
 
+    #if defined(LIL_BRP) && !defined(LIL_LWTEX) && defined(LIL_REFRACTION_BLUR2)
+        #define LIL_RES_XY lilGetWidthAndHeight(_GrabTexture)
+    #elif defined(LIL_BRP) && !defined(LIL_LWTEX)
+        #define LIL_RES_XY lilGetWidthAndHeight(_lilBackgroundTexture)
+    #else
+        #define LIL_RES_XY (LIL_SCREENPARAMS.xy)
+    #endif
+
     #define LIL_UNPACK_POSITION_CS(i,o) \
         o.positionCS = i.positionCS; \
         o.positionSS = lilTransformCStoSSFrag(i.positionCS); \
-        o.uvScn = i.positionCS.xy / LIL_SCREENPARAMS.xy; \
+        o.uvScn = i.positionCS.xy / LIL_RES_XY; \
         LIL_SCREEN_UV_STEREO_FIX(i,o)
 #else
     #define LIL_UNPACK_POSITION_CS(i,o)

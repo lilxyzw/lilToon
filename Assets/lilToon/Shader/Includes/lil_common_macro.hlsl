@@ -322,6 +322,11 @@
     {
         return tex3D(tex, float3(positionCS*0.25,alpha*0.9375)).a;
     }
+
+    float2 lilGetWidthAndHeight(TEXTURE2D(tex))
+    {
+        return float2(0, 0);
+    }
 #else
     #define LIL_SAMPLE_1D(tex,samp,uv)                      tex.Sample(samp,uv)
     #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)              tex.SampleLevel(samp,uv,lod)
@@ -385,6 +390,13 @@
         uint3 uv = uint3(positionCS, alpha*0.9375*16);
         uv.xy = uv.xy % 4;
         return tex[uv].a;
+    }
+
+    float2 lilGetWidthAndHeight(TEXTURE2D(tex))
+    {
+        uint width, height;
+        tex.GetDimensions(width, height);
+        return float2(width, height);
     }
 #endif
 
