@@ -4,8 +4,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using ABI.CCK.Components;
-using ABI.CCK.Scripts.Editor;
+using UnityEngine.Events;
 
 namespace lilToon.External
 {
@@ -16,8 +15,21 @@ namespace lilToon.External
         [InitializeOnLoadMethod]
         public static void StartupMethod()
         {
-            CCK_BuildUtility.PreAvatarBundleEvent.AddListener(OnBuildRequested);
-            CCK_BuildUtility.PrePropBundleEvent.AddListener(OnBuildRequested);
+            try
+            {
+                var type = Assembly.Load("Assembly-CSharp-Editor").GetType("ABI.CCK.Scripts.Editor.CCK_BuildUtility");
+                var preAvatarBundleEvent = type.GetField("PreAvatarBundleEvent", BindingFlags.Static | BindingFlags.Public);
+                var prePropBundleEvent = type.GetField("PrePropBundleEvent", BindingFlags.Static | BindingFlags.Public);
+                var method = typeof(UnityEvent<GameObject>).GetMethod("AddListener");
+                var methodOnBuild = typeof(ChilloutVRModule).GetMethod("OnBuildRequested", BindingFlags.Static | BindingFlags.Public);
+                var m = (UnityAction<GameObject>)Delegate.CreateDelegate(typeof(UnityAction<GameObject>), null, methodOnBuild);
+                method.Invoke(preAvatarBundleEvent.GetValue(null), new object[]{m});
+                method.Invoke(prePropBundleEvent.GetValue(null), new object[]{m});
+            }
+            catch(Exception e)
+            {
+                Debug.LogException(e);
+            }
         }
 
         public static void OnBuildRequested(GameObject avatarGameObject)
@@ -57,12 +69,22 @@ namespace lilToon.External
                 if(animator.runtimeAnimatorController != null) clips.AddRange(animator.runtimeAnimatorController.animationClips);
             }
 
-            foreach(var descriptor in gameObject.GetComponentsInChildren<CVRAvatar>(true))
+            try
             {
-                if(descriptor.overrides != null)
+                var type = Assembly.Load("Assembly-CSharp-Editor").GetType("ABI.CCK.Components.CVRAvatar");
+                var overridesField = type.GetField("overrides");
+                foreach(var descriptor in gameObject.GetComponentsInChildren(type,true))
                 {
-                    clips.AddRange(descriptor.overrides.animationClips);
+                    var overrides = (AnimatorOverrideController)overridesField.GetValue(descriptor);
+                    if(overrides != null)
+                    {
+                        clips.AddRange(overrides.animationClips);
+                    }
                 }
+            }
+            catch(Exception e)
+            {
+                Debug.LogException(e);
             }
 
             return clips.ToArray();
@@ -98,33 +120,52 @@ namespace lilToon.External
         public static void GenerateBugReportCVRAvatar()
         {
             var clips = new List<AnimationClip>();
-            foreach(var descriptor in Selection.activeGameObject.GetComponentsInChildren<ABI.CCK.Components.CVRAvatar>(true))
+            try
             {
-                if(descriptor.overrides != null)
+                var type = Assembly.Load("Assembly-CSharp-Editor").GetType("ABI.CCK.Components.CVRAvatar");
+                var overridesField = type.GetField("overrides");
+                foreach(var descriptor in Selection.activeGameObject.GetComponentsInChildren(type,true))
                 {
-                    clips.AddRange(descriptor.overrides.animationClips);
+                    var overrides = (AnimatorOverrideController)overridesField.GetValue(descriptor);
+                    if(overrides != null)
+                    {
+                        clips.AddRange(overrides.animationClips);
+                    }
                 }
             }
-            GenerateBugReport(null, clips, "# CVR Avatar Debug");
+            catch(Exception e)
+            {
+                Debug.LogException(e);
+            }
+
+            var methods = typeof(lilToonEditorUtils).GetMethods(BindingFlags.Static | BindingFlags.NonPublic);
+            foreach(var method in methods)
+            {
+                var methodParams = method.GetParameters();
+                if(method.Name != "GenerateBugReport" || methodParams.Length != 3) continue;
+                method.Invoke(null, new object[]{null, clips, "# CVR Avatar Debug"});
+                return;
+            }
+            #pragma warning disable 0162
+            if(lilConstants.currentVersionValue < 31) EditorUtility.DisplayDialog("[Debug] Generate bug report (CVR Avatar)","This version does not support bug reports. Prease import lilToon 1.3.5 or newer.","OK");
+            else                                      EditorUtility.DisplayDialog("[Debug] Generate bug report (CVR Avatar)","Failed to generate bug report.","OK");
+            #pragma warning restore 0162
         }
 
         [MenuItem("GameObject/lilToon/[Debug] Generate bug report (CVR Avatar)", true, 23)]
         public static bool CheckGenerateBugReportCVRAvatar()
         {
-            return Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<ABI.CCK.Components.CVRAvatar>() != null;
-        }
-
-        private static void GenerateBugReport(List<Material> materialsIn, List<AnimationClip> clipsIn, string addText)
-        {
-            Type type = typeof(lilToonEditorUtils);
-            var methods = type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic);
-            foreach(var method in methods)
+            if(Selection.activeGameObject == null) return false;
+            try
             {
-                var methodParams = method.GetParameters();
-                if(method.Name != "GenerateBugReport" || methodParams.Length != 3) continue;
-                method.Invoke(null, new object[]{materialsIn,clipsIn,addText});
-                break;
+                var type = Assembly.Load("Assembly-CSharp-Editor").GetType("ABI.CCK.Components.CVRAvatar");
+                return Selection.activeGameObject.GetComponent(type) != null;
             }
+            catch(Exception e)
+            {
+                Debug.LogException(e);
+            }
+            return false;
         }
     }
 }

@@ -170,26 +170,25 @@ namespace lilToon.External
                         }
                     }
                 }
-                GenerateBugReport(null, clips, "# VRChat Avatar Debug");
-            }
-
-            [MenuItem("GameObject/lilToon/[Debug] Generate bug report (VRChat Avatar)", true, 23)]
-            public static bool CheckGenerateBugReportVRChatAvatar()
-            {
-                return Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<VRC.SDK3.Avatars.Components.VRCAvatarDescriptor>() != null;
-            }
-
-            private static void GenerateBugReport(List<Material> materialsIn, List<AnimationClip> clipsIn, string addText)
-            {
                 Type type = typeof(lilToonEditorUtils);
                 var methods = type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic);
                 foreach(var method in methods)
                 {
                     var methodParams = method.GetParameters();
                     if(method.Name != "GenerateBugReport" || methodParams.Length != 3) continue;
-                    method.Invoke(null, new object[]{materialsIn,clipsIn,addText});
-                    break;
+                    method.Invoke(null, new object[]{null, clips, "# VRChat Avatar Debug"});
+                    return;
                 }
+                #pragma warning disable 0162
+                if(lilConstants.currentVersionValue < 31) EditorUtility.DisplayDialog("[Debug] Generate bug report (VRChat Avatar)","This version does not support bug reports. Prease import lilToon 1.3.5 or newer.","OK");
+                else                                      EditorUtility.DisplayDialog("[Debug] Generate bug report (VRChat Avatar)","Failed to generate bug report.","OK");
+                #pragma warning restore 0162
+            }
+
+            [MenuItem("GameObject/lilToon/[Debug] Generate bug report (VRChat Avatar)", true, 23)]
+            public static bool CheckGenerateBugReportVRChatAvatar()
+            {
+                return Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<VRC.SDK3.Avatars.Components.VRCAvatarDescriptor>() != null;
             }
         #endif
     }
