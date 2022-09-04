@@ -71,7 +71,7 @@ namespace lilToon.External
 
             try
             {
-                var type = Assembly.Load("Assembly-CSharp-Editor").GetType("ABI.CCK.Components.CVRAvatar");
+                var type = Assembly.Load("Assembly-CSharp").GetType("ABI.CCK.Components.CVRAvatar");
                 var overridesField = type.GetField("overrides");
                 foreach(var descriptor in gameObject.GetComponentsInChildren(type,true))
                 {
@@ -122,7 +122,7 @@ namespace lilToon.External
             var clips = new List<AnimationClip>();
             try
             {
-                var type = Assembly.Load("Assembly-CSharp-Editor").GetType("ABI.CCK.Components.CVRAvatar");
+                var type = Assembly.Load("Assembly-CSharp").GetType("ABI.CCK.Components.CVRAvatar");
                 var overridesField = type.GetField("overrides");
                 foreach(var descriptor in Selection.activeGameObject.GetComponentsInChildren(type,true))
                 {
@@ -158,7 +158,7 @@ namespace lilToon.External
             if(Selection.activeGameObject == null) return false;
             try
             {
-                var type = Assembly.Load("Assembly-CSharp-Editor").GetType("ABI.CCK.Components.CVRAvatar");
+                var type = Assembly.Load("Assembly-CSharp").GetType("ABI.CCK.Components.CVRAvatar");
                 return Selection.activeGameObject.GetComponent(type) != null;
             }
             catch(Exception e)
