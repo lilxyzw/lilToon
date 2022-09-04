@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using Object = UnityEngine.Object;
+using System.Text;
 
 namespace lilToon
 {
@@ -531,10 +532,153 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Debug
-        //[MenuItem("GameObject/lilToon/[Debug] Optimization", false, menuPriorityFixLighting+1)]
-        //private static void DebugOptimization() { lilToonSetting.SetShaderSettingBeforeBuild(); }
-        //[MenuItem("GameObject/lilToon/[Debug] Undo Optimization", false, menuPriorityFixLighting+2)]
-        //private static void UndoDebugOptimization() { lilToonSetting.SetShaderSettingAfterBuild(); }
+        [MenuItem("GameObject/lilToon/[Debug] Generate bug report", false, 22)]
+        public static void GenerateBugReport()
+        {
+            GenerateBugReport(null, null, null);
+        }
+
+        internal static void GenerateBugReport(List<Material> materialsIn, List<AnimationClip> clipsIn, string addText)
+        {
+            StringBuilder sb = new StringBuilder();
+            if(!string.IsNullOrEmpty(addText))
+            {
+                sb.AppendLine(addText);
+                sb.AppendLine();
+            }
+            sb.AppendLine("# Platform Information");
+            sb.AppendLine("Unity: " + Application.unityVersion);
+            sb.AppendLine("Platform: " + Application.platform.ToString());
+            sb.AppendLine("Language: " + Application.systemLanguage.ToString());
+            sb.AppendLine("Shader API: " + SystemInfo.graphicsDeviceType.ToString());
+            sb.AppendLine();
+
+            sb.AppendLine("# SRP Information");
+            if(GraphicsSettings.renderPipelineAsset != null)
+            {
+                sb.AppendLine("Current RP: " + GraphicsSettings.renderPipelineAsset.ToString());
+            }
+            else
+            {
+                sb.AppendLine("Current RP: " + "Built-in Render Pipeline");
+            }
+            string versionURP = ReadVersion("30648b8d550465f4bb77f1e1afd0b37d");
+            if(versionURP != null) sb.AppendLine("URP: " + versionURP);
+            string versionHDRP = ReadVersion("6f54db4299717fc4ca37866c6afa0905");
+            if(versionHDRP != null) sb.AppendLine("HDRP: " + versionHDRP);
+            sb.AppendLine();
+
+            sb.AppendLine("# VRCSDK Information");
+            #if UDON
+                sb.AppendLine("UDON defined");
+            #endif
+            string versionVRCSDKBase = ReadVersion("1f872e4d36d785e409479da1c5fcde4c");
+            if(versionVRCSDKBase != null) sb.AppendLine("VRChat SDK - Base: " + versionVRCSDKBase);
+            string versionVRCSDKAvatars = ReadVersion("bd7510fb5fa478f43a81e9c74b72cb6f");
+            if(versionVRCSDKAvatars != null) sb.AppendLine("VRChat SDK - Avatars: " + versionVRCSDKAvatars);
+            string versionVRCSDKWorlds = ReadVersion("067f9b5cc16a52649985a5947e355556");
+            if(versionVRCSDKWorlds != null) sb.AppendLine("VRChat SDK - Worlds: " + versionVRCSDKWorlds);
+            string versionVRCSDKPath = AssetDatabase.GUIDToAssetPath("2cdbe2e71e2c46e48951c13df254e5b1");
+            if(!string.IsNullOrEmpty(versionVRCSDKPath)) sb.AppendLine("VRChat SDK - Unitypackage: " + File.ReadAllText(versionVRCSDKPath));
+            sb.AppendLine();
+
+            sb.AppendLine("# CVRCCK Information");
+            sb.AppendLine();
+
+            sb.AppendLine("# Shader Information");
+            sb.AppendLine("lilToon " + lilConstants.currentVersionName);
+            sb.AppendLine();
+
+            sb.AppendLine("# GameObject Information");
+            var materialList = new List<Material>();
+            var clipList = new List<AnimationClip>();
+            if(Selection.activeGameObject == null)
+            {
+                foreach(string guid in AssetDatabase.FindAssets("t:material"))
+                {
+                    Material material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
+                    materialList.Add(material);
+                }
+                foreach(string guid in AssetDatabase.FindAssets("t:animationclip"))
+                {
+                    AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(lilDirectoryManager.GUIDToPath(guid));
+                    clipList.Add(clip);
+                }
+            }
+            else
+            {
+                foreach(var renderer in Selection.activeGameObject.GetComponentsInChildren<Renderer>(true))
+                {
+                    materialList.AddRange(renderer.sharedMaterials);
+                }
+                foreach(var animator in Selection.activeGameObject.GetComponentsInChildren<Animator>(true))
+                {
+                    if(animator.runtimeAnimatorController != null) clipList.AddRange(animator.runtimeAnimatorController.animationClips);
+                }
+                var meshRenderers = Selection.activeGameObject.GetComponentsInChildren<MeshRenderer>(true);
+                var skinnedMeshRenderers = Selection.activeGameObject.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+                var animators = Selection.activeGameObject.GetComponentsInChildren<Animator>(true);
+
+                if(meshRenderers == null)   sb.AppendLine("MeshRenderer is not found");
+                else                        sb.AppendLine("MeshRenderer Count: " + meshRenderers.Length);
+                if(skinnedMeshRenderers == null)    sb.AppendLine("SkinnedMeshRenderer is not found");
+                else                                sb.AppendLine("SkinnedMeshRenderer Count: " + skinnedMeshRenderers.Length);
+                if(animators == null)   sb.AppendLine("Animator is not found");
+                else                    sb.AppendLine("Animator Count: " + animators.Length);
+            }
+
+            if(materialsIn != null) materialList.AddRange(materialsIn);
+            if(clipsIn != null) clipList.AddRange(clipsIn);
+
+            Material[] materials = materialList.ToArray();
+            AnimationClip[] clips = clipList.ToArray();
+
+            if(materials == null)   sb.AppendLine("Material is not found");
+            else                    sb.AppendLine("Material Count: " + materials.Length);
+            if(clips == null)   sb.AppendLine("AnimationClip is not found");
+            else                sb.AppendLine("AnimationClip Count: " + clips.Length);
+            sb.AppendLine();
+
+            lilToonSetting.GetOptimizedSetting(materials, clips, out string usedShaders, out string optimizedHLSL, out string shaderSettingText);
+
+            sb.AppendLine("# Shader List");
+            if(!string.IsNullOrEmpty(usedShaders))  sb.AppendLine(usedShaders);
+            else                                    sb.AppendLine("Shader is not found");
+            sb.AppendLine();
+
+            sb.AppendLine("# Shader Setting");
+            if(!string.IsNullOrEmpty(shaderSettingText))    sb.AppendLine(shaderSettingText);
+            else                                            sb.AppendLine("Shader setting is empty");
+            sb.AppendLine();
+
+            sb.AppendLine("# Optimized Input HLSL");
+            if(!string.IsNullOrEmpty(optimizedHLSL))    sb.AppendLine(optimizedHLSL);
+            else                                        sb.AppendLine("Optimization is failed");
+            sb.AppendLine();
+
+            string date = DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss");
+            string path = EditorUtility.SaveFilePanel("Save Bug Report", "", "lilToonBugReport-" + date, "txt");
+            if(string.IsNullOrEmpty(path)) return;
+            var sw = new StreamWriter(path, false);
+            sw.Write(sb.ToString());
+            sw.Close();
+        }
+
+        private static string ReadVersion(string guid)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            if(!string.IsNullOrEmpty(path))
+            {
+                PackageInfos package = JsonUtility.FromJson<PackageInfos>(File.ReadAllText(path));
+                return package.version;
+            }
+            return null;
+        }
+
+        private class PackageInfos
+        {
+            public string version = "";
+        }
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Format checker

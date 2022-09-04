@@ -652,6 +652,40 @@ public class lilToonSetting : ScriptableObject
         AssetDatabase.Refresh();
     }
 
+    internal static void GetOptimizedSetting(Material[] materials, AnimationClip[] clips, out string usedShaders, out string optimizedHLSL, out string shaderSettingText)
+    {
+        usedShaders = null;
+        optimizedHLSL = null;
+        shaderSettingText = null;
+
+        var shaders = GetShaderListFromGameObject(materials, clips);
+        if(shaders.Count() == 0) return;
+
+        var shaderNames = new List<string>();
+        foreach(Shader shader in shaders) shaderNames.Add(shader.name);
+        usedShaders = string.Join(Environment.NewLine, shaderNames.ToArray());
+
+        lilToonSetting shaderSetting = null;
+        InitializeShaderSetting(ref shaderSetting);
+        TurnOffAllShaderSetting(ref shaderSetting);
+
+        optimizedHLSL = lilOptimizer.GetOptimizedText(materials, clips);
+
+        // Get materials
+        foreach(var material in materials)
+        {
+            SetupShaderSettingFromMaterial(material, ref shaderSetting);
+        }
+
+        // Get animations
+        foreach(var clip in clips)
+        {
+            SetupShaderSettingFromAnimationClip(clip, ref shaderSetting, true);
+        }
+
+        shaderSettingText = BuildShaderSettingString(shaderSetting, false);
+    }
+
     internal static void SetShaderSettingBeforeBuild(Material[] materials, AnimationClip[] clips)
     {
         try

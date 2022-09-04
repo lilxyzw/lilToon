@@ -5,9 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using VRC.SDKBase.Editor.BuildPipeline;
-#if !UDON
-    using VRC.SDK3.Avatars.Components;
-#endif
 
 namespace lilToon.External
 {
@@ -82,7 +79,7 @@ namespace lilToon.External
             }
 
             #if !UDON
-                foreach(var descriptor in gameObject.GetComponentsInChildren<VRCAvatarDescriptor>(true))
+                foreach(var descriptor in gameObject.GetComponentsInChildren<VRC.SDK3.Avatars.Components.VRCAvatarDescriptor>(true))
                 {
                     foreach(var layer in descriptor.specialAnimationLayers)
                     {
@@ -152,6 +149,49 @@ namespace lilToon.External
                 break;
             }
         }
+
+        // Debug
+        #if !UDON
+            [MenuItem("GameObject/lilToon/[Debug] Generate bug report (VRChat Avatar)", false, 23)]
+            public static void GenerateBugReportVRChatAvatar()
+            {
+                var clips = new List<AnimationClip>();
+                foreach(var descriptor in Selection.activeGameObject.GetComponentsInChildren<VRC.SDK3.Avatars.Components.VRCAvatarDescriptor>(true))
+                {
+                    foreach(var layer in descriptor.specialAnimationLayers)
+                    {
+                        if(layer.animatorController != null) clips.AddRange(layer.animatorController.animationClips);
+                    }
+                    if(descriptor.customizeAnimationLayers)
+                    {
+                        foreach(var layer in descriptor.baseAnimationLayers)
+                        {
+                            if(layer.animatorController != null) clips.AddRange(layer.animatorController.animationClips);
+                        }
+                    }
+                }
+                GenerateBugReport(null, clips, "# VRChat Avatar Debug");
+            }
+
+            [MenuItem("GameObject/lilToon/[Debug] Generate bug report (VRChat Avatar)", true, 23)]
+            public static bool CheckGenerateBugReportVRChatAvatar()
+            {
+                return Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<VRC.SDK3.Avatars.Components.VRCAvatarDescriptor>() != null;
+            }
+
+            private static void GenerateBugReport(List<Material> materialsIn, List<AnimationClip> clipsIn, string addText)
+            {
+                Type type = typeof(lilToonEditorUtils);
+                var methods = type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic);
+                foreach(var method in methods)
+                {
+                    var methodParams = method.GetParameters();
+                    if(method.Name != "GenerateBugReport" || methodParams.Length != 3) continue;
+                    method.Invoke(null, new object[]{materialsIn,clipsIn,addText});
+                    break;
+                }
+            }
+        #endif
     }
 }
 #endif

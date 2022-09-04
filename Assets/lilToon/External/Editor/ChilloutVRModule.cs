@@ -93,6 +93,39 @@ namespace lilToon.External
                 break;
             }
         }
+
+        [MenuItem("GameObject/lilToon/[Debug] Generate bug report (CVR Avatar)", false, 23)]
+        public static void GenerateBugReportCVRAvatar()
+        {
+            var clips = new List<AnimationClip>();
+            foreach(var descriptor in Selection.activeGameObject.GetComponentsInChildren<ABI.CCK.Components.CVRAvatar>(true))
+            {
+                if(descriptor.overrides != null)
+                {
+                    clips.AddRange(descriptor.overrides.animationClips);
+                }
+            }
+            GenerateBugReport(null, clips, "# CVR Avatar Debug");
+        }
+
+        [MenuItem("GameObject/lilToon/[Debug] Generate bug report (CVR Avatar)", true, 23)]
+        public static bool CheckGenerateBugReportCVRAvatar()
+        {
+            return Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<ABI.CCK.Components.CVRAvatar>() != null;
+        }
+
+        private static void GenerateBugReport(List<Material> materialsIn, List<AnimationClip> clipsIn, string addText)
+        {
+            Type type = typeof(lilToonEditorUtils);
+            var methods = type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic);
+            foreach(var method in methods)
+            {
+                var methodParams = method.GetParameters();
+                if(method.Name != "GenerateBugReport" || methodParams.Length != 3) continue;
+                method.Invoke(null, new object[]{materialsIn,clipsIn,addText});
+                break;
+            }
+        }
     }
 }
 #endif

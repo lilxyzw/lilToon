@@ -44,6 +44,38 @@ namespace lilToon
             }
         }
 
+        internal static string GetOptimizedText(Material[] materials, AnimationClip[] clips)
+        {
+            try
+            {
+                var dicT = new Dictionary<string, TexProp>();
+                var dicD = new Dictionary<string, STProp>();
+                var dicF = new Dictionary<string, FloatProp>();
+                var dicC = new Dictionary<string, ColorProp>();
+
+                // Get materials
+                foreach(var material in materials)
+                {
+                    CheckMaterial(material, dicT, dicD, dicF, dicC);
+                }
+
+                // Get animations
+                foreach(var clip in clips)
+                {
+                    CheckAnimationClip(clip, dicT, dicD, dicF, dicC);
+                }
+
+                // Apply
+                return RewriteInputHLSLText(dicT, dicD, dicF, dicC);
+            }
+            catch(Exception e)
+            {
+                Debug.LogException(e);
+                Debug.Log("[lilToon] OptimizeInputHLSL() failed");
+                return e.ToString();
+            }
+        }
+
         private static void CheckMaterial(Material material, Dictionary<string, TexProp> dicT, Dictionary<string, STProp> dicD, Dictionary<string, FloatProp> dicF, Dictionary<string, ColorProp> dicC)
         {
             if(material == null || !CheckShaderIslilToon(material.shader)) return;
@@ -178,10 +210,19 @@ namespace lilToon
 
         private static void RewriteInputHLSL(Dictionary<string, TexProp> dicT, Dictionary<string, STProp> dicD, Dictionary<string, FloatProp> dicF, Dictionary<string, ColorProp> dicC)
         {
-            if(dicT.Count == 0 && dicD.Count == 0 && dicF.Count == 0 && dicC.Count == 0) return;
+            string optHLSL = RewriteInputHLSLText(dicT, dicD, dicF, dicC);
+            string pathOpt = AssetDatabase.GUIDToAssetPath("571051a232e4af44a98389bda858df27");
+            var sw = new StreamWriter(pathOpt, false);
+            sw.Write(optHLSL);
+            sw.Close();
+        }
+
+        private static string RewriteInputHLSLText(Dictionary<string, TexProp> dicT, Dictionary<string, STProp> dicD, Dictionary<string, FloatProp> dicF, Dictionary<string, ColorProp> dicC)
+        {
+            if(dicT.Count == 0 && dicD.Count == 0 && dicF.Count == 0 && dicC.Count == 0) return null;
             string pathBase = AssetDatabase.GUIDToAssetPath("8ff7f7d9c86e1154fb3aac5a8a8681bb");
             string pathOpt = AssetDatabase.GUIDToAssetPath("571051a232e4af44a98389bda858df27");
-            if(string.IsNullOrEmpty(pathBase) || string.IsNullOrEmpty(pathOpt) || !File.Exists(pathBase) || !File.Exists(pathOpt)) return;
+            if(string.IsNullOrEmpty(pathBase) || string.IsNullOrEmpty(pathOpt) || !File.Exists(pathBase) || !File.Exists(pathOpt)) return null;
             var sb = new StringBuilder();
             var sr = new StreamReader(pathBase);
             string line;
@@ -257,16 +298,12 @@ namespace lilToon
                 }
                 sb.AppendLine(line);
             }
+            sr.Close();
 
             sb.Replace("\r\n", "\r");
             sb.Replace("\n", "\r");
             sb.Replace("\r", "\r\n");
-            string optHLSL = sb.ToString();
-            Debug.Log(optHLSL);
-            var sw = new StreamWriter(pathOpt, false);
-            sw.Write(optHLSL);
-            sw.Close();
-            sr.Close();
+            return sb.ToString();
         }
 
         internal static void ResetInputHLSL()
