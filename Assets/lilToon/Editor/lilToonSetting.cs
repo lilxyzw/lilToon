@@ -138,6 +138,43 @@ public class lilToonSetting : ScriptableObject
     public lilToonPreset presetHair;
     public lilToonPreset presetCloth;
 
+    // Lock
+    internal static void SaveLockedSetting(lilToonSetting shaderSetting)
+    {
+        string path = lilDirectoryManager.GetSettingLockPath();
+        File.WriteAllText(path, JsonUtility.ToJson(shaderSetting, true));
+        AssetDatabase.Refresh();
+    }
+
+    internal static void LoadLockedSetting(ref lilToonSetting shaderSetting)
+    {
+        var lockedSetting = CreateInstance<lilToonSetting>();
+        string path = lilDirectoryManager.GetSettingLockPath();
+        if(File.Exists(path))
+        {
+            JsonUtility.FromJsonOverwrite(File.ReadAllText(path), lockedSetting);
+            shaderSetting.LIL_OPTIMIZE_APPLY_SHADOW_FA       = lockedSetting.LIL_OPTIMIZE_APPLY_SHADOW_FA;
+            shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD        = lockedSetting.LIL_OPTIMIZE_USE_FORWARDADD;
+            shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD_SHADOW = lockedSetting.LIL_OPTIMIZE_USE_FORWARDADD_SHADOW;
+            shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP          = lockedSetting.LIL_OPTIMIZE_USE_LIGHTMAP;
+            shaderSetting.isDebugOptimize                    = lockedSetting.isDebugOptimize;
+            shaderSetting.isOptimizeInTestBuild              = lockedSetting.isOptimizeInTestBuild;
+            shaderSetting.mainLightModeName                  = lockedSetting.mainLightModeName;
+            shaderSetting.outlineLightModeName               = lockedSetting.outlineLightModeName;
+            shaderSetting.preLightModeName                   = lockedSetting.preLightModeName;
+            shaderSetting.furLightModeName                   = lockedSetting.furLightModeName;
+            shaderSetting.furPreLightModeName                = lockedSetting.furPreLightModeName;
+            shaderSetting.gemPreLightModeName                = lockedSetting.gemPreLightModeName;
+        }
+    }
+
+    internal static void DeleteLockedSetting()
+    {
+        string path = lilDirectoryManager.GetSettingLockPath();
+        if(File.Exists(path)) AssetDatabase.DeleteAsset(path);
+    }
+
+    // Save and Load
     public static void SaveShaderSetting(lilToonSetting shaderSetting)
     {
         string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
@@ -151,6 +188,7 @@ public class lilToonSetting : ScriptableObject
         string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
         if(shaderSetting == null) shaderSetting = CreateInstance<lilToonSetting>();
         if(File.Exists(shaderSettingPath)) JsonUtility.FromJsonOverwrite(File.ReadAllText(shaderSettingPath), shaderSetting);
+        LoadLockedSetting(ref shaderSetting);
     }
 
     internal static void InitializeShaderSetting(ref lilToonSetting shaderSetting)

@@ -3085,9 +3085,21 @@ namespace lilToon
             applyButton.normal.textColor = Color.red;
             applyButton.fontStyle = FontStyle.Bold;
 
+            bool isLocked = File.Exists(lilDirectoryManager.GetSettingLockPath());
+            EditorGUI.BeginChangeCheck();
+            ToggleGUI(GetLoc("sSettingLock"), ref isLocked);
+            if(EditorGUI.EndChangeCheck())
+            {
+                if(isLocked) lilToonSetting.SaveLockedSetting(shaderSetting);
+                else         lilToonSetting.DeleteLockedSetting();
+            }
+
+
             #if VRC_SDK_VRCSDK3 && !UDON
                 EditorGUI.BeginChangeCheck();
+                GUI.enabled = !isLocked;
                 ToggleGUI(GetLoc("sShaderSettingOptimizeInTestBuild"), ref shaderSetting.isOptimizeInTestBuild);
+                GUI.enabled = true;
                 if(EditorGUI.EndChangeCheck()) lilToonSetting.SaveShaderSetting(shaderSetting);
             #endif
 
@@ -3098,7 +3110,9 @@ namespace lilToon
             if(edSet.isShowShaderSetting)
             {
                 EditorGUILayout.BeginVertical(customBox);
+                GUI.enabled = !isLocked;
                 ToggleGUI(GetLoc("sSettingClippingCanceller"), ref shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER);
+                GUI.enabled = true;
                 EditorGUILayout.EndVertical();
             }
 
@@ -3148,6 +3162,7 @@ namespace lilToon
         #region
         private static void ShaderSettingOptimizationGUI()
         {
+            GUI.enabled = !File.Exists(lilDirectoryManager.GetSettingLockPath());
             lilRenderPipeline RP = lilRenderPipelineReader.GetRP();
             if(RP == lilRenderPipeline.BRP)
             {
@@ -3156,6 +3171,7 @@ namespace lilToon
                 ToggleGUI(GetLoc("sSettingUseForwardAddShadow"), ref shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD_SHADOW);
             }
             ToggleGUI(GetLoc("sSettingUseLightmap"), ref shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
+            GUI.enabled = true;
         }
 
         private static void ShaderSettingDefaultValueGUI()
@@ -3179,12 +3195,14 @@ namespace lilToon
             EditorGUI.indentLevel--;
             EditorGUILayout.LabelField("[Shader] LightMode Override", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
+            GUI.enabled = !File.Exists(lilDirectoryManager.GetSettingLockPath());
             shaderSetting.mainLightModeName = EditorGUILayout.TextField("Main", shaderSetting.mainLightModeName);
             shaderSetting.outlineLightModeName = EditorGUILayout.TextField("Outline", shaderSetting.outlineLightModeName);
             shaderSetting.preLightModeName = EditorGUILayout.TextField("Transparent backface", shaderSetting.preLightModeName);
             shaderSetting.furLightModeName = EditorGUILayout.TextField("Fur", shaderSetting.furLightModeName);
             shaderSetting.furPreLightModeName = EditorGUILayout.TextField("Fur Pre", shaderSetting.furPreLightModeName);
             shaderSetting.gemPreLightModeName = EditorGUILayout.TextField("Gem Pre", shaderSetting.gemPreLightModeName);
+            GUI.enabled = true;
             EditorGUI.indentLevel--;
         }
         #endregion

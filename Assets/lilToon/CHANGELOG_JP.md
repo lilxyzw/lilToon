@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 影色のサンプリング方法に`LUT`を追加
 - URPの`Forward+`をサポート
 - 発光をライトベイクに反映するオプションを追加
+- `シェーダー設定`のロックを追加
 
 ### 修正
 - VRChatのワールドSDKでのエラーを修正

@@ -551,6 +551,7 @@ namespace lilToon
             sb.AppendLine("Platform: " + Application.platform.ToString());
             sb.AppendLine("Language: " + Application.systemLanguage.ToString());
             sb.AppendLine("Shader API: " + SystemInfo.graphicsDeviceType.ToString());
+            sb.AppendLine("Color Space: " + PlayerSettings.colorSpace.ToString());
             sb.AppendLine();
 
             sb.AppendLine("# SRP Information");

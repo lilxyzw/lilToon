@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `LUT` for shadow color
 - Support for `Forward+` (URP)
 - Added option to reflect light emission in lightbake
+- Lock for `Shader Setting`
 
 ### Fixed
 - Fixed error in VRChat World SDK

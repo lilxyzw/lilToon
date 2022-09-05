@@ -40,6 +40,7 @@ namespace lilToon
         public static string GetCurrentRPPath()             { return GUIDToPath("142b3aeca72105442a83089b616e92b8"); } // "Assets/lilToon/Editor/CurrentRP.txt"
         public static string GetClusterCreatorKitPath()     { return GUIDToPath("6f11c0d5c326e4a6c851aa1c02ff11ee"); } // "ClusterCreatorKit/package.json"
         public static string GetShaderSettingPath()         { return "ProjectSettings/lilToonSetting.json";          } // "ProjectSettings/lilToonSetting.json"
+        public static string GetSettingLockPath()           { return GetMainFolderPath() + "/SettingLock.json"; }      // "Assets/lilToon/SettingLock.json"
         public static string[] GetShaderFolderPaths()       { return new[] {GetShaderFolderPath()}; }
         public static string GetSettingFolderPath()         { return GetMainFolderPath(); }
         public static string GUIDToPath(string GUID)        { return AssetDatabase.GUIDToAssetPath(GUID); }
