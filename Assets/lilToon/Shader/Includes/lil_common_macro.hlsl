@@ -1103,6 +1103,15 @@ float3 lilGetObjectPosition()
         lightLoopContext.shadowValue      = 1;
         lightLoopContext.sampleReflection = 0;
         lightLoopContext.contactShadow    = 0;
+        #if LIL_SRP_VERSION_GREATER_EQUAL(6, 7)
+            real contactShadowFade;
+        #endif
+        #if LIL_SRP_VERSION_GREATER_EQUAL(12, 1)
+            real splineVisibility;
+        #endif
+        #if defined(APPLY_FOG_ON_SKY_REFLECTIONS)
+            lightLoopContext.positionWS = 0;
+        #endif
         return lightLoopContext;
     }
 

@@ -14,6 +14,8 @@
     #define PUNCTUAL_SHADOW_HIGH
     #define DIRECTIONAL_SHADOW_HIGH
 #endif
+//#pragma multi_compile_fragment AREA_SHADOW_MEDIUM AREA_SHADOW_HIGH
+#define AREA_SHADOW_MEDIUM
 
 #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"

@@ -21,7 +21,7 @@ Unityバージョン
 - Unity 2019.4.31f1 (Built-in RP / URP 7.7.1 / HDRP 7.7.1)
 - Unity 2020.3.36f1 (Built-in RP / URP 10.9.0 / HDRP 10.9.0)
 - Unity 2021.3.5f1 (Built-in RP / URP 12.1.7 / HDRP 12.1.7)
-- Unity 2022.1.6f1 (Built-in RP / URP 13.1.8 / HDRP 13.1.8)
+- Unity 2022.2.0b1 (Built-in RP / URP 14.0.3 / HDRP 14.0.3)
 
 シェーダーモデル
 - 通常版: SM4.0・ES3.0以降
