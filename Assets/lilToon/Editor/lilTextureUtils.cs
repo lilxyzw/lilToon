@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using UnityEditor;
@@ -371,9 +372,9 @@ namespace lilToon
                 try
                 {
                     colors.Add(new Color(
-                        float.Parse(vals[0]),
-                        float.Parse(vals[1]),
-                        float.Parse(vals[2])
+                        float.Parse(vals[0], CultureInfo.InvariantCulture),
+                        float.Parse(vals[1], CultureInfo.InvariantCulture),
+                        float.Parse(vals[2], CultureInfo.InvariantCulture)
                     ));
                 }
                 catch(Exception e)

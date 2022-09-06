@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using UnityEditor;
@@ -251,7 +252,7 @@ namespace lilToon
                         if(dicD.ContainsKey(texname) && !dicD[texname].isVariable)
                         {
                             var v = dicD[texname];
-                            sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + v.s.x + "," + v.s.y + "," + v.o.x + "," + v.o.y + ")");
+                            sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + LilF2S(v.s.x) + "," + LilF2S(v.s.y) + "," + LilF2S(v.o.x) + "," + LilF2S(v.o.y) + ")");
                             continue;
                         }
                     }
@@ -259,7 +260,7 @@ namespace lilToon
                     {
                         var v = dicC[name];
                         Color c = line.Contains("Color") && !line.Contains("Emission") && PlayerSettings.colorSpace == ColorSpace.Linear ? v.c.linear : v.c;
-                        sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + c.r + "," + c.g + "," + c.b + "," + c.a + ")");
+                        sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + LilF2S(c.r) + "," + LilF2S(c.g) + "," + LilF2S(c.b) + "," + LilF2S(c.a) + ")");
                         continue;
                     }
                 }
@@ -270,7 +271,7 @@ namespace lilToon
                     string name = line.Substring(indF, indEND - indF);
                     if(dicF.ContainsKey(name) && !dicF[name].isVariable)
                     {
-                        sb.AppendLine(GetIndent(indF - 8) + "#define " + name + " (" + dicF[name].f + ")");
+                        sb.AppendLine(GetIndent(indF - 8) + "#define " + name + " (" + LilF2S(dicF[name].f) + ")");
                         continue;
                     }
                 }
@@ -330,6 +331,8 @@ namespace lilToon
             string shaderPath = AssetDatabase.GetAssetPath(shader);
             return !string.IsNullOrEmpty(shaderPath) && shaderPath.Contains(".lilcontainer");
         }
+
+        private static string LilF2S(float f){ return f.ToString(CultureInfo.InvariantCulture); }
 
         private struct TexProp
         {
