@@ -4,6 +4,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.5] - 2022-09-06
+### Added
+- LightMode override
+- `Tiling & Offset` and `Blend Mode (Add / Subtract)` for alpha mask
+- `LUT` for shadow color
+- Support for `Forward+` (URP)
+- Added option to reflect light emission in lightbake
+- Lock for `Shader Setting`
+- Bug report generator (`GameObject/lilToon/[Debug] Generate bug report`)
+
+### Fixed
+- Fixed error in VRChat World SDK
+- Fixed `Vertex Light Strength` being ignored
+- Fixed custom shaders not being scanned during optimization
+- Fixed light layers in URP
+- Fixed UV calculation when resolution is changed with `ScalableBufferManager.ResizeBuffers()`
+
+## [1.3.4] - 2022-07-30
+### Added
+- Warning when using variants with GrabPass or geometry shader in project for cluster
+- ChilloutVR avatar build optimization
+
+### Fixed
+- Fixed an issue that could cause script errors
+- Fixed color value after optimization
+- Fixed ForwardAdd lighting
+- Fixed an issue where additional lights would not work after build on URP
+
+## [1.3.3] - 2022-07-27
+### Added
+- `UV Mode` for glitter mask
+
+### Fixed
+- Fixed that the main color 2nd and 3rd dissolve may not work properly after optimization
+- Fixed an issue where shaders might not work well after optimization under some conditions
+- Fixed ambient lighting in URP
+- Fixed an issue with mixed line feed codes on Mac
+- Fixed an error in lilToonMulti
+- Fixed shader rewriting at startup not working properly in OpenGL
+
 ## [1.3.2] - 2022-07-20
 ### Added
 - `UV Mode` for normal map 2nd

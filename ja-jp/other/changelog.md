@@ -4,6 +4,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.5] - 2022-09-06
+### 追加
+- LightModeのオーバーライドを追加
+- アルファマスクに`Tiling & Offset`と`合成モード (加算 / 減算)`を追加
+- 影色のサンプリング方法に`LUT`を追加
+- URPの`Forward+`をサポート
+- 発光をライトベイクに反映するオプションを追加
+- `シェーダー設定`のロックを追加
+- バグレポーターを追加（`GameObject/lilToon/[Debug] Generate bug report`）
+
+### 修正
+- VRChatのワールドSDKでのエラーを修正
+- `頂点ライトの強度`が無視されていたのを修正
+- カスタムシェーダーが最適化時にスキャンされていなかったのを修正
+- URPのライトレイヤーを修正
+- `ScalableBufferManager.ResizeBuffers()`で解像度が変更された際のUV計算を修正
+
+## [1.3.4] - 2022-07-30
+### 追加
+- cluster用プロジェクトでGrabPassやジオメトリシェーダーを用いたバリアントを使用しているときの警告を追加
+- ChilloutVRのアバタービルド時にも最適化を行うようにした
+
+### 修正
+- 一部スクリプトエラーになることがあるのを修正
+- 最適化後の色の値を修正
+- ForwardAddパスのライティングを修正
+- URPでビルド後に追加ライトが動作しない問題を修正
+
+## [1.3.3] - 2022-07-27
+### 追加
+- ラメのマスクに`UV Mode`を追加
+
+### 修正
+- メインカラー2nd・3rdのDissolveが最適化時に正しく動作しなくなる場合がある問題を修正
+- 一部条件で最適化時にうまく動作しないことがあるのを修正
+- URPでの環境光の扱いを修正
+- Mac環境で改行コードが混在する問題を修正
+- lilToonMultiのエラーを修正
+- OpenGL環境でスタートアップ時のシェーダー書き換えが正しく動作していなかったのを修正
+
 ## [1.3.2] - 2022-07-20
 ### 追加
 - ノーマルマップ2ndに`UV Mode`を追加
