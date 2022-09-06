@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for `Forward+` (URP)
 - Added option to reflect light emission in lightbake
 - Lock for `Shader Setting`
+- Bug report generator (`GameObject/lilToon/[Debug] Generate bug report`)
 
 ### Fixed
 - Fixed error in VRChat World SDK

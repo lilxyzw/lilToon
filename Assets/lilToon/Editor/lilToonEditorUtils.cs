@@ -10,6 +10,7 @@ using System.IO;
 
 using Object = UnityEngine.Object;
 using System.Text;
+using System.Reflection;
 
 namespace lilToon
 {
@@ -541,6 +542,11 @@ namespace lilToon
         internal static void GenerateBugReport(List<Material> materialsIn, List<AnimationClip> clipsIn, string addText)
         {
             StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("# Shader Information");
+            sb.AppendLine("lilToon " + lilConstants.currentVersionName);
+            sb.AppendLine();
+
             if(!string.IsNullOrEmpty(addText))
             {
                 sb.AppendLine(addText);
@@ -551,7 +557,52 @@ namespace lilToon
             sb.AppendLine("Platform: " + Application.platform.ToString());
             sb.AppendLine("Language: " + Application.systemLanguage.ToString());
             sb.AppendLine("Shader API: " + SystemInfo.graphicsDeviceType.ToString());
+            sb.AppendLine();
+
+            sb.AppendLine("# Editor Settings");
+            foreach(var prop in typeof(EditorSettings).GetProperties(BindingFlags.Static | BindingFlags.Public))
+            {
+                sb.AppendLine("EditorSettings." + prop.Name + " = " + prop.GetValue(null,null) + ";");
+            }
+            sb.AppendLine();
+
+            sb.AppendLine("# Graphics Settings");
+            foreach(var prop in typeof(GraphicsSettings).GetProperties(BindingFlags.Static | BindingFlags.Public))
+            {
+                sb.AppendLine("GraphicsSettings." + prop.Name + " = " + prop.GetValue(null,null) + ";");
+            }
+            sb.AppendLine();
+
+            sb.AppendLine("# Tier Settings");
+            sb.AppendLine("Active Tier: " + Graphics.activeTier);
+            foreach(var prop in typeof(TierSettings).GetProperties(BindingFlags.Static | BindingFlags.Public))
+            {
+                sb.AppendLine("TierSettings." + prop.Name + " = " + prop.GetValue(null,null) + ";");
+            }
+            sb.AppendLine();
+
+            var buildTarget = EditorUserBuildSettings.activeBuildTarget;
+            var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
+
+            sb.AppendLine("# Player Settings");
             sb.AppendLine("Color Space: " + PlayerSettings.colorSpace.ToString());
+            sb.AppendLine("Graphics APIs: ");
+            foreach(var api in PlayerSettings.GetGraphicsAPIs(buildTarget))
+            {
+                sb.AppendLine("    " + api.ToString());
+            }
+            sb.AppendLine("Scripting Backend: " + PlayerSettings.GetScriptingBackend(buildTargetGroup));
+            sb.AppendLine("Api Compatibility Level: " + PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup));
+            sb.AppendLine("C++ Compiler Configuration: " + PlayerSettings.GetIl2CppCompilerConfiguration(buildTargetGroup));
+            sb.AppendLine("Use incremental GC: " + !PlayerSettings.GetIncrementalIl2CppBuild(buildTargetGroup));
+            sb.AppendLine("Scripting Define Symbols: " + PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup));
+            sb.AppendLine();
+
+            sb.AppendLine("# Quality Settings");
+            foreach(var prop in typeof(QualitySettings).GetProperties(BindingFlags.Static | BindingFlags.Public))
+            {
+                sb.AppendLine("QualitySettings." + prop.Name + " = " + prop.GetValue(null,null) + ";");
+            }
             sb.AppendLine();
 
             sb.AppendLine("# SRP Information");
@@ -584,10 +635,6 @@ namespace lilToon
             sb.AppendLine();
 
             sb.AppendLine("# CVRCCK Information");
-            sb.AppendLine();
-
-            sb.AppendLine("# Shader Information");
-            sb.AppendLine("lilToon " + lilConstants.currentVersionName);
             sb.AppendLine();
 
             sb.AppendLine("# GameObject Information");
@@ -640,7 +687,8 @@ namespace lilToon
             else                sb.AppendLine("AnimationClip Count: " + clips.Length);
             sb.AppendLine();
 
-            lilToonSetting.GetOptimizedSetting(materials, clips, out string usedShaders, out string optimizedHLSL, out string shaderSettingText);
+            string usedShaders, optimizedHLSL, shaderSettingText;
+            lilToonSetting.GetOptimizedSetting(materials, clips, out usedShaders, out optimizedHLSL, out shaderSettingText);
 
             sb.AppendLine("# Shader List");
             if(!string.IsNullOrEmpty(usedShaders))  sb.AppendLine(usedShaders);
