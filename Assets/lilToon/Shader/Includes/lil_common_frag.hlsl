@@ -192,9 +192,9 @@
         #define LIL_SCREEN_UV_STEREO_FIX(i,o)
     #endif
 
-    #if defined(LIL_BRP) && !defined(LIL_LWTEX) && defined(LIL_REFRACTION_BLUR2)
+    #if defined(LIL_BRP) && !defined(LIL_LWTEX) && defined(LIL_REFRACTION) && defined(LIL_REFRACTION_BLUR2)
         #define LIL_RES_XY lilGetWidthAndHeight(_GrabTexture)
-    #elif defined(LIL_BRP) && !defined(LIL_LWTEX)
+    #elif defined(LIL_BRP) && !defined(LIL_LWTEX) && defined(LIL_REFRACTION)
         #define LIL_RES_XY lilGetWidthAndHeight(_lilBackgroundTexture)
     #else
         #define LIL_RES_XY (LIL_SCREENPARAMS.xy)

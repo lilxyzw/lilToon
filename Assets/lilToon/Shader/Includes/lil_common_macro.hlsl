@@ -327,6 +327,11 @@
     {
         return float2(0, 0);
     }
+
+    float2 lilGetWidthAndHeight(TEXTURE2D_ARRAY(tex))
+    {
+        return float2(0, 0);
+    }
 #else
     #define LIL_SAMPLE_1D(tex,samp,uv)                      tex.Sample(samp,uv)
     #define LIL_SAMPLE_1D_LOD(tex,samp,uv,lod)              tex.SampleLevel(samp,uv,lod)
@@ -396,6 +401,13 @@
     {
         uint width, height;
         tex.GetDimensions(width, height);
+        return float2(width, height);
+    }
+
+    float2 lilGetWidthAndHeight(TEXTURE2D_ARRAY(tex))
+    {
+        uint width, height, element;
+        tex.GetDimensions(width, height, element);
         return float2(width, height);
     }
 #endif
