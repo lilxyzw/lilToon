@@ -189,6 +189,8 @@ sAlphaMaskWarnOpaque	If you want to use Alpha Mask, you need to change the "Rend
 sAlphaMaskModeNone	None	None	None	None	None
 sAlphaMaskModeReplace	Replace	置き換え	Replace	Replace	Replace
 sAlphaMaskModeMul	Multiply	乗算	Multiply	Multiply	Multiply
+sAlphaMaskModeAdd	Add	加算	Add	Add	Add
+sAlphaMaskModeSub	Subtract	減算	Subtract	Subtract	Subtract
 sShadowSetting	Shadow	影設定	그림자 설정	阴影设置	陰影設置
 sShadowTips	You can set the color and range of the shadow.	影の色や範囲の設定ができます	그림자의 색상과 범위를 설정할 수 있습니다	你可以设置阴影的颜色和范围。	你可以設置陰影的顏色和範圍。
 sShadow	Shadow	影	그림자	阴影	陰影

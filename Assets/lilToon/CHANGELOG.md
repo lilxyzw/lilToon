@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed shader property stringification bug
 - Fixed UV for reflection shader
+- Fixed missing localization
 
 ## [1.3.5] - 2022-09-06
 ### Added
