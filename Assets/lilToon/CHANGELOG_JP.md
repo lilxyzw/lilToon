@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.6] - 2022-09-xx
 ### 修正
 - シェーダープロパティの文字列化のバグを修正
+- 屈折シェーダーのUVを修正
 
 ## [1.3.5] - 2022-09-06
 ### 追加

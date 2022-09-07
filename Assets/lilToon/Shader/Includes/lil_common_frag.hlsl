@@ -186,7 +186,7 @@
 #endif
 
 #if defined(LIL_V2F_POSITION_CS)
-    #if defined(UNITY_SINGLE_PASS_STEREO)
+    #if defined(UNITY_SINGLE_PASS_STEREO) && !(defined(LIL_BRP) && !defined(LIL_LWTEX) && defined(LIL_REFRACTION))
         #define LIL_SCREEN_UV_STEREO_FIX(i,o) o.uvScn.x *= 0.5;
     #else
         #define LIL_SCREEN_UV_STEREO_FIX(i,o)
