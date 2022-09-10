@@ -1,5 +1,5 @@
 # lilToon
-Version 1.3.5
+Version 1.3.6
 
 # 概要
 アバターを用いたサービス（VRChat等）向けに開発したシェーダーで以下のような特徴があります。
@@ -11,7 +11,7 @@ Version 1.3.5
 
 # 対応状況
 Unityバージョン
-- Unity 2018 - Unity 2022.1
+- Unity 2018 - Unity 2022.2
 
 動作確認環境
 - Unity 2018.1.0f2 (Built-in RP)
