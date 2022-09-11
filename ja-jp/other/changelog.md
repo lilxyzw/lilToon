@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.6] - 2022-09-10
+### 修正
+- シェーダープロパティの文字列化のバグを修正
+- 屈折シェーダーのUVを修正
+- ローカライゼーション対応漏れを修正
+
 ## [1.3.5] - 2022-09-06
 ### 追加
 - LightModeのオーバーライドを追加
