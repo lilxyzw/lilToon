@@ -9,5 +9,7 @@
   "licensesUrl": "https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/LICENSE",
   "license": "MIT",
   "keywords": ["Toon", "Shader", "Material"],
-  "url" : "https://github.com/lilxyzw/lilToon.git?path=Assets/lilToon#master"
+  "legacyFolders" : {
+    "Assets\\lilToon" : "05d1d116436047941ad97d1b9064ee05"
+  }
 }
