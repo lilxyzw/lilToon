@@ -19,7 +19,6 @@ namespace lilToon
             public const string rspPath = "Assets/mcs.rsp";
         #endif
 
-        public static string GetMainFolderPath()            { return GUIDToPath("05d1d116436047941ad97d1b9064ee05"); } // "Assets/lilToon"
         public static string GetBaseShaderFolderPath()      { return GUIDToPath("d465bb256af2e3a4ca646387f4bd83e7"); } // "Assets/lilToon/BaseShaderResources"
         public static string GetEditorFolderPath()          { return GUIDToPath("3e73d675b9c1adc4f8b6b8ef01bce51c"); } // "Assets/lilToon/Editor"
         public static string GetPresetsFolderPath()         { return GUIDToPath("35817d21af2f3134182c4a7e4c07786b"); } // "Assets/lilToon/Presets"
@@ -39,6 +38,11 @@ namespace lilToon
         public static string GetGUICustomBoxLightPath()     { return GUIDToPath("a1ed8756474bfd34f80fa22e6c43b2e5"); } // "Assets/lilToon/Editor/Resources/gui_custom_box_light.guiskin"
         public static string GetCurrentRPPath()             { return GUIDToPath("142b3aeca72105442a83089b616e92b8"); } // "Assets/lilToon/Editor/CurrentRP.txt"
         public static string GetClusterCreatorKitPath()     { return GUIDToPath("6f11c0d5c326e4a6c851aa1c02ff11ee"); } // "ClusterCreatorKit/package.json"
+        public static string GetMainFolderPath() // "Assets/lilToon"
+        {
+            string editorPath = GetEditorFolderPath();
+            return editorPath.Substring(0, editorPath.Length - 7);
+        }
         public static string GetShaderSettingPath()         { return "ProjectSettings/lilToonSetting.json";          } // "ProjectSettings/lilToonSetting.json"
         public static string GetSettingLockPath()           { return GetMainFolderPath() + "/SettingLock.json"; }      // "Assets/lilToon/SettingLock.json"
         public static string[] GetShaderFolderPaths()       { return new[] {GetShaderFolderPath()}; }
