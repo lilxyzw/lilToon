@@ -37,6 +37,7 @@
     - [- Optimization](en-us/other/optimization.md "Optimization - lilToon")
     - [- Shader Setting](en-us/other/settings.md "Shader Setting - lilToon")
     - [- Menu items](en-us/other/menuitem.md "Menu items - lilToon")
+    - [- Texture import settings](ja-jp/other/textures.md "Texture import settings - lilToon")
     - [- Q&A](en-us/other/qa.md "Q&A - lilToon")
     - [- Changelog](en-us/other/changelog.md "Change log - lilToon")
 - **Developer Documentation**

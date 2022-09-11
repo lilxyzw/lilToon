@@ -37,6 +37,7 @@
     - [- 最適化](ja-jp/other/optimization.md "最適化 - lilToon")
     - [- シェーダー設定](ja-jp/other/settings.md "シェーダー設定 - lilToon")
     - [- メニューの追加項目](ja-jp/other/menuitem.md "メニューの追加項目 - lilToon")
+    - [- テクスチャのインポート設定について](ja-jp/other/textures.md "テクスチャのインポート設定について - lilToon")
     - [- Q&A](ja-jp/other/qa.md "Q&A - lilToon")
     - [- 変更履歴](ja-jp/other/changelog.md "変更履歴 - lilToon")
 - **開発者向けドキュメント**
