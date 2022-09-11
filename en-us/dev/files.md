@@ -1,5 +1,6 @@
 # ファイル構成
 - lilToon
+    - BaseShaderResources : 本体シェーダー用リソース
     - CustomShaderResources : カスタムシェーダー用リソース
         - BRP : BRP用SubShader
         - HDRP : HDRP用SubShader
@@ -17,6 +18,9 @@
         - lilToonPreset.cs : プリセットのScriptableObject
         - lilToonPropertyDrawer.cs : MaterialPropertyDrawer
         - lilToonSetting.cs : シェーダー設定のScriptableObject
+    - External : 外部SDKに依存するエディタ拡張
+    - Prefabs : 組み込みのPrefab
+        - FurCollider (range=x.xx22).prefab : ファーのコライダー
     - Presets : プリセット
     - Shader : シェーダー
         - Includes : hlslファイル (シェーダー本体)
@@ -74,11 +78,15 @@
         - lil_emission_rainbow.png : 虹色のグラデーションテクスチャ
         - lil_noise_1d.png : 1Dノイズ
         - lil_noise_fur.png : ファーのノイズ
+        - lil_noise_fur_2.png : ファーのノイズ
+        - lil_shape_*.png : ラメの形状
+        - lil_tangent.png : タンジェントマップの初期値
+        - lil_tangent_circular.png : Circularのタンジェントマップ
+        - matcap_metal_realistic.png : 金属のマットキャップ
     - CHANGELOG.md : 変更履歴
-    - DeveloperDocumentation.md : 開発者ドキュメント
     - LICENSE : ライセンス
-    - MANUAL.md : マニュアル
     - package.json : UPM用のデータ
     - README.md : 説明書
     - Third Party Notices.md : 参考文献やサードパーティのライセンスとURL
-    - ShaderSetting.asset : シェーダー設定保存用アセット
+    - SettingLock.json : ロックされたシェーダー設定の保存用アセット
+- csc.rsp : GIFを変換で`System.Drawing`を使用するためのファイル
