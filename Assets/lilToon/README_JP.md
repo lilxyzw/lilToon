@@ -1,5 +1,5 @@
 # lilToon
-Version 1.3.6
+Version 1.3.7
 
 # 概要
 アバターを用いたサービス（VRChat等）向けに開発したシェーダーで以下のような特徴があります。
@@ -32,8 +32,8 @@ Unityバージョン
 レンダリングパイプライン
 - Built-in Render Pipeline
 - Lightweight Render Pipeline 4.0.0 - 6.9.2
-- Universal Render Pipeline 7.0.0 - 13.1.8
-- High Definition Render Pipeline 4.0.0 - 13.1.8
+- Universal Render Pipeline 7.0.0 - 14.0.3
+- High Definition Render Pipeline 4.0.0 - 14.0.3
 
 # 主な機能
 - メインカラーx3レイヤー（デカール、レイヤーマスク、Gifアニメーション、通常・加算・乗算・スクリーン合成対応）
