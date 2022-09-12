@@ -663,6 +663,38 @@ namespace lilToon
 
         private readonly lilMaterialProperty ignoreEncryption   = new lilMaterialProperty("_IgnoreEncryption", PropertyBlock.Encryption);
         private readonly lilMaterialProperty keys               = new lilMaterialProperty("_Keys", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey0            = new lilMaterialProperty("_BitKey0", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey1            = new lilMaterialProperty("_BitKey1", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey2            = new lilMaterialProperty("_BitKey2", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey3            = new lilMaterialProperty("_BitKey3", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey4            = new lilMaterialProperty("_BitKey4", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey5            = new lilMaterialProperty("_BitKey5", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey6            = new lilMaterialProperty("_BitKey6", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey7            = new lilMaterialProperty("_BitKey7", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey8            = new lilMaterialProperty("_BitKey8", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey9            = new lilMaterialProperty("_BitKey9", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey10           = new lilMaterialProperty("_BitKey10", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey11           = new lilMaterialProperty("_BitKey11", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey12           = new lilMaterialProperty("_BitKey12", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey13           = new lilMaterialProperty("_BitKey13", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey14           = new lilMaterialProperty("_BitKey14", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey15           = new lilMaterialProperty("_BitKey15", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey16           = new lilMaterialProperty("_BitKey16", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey17           = new lilMaterialProperty("_BitKey17", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey18           = new lilMaterialProperty("_BitKey18", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey19           = new lilMaterialProperty("_BitKey19", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey20           = new lilMaterialProperty("_BitKey20", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey21           = new lilMaterialProperty("_BitKey21", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey22           = new lilMaterialProperty("_BitKey22", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey23           = new lilMaterialProperty("_BitKey23", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey24           = new lilMaterialProperty("_BitKey24", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey25           = new lilMaterialProperty("_BitKey25", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey26           = new lilMaterialProperty("_BitKey26", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey27           = new lilMaterialProperty("_BitKey27", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey28           = new lilMaterialProperty("_BitKey28", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey29           = new lilMaterialProperty("_BitKey29", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey30           = new lilMaterialProperty("_BitKey30", PropertyBlock.Encryption);
+        private readonly lilMaterialProperty bitKey31           = new lilMaterialProperty("_BitKey31", PropertyBlock.Encryption);
 
         private readonly lilMaterialProperty refractionStrength         = new lilMaterialProperty("_RefractionStrength", PropertyBlock.Refraction, PropertyBlock.Gem);
         private readonly lilMaterialProperty refractionFresnelPower     = new lilMaterialProperty("_RefractionFresnelPower", PropertyBlock.Refraction, PropertyBlock.Gem);
@@ -1195,6 +1227,38 @@ namespace lilToon
 
                 ignoreEncryption,
                 keys,
+                bitKey0,
+                bitKey1,
+                bitKey2,
+                bitKey3,
+                bitKey4,
+                bitKey5,
+                bitKey6,
+                bitKey7,
+                bitKey8,
+                bitKey9,
+                bitKey10,
+                bitKey11,
+                bitKey12,
+                bitKey13,
+                bitKey14,
+                bitKey15,
+                bitKey16,
+                bitKey17,
+                bitKey18,
+                bitKey19,
+                bitKey20,
+                bitKey21,
+                bitKey22,
+                bitKey23,
+                bitKey24,
+                bitKey25,
+                bitKey26,
+                bitKey27,
+                bitKey28,
+                bitKey29,
+                bitKey30,
+                bitKey31,
 
                 refractionStrength,
                 refractionFresnelPower,
@@ -1986,22 +2050,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Encryption
-                if(lilDirectoryManager.ExistsEncryption())
-                {
-                    edSet.isShowEncryption = lilEditorGUI.Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
-                    DrawMenuButton(GetLoc("sAnchorEncryption"), PropertyBlock.Encryption);
-                    if(edSet.isShowEncryption)
-                    {
-                        EditorGUILayout.BeginVertical(boxOuter);
-                        EditorGUILayout.LabelField(GetLoc("sEncryption"), customToggleFont);
-                        DrawMenuButton(GetLoc("sAnchorEncryption"), PropertyBlock.Encryption);
-                        EditorGUILayout.BeginVertical(boxInnerHalf);
-                        m_MaterialEditor.ShaderProperty(ignoreEncryption, GetLoc("sIgnoreEncryption"));
-                        m_MaterialEditor.ShaderProperty(keys, GetLoc("sKeys"));
-                        EditorGUILayout.EndVertical();
-                        EditorGUILayout.EndVertical();
-                    }
-                }
+                DrawEncryptionSettings();
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Stencil
@@ -2771,22 +2820,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Encryption
-                if(lilDirectoryManager.ExistsEncryption())
-                {
-                    edSet.isShowEncryption = lilEditorGUI.Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
-                    DrawMenuButton(GetLoc("sAnchorEncryption"), PropertyBlock.Encryption);
-                    if(edSet.isShowEncryption)
-                    {
-                        EditorGUILayout.BeginVertical(boxOuter);
-                        EditorGUILayout.LabelField(GetLoc("sEncryption"), customToggleFont);
-                        DrawMenuButton(GetLoc("sAnchorEncryption"), PropertyBlock.Encryption);
-                        EditorGUILayout.BeginVertical(boxInnerHalf);
-                        m_MaterialEditor.ShaderProperty(ignoreEncryption, GetLoc("sIgnoreEncryption"));
-                        m_MaterialEditor.ShaderProperty(keys, GetLoc("sKeys"));
-                        EditorGUILayout.EndVertical();
-                        EditorGUILayout.EndVertical();
-                    }
-                }
+                DrawEncryptionSettings();
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Refraction
@@ -5485,6 +5519,64 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(furStencilPass, "Pass");
                     m_MaterialEditor.ShaderProperty(furStencilFail, "Fail");
                     m_MaterialEditor.ShaderProperty(furStencilZFail, "ZFail");
+                    EditorGUILayout.EndVertical();
+                }
+            }
+        }
+
+        private void DrawEncryptionSettings()
+        {
+            if(lilDirectoryManager.ExistsEncryption() || lilDirectoryManager.ExistsAvaCryptV2())
+            {
+                edSet.isShowEncryption = lilEditorGUI.Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
+                DrawMenuButton(GetLoc("sAnchorEncryption"), PropertyBlock.Encryption);
+                if(edSet.isShowEncryption)
+                {
+                    EditorGUILayout.BeginVertical(boxOuter);
+                    EditorGUILayout.LabelField(GetLoc("sEncryption"), customToggleFont);
+                    DrawMenuButton(GetLoc("sAnchorEncryption"), PropertyBlock.Encryption);
+                    EditorGUILayout.BeginVertical(boxInnerHalf);
+                    m_MaterialEditor.ShaderProperty(ignoreEncryption, GetLoc("sIgnoreEncryption"));
+                    if(lilDirectoryManager.ExistsEncryption())
+                    {
+                        m_MaterialEditor.ShaderProperty(keys, GetLoc("sKeys"));
+                    }
+                    else
+                    {
+                        m_MaterialEditor.ShaderProperty(bitKey0, "_BitKey0");
+                        m_MaterialEditor.ShaderProperty(bitKey1, "_BitKey1");
+                        m_MaterialEditor.ShaderProperty(bitKey2, "_BitKey2");
+                        m_MaterialEditor.ShaderProperty(bitKey3, "_BitKey3");
+                        m_MaterialEditor.ShaderProperty(bitKey4, "_BitKey4");
+                        m_MaterialEditor.ShaderProperty(bitKey5, "_BitKey5");
+                        m_MaterialEditor.ShaderProperty(bitKey6, "_BitKey6");
+                        m_MaterialEditor.ShaderProperty(bitKey7, "_BitKey7");
+                        m_MaterialEditor.ShaderProperty(bitKey8, "_BitKey8");
+                        m_MaterialEditor.ShaderProperty(bitKey9, "_BitKey9");
+                        m_MaterialEditor.ShaderProperty(bitKey10, "_BitKey10");
+                        m_MaterialEditor.ShaderProperty(bitKey11, "_BitKey11");
+                        m_MaterialEditor.ShaderProperty(bitKey12, "_BitKey12");
+                        m_MaterialEditor.ShaderProperty(bitKey13, "_BitKey13");
+                        m_MaterialEditor.ShaderProperty(bitKey14, "_BitKey14");
+                        m_MaterialEditor.ShaderProperty(bitKey15, "_BitKey15");
+                        m_MaterialEditor.ShaderProperty(bitKey16, "_BitKey16");
+                        m_MaterialEditor.ShaderProperty(bitKey17, "_BitKey17");
+                        m_MaterialEditor.ShaderProperty(bitKey18, "_BitKey18");
+                        m_MaterialEditor.ShaderProperty(bitKey19, "_BitKey19");
+                        m_MaterialEditor.ShaderProperty(bitKey20, "_BitKey20");
+                        m_MaterialEditor.ShaderProperty(bitKey21, "_BitKey21");
+                        m_MaterialEditor.ShaderProperty(bitKey22, "_BitKey22");
+                        m_MaterialEditor.ShaderProperty(bitKey23, "_BitKey23");
+                        m_MaterialEditor.ShaderProperty(bitKey24, "_BitKey24");
+                        m_MaterialEditor.ShaderProperty(bitKey25, "_BitKey25");
+                        m_MaterialEditor.ShaderProperty(bitKey26, "_BitKey26");
+                        m_MaterialEditor.ShaderProperty(bitKey27, "_BitKey27");
+                        m_MaterialEditor.ShaderProperty(bitKey28, "_BitKey28");
+                        m_MaterialEditor.ShaderProperty(bitKey29, "_BitKey29");
+                        m_MaterialEditor.ShaderProperty(bitKey30, "_BitKey30");
+                        m_MaterialEditor.ShaderProperty(bitKey31, "_BitKey31");
+                    }
+                    EditorGUILayout.EndVertical();
                     EditorGUILayout.EndVertical();
                 }
             }

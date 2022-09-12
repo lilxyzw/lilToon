@@ -106,4 +106,11 @@ bool lilCheckAudioLink()
     #endif
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
+// GTAvaCrypt
+// https://github.com/rygo6/GTAvaCrypt/blob/master/LICENSE
+#if defined(LIL_FEATURE_ENCRYPTION)
+#include "GTModelDecode.cginc"
+#endif
+
 #endif
