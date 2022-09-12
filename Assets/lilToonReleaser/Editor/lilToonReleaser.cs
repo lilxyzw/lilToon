@@ -34,6 +34,11 @@ namespace lilToon
             // VPM path
             string pathVPM = pathO + "/" + packageName + "-" + version + ".zip";
 
+            // Markdown path
+            string pathChangelog = AssetDatabase.GUIDToAssetPath("3e475cdc396583e41b50cc858691ceb7");
+            string pathMarkdownI = AssetDatabase.GUIDToAssetPath("e3c0a3abc7c6c0540ab6ce28d4e24927");
+            string pathMarkdownO = pathO + "/" + Path.GetFileName(pathMarkdownI);
+
             // Create directory
             if(!Directory.Exists(pathO)) Directory.CreateDirectory(pathO);
             if(!Directory.Exists(pathBoothFolder)) Directory.CreateDirectory(pathBoothFolder);
@@ -49,6 +54,43 @@ namespace lilToon
 
             // Create VPM package
             CreateZip(pathI, pathVPM, false);
+
+            // Write Markdown
+            var sw = new StreamWriter(pathMarkdownO, false);
+            var sr = new StreamReader(pathMarkdownI);
+            bool shouldRead = false;
+            string line;
+
+            while((line = sr.ReadLine()) != null)
+            {
+                // Write changelog
+                if(line.Contains("CHANGELOG"))
+                {
+                    var srChangelog = new StreamReader(pathChangelog);
+                    while((line = srChangelog.ReadLine()) != null)
+                    {
+                        if(!shouldRead)
+                        {
+                            shouldRead = line.Contains("## [" + version + "]");
+                            continue;
+                        }
+                        if(line.Contains("## [")) break;
+                        sw.WriteLine(line);
+                    }
+                    srChangelog.Close();
+                    continue;
+                }
+
+                // Write line
+                sw.WriteLine(
+                    line
+                    .Replace("VERSION", version)
+                    .Replace("PACKAGENAME", packageName)
+                );
+            }
+
+            sw.Close();
+            sr.Close();
 
             EditorUtility.DisplayDialog("[lilToon] Export packages", "Complete!", "OK");
         }
