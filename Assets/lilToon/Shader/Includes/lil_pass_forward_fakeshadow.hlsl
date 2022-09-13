@@ -38,9 +38,7 @@ v2f vert(appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Encryption
-    #if defined(LIL_FEATURE_ENCRYPTION)
-        input.positionOS = vertexDecode(input.positionOS, input.normalOS, input.uv6, input.uv7);
-    #endif
+    #include "lil_vert_encryption.hlsl"
 
     LIL_VERTEX_POSITION_INPUTS(input.positionOS, vertexInput);
     #if defined(LIL_HDRP)
