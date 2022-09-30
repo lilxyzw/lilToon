@@ -397,7 +397,8 @@
             float furAlpha = saturate(furNoiseMask - furLayerShift * furLayerAbs * furLayerAbs * furLayerAbs + 0.25);
     #endif
     #define LIL_FUR_LAYER_AO \
-        fd.col.rgb *= furLayer * _FurAO * 2.0 + 1.0 - _FurAO;
+        float furAO = _FurAO * saturate(1.0 - fwidth(input.furLayer)); \
+        fd.col.rgb *= furLayer * furAO * 2.0 + 1.0 - furAO;
 #else
     #if defined(LIL_ONEPASS_FUR)
         #define LIL_FUR_LAYER_ALPHA \
