@@ -369,6 +369,7 @@ namespace lilToon
                 !assetName.Contains("ltsmulti") &&
                 !assetName.Contains("ltspass_lite") &&
                 !assetName.Contains("ltsl") &&
+                !assetName.Contains("fakeshadow") &&
                 File.Exists(lilDirectoryManager.postBuildTempPath)
             )
             {
