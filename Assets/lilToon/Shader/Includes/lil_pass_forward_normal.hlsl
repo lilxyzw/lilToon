@@ -279,7 +279,13 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         //------------------------------------------------------------------------------------------------------------------------------
         // Fur AO
         #if defined(LIL_FUR) && LIL_RENDER == 1
-            fd.col.rgb *= 1.0-_FurAO;
+            #if defined(LIL_FEATURE_FurMask)
+                float furMask = LIL_SAMPLE_2D(_FurMask, sampler_MainTex, fd.uvMain).r;
+                float furAO = _FurAO * furMask;
+            #else
+                float furAO = _FurAO;
+            #endif
+            fd.col.rgb *= 1.0-furAO;
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
