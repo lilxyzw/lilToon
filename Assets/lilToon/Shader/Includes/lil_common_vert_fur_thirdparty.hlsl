@@ -77,7 +77,7 @@ for(uint fl = 0; fl < _FurLayerNum; fl++)
             fvmix += noise0 * _FurVector.w * _FurRandomize;
         #endif
         #if defined(LIL_FEATURE_FurLengthMask)
-            fvmix *= LIL_SAMPLE_2D_LOD(_FurLengthMask, sampler_linear_repeat, outUV * _MainTex_ST.xy + _MainTex_ST.zw, 0).r;
+            fvmix *= LIL_SAMPLE_2D_LOD(_FurLengthMask, lil_sampler_linear_repeat, outUV * _MainTex_ST.xy + _MainTex_ST.zw, 0).r;
         #endif
 
         // In

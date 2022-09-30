@@ -155,7 +155,7 @@ v2g vert(appdata input)
         output.furVector = _FurVector.xyz + float3(0,0,0.001);
         if(_VertexColor2FurVector) output.furVector = lilBlendNormal(output.furVector, input.color.xyz);
         #if defined(LIL_FEATURE_FurVectorTex)
-            output.furVector = lilBlendNormal(output.furVector, lilUnpackNormalScale(LIL_SAMPLE_2D_LOD(_FurVectorTex, sampler_linear_repeat, uvMain, 0), _FurVectorScale));
+            output.furVector = lilBlendNormal(output.furVector, lilUnpackNormalScale(LIL_SAMPLE_2D_LOD(_FurVectorTex, lil_sampler_linear_repeat, uvMain, 0), _FurVectorScale));
         #endif
         output.furVector = mul(normalize(output.furVector), tbnOS);
         output.furVector *= _FurVector.w;
@@ -418,9 +418,9 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
             furVectors[2] += noise2 * _FurVector.w * _FurRandomize;
         #endif
         #if defined(LIL_FEATURE_FurLengthMask)
-            furVectors[0] *= LIL_SAMPLE_2D_LOD(_FurLengthMask, sampler_linear_repeat, input[0].uv0 * _MainTex_ST.xy + _MainTex_ST.zw, 0).r;
-            furVectors[1] *= LIL_SAMPLE_2D_LOD(_FurLengthMask, sampler_linear_repeat, input[1].uv0 * _MainTex_ST.xy + _MainTex_ST.zw, 0).r;
-            furVectors[2] *= LIL_SAMPLE_2D_LOD(_FurLengthMask, sampler_linear_repeat, input[2].uv0 * _MainTex_ST.xy + _MainTex_ST.zw, 0).r;
+            furVectors[0] *= LIL_SAMPLE_2D_LOD(_FurLengthMask, lil_sampler_linear_repeat, input[0].uv0 * _MainTex_ST.xy + _MainTex_ST.zw, 0).r;
+            furVectors[1] *= LIL_SAMPLE_2D_LOD(_FurLengthMask, lil_sampler_linear_repeat, input[1].uv0 * _MainTex_ST.xy + _MainTex_ST.zw, 0).r;
+            furVectors[2] *= LIL_SAMPLE_2D_LOD(_FurLengthMask, lil_sampler_linear_repeat, input[2].uv0 * _MainTex_ST.xy + _MainTex_ST.zw, 0).r;
         #endif
 
         if(_FurLayerNum == 1)

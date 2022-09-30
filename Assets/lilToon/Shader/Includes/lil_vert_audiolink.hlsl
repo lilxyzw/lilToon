@@ -21,7 +21,7 @@
         #if defined(Use_AudioLinkMask)
             if(_AudioLinkVertexUVMode == 3)
             {
-                audioLinkMask = LIL_SAMPLE_2D_LOD(_AudioLinkMask, sampler_linear_repeat, uvMain, 0);
+                audioLinkMask = LIL_SAMPLE_2D_LOD(_AudioLinkMask, lil_sampler_linear_repeat, uvMain, 0);
                 audioLinkUV = audioLinkMask.rg;
             }
         #endif
@@ -34,7 +34,7 @@
             if(_AudioLinkAsLocal)
             {
                 audioLinkUV.x += frac(-LIL_TIME * _AudioLinkLocalMapParams.r / 60 * _AudioLinkLocalMapParams.g) + _AudioLinkLocalMapParams.b;
-                audioLinkValue = LIL_SAMPLE_2D_LOD(_AudioLinkLocalMap, sampler_linear_repeat, audioLinkUV, 0).r;
+                audioLinkValue = LIL_SAMPLE_2D_LOD(_AudioLinkLocalMap, lil_sampler_linear_repeat, audioLinkUV, 0).r;
             }
             else
         #endif
@@ -44,7 +44,7 @@
         {
             // Scaling for _AudioTexture (4/64)
             audioLinkUV.y *= 0.0625;
-            audioLinkValue = LIL_SAMPLE_2D_LOD(_AudioTexture, sampler_linear_clamp, audioLinkUV, 0).r;
+            audioLinkValue = LIL_SAMPLE_2D_LOD(_AudioTexture, lil_sampler_linear_clamp, audioLinkUV, 0).r;
             audioLinkValue = saturate(audioLinkValue);
         }
 

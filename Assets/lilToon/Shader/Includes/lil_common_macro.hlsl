@@ -1025,7 +1025,7 @@ float3 lilGetObjectPosition()
     #if LIL_SRP_VERSION_LOWER(6, 8)
         float4 EvaluateLight_Directional(LightLoopContext lightLoopContext, PositionInputs posInput, DirectionalLightData light)
         {
-            float4 color = float4(light.color, 1.0);
+            float4 color = float4(light.color.rgb, 1.0);
 
             #if LIL_SRP_VERSION_GREATER_EQUAL(4, 1)
                 float cosZenithAngle = -light.forward.y;
@@ -1248,7 +1248,7 @@ float3 lilGetObjectPosition()
     // Punctual Light (Point / Spot)
     float4 EvaluateLight_Punctual(LightLoopContext lightLoopContext, float3 positionWS, LightData light, float3 L, float4 distances)
     {
-        float4 color = float4(light.color, 1.0);
+        float4 color = float4(light.color.rgb, 1.0);
         color.a *= PunctualLightAttenuation(distances, light.rangeAttenuationScale, light.rangeAttenuationBias, light.angleScale, light.angleOffset);
 
         #if !defined(LIGHT_EVALUATION_NO_HEIGHT_FOG) && LIL_SRP_VERSION_GREATER_EQUAL(4, 1)
@@ -1705,8 +1705,8 @@ float3 lilGetObjectPosition()
                     if((light.layerMask & renderingLayers) != 0)
                 #endif
                 {
-                    lightColor += light.color * light.distanceAttenuation * strength;
-                    lightDirection += dot(light.color, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * light.distanceAttenuation * strength * light.direction;
+                    lightColor += light.color.rgb * light.distanceAttenuation * strength;
+                    lightDirection += dot(light.color.rgb, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * light.distanceAttenuation * strength * light.direction;
                 }
             }
 
@@ -1722,8 +1722,8 @@ float3 lilGetObjectPosition()
                 #if LIL_SRP_VERSION_GREATER_EQUAL(12, 0) && defined(_LIGHT_LAYERS)
                     if((light.layerMask & renderingLayers) != 0)
                 #endif
-                lightColor += light.color * light.distanceAttenuation * strength;
-                lightDirection += dot(light.color, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * light.distanceAttenuation * strength * light.direction;
+                lightColor += light.color.rgb * light.distanceAttenuation * strength;
+                lightDirection += dot(light.color.rgb, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * light.distanceAttenuation * strength * light.direction;
             }
         #endif
     }

@@ -546,7 +546,7 @@
                 if(_Bump2ndMap_UVMode == 1) uvBump2nd = fd.uv1; \
                 if(_Bump2ndMap_UVMode == 2) uvBump2nd = fd.uv2; \
                 if(_Bump2ndMap_UVMode == 3) uvBump2nd = fd.uv3; \
-                float4 normal2ndTex = LIL_SAMPLE_2D_ST(_Bump2ndMap, sampler_linear_repeat, uvBump2nd); \
+                float4 normal2ndTex = LIL_SAMPLE_2D_ST(_Bump2ndMap, lil_sampler_linear_repeat, uvBump2nd); \
                 float bump2ndScale = _Bump2ndScale; \
                 LIL_SAMPLE_Bump2ndScaleMask; \
                 normalmap = lilBlendNormal(normalmap, lilUnpackNormalScale(normal2ndTex, bump2ndScale)); \
@@ -632,7 +632,7 @@
                 if(_AudioLinkAsLocal)
                 {
                     audioLinkUV.x += frac(-LIL_TIME * _AudioLinkLocalMapParams.r / 60 * _AudioLinkLocalMapParams.g) + _AudioLinkLocalMapParams.b;
-                    fd.audioLinkValue = LIL_SAMPLE_2D(_AudioLinkLocalMap, sampler_linear_repeat, audioLinkUV).r;
+                    fd.audioLinkValue = LIL_SAMPLE_2D(_AudioLinkLocalMap, lil_sampler_linear_repeat, audioLinkUV).r;
                 }
                 else
             #endif
@@ -642,7 +642,7 @@
             {
                 // Scaling for _AudioTexture (4/64)
                 audioLinkUV.y *= 0.0625;
-                float4 audioTexture = LIL_SAMPLE_2D(_AudioTexture, sampler_linear_clamp, audioLinkUV);
+                float4 audioTexture = LIL_SAMPLE_2D(_AudioTexture, lil_sampler_linear_clamp, audioLinkUV);
                 if(_AudioLinkUVMode == 4)
                 {
                     float audioVal = audioTexture.b * _AudioLinkUVParams.x * lerp(_AudioLinkUVParams.y, _AudioLinkUVParams.z, audioLinkMask.g);
@@ -883,10 +883,10 @@
             #endif
             #if defined(LIL_FEATURE_ShadowBlurMask)
                 #if defined(_ShadowBlurMaskLOD)
-                    float4 shadowBlurMask = LIL_SAMPLE_2D(_ShadowBlurMask, sampler_linear_repeat, fd.uvMain);
-                    if(_ShadowBlurMaskLOD) shadowBlurMask = LIL_SAMPLE_2D_GRAD(_ShadowBlurMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBlurMaskLOD), max(fd.ddyMain, _ShadowBlurMaskLOD));
+                    float4 shadowBlurMask = LIL_SAMPLE_2D(_ShadowBlurMask, lil_sampler_linear_repeat, fd.uvMain);
+                    if(_ShadowBlurMaskLOD) shadowBlurMask = LIL_SAMPLE_2D_GRAD(_ShadowBlurMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBlurMaskLOD), max(fd.ddyMain, _ShadowBlurMaskLOD));
                 #else
-                    float4 shadowBlurMask = LIL_SAMPLE_2D_GRAD(_ShadowBlurMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBlurMaskLOD), max(fd.ddyMain, _ShadowBlurMaskLOD));
+                    float4 shadowBlurMask = LIL_SAMPLE_2D_GRAD(_ShadowBlurMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBlurMaskLOD), max(fd.ddyMain, _ShadowBlurMaskLOD));
                 #endif
                 shadowBlur *= shadowBlurMask.r;
                 shadow2ndBlur *= shadowBlurMask.g;
@@ -898,10 +898,10 @@
             // AO Map & Toon
             #if defined(LIL_FEATURE_ShadowBorderMask)
                 #if defined(_ShadowBorderMaskLOD)
-                    float4 shadowBorderMask = LIL_SAMPLE_2D(_ShadowBorderMask, sampler_linear_repeat, fd.uvMain);
-                    if(_ShadowBorderMaskLOD) shadowBorderMask = LIL_SAMPLE_2D_GRAD(_ShadowBorderMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBorderMaskLOD), max(fd.ddyMain, _ShadowBorderMaskLOD));
+                    float4 shadowBorderMask = LIL_SAMPLE_2D(_ShadowBorderMask, lil_sampler_linear_repeat, fd.uvMain);
+                    if(_ShadowBorderMaskLOD) shadowBorderMask = LIL_SAMPLE_2D_GRAD(_ShadowBorderMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBorderMaskLOD), max(fd.ddyMain, _ShadowBorderMaskLOD));
                 #else
-                    float4 shadowBorderMask = LIL_SAMPLE_2D_GRAD(_ShadowBorderMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBorderMaskLOD), max(fd.ddyMain, _ShadowBorderMaskLOD));
+                    float4 shadowBorderMask = LIL_SAMPLE_2D_GRAD(_ShadowBorderMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowBorderMaskLOD), max(fd.ddyMain, _ShadowBorderMaskLOD));
                 #endif
                 shadowBorderMask.r = saturate(shadowBorderMask.r * _ShadowAOShift.x + _ShadowAOShift.y);
                 shadowBorderMask.g = saturate(shadowBorderMask.g * _ShadowAOShift.z + _ShadowAOShift.w);
@@ -949,10 +949,10 @@
             float shadowStrengthMask = 1;
             #if defined(LIL_FEATURE_ShadowStrengthMask)
                 #if defined(_ShadowStrengthMaskLOD)
-                    shadowStrengthMask = LIL_SAMPLE_2D(_ShadowStrengthMask, sampler_linear_repeat, fd.uvMain).r;
-                    if(_ShadowStrengthMaskLOD) shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).r;
+                    shadowStrengthMask = LIL_SAMPLE_2D(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain).r;
+                    if(_ShadowStrengthMaskLOD) shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).r;
                 #else
-                    shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).r;
+                    shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).r;
                 #endif
             #endif
             if(_ShadowMaskType)
@@ -1414,7 +1414,7 @@
             // Color
             float4 matCapColor = _MatCapColor;
             #if defined(LIL_FEATURE_MatCapTex)
-                matCapColor *= LIL_SAMPLE_2D_LOD(_MatCapTex, sampler_linear_repeat, matUV, _MatCapLod);
+                matCapColor *= LIL_SAMPLE_2D_LOD(_MatCapTex, lil_sampler_linear_repeat, matUV, _MatCapLod);
             #endif
             #if !defined(LIL_PASS_FORWARDADD)
                 matCapColor.rgb = lerp(matCapColor.rgb, matCapColor.rgb * fd.lightColor, _MatCapEnableLighting);
@@ -1482,7 +1482,7 @@
             // Color
             float4 matCap2ndColor = _MatCap2ndColor;
             #if defined(LIL_FEATURE_MatCap2ndTex)
-                matCap2ndColor *= LIL_SAMPLE_2D_LOD(_MatCap2ndTex, sampler_linear_repeat, mat2ndUV, _MatCap2ndLod);
+                matCap2ndColor *= LIL_SAMPLE_2D_LOD(_MatCap2ndTex, lil_sampler_linear_repeat, mat2ndUV, _MatCap2ndLod);
             #endif
             #if !defined(LIL_PASS_FORWARDADD)
                 matCap2ndColor.rgb = lerp(matCap2ndColor.rgb, matCap2ndColor.rgb * fd.lightColor, _MatCap2ndEnableLighting);
@@ -1723,10 +1723,10 @@
                     if(_EmissionUseGrad)
                     {
                         float gradUV = _EmissionGradSpeed * LIL_TIME + fd.audioLinkValue * _AudioLink2EmissionGrad;
-                        emissionColor *= LIL_SAMPLE_1D_LOD(_EmissionGradTex, sampler_linear_repeat, gradUV, 0);
+                        emissionColor *= LIL_SAMPLE_1D_LOD(_EmissionGradTex, lil_sampler_linear_repeat, gradUV, 0);
                     }
                 #elif defined(LIL_FEATURE_EMISSION_GRADATION)
-                    if(_EmissionUseGrad) emissionColor *= LIL_SAMPLE_1D(_EmissionGradTex, sampler_linear_repeat, _EmissionGradSpeed * LIL_TIME);
+                    if(_EmissionUseGrad) emissionColor *= LIL_SAMPLE_1D(_EmissionGradTex, lil_sampler_linear_repeat, _EmissionGradSpeed * LIL_TIME);
                 #endif
             #endif
             #if defined(LIL_FEATURE_AUDIOLINK)
@@ -1803,10 +1803,10 @@
                     if(_Emission2ndUseGrad)
                     {
                         float gradUV = _Emission2ndGradSpeed * LIL_TIME + fd.audioLinkValue * _AudioLink2Emission2ndGrad;
-                        emission2ndColor *= LIL_SAMPLE_1D_LOD(_Emission2ndGradTex, sampler_linear_repeat, gradUV, 0);
+                        emission2ndColor *= LIL_SAMPLE_1D_LOD(_Emission2ndGradTex, lil_sampler_linear_repeat, gradUV, 0);
                     }
                 #elif defined(LIL_FEATURE_EMISSION_GRADATION)
-                    if(_Emission2ndUseGrad) emission2ndColor *= LIL_SAMPLE_1D(_Emission2ndGradTex, sampler_linear_repeat, _Emission2ndGradSpeed * LIL_TIME);
+                    if(_Emission2ndUseGrad) emission2ndColor *= LIL_SAMPLE_1D(_Emission2ndGradTex, lil_sampler_linear_repeat, _Emission2ndGradSpeed * LIL_TIME);
                 #endif
             #endif
             #if defined(LIL_FEATURE_AUDIOLINK)

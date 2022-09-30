@@ -45,7 +45,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         float sum = 0;
         fd.smoothness = _Smoothness;
         #if defined(LIL_FEATURE_SmoothnessTex)
-            fd.smoothness *= LIL_SAMPLE_2D_ST(_SmoothnessTex, sampler_linear_repeat, fd.uvMain).r;
+            fd.smoothness *= LIL_SAMPLE_2D_ST(_SmoothnessTex, lil_sampler_linear_repeat, fd.uvMain).r;
         #endif
         float perceptualRoughness = 1.0 - fd.smoothness;
         float roughness = perceptualRoughness * perceptualRoughness;

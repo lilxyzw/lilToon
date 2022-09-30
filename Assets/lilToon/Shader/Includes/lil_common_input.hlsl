@@ -7,9 +7,15 @@
     TEXTURE3D(_DitherMaskLOD);
 #endif
 
-SAMPLER(sampler_trilinear_repeat);
-SAMPLER(sampler_linear_clamp);
-#define sampler_linear_repeat sampler_trilinear_repeat
+SAMPLER(lil_sampler_trilinear_repeat);
+SAMPLER(lil_sampler_linear_clamp);
+#define sampler_linear_clamp        lil_sampler_linear_clamp
+#define sampler_trilinear_clamp     lil_sampler_linear_clamp
+#define sampler_linear_repeat       lil_sampler_trilinear_repeat
+#define sampler_trilinear_repeat    lil_sampler_trilinear_repeat
+
+#define lil_sampler_trilinear_clamp     lil_sampler_linear_clamp
+#define lil_sampler_linear_repeat       lil_sampler_trilinear_repeat
 
 #if defined(LIL_BRP)
     TEXTURE2D_SCREEN(_CameraDepthTexture);
@@ -18,8 +24,8 @@ SAMPLER(sampler_linear_clamp);
     float4 _lilBackgroundTexture_TexelSize;
     #define LIL_GET_DEPTH_TEX_CS(uv) LIL_SAMPLE_SCREEN_CS(_CameraDepthTexture, lilCameraDepthTexel(uv))
     #define LIL_TO_LINEARDEPTH(z,uv) lilLinearEyeDepth(z, uv)
-    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN(_lilBackgroundTexture, sampler_linear_clamp, uv)
-    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN(_GrabTexture, sampler_linear_clamp, uv)
+    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN(_lilBackgroundTexture, lil_sampler_linear_clamp, uv)
+    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN(_GrabTexture, lil_sampler_linear_clamp, uv)
     #define LIL_ENABLED_DEPTH_TEX IsScreenTex(_CameraDepthTexture)
 #elif defined(LIL_HDRP)
     #define LIL_GET_DEPTH_TEX_CS(uv) SampleCameraDepth(uv/LIL_SCREENPARAMS.xy)
@@ -32,8 +38,8 @@ SAMPLER(sampler_linear_clamp);
     TEXTURE2D_SCREEN(_CameraOpaqueTexture);
     #define LIL_GET_DEPTH_TEX_CS(uv) LIL_SAMPLE_SCREEN_CS(_CameraDepthTexture, uv)
     #define LIL_TO_LINEARDEPTH(z,uv) LinearEyeDepth(z, _ZBufferParams)
-    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN_LOD(_CameraOpaqueTexture, sampler_linear_clamp, uv, lod)
-    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN_LOD(_CameraOpaqueTexture, sampler_linear_clamp, uv, lod)
+    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN_LOD(_CameraOpaqueTexture, lil_sampler_linear_clamp, uv, lod)
+    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN_LOD(_CameraOpaqueTexture, lil_sampler_linear_clamp, uv, lod)
     #define LIL_ENABLED_DEPTH_TEX IsScreenTex(_CameraDepthTexture)
 #endif
 
@@ -790,7 +796,7 @@ float4 _AudioTexture_TexelSize;
     #define sampler_MainTex sampler_OutlineTex
 #endif
 #if !defined(LIL_FEATURE_OutlineTex)
-    #define sampler_OutlineTex sampler_linear_repeat
+    #define sampler_OutlineTex lil_sampler_linear_repeat
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
