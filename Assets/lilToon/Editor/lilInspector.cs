@@ -572,6 +572,7 @@ namespace lilToon
         private readonly lilMaterialProperty rimIndirColor          = new lilMaterialProperty("_RimIndirColor", PropertyBlock.RimLight);
         private readonly lilMaterialProperty rimIndirBorder         = new lilMaterialProperty("_RimIndirBorder", PropertyBlock.RimLight);
         private readonly lilMaterialProperty rimIndirBlur           = new lilMaterialProperty("_RimIndirBlur", PropertyBlock.RimLight);
+        private readonly lilMaterialProperty rimBlendMode           = new lilMaterialProperty("_RimBlendMode", PropertyBlock.RimLight);
 
         private readonly lilMaterialProperty useGlitter                 = new lilMaterialProperty("_UseGlitter", PropertyBlock.Glitter);
         private readonly lilMaterialProperty glitterUVMode              = new lilMaterialProperty("_GlitterUVMode", PropertyBlock.Glitter);
@@ -1136,6 +1137,7 @@ namespace lilToon
                 rimIndirColor,
                 rimIndirBorder,
                 rimIndirBlur,
+                rimBlendMode,
 
                 useGlitter,
                 glitterUVMode,
@@ -5057,6 +5059,7 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(rimShadowMask, GetLoc("sShadowMask"));
                         m_MaterialEditor.ShaderProperty(rimBackfaceMask, GetLoc("sBackfaceMask"));
                         if(isTransparent) m_MaterialEditor.ShaderProperty(rimApplyTransparency, GetLoc("sApplyTransparency"));
+                        m_MaterialEditor.ShaderProperty(rimBlendMode, sBlendModes);
                         lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(rimDirStrength, GetLoc("sRimLightDirection"));
                         if(rimDirStrength.floatValue != 0)
@@ -5120,6 +5123,7 @@ namespace lilToon
                         EditorGUILayout.BeginVertical(boxInnerHalf);
                         TextureGUI(ref edSet.isShowRimColorTex, colorMaskRGBAContent, rimColorTex, rimColor);
                         lilEditorGUI.DrawColorAsAlpha(rimColor);
+                        m_MaterialEditor.ShaderProperty(rimBlendMode, sBlendModes);
                         lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(rimDirStrength, GetLoc("sRimLightDirection"));
                         if(rimDirStrength.floatValue != 0)

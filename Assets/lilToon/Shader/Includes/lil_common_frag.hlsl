@@ -1562,13 +1562,13 @@
                 #endif
 
                 // Blend
-                float3 rimSum = rimDir * rimColor.a * rimColor.rgb + rimIndir * rimIndirColor.a * rimIndirColor.rgb;
                 #if !defined(LIL_PASS_FORWARDADD)
-                    rimSum = lerp(rimSum, rimSum * fd.lightColor, _RimEnableLighting);
-                    fd.col.rgb += rimSum;
+                    float3 rimLightMul = 1 - _RimEnableLighting + fd.lightColor * _RimEnableLighting;
                 #else
-                    fd.col.rgb += rimSum * _RimEnableLighting * fd.lightColor;
+                    float3 rimLightMul = _RimBlendMode < 3 ? fd.lightColor * _RimEnableLighting : 1;
                 #endif
+                fd.col.rgb = lilBlendColor(fd.col.rgb, rimColor.rgb * rimLightMul, rimDir * rimColor.a, _RimBlendMode);
+                fd.col.rgb = lilBlendColor(fd.col.rgb, rimIndirColor.rgb * rimLightMul, rimIndir * rimIndirColor.a, _RimBlendMode);
             #else
                 // Color
                 float4 rimColor = _RimColor;
@@ -1591,16 +1591,15 @@
                 #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                     if(_RimApplyTransparency) rim *= fd.col.a;
                 #endif
+                rim = lerp(rim, rim * fd.shadowmix, _RimShadowMask);
 
                 // Blend
                 #if !defined(LIL_PASS_FORWARDADD)
-                    rim = lerp(rim, rim * fd.shadowmix, _RimShadowMask);
                     rimColor.rgb = lerp(rimColor.rgb, rimColor.rgb * fd.lightColor, _RimEnableLighting);
-                    fd.col.rgb += rim * rimColor.a * rimColor.rgb;
                 #else
-                    rim = lerp(rim, rim * fd.shadowmix, _RimShadowMask);
-                    fd.col.rgb += rim * _RimEnableLighting * rimColor.a * rimColor.rgb * fd.lightColor;
+                    if(_RimBlendMode < 3) rimColor.rgb *= fd.lightColor * _RimEnableLighting;
                 #endif
+                fd.col.rgb = lilBlendColor(fd.col.rgb, rimColor.rgb, rim * rimColor.a, _RimBlendMode);
             #endif
         }
     }

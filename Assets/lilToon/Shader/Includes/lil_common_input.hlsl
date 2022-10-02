@@ -593,6 +593,9 @@ CBUFFER_START(UnityPerMaterial)
     #if defined(LIL_MULTI_INPUTS_REFLECTION)
         uint    _ReflectionBlendMode;
     #endif
+    #if defined(LIL_MULTI_INPUTS_RIM)
+        uint    _RimBlendMode;
+    #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP)
         uint    _MatCapBlendMode;
     #endif

@@ -282,6 +282,7 @@ Shader "Hidden/lilToonTransparentOutline"
         [lilHDR]        _RimIndirColor              ("Indirection Color", Color) = (1,1,1,1)
                         _RimIndirBorder             ("Indirection Border", Range(0, 1)) = 0.5
                         _RimIndirBlur               ("Indirection Blur", Range(0, 1)) = 0.1
+        [lilEnum]       _RimBlendMode               ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Glitter
