@@ -24,8 +24,8 @@ SAMPLER(lil_sampler_linear_clamp);
     float4 _lilBackgroundTexture_TexelSize;
     #define LIL_GET_DEPTH_TEX_CS(uv) LIL_SAMPLE_SCREEN_CS(_CameraDepthTexture, lilCameraDepthTexel(uv))
     #define LIL_TO_LINEARDEPTH(z,uv) lilLinearEyeDepth(z, uv)
-    #define LIL_GET_BG_TEX(uv,lod) LIL_SAMPLE_SCREEN(_lilBackgroundTexture, lil_sampler_linear_clamp, uv)
-    #define LIL_GET_GRAB_TEX(uv,lod) LIL_SAMPLE_SCREEN(_GrabTexture, lil_sampler_linear_clamp, uv)
+    #define LIL_GET_BG_TEX(uv,lod) max(LIL_SAMPLE_SCREEN(_lilBackgroundTexture, lil_sampler_linear_clamp, uv),0)
+    #define LIL_GET_GRAB_TEX(uv,lod) max(LIL_SAMPLE_SCREEN(_GrabTexture, lil_sampler_linear_clamp, uv),0)
     #define LIL_ENABLED_DEPTH_TEX IsScreenTex(_CameraDepthTexture)
 #elif defined(LIL_HDRP)
     #define LIL_GET_DEPTH_TEX_CS(uv) SampleCameraDepth(uv/LIL_SCREENPARAMS.xy)
