@@ -1151,7 +1151,7 @@
             #if defined(LIL_BRP)
                 float3 refractCol = 0;
                 float sum = 0;
-                float blurOffset = fd.perceptualRoughness / sqrt(fd.positionSS.w) * (0.05 / LIL_REFRACTION_SAMPNUM);
+                float blurOffset = fd.perceptualRoughness / sqrt(fd.positionSS.w) * (0.03 / LIL_REFRACTION_SAMPNUM) * LIL_MATRIX_P._m11;
                 for(int j = -16; j <= 16; j++)
                 {
                     refractCol += LIL_GET_GRAB_TEX(refractUV + float2(0,j*blurOffset), 0).rgb * LIL_REFRACTION_GAUSDIST(j);
