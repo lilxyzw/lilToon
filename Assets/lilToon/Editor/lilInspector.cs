@@ -3205,6 +3205,7 @@ namespace lilToon
                 ToggleGUI(GetLoc("sSettingUseForwardAddShadow"), ref shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD_SHADOW);
             }
             ToggleGUI(GetLoc("sSettingUseLightmap"), ref shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP);
+            if(RP == lilRenderPipeline.BRP) ToggleGUI("Fix for Deffered", ref shaderSetting.LIL_OPTIMIZE_DEFFERED);
             GUI.enabled = true;
         }
 

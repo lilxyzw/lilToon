@@ -394,6 +394,14 @@ namespace lilToon
                 }
             }
 
+            if(
+                !assetName.Contains("ltspass") &&
+                GetBoolField("LIL_OPTIMIZE_DEFFERED", false)
+            )
+            {
+                sb.Replace("/SHADOW_CASTER_OUTLINE", "/SHADOW_CASTER");
+            }
+
             sb.Replace("\r\n", "\r");
             sb.Replace("\n", "\r");
             sb.Replace("\r", "\r\n");

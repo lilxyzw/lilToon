@@ -113,6 +113,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_OPTIMIZE_USE_FORWARDADD_SHADOW = false;
     public bool LIL_OPTIMIZE_USE_VERTEXLIGHT = true;
     public bool LIL_OPTIMIZE_USE_LIGHTMAP = false;
+    public bool LIL_OPTIMIZE_DEFFERED = false;
 
     public bool isLocked = false;
     public bool isDebugOptimize = false;
