@@ -38,35 +38,30 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     OVERRIDE_UNPACK_V2F
     LIL_COPY_VFACE(fd.facing);
 
-    #if defined(LIL_FEATURE_REFLECTION)
-        BEFORE_ANIMATE_MAIN_UV
-        OVERRIDE_ANIMATE_MAIN_UV
-        float3 refractCol = 0;
-        float sum = 0;
-        fd.smoothness = _Smoothness;
-        #if defined(LIL_FEATURE_SmoothnessTex)
-            fd.smoothness *= LIL_SAMPLE_2D_ST(_SmoothnessTex, lil_sampler_linear_repeat, fd.uvMain).r;
-        #endif
-        float perceptualRoughness = 1.0 - fd.smoothness;
-        float roughness = perceptualRoughness * perceptualRoughness;
-        #if !defined(LIL_LWTEX)
-            float2 bgRes = lilGetWidthAndHeight(_lilBackgroundTexture);
-            float aspect = bgRes.y / bgRes.x;
-        #else
-            float aspect = _lilBackgroundTexture_TexelSize.x * _lilBackgroundTexture_TexelSize.w;
-        #endif
-        float blurOffset = perceptualRoughness / sqrt(fd.positionSS.w) * aspect * (0.05 / LIL_REFRACTION_SAMPNUM);
-        for(int j = -LIL_REFRACTION_SAMPNUM; j <= LIL_REFRACTION_SAMPNUM; j++)
-        {
-            refractCol += LIL_GET_BG_TEX(fd.uvScn + float2(j*blurOffset,0), 0).rgb * LIL_REFRACTION_GAUSDIST(j);
-            sum += LIL_REFRACTION_GAUSDIST(j);
-        }
-        refractCol /= sum;
-        return float4(refractCol,1.0);
-    #else
-        float3 refractCol = LIL_GET_BG_TEX(fd.uvScn, 0).rgb;
-        return float4(refractCol,1.0);
+    BEFORE_ANIMATE_MAIN_UV
+    OVERRIDE_ANIMATE_MAIN_UV
+    float3 refractCol = 0;
+    float sum = 0;
+    fd.smoothness = _Smoothness;
+    #if defined(LIL_FEATURE_SmoothnessTex)
+        fd.smoothness *= LIL_SAMPLE_2D_ST(_SmoothnessTex, lil_sampler_linear_repeat, fd.uvMain).r;
     #endif
+    float perceptualRoughness = 1.0 - fd.smoothness;
+    float roughness = perceptualRoughness * perceptualRoughness;
+    #if !defined(LIL_LWTEX)
+        float2 bgRes = lilGetWidthAndHeight(_lilBackgroundTexture);
+        float aspect = bgRes.y / bgRes.x;
+    #else
+        float aspect = _lilBackgroundTexture_TexelSize.x * _lilBackgroundTexture_TexelSize.w;
+    #endif
+    float blurOffset = perceptualRoughness / sqrt(fd.positionSS.w) * aspect * (0.05 / LIL_REFRACTION_SAMPNUM);
+    for(int j = -LIL_REFRACTION_SAMPNUM; j <= LIL_REFRACTION_SAMPNUM; j++)
+    {
+        refractCol += LIL_GET_BG_TEX(fd.uvScn + float2(j*blurOffset,0), 0).rgb * LIL_REFRACTION_GAUSDIST(j);
+        sum += LIL_REFRACTION_GAUSDIST(j);
+    }
+    refractCol /= sum;
+    return float4(refractCol,1.0);
 }
 
 #endif

@@ -420,7 +420,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         // Refraction
         BEFORE_REFRACTION
         #if defined(LIL_REFRACTION) && !defined(LIL_PASS_FORWARDADD)
-            #if defined(LIL_REFRACTION_BLUR2) && defined(LIL_FEATURE_REFLECTION)
+            #if defined(LIL_REFRACTION_BLUR2)
                 fd.smoothness = _Smoothness;
                 #if defined(LIL_FEATURE_SmoothnessTex)
                     fd.smoothness *= LIL_SAMPLE_2D_ST(_SmoothnessTex, sampler_MainTex, fd.uvMain).r;

@@ -1147,7 +1147,7 @@
     void lilRefraction(inout lilFragData fd LIL_SAMP_IN_FUNC(samp))
     {
         float2 refractUV = fd.uvScn + (pow(1.0 - fd.nv, _RefractionFresnelPower) * _RefractionStrength) * mul((float3x3)LIL_MATRIX_V, fd.N).xy;
-        #if defined(LIL_REFRACTION_BLUR2) && defined(LIL_FEATURE_REFLECTION)
+        #if defined(LIL_REFRACTION_BLUR2)
             #if defined(LIL_BRP)
                 float3 refractCol = 0;
                 float sum = 0;
@@ -1163,8 +1163,6 @@
                 float refractLod = min(sqrt(fd.perceptualRoughness / sqrt(fd.positionSS.w) * 5.0), 10);
                 float3 refractCol = LIL_GET_GRAB_TEX(refractUV, refractLod).rgb * _RefractionColor.rgb;
             #endif
-        #elif defined(LIL_REFRACTION_BLUR2)
-            float3 refractCol = LIL_GET_GRAB_TEX(refractUV,0).rgb * _RefractionColor.rgb;
         #else
             float3 refractCol = LIL_GET_BG_TEX(refractUV,0).rgb * _RefractionColor.rgb;
         #endif

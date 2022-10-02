@@ -276,9 +276,11 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION)
         float4  _ReflectionColor;
-        float4  _SmoothnessTex_ST;
         float4  _MetallicGlossMap_ST;
         float4  _ReflectionColorTex_ST;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_REFLECTION) || defined(LIL_REFRACTION_BLUR2)
+        float4  _SmoothnessTex_ST;
     #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION) || defined(LIL_GEM)
         float4  _ReflectionCubeColor;
@@ -442,13 +444,15 @@ CBUFFER_START(UnityPerMaterial)
         float   _Anisotropy2ndSpecularStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION) || defined(LIL_GEM)
-        float   _Smoothness;
         float   _Reflectance;
         float   _SpecularNormalStrength;
         float   _SpecularBorder;
         float   _SpecularBlur;
         float   _ReflectionNormalStrength;
         float   _ReflectionCubeEnableLighting;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_REFLECTION) || defined(LIL_GEM) || defined(LIL_REFRACTION_BLUR2)
+        float   _Smoothness;
     #endif
     #if defined(LIL_MULTI_INPUTS_REFLECTION)
         float   _Metallic;
