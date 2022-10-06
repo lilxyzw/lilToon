@@ -170,7 +170,7 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Property drawer
         #region
-        public static void UV4Decal(MaterialEditor m_MaterialEditor, MaterialProperty isDecal, MaterialProperty isLeftOnly, MaterialProperty isRightOnly, MaterialProperty shouldCopy, MaterialProperty shouldFlipMirror, MaterialProperty shouldFlipCopy, MaterialProperty tex, MaterialProperty angle, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty uvMode)
+        public static void UV4Decal(MaterialEditor m_MaterialEditor, MaterialProperty isDecal, MaterialProperty isLeftOnly, MaterialProperty isRightOnly, MaterialProperty shouldCopy, MaterialProperty shouldFlipMirror, MaterialProperty shouldFlipCopy, MaterialProperty tex, MaterialProperty SR, MaterialProperty angle, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty uvMode)
         {
             m_MaterialEditor.ShaderProperty(uvMode, "UV Mode|UV0|UV1|UV2|UV3|MatCap");
             ConvertGifToAtlas(tex, decalAnimation, decalSubParam, isDecal);
@@ -330,6 +330,7 @@ namespace lilToon
                 }
 
                 m_MaterialEditor.ShaderProperty(angle, GetLoc("sAngle"));
+                ScrollAndRotateGUI(SR);
                 EditorGUI.indentLevel--;
                 m_MaterialEditor.ShaderProperty(decalAnimation, lilLanguageManager.BuildParams(GetLoc("sAnimation"), GetLoc("sXFrames"), GetLoc("sYFrames"), GetLoc("sFrames"), GetLoc("sFPS")));
                 m_MaterialEditor.ShaderProperty(decalSubParam, lilLanguageManager.BuildParams(GetLoc("sXRatio"), GetLoc("sYRatio"), GetLoc("sFixBorder")));
@@ -338,6 +339,7 @@ namespace lilToon
             {
                 m_MaterialEditor.TextureScaleOffsetProperty(tex);
                 m_MaterialEditor.ShaderProperty(angle, GetLoc("sAngle"));
+                ScrollAndRotateGUI(SR);
             }
 
             if(EditorButton(GetLoc("sReset")) && EditorUtility.DisplayDialog(GetLoc("sDialogResetUV"),GetLoc("sDialogResetUVMes"),GetLoc("sYes"),GetLoc("sNo")))
@@ -352,6 +354,41 @@ namespace lilToon
                 angle.floatValue = 0.0f;
                 decalAnimation.vectorValue = new Vector4(1.0f,1.0f,1.0f,30.0f);
                 decalSubParam.vectorValue = new Vector4(1.0f,1.0f,0.01f,1.0f);
+            }
+        }
+
+        private static void ScrollAndRotateGUI(MaterialProperty prop)
+        {
+            Vector2 scroll = new Vector2(prop.vectorValue.x, prop.vectorValue.y);
+            float angle = Radian2Degree(prop.vectorValue.z);
+            float rotate = RoundFloat1000000(prop.vectorValue.w / Mathf.PI * 0.5f);
+
+            EditorGUI.BeginChangeCheck();
+
+            Rect positionVec2 = EditorGUILayout.GetControlRect();
+
+            // Scroll label
+            float labelWidth = EditorGUIUtility.labelWidth;
+            Rect labelRect = new Rect(positionVec2.x, positionVec2.y, labelWidth, positionVec2.height);
+            EditorGUI.PrefixLabel(labelRect, new GUIContent(GetLoc("sScroll")));
+
+            // Copy & Reset indent
+            int indentBuf = EditorGUI.indentLevel;
+            EditorGUI.indentLevel = 0;
+
+            // Scroll
+            Rect vecRect = new Rect(positionVec2.x + labelWidth, positionVec2.y, positionVec2.width - labelWidth, positionVec2.height);
+            scroll = EditorGUI.Vector2Field(vecRect, GUIContent.none, scroll);
+
+            // Revert indent
+            EditorGUI.indentLevel = indentBuf;
+
+            // Rotate
+            rotate = EditorGUI.FloatField(EditorGUILayout.GetControlRect(), GetLoc("sRotate"), rotate);
+
+            if(EditorGUI.EndChangeCheck())
+            {
+                prop.vectorValue = new Vector4(scroll.x, scroll.y, Degree2Radian(angle), rotate * Mathf.PI * 2.0f);
             }
         }
 

@@ -171,8 +171,10 @@ CBUFFER_START(UnityPerMaterial)
     float4  _MainTexHSVG;
     float4  _Color2nd;
     float4  _Main2ndTex_ST;
+    float4  _Main2ndTex_ScrollRotate;
     float4  _Color3rd;
     float4  _Main3rdTex_ST;
+    float4  _Main3rdTex_ScrollRotate;
     float   _MainGradationStrength;
     float   _Main2ndTexAngle;
     float   _Main3rdTexAngle;
@@ -211,6 +213,7 @@ CBUFFER_START(UnityPerMaterial)
     #if defined(LIL_MULTI_INPUTS_MAIN2ND)
         float4  _Color2nd;
         float4  _Main2ndTex_ST;
+        float4  _Main2ndTex_ScrollRotate;
         float4  _Main2ndDistanceFade;
         float4  _Main2ndTexDecalAnimation;
         float4  _Main2ndTexDecalSubParam;
@@ -224,6 +227,7 @@ CBUFFER_START(UnityPerMaterial)
     #if defined(LIL_MULTI_INPUTS_MAIN3RD)
         float4  _Color3rd;
         float4  _Main3rdTex_ST;
+        float4  _Main3rdTex_ScrollRotate;
         float4  _Main3rdDistanceFade;
         float4  _Main3rdTexDecalAnimation;
         float4  _Main3rdTexDecalSubParam;

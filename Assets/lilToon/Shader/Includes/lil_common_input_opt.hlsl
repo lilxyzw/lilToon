@@ -26,6 +26,7 @@ float4  _MainTex_ST;
 #if defined(LIL_FEATURE_MAIN2ND)
     float4  _Color2nd;
     float4  _Main2ndTex_ST;
+    float4  _Main2ndTex_ScrollRotate;
     float4  _Main2ndDistanceFade;
     #if defined(LIL_FEATURE_DECAL) && defined(LIL_FEATURE_ANIMATE_DECAL)
         float4  _Main2ndTexDecalAnimation;
@@ -47,6 +48,7 @@ float4  _MainTex_ST;
 #if defined(LIL_FEATURE_MAIN3RD)
     float4  _Color3rd;
     float4  _Main3rdTex_ST;
+    float4  _Main3rdTex_ScrollRotate;
     float4  _Main3rdDistanceFade;
     #if defined(LIL_FEATURE_DECAL) && defined(LIL_FEATURE_ANIMATE_DECAL)
         float4  _Main3rdTexDecalAnimation;

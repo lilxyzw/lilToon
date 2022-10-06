@@ -471,6 +471,31 @@ float2 lilCalcDecalUV(
     return outUV;
 }
 
+float2 lilCalcDecalUV(
+    float2 uv,
+    float4 uv_ST,
+    float4 uv_SR,
+    bool isLeftOnly,
+    bool isRightOnly,
+    bool shouldCopy,
+    bool shouldFlipMirror,
+    bool shouldFlipCopy,
+    bool isRightHand)
+{
+    float4 uv_ST2 = uv_ST + float4(0,0,uv_SR.xy) * LIL_TIME;
+    float angle2 = uv_SR.z+ uv_SR.w * LIL_TIME;
+    return lilCalcDecalUV(
+        uv,
+        uv_ST2,
+        angle2,
+        isLeftOnly,
+        isRightOnly,
+        shouldCopy,
+        shouldFlipMirror,
+        shouldFlipCopy,
+        isRightHand);
+}
+
 float2 lilCalcAtlasAnimation(float2 uv, float4 decalAnimation, float4 decalSubParam)
 {
     float2 outuv = lerp(float2(uv.x, 1.0-uv.y), 0.5, decalSubParam.z);
@@ -651,6 +676,7 @@ void lilCalcDissolveWithNoise(
 float4 lilGetSubTex(
     TEXTURE2D(tex),
     float4 uv_ST,
+    float4 uv_SR,
     float angle,
     float2 uv,
     float nv,
@@ -667,7 +693,8 @@ float4 lilGetSubTex(
     LIL_SAMP_IN_FUNC(samp))
 {
     #if defined(LIL_FEATURE_DECAL)
-        float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
+        float4 uv_SR2 = float4(uv_SR.xy, angle, uv_SR.w);
+        float2 uv2 = lilCalcDecalUV(uv, uv_ST, uv_SR2, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
         #if defined(LIL_FEATURE_ANIMATE_DECAL)
             float2 uv2samp = lilCalcAtlasAnimation(uv2, decalAnimation, decalSubParam);
         #else
@@ -678,7 +705,8 @@ float4 lilGetSubTex(
         if(isDecal) outCol.a *= lilIsIn0to1(uv2, saturate(nv-0.05));
         return outCol;
     #else
-        float2 uv2 = lilCalcUV(uv, uv_ST, angle);
+        float4 uv_SR2 = float4(uv_SR.xy, angle, uv_SR.w);
+        float2 uv2 = lilCalcUV(uv, uv_ST, uv_SR2);
         float4 outCol = LIL_SAMPLE_2D(tex,samp,uv2);
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
         return outCol;
@@ -688,6 +716,7 @@ float4 lilGetSubTex(
 float4 lilGetSubTexWithoutAnimation(
     TEXTURE2D(tex),
     float4 uv_ST,
+    float4 uv_SR,
     float angle,
     float2 uv,
     float nv,
