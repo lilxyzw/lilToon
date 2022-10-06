@@ -410,6 +410,8 @@ namespace lilToon
             sb.Replace("\r\n        \r\n", "\r\n");
             sb.Replace("\r\n            \r\n", "\r\n");
 
+            AddHLSLDependency(assetFolderPath, ctx);
+
             return sb.ToString();
         }
 
@@ -431,7 +433,7 @@ namespace lilToon
             AddDependency(ctx, path);
             StreamReader sr = new StreamReader(path);
             string line;
-            while ((line = sr.ReadLine()) != null)
+            while((line = sr.ReadLine()) != null)
             {
                 if(line.Contains(csdShaderNameTag))
                 {
@@ -579,7 +581,7 @@ namespace lilToon
             StreamReader sr = new StreamReader(path);
             string line;
 
-            while ((line = sr.ReadLine()) != null)
+            while((line = sr.ReadLine()) != null)
             {
                 if(!isOrigShaderNameLoaded && line.StartsWith("Shader"))
                 {
@@ -851,6 +853,18 @@ namespace lilToon
                     }
                 }
             #endif
+        }
+
+        private static void AddHLSLDependency(string assetFolderPath, AssetImportContext ctx)
+        {
+            if(ctx == null) return;
+
+            foreach(string guid in AssetDatabase.FindAssets("", new[]{assetFolderPath}))
+            {
+                string assetpath = AssetDatabase.GUIDToAssetPath(guid);
+                if(assetpath.Contains("lilcontainer")) continue;
+                AddDependency(ctx, assetpath);
+            }
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
