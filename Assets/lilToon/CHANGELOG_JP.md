@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.7] - 2022-09-xx
 ### 追加
 - `VRChat Package Manager`のサポート
+- `GTAvaCrypt V2`のサポート
+- `SLZURP`のサポート
+- リムライトに`合成モード`を追加
+
+### 修正
+- FakeShadowのエラーを修正
+- ファー（カットアウト）のAOを修正
+- 屈折ぼかしの強度がFOVに依存していた問題を修正
 
 ## [1.3.6] - 2022-09-10
 ### 修正

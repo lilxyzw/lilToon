@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.7] - 2022-09-xx
 ### Added
 - Support for `VRChat Package Manager`
+- `Blending Mode` to rim light
+- Support for `GTAvaCrypt V2`
+- Support for `SLZURP`
+
+### Fixed
+- Fixed error in fakeshadow
+- Fixed AO in cutout fur
+- Fixed refraction blur strength depending on FOV
 
 ## [1.3.6] - 2022-09-10
 ### Fixed
