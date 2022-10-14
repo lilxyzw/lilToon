@@ -224,6 +224,7 @@ namespace lilToon
             string pathBase = AssetDatabase.GUIDToAssetPath("8ff7f7d9c86e1154fb3aac5a8a8681bb");
             string pathOpt = AssetDatabase.GUIDToAssetPath("571051a232e4af44a98389bda858df27");
             if(string.IsNullOrEmpty(pathBase) || string.IsNullOrEmpty(pathOpt) || !File.Exists(pathBase) || !File.Exists(pathOpt)) return null;
+            var shader = Shader.Find("Hidden/ltspass_proponly");
             var sb = new StringBuilder();
             var sr = new StreamReader(pathBase);
             string line;
@@ -259,7 +260,7 @@ namespace lilToon
                     else if(dicC.ContainsKey(name) && !dicC[name].isVariable)
                     {
                         var v = dicC[name];
-                        Color c = line.Contains("Color") && !line.Contains("Emission") && PlayerSettings.colorSpace == ColorSpace.Linear ? v.c.linear : v.c;
+                        Color c = ShouldLinear(shader, name) ? v.c.linear : v.c;
                         sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + LilF2S(c.r) + "," + LilF2S(c.g) + "," + LilF2S(c.b) + "," + LilF2S(c.a) + ")");
                         continue;
                     }
@@ -271,7 +272,9 @@ namespace lilToon
                     string name = line.Substring(indF, indEND - indF);
                     if(dicF.ContainsKey(name) && !dicF[name].isVariable)
                     {
-                        sb.AppendLine(GetIndent(indF - 8) + "#define " + name + " (" + LilF2S(dicF[name].f) + ")");
+                        float f = dicF[name].f;
+                        f = ShouldLinear(shader, name) ? Mathf.GammaToLinearSpace(f) : f;
+                        sb.AppendLine(GetIndent(indF - 8) + "#define " + name + " (" + LilF2S(f) + ")");
                         continue;
                     }
                 }
@@ -305,6 +308,20 @@ namespace lilToon
             sb.Replace("\n", "\r");
             sb.Replace("\r", "\r\n");
             return sb.ToString();
+        }
+
+        private static bool ShouldLinear(Shader shader, string name)
+        {
+            if(PlayerSettings.colorSpace != ColorSpace.Linear) return false;
+            int id = shader.FindPropertyIndex(name);
+            if(id == -1) return false;
+            var flag = shader.GetPropertyFlags(id);
+            var type = shader.GetPropertyType(id);
+            if(type == UnityEngine.Rendering.ShaderPropertyType.Color)
+            {
+                return flag != UnityEngine.Rendering.ShaderPropertyFlags.HDR;
+            }
+            return flag == UnityEngine.Rendering.ShaderPropertyFlags.Gamma;
         }
 
         internal static void ResetInputHLSL()

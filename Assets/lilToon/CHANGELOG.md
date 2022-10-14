@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed error in fakeshadow
 - Fixed AO in cutout fur
 - Fixed refraction blur strength depending on FOV
+- Fixed value after optimization
 
 ## [1.3.6] - 2022-09-10
 ### Fixed

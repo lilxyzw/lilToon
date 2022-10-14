@@ -1,0 +1,21 @@
+Shader "Hidden/ltspass_proponly"
+{
+    Properties
+    {
+        lilProperties "DefaultAll"
+    }
+
+    SubShader
+    {
+        Pass
+        {
+            Tags {"LightMode" = "Dummy"}
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            void vert(){}
+            void frag(){}
+            ENDHLSL
+        }
+    }
+}
