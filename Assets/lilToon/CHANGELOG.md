@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Blending Mode` to rim light
 - Support for `GTAvaCrypt V2`
 - Support for `SLZURP`
+- `Anti-aliasing shading` property
 
 ### Fixed
 - Fixed error in fakeshadow

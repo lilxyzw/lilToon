@@ -912,21 +912,21 @@
                 lns.xyz = _ShadowPostAO ? lns.xyz : lns.xyz * shadowBorderMask.rgb;
 
                 lns.w = lns.x;
-                lns.x = lilTooningNoSaturate(lns.x, _ShadowBorder, shadowBlur);
-                lns.y = lilTooningNoSaturate(lns.y, _Shadow2ndBorder, shadow2ndBlur);
-                lns.w = lilTooningNoSaturate(lns.w, _ShadowBorder, shadowBlur, _ShadowBorderRange);
+                lns.x = lilTooningNoSaturateScale(_AAStrength, lns.x, _ShadowBorder, shadowBlur);
+                lns.y = lilTooningNoSaturateScale(_AAStrength, lns.y, _Shadow2ndBorder, shadow2ndBlur);
+                lns.w = lilTooningNoSaturateScale(_AAStrength, lns.w, _ShadowBorder, shadowBlur, _ShadowBorderRange);
                 #if defined(LIL_FEATURE_SHADOW_3RD)
-                    lns.z = lilTooningNoSaturate(lns.z, _Shadow3rdBorder, shadow3rdBlur);
+                    lns.z = lilTooningNoSaturateScale(_AAStrength, lns.z, _Shadow3rdBorder, shadow3rdBlur);
                 #endif
                 lns = _ShadowPostAO ? lns * shadowBorderMask.rgbr : lns;
                 lns = saturate(lns);
             #else
                 lns.w = lns.x;
-                lns.x = lilTooning(lns.x, _ShadowBorder, shadowBlur);
-                lns.y = lilTooning(lns.y, _Shadow2ndBorder, shadow2ndBlur);
-                lns.w = lilTooning(lns.w, _ShadowBorder, shadowBlur, _ShadowBorderRange);
+                lns.x = lilTooningScale(_AAStrength, lns.x, _ShadowBorder, shadowBlur);
+                lns.y = lilTooningScale(_AAStrength, lns.y, _Shadow2ndBorder, shadow2ndBlur);
+                lns.w = lilTooningScale(_AAStrength, lns.w, _ShadowBorder, shadowBlur, _ShadowBorderRange);
                 #if defined(LIL_FEATURE_SHADOW_3RD)
-                    lns.z = lilTooning(lns.z, _Shadow3rdBorder, shadow3rdBlur);
+                    lns.z = lilTooningScale(_AAStrength, lns.z, _Shadow3rdBorder, shadow3rdBlur);
                 #endif
             #endif
 
@@ -1055,9 +1055,9 @@
             float lnB = ln1;
 
             // Toon
-            ln1 = lilTooning(ln1, _ShadowBorder, _ShadowBlur);
-            ln2 = lilTooning(ln2, _Shadow2ndBorder, _Shadow2ndBlur);
-            lnB = lilTooning(lnB, _ShadowBorder, _ShadowBlur, _ShadowBorderRange);
+            ln1 = lilTooningScale(_AAStrength, ln1, _ShadowBorder, _ShadowBlur);
+            ln2 = lilTooningScale(_AAStrength, ln2, _Shadow2ndBorder, _Shadow2ndBlur);
+            lnB = lilTooningScale(_AAStrength, lnB, _ShadowBorder, _ShadowBlur, _ShadowBorderRange);
 
             // Force shadow on back face
             float bfshadow = (fd.facing < 0.0) ? 1.0 - _BackfaceForceShadow : 1.0;
@@ -1126,7 +1126,7 @@
             #if defined(LIL_USE_SHADOW) || defined(LIL_LIGHTMODE_SHADOWMASK)
                 if(_BacklightReceiveShadow) backlightLN *= saturate(fd.attenuation + distance(fd.L, fd.origL));
             #endif
-            backlightLN = lilTooning(backlightLN, _BacklightBorder, _BacklightBlur);
+            backlightLN = lilTooningScale(_AAStrength, backlightLN, _BacklightBorder, _BacklightBlur);
             float backlight = saturate(backlightFactor * backlightLN);
             backlight = fd.facing < (_BacklightBackfaceMask-1.0) ? 0.0 : backlight;
 
@@ -1205,7 +1205,7 @@
         #else
             if(_SpecularToon)
         #endif
-        return lilTooning(pow(nh,1.0/fd.roughness), _SpecularBorder, _SpecularBlur);
+        return lilTooningScale(_AAStrength, pow(nh,1.0/fd.roughness), _SpecularBorder, _SpecularBlur);
 
         // Dot
         float nv = saturate(dot(N, fd.V));
@@ -1287,7 +1287,7 @@
 
         // Output
         #if defined(LIL_FEATURE_ANISOTROPY)
-            if(_SpecularToon) return lilTooning(specularTerm, 0.5);
+            if(_SpecularToon) return lilTooningScale(_AAStrength, specularTerm, 0.5);
         #endif
         return specularTerm * lilFresnelTerm(specular, lh);
     }
@@ -1548,8 +1548,8 @@
                 float rimDir = lerp(rim, rim*lnDir, _RimDirStrength);
                 float rimIndir = rim * lnIndir * _RimDirStrength;
 
-                rimDir = lilTooning(rimDir, _RimBorder, _RimBlur);
-                rimIndir = lilTooning(rimIndir, _RimIndirBorder, _RimIndirBlur);
+                rimDir = lilTooningScale(_AAStrength, rimDir, _RimBorder, _RimBlur);
+                rimIndir = lilTooningScale(_AAStrength, rimIndir, _RimIndirBorder, _RimIndirBlur);
 
                 rimDir = lerp(rimDir, rimDir * fd.shadowmix, _RimShadowMask);
                 rimIndir = lerp(rimIndir, rimIndir * fd.shadowmix, _RimShadowMask);
@@ -1587,7 +1587,7 @@
                 // Factor
                 float rim = pow(saturate(1.0 - nvabs), _RimFresnelPower);
                 rim = fd.facing < (_RimBackfaceMask-1.0) ? 0.0 : rim;
-                rim = lilTooning(rim, _RimBorder, _RimBlur);
+                rim = lilTooningScale(_AAStrength, rim, _RimBorder, _RimBlur);
                 #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                     if(_RimApplyTransparency) rim *= fd.col.a;
                 #endif
@@ -1609,7 +1609,7 @@
         if(_UseRim)
         {
             float rim = pow(saturate(1.0 - fd.nvabs), _RimFresnelPower);
-            rim = lilTooning(rim, _RimBorder, _RimBlur);
+            rim = lilTooningScale(_AAStrength, rim, _RimBorder, _RimBlur);
             rim = lerp(rim, rim * fd.shadowmix, _RimShadowMask);
             fd.col.rgb += rim * fd.triMask.g * _RimColor.rgb * fd.lightColor;
         }

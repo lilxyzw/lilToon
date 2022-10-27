@@ -124,6 +124,7 @@ sCullModeBack	Back	Back (前面のみ描画)	Back	Back	Back
 sFlipBackfaceNormal	Flip Backface Normal	裏面の法線を反転	뒷면의 법선을 반전	翻转背影法线	翻轉背影法線
 sShiftBackfaceUV	Shift Backface UV	裏面のUVをずらす	뒷면의 UV를 드티다	移动背面的UV	移動背面的UV
 sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면에 그림자를 드리우다	背面的力量阴影	背面的力量陰影
+sAAShading	Anti-aliasing shading	アンチエイリアスシェーディング	Anti-aliasing shading	Anti-aliasing shading	Anti-aliasing shading
 sSimpleStencilSettings	Simple Stencil Settings	簡易ステンシル設定	간이 스텐실 설정	简单Stencil设置	簡單Stencil設置
 sStencilModeNormal	Normal	通常	Normal	Normal	Normal
 sStencilModeWriter	Writer	Writer	Writer	Writer	Writer

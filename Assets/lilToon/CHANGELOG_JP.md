@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `GTAvaCrypt V2`のサポート
 - `SLZURP`のサポート
 - リムライトに`合成モード`を追加
+- `アンチエイリアスシェーディング`プロパティを追加
 
 ### 修正
 - FakeShadowのエラーを修正

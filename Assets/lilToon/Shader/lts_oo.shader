@@ -20,6 +20,7 @@ Shader "_lil/[Optional] lilToonOutlineOnly"
                         _AlphaBoostFA               ("Alpha Boost", Range(1,100)) = 10
                         _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
         [lilVec3B]      _LightDirectionOverride     ("Light Direction Override", Vector) = (0.001,0.002,0.001,0)
+                        _AAStrength                 ("AA Strength", Range(0, 1)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main

@@ -51,6 +51,7 @@ namespace lilToon
             res = res || name == "_TransparentMode";
             res = res || name == "_UseClippingCanceller";
             res = res || name == "_AsOverlay";
+            res = res || name == "_AAStrength";
             return res;
         }
 

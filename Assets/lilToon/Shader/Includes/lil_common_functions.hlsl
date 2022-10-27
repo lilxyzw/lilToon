@@ -18,38 +18,23 @@
         return saturate(f) == f;
     }
 
-    float lilTooningNoSaturate(float value, float border)
+    float lilTooningNoSaturateScale(float aascale, float value, float border)
     {
         return step(border, value);
     }
 
-    float lilTooningNoSaturate(float value, float border, float blur)
+    float lilTooningNoSaturateScale(float aascale, float value, float border, float blur)
     {
         float borderMin = saturate(border - blur * 0.5);
         float borderMax = saturate(border + blur * 0.5);
         return (value - borderMin) / saturate(borderMax - borderMin);
     }
 
-    float lilTooningNoSaturate(float value, float border, float blur, float borderRange)
+    float lilTooningNoSaturateScale(float aascale, float value, float border, float blur, float borderRange)
     {
         float borderMin = saturate(border - blur * 0.5 - borderRange);
         float borderMax = saturate(border + blur * 0.5);
         return (value - borderMin) / saturate(borderMax - borderMin);
-    }
-
-    float lilTooning(float value, float border)
-    {
-        return lilTooningNoSaturate(value, border);
-    }
-
-    float lilTooning(float value, float border, float blur)
-    {
-        return saturate(lilTooningNoSaturate(value, border, blur));
-    }
-
-    float lilTooning(float value, float border, float blur, float borderRange)
-    {
-        return saturate(lilTooningNoSaturate(value, border, blur, borderRange));
     }
 #else
     float lilIsIn0to1(float f)
@@ -64,40 +49,70 @@
         return saturate(value / clamp(fwidth(value), 0.0001, nv));
     }
 
-    float lilTooningNoSaturate(float value, float border)
+    float lilTooningNoSaturateScale(float aascale, float value, float border)
     {
-        return (value - border) / clamp(fwidth(value), 0.0001, 1.0);
+        return (value - border) / clamp(fwidth(value) * aascale, 0.0001, 1.0);
     }
 
-    float lilTooningNoSaturate(float value, float border, float blur)
+    float lilTooningNoSaturateScale(float aascale, float value, float border, float blur)
     {
         float borderMin = saturate(border - blur * 0.5);
         float borderMax = saturate(border + blur * 0.5);
-        return (value - borderMin) / saturate(borderMax - borderMin + fwidth(value));
+        return (value - borderMin) / saturate(borderMax - borderMin + fwidth(value) * aascale);
     }
 
-    float lilTooningNoSaturate(float value, float border, float blur, float borderRange)
+    float lilTooningNoSaturateScale(float aascale, float value, float border, float blur, float borderRange)
     {
         float borderMin = saturate(border - blur * 0.5 - borderRange);
         float borderMax = saturate(border + blur * 0.5);
-        return (value - borderMin) / saturate(borderMax - borderMin + fwidth(value));
-    }
-
-    float lilTooning(float value, float border)
-    {
-        return saturate(lilTooningNoSaturate(value, border));
-    }
-
-    float lilTooning(float value, float border, float blur)
-    {
-        return saturate(lilTooningNoSaturate(value, border, blur));
-    }
-
-    float lilTooning(float value, float border, float blur, float borderRange)
-    {
-        return saturate(lilTooningNoSaturate(value, border, blur, borderRange));
+        return (value - borderMin) / saturate(borderMax - borderMin + fwidth(value) * aascale);
     }
 #endif
+
+float lilTooningScale(float aascale, float value, float border)
+{
+    return saturate(lilTooningNoSaturateScale(aascale, value, border));
+}
+
+float lilTooningScale(float aascale, float value, float border, float blur)
+{
+    return saturate(lilTooningNoSaturateScale(aascale, value, border, blur));
+}
+
+float lilTooningScale(float aascale, float value, float border, float blur, float borderRange)
+{
+    return saturate(lilTooningNoSaturateScale(aascale, value, border, blur, borderRange));
+}
+
+float lilTooningNoSaturate(float value, float border)
+{
+    return lilTooningNoSaturateScale(1.0, value, border);
+}
+
+float lilTooningNoSaturate(float value, float border, float blur)
+{
+    return lilTooningNoSaturateScale(1.0, value, border, blur);
+}
+
+float lilTooningNoSaturate(float value, float border, float blur, float borderRange)
+{
+    return lilTooningNoSaturateScale(1.0, value, border, blur, borderRange);
+}
+
+float lilTooning(float value, float border)
+{
+    return saturate(lilTooningNoSaturate(value, border));
+}
+
+float lilTooning(float value, float border, float blur)
+{
+    return saturate(lilTooningNoSaturate(value, border, blur));
+}
+
+float lilTooning(float value, float border, float blur, float borderRange)
+{
+    return saturate(lilTooningNoSaturate(value, border, blur, borderRange));
+}
 
 // Optimized matrix calculation
 float4 lilOptMul(float4x4 mat, float3 pos)

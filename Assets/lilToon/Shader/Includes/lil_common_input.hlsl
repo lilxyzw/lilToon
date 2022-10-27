@@ -117,6 +117,7 @@ CBUFFER_START(UnityPerMaterial)
     float   _LightMinLimit;
     float   _LightMaxLimit;
     float   _MonochromeLighting;
+    float   _AAStrength;
     #if defined(LIL_BRP)
         float   _AlphaBoostFA;
     #endif
@@ -180,6 +181,7 @@ CBUFFER_START(UnityPerMaterial)
     float   _Main3rdTexAngle;
     float   _AlphaMaskScale;
     float   _AlphaMaskValue;
+    float   _AAStrength;
     uint    _Main2ndTexBlendMode;
     uint    _Main2ndTex_UVMode;
     uint    _Main3rdTexBlendMode;

@@ -273,6 +273,7 @@ float   _VertexLightStrength;
 float   _LightMinLimit;
 float   _LightMaxLimit;
 float   _MonochromeLighting;
+float   _AAStrength;
 #if defined(LIL_BRP)
     float   _AlphaBoostFA;
 #endif
