@@ -3444,7 +3444,7 @@ namespace lilToon
 
         private void DrawGIFragGUI()
         {
-            #if NITY_2019_1_OR_NEWER
+            #if UNITY_2019_1_OR_NEWER
                 m_MaterialEditor.LightmapEmissionFlagsProperty(0, true, true);
             #else
                 m_MaterialEditor.LightmapEmissionFlagsProperty(0, true);
@@ -4202,7 +4202,7 @@ namespace lilToon
                     {
                         m_MaterialEditor.ShaderProperty(cutoff, GetLoc("sCutoff"));
                     }
-                    if(!isGem)
+                    if(!isGem && !isFakeShadow)
                     {
                         m_MaterialEditor.ShaderProperty(cull, sCullModes);
                         EditorGUI.indentLevel++;
@@ -4226,7 +4226,7 @@ namespace lilToon
                         zwrite.floatValue = 1.0f;
                     }
                     if(isMulti) m_MaterialEditor.ShaderProperty(useClippingCanceller, GetLoc("sSettingClippingCanceller"));
-                    m_MaterialEditor.ShaderProperty(aaStrength, GetLoc("sAAShading"));
+                    if(!isFakeShadow) m_MaterialEditor.ShaderProperty(aaStrength, GetLoc("sAAShading"));
                     m_MaterialEditor.RenderQueueField();
                     if((renderingModeBuf >= RenderingMode.Transparent && renderingModeBuf != RenderingMode.FurCutout) || (isMulti && transparentModeMat.floatValue == 2.0f))
                     {
