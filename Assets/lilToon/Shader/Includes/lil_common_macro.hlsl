@@ -1680,21 +1680,11 @@ float3 lilGetObjectPosition()
 
         #if defined(_ADDITIONAL_LIGHTS) || defined(_ADDITIONAL_LIGHTS_VERTEX)
             uint lightsCount = GetAdditionalLightsCount();
-            #if defined(USE_FORWARD_PLUS) && USE_FORWARD_PLUS
-                ClusteredLightLoop cll = ClusteredLightLoopInit(GetNormalizedScreenSpaceUV(positionCS), positionWS);
-                while (ClusteredLightLoopNext(cll)) {
-                    uint lightIndex = ClusteredLightLoopGetLightIndex(cll);
-            #elif defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
-                ClusteredLightLoop cll = ClusteredLightLoopInit(GetNormalizedScreenSpaceUV(positionCS), positionWS);
-                while(ClusteredLightLoopNextWord(cll))
-                {
-                    while(ClusteredLightLoopNextLight(cll))
-                    {
-                        uint lightIndex = ClusteredLightLoopGetLightIndex(cll);
-            #elif defined(_USE_WEBGL1_LIGHTS) && _USE_WEBGL1_LIGHTS
-                for(uint lightIndex = 0; lightIndex < _WEBGL1_MAX_LIGHTS; lightIndex++)
-                {
-                    if(lightIndex >= lightsCount) break;
+            #if defined(LIGHT_LOOP_BEGIN)
+                InputData inputData = (InputData)0;
+                inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(positionCS);
+                inputData.positionWS = positionWS;
+                LIGHT_LOOP_BEGIN(lightsCount)
             #else
                 for(uint lightIndex = 0; lightIndex < lightsCount; lightIndex++)
                 {
@@ -1708,15 +1698,20 @@ float3 lilGetObjectPosition()
                     lightColor += light.color.rgb * light.distanceAttenuation * strength;
                     lightDirection += dot(light.color.rgb, float3(1.0/3.0, 1.0/3.0, 1.0/3.0)) * light.distanceAttenuation * strength * light.direction;
                 }
-            }
 
-            #if defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING
+            #if defined(LIGHT_LOOP_END)
+                LIGHT_LOOP_END
+            #else
                 }
             #endif
         #endif
 
         #if defined(_ADDITIONAL_LIGHTS) && (defined(USE_CLUSTERED_LIGHTING) && USE_CLUSTERED_LIGHTING || defined(USE_FORWARD_PLUS) && USE_FORWARD_PLUS)
-            for(uint lightIndex = 0; lightIndex < min(_AdditionalLightsDirectionalCount, MAX_VISIBLE_LIGHTS); lightIndex++)
+            #if defined(URP_FP_DIRECTIONAL_LIGHTS_COUNT)
+                for(uint lightIndex = 0; lightIndex < min(URP_FP_DIRECTIONAL_LIGHTS_COUNT, MAX_VISIBLE_LIGHTS); lightIndex++)
+            #else
+                for(uint lightIndex = 0; lightIndex < min(_AdditionalLightsDirectionalCount, MAX_VISIBLE_LIGHTS); lightIndex++)
+            #endif
             {
                 Light light = GetAdditionalLight(lightIndex, positionWS);
                 #if LIL_SRP_VERSION_GREATER_EQUAL(12, 0) && defined(_LIGHT_LAYERS)
