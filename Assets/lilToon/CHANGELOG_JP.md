@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 追加
 - `VRChat Package Manager`のサポート
 - `SLZURP`のサポート
-- リムライトに`合成モード`を追加
+- リムライトと発光に`合成モード`を追加
 - `アンチエイリアスシェーディング`プロパティを追加
 
 ### 修正

@@ -614,9 +614,11 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION)
         uint    _EmissionMap_UVMode;
+        uint    _EmissionBlendMode;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION_2ND)
         uint    _Emission2ndMap_UVMode;
+        uint    _Emission2ndBlendMode;
     #endif
     #if defined(LIL_MULTI_INPUTS_AUDIOLINK)
         uint    _AudioLinkUVMode;

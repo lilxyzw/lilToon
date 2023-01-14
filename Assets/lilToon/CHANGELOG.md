@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.7] - 2023-01-xx
 ### Added
 - Support for `VRChat Package Manager`
-- `Blending Mode` to rim light
+- `Blending Mode` to rim light and emission
 - Support for `SLZURP`
 - `Anti-aliasing shading` property
 

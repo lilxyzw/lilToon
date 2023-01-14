@@ -1732,7 +1732,12 @@
             #endif
             emissionColor.rgb = lerp(emissionColor.rgb, emissionColor.rgb * fd.invLighting, _EmissionFluorescence);
             emissionColor.rgb = lerp(emissionColor.rgb, emissionColor.rgb * fd.albedo, _EmissionMainStrength);
-            fd.emissionColor += _EmissionBlend * lilCalcBlink(_EmissionBlink) * emissionColor.a * emissionColor.rgb;
+            float emissionBlend = _EmissionBlend * lilCalcBlink(_EmissionBlink) * emissionColor.a;
+            #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+                emissionBlend *= fd.col.a;
+            #endif
+            fd.emissionColor += emissionBlend * emissionColor.rgb;
+            fd.col.rgb = lilBlendColor(fd.col.rgb, emissionColor.rgb, emissionBlend, _EmissionBlendMode);
         }
     }
 #elif defined(LIL_LITE)
@@ -1812,7 +1817,12 @@
             #endif
             emission2ndColor.rgb = lerp(emission2ndColor.rgb, emission2ndColor.rgb * fd.invLighting, _Emission2ndFluorescence);
             emission2ndColor.rgb = lerp(emission2ndColor.rgb, emission2ndColor.rgb * fd.albedo, _Emission2ndMainStrength);
-            fd.emissionColor += _Emission2ndBlend * lilCalcBlink(_Emission2ndBlink) * emission2ndColor.a * emission2ndColor.rgb;
+            float emission2ndBlend = _Emission2ndBlend * lilCalcBlink(_Emission2ndBlink) * emission2ndColor.a;
+            #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+                emission2ndBlend *= fd.col.a;
+            #endif
+            fd.emissionColor += emission2ndBlend * emission2ndColor.rgb;
+            fd.col.rgb = lilBlendColor(fd.col.rgb, emission2ndColor.rgb, emission2ndBlend, _Emission2ndBlendMode);
         }
     }
 #endif
@@ -1825,12 +1835,23 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // Dissolve Add
 #if !defined(OVERRIDE_DISSOLVE_ADD)
-    #define OVERRIDE_DISSOLVE_ADD \
-        fd.emissionColor += _DissolveColor.rgb * dissolveAlpha;
+    #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
+        #define OVERRIDE_DISSOLVE_ADD \
+            fd.emissionColor += _DissolveColor.rgb * dissolveAlpha; \
+            fd.col.rgb += _DissolveColor.rgb * dissolveAlpha * fd.col.a;
+    #else
+        #define OVERRIDE_DISSOLVE_ADD \
+            fd.emissionColor += _DissolveColor.rgb * dissolveAlpha; \
+            fd.col.rgb += _DissolveColor.rgb * dissolveAlpha;
+    #endif
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Blend Emission
+#if !defined(OVERRIDE_BLEND_EMISSION)
+    #define OVERRIDE_BLEND_EMISSION
+#endif
+/*
 #if !defined(OVERRIDE_BLEND_EMISSION)
     #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
         #define OVERRIDE_BLEND_EMISSION \
@@ -1840,6 +1861,7 @@
             fd.col.rgb += fd.emissionColor;
     #endif
 #endif
+*/
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Depth Fade

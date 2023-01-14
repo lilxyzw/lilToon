@@ -426,6 +426,7 @@ namespace lilToon
         private readonly lilMaterialProperty emissionBlend                  = new lilMaterialProperty("_EmissionBlend", PropertyBlock.Emission, PropertyBlock.Emission1st);
         private readonly lilMaterialProperty emissionBlendMask              = new lilMaterialProperty("_EmissionBlendMask", true, PropertyBlock.Emission, PropertyBlock.Emission1st);
         private readonly lilMaterialProperty emissionBlendMask_ScrollRotate = new lilMaterialProperty("_EmissionBlendMask_ScrollRotate", PropertyBlock.Emission, PropertyBlock.Emission1st);
+        private readonly lilMaterialProperty emissionBlendMode              = new lilMaterialProperty("_EmissionBlendMode", PropertyBlock.Emission, PropertyBlock.Emission1st);
         private readonly lilMaterialProperty emissionBlink                  = new lilMaterialProperty("_EmissionBlink", PropertyBlock.Emission, PropertyBlock.Emission1st);
         private readonly lilMaterialProperty emissionUseGrad                = new lilMaterialProperty("_EmissionUseGrad", PropertyBlock.Emission, PropertyBlock.Emission1st);
         private readonly lilMaterialProperty emissionGradTex                = new lilMaterialProperty("_EmissionGradTex", true, PropertyBlock.Emission, PropertyBlock.Emission1st);
@@ -442,6 +443,7 @@ namespace lilToon
         private readonly lilMaterialProperty emission2ndBlend                   = new lilMaterialProperty("_Emission2ndBlend", PropertyBlock.Emission, PropertyBlock.Emission2nd);
         private readonly lilMaterialProperty emission2ndBlendMask               = new lilMaterialProperty("_Emission2ndBlendMask", true, PropertyBlock.Emission, PropertyBlock.Emission2nd);
         private readonly lilMaterialProperty emission2ndBlendMask_ScrollRotate  = new lilMaterialProperty("_Emission2ndBlendMask_ScrollRotate", PropertyBlock.Emission, PropertyBlock.Emission2nd);
+        private readonly lilMaterialProperty emission2ndBlendMode               = new lilMaterialProperty("_Emission2ndBlendMode", PropertyBlock.Emission, PropertyBlock.Emission2nd);
         private readonly lilMaterialProperty emission2ndBlink                   = new lilMaterialProperty("_Emission2ndBlink", PropertyBlock.Emission, PropertyBlock.Emission2nd);
         private readonly lilMaterialProperty emission2ndUseGrad                 = new lilMaterialProperty("_Emission2ndUseGrad", PropertyBlock.Emission, PropertyBlock.Emission2nd);
         private readonly lilMaterialProperty emission2ndGradTex                 = new lilMaterialProperty("_Emission2ndGradTex", true, PropertyBlock.Emission, PropertyBlock.Emission2nd);
@@ -994,6 +996,7 @@ namespace lilToon
                 emissionBlend,
                 emissionBlendMask,
                 emissionBlendMask_ScrollRotate,
+                emissionBlendMode,
                 emissionBlink,
                 emissionUseGrad,
                 emissionGradTex,
@@ -1010,6 +1013,7 @@ namespace lilToon
                 emission2ndBlend,
                 emission2ndBlendMask,
                 emission2ndBlendMask_ScrollRotate,
+                emission2ndBlendMode,
                 emission2ndBlink,
                 emission2ndUseGrad,
                 emission2ndGradTex,
@@ -1640,6 +1644,7 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(emissionMainStrength, GetLoc("sMainColorPower"));
                         lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowEmissionBlendMask, maskBlendRGBAContent, emissionBlendMask, emissionBlend, emissionBlendMask_ScrollRotate, true, true);
+                        m_MaterialEditor.ShaderProperty(emissionBlendMode, sBlendModes);
                         lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emissionFluorescence, GetLoc("sFluorescence"));
                         EditorGUILayout.EndVertical();
@@ -1658,6 +1663,7 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(emission2ndMainStrength, GetLoc("sMainColorPower"));
                         lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowEmission2ndBlendMask, maskBlendRGBAContent, emission2ndBlendMask, emission2ndBlend, emission2ndBlendMask_ScrollRotate, true, true);
+                        m_MaterialEditor.ShaderProperty(emission2ndBlendMode, sBlendModes);
                         lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emission2ndFluorescence, GetLoc("sFluorescence"));
                         EditorGUILayout.EndVertical();
@@ -2415,6 +2421,7 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(emissionMainStrength, GetLoc("sMainColorPower"));
                         lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowEmissionBlendMask, maskBlendRGBAContent, emissionBlendMask, emissionBlend, emissionBlendMask_ScrollRotate, true, true);
+                        m_MaterialEditor.ShaderProperty(emissionBlendMode, sBlendModes);
                         lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emissionBlink, blinkSetting);
                         lilEditorGUI.DrawLine();
@@ -2445,6 +2452,7 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(emission2ndMainStrength, GetLoc("sMainColorPower"));
                         lilEditorGUI.DrawLine();
                         TextureGUI(ref edSet.isShowEmission2ndBlendMask, maskBlendRGBAContent, emission2ndBlendMask, emission2ndBlend, emission2ndBlendMask_ScrollRotate, true, true);
+                        m_MaterialEditor.ShaderProperty(emission2ndBlendMode, sBlendModes);
                         lilEditorGUI.DrawLine();
                         m_MaterialEditor.ShaderProperty(emission2ndBlink, blinkSetting);
                         lilEditorGUI.DrawLine();

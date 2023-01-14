@@ -322,6 +322,7 @@ Shader "Hidden/lilToonRefraction"
                         _EmissionBlend              ("Blend", Range(0,1)) = 1
                         _EmissionBlendMask          ("Mask", 2D) = "white" {}
         [lilUVAnim]     _EmissionBlendMask_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
+        [lilEnum]       _EmissionBlendMode          ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilBlink]      _EmissionBlink              ("Blink Strength|Blink Type|Blink Speed|Blink Offset", Vector) = (0,0,3.141593,0)
         [lilToggle]     _EmissionUseGrad            ("Use Gradation", Int) = 0
         [NoScaleOffset] _EmissionGradTex            ("Gradation Texture", 2D) = "white" {}
@@ -359,6 +360,7 @@ Shader "Hidden/lilToonRefraction"
                         _Emission2ndBlend           ("Blend", Range(0,1)) = 1
                         _Emission2ndBlendMask       ("Mask", 2D) = "white" {}
         [lilUVAnim]     _Emission2ndBlendMask_ScrollRotate ("Angle|UV Animation|Scroll|Rotate", Vector) = (0,0,0,0)
+        [lilEnum]       _Emission2ndBlendMode       ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 1
         [lilBlink]      _Emission2ndBlink           ("Blink Strength|Blink Type|Blink Speed|Blink Offset", Vector) = (0,0,3.141593,0)
         [lilToggle]     _Emission2ndUseGrad         ("Use Gradation", Int) = 0
         [NoScaleOffset] _Emission2ndGradTex         ("Gradation Texture", 2D) = "white" {}
