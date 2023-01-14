@@ -4176,6 +4176,10 @@ namespace lilToon
                         vertexLightStrength.floatValue = 1.0f;
                     }
                 }
+                if(renderingModeBuf == RenderingMode.Fur || renderingModeBuf == RenderingMode.FurCutout || renderingModeBuf == RenderingMode.FurTwoPass)
+                {
+                    EditorGUILayout.HelpBox(GetLoc("sHelpRenderingFur"), MessageType.Warning);
+                }
                 if(lilDirectoryManager.ExistsClusterCreatorKit())
                 {
                     if(renderingModeBuf == RenderingMode.Refraction || renderingModeBuf == RenderingMode.RefractionBlur || renderingModeBuf == RenderingMode.Gem)
