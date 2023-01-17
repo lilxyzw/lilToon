@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.7] - 2023-01-17
+### 追加
+- `VRChat Package Manager`のサポート
+- `SLZURP`のサポート
+- リムライトと発光に`合成モード`を追加
+- `アンチエイリアスシェーディング`プロパティを追加
+
+### 修正
+- FakeShadowのエラーを修正
+- ファー（カットアウト）のAOを修正
+- 屈折ぼかしの強度がFOVに依存していた問題を修正
+- 最適化後の値を修正
+- URP 14.0.4のForward+でエラーになる問題を修正
+
 ## [1.3.6] - 2022-09-10
 ### 修正
 - シェーダープロパティの文字列化のバグを修正
