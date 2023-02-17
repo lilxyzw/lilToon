@@ -4226,8 +4226,11 @@ namespace lilToon
                         {
                             m_MaterialEditor.ShaderProperty(flipNormal, GetLoc("sFlipBackfaceNormal"));
                             m_MaterialEditor.ShaderProperty(backfaceForceShadow, GetLoc("sBackfaceForceShadow"));
-                            m_MaterialEditor.ShaderProperty(backfaceColor, GetLoc("sColor"));
-                            lilEditorGUI.DrawColorAsAlpha(backfaceColor);
+                            if(!isLite)
+                            {
+                                m_MaterialEditor.ShaderProperty(backfaceColor, GetLoc("sColor"));
+                                lilEditorGUI.DrawColorAsAlpha(backfaceColor);
+                            }
                         }
                         EditorGUI.indentLevel--;
                     }
