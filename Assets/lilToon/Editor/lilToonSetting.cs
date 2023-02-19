@@ -666,31 +666,99 @@ public class lilToonSetting : ScriptableObject
         return shaderSettingString;
     }
 
+    internal static void WalkAllSceneReferencedAssets(Action<UnityEngine.Object> callback)
+    {
+        Queue<UnityEngine.Object> toVisit = new Queue<UnityEngine.Object>();
+        HashSet<UnityEngine.Object> visited = new HashSet<UnityEngine.Object>();
+
+        foreach (var root in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects())
+        {
+            toVisit.Enqueue(root.transform);
+            visited.Add(root.transform);
+        }
+
+        // use unity reflection to walk all properties in all objects referenced from the scene
+        while (toVisit.Count > 0)
+        {
+            var next = toVisit.Dequeue();
+            if (next == null) continue;
+            
+            callback.Invoke(next);
+
+            if (next is Transform t)
+            {
+                foreach (Transform child in t)
+                {
+                    if (!visited.Contains(child))
+                    {
+                        toVisit.Enqueue(child);
+                        visited.Add(child);
+                    }
+                }
+
+                foreach (Component c in t.GetComponents(typeof(Component)))
+                {
+                    if (!(c is Transform) && !visited.Contains(c))
+                    {
+                        toVisit.Enqueue(c);
+                        visited.Add(c);
+                    }
+                }
+            }
+            else
+            {
+                SerializedObject so = new SerializedObject(next);
+                SerializedProperty prop = so.GetIterator();
+
+                bool enterChildren = true;
+                while (prop.Next(enterChildren))
+                {
+                    enterChildren = true;
+
+                    switch (prop.propertyType)
+                    {
+                        case SerializedPropertyType.String:
+                            enterChildren = false;
+                            break;
+                        case SerializedPropertyType.ObjectReference:
+                        {
+                            var obj = prop.objectReferenceValue;
+                            if (obj != null && !visited.Contains(obj))
+                            {
+                                toVisit.Enqueue(obj);
+                                visited.Add(obj);
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     internal static void ApplyShaderSettingOptimized(List<Shader> shaders = null)
     {
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
         TurnOffAllShaderSetting(ref shaderSetting);
 
-        // Get materials
-        foreach(string guid in AssetDatabase.FindAssets("t:material"))
+        WalkAllSceneReferencedAssets(obj =>
         {
-            Material material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
-            SetupShaderSettingFromMaterial(material, ref shaderSetting);
-        }
-
-        // Get animations
-        foreach(string guid in AssetDatabase.FindAssets("t:animationclip"))
-        {
-            AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(lilDirectoryManager.GUIDToPath(guid));
-            SetupShaderSettingFromAnimationClip(clip, ref shaderSetting);
-        }
+            if (obj is Material material)
+            {
+                SetupShaderSettingFromMaterial(material, ref shaderSetting);
+            } else if (obj is AnimationClip clip)
+            {
+                SetupShaderSettingFromAnimationClip(clip, ref shaderSetting);
+            }
+        });
 
         // Apply
         ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild", shaders);
         AssetDatabase.Refresh();
     }
-
+    
     internal static void GetOptimizedSetting(Material[] materials, AnimationClip[] clips, out string usedShaders, out string optimizedHLSL, out string shaderSettingText)
     {
         usedShaders = null;
