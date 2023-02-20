@@ -1375,7 +1375,7 @@ public class lilToonSetting : ScriptableObject
 
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
-        #if VRC_SDK_VRCSDK3 && !UDON
+        #if LILTOON_VRCSDK3_AVATARS
             return shaderSetting.isOptimizeInTestBuild && !shaderSetting.isDebugOptimize;
         #else
             return !shaderSetting.isDebugOptimize;

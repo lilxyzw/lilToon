@@ -327,7 +327,7 @@ namespace lilToon
 
         private static void FixTransparentRenderQueue(Material material, RenderingMode renderingMode)
         {
-            #if VRC_SDK_VRCSDK3 && UDON
+            #if LILTOON_VRCSDK3_WORLDS
                 if( renderingMode == RenderingMode.Transparent ||
                     renderingMode == RenderingMode.Refraction ||
                     renderingMode == RenderingMode.RefractionBlur ||

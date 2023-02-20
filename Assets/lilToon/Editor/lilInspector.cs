@@ -3145,7 +3145,7 @@ namespace lilToon
             }
 
 
-            #if VRC_SDK_VRCSDK3 && !UDON
+            #if LILTOON_VRCSDK3_AVATARS
                 EditorGUI.BeginChangeCheck();
                 GUI.enabled = !isLocked;
                 ToggleGUI(GetLoc("sShaderSettingOptimizeInTestBuild"), ref shaderSetting.isOptimizeInTestBuild);
@@ -3359,7 +3359,7 @@ namespace lilToon
 
         private void DrawVRCFallbackGUI(Material material)
         {
-            #if VRC_SDK_VRCSDK2 || VRC_SDK_VRCSDK3 || VRC_SDK_VRCSDK4
+            #if VRC_SDK_VRCSDK2 || LILTOON_VRCSDK3 || VRC_SDK_VRCSDK4
                 edSet.isShowVRChat = lilEditorGUI.Foldout("VRChat", "VRChat", edSet.isShowVRChat);
                 if(edSet.isShowVRChat)
                 {
@@ -3445,7 +3445,7 @@ namespace lilToon
 
         private void DrawOptimizationButton(Material material, bool isnormal)
         {
-            #if VRC_SDK_VRCSDK3 && UDON
+            #if LILTOON_VRCSDK3_WORLDS
                 if(isnormal && lilEditorGUI.EditorButton(GetLoc("sOptimizeForEvents"))) lilMaterialUtils.RemoveUnusedTexture(material);
             #endif
         }
@@ -4245,7 +4245,7 @@ namespace lilToon
                     m_MaterialEditor.RenderQueueField();
                     if((renderingModeBuf >= RenderingMode.Transparent && renderingModeBuf != RenderingMode.FurCutout) || (isMulti && transparentModeMat.floatValue == 2.0f))
                     {
-                        #if VRC_SDK_VRCSDK3 && UDON
+                        #if LILTOON_VRCSDK3_WORLDS
                             if(material.renderQueue <= 2999 && zwrite.floatValue == 1.0f)
                             {
                                 EditorGUILayout.HelpBox(GetLoc("sHelpTransparentForWorld"),MessageType.Warning);

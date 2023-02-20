@@ -13,6 +13,12 @@
     "precompiledReferences": [],
     "autoReferenced": false,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.vrchat.base",
+            "expression": "",
+            "define": "LILTOON_VRCSDK3"
+        }
+    ],
     "noEngineReferences": false
 }
