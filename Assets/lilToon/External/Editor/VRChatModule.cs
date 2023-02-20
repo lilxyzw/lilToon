@@ -1,4 +1,9 @@
-#if UNITY_EDITOR && LILTOON_VRCSDK3
+#if VRC_SDK_VRCSDK3 && !UDON
+    #define LILTOON_VRCSDK3_AVATARS
+#elif VRC_SDK_VRCSDK3
+    #define LILTOON_VRCSDK3_WORLDS
+#endif
+#if UNITY_EDITOR && (LILTOON_VRCSDK3_AVATARS || LILTOON_VRCSDK3_WORLDS)
 using UnityEditor;
 using UnityEngine;
 using System;
@@ -14,7 +19,7 @@ namespace lilToon.External
     {
         public int callbackOrder { get { return 100; } }
 
-        #if UDON
+        #if LILTOON_VRCSDK3_WORLDS
             public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
             {
                 try
@@ -78,7 +83,7 @@ namespace lilToon.External
                 if(animator.runtimeAnimatorController != null) clips.AddRange(animator.runtimeAnimatorController.animationClips);
             }
 
-            #if !UDON
+            #if LILTOON_VRCSDK3_AVATARS
                 foreach(var descriptor in gameObject.GetComponentsInChildren<VRC.SDK3.Avatars.Components.VRCAvatarDescriptor>(true))
                 {
                     foreach(var layer in descriptor.specialAnimationLayers)
@@ -151,7 +156,7 @@ namespace lilToon.External
         }
 
         // Debug
-        #if !UDON
+        #if LILTOON_VRCSDK3_AVATARS
             [MenuItem("GameObject/lilToon/[Debug] Generate bug report (VRChat Avatar)", false, 23)]
             public static void GenerateBugReportVRChatAvatar()
             {

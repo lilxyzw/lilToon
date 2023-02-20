@@ -1,4 +1,9 @@
-﻿#if UNITY_EDITOR
+﻿#if VRC_SDK_VRCSDK3 && !UDON
+    #define LILTOON_VRCSDK3_AVATARS
+#elif VRC_SDK_VRCSDK3
+    #define LILTOON_VRCSDK3_WORLDS
+#endif
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -3359,7 +3364,7 @@ namespace lilToon
 
         private void DrawVRCFallbackGUI(Material material)
         {
-            #if VRC_SDK_VRCSDK2 || LILTOON_VRCSDK3 || VRC_SDK_VRCSDK4
+            #if VRC_SDK_VRCSDK2 || LILTOON_VRCSDK3_AVATARS || LILTOON_VRCSDK3_WORLDS
                 edSet.isShowVRChat = lilEditorGUI.Foldout("VRChat", "VRChat", edSet.isShowVRChat);
                 if(edSet.isShowVRChat)
                 {
