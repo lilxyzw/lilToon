@@ -149,7 +149,7 @@ public class lilToonSetting : ScriptableObject
     {
         string path = lilDirectoryManager.GetSettingLockPath();
         File.WriteAllText(path, JsonUtility.ToJson(shaderSetting, true));
-        AssetDatabase.Refresh();
+        if(!path.Contains("Packages")) AssetDatabase.Refresh();
     }
 
     internal static void LoadLockedSetting(ref lilToonSetting shaderSetting)
@@ -177,7 +177,9 @@ public class lilToonSetting : ScriptableObject
     internal static void DeleteLockedSetting()
     {
         string path = lilDirectoryManager.GetSettingLockPath();
-        if(File.Exists(path)) AssetDatabase.DeleteAsset(path);
+        if(File.Exists(path))         File.Delete(path);
+        if(File.Exists(path+".meta")) File.Delete(path+".meta");
+        if(!path.Contains("Packages")) AssetDatabase.Refresh();
     }
 
     // Save and Load
