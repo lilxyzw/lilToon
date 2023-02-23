@@ -29,6 +29,7 @@ namespace lilToon
             {
                 File.Create(lilDirectoryManager.startupTempPath);
 
+                #if LILTOON_DISABLE_ASSET_MODIFICATION == false
                 #if !SYSTEM_DRAWING
                     string editorPath = lilDirectoryManager.GetEditorPath();
 
@@ -63,6 +64,7 @@ namespace lilToon
                         AssetDatabase.ImportAsset(editorPath);
                     }
                 #endif
+                #endif //LILTOON_DISABLE_ASSET_MODIFICATION
             }
 
             //------------------------------------------------------------------------------------------------------------------------------
