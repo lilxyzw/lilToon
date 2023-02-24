@@ -10,6 +10,7 @@
   "license": "MIT",
   "keywords": ["Toon", "Shader", "Material"],
   "url" : "https://github.com/lilxyzw/lilToon/releases/download/1.3.7/jp.lilxyzw.liltoon-1.3.7.zip",
+  "repo" : "https://lilxyzw.github.io/vpm-repos/vpm.json",
   "legacyFolders" : {
     "Assets\\lilToon" : "05d1d116436047941ad97d1b9064ee05"
   }
