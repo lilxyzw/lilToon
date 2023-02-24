@@ -68,8 +68,8 @@ sCopyModeNormal	Normal	通常	보통	正常	正常
 sCopyModeSymmetry	Symmetry	左右対称	대칭	对称	對稱性
 sCopyModeFlip	Flip	反転	반전	翻转	翻轉
 sPosition	Position	座標	좌표	坐标	職位
-sPositionX	Position X	X座標	X좌표	X坐标	X職位
-sPositionY	Position Y	Y座標	Y좌표	Y坐标	Y職位
+sPositionX	Position X	X座標	X좌표	X 坐标	X職位
+sPositionY	Position Y	Y座標	Y좌표	Y 坐标	Y職位
 sScale	Scale	サイズ	크기	尺寸	尺度
 sScaleX	Scale X	X軸サイズ	X축 크기	X 尺寸	X尺度
 sScaleY	Scale Y	Y軸サイズ	Y축 크기	Y 尺寸	Y尺度
