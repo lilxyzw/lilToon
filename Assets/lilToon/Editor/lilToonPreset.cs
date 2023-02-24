@@ -485,7 +485,9 @@ public class lilToonPreset : ScriptableObject
                 preset.outlineMainTex = shouldSaveMainTex2Outline;
 
                 EditorUtility.SetDirty(preset);
-                string savePath = EditorUtility.SaveFilePanel("Save Preset", lilDirectoryManager.GetPresetsFolderPath(), filename, "asset");
+                string presetFolderPath = lilDirectoryManager.GetPresetsFolderPath();
+                if(presetFolderPath.Contains("Packages")) presetFolderPath = "Assets/";
+                string savePath = EditorUtility.SaveFilePanel("Save Preset", presetFolderPath, filename, "asset");
                 if(!string.IsNullOrEmpty(savePath))
                 {
                     AssetDatabase.CreateAsset(preset, FileUtil.GetProjectRelativePath(savePath));
