@@ -87,7 +87,7 @@ Shader "Hidden/lilToonLiteCutout"
         [HideInInspector]                               _BaseColor          ("Color", Color) = (1,1,1,1)
         [HideInInspector]                               _BaseMap            ("Texture", 2D) = "white" {}
         [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
-        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 33
+        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 34
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced
