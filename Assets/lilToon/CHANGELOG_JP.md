@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.8] - 2023-00-00
+### 修正
+- lilToonMultiの変換を修正
+- lilToonLiteのエディタエラーを修正
+- アニメーションやマテリアルがサブアセットである場合の検知を修正
+- VRCSDK3をVersion Definesを使って検知するように変更
+- UPMでインポートした場合に設定のロックが正しく機能しないのを修正
+- UPMでインポートした場合のプリセット保存ディレクトリを修正
+
 ## [1.3.7] - 2023-01-17
 ### 追加
 - `VRChat Package Manager`のサポート
