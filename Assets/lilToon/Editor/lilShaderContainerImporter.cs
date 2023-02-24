@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 
 namespace lilToon
 {
+    #if LILTOON_DISABLE_ASSET_MODIFICATION == false
     #if UNITY_2019_4_OR_NEWER
         [ScriptedImporter(0, "lilcontainer")]
         public class lilShaderContainerImporter : ScriptedImporter
@@ -68,6 +69,7 @@ namespace lilToon
             }
         }
     #endif
+    #endif //LILTOON_DISABLE_ASSET_MODIFICATION
 
     public class lilShaderContainer
     {

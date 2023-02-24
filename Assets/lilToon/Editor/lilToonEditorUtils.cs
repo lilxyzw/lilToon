@@ -749,6 +749,7 @@ namespace lilToon
         public static string GetLoc(string value) { return lilLanguageManager.GetLoc(value); }
     }
 
+#if LILTOON_DISABLE_ASSET_MODIFICATION == false
 #if UNITY_2019_3_OR_NEWER
     //------------------------------------------------------------------------------------------------------------------------------
     // Build size optimization
@@ -876,5 +877,6 @@ namespace lilToon
             lilToonSetting.SetShaderSettingAfterBuild();
         }
     }
+#endif //LILTOON_DISABLE_ASSET_MODIFICATION
 }
 #endif
