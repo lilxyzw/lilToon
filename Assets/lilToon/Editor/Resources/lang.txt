@@ -506,6 +506,7 @@ sAnchorParallax	advanced/parallax	advanced/parallax	advanced/parallax	advanced/p
 sAnchorDistanceFade	advanced/distancefade	advanced/distancefade	advanced/distancefade	advanced/distancefade	advanced/distancefade
 sAnchorAudioLink	advanced/audiolink	advanced/audiolink	advanced/audiolink	advanced/audiolink	advanced/audiolink
 sAnchorDissolve	advanced/dissolve	advanced/dissolve	advanced/dissolve	advanced/dissolve	advanced/dissolve
+sAnchorIDMask	advanced/idmask	advanced/idmask	advanced/idmask	advanced/idmask	advanced/idmask
 sAnchorEncryption	advanced/encryption	advanced/encryption	advanced/encryption	advanced/encryption	advanced/encryption
 sAnchorStencil	advanced/stencil	advanced/stencil	advanced/stencil	advanced/stencil	advanced/stencil
 sAnchorRendering	advanced/rendering	advanced/rendering	advanced/rendering	advanced/rendering	advanced/rendering

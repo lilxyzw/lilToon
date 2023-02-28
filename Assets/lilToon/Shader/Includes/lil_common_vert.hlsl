@@ -352,6 +352,20 @@ LIL_V2F_TYPE vert(appdata input)
         if(width > -0.000001 && width < 0.000001 && _OutlineDeleteMesh) LIL_V2F_OUT.positionCS = 0.0/0.0;
     #endif
 
+    //------------------------------------------------------------------------------------------------------------------------------
+    // IDMask
+    #if defined(LIL_FEATURE_IDMASK) && !defined(LIL_NOT_SUPPORT_VERTEXID) && !defined(LIL_LITE)
+        int idMaskIndices[8] = {_IDMaskIndex1,_IDMaskIndex2,_IDMaskIndex3,_IDMaskIndex4,_IDMaskIndex5,_IDMaskIndex6,_IDMaskIndex7,_IDMaskIndex8};
+        float idMaskFlags[8] = {_IDMask1,_IDMask2,_IDMask3,_IDMask4,_IDMask5,_IDMask6,_IDMask7,_IDMask8};
+        bool idMasked = IDMask(input.vertexID,idMaskIndices,idMaskFlags);
+        #if defined(LIL_V2F_POSITION_CS)
+            LIL_V2F_OUT.positionCS = idMasked ? 0.0/0.0 : LIL_V2F_OUT.positionCS;
+        #endif
+        #if defined(LIL_ONEPASS_OUTLINE)
+            LIL_V2F_OUT.positionCSOL = idMasked ? 0.0/0.0 : LIL_V2F_OUT.positionCSOL;
+        #endif
+    #endif
+
     #if defined(LIL_TESSELLATION) || defined(LIL_CUSTOM_SAFEVERT)
         }
     #endif

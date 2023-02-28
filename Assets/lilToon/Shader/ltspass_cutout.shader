@@ -434,6 +434,25 @@ Shader "Hidden/ltspass_cutout"
         [lilDissolveP]  _DissolvePos                ("Dissolve Position", Vector) = (0,0,0,0)
 
         //----------------------------------------------------------------------------------------------------------------------
+        // ID Mask
+        [ToggleUI]      _IDMask1                    ("_IDMask1", Int) = 0
+        [ToggleUI]      _IDMask2                    ("_IDMask2", Int) = 0
+        [ToggleUI]      _IDMask3                    ("_IDMask3", Int) = 0
+        [ToggleUI]      _IDMask4                    ("_IDMask4", Int) = 0
+        [ToggleUI]      _IDMask5                    ("_IDMask5", Int) = 0
+        [ToggleUI]      _IDMask6                    ("_IDMask6", Int) = 0
+        [ToggleUI]      _IDMask7                    ("_IDMask7", Int) = 0
+        [ToggleUI]      _IDMask8                    ("_IDMask8", Int) = 0
+                        _IDMaskIndex1               ("_IDMaskIndex1", Int) = 0
+                        _IDMaskIndex2               ("_IDMaskIndex2", Int) = 0
+                        _IDMaskIndex3               ("_IDMaskIndex3", Int) = 0
+                        _IDMaskIndex4               ("_IDMaskIndex4", Int) = 0
+                        _IDMaskIndex5               ("_IDMaskIndex5", Int) = 0
+                        _IDMaskIndex6               ("_IDMaskIndex6", Int) = 0
+                        _IDMaskIndex7               ("_IDMaskIndex7", Int) = 0
+                        _IDMaskIndex8               ("_IDMaskIndex8", Int) = 0
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Encryption
         [lilToggle]     _IgnoreEncryption           ("Ignore Encryption", Int) = 0
                         _Keys                       ("Keys", Vector) = (0,0,0,0)
@@ -618,6 +637,7 @@ Shader "Hidden/ltspass_cutout"
             #define LIL_FEATURE_AUDIOLINK_VERTEX
             #define LIL_FEATURE_AUDIOLINK_LOCAL
             #define LIL_FEATURE_DISSOLVE
+            #define LIL_FEATURE_IDMASK
             #define LIL_FEATURE_OUTLINE_TONE_CORRECTION
             #define LIL_FEATURE_OUTLINE_RECEIVE_SHADOW
             #define LIL_FEATURE_ANIMATE_OUTLINE_UV

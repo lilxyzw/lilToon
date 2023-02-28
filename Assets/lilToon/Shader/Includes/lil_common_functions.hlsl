@@ -1155,4 +1155,52 @@ float lilCalcEdgeTessFactor(float3 wpos0, float3 wpos1, float edgeLen)
     return max(distance(wpos0, wpos1) * LIL_SCREENPARAMS.y / (edgeLen * dist), 1.0);
 }
 
+//------------------------------------------------------------------------------------------------------------------------------
+// IDMask
+// Do not use float2x4 because it is not supported in ES2.0
+float4x4 IDToMeshMask(uint vertexID, int indices[8])
+{
+    /*
+    return float2x4(
+        (vertexID >= indices[0]) && (vertexID < indices[1]),
+        (vertexID >= indices[1]) && (vertexID < indices[2]),
+        (vertexID >= indices[2]) && (vertexID < indices[3]),
+        (vertexID >= indices[3]) && (vertexID < indices[4]),
+        (vertexID >= indices[4]) && (vertexID < indices[5]),
+        (vertexID >= indices[5]) && (vertexID < indices[6]),
+        (vertexID >= indices[6]) && (vertexID < indices[7]),
+        (vertexID >= indices[7])
+    );
+    */
+
+    float a0 = (int)vertexID - indices[0];
+    float a1 = (int)vertexID - indices[1];
+    float a2 = (int)vertexID - indices[2];
+    float a3 = (int)vertexID - indices[3];
+    float a4 = (int)vertexID - indices[4];
+    float a5 = (int)vertexID - indices[5];
+    float a6 = (int)vertexID - indices[6];
+    float a7 = (int)vertexID - indices[7];
+
+    float4 b0 =
+        float4(saturate(a0+1), saturate(a1+1), saturate(a2+1), saturate(a3+1)) *
+        float4(saturate(-a1),  saturate(-a2),  saturate(-a3),  saturate(-a4));
+    float4 b1 =
+        float4(saturate(a4+1), saturate(a5+1), saturate(a6+1), saturate(a7+1)) *
+        float4(saturate(-a5),  saturate(-a6),  saturate(-a7),  1);
+    return float4x4(b0,b1,float4(0,0,0,0),float4(0,0,0,0));
+}
+
+float IDToMeshNum(uint vertexID, int indices[8])
+{
+    float4x4 masks = IDToMeshMask(vertexID,indices);
+    return dot(masks[0],float4(1,2,3,4)) + dot(masks[1],float4(5,6,7,8));
+}
+
+bool IDMask(uint vertexID, int indices[8], float flags[8])
+{
+    float4x4 masks = IDToMeshMask(vertexID,indices);
+    return dot(masks[0],float4(flags[0],flags[1],flags[2],flags[3])) + dot(masks[1],float4(flags[4],flags[5],flags[6],flags[7]));
+}
+
 #endif

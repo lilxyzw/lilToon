@@ -158,6 +158,7 @@ namespace lilToon
             public bool isShowGem                       = false;
             public bool isShowDissolveMask              = false;
             public bool isShowDissolveNoiseMask         = false;
+            public bool isShowIDMask                    = false;
             public bool isShowEncryption                = false;
             public bool isShowStencil                   = false;
             public bool isShowOutline                   = false;
@@ -671,6 +672,23 @@ namespace lilToon
         private readonly lilMaterialProperty dissolveColor                  = new lilMaterialProperty("_DissolveColor", PropertyBlock.Dissolve);
         private readonly lilMaterialProperty dissolveParams                 = new lilMaterialProperty("_DissolveParams", PropertyBlock.Dissolve);
         private readonly lilMaterialProperty dissolvePos                    = new lilMaterialProperty("_DissolvePos", PropertyBlock.Dissolve);
+
+        private readonly lilMaterialProperty idMask1        = new lilMaterialProperty("_IDMask1", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMask2        = new lilMaterialProperty("_IDMask2", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMask3        = new lilMaterialProperty("_IDMask3", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMask4        = new lilMaterialProperty("_IDMask4", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMask5        = new lilMaterialProperty("_IDMask5", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMask6        = new lilMaterialProperty("_IDMask6", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMask7        = new lilMaterialProperty("_IDMask7", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMask8        = new lilMaterialProperty("_IDMask8", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskIndex1   = new lilMaterialProperty("_IDMaskIndex1", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskIndex2   = new lilMaterialProperty("_IDMaskIndex2", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskIndex3   = new lilMaterialProperty("_IDMaskIndex3", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskIndex4   = new lilMaterialProperty("_IDMaskIndex4", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskIndex5   = new lilMaterialProperty("_IDMaskIndex5", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskIndex6   = new lilMaterialProperty("_IDMaskIndex6", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskIndex7   = new lilMaterialProperty("_IDMaskIndex7", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskIndex8   = new lilMaterialProperty("_IDMaskIndex8", PropertyBlock.IDMask);
 
         private readonly lilMaterialProperty ignoreEncryption   = new lilMaterialProperty("_IgnoreEncryption", PropertyBlock.Encryption);
         private readonly lilMaterialProperty keys               = new lilMaterialProperty("_Keys", PropertyBlock.Encryption);
@@ -1241,6 +1259,23 @@ namespace lilToon
                 dissolveColor,
                 dissolveParams,
                 dissolvePos,
+
+                idMask1,
+                idMask2,
+                idMask3,
+                idMask4,
+                idMask5,
+                idMask6,
+                idMask7,
+                idMask8,
+                idMaskIndex1,
+                idMaskIndex2,
+                idMaskIndex3,
+                idMaskIndex4,
+                idMaskIndex5,
+                idMaskIndex6,
+                idMaskIndex7,
+                idMaskIndex8,
 
                 ignoreEncryption,
                 keys,
@@ -2836,6 +2871,37 @@ namespace lilToon
                         m_MaterialEditor.ShaderProperty(dissolveColor, GetLoc("sColor"));
                         EditorGUILayout.EndVertical();
                     }
+                    EditorGUILayout.EndVertical();
+                }
+
+                //------------------------------------------------------------------------------------------------------------------------------
+                // IDMask
+                edSet.isShowIDMask = lilEditorGUI.Foldout("ID Mask", edSet.isShowIDMask);
+                DrawMenuButton(GetLoc("sAnchorIDMask"), PropertyBlock.IDMask);
+                if(edSet.isShowIDMask)
+                {
+                    EditorGUILayout.BeginVertical(boxOuter);
+                    EditorGUILayout.LabelField(GetLoc("ID Mask"), customToggleFont);
+                    EditorGUILayout.BeginVertical(boxInnerHalf);
+                    EditorGUILayout.HelpBox("It is recommended that these properties be set from scripts.", MessageType.Warning);
+                    EditorGUILayout.HelpBox("If you want to mask vertex ids 1000 to 1999, set:\r\n_IDMask1 = 1\r\n_IDMaskIndex1 = 1000\r\n_IDMaskIndex2 = 2000", MessageType.Info);
+                    m_MaterialEditor.ShaderProperty(idMask1     , "_IDMask1");
+                    m_MaterialEditor.ShaderProperty(idMask2     , "_IDMask2");
+                    m_MaterialEditor.ShaderProperty(idMask3     , "_IDMask3");
+                    m_MaterialEditor.ShaderProperty(idMask4     , "_IDMask4");
+                    m_MaterialEditor.ShaderProperty(idMask5     , "_IDMask5");
+                    m_MaterialEditor.ShaderProperty(idMask6     , "_IDMask6");
+                    m_MaterialEditor.ShaderProperty(idMask7     , "_IDMask7");
+                    m_MaterialEditor.ShaderProperty(idMask8     , "_IDMask8");
+                    m_MaterialEditor.ShaderProperty(idMaskIndex1, "_IDMaskIndex1");
+                    m_MaterialEditor.ShaderProperty(idMaskIndex2, "_IDMaskIndex2");
+                    m_MaterialEditor.ShaderProperty(idMaskIndex3, "_IDMaskIndex3");
+                    m_MaterialEditor.ShaderProperty(idMaskIndex4, "_IDMaskIndex4");
+                    m_MaterialEditor.ShaderProperty(idMaskIndex5, "_IDMaskIndex5");
+                    m_MaterialEditor.ShaderProperty(idMaskIndex6, "_IDMaskIndex6");
+                    m_MaterialEditor.ShaderProperty(idMaskIndex7, "_IDMaskIndex7");
+                    m_MaterialEditor.ShaderProperty(idMaskIndex8, "_IDMaskIndex8");
+                    EditorGUILayout.EndVertical();
                     EditorGUILayout.EndVertical();
                 }
 

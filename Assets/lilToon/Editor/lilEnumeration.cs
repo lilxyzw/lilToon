@@ -75,6 +75,7 @@ namespace lilToon
         DistanceFade,
         AudioLink,
         Dissolve,
+        IDMask,
         Refraction,
         Fur,
         Encryption,

@@ -185,6 +185,17 @@ v2g vert(appdata input)
         #endif
     #endif
 
+    //------------------------------------------------------------------------------------------------------------------------------
+    // IDMask
+    #if defined(LIL_FEATURE_IDMASK) && !defined(LIL_NOT_SUPPORT_VERTEXID)
+        int idMaskIndices[8] = {_IDMaskIndex1,_IDMaskIndex2,_IDMaskIndex3,_IDMaskIndex4,_IDMaskIndex5,_IDMaskIndex6,_IDMaskIndex7,_IDMaskIndex8};
+        float idMaskFlags[8] = {_IDMask1,_IDMask2,_IDMask3,_IDMask4,_IDMask5,_IDMask6,_IDMask7,_IDMask8};
+        bool idMasked = IDMask(input.vertexID,idMaskIndices,idMaskFlags);
+        #if defined(LIL_V2G_POSITION_WS)
+            output.positionWS = idMasked ? 0.0/0.0 : output.positionWS;
+        #endif
+    #endif
+
     return output;
 }
 

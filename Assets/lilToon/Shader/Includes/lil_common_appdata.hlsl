@@ -54,7 +54,7 @@
     #define LIL_APP_TANGENT
 #endif
 
-#if !defined(LIL_NOT_SUPPORT_VERTEXID) && (defined(LIL_REQUIRE_APP_VERTEXID) || defined(LIL_FUR))
+#if !defined(LIL_NOT_SUPPORT_VERTEXID) && (defined(LIL_REQUIRE_APP_VERTEXID) || defined(LIL_FEATURE_IDMASK) || defined(LIL_FUR))
     #define LIL_APP_VERTEXID
 #endif
 

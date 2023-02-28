@@ -458,6 +458,16 @@ float   _AAStrength;
 #if defined(LIL_FEATURE_DISSOLVE) &&  defined(LIL_FEATURE_DissolveNoiseMask)
     float   _DissolveNoiseStrength;
 #endif
+#if defined(LIL_FEATURE_IDMASK)
+    float   _IDMask1;
+    float   _IDMask2;
+    float   _IDMask3;
+    float   _IDMask4;
+    float   _IDMask5;
+    float   _IDMask6;
+    float   _IDMask7;
+    float   _IDMask8;
+#endif
 float   _lilShadowCasterBias;
 
 #if !defined(LIL_FUR) && !defined(LIL_REFRACTION) && !defined(LIL_GEM)
@@ -502,6 +512,16 @@ float   _lilShadowCasterBias;
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Int
+#if defined(LIL_FEATURE_IDMASK)
+    int     _IDMaskIndex1;
+    int     _IDMaskIndex2;
+    int     _IDMaskIndex3;
+    int     _IDMaskIndex4;
+    int     _IDMaskIndex5;
+    int     _IDMaskIndex6;
+    int     _IDMaskIndex7;
+    int     _IDMaskIndex8;
+#endif
 uint    _Cull;
 #if !defined(LIL_FUR) && !defined(LIL_REFRACTION) && !defined(LIL_GEM)
     uint    _OutlineCull;

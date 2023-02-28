@@ -13,7 +13,7 @@ struct lilTessellationFactors {
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Vertex Shader
-appdata vertTess(appdata input)
+appdataCopy vertTess(appdata input)
 {
     return input;
 }
@@ -25,12 +25,12 @@ appdata vertTess(appdata input)
 [outputtopology("triangle_cw")]
 [patchconstantfunc("hullConst")]
 [outputcontrolpoints(3)]
-appdata hull(InputPatch<appdata, 3> input, uint id : SV_OutputControlPointID)
+appdataCopy hull(InputPatch<appdataCopy, 3> input, uint id : SV_OutputControlPointID)
 {
     return input[id];
 }
 
-lilTessellationFactors hullConst(InputPatch<appdata, 3> input)
+lilTessellationFactors hullConst(InputPatch<appdataCopy, 3> input)
 {
     lilTessellationFactors output;
     LIL_INITIALIZE_STRUCT(lilTessellationFactors, output);
@@ -81,9 +81,9 @@ lilTessellationFactors hullConst(InputPatch<appdata, 3> input)
 // Domain Shader
 [domain("tri")]
 #if defined(LIL_ONEPASS_OUTLINE)
-v2g domain(lilTessellationFactors hsConst, const OutputPatch<appdata, 3> input, float3 bary : SV_DomainLocation)
+v2g domain(lilTessellationFactors hsConst, const OutputPatch<appdataCopy, 3> input, float3 bary : SV_DomainLocation)
 #else
-v2f domain(lilTessellationFactors hsConst, const OutputPatch<appdata, 3> input, float3 bary : SV_DomainLocation)
+v2f domain(lilTessellationFactors hsConst, const OutputPatch<appdataCopy, 3> input, float3 bary : SV_DomainLocation)
 #endif
 {
     appdata output;
