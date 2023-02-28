@@ -3,6 +3,14 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Appdata
+#if defined(LIL_REQUIRE_APP_PREVPOS) || defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
+    #define LIL_APP_PREVPOS
+#endif
+
+#if defined(LIL_REQUIRE_APP_PREVEL) || defined(_ADD_PRECOMPUTED_VELOCITY)
+    #define LIL_APP_PREVEL
+#endif
+
 #define LIL_APP_POSITION
 #define LIL_APP_TEXCOORD0
 #define LIL_APP_TEXCOORD1
@@ -26,19 +34,19 @@
 #endif
 */
 
-#if defined(LIL_REQUIRE_APP_TEXCOORD4)
+#if !defined(LIL_APP_PREVPOS) && (defined(LIL_REQUIRE_APP_TEXCOORD4) || defined(LIL_FEATURE_IDMASK) && !defined(LIL_LITE))
     #define LIL_APP_TEXCOORD4
 #endif
 
-#if defined(LIL_REQUIRE_APP_TEXCOORD5)
+#if !defined(LIL_APP_PREVEL) && (defined(LIL_REQUIRE_APP_TEXCOORD5) || defined(LIL_FEATURE_IDMASK) && !defined(LIL_LITE))
     #define LIL_APP_TEXCOORD5
 #endif
 
-#if defined(LIL_REQUIRE_APP_TEXCOORD6) || defined(LIL_FEATURE_ENCRYPTION) && !defined(LIL_LITE)
+#if defined(LIL_REQUIRE_APP_TEXCOORD6) || (defined(LIL_FEATURE_IDMASK) || defined(LIL_FEATURE_ENCRYPTION)) && !defined(LIL_LITE)
     #define LIL_APP_TEXCOORD6
 #endif
 
-#if defined(LIL_REQUIRE_APP_TEXCOORD7) || defined(LIL_FEATURE_ENCRYPTION) && !defined(LIL_LITE)
+#if defined(LIL_REQUIRE_APP_TEXCOORD7) || (defined(LIL_FEATURE_IDMASK) || defined(LIL_FEATURE_ENCRYPTION)) && !defined(LIL_LITE)
     #define LIL_APP_TEXCOORD7
 #endif
 
@@ -56,14 +64,6 @@
 
 #if !defined(LIL_NOT_SUPPORT_VERTEXID) && (defined(LIL_REQUIRE_APP_VERTEXID) || defined(LIL_FEATURE_IDMASK) || defined(LIL_FUR))
     #define LIL_APP_VERTEXID
-#endif
-
-#if defined(LIL_REQUIRE_APP_PREVPOS) || defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
-    #define LIL_APP_PREVPOS
-#endif
-
-#if defined(LIL_REQUIRE_APP_PREVEL) || defined(_ADD_PRECOMPUTED_VELOCITY)
-    #define LIL_APP_PREVEL
 #endif
 
 struct appdata

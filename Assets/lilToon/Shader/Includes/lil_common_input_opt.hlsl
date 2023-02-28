@@ -521,6 +521,7 @@ float   _lilShadowCasterBias;
     int     _IDMaskIndex6;
     int     _IDMaskIndex7;
     int     _IDMaskIndex8;
+    uint    _IDMaskFrom;
 #endif
 uint    _Cull;
 #if !defined(LIL_FUR) && !defined(LIL_REFRACTION) && !defined(LIL_GEM)

@@ -673,6 +673,7 @@ namespace lilToon
         private readonly lilMaterialProperty dissolveParams                 = new lilMaterialProperty("_DissolveParams", PropertyBlock.Dissolve);
         private readonly lilMaterialProperty dissolvePos                    = new lilMaterialProperty("_DissolvePos", PropertyBlock.Dissolve);
 
+        private readonly lilMaterialProperty idMaskFrom     = new lilMaterialProperty("_IDMaskFrom", PropertyBlock.IDMask);
         private readonly lilMaterialProperty idMask1        = new lilMaterialProperty("_IDMask1", PropertyBlock.IDMask);
         private readonly lilMaterialProperty idMask2        = new lilMaterialProperty("_IDMask2", PropertyBlock.IDMask);
         private readonly lilMaterialProperty idMask3        = new lilMaterialProperty("_IDMask3", PropertyBlock.IDMask);
@@ -1260,6 +1261,7 @@ namespace lilToon
                 dissolveParams,
                 dissolvePos,
 
+                idMaskFrom,
                 idMask1,
                 idMask2,
                 idMask3,
@@ -2885,6 +2887,7 @@ namespace lilToon
                     EditorGUILayout.BeginVertical(boxInnerHalf);
                     EditorGUILayout.HelpBox("It is recommended that these properties be set from scripts.", MessageType.Warning);
                     EditorGUILayout.HelpBox("If you want to mask vertex ids 1000 to 1999, set:\r\n_IDMask1 = 1\r\n_IDMaskIndex1 = 1000\r\n_IDMaskIndex2 = 2000", MessageType.Info);
+                    m_MaterialEditor.ShaderProperty(idMaskFrom  , "_IDMaskFrom|0: UV0|1: UV1|2: UV2|3: UV3|4: UV4|5: UV5|6: UV6|7: UV7|8: VertexID");
                     m_MaterialEditor.ShaderProperty(idMask1     , "_IDMask1");
                     m_MaterialEditor.ShaderProperty(idMask2     , "_IDMask2");
                     m_MaterialEditor.ShaderProperty(idMask3     , "_IDMask3");

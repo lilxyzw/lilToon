@@ -435,6 +435,7 @@ Shader "Hidden/lilToonTransparent"
 
         //----------------------------------------------------------------------------------------------------------------------
         // ID Mask
+        [lilEnum]       _IDMaskFrom                 ("_IDMaskFrom|UV0|UV1|UV2|UV3|UV4|UV5|UV6|UV7|VertexID", Int) = 8
         [ToggleUI]      _IDMask1                    ("_IDMask1", Int) = 0
         [ToggleUI]      _IDMask2                    ("_IDMask2", Int) = 0
         [ToggleUI]      _IDMask3                    ("_IDMask3", Int) = 0
