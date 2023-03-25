@@ -48,6 +48,12 @@ SAMPLER(lil_sampler_linear_clamp);
 #if !defined(LIL_FEATURE_MainTex)
     #define LIL_FEATURE_MainTex
 #endif
+#if !defined(LIL_FEATURE_Main2ndTex)
+    #define LIL_FEATURE_Main2ndTex
+#endif
+#if !defined(LIL_FEATURE_Main3rdTex)
+    #define LIL_FEATURE_Main3rdTex
+#endif
 #if defined(LIL_LITE)
     #if !defined(LIL_FEATURE_TriMask)
         #define LIL_FEATURE_TriMask

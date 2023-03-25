@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed locking settings when using UPM
 - Fixed save directory for presets when imported with UPM
 - Fixed emission not working properly
+- Fixed UV not being clamped when texture is not set for main color 2nd/3rd
 
 ## [1.3.7] - 2023-01-17
 ### Added
