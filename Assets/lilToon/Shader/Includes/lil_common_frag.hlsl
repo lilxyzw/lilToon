@@ -1736,7 +1736,6 @@
             #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                 emissionBlend *= fd.col.a;
             #endif
-            fd.emissionColor += emissionBlend * emissionColor.rgb;
             fd.col.rgb = lilBlendColor(fd.col.rgb, emissionColor.rgb, emissionBlend, _EmissionBlendMode);
         }
     }
@@ -1821,7 +1820,6 @@
             #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
                 emission2ndBlend *= fd.col.a;
             #endif
-            fd.emissionColor += emission2ndBlend * emission2ndColor.rgb;
             fd.col.rgb = lilBlendColor(fd.col.rgb, emission2ndColor.rgb, emission2ndBlend, _Emission2ndBlendMode);
         }
     }
@@ -1835,23 +1833,12 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // Dissolve Add
 #if !defined(OVERRIDE_DISSOLVE_ADD)
-    #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
-        #define OVERRIDE_DISSOLVE_ADD \
-            fd.emissionColor += _DissolveColor.rgb * dissolveAlpha; \
-            fd.col.rgb += _DissolveColor.rgb * dissolveAlpha * fd.col.a;
-    #else
-        #define OVERRIDE_DISSOLVE_ADD \
-            fd.emissionColor += _DissolveColor.rgb * dissolveAlpha; \
-            fd.col.rgb += _DissolveColor.rgb * dissolveAlpha;
-    #endif
+    #define OVERRIDE_DISSOLVE_ADD \
+        fd.emissionColor += _DissolveColor.rgb * dissolveAlpha;
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Blend Emission
-#if !defined(OVERRIDE_BLEND_EMISSION)
-    #define OVERRIDE_BLEND_EMISSION
-#endif
-/*
 #if !defined(OVERRIDE_BLEND_EMISSION)
     #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
         #define OVERRIDE_BLEND_EMISSION \
@@ -1861,7 +1848,6 @@
             fd.col.rgb += fd.emissionColor;
     #endif
 #endif
-*/
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Depth Fade

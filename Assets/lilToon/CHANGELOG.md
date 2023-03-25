@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.8] - 2023-00-00
+## [Unreleased]
 ### Added
 - Mask by vertex id
 
@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed to detect VRCSDK3 using Version Defines
 - Fixed locking settings when using UPM
 - Fixed save directory for presets when imported with UPM
+- Fixed emission not working properly
 
 ## [1.3.7] - 2023-01-17
 ### Added
