@@ -127,6 +127,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             #define LIL_FEATURE_AUDIOLINK_VERTEX
             #define LIL_FEATURE_AUDIOLINK_LOCAL
             #define LIL_FEATURE_DISSOLVE
+            #define LIL_FEATURE_DITHER
             #define LIL_FEATURE_IDMASK
             #define LIL_FEATURE_OUTLINE_TONE_CORRECTION
             #define LIL_FEATURE_OUTLINE_RECEIVE_SHADOW

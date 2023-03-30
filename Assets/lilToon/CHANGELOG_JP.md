@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### 追加
 - 頂点IDによるマスクを追加
+- Ditherを追加
 
 ### 修正
 - lilToonMultiの変換を修正

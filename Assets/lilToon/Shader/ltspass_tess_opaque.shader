@@ -21,6 +21,7 @@ Shader "Hidden/ltspass_tess_opaque"
                         _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
         [lilVec3B]      _LightDirectionOverride     ("Light Direction Override", Vector) = (0.001,0.002,0.001,0)
                         _AAStrength                 ("AA Strength", Range(0, 1)) = 1
+        [lilToggle]     _UseDither                  ("Dither", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
@@ -638,6 +639,7 @@ Shader "Hidden/ltspass_tess_opaque"
             #define LIL_FEATURE_AUDIOLINK_VERTEX
             #define LIL_FEATURE_AUDIOLINK_LOCAL
             #define LIL_FEATURE_DISSOLVE
+            #define LIL_FEATURE_DITHER
             #define LIL_FEATURE_IDMASK
             #define LIL_FEATURE_OUTLINE_TONE_CORRECTION
             #define LIL_FEATURE_OUTLINE_RECEIVE_SHADOW

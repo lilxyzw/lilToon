@@ -179,6 +179,13 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
+        // Dither
+        BEFORE_DITHER
+        #if !defined(LIL_LITE) && defined(LIL_FEATURE_DITHER) && LIL_RENDER == 1
+            OVERRIDE_DITHER
+        #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
         // Alpha
         #if LIL_RENDER == 0
             // Opaque
@@ -247,6 +254,13 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         #if defined(LIL_FEATURE_DISSOLVE) && LIL_RENDER != 0
             float dissolveAlpha = 0.0;
             OVERRIDE_DISSOLVE
+        #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Dither
+        BEFORE_DITHER
+        #if !defined(LIL_LITE) && defined(LIL_FEATURE_DITHER) && LIL_RENDER == 1
+            OVERRIDE_DITHER
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------

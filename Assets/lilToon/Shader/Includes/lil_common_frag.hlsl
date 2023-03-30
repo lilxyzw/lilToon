@@ -42,6 +42,10 @@
     #define BEFORE_DISSOLVE
 #endif
 
+#if !defined(BEFORE_DITHER)
+    #define BEFORE_DITHER
+#endif
+
 #if !defined(BEFORE_NORMAL_1ST)
     #define BEFORE_NORMAL_1ST
 #endif
@@ -504,6 +508,17 @@
                 _DissolveMaskEnabled \
                 LIL_SAMP_IN(sampler_MainTex) \
             );
+    #endif
+#endif
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Dither
+#if !defined(OVERRIDE_DITHER)
+    #if !defined(SHADER_API_GLES)
+        #define OVERRIDE_DITHER \
+            if(_UseDither == 1) fd.col.a = lilSampleDither(_DitherMaskLOD, input.positionCS.xy, fd.col.a);
+    #else
+        #define OVERRIDE_DITHER
     #endif
 #endif
 

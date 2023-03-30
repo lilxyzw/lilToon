@@ -125,6 +125,7 @@ sFlipBackfaceNormal	Flip Backface Normal	裏面の法線を反転	뒷면의 법�
 sShiftBackfaceUV	Shift Backface UV	裏面のUVをずらす	뒷면의 UV를 드티다	移动背面 UV	移動背面的UV
 sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면에 그림자를 드리우다	背面阴影力量	背面的力量陰影
 sAAShading	Anti-aliasing shading	アンチエイリアスシェーディング	Anti-aliasing shading	抗锯齿阴影	Anti-aliasing shading
+sDither	Dither	Dither	Dither	Dither	Dither
 sSimpleStencilSettings	Simple Stencil Settings	簡易ステンシル設定	간이 스텐실 설정	简易 Stencil 设置	簡單Stencil設置
 sStencilModeNormal	Normal	通常	Normal	Normal	Normal
 sStencilModeWriter	Writer	Writer	Writer	Writer	Writer

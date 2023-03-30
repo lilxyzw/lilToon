@@ -579,6 +579,9 @@ uint    _Cull;
         uint    _AudioLinkVertexUVMode;
     #endif
 #endif
+#if defined(LIL_FEATURE_DITHER)
+    uint    _UseDither;
+#endif
 #if !defined(LIL_FUR) && !defined(LIL_REFRACTION) && !defined(LIL_GEM)
     uint    _OutlineVertexR2Width;
     uint    _OutlineVectorUVMode;

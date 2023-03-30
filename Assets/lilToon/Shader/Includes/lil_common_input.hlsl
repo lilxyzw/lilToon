@@ -651,6 +651,9 @@ CBUFFER_START(UnityPerMaterial)
         uint    _AudioLinkUVMode;
         uint    _AudioLinkVertexUVMode;
     #endif
+    #if defined(LIL_MULTI_INPUTS_DITHER)
+        uint    _UseDither;
+    #endif
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
         uint    _OutlineVertexR2Width;
         uint    _OutlineVectorUVMode;

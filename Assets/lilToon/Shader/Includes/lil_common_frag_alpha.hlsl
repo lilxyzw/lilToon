@@ -44,6 +44,13 @@
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
+    // Dither
+    BEFORE_DITHER
+    #if !defined(LIL_LITE) && defined(LIL_FEATURE_DITHER) && LIL_RENDER == 1
+        OVERRIDE_DITHER
+    #endif
+
+    //------------------------------------------------------------------------------------------------------------------------------
     // Cutout
     clip(fd.col.a - _Cutoff);
     #if LIL_RENDER == 2 && !defined(SHADER_API_GLES)

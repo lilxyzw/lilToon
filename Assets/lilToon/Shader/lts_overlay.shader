@@ -21,6 +21,7 @@ Shader "_lil/[Optional] lilToonOverlay"
                         _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
         [lilVec3B]      _LightDirectionOverride     ("Light Direction Override", Vector) = (0.001,0.002,0.001,0)
                         _AAStrength                 ("AA Strength", Range(0, 1)) = 1
+        [lilToggle]     _UseDither                  ("Dither", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main

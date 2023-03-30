@@ -47,6 +47,7 @@
 // _MAPPING_6_FRAMES_LAYOUT             LIL_FEATURE_AUDIOLINK
 // _SUNDISK_HIGH_QUALITY                LIL_FEATURE_AUDIOLINK_LOCAL
 // GEOM_TYPE_BRANCH_DETAIL              LIL_FEATURE_DISSOLVE
+// ETC1_EXTERNAL_ALPHA                  LIL_FEATURE_DITHER
 // ------------------------------------ --------------------------------------------------------------------------------
 // _DETAIL_MULX2                        LIL_FEATURE_OUTLINE_TONE_CORRECTION
 
@@ -211,6 +212,11 @@
 #if defined(GEOM_TYPE_BRANCH_DETAIL)
     #define LIL_FEATURE_DISSOLVE
     #undef GEOM_TYPE_BRANCH_DETAIL
+#endif
+
+#if defined(ETC1_EXTERNAL_ALPHA)
+    #define LIL_FEATURE_DITHER
+    #undef ETC1_EXTERNAL_ALPHA
 #endif
 
 #if defined(_DETAIL_MULX2)

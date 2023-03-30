@@ -21,6 +21,7 @@ Shader "Hidden/lilToonMultiOutline"
                         _lilDirectionalLightStrength ("Directional Light Strength", Range(0,1)) = 1
         [lilVec3B]      _LightDirectionOverride     ("Light Direction Override", Vector) = (0.001,0.002,0.001,0)
                         _AAStrength                 ("AA Strength", Range(0, 1)) = 1
+        [lilToggle]     _UseDither                  ("Dither", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
@@ -677,6 +678,7 @@ Shader "Hidden/lilToonMultiOutline"
             // AlphaMask and Dissolve
             #pragma shader_feature_local _COLOROVERLAY_ON
             #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+            #pragma shader_feature_local ETC1_EXTERNAL_ALPHA
 
             // Main
             #pragma shader_feature_local EFFECT_HUE_VARIATION
@@ -766,6 +768,7 @@ Shader "Hidden/lilToonMultiOutline"
             // AlphaMask and Dissolve
             #pragma shader_feature_local _COLOROVERLAY_ON
             #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+            #pragma shader_feature_local ETC1_EXTERNAL_ALPHA
 
             // Replace keywords
             #include "Includes/lil_replace_keywords.hlsl"
@@ -830,6 +833,7 @@ Shader "Hidden/lilToonMultiOutline"
             // AlphaMask and Dissolve
             #pragma shader_feature_local _COLOROVERLAY_ON
             #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+            #pragma shader_feature_local ETC1_EXTERNAL_ALPHA
 
             // Main
             #pragma shader_feature_local EFFECT_HUE_VARIATION
@@ -915,6 +919,7 @@ Shader "Hidden/lilToonMultiOutline"
             // AlphaMask and Dissolve
             #pragma shader_feature_local _COLOROVERLAY_ON
             #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+            #pragma shader_feature_local ETC1_EXTERNAL_ALPHA
 
             // Replace keywords
             #include "Includes/lil_replace_keywords.hlsl"
@@ -959,6 +964,7 @@ Shader "Hidden/lilToonMultiOutline"
             // AlphaMask and Dissolve
             #pragma shader_feature_local _COLOROVERLAY_ON
             #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
+            #pragma shader_feature_local ETC1_EXTERNAL_ALPHA
 
             // Replace keywords
             #include "Includes/lil_replace_keywords.hlsl"
