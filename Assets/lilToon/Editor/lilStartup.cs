@@ -225,15 +225,11 @@ namespace lilToon
             if(indexlil < 0) return;
             string packageVerString = packageName.Substring(indexlil + 8);
 
-            int[] semPackage = ReadSemVer(packageVerString);
-            int[] semCurrent = ReadSemVer(lilConstants.currentVersionName);
+            var semPackage = new SemVerParser(packageVerString);
+            var semCurrent = new SemVerParser(lilConstants.currentVersionName);
             if(semPackage == null || semCurrent == null) return;
 
-            if(
-                semPackage[0] < semCurrent[0] ||
-                semPackage[0] == semCurrent[0] && semPackage[1] < semCurrent[1] ||
-                semPackage[0] == semCurrent[0] && semPackage[1] == semCurrent[1] && semPackage[2] < semCurrent[2]
-            )
+            if(semPackage < semCurrent)
             {
                 if(EditorUtility.DisplayDialog("lilToon", lilLanguageManager.GetLoc("sDialogImportOldVer"), lilLanguageManager.GetLoc("sYes"), lilLanguageManager.GetLoc("sNo"))) return;
                 CoroutineHandler.StartStaticCoroutine(ClosePackageImportWindow());
