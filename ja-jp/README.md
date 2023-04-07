@@ -3,7 +3,7 @@
 <div class="align-center">
 
 ## ダウンロード
-シェーダー: [BOOTH](https://lilxyzw.booth.pm/items/3087170) / [GitHub](https://github.com/lilxyzw/lilToon/releases)  
+シェーダー: [BOOTH](https://lilxyzw.booth.pm/items/3087170) / [GitHub](https://github.com/lilxyzw/lilToon/releases) / [VRChat Creator Companion](vcc://vpm/addRepo?url=https://lilxyzw.github.io/vpm-repos/vpm.json)  
 ロゴ: [GitHub](https://github.com/lilxyzw/lilToon/tree/master/logo)
 
 ## 特徴

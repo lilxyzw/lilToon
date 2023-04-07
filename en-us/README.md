@@ -5,7 +5,7 @@
 <div class="align-center">
 
 ## Download
-Shader: [BOOTH](https://lilxyzw.booth.pm/items/3087170) / [GitHub](https://github.com/lilxyzw/lilToon/releases)  
+Shader: [BOOTH](https://lilxyzw.booth.pm/items/3087170) / [GitHub](https://github.com/lilxyzw/lilToon/releases) / [VRChat Creator Companion](vcc://vpm/addRepo?url=https://lilxyzw.github.io/vpm-repos/vpm.json)  
 Logo: [GitHub](https://github.com/lilxyzw/lilToon/tree/master/logo)
 
 ## Features

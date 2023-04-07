@@ -21,6 +21,7 @@ Unity等で3DCGを扱う際に登場する用語です。これらを把握し�
     <div class="timeline_label">STEP 1</div>
     <div class="timeline_title">シェーダーのダウンロード</div>
     <div class="timeline_text">ダウンロードは<a href="https://lilxyzw.booth.pm/items/3087170">BOOTH</a>や<a href="https://github.com/lilxyzw/lilToon/releases">GitHub</a>から行えます。いくつかバリエーションがありますが、用途にあったもの1つだけをインポートしてください。
+    <div class="window_info">&#x1f530; VRChatで使用する場合は<a href="vcc://vpm/addRepo?url=https://lilxyzw.github.io/vpm-repos/vpm.json">こちら</a>からVCCに追加することもできます。VCCに追加するとManage Projectのパッケージ一覧に表示されますので+ボタンを押すかパッケージのバージョンを選択して追加してください。<span>VCCから追加した場合はSTEP 2のunitypackageのインポートは不要</span>です。</div>
 
 |種類|用途|
 |-|-|
