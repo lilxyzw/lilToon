@@ -195,6 +195,11 @@ float4  _MainTex_ST;
     float4  _DistanceFadeColor;
 #endif
 
+// Dither
+#if defined(LIL_FEATURE_DITHER)
+    float4  _DitherTex_TexelSize;
+#endif
+
 // AudioLink
 #if defined(LIL_FEATURE_AUDIOLINK)
     float4  _AudioLinkDefaultValue;
@@ -578,6 +583,9 @@ uint    _Cull;
     #if defined(LIL_FEATURE_AUDIOLINK_VERTEX)
         uint    _AudioLinkVertexUVMode;
     #endif
+#endif
+#if defined(LIL_FEATURE_DISTANCE_FADE)
+    uint    _DistanceFadeMode;
 #endif
 #if defined(LIL_FEATURE_DITHER)
     uint    _UseDither;

@@ -87,6 +87,7 @@ struct lilFragData
     float4 positionCS;
     float4 positionSS;
     float depth;
+    float depthObject;
 
     // Vector
     float3 cameraFront;
@@ -163,6 +164,7 @@ lilFragData lilInitFragData()
     fd.positionCS = 0.0;
     fd.positionSS = 0.0;
     fd.depth = 0.0;
+    fd.depthObject = 0.0;
 
     fd.cameraFront = lilCameraDirection();
     fd.cameraUp = lilCameraUp();

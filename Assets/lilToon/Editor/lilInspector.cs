@@ -248,6 +248,7 @@ namespace lilToon
         protected static string     sAlphaMaskModes                 { get { return lilLanguageManager.sAlphaMaskModes               ; } private set { lilLanguageManager.sAlphaMaskModes                = value; } }
         protected static string     blinkSetting                    { get { return lilLanguageManager.blinkSetting                  ; } private set { lilLanguageManager.blinkSetting                   = value; } }
         protected static string     sDistanceFadeSetting            { get { return lilLanguageManager.sDistanceFadeSetting          ; } private set { lilLanguageManager.sDistanceFadeSetting           = value; } }
+        protected static string     sDistanceFadeSettingMode        { get { return lilLanguageManager.sDistanceFadeSettingMode      ; } private set { lilLanguageManager.sDistanceFadeSettingMode       = value; } }
         protected static string     sDissolveParams                 { get { return lilLanguageManager.sDissolveParams               ; } private set { lilLanguageManager.sDissolveParams                = value; } }
         protected static string     sDissolveParamsMode             { get { return lilLanguageManager.sDissolveParamsMode           ; } private set { lilLanguageManager.sDissolveParamsMode            = value; } }
         protected static string     sDissolveParamsOther            { get { return lilLanguageManager.sDissolveParamsOther          ; } private set { lilLanguageManager.sDissolveParamsOther           = value; } }
@@ -269,6 +270,7 @@ namespace lilToon
         protected static GUIContent maskBlendRGBAContent            { get { return lilLanguageManager.maskBlendRGBAContent          ; } private set { lilLanguageManager.maskBlendRGBAContent           = value; } }
         protected static GUIContent colorMaskRGBAContent            { get { return lilLanguageManager.colorMaskRGBAContent          ; } private set { lilLanguageManager.colorMaskRGBAContent           = value; } }
         protected static GUIContent alphaMaskContent                { get { return lilLanguageManager.alphaMaskContent              ; } private set { lilLanguageManager.alphaMaskContent               = value; } }
+        protected static GUIContent ditherContent                   { get { return lilLanguageManager.ditherContent                 ; } private set { lilLanguageManager.ditherContent                  = value; } }
         protected static GUIContent maskStrengthContent             { get { return lilLanguageManager.maskStrengthContent           ; } private set { lilLanguageManager.maskStrengthContent            = value; } }
         protected static GUIContent normalMapContent                { get { return lilLanguageManager.normalMapContent              ; } private set { lilLanguageManager.normalMapContent               = value; } }
         protected static GUIContent noiseMaskContent                { get { return lilLanguageManager.noiseMaskContent              ; } private set { lilLanguageManager.noiseMaskContent               = value; } }
@@ -299,6 +301,7 @@ namespace lilToon
         private readonly lilMaterialProperty backfaceColor          = new lilMaterialProperty("_BackfaceColor", PropertyBlock.Base);
         private readonly lilMaterialProperty aaStrength             = new lilMaterialProperty("_AAStrength", PropertyBlock.Base);
         private readonly lilMaterialProperty useDither              = new lilMaterialProperty("_UseDither", PropertyBlock.Base);
+        private readonly lilMaterialProperty ditherTex              = new lilMaterialProperty("_DitherTex", PropertyBlock.Base);
 
         private readonly lilMaterialProperty asUnlit                        = new lilMaterialProperty("_AsUnlit", PropertyBlock.Lighting);
         private readonly lilMaterialProperty vertexLightStrength            = new lilMaterialProperty("_VertexLightStrength", PropertyBlock.Lighting);
@@ -644,6 +647,7 @@ namespace lilToon
 
         private readonly lilMaterialProperty distanceFade       = new lilMaterialProperty("_DistanceFade", PropertyBlock.DistanceFade);
         private readonly lilMaterialProperty distanceFadeColor  = new lilMaterialProperty("_DistanceFadeColor", PropertyBlock.DistanceFade);
+        private readonly lilMaterialProperty distanceFadeMode   = new lilMaterialProperty("_DistanceFadeMode", PropertyBlock.DistanceFade);
 
         private readonly lilMaterialProperty useAudioLink               = new lilMaterialProperty("_UseAudioLink", PropertyBlock.AudioLink);
         private readonly lilMaterialProperty audioLinkDefaultValue      = new lilMaterialProperty("_AudioLinkDefaultValue", PropertyBlock.AudioLink);
@@ -888,6 +892,7 @@ namespace lilToon
                 backfaceColor,
                 aaStrength,
                 useDither,
+                ditherTex,
 
                 asUnlit,
                 vertexLightStrength,
@@ -1233,6 +1238,7 @@ namespace lilToon
 
                 distanceFade,
                 distanceFadeColor,
+                distanceFadeMode,
 
                 useAudioLink,
                 audioLinkDefaultValue,
@@ -2772,6 +2778,7 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(distanceFadeColor, GetLoc("sColor"));
                     EditorGUI.indentLevel++;
                     m_MaterialEditor.ShaderProperty(distanceFade, sDistanceFadeSetting);
+                    m_MaterialEditor.ShaderProperty(distanceFadeMode, sDistanceFadeSettingMode);
                     EditorGUI.indentLevel--;
                     EditorGUILayout.EndVertical();
                     EditorGUILayout.EndVertical();
@@ -4320,7 +4327,7 @@ namespace lilToon
                     if(!isFakeShadow) m_MaterialEditor.ShaderProperty(aaStrength, GetLoc("sAAShading"));
                     if(!isFakeShadow && renderingModeBuf == RenderingMode.Cutout || (isMulti && transparentModeMat.floatValue == 1.0f))
                     {
-                        m_MaterialEditor.ShaderProperty(useDither, GetLoc("sDither"));
+                        m_MaterialEditor.TexturePropertySingleLine(ditherContent, ditherTex, useDither);
                     }
                     m_MaterialEditor.RenderQueueField();
                     if((renderingModeBuf >= RenderingMode.Transparent && renderingModeBuf != RenderingMode.FurCutout) || (isMulti && transparentModeMat.floatValue == 2.0f))

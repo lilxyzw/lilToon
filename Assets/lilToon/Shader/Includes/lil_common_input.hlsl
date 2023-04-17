@@ -54,6 +54,9 @@ SAMPLER(lil_sampler_linear_clamp);
 #if !defined(LIL_FEATURE_Main3rdTex)
     #define LIL_FEATURE_Main3rdTex
 #endif
+#if !defined(LIL_FEATURE_DitherTex)
+    #define LIL_FEATURE_DitherTex
+#endif
 #if defined(LIL_LITE)
     #if !defined(LIL_FEATURE_TriMask)
         #define LIL_FEATURE_TriMask
@@ -330,6 +333,9 @@ CBUFFER_START(UnityPerMaterial)
     #if defined(LIL_MULTI_INPUTS_DISTANCE_FADE)
         float4  _DistanceFade;
         float4  _DistanceFadeColor;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_DITHER)
+        float4  _DitherTex_TexelSize;
     #endif
     #if defined(LIL_MULTI_INPUTS_AUDIOLINK)
         float4  _AudioLinkDefaultValue;
@@ -651,6 +657,9 @@ CBUFFER_START(UnityPerMaterial)
         uint    _AudioLinkUVMode;
         uint    _AudioLinkVertexUVMode;
     #endif
+    #if defined(LIL_MULTI_INPUTS_DISTANCE_FADE)
+        uint    _DistanceFadeMode;
+    #endif
     #if defined(LIL_MULTI_INPUTS_DITHER)
         uint    _UseDither;
     #endif
@@ -812,6 +821,7 @@ TEXTURE2D(_Emission2ndMap);
 TEXTURE2D(_Emission2ndBlendMask);
 TEXTURE2D(_Emission2ndGradTex);
 TEXTURE2D(_ParallaxMap);
+TEXTURE2D(_DitherTex);
 TEXTURE2D(_AudioLinkMask);
 TEXTURE2D(_AudioLinkLocalMap);
 TEXTURE2D(_DissolveMask);

@@ -2159,6 +2159,7 @@ struct lilLightData
 
 #define LIL_GET_POSITION_WS_DATA(input,fd) \
     fd.depth = length(lilHeadDirection(fd.positionWS)); \
+    fd.depthObject = length(lilHeadDirection(lilTransformOStoWS(float3(0,0,0)))); \
     fd.V = normalize(lilViewDirection(fd.positionWS)); \
     fd.headV = normalize(lilHeadDirection(fd.positionWS)); \
     fd.vl = dot(fd.V, fd.L); \

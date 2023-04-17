@@ -22,6 +22,7 @@ Shader "_lil/[Optional] lilToonFurOnlyTwoPass"
         [lilVec3B]      _LightDirectionOverride     ("Light Direction Override", Vector) = (0.001,0.002,0.001,0)
                         _AAStrength                 ("AA Strength", Range(0, 1)) = 1
         [lilToggle]     _UseDither                  ("Dither", Int) = 0
+        [NoScaleOffset] _DitherTex                  ("Dither", 2D) = "white" {}
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
@@ -400,6 +401,7 @@ Shader "_lil/[Optional] lilToonFurOnlyTwoPass"
         // Distance Fade
         [lilHDR]        _DistanceFadeColor          ("Color", Color) = (0,0,0,1)
         [lilFFFB]       _DistanceFade               ("Start|End|Strength|Fix backface", Vector) = (0.1,0.01,0,0)
+        [lilEnum]       _DistanceFadeMode           ("Mode|Vertex|Object", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // AudioLink

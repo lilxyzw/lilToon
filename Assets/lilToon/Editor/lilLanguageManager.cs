@@ -17,6 +17,7 @@ namespace lilToon
         public static string sAlphaMaskModes;
         public static string blinkSetting;
         public static string sDistanceFadeSetting;
+        public static string sDistanceFadeSettingMode;
         public static string sDissolveParams;
         public static string sDissolveParamsMode;
         public static string sDissolveParamsOther;
@@ -38,6 +39,7 @@ namespace lilToon
         public static GUIContent maskBlendRGBAContent;
         public static GUIContent colorMaskRGBAContent;
         public static GUIContent alphaMaskContent;
+        public static GUIContent ditherContent;
         public static GUIContent maskStrengthContent;
         public static GUIContent normalMapContent;
         public static GUIContent noiseMaskContent;
@@ -149,6 +151,7 @@ namespace lilToon
             sAlphaMaskModes                 = BuildParams(GetLoc("sAlphaMask"), GetLoc("sAlphaMaskModeNone"), GetLoc("sAlphaMaskModeReplace"), GetLoc("sAlphaMaskModeMul"), GetLoc("sAlphaMaskModeAdd"), GetLoc("sAlphaMaskModeSub"));
             blinkSetting                    = BuildParams(GetLoc("sBlinkStrength"), GetLoc("sBlinkType"), GetLoc("sBlinkSpeed"), GetLoc("sBlinkOffset"));
             sDistanceFadeSetting            = BuildParams(GetLoc("sStartDistance"), GetLoc("sEndDistance"), GetLoc("sStrength"), GetLoc("sBackfaceForceShadow"));
+            sDistanceFadeSettingMode        = BuildParams("Mode", GetLoc("sVertex"), GetLoc("sDissolveModePosition"));
             sDissolveParams                 = BuildParams(GetLoc("sDissolveMode"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"), GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"));
             sDissolveParamsMode             = BuildParams(GetLoc("sDissolve"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"));
             sDissolveParamsOther            = BuildParams(GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"), "Dummy");
@@ -169,6 +172,7 @@ namespace lilToon
             maskBlendRGBAContent            = new GUIContent(GetLoc("sMask"),                               GetLoc("sTextureRGBA"));
             colorMaskRGBAContent            = new GUIContent(GetLoc("sColor") + " / " + GetLoc("sMask"),    GetLoc("sTextureRGBA"));
             alphaMaskContent                = new GUIContent(GetLoc("sAlphaMask"),                          GetLoc("sAlphaR"));
+            ditherContent                   = new GUIContent(GetLoc("sDither"),                             GetLoc("sAlphaR"));
             maskStrengthContent             = new GUIContent(GetLoc("sStrengthMask"),                       GetLoc("sStrengthR"));
             normalMapContent                = new GUIContent(GetLoc("sNormalMap"),                          GetLoc("sNormalRGB"));
             noiseMaskContent                = new GUIContent(GetLoc("sNoise"),                              GetLoc("sNoiseR"));

@@ -515,8 +515,20 @@
 // Dither
 #if !defined(OVERRIDE_DITHER)
     #if !defined(SHADER_API_GLES)
-        #define OVERRIDE_DITHER \
-            if(_UseDither == 1) fd.col.a = lilSampleDither(_DitherMaskLOD, input.positionCS.xy, fd.col.a);
+        #if defined(LIL_FEATURE_DISTANCE_FADE)
+            #define OVERRIDE_DITHER \
+                if(_UseDither == 1) \
+                { \
+                    lilDistanceFadeAlphaOnly(fd); \
+                    fd.col.a = fd.col.a >= (_DitherTex[(uint2)input.positionCS.xy%(uint2)_DitherTex_TexelSize.zw].r * 255 + 1) / (_DitherTex_TexelSize.z*_DitherTex_TexelSize.w+1); \
+                }
+        #else
+            #define OVERRIDE_DITHER \
+                if(_UseDither == 1) \
+                { \
+                    fd.col.a = fd.col.a >= (_DitherTex[(uint2)input.positionCS.xy%(uint2)_DitherTex_TexelSize.zw].r * 255 + 1) / (_DitherTex_TexelSize.z*_DitherTex_TexelSize.w+1); \
+                }
+        #endif
     #else
         #define OVERRIDE_DITHER
     #endif
@@ -1900,9 +1912,24 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // Distance Fade
 #if defined(LIL_FEATURE_DISTANCE_FADE) && !defined(LIL_LITE)
+    void lilDistanceFadeAlphaOnly(inout lilFragData fd)
+    {
+        float depth = _DistanceFadeMode ? fd.depthObject : fd.depth;
+        float distFade = saturate((depth - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x));
+        #if defined(LIL_OUTLINE) || defined(LIL_PASS_FORWARD_FUR_INCLUDED)
+            distFade = distFade * _DistanceFade.z;
+        #else
+            distFade = fd.facing < (_DistanceFade.w-1.0) ? _DistanceFade.z : distFade * _DistanceFade.z;
+        #endif
+        #if LIL_RENDER == 1
+            fd.col.a = lerp(fd.col.a, fd.col.a * _DistanceFadeColor.a, distFade);
+        #endif
+    }
+
     void lilDistanceFade(inout lilFragData fd)
     {
-        float distFade = saturate((fd.depth - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x));
+        float depth = _DistanceFadeMode ? fd.depthObject : fd.depth;
+        float distFade = saturate((depth - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x));
         #if defined(LIL_OUTLINE) || defined(LIL_PASS_FORWARD_FUR_INCLUDED)
             distFade = distFade * _DistanceFade.z;
         #else
