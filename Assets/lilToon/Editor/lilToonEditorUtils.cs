@@ -762,6 +762,7 @@ namespace lilToon
             if(!shader.name.Contains("lilToon") && !shader.name.Contains("ltspass")) return;
 
             lilRenderPipeline lilRP = lilRenderPipelineReader.GetRP();
+            if(lilRP != lilRenderPipeline.BRP) return; // Avoid conflicts with custom render pipelines
 
             if(shader.name.Contains("lilToonMulti"))
             {

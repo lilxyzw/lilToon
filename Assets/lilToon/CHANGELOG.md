@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed emission not working properly
 - Fixed UV not being clamped when texture is not set for main color 2nd/3rd
 - Fixed unable to get the correct version of SLZURP
+- Worked around an issue that conflicted with URP's variant reduction feature
 
 ## [1.3.7] - 2023-01-17
 ### Added

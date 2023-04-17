@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 発光効果が正しく反映されていなかったのを修正
 - メインカラー2nd・3rdにテクスチャをセットしていない場合にデカール化されないのを修正
 - SLZURPの正しいバージョンが取得できないのを修正
+- URPのバリアント削減機能と競合していた問題を回避
 
 ## [1.3.7] - 2023-01-17
 ### 追加
