@@ -12,7 +12,8 @@ namespace lilToon
         public string build;
 
         public SemVerParser(string versionString) {
-            var pattern = @"^(\d+)\.(\d+)\.(\d+)(?:-(.+))?(?:\+(.+))?$";
+            // https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+            var pattern = @"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$";
             var regex = new Regex(pattern);
             var match = regex.Match(versionString);
             if (match.Success) {
