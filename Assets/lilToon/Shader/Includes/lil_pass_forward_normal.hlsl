@@ -181,7 +181,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         //------------------------------------------------------------------------------------------------------------------------------
         // Dither
         BEFORE_DITHER
-        #if !defined(LIL_LITE) && defined(LIL_FEATURE_DITHER) && LIL_RENDER == 1
+        #if defined(LIL_FEATURE_DITHER) && LIL_RENDER == 1
             OVERRIDE_DITHER
         #endif
 
@@ -259,7 +259,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         //------------------------------------------------------------------------------------------------------------------------------
         // Dither
         BEFORE_DITHER
-        #if !defined(LIL_LITE) && defined(LIL_FEATURE_DITHER) && LIL_RENDER == 1
+        #if defined(LIL_FEATURE_DITHER) && LIL_RENDER == 1
             OVERRIDE_DITHER
         #endif
 
@@ -270,6 +270,9 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             fd.col.a = 1.0;
         #elif LIL_RENDER == 1
             // Cutout
+            #if defined(LIL_FEATURE_DITHER)
+                if(!_UseDither)
+            #endif
             fd.col.a = saturate((fd.col.a - _Cutoff) / max(fwidth(fd.col.a), 0.0001) + 0.5);
             if(fd.col.a == 0) discard;
         #elif LIL_RENDER == 2 && !defined(LIL_REFRACTION)

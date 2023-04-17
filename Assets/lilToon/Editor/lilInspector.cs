@@ -4318,7 +4318,10 @@ namespace lilToon
                     }
                     if(isMulti) m_MaterialEditor.ShaderProperty(useClippingCanceller, GetLoc("sSettingClippingCanceller"));
                     if(!isFakeShadow) m_MaterialEditor.ShaderProperty(aaStrength, GetLoc("sAAShading"));
-                    if(!isFakeShadow && renderingModeBuf == RenderingMode.Cutout) m_MaterialEditor.ShaderProperty(useDither, GetLoc("sDither"));
+                    if(!isFakeShadow && renderingModeBuf == RenderingMode.Cutout || (isMulti && transparentModeMat.floatValue == 1.0f))
+                    {
+                        m_MaterialEditor.ShaderProperty(useDither, GetLoc("sDither"));
+                    }
                     m_MaterialEditor.RenderQueueField();
                     if((renderingModeBuf >= RenderingMode.Transparent && renderingModeBuf != RenderingMode.FurCutout) || (isMulti && transparentModeMat.floatValue == 2.0f))
                     {

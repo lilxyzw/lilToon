@@ -390,6 +390,7 @@ namespace lilToon
 
             SetShaderKeywords(material, "UNITY_UI_ALPHACLIP",                   tpmode == 1);
             SetShaderKeywords(material, "UNITY_UI_CLIP_RECT",                   tpmode == 2 || tpmode == 4);
+            SetShaderKeywords(material, "ETC1_EXTERNAL_ALPHA",                  tpmode == 1 && material.GetFloat("_UseDither") == 1.0f);
             material.SetShaderPassEnabled("ShadowCaster",                       material.GetFloat("_AsOverlay") == 0.0f);
             material.SetShaderPassEnabled("DepthOnly",                          material.GetFloat("_AsOverlay") == 0.0f);
             material.SetShaderPassEnabled("DepthNormals",                       material.GetFloat("_AsOverlay") == 0.0f);
@@ -452,12 +453,10 @@ namespace lilToon
 
             if(isRefr || isFur || isGem)
             {
-                SetShaderKeywords(material, "ETC1_EXTERNAL_ALPHA",                  false);
                 SetShaderKeywords(material, "_DETAIL_MULX2",                        false);
             }
             else
             {
-                SetShaderKeywords(material, "ETC1_EXTERNAL_ALPHA",                  false);
                 SetShaderKeywords(material, "_DETAIL_MULX2",                        isOutl && material.GetVector("_OutlineTexHSVG") != lilConstants.defaultHSVG);
             }
 
