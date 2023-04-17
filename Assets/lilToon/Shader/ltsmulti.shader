@@ -624,6 +624,7 @@ Shader "_lil/lilToonMulti"
             #define LIL_MULTI_INPUTS_DISTANCE_FADE
             #define LIL_MULTI_INPUTS_AUDIOLINK
             #define LIL_MULTI_INPUTS_DISSOLVE
+            #define LIL_MULTI_INPUTS_DITHER
             #define LIL_MULTI_INPUTS_IDMASK
 
             #pragma skip_variants DECALS_OFF DECALS_3RT DECALS_4RT DECAL_SURFACE_GRADIENT _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3

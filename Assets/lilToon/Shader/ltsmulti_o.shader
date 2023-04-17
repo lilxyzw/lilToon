@@ -624,6 +624,7 @@ Shader "Hidden/lilToonMultiOutline"
             #define LIL_MULTI_INPUTS_DISTANCE_FADE
             #define LIL_MULTI_INPUTS_AUDIOLINK
             #define LIL_MULTI_INPUTS_DISSOLVE
+            #define LIL_MULTI_INPUTS_DITHER
             #define LIL_MULTI_INPUTS_IDMASK
             #define LIL_MULTI_INPUTS_OUTLINE
 
