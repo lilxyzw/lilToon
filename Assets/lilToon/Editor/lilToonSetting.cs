@@ -700,8 +700,9 @@ public class lilToonSetting : ScriptableObject
             
             callback.Invoke(next);
 
-            if (next is Transform t)
+            if (next is Transform)
             {
+                var t = (Transform)next;
                 foreach (Transform child in t)
                 {
                     if (!visited.Contains(child))
@@ -760,12 +761,12 @@ public class lilToonSetting : ScriptableObject
 
         WalkAllSceneReferencedAssets(obj =>
         {
-            if (obj is Material material)
+            if (obj is Material)
             {
-                SetupShaderSettingFromMaterial(material, ref shaderSetting);
-            } else if (obj is AnimationClip clip)
+                SetupShaderSettingFromMaterial((Material)obj, ref shaderSetting);
+            } else if (obj is AnimationClip)
             {
-                SetupShaderSettingFromAnimationClip(clip, ref shaderSetting);
+                SetupShaderSettingFromAnimationClip((AnimationClip)obj, ref shaderSetting);
             }
         });
 
