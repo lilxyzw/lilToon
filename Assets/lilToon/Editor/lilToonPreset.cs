@@ -20,28 +20,28 @@ public class lilToonPreset : ScriptableObject
     public bool outlineMainTex;
     public int tessellation;
 
-    [System.Serializable]
+    [Serializable]
     public struct lilPresetBase
     {
         public string language;
         public string name;
     }
 
-    [System.Serializable]
+    [Serializable]
     public struct lilPresetColor
     {
         public string name;
         public Color value;
     }
 
-    [System.Serializable]
+    [Serializable]
     public struct lilPresetVector4
     {
         public string name;
         public Vector4 value;
     }
 
-    [System.Serializable]
+    [Serializable]
     public struct lilPresetFloat
     {
         public string name;
@@ -78,7 +78,7 @@ public class lilToonPreset : ScriptableObject
         bool isonepass      = material.shader.name.Contains("OnePass");
         bool istwopass      = material.shader.name.Contains("TwoPass");
 
-        RenderingMode           renderingMode = RenderingMode.Opaque;
+        var renderingMode = RenderingMode.Opaque;
 
         //if(string.IsNullOrEmpty(preset.renderingMode) || !Enum.TryParse(preset.renderingMode, out renderingMode))
         if(string.IsNullOrEmpty(preset.renderingMode) || !Enum.IsDefined(typeof(RenderingMode), preset.renderingMode))
@@ -96,7 +96,7 @@ public class lilToonPreset : ScriptableObject
             renderingMode = (RenderingMode)Enum.Parse(typeof(RenderingMode), preset.renderingMode);
         }
 
-        TransparentMode         transparentMode = TransparentMode.Normal;
+        var                     transparentMode = TransparentMode.Normal;
         if(isonepass)           transparentMode = TransparentMode.OnePass;
         if(!isfur && istwopass) transparentMode = TransparentMode.TwoPass;
 
@@ -118,7 +118,7 @@ public class lilToonPreset : ScriptableObject
 
     public static lilToonPreset[] LoadPresets()
     {
-        string[] presetGuid = AssetDatabase.FindAssets("t:lilToonPreset");
+        var presetGuid = AssetDatabase.FindAssets("t:lilToonPreset");
         var presetList = new List<lilToonPreset>();
         for(int i=0; i<presetGuid.Length; i++)
         {
@@ -254,11 +254,11 @@ public class lilToonPreset : ScriptableObject
                                     GetLoc("sPresetCategoryOther") };
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
-            Material material = (Material)Selection.activeObject;
+            var material = (Material)Selection.activeObject;
             if(preset == null) preset = CreateInstance<lilToonPreset>();
 
             // load language
-            string[] langName = lilLanguageManager.langSet.languageNames.Split('\t');
+            var langName = lilLanguageManager.langSet.languageNames.Split('\t');
             Array.Resize(ref presetName, langName.Length);
 
             // Initialize
@@ -544,7 +544,7 @@ public class lilToonPreset : ScriptableObject
                     shouldSaveFurRendering && lilPropertyNameChecker.IsFurRenderingProperty(propName)
                 )) continue;
 
-                ShaderUtil.ShaderPropertyType propType = ShaderUtil.GetPropertyType(material.shader, i);
+                var propType = ShaderUtil.GetPropertyType(material.shader, i);
                 if(propType == ShaderUtil.ShaderPropertyType.Color)
                 {
                     Array.Resize(ref preset.colors, preset.colors.Length + 1);

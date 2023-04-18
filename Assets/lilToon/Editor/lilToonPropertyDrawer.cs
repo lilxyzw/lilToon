@@ -16,7 +16,7 @@ namespace lilToon
             #if UNITY_2019_1_OR_NEWER
                 float xMax = position.xMax;
                 position.width = string.IsNullOrEmpty(label) ? Mathf.Min(50.0f, position.width) : EditorGUIUtility.labelWidth + 50.0f;
-                Color value = prop.colorValue;
+                var value = prop.colorValue;
                 EditorGUI.BeginChangeCheck();
                 EditorGUI.showMixedValue = prop.hasMixedValue;
                 value = EditorGUI.ColorField(position, new GUIContent(label), value, true, true, true);
@@ -30,7 +30,7 @@ namespace lilToon
                 // Hex
                 EditorGUI.BeginChangeCheck();
                 float intensity = value.maxColorComponent > 1.0f ? value.maxColorComponent : 1.0f;
-                Color value2 = new Color(value.r / intensity, value.g / intensity, value.b / intensity, 1.0f);
+                var value2 = new Color(value.r / intensity, value.g / intensity, value.b / intensity, 1.0f);
                 string hex = ColorUtility.ToHtmlStringRGB(value2);
                 int indentLevel = EditorGUI.indentLevel;
                 EditorGUI.indentLevel = 0;
@@ -59,7 +59,7 @@ namespace lilToon
                     prop.colorValue = value;
                 }
             #else
-                Color value = prop.colorValue;
+                var value = prop.colorValue;
                 EditorGUI.BeginChangeCheck();
                 EditorGUI.showMixedValue = prop.hasMixedValue;
                 value = EditorGUI.ColorField(position, new GUIContent(label), value, true, true, true);
@@ -108,7 +108,7 @@ namespace lilToon
             }
             else
             {
-                GUIStyle customToggleFont = new GUIStyle();
+                var customToggleFont = new GUIStyle();
                 customToggleFont.normal.textColor = Color.white;
                 customToggleFont.contentOffset = new Vector2(2f,0f);
                 value = EditorGUI.ToggleLeft(position, label, value, customToggleFont);
@@ -167,7 +167,7 @@ namespace lilToon
         // [lilBlink]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             float strength = prop.vectorValue.x;
             float type = prop.vectorValue.y;
             float speed = prop.vectorValue.z / Mathf.PI;
@@ -195,7 +195,7 @@ namespace lilToon
         // [lilVec2R]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            Rect position1 = EditorGUILayout.GetControlRect();
+            var position1 = EditorGUILayout.GetControlRect();
             float x = prop.vectorValue.x;
             float y = prop.vectorValue.y;
 
@@ -220,7 +220,7 @@ namespace lilToon
         // [lilVec2]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            Vector2 vec = new Vector2(prop.vectorValue.x, prop.vectorValue.y);
+            var vec = new Vector2(prop.vectorValue.x, prop.vectorValue.y);
             float unused0 = prop.vectorValue.z;
             float unused1 = prop.vectorValue.w;
 
@@ -244,7 +244,7 @@ namespace lilToon
         // [lilVec3]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            Vector3 vec = new Vector3(prop.vectorValue.x, prop.vectorValue.y, prop.vectorValue.z);
+            var vec = new Vector3(prop.vectorValue.x, prop.vectorValue.y, prop.vectorValue.z);
             float unused = prop.vectorValue.w;
 
             EditorGUIUtility.wideMode = true;
@@ -267,8 +267,8 @@ namespace lilToon
         // [lilVec3Float]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
-            Vector3 vec = new Vector3(prop.vectorValue.x, prop.vectorValue.y, prop.vectorValue.z);
+            var labels = label.Split('|');
+            var vec = new Vector3(prop.vectorValue.x, prop.vectorValue.y, prop.vectorValue.z);
             float length = prop.vectorValue.w;
 
             EditorGUIUtility.wideMode = true;
@@ -292,7 +292,7 @@ namespace lilToon
         // [lilHSVG]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             float hue = prop.vectorValue.x;
             float sat = prop.vectorValue.y;
             float val = prop.vectorValue.z;
@@ -317,8 +317,8 @@ namespace lilToon
         // [lilUVAnim]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
-            Vector2 scroll = new Vector2(prop.vectorValue.x, prop.vectorValue.y);
+            var labels = label.Split('|');
+            var scroll = new Vector2(prop.vectorValue.x, prop.vectorValue.y);
             float angle = lilEditorGUI.Radian2Degree(prop.vectorValue.z);
             float rotate = lilEditorGUI.RoundFloat1000000(prop.vectorValue.w / Mathf.PI * 0.5f);
 
@@ -327,11 +327,11 @@ namespace lilToon
             if(labels.Length == 1)
             {
                 float labelWidth = EditorGUIUtility.labelWidth;
-                Rect labelRect = new Rect(position.x, position.y, labelWidth, position.height);
+                var labelRect = new Rect(position.x, position.y, labelWidth, position.height);
                 EditorGUI.PrefixLabel(labelRect, new GUIContent(labels[0]));
                 int indentBuf = EditorGUI.indentLevel;
                 EditorGUI.indentLevel = 0;
-                Rect vecRect = new Rect(position.x + labelWidth, position.y, position.width - labelWidth, position.height);
+                var vecRect = new Rect(position.x + labelWidth, position.y, position.width - labelWidth, position.height);
                 scroll = EditorGUI.Vector2Field(vecRect, GUIContent.none, scroll);
                 EditorGUI.indentLevel = indentBuf;
             }
@@ -345,11 +345,11 @@ namespace lilToon
                 // Heading (UV Animation)
                 EditorGUILayout.LabelField(labels[1], EditorStyles.boldLabel);
 
-                Rect positionVec2 = EditorGUILayout.GetControlRect();
+                var positionVec2 = EditorGUILayout.GetControlRect();
 
                 // Scroll label
                 float labelWidth = EditorGUIUtility.labelWidth;
-                Rect labelRect = new Rect(positionVec2.x, positionVec2.y, labelWidth, positionVec2.height);
+                var labelRect = new Rect(positionVec2.x, positionVec2.y, labelWidth, positionVec2.height);
                 EditorGUI.PrefixLabel(labelRect, new GUIContent(labels[2]));
 
                 // Copy & Reset indent
@@ -357,7 +357,7 @@ namespace lilToon
                 EditorGUI.indentLevel = 0;
 
                 // Scroll
-                Rect vecRect = new Rect(positionVec2.x + labelWidth, positionVec2.y, positionVec2.width - labelWidth, positionVec2.height);
+                var vecRect = new Rect(positionVec2.x + labelWidth, positionVec2.y, positionVec2.width - labelWidth, positionVec2.height);
                 scroll = EditorGUI.Vector2Field(vecRect, GUIContent.none, scroll);
 
                 // Revert indent
@@ -379,7 +379,7 @@ namespace lilToon
         // [lilDecalAnim]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             int loopX = (int)prop.vectorValue.x;
             int loopY = (int)prop.vectorValue.y;
             int frames = (int)prop.vectorValue.z;
@@ -389,10 +389,10 @@ namespace lilToon
             EditorGUI.LabelField(position, labels[0], EditorStyles.boldLabel);
 
             EditorGUI.indentLevel++;
-            Rect position1 = EditorGUILayout.GetControlRect();
-            Rect position2 = EditorGUILayout.GetControlRect();
-            Rect position3 = EditorGUILayout.GetControlRect();
-            Rect position4 = EditorGUILayout.GetControlRect();
+            var position1 = EditorGUILayout.GetControlRect();
+            var position2 = EditorGUILayout.GetControlRect();
+            var position3 = EditorGUILayout.GetControlRect();
+            var position4 = EditorGUILayout.GetControlRect();
 
             EditorGUI.BeginChangeCheck();
             loopX = EditorGUI.IntField(position1, labels[1], loopX);
@@ -413,15 +413,15 @@ namespace lilToon
         // [lilDecalSub]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             float scaleX = prop.vectorValue.x;
             float scaleY = prop.vectorValue.y;
             float border = prop.vectorValue.z;
             float unused = prop.vectorValue.w;
 
             EditorGUI.indentLevel++;
-            Rect position1 = EditorGUILayout.GetControlRect();
-            Rect position2 = EditorGUILayout.GetControlRect();
+            var position1 = EditorGUILayout.GetControlRect();
+            var position2 = EditorGUILayout.GetControlRect();
 
             EditorGUI.BeginChangeCheck();
             scaleX = EditorGUI.Slider(position, labels[0], scaleX, 0.0f, 1.0f);
@@ -441,8 +441,8 @@ namespace lilToon
         // [lilEnum]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
-            string[] enums = new string[labels.Length-1];
+            var labels = label.Split('|');
+            var enums = new string[labels.Length-1];
             Array.Copy(labels, 1, enums, 0, labels.Length-1);
 
             EditorGUI.BeginChangeCheck();
@@ -462,8 +462,8 @@ namespace lilToon
         // [lilEnum]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
-            string[] enums = new string[labels.Length-1];
+            var labels = label.Split('|');
+            var enums = new string[labels.Length-1];
             Array.Copy(labels, 1, enums, 0, labels.Length-1);
 
             EditorGUI.BeginChangeCheck();
@@ -475,11 +475,11 @@ namespace lilToon
             }
             else
             {
-                GUIStyle customToggleFont = new GUIStyle();
+                var customToggleFont = new GUIStyle();
                 customToggleFont.normal.textColor = Color.white;
                 customToggleFont.contentOffset = new Vector2(2f,0f);
                 float labelWidth = EditorGUIUtility.labelWidth;
-                Rect labelRect = new Rect(position.x, position.y, labelWidth, position.height);
+                var labelRect = new Rect(position.x, position.y, labelWidth, position.height);
                 EditorGUI.PrefixLabel(labelRect, new GUIContent(labels[0]), customToggleFont);
                 value = EditorGUI.Popup(position, " ", (int)value, enums);
             }
@@ -498,7 +498,7 @@ namespace lilToon
         // [lilColorMask]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] masks = new string[]{"None","A","B","BA","G","GA","GB","GBA","R","RA","RB","RBA","RG","RGA","RGB","RGBA"};
+            var masks = new string[]{"None","A","B","BA","G","GA","GB","GBA","R","RA","RB","RBA","RG","RGA","RGB","RGBA"};
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
             float cullFloat = EditorGUI.Popup(position, label, (int)prop.floatValue, masks);
@@ -516,15 +516,15 @@ namespace lilToon
         // [lil3Param]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             float param1 = prop.vectorValue.x;
             float param2 = prop.vectorValue.y;
             float param3 = prop.vectorValue.z;
             float unused = prop.vectorValue.w;
 
             EditorGUI.indentLevel++;
-            Rect position1 = EditorGUILayout.GetControlRect();
-            Rect position2 = EditorGUILayout.GetControlRect();
+            var position1 = EditorGUILayout.GetControlRect();
+            var position2 = EditorGUILayout.GetControlRect();
 
             EditorGUI.BeginChangeCheck();
             param1 = EditorGUI.FloatField(position, labels[0], param1);
@@ -544,13 +544,13 @@ namespace lilToon
         // [lilFF]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             float param1 = prop.vectorValue.x;
             float param2 = prop.vectorValue.y;
             float param3 = prop.vectorValue.z;
             float param4 = prop.vectorValue.w;
 
-            Rect position1 = EditorGUILayout.GetControlRect();
+            var position1 = EditorGUILayout.GetControlRect();
 
             EditorGUI.BeginChangeCheck();
             param1 = EditorGUI.FloatField(position, labels[0], param1);
@@ -568,15 +568,15 @@ namespace lilToon
         // [lilFFFF]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             float param1 = prop.vectorValue.x;
             float param2 = prop.vectorValue.y;
             float param3 = prop.vectorValue.z;
             float param4 = prop.vectorValue.w;
 
-            Rect position1 = EditorGUILayout.GetControlRect();
-            Rect position2 = EditorGUILayout.GetControlRect();
-            Rect position3 = EditorGUILayout.GetControlRect();
+            var position1 = EditorGUILayout.GetControlRect();
+            var position2 = EditorGUILayout.GetControlRect();
+            var position3 = EditorGUILayout.GetControlRect();
 
             EditorGUI.BeginChangeCheck();
             param1 = EditorGUI.FloatField(position, labels[0], param1);
@@ -596,15 +596,15 @@ namespace lilToon
         // [lilFFFB]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             float param1 = prop.vectorValue.x;
             float param2 = prop.vectorValue.y;
             float param3 = prop.vectorValue.z;
             bool param4 = prop.vectorValue.w != 0.0f;
 
-            Rect position1 = EditorGUILayout.GetControlRect();
-            Rect position2 = EditorGUILayout.GetControlRect();
-            Rect position3 = EditorGUILayout.GetControlRect();
+            var position1 = EditorGUILayout.GetControlRect();
+            var position2 = EditorGUILayout.GetControlRect();
+            var position3 = EditorGUILayout.GetControlRect();
 
             EditorGUI.BeginChangeCheck();
             param1 = EditorGUI.FloatField(position, labels[0], param1);
@@ -624,15 +624,15 @@ namespace lilToon
         // [lilFRFR]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             float param1 = prop.vectorValue.x;
             float param2 = prop.vectorValue.y;
             float param3 = prop.vectorValue.z;
             float param4 = prop.vectorValue.w;
 
-            Rect position1 = EditorGUILayout.GetControlRect();
-            Rect position2 = EditorGUILayout.GetControlRect();
-            Rect position3 = EditorGUILayout.GetControlRect();
+            var position1 = EditorGUILayout.GetControlRect();
+            var position2 = EditorGUILayout.GetControlRect();
+            var position3 = EditorGUILayout.GetControlRect();
 
             EditorGUI.BeginChangeCheck();
             param1 = EditorGUI.FloatField(position, labels[0], param1);
@@ -653,11 +653,11 @@ namespace lilToon
         // [lilVec3B]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
-            Vector3 vec = new Vector3(prop.vectorValue.x, prop.vectorValue.y, prop.vectorValue.z);
+            var labels = label.Split('|');
+            var vec = new Vector3(prop.vectorValue.x, prop.vectorValue.y, prop.vectorValue.z);
             bool value = prop.vectorValue.w != 0.0f;
 
-            Rect position1 = EditorGUILayout.GetControlRect();
+            var position1 = EditorGUILayout.GetControlRect();
 
             EditorGUIUtility.wideMode = true;
 
@@ -681,7 +681,7 @@ namespace lilToon
         // [lilALUVParams]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             float scale = prop.vectorValue.x;
             float offset = prop.vectorValue.y;
             float angle180 = lilEditorGUI.Radian2Degree(prop.vectorValue.z);
@@ -690,23 +690,23 @@ namespace lilToon
             EditorGUI.BeginChangeCheck();
             if(labels.Length == 6)
             {
-                Rect position1 = EditorGUILayout.GetControlRect();
+                var position1 = EditorGUILayout.GetControlRect();
                 offset = EditorGUI.FloatField(position, labels[0], offset);
                 band = EditorGUI.Popup(position1, labels[1], (int)band, new string[]{labels[2],labels[3],labels[4],labels[5]});
             }
             if(labels.Length == 7)
             {
-                Rect position1 = EditorGUILayout.GetControlRect();
-                Rect position2 = EditorGUILayout.GetControlRect();
+                var position1 = EditorGUILayout.GetControlRect();
+                var position2 = EditorGUILayout.GetControlRect();
                 scale = EditorGUI.FloatField(position, labels[0], scale);
                 offset = EditorGUI.FloatField(position1, labels[1], offset);
                 band = EditorGUI.Popup(position2, labels[2], (int)band, new string[]{labels[3],labels[4],labels[5],labels[6]});
             }
             if(labels.Length == 8)
             {
-                Rect position1 = EditorGUILayout.GetControlRect();
-                Rect position2 = EditorGUILayout.GetControlRect();
-                Rect position3 = EditorGUILayout.GetControlRect();
+                var position1 = EditorGUILayout.GetControlRect();
+                var position2 = EditorGUILayout.GetControlRect();
+                var position3 = EditorGUILayout.GetControlRect();
                 scale = EditorGUI.FloatField(position, labels[0], scale);
                 offset = EditorGUI.FloatField(position1, labels[1], offset);
                 angle180 = EditorGUI.Slider(position2, labels[2], angle180, -180.0f, 180.0f);
@@ -725,15 +725,15 @@ namespace lilToon
         // [lilALLocal]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             float BPM = prop.vectorValue.x;
             float Notes = prop.vectorValue.y;
             float Offset = prop.vectorValue.z;
             float unused = prop.vectorValue.w;
 
             EditorGUI.indentLevel++;
-            Rect position1 = EditorGUILayout.GetControlRect();
-            Rect position2 = EditorGUILayout.GetControlRect();
+            var position1 = EditorGUILayout.GetControlRect();
+            var position2 = EditorGUILayout.GetControlRect();
 
             EditorGUI.BeginChangeCheck();
             BPM = EditorGUI.FloatField(position, labels[0], BPM);
@@ -753,7 +753,7 @@ namespace lilToon
         // [lilDissolve]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             float type = prop.vectorValue.x;
             float shape = prop.vectorValue.y;
             float border = prop.vectorValue.z;
@@ -768,11 +768,11 @@ namespace lilToon
                 }
                 else
                 {
-                    GUIStyle customToggleFont = new GUIStyle();
+                    var customToggleFont = new GUIStyle();
                     customToggleFont.normal.textColor = Color.white;
                     customToggleFont.contentOffset = new Vector2(2f,0f);
                     float labelWidth = EditorGUIUtility.labelWidth;
-                    Rect labelRect = new Rect(position.x, position.y, labelWidth, position.height);
+                    var labelRect = new Rect(position.x, position.y, labelWidth, position.height);
                     EditorGUI.PrefixLabel(labelRect, new GUIContent(labels[0]), customToggleFont);
                     type = EditorGUI.Popup(position, " ", (int)type, new string[]{labels[1],labels[2],labels[3],labels[4]});
                 }
@@ -781,22 +781,22 @@ namespace lilToon
             {
                 if(type == 1.0f)
                 {
-                    Rect position1 = EditorGUILayout.GetControlRect();
+                    var position1 = EditorGUILayout.GetControlRect();
                     border = EditorGUI.Slider(position, labels[3], border, -1.0f, 2.0f);
                     blur = EditorGUI.Slider(position1, labels[4], blur, 0.0f, 1.0f);
                 }
                 if(type == 2.0f)
                 {
-                    Rect position1 = EditorGUILayout.GetControlRect();
-                    Rect position2 = EditorGUILayout.GetControlRect();
+                    var position1 = EditorGUILayout.GetControlRect();
+                    var position2 = EditorGUILayout.GetControlRect();
                     shape = EditorGUI.Popup(position, labels[0], (int)shape, new string[]{labels[1],labels[2]});
                     border = EditorGUI.FloatField(position1, labels[3], border);
                     blur = EditorGUI.FloatField(position2, labels[4], blur);
                 }
                 if(type == 3.0f)
                 {
-                    Rect position1 = EditorGUILayout.GetControlRect();
-                    Rect position2 = EditorGUILayout.GetControlRect();
+                    var position1 = EditorGUILayout.GetControlRect();
+                    var position2 = EditorGUILayout.GetControlRect();
                     shape = EditorGUI.Popup(position, labels[0], (int)shape, new string[]{labels[1],labels[2]});
                     border = EditorGUI.FloatField(position1, labels[3], border);
                     blur = EditorGUI.FloatField(position2, labels[4], blur);
@@ -807,25 +807,25 @@ namespace lilToon
                 type = EditorGUI.Popup(position, labels[0], (int)type, new string[]{labels[1],labels[2],labels[3],labels[4]});
                 if(type == 1.0f)
                 {
-                    Rect position1 = EditorGUILayout.GetControlRect();
-                    Rect position2 = EditorGUILayout.GetControlRect();
+                    var position1 = EditorGUILayout.GetControlRect();
+                    var position2 = EditorGUILayout.GetControlRect();
                     border = EditorGUI.Slider(position1, labels[8], border, -1.0f, 2.0f);
                     blur = EditorGUI.Slider(position2, labels[9], blur, 0.0f, 1.0f);
                 }
                 if(type == 2.0f)
                 {
-                    Rect position1 = EditorGUILayout.GetControlRect();
-                    Rect position2 = EditorGUILayout.GetControlRect();
-                    Rect position3 = EditorGUILayout.GetControlRect();
+                    var position1 = EditorGUILayout.GetControlRect();
+                    var position2 = EditorGUILayout.GetControlRect();
+                    var position3 = EditorGUILayout.GetControlRect();
                     shape = EditorGUI.Popup(position1, labels[5], (int)shape, new string[]{labels[6],labels[7]});
                     border = EditorGUI.FloatField(position2, labels[8], border);
                     blur = EditorGUI.FloatField(position3, labels[9], blur);
                 }
                 if(type == 3.0f)
                 {
-                    Rect position1 = EditorGUILayout.GetControlRect();
-                    Rect position2 = EditorGUILayout.GetControlRect();
-                    Rect position3 = EditorGUILayout.GetControlRect();
+                    var position1 = EditorGUILayout.GetControlRect();
+                    var position2 = EditorGUILayout.GetControlRect();
+                    var position3 = EditorGUILayout.GetControlRect();
                     shape = EditorGUI.Popup(position1, labels[5], (int)shape, new string[]{labels[6],labels[7]});
                     border = EditorGUI.FloatField(position2, labels[8], border);
                     blur = EditorGUI.FloatField(position3, labels[9], blur);
@@ -844,7 +844,7 @@ namespace lilToon
         // [lilDissolveP]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
 
             if(labels.Length == 2)
             {
@@ -861,7 +861,7 @@ namespace lilToon
                 if(type == 2)
                 {
                     EditorGUI.BeginChangeCheck();
-                    Vector2 vec = EditorGUI.Vector2Field(position, labels[0], new Vector2(prop.vectorValue.x, prop.vectorValue.y));
+                    var vec = EditorGUI.Vector2Field(position, labels[0], new Vector2(prop.vectorValue.x, prop.vectorValue.y));
                     if(EditorGUI.EndChangeCheck())
                     {
                         prop.vectorValue = new Vector4(vec.x, vec.y, prop.vectorValue.z, prop.vectorValue.w);
@@ -870,7 +870,7 @@ namespace lilToon
                 if(type == 3)
                 {
                     EditorGUI.BeginChangeCheck();
-                    Vector3 vec = EditorGUI.Vector3Field(position, labels[0], new Vector3(prop.vectorValue.x, prop.vectorValue.y, prop.vectorValue.z));
+                    var vec = EditorGUI.Vector3Field(position, labels[0], new Vector3(prop.vectorValue.x, prop.vectorValue.y, prop.vectorValue.z));
                     if(EditorGUI.EndChangeCheck())
                     {
                         prop.vectorValue = new Vector4(vec.x, vec.y, vec.z, prop.vectorValue.w);
@@ -879,7 +879,7 @@ namespace lilToon
                 if(type == 4)
                 {
                     EditorGUI.BeginChangeCheck();
-                    Vector4 vec = EditorGUI.Vector4Field(position, labels[0], prop.vectorValue);
+                    var vec = EditorGUI.Vector4Field(position, labels[0], prop.vectorValue);
                     if(EditorGUI.EndChangeCheck())
                     {
                         prop.vectorValue = vec;
@@ -889,7 +889,7 @@ namespace lilToon
             else
             {
                 EditorGUI.BeginChangeCheck();
-                Vector4 vec = EditorGUI.Vector4Field(position, labels[0], prop.vectorValue);
+                var vec = EditorGUI.Vector4Field(position, labels[0], prop.vectorValue);
                 if(EditorGUI.EndChangeCheck())
                 {
                     prop.vectorValue = vec;
@@ -928,12 +928,12 @@ namespace lilToon
         // [lilGlitParam1]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
-            Vector2 tiling = new Vector2(prop.vectorValue.x, prop.vectorValue.y);
+            var labels = label.Split('|');
+            var tiling = new Vector2(prop.vectorValue.x, prop.vectorValue.y);
             float size = prop.vectorValue.z == 0.0f ? 0.0f : Mathf.Sqrt(prop.vectorValue.z);
             float contrast = prop.vectorValue.w;
-            Rect position1 = EditorGUILayout.GetControlRect();
-            Rect position2 = EditorGUILayout.GetControlRect();
+            var position1 = EditorGUILayout.GetControlRect();
+            var position2 = EditorGUILayout.GetControlRect();
             EditorGUIUtility.wideMode = true;
 
             EditorGUI.BeginChangeCheck();
@@ -955,14 +955,14 @@ namespace lilToon
         // [lilGlitParam2]
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
         {
-            string[] labels = label.Split('|');
+            var labels = label.Split('|');
             float speed = prop.vectorValue.x;
             float angle = prop.vectorValue.y;
             float light = prop.vectorValue.z;
             float random = prop.vectorValue.w;
-            Rect position1 = EditorGUILayout.GetControlRect();
-            Rect position2 = EditorGUILayout.GetControlRect();
-            Rect position3 = EditorGUILayout.GetControlRect();
+            var position1 = EditorGUILayout.GetControlRect();
+            var position2 = EditorGUILayout.GetControlRect();
+            var position3 = EditorGUILayout.GetControlRect();
 
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;

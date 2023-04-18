@@ -22,7 +22,7 @@ namespace lilToon
             #if UNITY_2018_3_OR_NEWER
                 ingrad = EditorGUILayout.GradientField(lilLanguageManager.GetLoc("sGradColor"), ingrad);
             #else
-                MethodInfo setMethod = typeof(EditorGUILayout).GetMethod(
+                var setMethod = typeof(EditorGUILayout).GetMethod(
                     "GradientField",
                     BindingFlags.NonPublic | BindingFlags.Static,
                     null,
@@ -40,7 +40,7 @@ namespace lilToon
             }
             if(GUILayout.Button("Save"))
             {
-                Texture2D tex = GradientToTexture(ingrad, setLinear);
+                var tex = GradientToTexture(ingrad, setLinear);
                 tex = SaveTextureToPng(material, tex, texprop.name);
                 if(setLinear) SetLinear(tex);
                 texprop.textureValue = tex;
@@ -54,7 +54,7 @@ namespace lilToon
             #if UNITY_2018_3_OR_NEWER
                 ingrad = EditorGUILayout.GradientField(lilLanguageManager.GetLoc("sGradColor"), ingrad);
             #else
-                MethodInfo setMethod = typeof(EditorGUILayout).GetMethod(
+                var setMethod = typeof(EditorGUILayout).GetMethod(
                     "GradientField",
                     BindingFlags.NonPublic | BindingFlags.Static,
                     null,
@@ -73,7 +73,7 @@ namespace lilToon
             }
             if(GUILayout.Button("Save"))
             {
-                Texture2D tex = GradientToTexture(ingrad, setLinear);
+                var tex = GradientToTexture(ingrad, setLinear);
                 tex = SaveTextureToPng(material, tex, texprop.name);
                 if(setLinear) SetLinear(tex);
                 texprop.textureValue = tex;
@@ -86,7 +86,7 @@ namespace lilToon
             if(tex != null)
             {
                 string path = AssetDatabase.GetAssetPath(tex);
-                TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(path);
+                var textureImporter = (TextureImporter)AssetImporter.GetAtPath(path);
                 textureImporter.sRGBTexture = false;
                 AssetDatabase.ImportAsset(path);
             }
@@ -94,9 +94,9 @@ namespace lilToon
 
         private static Gradient MaterialToGradient(Material material, string emissionName)
         {
-            Gradient outgrad = new Gradient();
-            GradientColorKey[] colorKey = new GradientColorKey[material.GetInt(emissionName + "ci")];
-            GradientAlphaKey[] alphaKey = new GradientAlphaKey[material.GetInt(emissionName + "ai")];
+            var outgrad = new Gradient();
+            var colorKey = new GradientColorKey[material.GetInt(emissionName + "ci")];
+            var alphaKey = new GradientAlphaKey[material.GetInt(emissionName + "ai")];
             for(int i=0;i<colorKey.Length;i++)
             {
                 colorKey[i].color = material.GetColor(emissionName + "c" + i.ToString());
@@ -127,7 +127,7 @@ namespace lilToon
 
         private static Texture2D GradientToTexture(Gradient grad, bool setLinear = false)
         {
-            Texture2D tex = new Texture2D(128, 4, TextureFormat.ARGB32, true, setLinear);
+            var tex = new Texture2D(128, 4, TextureFormat.ARGB32, true, setLinear);
 
             // Set colors
             for(int w = 0; w < tex.width; w++)
@@ -154,8 +154,8 @@ namespace lilToon
             if(!tex.isReadable)
             #endif
             {
-                RenderTexture bufRT = RenderTexture.active;
-                RenderTexture texR = RenderTexture.GetTemporary(tex.width, tex.height);
+                var bufRT = RenderTexture.active;
+                var texR = RenderTexture.GetTemporary(tex.width, tex.height);
                 Graphics.Blit(tex, texR);
                 RenderTexture.active = texR;
                 tex = new Texture2D(texR.width, texR.height);
@@ -176,7 +176,7 @@ namespace lilToon
                path.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
                path.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase))
             {
-                byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
+                var bytes = File.ReadAllBytes(Path.GetFullPath(path));
                 tex.LoadImage(bytes);
             }
 
@@ -266,8 +266,8 @@ namespace lilToon
             public static string ConvertGifToAtlas(Object tex, out int frameCount, out int loopXY, out int duration, out float xScale, out float yScale)
             {
                     string path = AssetDatabase.GetAssetPath(tex);
-                    System.Drawing.Image origGif = System.Drawing.Image.FromFile(path);
-                    System.Drawing.Imaging.FrameDimension dimension = new System.Drawing.Imaging.FrameDimension(origGif.FrameDimensionsList[0]);
+                    var origGif = System.Drawing.Image.FromFile(path);
+                    var dimension = new System.Drawing.Imaging.FrameDimension(origGif.FrameDimensionsList[0]);
                     frameCount = origGif.GetFrameCount(dimension);
                     loopXY = Mathf.CeilToInt(Mathf.Sqrt(frameCount));
                     duration = BitConverter.ToInt32(origGif.GetPropertyItem(20736).Value, 0);
@@ -283,7 +283,7 @@ namespace lilToon
                         finalWidth = origGif.Width * loopXY;
                         finalHeight = origGif.Height * loopXY;
                     }
-                    Texture2D atlasTexture = new Texture2D(finalWidth, finalHeight);
+                    var atlasTexture = new Texture2D(finalWidth, finalHeight);
                     xScale = (float)(origGif.Width * loopXY) / finalWidth;
                     yScale = (float)(origGif.Height * loopXY) / finalHeight;
                     for(int x = 0; x < finalWidth; x++)
@@ -298,14 +298,14 @@ namespace lilToon
                         int offsetX = i%loopXY;
                         int offsetY = Mathf.FloorToInt(i/loopXY);
                         origGif.SelectActiveFrame(dimension, i);
-                        System.Drawing.Bitmap frame = new System.Drawing.Bitmap(origGif.Width, origGif.Height);
+                        var frame = new System.Drawing.Bitmap(origGif.Width, origGif.Height);
                         System.Drawing.Graphics.FromImage(frame).DrawImage(origGif, System.Drawing.Point.Empty);
 
                         for(int x = 0; x < frame.Width; x++)
                         {
                             for(int y = 0; y < frame.Height; y++)
                             {
-                                System.Drawing.Color sourceColor = frame.GetPixel(x, y);
+                                var sourceColor = frame.GetPixel(x, y);
                                 atlasTexture.SetPixel(x + (frame.Width * offsetX), finalHeight - (frame.Height * offsetY) - 1 - y, new Color32(sourceColor.R, sourceColor.G, sourceColor.B, sourceColor.A));
                             }
                         }
@@ -400,7 +400,7 @@ namespace lilToon
             int width = resX * resY * resX;
             int height = resX * resY * resY;
 
-            Material material = new Material(lilShaderManager.ltsbaker);
+            var material = new Material(lilShaderManager.ltsbaker);
             material.SetTexture("_MainTex3D", tex);
             material.SetFloat("_ResX", resX);
             material.SetFloat("_ResY", resY);
@@ -408,9 +408,9 @@ namespace lilToon
 
             var outTexture = new Texture2D(width, height, TextureFormat.RGBA32, false);
 
-            RenderTexture bufRT = RenderTexture.active;
-            RenderTexture srcTexture = RenderTexture.GetTemporary(width, height);
-            RenderTexture dstTexture = RenderTexture.GetTemporary(width, height);
+            var bufRT = RenderTexture.active;
+            var srcTexture = RenderTexture.GetTemporary(width, height);
+            var dstTexture = RenderTexture.GetTemporary(width, height);
             Graphics.Blit(srcTexture, dstTexture, material);
             RenderTexture.active = dstTexture;
             outTexture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
@@ -431,7 +431,7 @@ namespace lilToon
                 EditorUtility.DisplayDialog("[lilToon] Convert LUT to PNG", lilLanguageManager.GetLoc("sUtilInvalidFormat"), lilLanguageManager.GetLoc("sOK"));
                 return;
             }
-            Texture2D tex = ConvertLUT3Dto2D(texOrig);
+            var tex = ConvertLUT3Dto2D(texOrig);
             SaveTextureToPng(path, "_conv", tex);
             AssetDatabase.Refresh();
         }

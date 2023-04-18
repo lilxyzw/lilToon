@@ -1504,7 +1504,7 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Load Properties
-            foreach(lilMaterialProperty prop in AllProperties()) prop.FindProperty(props);
+            foreach(var prop in AllProperties()) prop.FindProperty(props);
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Check Shader Type
@@ -3223,7 +3223,7 @@ namespace lilToon
 
         private void DrawSettingsGUI()
         {
-            GUIStyle applyButton = new GUIStyle(GUI.skin.button);
+            var applyButton = new GUIStyle(GUI.skin.button);
             applyButton.normal.textColor = Color.red;
             applyButton.fontStyle = FontStyle.Bold;
 
@@ -3305,7 +3305,7 @@ namespace lilToon
         private static void ShaderSettingOptimizationGUI()
         {
             GUI.enabled = !File.Exists(lilDirectoryManager.GetSettingLockPath());
-            lilRenderPipeline RP = lilRenderPipelineReader.GetRP();
+            var RP = lilRenderPipelineReader.GetRP();
             if(RP == lilRenderPipeline.BRP)
             {
                 ToggleGUI(GetLoc("sSettingApplyShadowFA"), ref shaderSetting.LIL_OPTIMIZE_APPLY_SHADOW_FA);
@@ -3365,7 +3365,7 @@ namespace lilToon
         private static void DrawWebPages()
         {
             VersionCheck();
-            GUIStyle labelStyle = new GUIStyle(GUI.skin.label){fontStyle = FontStyle.Bold};
+            var labelStyle = new GUIStyle(GUI.skin.label){fontStyle = FontStyle.Bold};
             string versionLabel = "lilToon " + lilConstants.currentVersionName;
             if(latestVersion != null && latestVersion.latest_vertion_name != null && latestVersion.latest_vertion_value > lilConstants.currentVersionValue)
             {
@@ -3389,7 +3389,7 @@ namespace lilToon
             {
                 if(File.Exists(lilDirectoryManager.versionInfoTempPath))
                 {
-                    StreamReader sr = new StreamReader(lilDirectoryManager.versionInfoTempPath);
+                    var sr = new StreamReader(lilDirectoryManager.versionInfoTempPath);
                     string s = sr.ReadToEnd();
                     sr.Close();
                     if(!string.IsNullOrEmpty(s) && s.Contains("latest_vertion_name") && s.Contains("latest_vertion_value"))
@@ -3431,13 +3431,13 @@ namespace lilToon
 
         private void DrawMenuButton(string helpAnchor, PropertyBlock propertyBlock)
         {
-            Rect position = GUILayoutUtility.GetLastRect();
+            var position = GUILayoutUtility.GetLastRect();
             position.x += position.width - 24;
             position.width = 24;
 
             if(GUI.Button(position, EditorGUIUtility.IconContent("_Popup"), middleButton))
             {
-                GenericMenu menu = new GenericMenu();
+                var menu = new GenericMenu();
                 menu.AddItem(new GUIContent(GetLoc("sCopy")),               false, CopyProperties,  propertyBlock);
                 menu.AddItem(new GUIContent(GetLoc("sPaste")),              false, PasteProperties, new PropertyBlockData{propertyBlock = propertyBlock, shouldCopyTex = false});
                 menu.AddItem(new GUIContent(GetLoc("sPasteWithTexture")),   false, PasteProperties, new PropertyBlockData{propertyBlock = propertyBlock, shouldCopyTex = true});
@@ -3560,7 +3560,7 @@ namespace lilToon
             if(!lilLanguageManager.ShouldApplyTemp()) return;
             lilLanguageManager.ApplySettingTemp();
             if(!File.Exists(lilDirectoryManager.editorSettingTempPath)) return;
-            StreamReader sr = new StreamReader(lilDirectoryManager.editorSettingTempPath);
+            var sr = new StreamReader(lilDirectoryManager.editorSettingTempPath);
             string s = sr.ReadToEnd();
             sr.Close();
             if(!string.IsNullOrEmpty(s)) EditorJsonUtility.FromJsonOverwrite(s,edSet);
@@ -3569,7 +3569,7 @@ namespace lilToon
         public static void SaveEditorSettingTemp()
         {
             lilLanguageManager.SaveSettingTemp();
-            StreamWriter sw = new StreamWriter(lilDirectoryManager.editorSettingTempPath,false);
+            var sw = new StreamWriter(lilDirectoryManager.editorSettingTempPath,false);
             sw.Write(EditorJsonUtility.ToJson(edSet));
             sw.Close();
         }
@@ -3627,9 +3627,9 @@ namespace lilToon
 
         private void CopyProperties(PropertyBlock propertyBlock)
         {
-            foreach(lilMaterialProperty prop in AllProperties())
+            foreach(var prop in AllProperties())
             {
-                foreach(PropertyBlock block in prop.blocks)
+                foreach(var block in prop.blocks)
                 {
                     if(block == propertyBlock && prop.p != null) copiedProperties[prop.name] = prop.p;
                 }
@@ -3638,18 +3638,18 @@ namespace lilToon
 
         private void PasteProperties(PropertyBlock propertyBlock, bool shouldCopyTex)
         {
-            foreach(lilMaterialProperty prop in AllProperties())
+            foreach(var prop in AllProperties())
             {
                 if(!shouldCopyTex && prop.isTexture)
                 {
                     Debug.Log("Skip Texture");
                     continue;
                 }
-                foreach(PropertyBlock block in prop.blocks)
+                foreach(var block in prop.blocks)
                 {
                     if(block == propertyBlock && prop.p != null && copiedProperties.ContainsKey(prop.name) && copiedProperties[prop.name] != null)
                     {
-                        MaterialProperty.PropType propType = prop.type;
+                        var propType = prop.type;
                         if(propType == MaterialProperty.PropType.Color)     prop.colorValue = copiedProperties[prop.name].colorValue;
                         if(propType == MaterialProperty.PropType.Vector)    prop.vectorValue = copiedProperties[prop.name].vectorValue;
                         if(propType == MaterialProperty.PropType.Float)     prop.floatValue = copiedProperties[prop.name].floatValue;
@@ -3663,16 +3663,16 @@ namespace lilToon
         private void ResetProperties(PropertyBlock propertyBlock)
         {
             #if UNITY_2019_3_OR_NEWER
-            foreach(lilMaterialProperty prop in AllProperties())
+            foreach(var prop in AllProperties())
             {
-                foreach(PropertyBlock block in prop.blocks)
+                foreach(var block in prop.blocks)
                 {
                     if(block == propertyBlock && prop.p != null && prop.targets[0] is Material && ((Material)prop.targets[0]).shader != null)
                     {
-                        Shader shader = ((Material)prop.targets[0]).shader;
+                        var shader = ((Material)prop.targets[0]).shader;
                         int propID = shader.FindPropertyIndex(prop.name);
                         if(propID == -1) return;
-                        MaterialProperty.PropType propType = prop.type;
+                        var propType = prop.type;
                         if(propType == MaterialProperty.PropType.Color)     prop.colorValue = shader.GetPropertyDefaultVectorValue(propID);
                         if(propType == MaterialProperty.PropType.Vector)    prop.vectorValue = shader.GetPropertyDefaultVectorValue(propID);
                         if(propType == MaterialProperty.PropType.Float)     prop.floatValue = shader.GetPropertyDefaultFloatValue(propID);
@@ -3691,7 +3691,7 @@ namespace lilToon
 
         private void PasteProperties(object obj)
         {
-            PropertyBlockData propertyBlockData = (PropertyBlockData)obj;
+            var propertyBlockData = (PropertyBlockData)obj;
             PasteProperties(propertyBlockData.propertyBlock, propertyBlockData.shouldCopyTex);
         }
 
@@ -3796,7 +3796,7 @@ namespace lilToon
                             if(lilEditorGUI.EditorButton(showName))
                             {
                                 var objs = m_MaterialEditor.targets.Where(obj => obj is Material);
-                                foreach(Object obj in objs)
+                                foreach(var obj in objs)
                                 {
                                     lilToonPreset.ApplyPreset((Material)obj, presets[j], isMulti);
                                 }
@@ -3813,7 +3813,7 @@ namespace lilToon
         #region
         private void CreateMToonMaterial(Material material)
         {
-            Material mtoonMaterial = new Material(mtoon);
+            var mtoonMaterial = new Material(mtoon);
 
             string matPath = AssetDatabase.GetAssetPath(material);
             if(!string.IsNullOrEmpty(matPath))  matPath = EditorUtility.SaveFilePanel("Save Material", Path.GetDirectoryName(matPath), Path.GetFileNameWithoutExtension(matPath)+"_mtoon", "mat");
@@ -3831,11 +3831,11 @@ namespace lilToon
             mtoonMaterial.SetFloat("_DebugMode",                0.0f);
             mtoonMaterial.SetFloat("_CullMode",                 cull.floatValue);
 
-            Texture bakedMainTex = AutoBakeMainTexture(material);
+            var bakedMainTex = AutoBakeMainTexture(material);
             mtoonMaterial.SetTexture("_MainTex", bakedMainTex);
 
-            Vector2 mainScale = material.GetTextureScale(mainTex.name);
-            Vector2 mainOffset = material.GetTextureOffset(mainTex.name);
+            var mainScale = material.GetTextureScale(mainTex.name);
+            var mainOffset = material.GetTextureOffset(mainTex.name);
             mtoonMaterial.SetTextureScale(mainTex.name, mainScale);
             mtoonMaterial.SetTextureOffset(mainTex.name, mainOffset);
 
@@ -3852,13 +3852,13 @@ namespace lilToon
                 float shadeToony = (2.0f - (Mathf.Clamp01(shadowBorder.floatValue + (shadowBlur.floatValue * 0.5f)) * 2.0f)) / (1.0f - shadeShift);
                 if(shadowStrengthMask.textureValue != null || shadowMainStrength.floatValue != 0.0f)
                 {
-                    Texture bakedShadowTex = AutoBakeShadowTexture(material, bakedMainTex);
+                    var bakedShadowTex = AutoBakeShadowTexture(material, bakedMainTex);
                     mtoonMaterial.SetColor("_ShadeColor",               Color.white);
                     mtoonMaterial.SetTexture("_ShadeTexture",           bakedShadowTex);
                 }
                 else
                 {
-                    Color shadeColorStrength = new Color(
+                    var shadeColorStrength = new Color(
                         1.0f - ((1.0f - shadowColor.colorValue.r) * shadowStrength.floatValue),
                         1.0f - ((1.0f - shadowColor.colorValue.g) * shadowStrength.floatValue),
                         1.0f - ((1.0f - shadowColor.colorValue.b) * shadowStrength.floatValue),
@@ -3911,7 +3911,7 @@ namespace lilToon
 
             if(useMatCap.floatValue == 1.0f && matcapBlendMode.floatValue != 3.0f && matcapTex.textureValue != null)
             {
-                Texture bakedMatCap = AutoBakeMatCap(material);
+                var bakedMatCap = AutoBakeMatCap(material);
                 mtoonMaterial.SetTexture("_SphereAdd", bakedMatCap);
             }
 
@@ -3976,8 +3976,8 @@ namespace lilToon
 
         private void CreateLiteMaterial(Material material)
         {
-            Material liteMaterial = new Material(ltsl);
-            RenderingMode renderingMode = renderingModeBuf;
+            var liteMaterial = new Material(ltsl);
+            var renderingMode = renderingModeBuf;
             if(renderingMode == RenderingMode.Refraction)       renderingMode = RenderingMode.Transparent;
             if(renderingMode == RenderingMode.RefractionBlur)   renderingMode = RenderingMode.Transparent;
             if(renderingMode == RenderingMode.Fur)              renderingMode = RenderingMode.Transparent;
@@ -3987,9 +3987,9 @@ namespace lilToon
             bool isonepass      = material.shader.name.Contains("OnePass");
             bool istwopass      = material.shader.name.Contains("TwoPass");
 
-            TransparentMode     transparentMode = TransparentMode.Normal;
-            if(isonepass)       transparentMode = TransparentMode.OnePass;
-            if(istwopass)       transparentMode = TransparentMode.TwoPass;
+            var           transparentMode = TransparentMode.Normal;
+            if(isonepass) transparentMode = TransparentMode.OnePass;
+            if(istwopass) transparentMode = TransparentMode.TwoPass;
 
             SetupMaterialWithRenderingMode(liteMaterial, renderingMode, transparentMode, isOutl, true, isStWr, false);
 
@@ -4009,24 +4009,24 @@ namespace lilToon
             liteMaterial.SetColor("_Color",                     mainColor.colorValue);
             liteMaterial.SetVector("_MainTex_ScrollRotate",     mainTex_ScrollRotate.vectorValue);
 
-            Texture bakedMainTex = AutoBakeMainTexture(material);
+            var bakedMainTex = AutoBakeMainTexture(material);
             liteMaterial.SetTexture("_MainTex", bakedMainTex);
 
-            Vector2 mainScale = material.GetTextureScale(mainTex.name);
-            Vector2 mainOffset = material.GetTextureOffset(mainTex.name);
+            var mainScale = material.GetTextureScale(mainTex.name);
+            var mainOffset = material.GetTextureOffset(mainTex.name);
             liteMaterial.SetTextureScale(mainTex.name, mainScale);
             liteMaterial.SetTextureOffset(mainTex.name, mainOffset);
 
             liteMaterial.SetFloat("_UseShadow",                 useShadow.floatValue);
             if(useShadow.floatValue == 1.0f)
             {
-                Texture bakedShadowTex = AutoBakeShadowTexture(material, bakedMainTex, 1, false);
+                var bakedShadowTex = AutoBakeShadowTexture(material, bakedMainTex, 1, false);
                 liteMaterial.SetFloat("_ShadowBorder",              shadowBorder.floatValue);
                 liteMaterial.SetFloat("_ShadowBlur",                shadowBlur.floatValue);
                 liteMaterial.SetTexture("_ShadowColorTex",          bakedShadowTex);
                 if(shadow2ndColor.colorValue.a != 0.0f)
                 {
-                    Texture bakedShadow2ndTex = AutoBakeShadowTexture(material, bakedMainTex, 2, false);
+                    var bakedShadow2ndTex = AutoBakeShadowTexture(material, bakedMainTex, 2, false);
                     liteMaterial.SetFloat("_Shadow2ndBorder",           shadow2ndBorder.floatValue);
                     liteMaterial.SetFloat("_Shadow2ndBlur",             shadow2ndBlur.floatValue);
                     liteMaterial.SetTexture("_Shadow2ndColorTex",       bakedShadow2ndTex);
@@ -4038,7 +4038,7 @@ namespace lilToon
 
             if(isOutl)
             {
-                Texture bakedOutlineTex = AutoBakeOutlineTexture(material);
+                var bakedOutlineTex = AutoBakeOutlineTexture(material);
                 liteMaterial.SetColor("_OutlineColor",              outlineColor.colorValue);
                 liteMaterial.SetTexture("_OutlineTex",              bakedOutlineTex);
                 liteMaterial.SetVector("_OutlineTex_ScrollRotate",  outlineTex_ScrollRotate.vectorValue);
@@ -4067,7 +4067,7 @@ namespace lilToon
                 liteMaterial.SetFloat("_OutlineStencilZFail",       outlineStencilZFail.floatValue);
             }
 
-            Texture bakedMatCap = AutoBakeMatCap(liteMaterial);
+            var bakedMatCap = AutoBakeMatCap(liteMaterial);
             if(bakedMatCap != null)
             {
                 liteMaterial.SetTexture("_MatCapTex",               bakedMatCap);
@@ -4100,7 +4100,7 @@ namespace lilToon
                 liteMaterial.SetVector("_EmissionBlink",            emissionBlink.vectorValue);
             }
 
-            Texture bakedTriMask = AutoBakeTriMask(liteMaterial);
+            var bakedTriMask = AutoBakeTriMask(liteMaterial);
             if(bakedTriMask != null) liteMaterial.SetTexture("_TriMask", bakedTriMask);
 
             liteMaterial.SetFloat("_SrcBlend",                  srcBlend.floatValue);
@@ -4149,7 +4149,7 @@ namespace lilToon
         protected void ConvertMaterialToCustomShader(Material material)
         {
             lilShaderManager.InitializeShaders();
-            Shader shader = material.shader;
+            var shader = material.shader;
                  if(shader == lts)           { ReplaceToCustomShaders(); shader = lts       ;}
             else if(shader == ltsc)          { ReplaceToCustomShaders(); shader = ltsc      ;}
             else if(shader == ltst)          { ReplaceToCustomShaders(); shader = ltst      ;}
@@ -4258,7 +4258,7 @@ namespace lilToon
                 }
                 if(renderingModeBuf == RenderingMode.Transparent)
                 {
-                    TransparentMode transparentMode = (TransparentMode)EditorGUILayout.Popup(GetLoc("sTransparentMode"), (int)transparentModeBuf, sTransparentModeList);
+                    var transparentMode = (TransparentMode)EditorGUILayout.Popup(GetLoc("sTransparentMode"), (int)transparentModeBuf, sTransparentModeList);
                     if(transparentModeBuf != transparentMode)
                     {
                         SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentMode);
@@ -4638,10 +4638,10 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(monochromeLighting, GetLoc("sMonochromeLighting"));
                     if(shadowEnvStrength != null) m_MaterialEditor.ShaderProperty(shadowEnvStrength, GetLoc("sShadowEnvStrength"));
                     GUILayout.BeginHorizontal();
-                    Rect position2 = EditorGUILayout.GetControlRect();
-                    Rect labelRect = new Rect(position2.x, position2.y, EditorGUIUtility.labelWidth, position2.height);
-                    Rect buttonRect1 = new Rect(labelRect.x + labelRect.width, position2.y, (position2.width - EditorGUIUtility.labelWidth)*0.5f, position2.height);
-                    Rect buttonRect2 = new Rect(buttonRect1.x + buttonRect1.width, position2.y, buttonRect1.width, position2.height);
+                    var position2 = EditorGUILayout.GetControlRect();
+                    var labelRect = new Rect(position2.x, position2.y, EditorGUIUtility.labelWidth, position2.height);
+                    var buttonRect1 = new Rect(labelRect.x + labelRect.width, position2.y, (position2.width - EditorGUIUtility.labelWidth)*0.5f, position2.height);
+                    var buttonRect2 = new Rect(buttonRect1.x + buttonRect1.width, position2.y, buttonRect1.width, position2.height);
                     EditorGUI.PrefixLabel(labelRect, new GUIContent(GetLoc("sLightingPreset")));
                     if(GUI.Button(buttonRect1, new GUIContent(GetLoc("sLightingPresetDefault")))) ApplyLightingPreset(LightingPreset.Default);
                     if(GUI.Button(buttonRect2, new GUIContent(GetLoc("sLightingPresetSemiMonochrome")))) ApplyLightingPreset(LightingPreset.SemiMonochrome);
@@ -4693,10 +4693,10 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(monochromeLighting, GetLoc("sMonochromeLighting"));
                     if(shadowEnvStrength != null) m_MaterialEditor.ShaderProperty(shadowEnvStrength, GetLoc("sShadowEnvStrength"));
                     GUILayout.BeginHorizontal();
-                    Rect position2 = EditorGUILayout.GetControlRect();
-                    Rect labelRect = new Rect(position2.x, position2.y, EditorGUIUtility.labelWidth, position2.height);
-                    Rect buttonRect1 = new Rect(labelRect.x + labelRect.width, position2.y, (position2.width - EditorGUIUtility.labelWidth)*0.5f, position2.height);
-                    Rect buttonRect2 = new Rect(buttonRect1.x + buttonRect1.width, position2.y, buttonRect1.width, position2.height);
+                    var position2 = EditorGUILayout.GetControlRect();
+                    var labelRect = new Rect(position2.x, position2.y, EditorGUIUtility.labelWidth, position2.height);
+                    var buttonRect1 = new Rect(labelRect.x + labelRect.width, position2.y, (position2.width - EditorGUIUtility.labelWidth)*0.5f, position2.height);
+                    var buttonRect2 = new Rect(buttonRect1.x + buttonRect1.width, position2.y, buttonRect1.width, position2.height);
                     EditorGUI.PrefixLabel(labelRect, new GUIContent(GetLoc("sLightingPreset")));
                     if(GUI.Button(buttonRect1, new GUIContent(GetLoc("sLightingPresetDefault")))) ApplyLightingPreset(LightingPreset.Default);
                     if(GUI.Button(buttonRect2, new GUIContent(GetLoc("sLightingPresetSemiMonochrome")))) ApplyLightingPreset(LightingPreset.SemiMonochrome);
@@ -5333,7 +5333,7 @@ namespace lilToon
                     lilEditorGUI.DrawLine();
 
                     // Param1
-                    Vector2 scale = new Vector2(256.0f/glitterParams1.vectorValue.x, 256.0f/glitterParams1.vectorValue.y);
+                    var scale = new Vector2(256.0f/glitterParams1.vectorValue.x, 256.0f/glitterParams1.vectorValue.y);
                     float size = glitterParams1.vectorValue.z == 0.0f ? 0.0f : Mathf.Sqrt(glitterParams1.vectorValue.z);
                     float density = Mathf.Sqrt(1.0f / glitterParams1.vectorValue.w) / 1.5f;
                     float sensitivity = lilEditorGUI.RoundFloat1000000(glitterSensitivity.floatValue / density);
@@ -5808,7 +5808,7 @@ namespace lilToon
         {
             if(mainTex.textureValue != null && lilEditorGUI.EditorButton(GetLoc("sBakeAlphamask")))
             {
-                Texture bakedTexture = AutoBakeAlphaMask(material);
+                var bakedTexture = AutoBakeAlphaMask(material);
                 if(bakedTexture == mainTex.textureValue) return;
 
                 mainTex.textureValue = bakedTexture;
@@ -5855,16 +5855,16 @@ namespace lilToon
                 bool bake2nd = (bakeType == 0 || bakeType == 2 || bakeType == 5) && useMain2ndTex.floatValue != 0.0;
                 bool bake3rd = (bakeType == 0 || bakeType == 3 || bakeType == 6) && useMain3rdTex.floatValue != 0.0;
                 // run bake
-                Texture2D bufMainTexture = mainTex.textureValue as Texture2D;
-                Material hsvgMaterial = new Material(ltsbaker);
+                var bufMainTexture = mainTex.textureValue as Texture2D;
+                var hsvgMaterial = new Material(ltsbaker);
 
                 string path;
 
-                Texture2D srcTexture = new Texture2D(2, 2);
-                Texture2D srcMain2 = new Texture2D(2, 2);
-                Texture2D srcMain3 = new Texture2D(2, 2);
-                Texture2D srcMask2 = new Texture2D(2, 2);
-                Texture2D srcMask3 = new Texture2D(2, 2);
+                var srcTexture = new Texture2D(2, 2);
+                var srcMain2 = new Texture2D(2, 2);
+                var srcMain3 = new Texture2D(2, 2);
+                var srcMask2 = new Texture2D(2, 2);
+                var srcMask3 = new Texture2D(2, 2);
 
                 hsvgMaterial.SetColor(mainColor.name,           mainColor.colorValue);
                 hsvgMaterial.SetVector(mainTexHSVG.name,        mainTexHSVG.vectorValue);
@@ -6008,16 +6008,16 @@ namespace lilToon
                 bool bake2nd = useMain2ndTex.floatValue != 0.0;
                 bool bake3rd = useMain3rdTex.floatValue != 0.0;
                 // run bake
-                Texture2D bufMainTexture = mainTex.textureValue as Texture2D;
-                Material hsvgMaterial = new Material(ltsbaker);
+                var bufMainTexture = mainTex.textureValue as Texture2D;
+                var hsvgMaterial = new Material(ltsbaker);
 
                 string path;
 
-                Texture2D srcTexture = new Texture2D(2, 2);
-                Texture2D srcMain2 = new Texture2D(2, 2);
-                Texture2D srcMain3 = new Texture2D(2, 2);
-                Texture2D srcMask2 = new Texture2D(2, 2);
-                Texture2D srcMask3 = new Texture2D(2, 2);
+                var srcTexture = new Texture2D(2, 2);
+                var srcMain2 = new Texture2D(2, 2);
+                var srcMain3 = new Texture2D(2, 2);
+                var srcMask2 = new Texture2D(2, 2);
+                var srcMask3 = new Texture2D(2, 2);
 
                 hsvgMaterial.SetColor(mainColor.name,           Color.white);
                 hsvgMaterial.SetVector(mainTexHSVG.name,        mainTexHSVG.vectorValue);
@@ -6152,14 +6152,14 @@ namespace lilToon
             if(!shouldNotBakeAll && shouldBake)
             {
                 // run bake
-                Texture2D bufMainTexture = bakedMainTex as Texture2D;
-                Material hsvgMaterial = new Material(ltsbaker);
+                var bufMainTexture = bakedMainTex as Texture2D;
+                var hsvgMaterial = new Material(ltsbaker);
 
                 string path;
 
-                Texture2D srcTexture = new Texture2D(2, 2);
-                Texture2D srcMain2 = new Texture2D(2, 2);
-                Texture2D srcMask2 = new Texture2D(2, 2);
+                var srcTexture = new Texture2D(2, 2);
+                var srcMain2 = new Texture2D(2, 2);
+                var srcMask2 = new Texture2D(2, 2);
 
                 hsvgMaterial.SetColor(mainColor.name,                   Color.white);
                 hsvgMaterial.SetVector(mainTexHSVG.name,                lilConstants.defaultHSVG);
@@ -6254,12 +6254,12 @@ namespace lilToon
             if(!shouldNotBakeAll && EditorUtility.DisplayDialog(GetLoc("sDialogRunBake"), GetLoc("sDialogBakeMatCap"), GetLoc("sYes"), GetLoc("sNo")))
             {
                 // run bake
-                Texture2D bufMainTexture = matcapTex.textureValue as Texture2D;
-                Material hsvgMaterial = new Material(ltsbaker);
+                var bufMainTexture = matcapTex.textureValue as Texture2D;
+                var hsvgMaterial = new Material(ltsbaker);
 
                 string path;
 
-                Texture2D srcTexture = new Texture2D(2, 2);
+                var srcTexture = new Texture2D(2, 2);
 
                 hsvgMaterial.SetColor(mainColor.name,           matcapColor.colorValue);
                 hsvgMaterial.SetVector(mainTexHSVG.name,        lilConstants.defaultHSVG);
@@ -6301,14 +6301,14 @@ namespace lilToon
             if(!shouldNotBakeAll && EditorUtility.DisplayDialog(GetLoc("sDialogRunBake"), GetLoc("sDialogBakeTriMask"), GetLoc("sYes"), GetLoc("sNo")))
             {
                 // run bake
-                Texture2D bufMainTexture = mainTex.textureValue as Texture2D;
-                Material hsvgMaterial = new Material(ltsbaker);
+                var bufMainTexture = mainTex.textureValue as Texture2D;
+                var hsvgMaterial = new Material(ltsbaker);
 
                 string path;
 
-                Texture2D srcTexture = new Texture2D(2, 2);
-                Texture2D srcMain2 = new Texture2D(2, 2);
-                Texture2D srcMain3 = new Texture2D(2, 2);
+                var srcTexture = new Texture2D(2, 2);
+                var srcMain2 = new Texture2D(2, 2);
+                var srcMain3 = new Texture2D(2, 2);
 
                 hsvgMaterial.EnableKeyword("_TRIMASK");
 
@@ -6368,13 +6368,13 @@ namespace lilToon
         private Texture AutoBakeAlphaMask(Material material)
         {
             // run bake
-            Texture2D bufMainTexture = mainTex.textureValue as Texture2D;
-            Material hsvgMaterial = new Material(ltsbaker);
+            var bufMainTexture = mainTex.textureValue as Texture2D;
+            var hsvgMaterial = new Material(ltsbaker);
 
             string path;
 
-            Texture2D srcTexture = new Texture2D(2, 2);
-            Texture2D srcAlphaMask = new Texture2D(2, 2);
+            var srcTexture = new Texture2D(2, 2);
+            var srcAlphaMask = new Texture2D(2, 2);
 
             hsvgMaterial.EnableKeyword("_ALPHAMASK");
             hsvgMaterial.SetColor(mainColor.name,           Color.white);
@@ -6413,7 +6413,7 @@ namespace lilToon
             {
                 CopyTextureSetting(bufMainTexture, outTexture);
                 string savePath = AssetDatabase.GetAssetPath(outTexture);
-                TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(savePath);
+                var textureImporter = (TextureImporter)AssetImporter.GetAtPath(savePath);
                 textureImporter.alphaIsTransparency = true;
                 AssetDatabase.ImportAsset(savePath);
             }
@@ -6430,12 +6430,12 @@ namespace lilToon
             if(!shouldNotBakeOutline && EditorUtility.DisplayDialog(GetLoc("sDialogRunBake"), GetLoc("sDialogBakeOutline"), GetLoc("sYes"), GetLoc("sNo")))
             {
                 // run bake
-                Texture2D bufMainTexture = outlineTex.textureValue as Texture2D;
-                Material hsvgMaterial = new Material(ltsbaker);
+                var bufMainTexture = outlineTex.textureValue as Texture2D;
+                var hsvgMaterial = new Material(ltsbaker);
 
                 string path;
 
-                Texture2D srcTexture = new Texture2D(2, 2);
+                var srcTexture = new Texture2D(2, 2);
 
                 hsvgMaterial.SetColor(mainColor.name,                   Color.white);
                 hsvgMaterial.SetVector(mainTexHSVG.name,                outlineTexHSVG.vectorValue);
@@ -6481,14 +6481,14 @@ namespace lilToon
                 return;
             }
 
-            Material hsvgMaterial = new Material(ltsbaker);
+            var hsvgMaterial = new Material(ltsbaker);
             hsvgMaterial.SetColor(mainColor.name, maskcolor.colorValue);
 
-            Texture2D bufMainTexture = Texture2D.whiteTexture;
+            var bufMainTexture = Texture2D.whiteTexture;
             if(masktex != null && masktex.textureValue is Texture2D) bufMainTexture = (Texture2D)masktex.textureValue;
             string path = "";
 
-            Texture2D srcTexture = new Texture2D(2, 2);
+            var srcTexture = new Texture2D(2, 2);
 
             if(masktex != null) path = AssetDatabase.GetAssetPath(bufMainTexture);
             if(!string.IsNullOrEmpty(path))
@@ -6532,11 +6532,11 @@ namespace lilToon
             }
             outTexture = new Texture2D(width, height);
 
-            RenderTexture bufRT = RenderTexture.active;
-            RenderTexture dstTexture = RenderTexture.GetTemporary(width, height);
+            var bufRT = RenderTexture.active;
+            var dstTexture = RenderTexture.GetTemporary(width, height);
             Graphics.Blit(srcTexture, dstTexture, material);
             RenderTexture.active = dstTexture;
-            outTexture.ReadPixels(new Rect(0, 0, srcTexture.width, srcTexture.height), 0, 0);
+            outTexture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
             outTexture.Apply();
             RenderTexture.active = bufRT;
             RenderTexture.ReleaseTemporary(dstTexture);
@@ -6547,11 +6547,11 @@ namespace lilToon
             if(fromTexture == null || toTexture == null) return;
             string fromPath = AssetDatabase.GetAssetPath(fromTexture);
             string toPath = AssetDatabase.GetAssetPath(toTexture);
-            TextureImporter fromTextureImporter = (TextureImporter)AssetImporter.GetAtPath(fromPath);
-            TextureImporter toTextureImporter = (TextureImporter)AssetImporter.GetAtPath(toPath);
+            var fromTextureImporter = (TextureImporter)AssetImporter.GetAtPath(fromPath);
+            var toTextureImporter = (TextureImporter)AssetImporter.GetAtPath(toPath);
             if(fromTextureImporter == null || toTextureImporter == null) return;
 
-            TextureImporterSettings fromTextureImporterSettings = new TextureImporterSettings();
+            var fromTextureImporterSettings = new TextureImporterSettings();
             fromTextureImporter.ReadTextureSettings(fromTextureImporterSettings);
             toTextureImporter.SetTextureSettings(fromTextureImporterSettings);
             toTextureImporter.SetPlatformTextureSettings(fromTextureImporter.GetDefaultPlatformTextureSettings());
@@ -6572,7 +6572,7 @@ namespace lilToon
             [MenuItem("Window/_lil/[Beta] lilToon Multi-Editor")]
             static void Init()
             {
-                lilMaterialEditor window = (lilMaterialEditor)GetWindow(typeof(lilMaterialEditor), false, "[Beta] lilToon Multi-Editor");
+                var window = (lilMaterialEditor)GetWindow(typeof(lilMaterialEditor), false, "[Beta] lilToon Multi-Editor");
                 window.Show();
             }
 
@@ -6588,7 +6588,7 @@ namespace lilToon
                 isCustomEditor = true;
                 isMultiVariants = objects.Any(obj => ((Material)obj).shader != material.shader);
                 materialEditor = (MaterialEditor)Editor.CreateEditor(objects, typeof(MaterialEditor));
-                lilToonInspector inspector = new lilToonInspector();
+                var inspector = new lilToonInspector();
 
                 EditorGUILayout.LabelField("Selected Materials", string.Join(", ", objects.Select(obj => obj.name).ToArray()), EditorStyles.boldLabel);
                 lilEditorGUI.DrawLine();
@@ -6634,7 +6634,7 @@ namespace lilToon
             if((ssA == null && ssB != null) || (ssA != null && ssB == null)) return false;
             if(ssA == null && ssB == null) return true;
 
-            foreach(FieldInfo field in typeof(lilToonSetting).GetFields(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly))
+            foreach(var field in typeof(lilToonSetting).GetFields(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly))
             {
                 if(field.FieldType != typeof(bool) || (bool)field.GetValue(ssA) == (bool)field.GetValue(ssB)) continue;
                 return false;
@@ -6648,7 +6648,7 @@ namespace lilToon
         {
             if(ssA == null || ssB == null) return;
 
-            foreach(FieldInfo field in typeof(lilToonSetting).GetFields(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly))
+            foreach(var field in typeof(lilToonSetting).GetFields(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly))
             {
                 field.SetValue(ssA, field.GetValue(ssB));
             }

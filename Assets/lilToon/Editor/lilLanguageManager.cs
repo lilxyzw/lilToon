@@ -139,7 +139,7 @@ namespace lilToon
             langSet.languageName = langSet.languageNames.Split('\t')[langSet.languageNum];
             while((str = sr.ReadLine()) != null)
             {
-                string[] lineContents = str.Split('\t');
+                var lineContents = str.Split('\t');
                 loc[lineContents[0]] = lineContents[langSet.languageNum+1];
             }
             sr.Close();

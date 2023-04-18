@@ -36,20 +36,20 @@ namespace lilToon
                     // RSP
                     if(!File.Exists(lilDirectoryManager.rspPath))
                     {
-                        StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
+                        var sw = new StreamWriter(lilDirectoryManager.rspPath,true);
                         sw.Write("-r:System.Drawing.dll" + Environment.NewLine + "-define:SYSTEM_DRAWING");
                         sw.Close();
                         AssetDatabase.Refresh();
                         AssetDatabase.ImportAsset(editorPath);
                     }
 
-                    StreamReader sr = new StreamReader(lilDirectoryManager.rspPath);
+                    var sr = new StreamReader(lilDirectoryManager.rspPath);
                     string s = sr.ReadToEnd();
                     sr.Close();
 
                     if(!s.Contains("r:System.Drawing.dll"))
                     {
-                        StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
+                        var sw = new StreamWriter(lilDirectoryManager.rspPath,true);
                         sw.Write(Environment.NewLine + "-r:System.Drawing.dll");
                         sw.Close();
                         AssetDatabase.Refresh();
@@ -57,7 +57,7 @@ namespace lilToon
                     }
                     if(!s.Contains("define:SYSTEM_DRAWING"))
                     {
-                        StreamWriter sw = new StreamWriter(lilDirectoryManager.rspPath,true);
+                        var sw = new StreamWriter(lilDirectoryManager.rspPath,true);
                         sw.Write(Environment.NewLine + "-define:SYSTEM_DRAWING");
                         sw.Close();
                         AssetDatabase.Refresh();
@@ -72,7 +72,7 @@ namespace lilToon
             string currentRPPath = lilDirectoryManager.GetCurrentRPPath();
             if(File.Exists(currentRPPath))
             {
-                StreamReader srRP = new StreamReader(currentRPPath);
+                var srRP = new StreamReader(currentRPPath);
                 string shaderRP = srRP.ReadLine();
                 string shaderAPI = srRP.ReadLine();
                 srRP.Close();
@@ -80,7 +80,7 @@ namespace lilToon
                 bool shouldRewrite = false;
                 string projectRP = lilRenderPipelineReader.GetRP().ToString();
                 string projectAPI = SystemInfo.graphicsDeviceType.ToString();
-                StreamWriter swRP = new StreamWriter(currentRPPath,false);
+                var swRP = new StreamWriter(currentRPPath,false);
                 swRP.WriteLine(projectRP);
                 swRP.WriteLine(projectAPI);
 
@@ -138,7 +138,7 @@ namespace lilToon
                 #if UNITY_2019_4_OR_NEWER
                     // Update custom shaders
                     var folders = new List<string>();
-                    foreach(string shaderGuid in AssetDatabase.FindAssets("t:shader"))
+                    foreach(var shaderGuid in AssetDatabase.FindAssets("t:shader"))
                     {
                         string shaderPath = lilDirectoryManager.GUIDToPath(shaderGuid);
                         if(!shaderPath.Contains(".lilcontainer")) continue;
@@ -153,7 +153,7 @@ namespace lilToon
                         ) continue;
                         folders.Add(folder);
                     }
-                    foreach(string folder in folders)
+                    foreach(var folder in folders)
                     {
                         AssetDatabase.ImportAsset(folder, ImportAssetOptions.ImportRecursive);
                     }
@@ -180,7 +180,7 @@ namespace lilToon
                     if(!webRequest.isNetworkError)
                 #endif
                 {
-                    StreamWriter sw = new StreamWriter(lilDirectoryManager.versionInfoTempPath,false);
+                    var sw = new StreamWriter(lilDirectoryManager.versionInfoTempPath,false);
                     sw.Write(webRequest.downloadHandler.text);
                     sw.Close();
                 }
@@ -189,9 +189,9 @@ namespace lilToon
 
         private static void MigrateMaterials()
         {
-            foreach(string guid in AssetDatabase.FindAssets("t:material"))
+            foreach(var guid in AssetDatabase.FindAssets("t:material"))
             {
-                Material material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
+                var material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
                 MigrateMaterial(material);
             }
             AssetDatabase.SaveAssets();
@@ -253,7 +253,7 @@ namespace lilToon
 
         private static int[] ReadSemVer(string sem)
         {
-            string[] parts = sem.Split('.');
+            var parts = sem.Split('.');
             if(parts.Length < 3) return null;
             int major, minor, patch;
             try
@@ -282,7 +282,7 @@ namespace lilToon
             {
                 if(m_Instance == null)
                 {
-                    GameObject o = new GameObject("CoroutineHandler")
+                    var o = new GameObject("CoroutineHandler")
                     {
                         hideFlags = HideFlags.HideAndDontSave
                     };

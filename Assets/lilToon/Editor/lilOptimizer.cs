@@ -96,15 +96,15 @@ namespace lilToon
         private static void CheckAnimationClip(AnimationClip clip, Dictionary<string, TexProp> dicT, Dictionary<string, STProp> dicD, Dictionary<string, FloatProp> dicF, Dictionary<string, ColorProp> dicC)
         {
             if(clip == null) return;
-            foreach(EditorCurveBinding binding in AnimationUtility.GetObjectReferenceCurveBindings(clip))
+            foreach(var binding in AnimationUtility.GetObjectReferenceCurveBindings(clip))
             {
-                foreach(ObjectReferenceKeyframe frame in AnimationUtility.GetObjectReferenceCurve(clip, binding))
+                foreach(var frame in AnimationUtility.GetObjectReferenceCurve(clip, binding))
                 {
                     if(frame.value is Material) CheckMaterial((Material)frame.value, dicT, dicD, dicF, dicC);
                 }
             }
 
-            foreach(EditorCurveBinding binding in AnimationUtility.GetCurveBindings(clip))
+            foreach(var binding in AnimationUtility.GetCurveBindings(clip))
             {
                 string propname = binding.propertyName;
                 if(string.IsNullOrEmpty(propname) || !propname.Contains("material.")) continue;

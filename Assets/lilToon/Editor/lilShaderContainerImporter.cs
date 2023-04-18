@@ -23,9 +23,9 @@ namespace lilToon
             public override void OnImportAsset(AssetImportContext ctx)
             {
                 #if UNITY_2019_4_0 || UNITY_2019_4_1 || UNITY_2019_4_2 || UNITY_2019_4_3 || UNITY_2019_4_4 || UNITY_2019_4_5 || UNITY_2019_4_6 || UNITY_2019_4_7 || UNITY_2019_4_8 || UNITY_2019_4_9 || UNITY_2019_4_10
-                    Shader shader = ShaderUtil.CreateShaderAsset(lilShaderContainer.UnpackContainer(ctx.assetPath, ctx), false);
+                    var shader = ShaderUtil.CreateShaderAsset(lilShaderContainer.UnpackContainer(ctx.assetPath, ctx), false);
                 #else
-                    Shader shader = ShaderUtil.CreateShaderAsset(ctx, lilShaderContainer.UnpackContainer(ctx.assetPath, ctx), false);
+                    var shader = ShaderUtil.CreateShaderAsset(ctx, lilShaderContainer.UnpackContainer(ctx.assetPath, ctx), false);
                 #endif
 
                 ctx.AddObjectToAsset("main obj", shader);
@@ -54,7 +54,7 @@ namespace lilToon
         {
             private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
             {
-                foreach(string path in importedAssets)
+                foreach(var path in importedAssets)
                 {
                     if(!path.EndsWith("lilcontainer", StringComparison.InvariantCultureIgnoreCase)) continue;
 
@@ -359,7 +359,7 @@ namespace lilToon
                 );
             }
 
-            foreach(KeyValuePair<string,string> replace in replaces)
+            foreach(var replace in replaces)
             {
                 sb.Replace(FixNewlineCode(replace.Key), FixNewlineCode(replace.Value));
             }
@@ -433,7 +433,7 @@ namespace lilToon
                 return;
             }
             AddDependency(ctx, path);
-            StreamReader sr = new StreamReader(path);
+            var sr = new StreamReader(path);
             string line;
             while((line = sr.ReadLine()) != null)
             {
@@ -579,8 +579,8 @@ namespace lilToon
 
         private static StringBuilder ReadContainerFile(string path, string rpname, AssetImportContext ctx, bool doOptimize)
         {
-            StringBuilder sb = new StringBuilder();
-            StreamReader sr = new StreamReader(path);
+            var sb = new StringBuilder();
+            var sr = new StreamReader(path);
             string line;
 
             while((line = sr.ReadLine()) != null)
@@ -678,8 +678,8 @@ namespace lilToon
 
             if(rpname == "URP" && !subpath.Contains("UsePass"))
             {
-                StringBuilder sb1 = new StringBuilder(ReadTextFile(subpath));
-                StringBuilder sb2 = new StringBuilder(sb1.ToString());
+                var sb1 = new StringBuilder(ReadTextFile(subpath));
+                var sb2 = new StringBuilder(sb1.ToString());
 
                 sb1.Replace(LIL_DOTS_SM_TAGS, " \"ShaderModel\" = \"4.5\"");
                 //sb1.Replace(LIL_DOTS_SM_4_5, "#pragma target 4.5" + Environment.NewLine + "            #pragma exclude_renderers gles gles3 glcore");
@@ -812,7 +812,7 @@ namespace lilToon
 
         private static string ReadTextFile(string path)
         {
-            StreamReader sr = new StreamReader(path);
+            var sr = new StreamReader(path);
             string text = sr.ReadToEnd();
             sr.Close();
             return text;
@@ -827,13 +827,13 @@ namespace lilToon
         {
             #if UNITY_2019_4_0 || UNITY_2019_4_1 || UNITY_2019_4_2 || UNITY_2019_4_3 || UNITY_2019_4_4 || UNITY_2019_4_5 || UNITY_2019_4_6 || UNITY_2019_4_7 || UNITY_2019_4_8 || UNITY_2019_4_9 || UNITY_2019_4_10
                 string additionalPath = assetFolderPath.Replace("\\", "/");
-                char[] escapes = Environment.NewLine.ToCharArray();
-                string[] text = sb.ToString().Split(escapes[0]);
+                var escapes = Environment.NewLine.ToCharArray();
+                var text = sb.ToString().Split(escapes[0]);
                 sb.Clear();
 
                 if(escapes.Length >= 1)
                 {
-                    foreach(char escape in escapes)
+                    foreach(var escape in escapes)
                     {
                         string escapeStr = escape.ToString();
                         for(int i = 0; i < text.Length; i++)
@@ -843,7 +843,7 @@ namespace lilToon
                     }
                 }
 
-                foreach(string line in text)
+                foreach(var line in text)
                 {
                     if(line.Contains("#include \"") && !line.Contains("\"Assets/") && !line.Contains("\"Packages/"))
                     {
@@ -861,7 +861,7 @@ namespace lilToon
         {
             if(ctx == null) return;
 
-            foreach(string guid in AssetDatabase.FindAssets("", new[]{assetFolderPath}))
+            foreach(var guid in AssetDatabase.FindAssets("", new[]{assetFolderPath}))
             {
                 string assetpath = AssetDatabase.GUIDToAssetPath(guid);
                 if(assetpath.Contains("lilcontainer")) continue;
@@ -884,8 +884,8 @@ namespace lilToon
 
         private static string GetRelativePath(string fromPath, string toPath)
         {
-            Uri fromUri = new Uri(Path.GetFullPath(fromPath));
-            Uri toUri = new Uri(Path.GetFullPath(toPath));
+            var fromUri = new Uri(Path.GetFullPath(fromPath));
+            var toUri = new Uri(Path.GetFullPath(toPath));
 
             string relativePath = Uri.UnescapeDataString(fromUri.MakeRelativeUri(toUri).ToString());
             relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, '/');
@@ -937,7 +937,7 @@ namespace lilToon
                     "        */" + Environment.NewLine + "        // ForwardAdd End");
             }
 
-            string[] lines = sb.ToString().Split('\n');
+            var lines = sb.ToString().Split('\n');
             sb = new StringBuilder();
             for(int i = 0; i < lines.Length; i++)
             {
@@ -1537,8 +1537,7 @@ namespace lilToon
         // Avoid Errors
         public static string BuildShaderSettingString(bool isFile, ref bool useBaseShadow, ref bool useOutlineShadow)
         {
-            Type type = typeof(lilToonSetting);
-            var methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public);
+            var methods = typeof(lilToonSetting).GetMethods(BindingFlags.Static | BindingFlags.Public);
             foreach(var method in methods)
             {
                 var methodParams = method.GetParameters();
@@ -1566,8 +1565,7 @@ namespace lilToon
 
         private static object GetFieldValue(string name)
         {
-            Type type = typeof(lilToonSetting);
-            var field = type.GetField(name);
+            var field = typeof(lilToonSetting).GetField(name);
             if(field == null) return null;
 
             lilToonSetting shaderSetting = InitSetting();
@@ -1578,8 +1576,7 @@ namespace lilToon
 
         private static lilToonSetting InitSetting()
         {
-            Type type = typeof(lilToonSetting);
-            var method = type.GetMethod("InitializeShaderSetting", BindingFlags.Static | BindingFlags.NonPublic);
+            var method = typeof(lilToonSetting).GetMethod("InitializeShaderSetting", BindingFlags.Static | BindingFlags.NonPublic);
             if(method == null) return null;
 
             lilToonSetting shaderSetting = null;

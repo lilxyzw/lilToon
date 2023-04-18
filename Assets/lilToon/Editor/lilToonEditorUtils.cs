@@ -94,8 +94,8 @@ namespace lilToon
         [MenuItem(menuPathConvertNormal, false, menuPriorityConvertNormal)]
         private static void ConvertNormal()
         {
-            Texture2D srcTexture = new Texture2D(2, 2, TextureFormat.ARGB32, true, true);
-            Material hsvgMaterial = new Material(Shader.Find("Hidden/ltsother_baker"));
+            var srcTexture = new Texture2D(2, 2, TextureFormat.ARGB32, true, true);
+            var hsvgMaterial = new Material(Shader.Find("Hidden/ltsother_baker"));
             string path = AssetDatabase.GetAssetPath(Selection.activeObject);
             lilTextureUtils.LoadTexture(ref srcTexture, path);
             hsvgMaterial.SetTexture("_MainTex", srcTexture);
@@ -158,9 +158,9 @@ namespace lilToon
         [MenuItem(menuPathPixelArtReduction, false, menuPriorityPixelArtReduction)]
         private static void PixelArtReduction()
         {
-            Texture2D srcTexture = new Texture2D(2, 2);
+            var srcTexture = new Texture2D(2, 2);
             string path = AssetDatabase.GetAssetPath(Selection.activeObject);
-            byte[] bytes = File.ReadAllBytes(Path.GetFullPath(path));
+            var bytes = File.ReadAllBytes(Path.GetFullPath(path));
             srcTexture.LoadImage(bytes);
             lilTextureUtils.LoadTexture(ref srcTexture, path);
             int finalWidth;
@@ -178,7 +178,7 @@ namespace lilToon
                 finalHeight = srcTexture.height / 4;
                 scale = 4;
             }
-            Texture2D outTex = new Texture2D(finalWidth, finalHeight);
+            var outTex = new Texture2D(finalWidth, finalHeight);
             for(int x = 0; x < finalWidth; x++)
             {
                 for(int y = 0; y < finalHeight; y++)
@@ -191,7 +191,7 @@ namespace lilToon
             // Save
             string savePath = lilTextureUtils.SaveTextureToPng(path, "_resized", outTex);
             AssetDatabase.Refresh();
-            TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(savePath);
+            var textureImporter = (TextureImporter)AssetImporter.GetAtPath(savePath);
             textureImporter.filterMode = FilterMode.Point;
             AssetDatabase.ImportAsset(savePath);
         }
@@ -208,15 +208,15 @@ namespace lilToon
         private static void SetupFromFBX()
         {
             if(Selection.objects.Length == 0) return;
-            Shader lts = Shader.Find("lilToon");
+            var lts = Shader.Find("lilToon");
             if(lts == null) EditorUtility.DisplayDialog("Setup From FBX",GetLoc("sUtilShaderNotFound"),GetLoc("sCancel"));
             Undo.RecordObjects(Selection.objects, "Setup From FBX");
-            foreach(Object selectionObj in Selection.objects)
+            foreach(var selectionObj in Selection.objects)
             {
                 string path = AssetDatabase.GetAssetPath(selectionObj);
                 if(!path.EndsWith(".fbx", StringComparison.OrdinalIgnoreCase)) continue;
 
-                ModelImporter importer = (ModelImporter)AssetImporter.GetAtPath(path);
+                var importer = (ModelImporter)AssetImporter.GetAtPath(path);
                 #if UNITY_2019_3_OR_NEWER
                     importer.materialImportMode = ModelImporterMaterialImportMode.ImportStandard;
                 #else
@@ -238,15 +238,15 @@ namespace lilToon
                 lilToonSetting.InitializeShaderSetting(ref shaderSetting);
 
                 // Materials in SerializedObject
-                SerializedObject serializedObject = new SerializedObject(importer);
-                SerializedProperty serializedObjects = serializedObject.FindProperty("m_ExternalObjects");
+                var serializedObject = new SerializedObject(importer);
+                var serializedObjects = serializedObject.FindProperty("m_ExternalObjects");
                 for(int i = 0; i < serializedObjects.arraySize; i++)
                 {
-                    SerializedProperty serializedMaterial = serializedObjects.GetArrayElementAtIndex(i);
+                    var serializedMaterial = serializedObjects.GetArrayElementAtIndex(i);
                     string propType = serializedMaterial.FindPropertyRelative("first.type").stringValue;
                     if(propType != "UnityEngine:Material") continue;
 
-                    Material material = (Material)serializedMaterial.FindPropertyRelative("second").objectReferenceValue;
+                    var material = (Material)serializedMaterial.FindPropertyRelative("second").objectReferenceValue;
                     if(material == null)
                     {
                         material = new Material(lts)
@@ -258,10 +258,10 @@ namespace lilToon
                 }
 
                 // Materials in model
-                foreach(Object obj in AssetDatabase.LoadAllAssetsAtPath(path))
+                foreach(var obj in AssetDatabase.LoadAllAssetsAtPath(path))
                 {
                     if(obj == null || !(obj is Material)) continue;
-                    Material material = new Material((Material)obj);
+                    var material = new Material((Material)obj);
                     SetUpMaterial(ref material, materialFolder, shaderSetting);
                 }
 
@@ -295,14 +295,14 @@ namespace lilToon
             {
                 AssetDatabase.CreateAsset(material, materialPath);
             }
-            Shader lts = Shader.Find("lilToon");
+            var lts = Shader.Find("lilToon");
             if(lts != null) material.shader = lts;
 
             if(material.GetTexture("_MainTex") == null)
             {
-                foreach(string texGUID in AssetDatabase.FindAssets("t:texture2d"))
+                foreach(var texGUID in AssetDatabase.FindAssets("t:texture2d"))
                 {
-                    Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
+                    var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
                     if(tex == null) continue;
                     string texNameLow = tex.name.ToLower();
                     if(!texNameLow.Contains(materialLowerName)) continue;
@@ -340,9 +340,9 @@ namespace lilToon
 
             if(!material.HasProperty("_ShadowStrengthMask") || material.GetTexture("_ShadowStrengthMask") == null)
             {
-                foreach(string texGUID in AssetDatabase.FindAssets("t:texture2d"))
+                foreach(var texGUID in AssetDatabase.FindAssets("t:texture2d"))
                 {
-                    Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
+                    var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
                     if(tex == null) continue;
                     string texNameLow = tex.name.ToLower();
                     if(!texNameLow.Contains(materialLowerName)) continue;
@@ -356,9 +356,9 @@ namespace lilToon
 
             if(isOutl && (!material.HasProperty("_OutlineWidthMask") || material.GetTexture("_OutlineWidthMask") == null))
             {
-                foreach(string texGUID in AssetDatabase.FindAssets("t:texture2d"))
+                foreach(var texGUID in AssetDatabase.FindAssets("t:texture2d"))
                 {
-                    Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
+                    var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
                     if(tex == null) continue;
                     string texNameLow = tex.name.ToLower();
                     if(texNameLow.Contains(materialLowerName) && texNameLow.Contains("outline"))
@@ -389,11 +389,11 @@ namespace lilToon
         [MenuItem(menuPathFixLighting, false, menuPriorityFixLighting)]
         private static void FixLighting()
         {
-            GameObject gameObject = Selection.activeGameObject;
-            Transform anchorTransform = gameObject.transform.Find(anchorName);
-            GameObject anchorObject = anchorTransform != null ? anchorTransform.gameObject : null;
-            MeshRenderer[] meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>(true);
-            SkinnedMeshRenderer[] skinnedMeshRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+            var gameObject = Selection.activeGameObject;
+            var anchorTransform = gameObject.transform.Find(anchorName);
+            var anchorObject = anchorTransform != null ? anchorTransform.gameObject : null;
+            var meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>(true);
+            var skinnedMeshRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>(true);
 
             var recordObjects = new List<Object>{gameObject};
             recordObjects.AddRange(meshRenderers);
@@ -414,7 +414,7 @@ namespace lilToon
             float maxX = -10000.0f;
             float maxY = -10000.0f;
             float maxZ = -10000.0f;
-            foreach(Transform objTransform in gameObject.GetComponentsInChildren<Transform>(true))
+            foreach(var objTransform in gameObject.GetComponentsInChildren<Transform>(true))
             {
                 minX = minX < objTransform.position.x ? minX : objTransform.position.x;
                 minY = minY < objTransform.position.y ? minY : objTransform.position.y;
@@ -424,7 +424,7 @@ namespace lilToon
                 maxZ = maxZ > objTransform.position.z ? maxZ : objTransform.position.z;
             }
 
-            Vector3 centerPosition = new Vector3((minX + maxX) / 2.0f, (minY + maxY) / 2.0f, (minZ + maxZ) / 2.0f);
+            var centerPosition = new Vector3((minX + maxX) / 2.0f, (minY + maxY) / 2.0f, (minZ + maxZ) / 2.0f);
 
             anchorObject.transform.position = new Vector3(gameObject.transform.position.x, centerPosition.y, gameObject.transform.position.z);
             anchorObject.transform.parent = gameObject.transform;
@@ -450,10 +450,10 @@ namespace lilToon
             // MeshRenderer
             if(meshRenderers.Length != 0)
             {
-                foreach(MeshRenderer meshRenderer in meshRenderers)
+                foreach(var meshRenderer in meshRenderers)
                 {
                     // Fix vertex light
-                    foreach(Material material in meshRenderer.sharedMaterials)
+                    foreach(var material in meshRenderer.sharedMaterials)
                     {
                         if(lilMaterialUtils.CheckShaderIslilToon(material) && shaderSetting != null)
                         {
@@ -483,10 +483,10 @@ namespace lilToon
             // SkinnedMeshRenderer
             if(skinnedMeshRenderers.Length != 0)
             {
-                foreach(SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
+                foreach(var skinnedMeshRenderer in skinnedMeshRenderers)
                 {
                     // Fix vertex light
-                    foreach(Material material in skinnedMeshRenderer.sharedMaterials)
+                    foreach(var material in skinnedMeshRenderer.sharedMaterials)
                     {
                         if(lilMaterialUtils.CheckShaderIslilToon(material) && shaderSetting != null)
                         {
@@ -541,7 +541,7 @@ namespace lilToon
 
         internal static void GenerateBugReport(List<Material> materialsIn, List<AnimationClip> clipsIn, string addText)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.AppendLine("# Shader Information");
             sb.AppendLine("lilToon " + lilConstants.currentVersionName);
@@ -642,14 +642,14 @@ namespace lilToon
             var clipList = new List<AnimationClip>();
             if(Selection.activeGameObject == null)
             {
-                foreach(string guid in AssetDatabase.FindAssets("t:material"))
+                foreach(var guid in AssetDatabase.FindAssets("t:material"))
                 {
-                    Material material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
+                    var material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
                     materialList.Add(material);
                 }
-                foreach(string guid in AssetDatabase.FindAssets("t:animationclip"))
+                foreach(var guid in AssetDatabase.FindAssets("t:animationclip"))
                 {
-                    AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(lilDirectoryManager.GUIDToPath(guid));
+                    var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(lilDirectoryManager.GUIDToPath(guid));
                     clipList.Add(clip);
                 }
             }
@@ -678,8 +678,8 @@ namespace lilToon
             if(materialsIn != null) materialList.AddRange(materialsIn);
             if(clipsIn != null) clipList.AddRange(clipsIn);
 
-            Material[] materials = materialList.ToArray();
-            AnimationClip[] clips = clipList.ToArray();
+            var materials = materialList.ToArray();
+            var clips = clipList.ToArray();
 
             if(materials == null)   sb.AppendLine("Material is not found");
             else                    sb.AppendLine("Material Count: " + materials.Length);
@@ -718,7 +718,7 @@ namespace lilToon
             string path = AssetDatabase.GUIDToAssetPath(guid);
             if(!string.IsNullOrEmpty(path))
             {
-                PackageInfos package = JsonUtility.FromJson<PackageInfos>(File.ReadAllText(path));
+                var package = JsonUtility.FromJson<PackageInfos>(File.ReadAllText(path));
                 return package.version;
             }
             return null;
@@ -761,13 +761,13 @@ namespace lilToon
         {
             if(!shader.name.Contains("lilToon") && !shader.name.Contains("ltspass")) return;
 
-            lilRenderPipeline lilRP = lilRenderPipelineReader.GetRP();
+            var lilRP = lilRenderPipelineReader.GetRP();
             if(lilRP != lilRenderPipeline.BRP) return; // Avoid conflicts with custom render pipelines
 
             if(shader.name.Contains("lilToonMulti"))
             {
-                string[] keywords = GatherKeywords(shader, data);
-                Material[] materials = GatherMaterials(shader);
+                var keywords = GatherKeywords(shader, data);
+                var materials = GatherMaterials(shader);
 
                 for(int i = data.Count - 1; i >= 0; i--)
                 {
@@ -783,10 +783,10 @@ namespace lilToon
 
         private Material[] GatherMaterials(Shader shader)
         {
-            List<Material> materialList = new List<Material>();
-            foreach(string guid in AssetDatabase.FindAssets("t:material"))
+            var materialList = new List<Material>();
+            foreach(var guid in AssetDatabase.FindAssets("t:material"))
             {
-                Material material = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(guid));
+                var material = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(guid));
                 if(material.shader == shader) materialList.Add(material);
             }
             return materialList.ToArray();
@@ -794,10 +794,10 @@ namespace lilToon
 
         private bool IsMatchKeywords(Material material, ShaderKeywordSet shaderKeywordSet, Shader shader, string[] keywords)
         {
-            foreach(string keyword in keywords)
+            foreach(var keyword in keywords)
             {
                 bool materialHasKeyword = System.Array.IndexOf(material.shaderKeywords, keyword) >= 0;
-                ShaderKeyword keyword2 = new ShaderKeyword(shader, keyword);
+                var keyword2 = new ShaderKeyword(shader, keyword);
                 if(materialHasKeyword && shaderKeywordSet.IsEnabled(keyword2))
                 {
                     continue;
@@ -813,29 +813,29 @@ namespace lilToon
 
         private bool ShouldRemoveShadowsScreen(Shader shader, ShaderKeywordSet shaderKeywordSet, lilRenderPipeline RP)
         {
-            ShaderKeyword _REQUIRE_UV2 = new ShaderKeyword(shader, "_REQUIRE_UV2");
-            ShaderKeyword ANTI_FLICKER = new ShaderKeyword(shader, "ANTI_FLICKER");
+            var _REQUIRE_UV2 = new ShaderKeyword(shader, "_REQUIRE_UV2");
+            var ANTI_FLICKER = new ShaderKeyword(shader, "ANTI_FLICKER");
             if(shaderKeywordSet.IsEnabled(_REQUIRE_UV2) || shaderKeywordSet.IsEnabled(ANTI_FLICKER)) return false;
             if(RP == lilRenderPipeline.BRP)
             {
-                ShaderKeyword SHADOWS_SCREEN                = new ShaderKeyword(shader, "SHADOWS_SCREEN");
+                var SHADOWS_SCREEN                = new ShaderKeyword(shader, "SHADOWS_SCREEN");
                 return shaderKeywordSet.IsEnabled(SHADOWS_SCREEN);
             }
             else if(RP == lilRenderPipeline.LWRP || RP == lilRenderPipeline.URP)
             {
-                ShaderKeyword _MAIN_LIGHT_SHADOWS           = new ShaderKeyword(shader, "_MAIN_LIGHT_SHADOWS");
-                ShaderKeyword _MAIN_LIGHT_SHADOWS_CASCADE   = new ShaderKeyword(shader, "_MAIN_LIGHT_SHADOWS_CASCADE");
-                ShaderKeyword _MAIN_LIGHT_SHADOWS_SCREEN    = new ShaderKeyword(shader, "_MAIN_LIGHT_SHADOWS_SCREEN");
-                ShaderKeyword _SHADOWS_SOFT                 = new ShaderKeyword(shader, "_SHADOWS_SOFT");
+                var _MAIN_LIGHT_SHADOWS           = new ShaderKeyword(shader, "_MAIN_LIGHT_SHADOWS");
+                var _MAIN_LIGHT_SHADOWS_CASCADE   = new ShaderKeyword(shader, "_MAIN_LIGHT_SHADOWS_CASCADE");
+                var _MAIN_LIGHT_SHADOWS_SCREEN    = new ShaderKeyword(shader, "_MAIN_LIGHT_SHADOWS_SCREEN");
+                var _SHADOWS_SOFT                 = new ShaderKeyword(shader, "_SHADOWS_SOFT");
                 return shaderKeywordSet.IsEnabled(_MAIN_LIGHT_SHADOWS) || shaderKeywordSet.IsEnabled(_MAIN_LIGHT_SHADOWS_CASCADE) || shaderKeywordSet.IsEnabled(_MAIN_LIGHT_SHADOWS_SCREEN) || shaderKeywordSet.IsEnabled(_SHADOWS_SOFT);
             }
             else if(RP == lilRenderPipeline.HDRP)
             {
-                ShaderKeyword SCREEN_SPACE_SHADOWS_OFF      = new ShaderKeyword(shader, "SCREEN_SPACE_SHADOWS_OFF");
-                ShaderKeyword SCREEN_SPACE_SHADOWS_ON       = new ShaderKeyword(shader, "SCREEN_SPACE_SHADOWS_ON");
-                ShaderKeyword SHADOW_LOW                    = new ShaderKeyword(shader, "SHADOW_LOW");
-                ShaderKeyword SHADOW_MEDIUM                 = new ShaderKeyword(shader, "SHADOW_MEDIUM");
-                ShaderKeyword SHADOW_HIGH                   = new ShaderKeyword(shader, "SHADOW_HIGH");
+                var SCREEN_SPACE_SHADOWS_OFF      = new ShaderKeyword(shader, "SCREEN_SPACE_SHADOWS_OFF");
+                var SCREEN_SPACE_SHADOWS_ON       = new ShaderKeyword(shader, "SCREEN_SPACE_SHADOWS_ON");
+                var SHADOW_LOW                    = new ShaderKeyword(shader, "SHADOW_LOW");
+                var SHADOW_MEDIUM                 = new ShaderKeyword(shader, "SHADOW_MEDIUM");
+                var SHADOW_HIGH                   = new ShaderKeyword(shader, "SHADOW_HIGH");
                 return shaderKeywordSet.IsEnabled(SCREEN_SPACE_SHADOWS_OFF) || shaderKeywordSet.IsEnabled(SCREEN_SPACE_SHADOWS_ON) || shaderKeywordSet.IsEnabled(SHADOW_LOW) || shaderKeywordSet.IsEnabled(SHADOW_MEDIUM) || shaderKeywordSet.IsEnabled(SHADOW_HIGH);
             }
             return false;
@@ -844,9 +844,9 @@ namespace lilToon
         private string[] GatherKeywords(Shader shader, IList<ShaderCompilerData> data)
         {
             List<string> keywordList = new List<string>();
-            foreach(ShaderCompilerData part in data)
+            foreach(var part in data)
             {
-                foreach(ShaderKeyword keyword in part.shaderKeywordSet.GetShaderKeywords())
+                foreach(var keyword in part.shaderKeywordSet.GetShaderKeywords())
                 {
                     #if UNITY_2021_2_OR_NEWER
                         if(!ShaderKeyword.IsKeywordLocal(keyword) || keywordList.Contains(keyword.name)) continue;

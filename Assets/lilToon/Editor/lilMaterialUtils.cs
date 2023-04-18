@@ -608,7 +608,7 @@ namespace lilToon
 
         public static void RemoveShaderKeywords(Material material)
         {
-            foreach(string keyword in material.shaderKeywords)
+            foreach(var keyword in material.shaderKeywords)
             {
                 material.DisableKeyword(keyword);
             }

@@ -35,14 +35,14 @@ namespace lilToon
 
         public static bool Foldout(string title, string help, bool display)
         {
-            Rect rect = GUILayoutUtility.GetRect(16f, 20f, foldout);
+            var rect = GUILayoutUtility.GetRect(16f, 20f, foldout);
             rect.width += 8f;
             rect.x -= 8f;
             GUI.Box(rect, new GUIContent(title, help), foldout);
 
-            Event e = Event.current;
+            var e = Event.current;
 
-            Rect toggleRect = new Rect(rect.x + 4f, rect.y + 2f, 13f, 13f);
+            var toggleRect = new Rect(rect.x + 4f, rect.y + 2f, 13f, 13f);
             if(e.type == EventType.Repaint) {
                 EditorStyles.foldout.Draw(toggleRect, false, false, display, false);
             }
@@ -63,10 +63,10 @@ namespace lilToon
 
         public static void DrawWebButton(string text, string URL)
         {
-            Rect position = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect());
-            GUIContent icon = EditorGUIUtility.IconContent("BuildSettings.Web.Small");
+            var position = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect());
+            var icon = EditorGUIUtility.IconContent("BuildSettings.Web.Small");
             icon.text = text;
-            GUIStyle style = new GUIStyle(EditorStyles.label){padding = new RectOffset()};
+            var style = new GUIStyle(EditorStyles.label){padding = new RectOffset()};
             if(GUI.Button(position, icon, style)){
                 Application.OpenURL(URL);
             }
@@ -75,7 +75,7 @@ namespace lilToon
         public static bool DrawSimpleFoldout(string label, bool condition, GUIStyle style, bool isCustomEditor = true)
         {
             EditorGUI.indentLevel++;
-            Rect position = EditorGUILayout.GetControlRect();
+            var position = EditorGUILayout.GetControlRect();
             EditorGUI.LabelField(position, label, style);
             EditorGUI.indentLevel--;
 
@@ -91,7 +91,7 @@ namespace lilToon
         public static bool DrawSimpleFoldout(MaterialEditor materialEditor, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, bool condition, bool isCustomEditor = true)
         {
             EditorGUI.indentLevel++;
-            Rect position = materialEditor.TexturePropertySingleLine(guiContent, textureName, rgba);
+            var position = materialEditor.TexturePropertySingleLine(guiContent, textureName, rgba);
             EditorGUI.indentLevel--;
 
             position.x += isCustomEditor ? 0 : 10;
@@ -101,7 +101,7 @@ namespace lilToon
         public static bool DrawSimpleFoldout(MaterialEditor materialEditor, GUIContent guiContent, MaterialProperty textureName, bool condition, bool isCustomEditor = true)
         {
             EditorGUI.indentLevel++;
-            Rect position = materialEditor.TexturePropertySingleLine(guiContent, textureName);
+            var position = materialEditor.TexturePropertySingleLine(guiContent, textureName);
             EditorGUI.indentLevel--;
 
             position.x += isCustomEditor ? 0 : 10;
@@ -143,7 +143,7 @@ namespace lilToon
 
         public static void DrawHelpButton(string helpAnchor)
         {
-            Rect position = GUILayoutUtility.GetLastRect();
+            var position = GUILayoutUtility.GetLastRect();
             position.x += position.width - 24;
             position.width = 24;
             if(GUI.Button(position, EditorGUIUtility.IconContent("_Help"), middleButton)){
@@ -359,17 +359,17 @@ namespace lilToon
 
         private static void ScrollAndRotateGUI(MaterialProperty prop)
         {
-            Vector2 scroll = new Vector2(prop.vectorValue.x, prop.vectorValue.y);
+            var scroll = new Vector2(prop.vectorValue.x, prop.vectorValue.y);
             float angle = Radian2Degree(prop.vectorValue.z);
             float rotate = RoundFloat1000000(prop.vectorValue.w / Mathf.PI * 0.5f);
 
             EditorGUI.BeginChangeCheck();
 
-            Rect positionVec2 = EditorGUILayout.GetControlRect();
+            var positionVec2 = EditorGUILayout.GetControlRect();
 
             // Scroll label
             float labelWidth = EditorGUIUtility.labelWidth;
-            Rect labelRect = new Rect(positionVec2.x, positionVec2.y, labelWidth, positionVec2.height);
+            var labelRect = new Rect(positionVec2.x, positionVec2.y, labelWidth, positionVec2.height);
             EditorGUI.PrefixLabel(labelRect, new GUIContent(GetLoc("sScroll")));
 
             // Copy & Reset indent
@@ -377,7 +377,7 @@ namespace lilToon
             EditorGUI.indentLevel = 0;
 
             // Scroll
-            Rect vecRect = new Rect(positionVec2.x + labelWidth, positionVec2.y, positionVec2.width - labelWidth, positionVec2.height);
+            var vecRect = new Rect(positionVec2.x + labelWidth, positionVec2.y, positionVec2.width - labelWidth, positionVec2.height);
             scroll = EditorGUI.Vector2Field(vecRect, GUIContent.none, scroll);
 
             // Revert indent
@@ -464,7 +464,7 @@ namespace lilToon
             if(tex.textureValue is Texture2D && !((Texture2D)tex.textureValue).alphaIsTransparency && AutoFixHelpBox(GetLoc("sNotAlphaIsTransparency")))
             {
                 string path = AssetDatabase.GetAssetPath(tex.textureValue);
-                TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(path);
+                var textureImporter = (TextureImporter)AssetImporter.GetAtPath(path);
                 textureImporter.alphaIsTransparency = true;
                 AssetDatabase.ImportAsset(path);
             }
@@ -632,10 +632,10 @@ namespace lilToon
                 m_MaterialEditor.ShaderProperty(vrParallaxStrength, GetLoc("sVRParallaxStrength"));
 
                 GUILayout.BeginHorizontal();
-                Rect position2 = EditorGUILayout.GetControlRect();
-                Rect labelRect = new Rect(position2.x, position2.y, EditorGUIUtility.labelWidth, position2.height);
-                Rect buttonRect1 = new Rect(labelRect.x + labelRect.width, position2.y, (position2.width - EditorGUIUtility.labelWidth)*0.5f, position2.height);
-                Rect buttonRect2 = new Rect(buttonRect1.x + buttonRect1.width, position2.y, buttonRect1.width, position2.height);
+                var position2 = EditorGUILayout.GetControlRect();
+                var labelRect = new Rect(position2.x, position2.y, EditorGUIUtility.labelWidth, position2.height);
+                var buttonRect1 = new Rect(labelRect.x + labelRect.width, position2.y, (position2.width - EditorGUIUtility.labelWidth)*0.5f, position2.height);
+                var buttonRect2 = new Rect(buttonRect1.x + buttonRect1.width, position2.y, buttonRect1.width, position2.height);
                 EditorGUI.PrefixLabel(labelRect, new GUIContent("UV Preset"));
                 if(GUI.Button(buttonRect1, new GUIContent("MatCap"))) ApplyMatCapUVPreset(false, blendUV1, zRotCancel, perspective, vrParallaxStrength);
                 if(GUI.Button(buttonRect2, new GUIContent("AngelRing"))) ApplyMatCapUVPreset(true, blendUV1, zRotCancel, perspective, vrParallaxStrength);
@@ -677,9 +677,9 @@ namespace lilToon
                 val / 128 % 2 != 0
             };
             EditorGUI.BeginChangeCheck();
-            Rect position = EditorGUILayout.GetControlRect();
-            Rect labelRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, position.height);
-            Rect toggleRect = new Rect(labelRect.x + labelRect.width + 2, position.y, position.height, position.height);
+            var position = EditorGUILayout.GetControlRect();
+            var labelRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, position.height);
+            var toggleRect = new Rect(labelRect.x + labelRect.width + 2, position.y, position.height, position.height);
             EditorGUI.PrefixLabel(labelRect, new GUIContent(label));
             b[7] = EditorGUI.Toggle(toggleRect,b[7]); toggleRect.x += position.height;
             b[6] = EditorGUI.Toggle(toggleRect,b[6]); toggleRect.x += position.height;
@@ -704,7 +704,7 @@ namespace lilToon
             }
 
             EditorGUI.BeginChangeCheck();
-            Rect numRect = new Rect(toggleRect.x, position.y, position.width - toggleRect.x + position.height + 2, position.height);
+            var numRect = new Rect(toggleRect.x, position.y, position.width - toggleRect.x + position.height + 2, position.height);
             val = EditorGUI.IntField(numRect, val);
             if(EditorGUI.EndChangeCheck())
             {
