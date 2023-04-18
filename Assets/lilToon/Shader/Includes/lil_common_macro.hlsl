@@ -323,6 +323,12 @@
         return tex3D(tex, float3(positionCS*0.25,alpha*0.9375)).a;
     }
 
+    float4 lilSamplePointRepeat(TEXTURE2D(tex), float2 positionCS, float2 size)
+    {
+        uint2 uv = (uint2)positionCS.xy%(uint2)size;
+        return tex2D(tex, uv/size);
+    }
+
     float2 lilGetWidthAndHeight(TEXTURE2D(tex))
     {
         return float2(0, 0);
@@ -395,6 +401,12 @@
         uint3 uv = uint3(positionCS, alpha*0.9375*16);
         uv.xy = uv.xy % 4;
         return tex[uv].a;
+    }
+
+    float4 lilSamplePointRepeat(TEXTURE2D(tex), float2 positionCS, float2 size)
+    {
+        uint2 uv = (uint2)positionCS.xy%(uint2)size;
+        return tex[uv];
     }
 
     float2 lilGetWidthAndHeight(TEXTURE2D(tex))
