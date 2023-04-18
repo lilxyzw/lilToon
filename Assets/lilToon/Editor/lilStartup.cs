@@ -225,7 +225,7 @@ namespace lilToon
             if(indexlil < 0) return;
             string packageVerString = packageName.Substring(indexlil + 8);
 
-            var semPackage = new SemVerParser(packageVerString);
+            var semPackage = new SemVerParser(packageVerString, true);
             var semCurrent = new SemVerParser(lilConstants.currentVersionName);
             if(semPackage == null || semCurrent == null) return;
 

@@ -11,6 +11,35 @@ namespace lilToon
         public string prerelease;
         public string build;
 
+        public SemVerParser(string versionString, bool isForced) {
+            // https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+            var pattern = @"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$";
+            var pattern2 = @"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)";
+            var regex = new Regex(pattern);
+            var regex2 = new Regex(pattern2);
+            var match = regex.Match(versionString);
+            var match2 = regex2.Match(versionString);
+            if (match.Success) {
+                major = int.Parse(match.Groups[1].Value);
+                minor = int.Parse(match.Groups[2].Value);
+                patch = int.Parse(match.Groups[3].Value);
+                prerelease = match.Groups[4].Success ? match.Groups[4].Value : null;
+                build = match.Groups[5].Success ? match.Groups[5].Value : null;
+            } else if (match2.Success) {
+                major = int.Parse(match2.Groups[1].Value);
+                minor = int.Parse(match2.Groups[2].Value);
+                patch = int.Parse(match2.Groups[3].Value);
+                prerelease = null;
+                build = null;
+            } else if(isForced) {
+                major = 999999;
+                minor = 999999;
+                patch = 999999;
+            } else {
+                throw new ArgumentException("Invalid semver string: " + versionString);
+            }
+        }
+
         public SemVerParser(string versionString) {
             // https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
             var pattern = @"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$";
