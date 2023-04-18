@@ -3627,59 +3627,53 @@ namespace lilToon
 
         private void CopyProperties(PropertyBlock propertyBlock)
         {
-            foreach(var prop in AllProperties())
+            foreach(var p in AllProperties().Where(p =>
+                p.p != null &&
+                p.blocks.Any(b => b == propertyBlock)
+            ))
             {
-                foreach(var block in prop.blocks)
-                {
-                    if(block == propertyBlock && prop.p != null) copiedProperties[prop.name] = prop.p;
-                }
+                copiedProperties[p.name] = p.p;
             }
         }
 
         private void PasteProperties(PropertyBlock propertyBlock, bool shouldCopyTex)
         {
-            foreach(var prop in AllProperties())
+            foreach(var p in AllProperties().Where(p =>
+                p.p != null &&
+                p.blocks.Any(b => b == propertyBlock) &&
+                !(!shouldCopyTex && p.isTexture) &&
+                copiedProperties.ContainsKey(p.name) &&
+                copiedProperties[p.name] != null
+            ))
             {
-                if(!shouldCopyTex && prop.isTexture)
-                {
-                    Debug.Log("Skip Texture");
-                    continue;
-                }
-                foreach(var block in prop.blocks)
-                {
-                    if(block == propertyBlock && prop.p != null && copiedProperties.ContainsKey(prop.name) && copiedProperties[prop.name] != null)
-                    {
-                        var propType = prop.type;
-                        if(propType == MaterialProperty.PropType.Color)     prop.colorValue = copiedProperties[prop.name].colorValue;
-                        if(propType == MaterialProperty.PropType.Vector)    prop.vectorValue = copiedProperties[prop.name].vectorValue;
-                        if(propType == MaterialProperty.PropType.Float)     prop.floatValue = copiedProperties[prop.name].floatValue;
-                        if(propType == MaterialProperty.PropType.Range)     prop.floatValue = copiedProperties[prop.name].floatValue;
-                        if(propType == MaterialProperty.PropType.Texture)   prop.textureValue = copiedProperties[prop.name].textureValue;
-                    }
-                }
+                var propType = p.type;
+                if(propType == MaterialProperty.PropType.Color)   p.colorValue = copiedProperties[p.name].colorValue;
+                if(propType == MaterialProperty.PropType.Vector)  p.vectorValue = copiedProperties[p.name].vectorValue;
+                if(propType == MaterialProperty.PropType.Float)   p.floatValue = copiedProperties[p.name].floatValue;
+                if(propType == MaterialProperty.PropType.Range)   p.floatValue = copiedProperties[p.name].floatValue;
+                if(propType == MaterialProperty.PropType.Texture) p.textureValue = copiedProperties[p.name].textureValue;
             }
         }
 
         private void ResetProperties(PropertyBlock propertyBlock)
         {
             #if UNITY_2019_3_OR_NEWER
-            foreach(var prop in AllProperties())
+            foreach(var p in AllProperties().Where(p =>
+                p.p != null &&
+                p.blocks.Any(b => b == propertyBlock) &&
+                p.targets[0] is Material &&
+                ((Material)p.targets[0]).shader != null
+            ))
             {
-                foreach(var block in prop.blocks)
-                {
-                    if(block == propertyBlock && prop.p != null && prop.targets[0] is Material && ((Material)prop.targets[0]).shader != null)
-                    {
-                        var shader = ((Material)prop.targets[0]).shader;
-                        int propID = shader.FindPropertyIndex(prop.name);
-                        if(propID == -1) return;
-                        var propType = prop.type;
-                        if(propType == MaterialProperty.PropType.Color)     prop.colorValue = shader.GetPropertyDefaultVectorValue(propID);
-                        if(propType == MaterialProperty.PropType.Vector)    prop.vectorValue = shader.GetPropertyDefaultVectorValue(propID);
-                        if(propType == MaterialProperty.PropType.Float)     prop.floatValue = shader.GetPropertyDefaultFloatValue(propID);
-                        if(propType == MaterialProperty.PropType.Range)     prop.floatValue = shader.GetPropertyDefaultFloatValue(propID);
-                        if(propType == MaterialProperty.PropType.Texture)   prop.textureValue = null;
-                    }
-                }
+                var shader = ((Material)p.targets[0]).shader;
+                int propID = shader.FindPropertyIndex(p.name);
+                if(propID == -1) continue;
+                var propType = p.type;
+                if(propType == MaterialProperty.PropType.Color)     p.colorValue = shader.GetPropertyDefaultVectorValue(propID);
+                if(propType == MaterialProperty.PropType.Vector)    p.vectorValue = shader.GetPropertyDefaultVectorValue(propID);
+                if(propType == MaterialProperty.PropType.Float)     p.floatValue = shader.GetPropertyDefaultFloatValue(propID);
+                if(propType == MaterialProperty.PropType.Range)     p.floatValue = shader.GetPropertyDefaultFloatValue(propID);
+                if(propType == MaterialProperty.PropType.Texture)   p.textureValue = null;
             }
             #endif
         }
@@ -6633,14 +6627,7 @@ namespace lilToon
         {
             if((ssA == null && ssB != null) || (ssA != null && ssB == null)) return false;
             if(ssA == null && ssB == null) return true;
-
-            foreach(var field in typeof(lilToonSetting).GetFields(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly))
-            {
-                if(field.FieldType != typeof(bool) || (bool)field.GetValue(ssA) == (bool)field.GetValue(ssB)) continue;
-                return false;
-            }
-
-            return true;
+            return !typeof(lilToonSetting).GetFields(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly).Any(f => f.FieldType == typeof(bool) && (bool)f.GetValue(ssA) != (bool)f.GetValue(ssB));
         }
 
         [Obsolete("This may be deleted in the future.")]

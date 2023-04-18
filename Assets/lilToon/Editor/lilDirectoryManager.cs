@@ -1,5 +1,8 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 namespace lilToon
 {
@@ -53,6 +56,26 @@ namespace lilToon
         public static bool ExistsEncryption() { return !string.IsNullOrEmpty(GetAvatarEncryptionPath()); }
         public static bool ExistsAvaCryptV2() { return !string.IsNullOrEmpty(GetAvaCryptV2Path()); }
         public static bool ExistsClusterCreatorKit() { return !string.IsNullOrEmpty(GetClusterCreatorKitPath()); }
+
+        public static IEnumerable<string> FindAssetsPath(string filter, string[] folders)
+        {
+            return AssetDatabase.FindAssets(filter, folders).Select(id => GUIDToPath(id));
+        }
+
+        public static IEnumerable<string> FindAssetsPath(string filter)
+        {
+            return AssetDatabase.FindAssets(filter).Select(id => GUIDToPath(id));
+        }
+
+        public static IEnumerable<T> FindAssets<T>(string filter, string[] folders) where T : Object
+        {
+            return FindAssetsPath(filter, folders).Select(p => AssetDatabase.LoadAssetAtPath<T>(p));
+        }
+
+        public static IEnumerable<T> FindAssets<T>(string filter) where T : Object
+        {
+            return FindAssetsPath(filter).Select(p => AssetDatabase.LoadAssetAtPath<T>(p));
+        }
     }
 }
 #endif

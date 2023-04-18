@@ -207,9 +207,8 @@ public class lilToonSetting : ScriptableObject
         LoadShaderSetting(ref shaderSetting);
         if(shaderSetting == null)
         {
-            foreach(var guid in AssetDatabase.FindAssets("t:lilToonSetting"))
+            foreach(var path in lilDirectoryManager.FindAssetsPath("t:lilToonSetting"))
             {
-                string path = lilDirectoryManager.GUIDToPath(guid);
                 var shaderSettingOld = AssetDatabase.LoadAssetAtPath<lilToonSetting>(path);
                 shaderSetting = Instantiate(shaderSettingOld);
                 if(shaderSetting != null)
@@ -449,23 +448,13 @@ public class lilToonSetting : ScriptableObject
         string shaderSettingString = BuildShaderSettingString(shaderSetting, true);
 
         string shaderFolderPath = lilDirectoryManager.GetShaderFolderPath();
-        var folders = new List<string>{shaderFolderPath};
         string baseShaderFolderPath = lilDirectoryManager.GetBaseShaderFolderPath();
-        foreach(var shaderGuid in AssetDatabase.FindAssets("", new[] {baseShaderFolderPath}))
+        foreach(var baseShaderPath in lilDirectoryManager.FindAssetsPath("", new[] {baseShaderFolderPath}).Where(p => p.Contains(".lilinternal")))
         {
-            string baseShaderPath = lilDirectoryManager.GUIDToPath(shaderGuid);
-            if(!baseShaderPath.Contains(".lilinternal")) continue;
             string shaderPath = shaderFolderPath + Path.AltDirectorySeparatorChar + Path.GetFileNameWithoutExtension(baseShaderPath) + ".shader";
             File.WriteAllText(shaderPath, lilShaderContainer.UnpackContainer(baseShaderPath));
         }
-        foreach(var shaderGuid in AssetDatabase.FindAssets("t:shader"))
-        {
-            string shaderPath = lilDirectoryManager.GUIDToPath(shaderGuid);
-            if(!shaderPath.Contains(".lilcontainer")) continue;
-            string folder = Path.GetDirectoryName(shaderPath);
-            if(!folders.Contains(folder)) folders.Add(folder);
-        }
-        foreach(var folder in folders)
+        foreach(var folder in lilDirectoryManager.FindAssetsPath("t:shader").Where(p => p.Contains(".lilcontainer")).Select(p => Path.GetDirectoryName(p)).Distinct())
         {
             AssetDatabase.ImportAsset(folder, ImportAssetOptions.ImportRecursive);
         }
@@ -784,9 +773,7 @@ public class lilToonSetting : ScriptableObject
         var shaders = GetShaderListFromGameObject(materials, clips);
         if(shaders.Count() == 0) return;
 
-        var shaderNames = new List<string>();
-        foreach(var shader in shaders) shaderNames.Add(shader.name);
-        usedShaders = string.Join(Environment.NewLine, shaderNames.ToArray());
+        usedShaders = string.Join(Environment.NewLine, shaders.Select(s => s.name).Distinct());
 
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
@@ -817,9 +804,7 @@ public class lilToonSetting : ScriptableObject
             var shaders = GetShaderListFromGameObject(materials, clips);
             if(shaders.Count() == 0) return;
 
-            var shaderNames = new List<string>();
-            foreach(var shader in shaders) shaderNames.Add(shader.name);
-            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaderNames.ToArray()));
+            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaders.Select(s => s.name).Distinct()));
 
             lilToonSetting shaderSetting = null;
             InitializeShaderSetting(ref shaderSetting);
@@ -856,11 +841,7 @@ public class lilToonSetting : ScriptableObject
         {
             if(!ShouldOptimization()) return;
             var shaders = GetShaderListFromProject();
-
-            var shaderNames = new List<string>();
-            foreach(var shader in shaders) shaderNames.Add(shader.name);
-            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaderNames.ToArray()));
-
+            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaders.Select(s => s.name).Distinct()));
             ApplyShaderSettingOptimized(shaders);
         }
         catch(Exception e)
@@ -884,15 +865,7 @@ public class lilToonSetting : ScriptableObject
 
             lilOptimizer.ResetInputHLSL();
 
-            var shaders = new List<Shader>();
-            if(shaderNames.Length > 0)
-            {
-                foreach(var shaderName in shaderNames)
-                {
-                    var usePassShader = Shader.Find(shaderName);
-                    if(usePassShader != null) shaders.Add(usePassShader);
-                }
-            }
+            var shaders = shaderNames.Select(n => Shader.Find(n)).Where(s => s != null).ToList();
             if(shaderSetting.isDebugOptimize)
             {
                 ApplyShaderSettingOptimized();
@@ -1181,15 +1154,9 @@ public class lilToonSetting : ScriptableObject
 
         if(shouldCheckMaterial)
         {
-            foreach(var binding in AnimationUtility.GetObjectReferenceCurveBindings(clip))
+            foreach(var frame in AnimationUtility.GetObjectReferenceCurveBindings(clip).SelectMany(b => AnimationUtility.GetObjectReferenceCurve(clip, b)).Where(f => f.value is Material))
             {
-                foreach(var frame in AnimationUtility.GetObjectReferenceCurve(clip, binding))
-                {
-                    if(frame.value is Material)
-                    {
-                        SetupShaderSettingFromMaterial((Material)frame.value, ref shaderSetting);
-                    }
-                }
+                SetupShaderSettingFromMaterial((Material)frame.value, ref shaderSetting);
             }
         }
 
@@ -1268,23 +1235,15 @@ public class lilToonSetting : ScriptableObject
     internal static void CheckTextures(ref lilToonSetting shaderSetting)
     {
         // Get materials
-        foreach(var guid in AssetDatabase.FindAssets("t:material"))
+        foreach(var material in lilDirectoryManager.FindAssets<Material>("t:material"))
         {
-            var material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
             CheckTextures(ref shaderSetting, material);
         }
 
         // Get animations
-        foreach(var guid in AssetDatabase.FindAssets("t:animationclip"))
+        foreach(var propname in lilDirectoryManager.FindAssets<AnimationClip>("t:animationclip").SelectMany(c => AnimationUtility.GetCurveBindings(c)).Select(b => b.propertyName).Where(n => !string.IsNullOrEmpty(n) && n.Contains("material.")))
         {
-            var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(lilDirectoryManager.GUIDToPath(guid));
-            foreach(var binding in AnimationUtility.GetCurveBindings(clip))
-            {
-                string propname = binding.propertyName;
-                if(string.IsNullOrEmpty(propname) || !propname.Contains("material.")) continue;
-
-                CheckTextures(ref shaderSetting, propname);
-            }
+            CheckTextures(ref shaderSetting, propname);
         }
     }
 
@@ -1435,25 +1394,12 @@ public class lilToonSetting : ScriptableObject
 
     private static List<Shader> GetShaderListFromProject()
     {
-        var shaders = new List<Shader>();
-
-        foreach(var guid in AssetDatabase.FindAssets("t:material"))
-        {
-            var material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
-            if(lilMaterialUtils.CheckShaderIslilToon(material)) shaders.Add(material.shader);
-        }
-
-        return GetTrueShaderLists(shaders);
+        return GetTrueShaderLists(lilDirectoryManager.FindAssets<Material>("t:material").Where(m => lilMaterialUtils.CheckShaderIslilToon(m)).Select(m => m.shader).Distinct().ToList());
     }
 
     private static List<Shader> GetShaderListFromGameObject(Material[] materials, AnimationClip[] clips)
     {
-        var shaders = new List<Shader>();
-
-        foreach(var material in materials)
-        {
-            if(lilMaterialUtils.CheckShaderIslilToon(material)) shaders.Add(material.shader);
-        }
+        var shaders = materials.Where(m => lilMaterialUtils.CheckShaderIslilToon(m)).Select(m => m.shader).ToList();
 
         foreach(var clip in clips)
         {
@@ -1466,10 +1412,8 @@ public class lilToonSetting : ScriptableObject
     private static List<Shader> GetTrueShaderLists(List<Shader> shaders)
     {
         shaders = shaders.Distinct().ToList();
-        for(int i = 0; i < shaders.Count(); i++)
+        foreach(var path in shaders.Select(s => AssetDatabase.GetAssetPath(s)).Where(p => !string.IsNullOrEmpty(p)))
         {
-            string path = AssetDatabase.GetAssetPath(shaders[i]);
-            if(string.IsNullOrEmpty(path)) continue;
             TextReader sr;
             if(path.Contains(".lilcontainer"))
             {
@@ -1499,16 +1443,7 @@ public class lilToonSetting : ScriptableObject
 
     private static void CheckAnimationClip(AnimationClip clip, List<Shader> shaders)
     {
-        foreach(var binding in AnimationUtility.GetObjectReferenceCurveBindings(clip))
-        {
-            foreach(var frame in AnimationUtility.GetObjectReferenceCurve(clip, binding))
-            {
-                if(frame.value is Material && lilMaterialUtils.CheckShaderIslilToon((Material)frame.value))
-                {
-                    shaders.Add(((Material)frame.value).shader);
-                }
-            }
-        }
+        shaders.AddRange(AnimationUtility.GetObjectReferenceCurveBindings(clip).SelectMany(b => AnimationUtility.GetObjectReferenceCurve(clip, b)).Where(f => lilMaterialUtils.CheckShaderIslilToon(f.value as Material)).Select(f => ((Material)f.value).shader));
     }
 }
 #endif

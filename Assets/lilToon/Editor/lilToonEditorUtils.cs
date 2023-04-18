@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using Object = UnityEngine.Object;
 using System.Text;
@@ -74,12 +75,9 @@ namespace lilToon
         {
             if(Selection.objects.Length == 0) return;
             Undo.RecordObjects(Selection.objects, "Remove unused properties");
-            for(int i = 0; i < Selection.objects.Length; i++)
+            foreach(var m in Selection.objects.Where(o => o is Material).Select(o => (Material)o))
             {
-                if(Selection.objects[i] is Material)
-                {
-                    lilMaterialUtils.RemoveUnusedTexture((Material)Selection.objects[i]);
-                }
+                lilMaterialUtils.RemoveUnusedTexture(m);
             }
         }
 
@@ -140,10 +138,9 @@ namespace lilToon
         [MenuItem(menuPathConvertLUTToPNG, false, menuPriorityConvertLUTToPNG)]
         private static void ConvertLUTToPNG()
         {
-            if(Selection.objects.Length == 0) return;
-            for(int i = 0; i < Selection.objects.Length; i++)
+            foreach(var o in Selection.objects)
             {
-                lilTextureUtils.ConvertLUTToPNG(Selection.objects[i]);
+                lilTextureUtils.ConvertLUTToPNG(o);
             }
         }
 
@@ -258,9 +255,8 @@ namespace lilToon
                 }
 
                 // Materials in model
-                foreach(var obj in AssetDatabase.LoadAllAssetsAtPath(path))
+                foreach(var obj in AssetDatabase.LoadAllAssetsAtPath(path).Where(o => o is Material))
                 {
-                    if(obj == null || !(obj is Material)) continue;
                     var material = new Material((Material)obj);
                     SetUpMaterial(ref material, materialFolder, shaderSetting);
                 }
@@ -300,10 +296,8 @@ namespace lilToon
 
             if(material.GetTexture("_MainTex") == null)
             {
-                foreach(var texGUID in AssetDatabase.FindAssets("t:texture2d"))
+                foreach(var tex in lilDirectoryManager.FindAssets<Texture2D>("t:texture2d"))
                 {
-                    var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
-                    if(tex == null) continue;
                     string texNameLow = tex.name.ToLower();
                     if(!texNameLow.Contains(materialLowerName)) continue;
                     if(lilMaterialUtils.CheckMainTextureName(texNameLow))
@@ -340,10 +334,8 @@ namespace lilToon
 
             if(!material.HasProperty("_ShadowStrengthMask") || material.GetTexture("_ShadowStrengthMask") == null)
             {
-                foreach(var texGUID in AssetDatabase.FindAssets("t:texture2d"))
+                foreach(var tex in lilDirectoryManager.FindAssets<Texture2D>("t:texture2d"))
                 {
-                    var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
-                    if(tex == null) continue;
                     string texNameLow = tex.name.ToLower();
                     if(!texNameLow.Contains(materialLowerName)) continue;
                     if((texNameLow.Contains("shadow") || texNameLow.Contains("shade")) && (texNameLow.Contains("mask") || texNameLow.Contains("strength")))
@@ -356,10 +348,8 @@ namespace lilToon
 
             if(isOutl && (!material.HasProperty("_OutlineWidthMask") || material.GetTexture("_OutlineWidthMask") == null))
             {
-                foreach(var texGUID in AssetDatabase.FindAssets("t:texture2d"))
+                foreach(var tex in lilDirectoryManager.FindAssets<Texture2D>("t:texture2d"))
                 {
-                    var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(texGUID));
-                    if(tex == null) continue;
                     string texNameLow = tex.name.ToLower();
                     if(texNameLow.Contains(materialLowerName) && texNameLow.Contains("outline"))
                     {
@@ -453,20 +443,17 @@ namespace lilToon
                 foreach(var meshRenderer in meshRenderers)
                 {
                     // Fix vertex light
-                    foreach(var material in meshRenderer.sharedMaterials)
+                    foreach(var material in meshRenderer.sharedMaterials.Where(m => lilMaterialUtils.CheckShaderIslilToon(m) && shaderSetting != null))
                     {
-                        if(lilMaterialUtils.CheckShaderIslilToon(material) && shaderSetting != null)
-                        {
-                            Undo.RecordObject(material, "[lilToon] Fix lighting");
-                            material.SetFloat("_AsUnlit", shaderSetting.defaultAsUnlit);
-                            material.SetFloat("_VertexLightStrength", shaderSetting.defaultVertexLightStrength);
-                            material.SetFloat("_LightMinLimit", shaderSetting.defaultLightMinLimit);
-                            material.SetFloat("_LightMaxLimit", shaderSetting.defaultLightMaxLimit);
-                            material.SetFloat("_BeforeExposureLimit", shaderSetting.defaultBeforeExposureLimit);
-                            material.SetFloat("_MonochromeLighting", shaderSetting.defaultMonochromeLighting);
-                            material.SetFloat("_lilDirectionalLightStrength", shaderSetting.defaultlilDirectionalLightStrength);
-                            EditorUtility.SetDirty(material);
-                        }
+                        Undo.RecordObject(material, "[lilToon] Fix lighting");
+                        material.SetFloat("_AsUnlit", shaderSetting.defaultAsUnlit);
+                        material.SetFloat("_VertexLightStrength", shaderSetting.defaultVertexLightStrength);
+                        material.SetFloat("_LightMinLimit", shaderSetting.defaultLightMinLimit);
+                        material.SetFloat("_LightMaxLimit", shaderSetting.defaultLightMaxLimit);
+                        material.SetFloat("_BeforeExposureLimit", shaderSetting.defaultBeforeExposureLimit);
+                        material.SetFloat("_MonochromeLighting", shaderSetting.defaultMonochromeLighting);
+                        material.SetFloat("_lilDirectionalLightStrength", shaderSetting.defaultlilDirectionalLightStrength);
+                        EditorUtility.SetDirty(material);
                     }
 
                     // Fix renderer settings
@@ -486,20 +473,17 @@ namespace lilToon
                 foreach(var skinnedMeshRenderer in skinnedMeshRenderers)
                 {
                     // Fix vertex light
-                    foreach(var material in skinnedMeshRenderer.sharedMaterials)
+                    foreach(var material in skinnedMeshRenderer.sharedMaterials.Where(m => lilMaterialUtils.CheckShaderIslilToon(m) && shaderSetting != null))
                     {
-                        if(lilMaterialUtils.CheckShaderIslilToon(material) && shaderSetting != null)
-                        {
-                            Undo.RecordObject(material, "[lilToon] Fix lighting");
-                            material.SetFloat("_AsUnlit", shaderSetting.defaultAsUnlit);
-                            material.SetFloat("_VertexLightStrength", shaderSetting.defaultVertexLightStrength);
-                            material.SetFloat("_LightMinLimit", shaderSetting.defaultLightMinLimit);
-                            material.SetFloat("_LightMaxLimit", shaderSetting.defaultLightMaxLimit);
-                            material.SetFloat("_BeforeExposureLimit", shaderSetting.defaultBeforeExposureLimit);
-                            material.SetFloat("_MonochromeLighting", shaderSetting.defaultMonochromeLighting);
-                            material.SetFloat("_lilDirectionalLightStrength", shaderSetting.defaultlilDirectionalLightStrength);
-                            EditorUtility.SetDirty(material);
-                        }
+                        Undo.RecordObject(material, "[lilToon] Fix lighting");
+                        material.SetFloat("_AsUnlit", shaderSetting.defaultAsUnlit);
+                        material.SetFloat("_VertexLightStrength", shaderSetting.defaultVertexLightStrength);
+                        material.SetFloat("_LightMinLimit", shaderSetting.defaultLightMinLimit);
+                        material.SetFloat("_LightMaxLimit", shaderSetting.defaultLightMaxLimit);
+                        material.SetFloat("_BeforeExposureLimit", shaderSetting.defaultBeforeExposureLimit);
+                        material.SetFloat("_MonochromeLighting", shaderSetting.defaultMonochromeLighting);
+                        material.SetFloat("_lilDirectionalLightStrength", shaderSetting.defaultlilDirectionalLightStrength);
+                        EditorUtility.SetDirty(material);
                     }
 
                     // Fix renderer settings
@@ -638,31 +622,17 @@ namespace lilToon
             sb.AppendLine();
 
             sb.AppendLine("# GameObject Information");
-            var materialList = new List<Material>();
-            var clipList = new List<AnimationClip>();
+            List<Material> materialList;
+            List<AnimationClip> clipList;
             if(Selection.activeGameObject == null)
             {
-                foreach(var guid in AssetDatabase.FindAssets("t:material"))
-                {
-                    var material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
-                    materialList.Add(material);
-                }
-                foreach(var guid in AssetDatabase.FindAssets("t:animationclip"))
-                {
-                    var clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(lilDirectoryManager.GUIDToPath(guid));
-                    clipList.Add(clip);
-                }
+                materialList = lilDirectoryManager.FindAssets<Material>("t:material").ToList();
+                clipList = lilDirectoryManager.FindAssets<AnimationClip>("t:animationclip").ToList();
             }
             else
             {
-                foreach(var renderer in Selection.activeGameObject.GetComponentsInChildren<Renderer>(true))
-                {
-                    materialList.AddRange(renderer.sharedMaterials);
-                }
-                foreach(var animator in Selection.activeGameObject.GetComponentsInChildren<Animator>(true))
-                {
-                    if(animator.runtimeAnimatorController != null) clipList.AddRange(animator.runtimeAnimatorController.animationClips);
-                }
+                materialList = Selection.activeGameObject.GetComponentsInChildren<Renderer>(true).SelectMany(r => r.sharedMaterials).ToList();
+                clipList = Selection.activeGameObject.GetComponentsInChildren<Animator>(true).Where(a => a.runtimeAnimatorController != null).SelectMany(a => a.runtimeAnimatorController.animationClips).ToList();
                 var meshRenderers = Selection.activeGameObject.GetComponentsInChildren<MeshRenderer>(true);
                 var skinnedMeshRenderers = Selection.activeGameObject.GetComponentsInChildren<SkinnedMeshRenderer>(true);
                 var animators = Selection.activeGameObject.GetComponentsInChildren<Animator>(true);
@@ -783,20 +753,14 @@ namespace lilToon
 
         private Material[] GatherMaterials(Shader shader)
         {
-            var materialList = new List<Material>();
-            foreach(var guid in AssetDatabase.FindAssets("t:material"))
-            {
-                var material = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(guid));
-                if(material.shader == shader) materialList.Add(material);
-            }
-            return materialList.ToArray();
+            return lilDirectoryManager.FindAssets<Material>("t:material").Where(m => m.shader == shader).ToArray();
         }
 
         private bool IsMatchKeywords(Material material, ShaderKeywordSet shaderKeywordSet, Shader shader, string[] keywords)
         {
             foreach(var keyword in keywords)
             {
-                bool materialHasKeyword = System.Array.IndexOf(material.shaderKeywords, keyword) >= 0;
+                bool materialHasKeyword = Array.IndexOf(material.shaderKeywords, keyword) >= 0;
                 var keyword2 = new ShaderKeyword(shader, keyword);
                 if(materialHasKeyword && shaderKeywordSet.IsEnabled(keyword2))
                 {
@@ -843,21 +807,11 @@ namespace lilToon
 
         private string[] GatherKeywords(Shader shader, IList<ShaderCompilerData> data)
         {
-            List<string> keywordList = new List<string>();
-            foreach(var part in data)
-            {
-                foreach(var keyword in part.shaderKeywordSet.GetShaderKeywords())
-                {
-                    #if UNITY_2021_2_OR_NEWER
-                        if(!ShaderKeyword.IsKeywordLocal(keyword) || keywordList.Contains(keyword.name)) continue;
-                        keywordList.Add(keyword.name);
-                    #else
-                        if(!ShaderKeyword.IsKeywordLocal(keyword) || keywordList.Contains(ShaderKeyword.GetKeywordName(shader, keyword))) continue;
-                        keywordList.Add(ShaderKeyword.GetKeywordName(shader, keyword));
-                    #endif
-                }
-            }
-            return keywordList.ToArray();
+            #if UNITY_2021_2_OR_NEWER
+                return data.SelectMany(p => p.shaderKeywordSet.GetShaderKeywords()).Where(k => ShaderKeyword.IsKeywordLocal(k)).Select(k => k.name).Distinct().ToArray();
+            #else
+                return data.SelectMany(p => p.shaderKeywordSet.GetShaderKeywords()).Where(k => ShaderKeyword.IsKeywordLocal(k)).Select(k => ShaderKeyword.GetKeywordName(shader, k)).Distinct().ToArray();
+            #endif
         }
     }
 #endif

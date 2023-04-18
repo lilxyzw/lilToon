@@ -88,15 +88,7 @@ namespace lilToon
 
         public void FindProperty(MaterialProperty[] props)
         {
-            for(var i = 0; i < props.Length; i++)
-            {
-                if(props[i] != null && props[i].name == propertyName)
-                {
-                    p = props[i];
-                    return;
-                }
-            }
-            p = null;
+            p = props.FirstOrDefault(prop => prop != null && prop.name == propertyName);
         }
 
         public lilMaterialProperty()

@@ -7,8 +7,9 @@ using UnityEngine;
 using UnityEditor;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Linq;
 #if UNITY_2020_2_OR_NEWER
-    using UnityEditor.AssetImporters;
+using UnityEditor.AssetImporters;
 #else
     using UnityEditor.Experimental.AssetImporters;
 #endif
@@ -54,16 +55,14 @@ namespace lilToon
         {
             private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
             {
-                foreach(var path in importedAssets)
+                foreach(var path in importedAssets.Where(p => p.EndsWith("lilcontainer", StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    if(!path.EndsWith("lilcontainer", StringComparison.InvariantCultureIgnoreCase)) continue;
-
                     var mainobj = AssetDatabase.LoadMainAssetAtPath(path);
                     if(mainobj is Shader) ShaderUtil.RegisterShader((Shader)mainobj);
 
-                    foreach(var obj in AssetDatabase.LoadAllAssetRepresentationsAtPath(path))
+                    foreach(var obj in AssetDatabase.LoadAllAssetRepresentationsAtPath(path).Where(o => o is Shader))
                     {
-                        if(obj is Shader) ShaderUtil.RegisterShader((Shader)obj);
+                        ShaderUtil.RegisterShader((Shader)obj);
                     }
                 }
             }
@@ -835,10 +834,9 @@ namespace lilToon
                 {
                     foreach(var escape in escapes)
                     {
-                        string escapeStr = escape.ToString();
                         for(int i = 0; i < text.Length; i++)
                         {
-                            text[i] = text[i].Replace(escapeStr, "");
+                            text[i] = text[i].Replace(escape.ToString(), "");
                         }
                     }
                 }
@@ -861,10 +859,8 @@ namespace lilToon
         {
             if(ctx == null) return;
 
-            foreach(var guid in AssetDatabase.FindAssets("", new[]{assetFolderPath}))
+            foreach(var assetpath in lilDirectoryManager.FindAssetsPath("", new[]{assetFolderPath}).Where(p => !p.Contains("lilcontainer")))
             {
-                string assetpath = AssetDatabase.GUIDToAssetPath(guid);
-                if(assetpath.Contains("lilcontainer")) continue;
                 AddDependency(ctx, assetpath);
             }
         }

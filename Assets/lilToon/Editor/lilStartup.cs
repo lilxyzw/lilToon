@@ -7,6 +7,7 @@ using System.IO;
 using System.Collections;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace lilToon
 {
@@ -138,10 +139,8 @@ namespace lilToon
                 #if UNITY_2019_4_OR_NEWER
                     // Update custom shaders
                     var folders = new List<string>();
-                    foreach(var shaderGuid in AssetDatabase.FindAssets("t:shader"))
+                    foreach(var shaderPath in lilDirectoryManager.FindAssetsPath("t:shader").Where(p => p.Contains(".lilcontainer")))
                     {
-                        string shaderPath = lilDirectoryManager.GUIDToPath(shaderGuid);
-                        if(!shaderPath.Contains(".lilcontainer")) continue;
                         string folder = Path.GetDirectoryName(shaderPath);
                         if(folders.Contains(folder)) continue;
                         var shader = AssetDatabase.LoadAssetAtPath<Shader>(shaderPath);
@@ -189,9 +188,8 @@ namespace lilToon
 
         private static void MigrateMaterials()
         {
-            foreach(var guid in AssetDatabase.FindAssets("t:material"))
+            foreach(var material in lilDirectoryManager.FindAssets<Material>("t:material"))
             {
-                var material = AssetDatabase.LoadAssetAtPath<Material>(lilDirectoryManager.GUIDToPath(guid));
                 MigrateMaterial(material);
             }
             AssetDatabase.SaveAssets();

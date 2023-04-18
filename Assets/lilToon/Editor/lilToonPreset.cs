@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using lilToon;
 using UnityEditor;
 using UnityEngine;
@@ -61,9 +62,9 @@ public class lilToonPreset : ScriptableObject
     {
         if(material == null || preset == null) return;
         Undo.RecordObject(material, "Apply Preset");
-        for(int i = 0; i < preset.floats.Length; i++)
+        foreach(var f in preset.floats.Where(f => f.name == "_StencilPass"))
         {
-            if(preset.floats[i].name == "_StencilPass") material.SetFloat(preset.floats[i].name, preset.floats[i].value);
+            material.SetFloat(f.name, f.value);
         }
         if(preset.shader != null) material.shader = preset.shader;
         bool isoutl         = preset.outline == -1 ? material.shader.name.Contains("Outline") : (preset.outline == 1);
@@ -103,14 +104,14 @@ public class lilToonPreset : ScriptableObject
         lilMaterialUtils.SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, istess, ismulti);
         if(preset.renderQueue != -2) material.renderQueue = preset.renderQueue;
 
-        for(int i = 0; i < preset.colors.Length;   i++) material.SetColor(preset.colors[i].name, preset.colors[i].value);
-        for(int i = 0; i < preset.vectors.Length;  i++) material.SetVector(preset.vectors[i].name, preset.vectors[i].value);
-        for(int i = 0; i < preset.floats.Length;   i++) material.SetFloat(preset.floats[i].name, preset.floats[i].value);
-        for(int i = 0; i < preset.textures.Length; i++)
+        foreach(var c in preset.colors ) material.SetColor(c.name, c.value);
+        foreach(var v in preset.vectors) material.SetVector(v.name, v.value);
+        foreach(var f in preset.floats ) material.SetFloat(f.name, f.value);
+        foreach(var t in preset.textures)
         {
-            material.SetTexture(preset.textures[i].name, preset.textures[i].value);
-            material.SetTextureOffset(preset.textures[i].name, preset.textures[i].offset);
-            material.SetTextureScale(preset.textures[i].name, preset.textures[i].scale);
+            material.SetTexture(t.name, t.value);
+            material.SetTextureOffset(t.name, t.offset);
+            material.SetTextureScale(t.name, t.scale);
         }
 
         if(preset.outlineMainTex) material.SetTexture("_OutlineTex", material.GetTexture("_MainTex"));
@@ -118,13 +119,7 @@ public class lilToonPreset : ScriptableObject
 
     public static lilToonPreset[] LoadPresets()
     {
-        var presetGuid = AssetDatabase.FindAssets("t:lilToonPreset");
-        var presetList = new List<lilToonPreset>();
-        for(int i=0; i<presetGuid.Length; i++)
-        {
-            presetList.Add(AssetDatabase.LoadAssetAtPath<lilToonPreset>(lilDirectoryManager.GUIDToPath(presetGuid[i])));
-        }
-        return presetList.ToArray();
+        return lilDirectoryManager.FindAssets<lilToonPreset>("t:lilToonPreset").ToArray();
     }
 
     //------------------------------------------------------------------------------------------------------------------------------
