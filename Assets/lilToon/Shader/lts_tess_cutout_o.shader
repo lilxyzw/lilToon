@@ -23,6 +23,7 @@ Shader "Hidden/lilToonTessellationCutoutOutline"
                         _AAStrength                 ("AA Strength", Range(0, 1)) = 1
         [lilToggle]     _UseDither                  ("Dither", Int) = 0
         [NoScaleOffset] _DitherTex                  ("Dither", 2D) = "white" {}
+                        _DitherMaxValue             ("Max Value", Float) = 255
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main

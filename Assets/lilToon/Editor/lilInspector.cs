@@ -302,6 +302,7 @@ namespace lilToon
         private readonly lilMaterialProperty aaStrength             = new lilMaterialProperty("_AAStrength", PropertyBlock.Base);
         private readonly lilMaterialProperty useDither              = new lilMaterialProperty("_UseDither", PropertyBlock.Base);
         private readonly lilMaterialProperty ditherTex              = new lilMaterialProperty("_DitherTex", PropertyBlock.Base);
+        private readonly lilMaterialProperty ditherMaxValue         = new lilMaterialProperty("_DitherMaxValue", PropertyBlock.Base);
 
         private readonly lilMaterialProperty asUnlit                        = new lilMaterialProperty("_AsUnlit", PropertyBlock.Lighting);
         private readonly lilMaterialProperty vertexLightStrength            = new lilMaterialProperty("_VertexLightStrength", PropertyBlock.Lighting);
@@ -893,6 +894,7 @@ namespace lilToon
                 aaStrength,
                 useDither,
                 ditherTex,
+                ditherMaxValue,
 
                 asUnlit,
                 vertexLightStrength,
@@ -4327,7 +4329,19 @@ namespace lilToon
                     if(!isFakeShadow) m_MaterialEditor.ShaderProperty(aaStrength, GetLoc("sAAShading"));
                     if(!isFakeShadow && renderingModeBuf == RenderingMode.Cutout || (isMulti && transparentModeMat.floatValue == 1.0f))
                     {
-                        m_MaterialEditor.TexturePropertySingleLine(ditherContent, ditherTex, useDither);
+                        m_MaterialEditor.ShaderProperty(useDither, GetLoc("sDither"));
+                        if(useDither.floatValue == 1.0f)
+                        {
+                            EditorGUI.indentLevel++;
+                            EditorGUI.BeginChangeCheck();
+                            m_MaterialEditor.TexturePropertySingleLine(ditherContent, ditherTex);
+                            if(EditorGUI.EndChangeCheck() && ditherTex.textureValue != null)
+                            {
+                                ditherMaxValue.floatValue = Mathf.Clamp(ditherTex.textureValue.width * ditherTex.textureValue.height-1, 0, 255);
+                            }
+                            m_MaterialEditor.ShaderProperty(ditherMaxValue, "Max Value");
+                            EditorGUI.indentLevel--;
+                        }
                     }
                     m_MaterialEditor.RenderQueueField();
                     if((renderingModeBuf >= RenderingMode.Transparent && renderingModeBuf != RenderingMode.FurCutout) || (isMulti && transparentModeMat.floatValue == 2.0f))

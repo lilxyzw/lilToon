@@ -520,13 +520,13 @@
                 if(_UseDither == 1) \
                 { \
                     lilDistanceFadeAlphaOnly(fd); \
-                    fd.col.a = fd.col.a >= (_DitherTex[(uint2)input.positionCS.xy%(uint2)_DitherTex_TexelSize.zw].r * 255 + 1) / (_DitherTex_TexelSize.z*_DitherTex_TexelSize.w+1); \
+                    fd.col.a = fd.col.a >= (_DitherTex[(uint2)input.positionCS.xy%(uint2)_DitherTex_TexelSize.zw].r * 255 + 1) / (_DitherMaxValue+2); \
                 }
         #else
             #define OVERRIDE_DITHER \
                 if(_UseDither == 1) \
                 { \
-                    fd.col.a = fd.col.a >= (_DitherTex[(uint2)input.positionCS.xy%(uint2)_DitherTex_TexelSize.zw].r * 255 + 1) / (_DitherTex_TexelSize.z*_DitherTex_TexelSize.w+1); \
+                    fd.col.a = fd.col.a >= (_DitherTex[(uint2)input.positionCS.xy%(uint2)_DitherTex_TexelSize.zw].r * 255 + 1) / (_DitherMaxValue+2); \
                 }
         #endif
     #else

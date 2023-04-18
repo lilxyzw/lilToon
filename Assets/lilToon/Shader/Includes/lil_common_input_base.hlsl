@@ -456,6 +456,9 @@ float   _AAStrength;
     float   _Parallax;
     float   _ParallaxOffset;
 #endif
+#if defined(LIL_FEATURE_DITHER)
+    float   _DitherMaxValue;
+#endif
 #if defined(LIL_FEATURE_AUDIOLINK)
     float   _AudioLink2EmissionGrad;
     float   _AudioLink2Emission2ndGrad;

@@ -544,6 +544,9 @@ CBUFFER_START(UnityPerMaterial)
         float   _Parallax;
         float   _ParallaxOffset;
     #endif
+    #if defined(LIL_MULTI_INPUTS_DITHER)
+        float   _DitherMaxValue;
+    #endif
     #if defined(LIL_MULTI_INPUTS_AUDIOLINK)
         float   _AudioLink2EmissionGrad;
         float   _AudioLink2Emission2ndGrad;
