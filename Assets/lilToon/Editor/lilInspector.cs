@@ -3831,7 +3831,7 @@ namespace lilToon
             mtoonMaterial.SetFloat("_DebugMode",                0.0f);
             mtoonMaterial.SetFloat("_CullMode",                 cull.floatValue);
 
-            Texture2D bakedMainTex = AutoBakeMainTexture(material);
+            Texture bakedMainTex = AutoBakeMainTexture(material);
             mtoonMaterial.SetTexture("_MainTex", bakedMainTex);
 
             Vector2 mainScale = material.GetTextureScale(mainTex.name);
@@ -3852,7 +3852,7 @@ namespace lilToon
                 float shadeToony = (2.0f - (Mathf.Clamp01(shadowBorder.floatValue + (shadowBlur.floatValue * 0.5f)) * 2.0f)) / (1.0f - shadeShift);
                 if(shadowStrengthMask.textureValue != null || shadowMainStrength.floatValue != 0.0f)
                 {
-                    Texture2D bakedShadowTex = AutoBakeShadowTexture(material, bakedMainTex);
+                    Texture bakedShadowTex = AutoBakeShadowTexture(material, bakedMainTex);
                     mtoonMaterial.SetColor("_ShadeColor",               Color.white);
                     mtoonMaterial.SetTexture("_ShadeTexture",           bakedShadowTex);
                 }
@@ -3911,7 +3911,7 @@ namespace lilToon
 
             if(useMatCap.floatValue == 1.0f && matcapBlendMode.floatValue != 3.0f && matcapTex.textureValue != null)
             {
-                Texture2D bakedMatCap = AutoBakeMatCap(material);
+                Texture bakedMatCap = AutoBakeMatCap(material);
                 mtoonMaterial.SetTexture("_SphereAdd", bakedMatCap);
             }
 
@@ -4009,7 +4009,7 @@ namespace lilToon
             liteMaterial.SetColor("_Color",                     mainColor.colorValue);
             liteMaterial.SetVector("_MainTex_ScrollRotate",     mainTex_ScrollRotate.vectorValue);
 
-            Texture2D bakedMainTex = AutoBakeMainTexture(material);
+            Texture bakedMainTex = AutoBakeMainTexture(material);
             liteMaterial.SetTexture("_MainTex", bakedMainTex);
 
             Vector2 mainScale = material.GetTextureScale(mainTex.name);
@@ -4020,13 +4020,13 @@ namespace lilToon
             liteMaterial.SetFloat("_UseShadow",                 useShadow.floatValue);
             if(useShadow.floatValue == 1.0f)
             {
-                Texture2D bakedShadowTex = AutoBakeShadowTexture(material, bakedMainTex, 1, false);
+                Texture bakedShadowTex = AutoBakeShadowTexture(material, bakedMainTex, 1, false);
                 liteMaterial.SetFloat("_ShadowBorder",              shadowBorder.floatValue);
                 liteMaterial.SetFloat("_ShadowBlur",                shadowBlur.floatValue);
                 liteMaterial.SetTexture("_ShadowColorTex",          bakedShadowTex);
                 if(shadow2ndColor.colorValue.a != 0.0f)
                 {
-                    Texture2D bakedShadow2ndTex = AutoBakeShadowTexture(material, bakedMainTex, 2, false);
+                    Texture bakedShadow2ndTex = AutoBakeShadowTexture(material, bakedMainTex, 2, false);
                     liteMaterial.SetFloat("_Shadow2ndBorder",           shadow2ndBorder.floatValue);
                     liteMaterial.SetFloat("_Shadow2ndBlur",             shadow2ndBlur.floatValue);
                     liteMaterial.SetTexture("_Shadow2ndColorTex",       bakedShadow2ndTex);
@@ -4038,7 +4038,7 @@ namespace lilToon
 
             if(isOutl)
             {
-                Texture2D bakedOutlineTex = AutoBakeOutlineTexture(material);
+                Texture bakedOutlineTex = AutoBakeOutlineTexture(material);
                 liteMaterial.SetColor("_OutlineColor",              outlineColor.colorValue);
                 liteMaterial.SetTexture("_OutlineTex",              bakedOutlineTex);
                 liteMaterial.SetVector("_OutlineTex_ScrollRotate",  outlineTex_ScrollRotate.vectorValue);
@@ -4067,7 +4067,7 @@ namespace lilToon
                 liteMaterial.SetFloat("_OutlineStencilZFail",       outlineStencilZFail.floatValue);
             }
 
-            Texture2D bakedMatCap = AutoBakeMatCap(liteMaterial);
+            Texture bakedMatCap = AutoBakeMatCap(liteMaterial);
             if(bakedMatCap != null)
             {
                 liteMaterial.SetTexture("_MatCapTex",               bakedMatCap);
@@ -4100,7 +4100,7 @@ namespace lilToon
                 liteMaterial.SetVector("_EmissionBlink",            emissionBlink.vectorValue);
             }
 
-            Texture2D bakedTriMask = AutoBakeTriMask(liteMaterial);
+            Texture bakedTriMask = AutoBakeTriMask(liteMaterial);
             if(bakedTriMask != null) liteMaterial.SetTexture("_TriMask", bakedTriMask);
 
             liteMaterial.SetFloat("_SrcBlend",                  srcBlend.floatValue);
@@ -5808,7 +5808,7 @@ namespace lilToon
         {
             if(mainTex.textureValue != null && lilEditorGUI.EditorButton(GetLoc("sBakeAlphamask")))
             {
-                Texture2D bakedTexture = AutoBakeAlphaMask(material);
+                Texture bakedTexture = AutoBakeAlphaMask(material);
                 if(bakedTexture == mainTex.textureValue) return;
 
                 mainTex.textureValue = bakedTexture;
@@ -5855,7 +5855,7 @@ namespace lilToon
                 bool bake2nd = (bakeType == 0 || bakeType == 2 || bakeType == 5) && useMain2ndTex.floatValue != 0.0;
                 bool bake3rd = (bakeType == 0 || bakeType == 3 || bakeType == 6) && useMain3rdTex.floatValue != 0.0;
                 // run bake
-                Texture2D bufMainTexture = (Texture2D)mainTex.textureValue;
+                Texture2D bufMainTexture = mainTex.textureValue as Texture2D;
                 Material hsvgMaterial = new Material(ltsbaker);
 
                 string path;
@@ -6000,7 +6000,7 @@ namespace lilToon
             }
         }
 
-        private Texture2D AutoBakeMainTexture(Material material)
+        private Texture AutoBakeMainTexture(Material material)
         {
             bool shouldNotBakeAll = mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == lilConstants.defaultHSVG && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
             if(!shouldNotBakeAll && EditorUtility.DisplayDialog(GetLoc("sDialogRunBake"), GetLoc("sDialogBakeMain"), GetLoc("sYes"), GetLoc("sNo")))
@@ -6008,7 +6008,7 @@ namespace lilToon
                 bool bake2nd = useMain2ndTex.floatValue != 0.0;
                 bool bake3rd = useMain3rdTex.floatValue != 0.0;
                 // run bake
-                Texture2D bufMainTexture = (Texture2D)mainTex.textureValue;
+                Texture2D bufMainTexture = mainTex.textureValue as Texture2D;
                 Material hsvgMaterial = new Material(ltsbaker);
 
                 string path;
@@ -6140,11 +6140,11 @@ namespace lilToon
             }
             else
             {
-                return (Texture2D)mainTex.textureValue;
+                return mainTex.textureValue;
             }
         }
 
-        private Texture2D AutoBakeShadowTexture(Material material, Texture2D bakedMainTex, int shadowType = 0, bool shouldShowDialog = true)
+        private Texture AutoBakeShadowTexture(Material material, Texture bakedMainTex, int shadowType = 0, bool shouldShowDialog = true)
         {
             bool shouldNotBakeAll = useShadow.floatValue == 0.0 && shadowColor.colorValue == Color.white && shadowColorTex.textureValue == null && shadowStrengthMask.textureValue == null;
             bool shouldBake = true;
@@ -6152,7 +6152,7 @@ namespace lilToon
             if(!shouldNotBakeAll && shouldBake)
             {
                 // run bake
-                Texture2D bufMainTexture = bakedMainTex;
+                Texture2D bufMainTexture = bakedMainTex as Texture2D;
                 Material hsvgMaterial = new Material(ltsbaker);
 
                 string path;
@@ -6248,13 +6248,13 @@ namespace lilToon
             }
         }
 
-        private Texture2D AutoBakeMatCap(Material material)
+        private Texture AutoBakeMatCap(Material material)
         {
             bool shouldNotBakeAll = matcapColor.colorValue == Color.white;
             if(!shouldNotBakeAll && EditorUtility.DisplayDialog(GetLoc("sDialogRunBake"), GetLoc("sDialogBakeMatCap"), GetLoc("sYes"), GetLoc("sNo")))
             {
                 // run bake
-                Texture2D bufMainTexture = (Texture2D)matcapTex.textureValue;
+                Texture2D bufMainTexture = matcapTex.textureValue as Texture2D;
                 Material hsvgMaterial = new Material(ltsbaker);
 
                 string path;
@@ -6291,17 +6291,17 @@ namespace lilToon
             }
             else
             {
-                return (Texture2D)matcapTex.textureValue;
+                return matcapTex.textureValue;
             }
         }
 
-        private Texture2D AutoBakeTriMask(Material material)
+        private Texture AutoBakeTriMask(Material material)
         {
             bool shouldNotBakeAll = matcapBlendMask.textureValue == null && rimColorTex.textureValue == null && emissionBlendMask.textureValue == null;
             if(!shouldNotBakeAll && EditorUtility.DisplayDialog(GetLoc("sDialogRunBake"), GetLoc("sDialogBakeTriMask"), GetLoc("sYes"), GetLoc("sNo")))
             {
                 // run bake
-                Texture2D bufMainTexture = (Texture2D)mainTex.textureValue;
+                Texture2D bufMainTexture = mainTex.textureValue as Texture2D;
                 Material hsvgMaterial = new Material(ltsbaker);
 
                 string path;
@@ -6365,10 +6365,10 @@ namespace lilToon
             }
         }
 
-        private Texture2D AutoBakeAlphaMask(Material material)
+        private Texture AutoBakeAlphaMask(Material material)
         {
             // run bake
-            Texture2D bufMainTexture = (Texture2D)mainTex.textureValue;
+            Texture2D bufMainTexture = mainTex.textureValue as Texture2D;
             Material hsvgMaterial = new Material(ltsbaker);
 
             string path;
@@ -6424,13 +6424,13 @@ namespace lilToon
             return outTexture;
         }
 
-        private Texture2D AutoBakeOutlineTexture(Material material)
+        private Texture AutoBakeOutlineTexture(Material material)
         {
             bool shouldNotBakeOutline = outlineTex.textureValue == null || outlineTexHSVG.vectorValue == lilConstants.defaultHSVG;
             if(!shouldNotBakeOutline && EditorUtility.DisplayDialog(GetLoc("sDialogRunBake"), GetLoc("sDialogBakeOutline"), GetLoc("sYes"), GetLoc("sNo")))
             {
                 // run bake
-                Texture2D bufMainTexture = (Texture2D)outlineTex.textureValue;
+                Texture2D bufMainTexture = outlineTex.textureValue as Texture2D;
                 Material hsvgMaterial = new Material(ltsbaker);
 
                 string path;
@@ -6467,7 +6467,7 @@ namespace lilToon
             }
             else
             {
-                return (Texture2D)outlineTex.textureValue;
+                return outlineTex.textureValue;
             }
         }
 
@@ -6477,7 +6477,7 @@ namespace lilToon
             {
                 int shadowType = propName.Contains("2nd") ? 2 : 1;
                 shadowType = propName.Contains("3rd") ? 3 : shadowType;
-                AutoBakeShadowTexture(material, (Texture2D)mainTex.textureValue, shadowType, false);
+                AutoBakeShadowTexture(material, mainTex.textureValue, shadowType, false);
                 return;
             }
 
@@ -6485,7 +6485,7 @@ namespace lilToon
             hsvgMaterial.SetColor(mainColor.name, maskcolor.colorValue);
 
             Texture2D bufMainTexture = Texture2D.whiteTexture;
-            if(masktex != null && masktex.textureValue != null) bufMainTexture = (Texture2D)masktex.textureValue;
+            if(masktex != null && masktex.textureValue is Texture2D) bufMainTexture = (Texture2D)masktex.textureValue;
             string path = "";
 
             Texture2D srcTexture = new Texture2D(2, 2);

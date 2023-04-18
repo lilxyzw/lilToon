@@ -461,7 +461,7 @@ namespace lilToon
 
         public static void SetAlphaIsTransparencyGUI(MaterialProperty tex)
         {
-            if(tex.textureValue != null && !((Texture2D)tex.textureValue).alphaIsTransparency && AutoFixHelpBox(GetLoc("sNotAlphaIsTransparency")))
+            if(tex.textureValue is Texture2D && !((Texture2D)tex.textureValue).alphaIsTransparency && AutoFixHelpBox(GetLoc("sNotAlphaIsTransparency")))
             {
                 string path = AssetDatabase.GetAssetPath(tex.textureValue);
                 TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(path);
