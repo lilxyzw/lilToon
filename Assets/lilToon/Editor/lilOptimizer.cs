@@ -283,7 +283,7 @@ namespace lilToon
                     // Int
                     indI += TYPE_OFFSET;
                     string name = line.Substring(indI, indEND - indI);
-                    if(dicF.ContainsKey(name) && !dicF[name].isVariable)
+                    if(dicF.ContainsKey(name) && !dicF[name].isVariable && name != "_AlphaMaskMode")
                     {
                         sb.AppendLine(GetIndent(indI - 8) + "#define " + name + " (" + (uint)dicF[name].f + ")");
                         continue;
