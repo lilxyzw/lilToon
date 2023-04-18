@@ -245,6 +245,7 @@ namespace lilToon
         protected static string     sMainColorBranch                { get { return lilLanguageManager.sMainColorBranch              ; } private set { lilLanguageManager.sMainColorBranch               = value; } }
         protected static string     sCullModes                      { get { return lilLanguageManager.sCullModes                    ; } private set { lilLanguageManager.sCullModes                     = value; } }
         protected static string     sBlendModes                     { get { return lilLanguageManager.sBlendModes                   ; } private set { lilLanguageManager.sBlendModes                    = value; } }
+        protected static string     sAlphaModes                     { get { return lilLanguageManager.sAlphaModes                   ; } private set { lilLanguageManager.sAlphaModes                    = value; } }
         protected static string     sAlphaMaskModes                 { get { return lilLanguageManager.sAlphaMaskModes               ; } private set { lilLanguageManager.sAlphaMaskModes                = value; } }
         protected static string     blinkSetting                    { get { return lilLanguageManager.blinkSetting                  ; } private set { lilLanguageManager.blinkSetting                   = value; } }
         protected static string     sDistanceFadeSetting            { get { return lilLanguageManager.sDistanceFadeSetting          ; } private set { lilLanguageManager.sDistanceFadeSetting           = value; } }
@@ -346,6 +347,7 @@ namespace lilToon
         private readonly lilMaterialProperty main2ndTexIsMSDF                       = new lilMaterialProperty("_Main2ndTexIsMSDF", PropertyBlock.MainColor, PropertyBlock.MainColor2nd);
         private readonly lilMaterialProperty main2ndBlendMask                       = new lilMaterialProperty("_Main2ndBlendMask", true, PropertyBlock.MainColor, PropertyBlock.MainColor2nd);
         private readonly lilMaterialProperty main2ndTexBlendMode                    = new lilMaterialProperty("_Main2ndTexBlendMode", PropertyBlock.MainColor, PropertyBlock.MainColor2nd);
+        private readonly lilMaterialProperty main2ndTexAlphaMode                    = new lilMaterialProperty("_Main2ndTexAlphaMode", PropertyBlock.MainColor, PropertyBlock.MainColor2nd);
         private readonly lilMaterialProperty main2ndEnableLighting                  = new lilMaterialProperty("_Main2ndEnableLighting", PropertyBlock.MainColor, PropertyBlock.MainColor2nd);
         private readonly lilMaterialProperty main2ndDissolveMask                    = new lilMaterialProperty("_Main2ndDissolveMask", true, PropertyBlock.MainColor, PropertyBlock.MainColor2nd);
         private readonly lilMaterialProperty main2ndDissolveNoiseMask               = new lilMaterialProperty("_Main2ndDissolveNoiseMask", true, PropertyBlock.MainColor, PropertyBlock.MainColor2nd);
@@ -374,6 +376,7 @@ namespace lilToon
         private readonly lilMaterialProperty main3rdTexIsMSDF                       = new lilMaterialProperty("_Main3rdTexIsMSDF", PropertyBlock.MainColor, PropertyBlock.MainColor3rd);
         private readonly lilMaterialProperty main3rdBlendMask                       = new lilMaterialProperty("_Main3rdBlendMask", true, PropertyBlock.MainColor, PropertyBlock.MainColor3rd);
         private readonly lilMaterialProperty main3rdTexBlendMode                    = new lilMaterialProperty("_Main3rdTexBlendMode", PropertyBlock.MainColor, PropertyBlock.MainColor3rd);
+        private readonly lilMaterialProperty main3rdTexAlphaMode                    = new lilMaterialProperty("_Main3rdTexAlphaMode", PropertyBlock.MainColor, PropertyBlock.MainColor3rd);
         private readonly lilMaterialProperty main3rdEnableLighting                  = new lilMaterialProperty("_Main3rdEnableLighting", PropertyBlock.MainColor, PropertyBlock.MainColor3rd);
         private readonly lilMaterialProperty main3rdDissolveMask                    = new lilMaterialProperty("_Main3rdDissolveMask", true, PropertyBlock.MainColor, PropertyBlock.MainColor3rd);
         private readonly lilMaterialProperty main3rdDissolveNoiseMask               = new lilMaterialProperty("_Main3rdDissolveNoiseMask", true, PropertyBlock.MainColor, PropertyBlock.MainColor3rd);
@@ -938,6 +941,7 @@ namespace lilToon
                 main2ndTexIsMSDF,
                 main2ndBlendMask,
                 main2ndTexBlendMode,
+                main2ndTexAlphaMode,
                 main2ndEnableLighting,
                 main2ndDissolveMask,
                 main2ndDissolveNoiseMask,
@@ -966,6 +970,7 @@ namespace lilToon
                 main3rdTexIsMSDF,
                 main3rdBlendMask,
                 main3rdTexBlendMode,
+                main3rdTexAlphaMode,
                 main3rdEnableLighting,
                 main3rdDissolveMask,
                 main3rdDissolveNoiseMask,
@@ -2374,6 +2379,7 @@ namespace lilToon
                             EditorGUI.indentLevel -= 2;
                             m_MaterialEditor.ShaderProperty(main2ndEnableLighting, GetLoc("sEnableLighting"));
                             m_MaterialEditor.ShaderProperty(main2ndTexBlendMode, sBlendModes);
+                            m_MaterialEditor.ShaderProperty(main2ndTexAlphaMode, sAlphaModes);
                             lilEditorGUI.DrawLine();
                             UV4Decal(main2ndTexIsDecal, main2ndTexIsLeftOnly, main2ndTexIsRightOnly, main2ndTexShouldCopy, main2ndTexShouldFlipMirror, main2ndTexShouldFlipCopy, main2ndTex, main2ndTex_ScrollRotate, main2ndTexAngle, main2ndTexDecalAnimation, main2ndTexDecalSubParam, main2ndTex_UVMode);
                             lilEditorGUI.DrawLine();
@@ -2416,6 +2422,7 @@ namespace lilToon
                             EditorGUI.indentLevel -= 2;
                             m_MaterialEditor.ShaderProperty(main3rdEnableLighting, GetLoc("sEnableLighting"));
                             m_MaterialEditor.ShaderProperty(main3rdTexBlendMode, sBlendModes);
+                            m_MaterialEditor.ShaderProperty(main3rdTexAlphaMode, sAlphaModes);
                             lilEditorGUI.DrawLine();
                             UV4Decal(main3rdTexIsDecal, main3rdTexIsLeftOnly, main3rdTexIsRightOnly, main3rdTexShouldCopy, main3rdTexShouldFlipMirror, main3rdTexShouldFlipCopy, main3rdTex, main3rdTex_ScrollRotate, main3rdTexAngle, main3rdTexDecalAnimation, main3rdTexDecalSubParam, main3rdTex_UVMode);
                             lilEditorGUI.DrawLine();
@@ -5888,6 +5895,7 @@ namespace lilToon
                     hsvgMaterial.SetFloat(main2ndTexShouldFlipCopy.name,    main2ndTexShouldFlipCopy.floatValue);
                     hsvgMaterial.SetFloat(main2ndTexIsMSDF.name,            main2ndTexIsMSDF.floatValue);
                     hsvgMaterial.SetFloat(main2ndTexBlendMode.name,         main2ndTexBlendMode.floatValue);
+                    hsvgMaterial.SetFloat(main2ndTexAlphaMode.name,         main2ndTexAlphaMode.floatValue);
                     hsvgMaterial.SetTextureOffset(main2ndTex.name,          material.GetTextureOffset(main2ndTex.name));
                     hsvgMaterial.SetTextureScale(main2ndTex.name,           material.GetTextureScale(main2ndTex.name));
                     hsvgMaterial.SetTextureOffset(main2ndBlendMask.name,    material.GetTextureOffset(main2ndBlendMask.name));
@@ -5929,6 +5937,7 @@ namespace lilToon
                     hsvgMaterial.SetFloat(main3rdTexShouldFlipCopy.name,    main3rdTexShouldFlipCopy.floatValue);
                     hsvgMaterial.SetFloat(main3rdTexIsMSDF.name,            main3rdTexIsMSDF.floatValue);
                     hsvgMaterial.SetFloat(main3rdTexBlendMode.name,         main3rdTexBlendMode.floatValue);
+                    hsvgMaterial.SetFloat(main3rdTexAlphaMode.name,         main3rdTexAlphaMode.floatValue);
                     hsvgMaterial.SetTextureOffset(main3rdTex.name,          material.GetTextureOffset(main3rdTex.name));
                     hsvgMaterial.SetTextureScale(main3rdTex.name,           material.GetTextureScale(main3rdTex.name));
                     hsvgMaterial.SetTextureOffset(main3rdBlendMask.name,    material.GetTextureOffset(main3rdBlendMask.name));
@@ -6040,6 +6049,7 @@ namespace lilToon
                     hsvgMaterial.SetFloat(main2ndTexShouldFlipCopy.name,    main2ndTexShouldFlipCopy.floatValue);
                     hsvgMaterial.SetFloat(main2ndTexIsMSDF.name,            main2ndTexIsMSDF.floatValue);
                     hsvgMaterial.SetFloat(main2ndTexBlendMode.name,         main2ndTexBlendMode.floatValue);
+                    hsvgMaterial.SetFloat(main2ndTexAlphaMode.name,         main2ndTexAlphaMode.floatValue);
                     hsvgMaterial.SetTextureOffset(main2ndTex.name,          material.GetTextureOffset(main2ndTex.name));
                     hsvgMaterial.SetTextureScale(main2ndTex.name,           material.GetTextureScale(main2ndTex.name));
                     hsvgMaterial.SetTextureOffset(main2ndBlendMask.name,    material.GetTextureOffset(main2ndBlendMask.name));
@@ -6081,6 +6091,7 @@ namespace lilToon
                     hsvgMaterial.SetFloat(main3rdTexShouldFlipCopy.name,    main3rdTexShouldFlipCopy.floatValue);
                     hsvgMaterial.SetFloat(main3rdTexIsMSDF.name,            main3rdTexIsMSDF.floatValue);
                     hsvgMaterial.SetFloat(main3rdTexBlendMode.name,         main3rdTexBlendMode.floatValue);
+                    hsvgMaterial.SetFloat(main3rdTexAlphaMode.name,         main3rdTexAlphaMode.floatValue);
                     hsvgMaterial.SetTextureOffset(main3rdTex.name,          material.GetTextureOffset(main3rdTex.name));
                     hsvgMaterial.SetTextureScale(main3rdTex.name,           material.GetTextureScale(main3rdTex.name));
                     hsvgMaterial.SetTextureOffset(main3rdBlendMask.name,    material.GetTextureOffset(main3rdBlendMask.name));
@@ -6160,18 +6171,21 @@ namespace lilToon
                 {
                     hsvgMaterial.SetColor(mainColor2nd.name,                new Color(shadow2ndColor.colorValue.r, shadow2ndColor.colorValue.g, shadow2ndColor.colorValue.b, shadow2ndColor.colorValue.a * shadowStrength.floatValue));
                     hsvgMaterial.SetFloat(main2ndTexBlendMode.name,         0.0f);
+                    hsvgMaterial.SetFloat(main2ndTexAlphaMode.name,         0.0f);
                     path = AssetDatabase.GetAssetPath(material.GetTexture(shadow2ndColorTex.name));
                 }
                 else if(shadowType == 3)
                 {
                     hsvgMaterial.SetColor(mainColor3rd.name,                new Color(shadow3rdColor.colorValue.r, shadow3rdColor.colorValue.g, shadow3rdColor.colorValue.b, shadow3rdColor.colorValue.a * shadowStrength.floatValue));
                     hsvgMaterial.SetFloat(main3rdTexBlendMode.name,         0.0f);
+                    hsvgMaterial.SetFloat(main3rdTexAlphaMode.name,         0.0f);
                     path = AssetDatabase.GetAssetPath(material.GetTexture(shadow3rdColorTex.name));
                 }
                 else
                 {
                     hsvgMaterial.SetColor(mainColor2nd.name,                new Color(shadowColor.colorValue.r, shadowColor.colorValue.g, shadowColor.colorValue.b, shadowStrength.floatValue));
                     hsvgMaterial.SetFloat(main2ndTexBlendMode.name,         0.0f);
+                    hsvgMaterial.SetFloat(main2ndTexAlphaMode.name,         0.0f);
                     path = AssetDatabase.GetAssetPath(material.GetTexture(shadowColorTex.name));
                 }
 

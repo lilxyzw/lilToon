@@ -242,6 +242,27 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         OVERRIDE_MAIN
 
         //------------------------------------------------------------------------------------------------------------------------------
+        // Layer Color
+        #if defined(LIL_V2F_TANGENT_WS)
+            fd.isRightHand = input.tangentWS.w > 0.0;
+        #endif
+        // 2nd
+        BEFORE_MAIN2ND
+        #if defined(LIL_FEATURE_MAIN2ND)
+            float main2ndDissolveAlpha = 0.0;
+            float4 color2nd = 1.0;
+            OVERRIDE_MAIN2ND
+        #endif
+
+        // 3rd
+        BEFORE_MAIN3RD
+        #if defined(LIL_FEATURE_MAIN3RD)
+            float main3rdDissolveAlpha = 0.0;
+            float4 color3rd = 1.0;
+            OVERRIDE_MAIN3RD
+        #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
         // Alpha Mask
         BEFORE_ALPHAMASK
         #if defined(LIL_FEATURE_ALPHAMASK) && LIL_RENDER != 0
@@ -354,27 +375,6 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         BEFORE_AUDIOLINK
         #if defined(LIL_FEATURE_AUDIOLINK)
             OVERRIDE_AUDIOLINK
-        #endif
-
-        //------------------------------------------------------------------------------------------------------------------------------
-        // Layer Color
-        #if defined(LIL_V2F_TANGENT_WS)
-            fd.isRightHand = input.tangentWS.w > 0.0;
-        #endif
-        // 2nd
-        BEFORE_MAIN2ND
-        #if defined(LIL_FEATURE_MAIN2ND)
-            float main2ndDissolveAlpha = 0.0;
-            float4 color2nd = 1.0;
-            OVERRIDE_MAIN2ND
-        #endif
-
-        // 3rd
-        BEFORE_MAIN3RD
-        #if defined(LIL_FEATURE_MAIN3RD)
-            float main3rdDissolveAlpha = 0.0;
-            float4 color3rd = 1.0;
-            OVERRIDE_MAIN3RD
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------

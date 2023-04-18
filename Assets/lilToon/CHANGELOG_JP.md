@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 追加
 - 頂点IDによるマスクを追加
 - Ditherを追加
+- メインカラー2nd・3rdに透明度の置換機能を追加
 
 ### 修正
 - lilToonMultiの変換を修正

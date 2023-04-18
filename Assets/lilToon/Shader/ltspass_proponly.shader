@@ -55,6 +55,7 @@ Shader "Hidden/ltspass_proponly"
         [lilToggle]     _Main2ndTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main2ndBlendMask           ("Mask", 2D) = "white" {}
         [lilEnum]       _Main2ndTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
+        [lilEnum]       _Main2ndTexAlphaMode        ("Alpha Mode|None|Replace|Multiply|Add|Subtract", Int) = 0
                         _Main2ndEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
                         _Main2ndDissolveMask        ("Dissolve Mask", 2D) = "white" {}
                         _Main2ndDissolveNoiseMask   ("Dissolve Noise Mask", 2D) = "gray" {}
@@ -85,6 +86,7 @@ Shader "Hidden/ltspass_proponly"
         [lilToggle]     _Main3rdTexIsMSDF           ("As MSDF", Int) = 0
         [NoScaleOffset] _Main3rdBlendMask           ("Mask", 2D) = "white" {}
         [lilEnum]       _Main3rdTexBlendMode        ("Blend Mode|Normal|Add|Screen|Multiply", Int) = 0
+        [lilEnum]       _Main3rdTexAlphaMode        ("Alpha Mode|None|Replace|Multiply|Add|Subtract", Int) = 0
                         _Main3rdEnableLighting      ("Enable Lighting", Range(0, 1)) = 1
                         _Main3rdDissolveMask        ("Dissolve Mask", 2D) = "white" {}
                         _Main3rdDissolveNoiseMask   ("Dissolve Noise Mask", 2D) = "gray" {}

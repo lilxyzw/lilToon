@@ -768,6 +768,16 @@
             #endif
             color2nd.a = lerp(color2nd.a, color2nd.a * saturate((fd.depth - _Main2ndDistanceFade.x) / (_Main2ndDistanceFade.y - _Main2ndDistanceFade.x)), _Main2ndDistanceFade.z);
             if(_Main2ndTex_Cull == 1 && fd.facing > 0 || _Main2ndTex_Cull == 2 && fd.facing < 0) color2nd.a = 0;
+            #if LIL_RENDER != 0
+                if(_Main2ndTexAlphaMode != 0)
+                {
+                    if(_Main2ndTexAlphaMode == 1) fd.col.a = color2nd.a;
+                    if(_Main2ndTexAlphaMode == 2) fd.col.a = fd.col.a * color2nd.a;
+                    if(_Main2ndTexAlphaMode == 3) fd.col.a = saturate(fd.col.a + color2nd.a);
+                    if(_Main2ndTexAlphaMode == 4) fd.col.a = saturate(fd.col.a - color2nd.a);
+                    color2nd.a = 1;
+                }
+            #endif
             fd.col.rgb = lilBlendColor(fd.col.rgb, color2nd.rgb, color2nd.a * _Main2ndEnableLighting, _Main2ndTexBlendMode);
         }
     }
@@ -854,6 +864,16 @@
             #endif
             color3rd.a = lerp(color3rd.a, color3rd.a * saturate((fd.depth - _Main3rdDistanceFade.x) / (_Main3rdDistanceFade.y - _Main3rdDistanceFade.x)), _Main3rdDistanceFade.z);
             if(_Main3rdTex_Cull == 1 && fd.facing > 0 || _Main3rdTex_Cull == 2 && fd.facing < 0) color3rd.a = 0;
+            #if LIL_RENDER != 0
+                if(_Main3rdTexAlphaMode != 0)
+                {
+                    if(_Main3rdTexAlphaMode == 1) fd.col.a = color3rd.a;
+                    if(_Main3rdTexAlphaMode == 2) fd.col.a = fd.col.a * color3rd.a;
+                    if(_Main3rdTexAlphaMode == 3) fd.col.a = saturate(fd.col.a + color3rd.a);
+                    if(_Main3rdTexAlphaMode == 4) fd.col.a = saturate(fd.col.a - color3rd.a);
+                    color3rd.a = 1;
+                }
+            #endif
             fd.col.rgb = lilBlendColor(fd.col.rgb, color3rd.rgb, color3rd.a * _Main3rdEnableLighting, _Main3rdTexBlendMode);
         }
     }
