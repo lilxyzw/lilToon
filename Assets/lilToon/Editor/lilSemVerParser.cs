@@ -102,7 +102,7 @@ namespace lilToon
             if (ReferenceEquals(v1, v2)) {
                 return true;
             }
-            if (v1 == null || v2 == null) {
+            if (ReferenceEquals(v1, null) || ReferenceEquals(v2, null)) {
                 return false;
             }
             return v1.CompareTo(v2) == 0;
