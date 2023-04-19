@@ -17,7 +17,7 @@
 #if defined(LIL_V2F_FORCE_POSITION_OS) || ((LIL_RENDER > 0) && !defined(LIL_LITE) && defined(LIL_FEATURE_DISSOLVE))
     #define LIL_V2F_POSITION_OS
 #endif
-#if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_FEATURE_DISTANCE_FADE)
+#if defined(LIL_V2F_FORCE_POSITION_WS) || (LIL_RENDER > 0) && defined(LIL_FEATURE_DISTANCE_FADE)
     #define LIL_V2F_POSITION_WS
 #endif
 #define LIL_V2F_SHADOW_CASTER
