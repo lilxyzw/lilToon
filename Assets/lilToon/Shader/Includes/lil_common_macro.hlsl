@@ -1950,6 +1950,9 @@ struct lilLightData
 #elif defined(LIL_USE_ADDITIONALLIGHT_MAINDIR_PS)
     #define LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o)
     #define LIL_CORRECT_LIGHTDIRECTION_PS(lightDirection) lightDirection = normalize(lightDirection)
+#elif defined(LIL_URP)
+    #define LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o) o.lightDirection = normalize(o.lightDirection)
+    #define LIL_CORRECT_LIGHTDIRECTION_PS(lightDirection)
 #else
     #define LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o)
     #define LIL_CORRECT_LIGHTDIRECTION_PS(lightDirection)
