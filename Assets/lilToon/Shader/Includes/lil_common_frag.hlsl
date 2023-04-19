@@ -515,7 +515,14 @@
 // Dither
 #if !defined(OVERRIDE_DITHER)
     #if !defined(SHADER_API_GLES)
-        #if defined(LIL_FEATURE_DISTANCE_FADE)
+        #if defined(LIL_FEATURE_DISTANCE_FADE) && defined(LIL_PASS_SHADOWCASTER_INCLUDED)
+            #define OVERRIDE_DITHER \
+                if(_UseDither == 1) \
+                { \
+                    if(LIL_MATRIX_P._m33 == 0.0) lilDistanceFadeAlphaOnly(fd); \
+                    fd.col.a = fd.col.a >= (lilSamplePointRepeat(_DitherTex, input.positionCS.xy, _DitherTex_TexelSize.zw).r * 255 + 1) / (_DitherMaxValue+2); \
+                }
+        #elif defined(LIL_FEATURE_DISTANCE_FADE)
             #define OVERRIDE_DITHER \
                 if(_UseDither == 1) \
                 { \

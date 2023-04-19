@@ -776,6 +776,9 @@ Shader "Hidden/lilToonMultiOutline"
             #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
             #pragma shader_feature_local ETC1_EXTERNAL_ALPHA
 
+            // Main
+            #pragma shader_feature_local _FADING_ON
+
             // Replace keywords
             #include "Includes/lil_replace_keywords.hlsl"
 
@@ -927,6 +930,9 @@ Shader "Hidden/lilToonMultiOutline"
             #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
             #pragma shader_feature_local ETC1_EXTERNAL_ALPHA
 
+            // Main
+            #pragma shader_feature_local _FADING_ON
+
             // Replace keywords
             #include "Includes/lil_replace_keywords.hlsl"
 
@@ -971,6 +977,9 @@ Shader "Hidden/lilToonMultiOutline"
             #pragma shader_feature_local _COLOROVERLAY_ON
             #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
             #pragma shader_feature_local ETC1_EXTERNAL_ALPHA
+
+            // Main
+            #pragma shader_feature_local _FADING_ON
 
             // Replace keywords
             #include "Includes/lil_replace_keywords.hlsl"

@@ -3,6 +3,10 @@
 // This is included in the subpass fragment shader
 #define LIL_ALPHA_PS
 #if LIL_RENDER > 0
+    #if defined(LIL_V2F_POSITION_WS)
+        LIL_GET_POSITION_WS_DATA(input,fd);
+    #endif
+
     #if defined(LIL_OUTLINE)
         BEFORE_ANIMATE_OUTLINE_UV
         OVERRIDE_ANIMATE_OUTLINE_UV

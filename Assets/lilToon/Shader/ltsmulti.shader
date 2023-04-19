@@ -843,6 +843,9 @@ Shader "_lil/lilToonMulti"
             #pragma shader_feature_local GEOM_TYPE_BRANCH_DETAIL
             #pragma shader_feature_local ETC1_EXTERNAL_ALPHA
 
+            // Main
+            #pragma shader_feature_local _FADING_ON
+
             // Replace keywords
             #include "Includes/lil_replace_keywords.hlsl"
 
