@@ -403,6 +403,10 @@ namespace lilToon
                 sb.Replace("/SHADOW_CASTER_OUTLINE", "/SHADOW_CASTER");
             }
 
+            #if !UNITY_2019_4_OR_NEWER
+                sb.Replace("shader_feature_local", "shader_feature");
+            #endif
+
             sb.Replace("\r\n", "\r");
             sb.Replace("\n", "\r");
             sb.Replace("\r", "\r\n");
