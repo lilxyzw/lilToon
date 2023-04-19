@@ -4341,6 +4341,13 @@ namespace lilToon
                                 ditherMaxValue.floatValue = Mathf.Clamp(ditherTex.textureValue.width * ditherTex.textureValue.height-1, 0, 255);
                             }
                             m_MaterialEditor.ShaderProperty(ditherMaxValue, "Max Value");
+                            EditorGUILayout.BeginHorizontal();
+                            GUILayout.Space(16);
+                            if(GUILayout.Button("x2" )){ditherTex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(lilDirectoryManager.GetMainFolderPath() + "/Texture/lil_bayer_2x2.png");   ditherMaxValue.floatValue = 3  ;}
+                            if(GUILayout.Button("x4" )){ditherTex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(lilDirectoryManager.GetMainFolderPath() + "/Texture/lil_bayer_4x4.png");   ditherMaxValue.floatValue = 15 ;}
+                            if(GUILayout.Button("x8" )){ditherTex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(lilDirectoryManager.GetMainFolderPath() + "/Texture/lil_bayer_8x8.png");   ditherMaxValue.floatValue = 63 ;}
+                            if(GUILayout.Button("x16")){ditherTex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(lilDirectoryManager.GetMainFolderPath() + "/Texture/lil_bayer_16x16.png"); ditherMaxValue.floatValue = 255;}
+                            EditorGUILayout.EndHorizontal();
                             EditorGUI.indentLevel--;
                         }
                     }
