@@ -2164,10 +2164,18 @@ struct lilLightData
 #endif
 
 // Fragment Macro
-#define LIL_GET_LIGHTING_DATA(input,fd) \
-    LIL_GET_MAINLIGHT(input, fd.lightColor, fd.L, fd.attenuation); \
-    LIL_GET_ADDITIONALLIGHT(input, fd.addLightColor); \
-    fd.invLighting = saturate((1.0 - fd.lightColor) * sqrt(fd.lightColor))
+#if defined(LIL_HDRP)
+    #define LIL_GET_LIGHTING_DATA(input,fd) \
+        LIL_GET_MAINLIGHT(input, fd.lightColor, fd.L, fd.attenuation); \
+        fd.origL = fd.L; \
+        LIL_GET_ADDITIONALLIGHT(input, fd.addLightColor); \
+        fd.invLighting = saturate((1.0 - fd.lightColor) * sqrt(fd.lightColor))
+#else
+    #define LIL_GET_LIGHTING_DATA(input,fd) \
+        LIL_GET_MAINLIGHT(input, fd.lightColor, fd.L, fd.attenuation); \
+        LIL_GET_ADDITIONALLIGHT(input, fd.addLightColor); \
+        fd.invLighting = saturate((1.0 - fd.lightColor) * sqrt(fd.lightColor))
+#endif
 
 #define LIL_GET_POSITION_WS_DATA(input,fd) \
     fd.depth = length(lilHeadDirection(fd.positionWS)); \

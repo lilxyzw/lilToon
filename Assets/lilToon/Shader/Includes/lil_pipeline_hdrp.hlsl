@@ -17,6 +17,10 @@
 //#pragma multi_compile_fragment AREA_SHADOW_MEDIUM AREA_SHADOW_HIGH
 #define AREA_SHADOW_MEDIUM
 
+#if defined(LIL_PASS_SHADOWCASTER) && ((LIL_SRP_VERSION_MAJOR < 5) || (LIL_SRP_VERSION_MAJOR <= 5) && (LIL_SRP_VERSION_MINOR <= 10))
+    #define USE_LEGACY_UNITY_MATRIX_VARIABLES
+#endif
+
 #include "Packages/com.unity.render-pipelines.high-definition/Runtime/RenderPipeline/ShaderPass/ShaderPass.cs.hlsl"
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
