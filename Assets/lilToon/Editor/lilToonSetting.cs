@@ -773,7 +773,7 @@ public class lilToonSetting : ScriptableObject
         var shaders = GetShaderListFromGameObject(materials, clips);
         if(shaders.Count() == 0) return;
 
-        usedShaders = string.Join(Environment.NewLine, shaders.Select(s => s.name).Distinct());
+        usedShaders = string.Join(Environment.NewLine, shaders.Select(s => s.name).Distinct().ToArray());
 
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);
@@ -804,7 +804,7 @@ public class lilToonSetting : ScriptableObject
             var shaders = GetShaderListFromGameObject(materials, clips);
             if(shaders.Count() == 0) return;
 
-            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaders.Select(s => s.name).Distinct()));
+            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaders.Select(s => s.name).Distinct().ToArray()));
 
             lilToonSetting shaderSetting = null;
             InitializeShaderSetting(ref shaderSetting);
@@ -841,7 +841,7 @@ public class lilToonSetting : ScriptableObject
         {
             if(!ShouldOptimization()) return;
             var shaders = GetShaderListFromProject();
-            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaders.Select(s => s.name).Distinct()));
+            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaders.Select(s => s.name).Distinct().ToArray()));
             ApplyShaderSettingOptimized(shaders);
         }
         catch(Exception e)
