@@ -12,8 +12,12 @@
 
 #define LIL_V2F_POSITION_CS
 #if defined(LIL_V2F_FORCE_TEXCOORD0) || (LIL_RENDER > 0)
-    #define LIL_V2F_PACKED_TEXCOORD01
-    #define LIL_V2F_PACKED_TEXCOORD23
+    #if defined(LIL_FUR)
+        #define LIL_V2F_TEXCOORD0
+    #else
+        #define LIL_V2F_PACKED_TEXCOORD01
+        #define LIL_V2F_PACKED_TEXCOORD23
+    #endif
 #endif
 #if defined(LIL_V2F_FORCE_POSITION_OS) || ((LIL_RENDER > 0) && !defined(LIL_LITE) && defined(LIL_FEATURE_DISSOLVE))
     #define LIL_V2F_POSITION_OS
@@ -31,6 +35,9 @@
 struct v2f
 {
     float4 positionCS   : SV_POSITION;
+    #if defined(LIL_V2F_TEXCOORD0)
+        float2 uv0         : TEXCOORD0;
+    #endif
     #if defined(LIL_V2F_PACKED_TEXCOORD01)
         float4 uv01         : TEXCOORD0;
     #endif
@@ -79,7 +86,7 @@ struct v2f
     struct v2g
     {
         v2f base;
-        float4 positionCSOL : TEXCOORD3;
+        float4 positionCSOL : TEXCOORD5;
     };
 #endif
 

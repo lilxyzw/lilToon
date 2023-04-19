@@ -335,10 +335,10 @@ LIL_V2F_TYPE vert(appdata input)
     #if defined(SHADERPASS) && SHADERPASS == SHADERPASS_DEPTH_ONLY && defined(LIL_OUTLINE)
         #if defined(UNITY_REVERSED_Z)
             // DirectX
-            LIL_V2F_OUT.positionCS.z -= 0.0001;
+            LIL_V2F_OUT_BASE.positionCS.z -= 0.0001;
         #else
             // OpenGL
-            LIL_V2F_OUT.positionCS.z += 0.0001;
+            LIL_V2F_OUT_BASE.positionCS.z += 0.0001;
         #endif
     #endif
 
@@ -349,7 +349,7 @@ LIL_V2F_TYPE vert(appdata input)
         if(width > -0.000001 && width < 0.000001 && _OutlineDeleteMesh) LIL_V2F_OUT.positionCSOL = 0.0/0.0;
     #elif defined(LIL_OUTLINE)
         float width = lilGetOutlineWidth(uvMain, input.color, _OutlineWidth, _OutlineWidthMask, _OutlineVertexR2Width LIL_SAMP_IN(lil_sampler_linear_repeat));
-        if(width > -0.000001 && width < 0.000001 && _OutlineDeleteMesh) LIL_V2F_OUT.positionCS = 0.0/0.0;
+        if(width > -0.000001 && width < 0.000001 && _OutlineDeleteMesh) LIL_V2F_OUT_BASE.positionCS = 0.0/0.0;
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -388,7 +388,7 @@ LIL_V2F_TYPE vert(appdata input)
         }
         bool idMasked = IDMask(idMaskArg,idMaskIndices,idMaskFlags);
         #if defined(LIL_V2F_POSITION_CS)
-            LIL_V2F_OUT.positionCS = idMasked ? 0.0/0.0 : LIL_V2F_OUT.positionCS;
+            LIL_V2F_OUT_BASE.positionCS = idMasked ? 0.0/0.0 : LIL_V2F_OUT_BASE.positionCS;
         #endif
         #if defined(LIL_ONEPASS_OUTLINE)
             LIL_V2F_OUT.positionCSOL = idMasked ? 0.0/0.0 : LIL_V2F_OUT.positionCSOL;
