@@ -2,6 +2,7 @@
     {
         Tags {"RenderType" = "HDLitShader"}
         HLSLINCLUDE
+            *LIL_SRP_VERSION*
             #pragma target 4.5
             #pragma exclude_renderers gles gles3 glcore
             #pragma fragmentoption ARB_precision_hint_fastest

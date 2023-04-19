@@ -3,6 +3,7 @@
         Tags {"RenderType" = "HDLitShader"}
         HLSLINCLUDE
             *LIL_SHADER_SETTING*
+            *LIL_SRP_VERSION*
             #define LIL_TESSELLATION
             #pragma target 5.0
             #pragma exclude_renderers gles gles3 glcore

@@ -2,6 +2,7 @@
     {
         Tags {*LIL_DOTS_SM_TAGS*}
         HLSLINCLUDE
+            *LIL_SRP_VERSION*
             *LIL_DOTS_SM_4_5*
             #pragma exclude_renderers d3d11_9x
             #pragma fragmentoption ARB_precision_hint_fastest

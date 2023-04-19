@@ -3,6 +3,7 @@
         Tags {*LIL_SUBSHADER_TAGS*}
         HLSLINCLUDE
             *LIL_SHADER_SETTING*
+            *LIL_SRP_VERSION*
             #pragma target 3.5
             #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_REFRACTION

@@ -3,6 +3,7 @@
         Tags {*LIL_SUBSHADER_TAGS**LIL_DOTS_SM_TAGS*}
         HLSLINCLUDE
             *LIL_SHADER_SETTING*
+            *LIL_SRP_VERSION*
             *LIL_DOTS_SM_4_5_OR_3_5*
             #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_FAKESHADOW

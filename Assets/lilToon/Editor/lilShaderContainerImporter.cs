@@ -103,6 +103,7 @@ namespace lilToon
         private const string LIL_SUBSHADER_INSERT           = "*LIL_SUBSHADER_INSERT*";
         private const string LIL_SUBSHADER_INSERT_POST      = "*LIL_SUBSHADER_INSERT_POST*";
         private const string LIL_SHADER_SETTING             = "*LIL_SHADER_SETTING*";
+        private const string LIL_SRP_VERSION                = "*LIL_SRP_VERSION*";
         private const string LIL_PASS_SHADER_NAME           = "*LIL_PASS_SHADER_NAME*";
         private const string LIL_SUBSHADER_TAGS             = "*LIL_SUBSHADER_TAGS*";
         private const string LIL_DOTS_SM_TAGS               = "*LIL_DOTS_SM_TAGS*";
@@ -230,15 +231,6 @@ namespace lilToon
                     break;
             }
 
-            if(version.RP != lilRenderPipeline.BRP && version.Major > 0)
-            {
-                shaderSettingText +=
-                    Environment.NewLine +
-                    "            #define LIL_SRP_VERSION_MAJOR " + version.Major + Environment.NewLine +
-                    "            #define LIL_SRP_VERSION_MINOR " + version.Minor + Environment.NewLine +
-                    "            #define LIL_SRP_VERSION_PATCH " + version.Patch + Environment.NewLine;
-            }
-
             ReadDataFile(ctx);
             ReplaceMultiCompiles(ref insertPassPre, version, indent, false);
             ReplaceMultiCompiles(ref insertPassPost, version, indent, false);
@@ -253,6 +245,19 @@ namespace lilToon
             sb.Replace(LIL_SUBSHADER_INSERT,        insertText);
             sb.Replace(LIL_SUBSHADER_INSERT_POST,   insertPostText);
             sb.Replace(LIL_SHADER_SETTING,          shaderSettingText);
+            if(version.RP != lilRenderPipeline.BRP && version.Major > 0)
+            {
+                sb.Replace(
+                    LIL_SRP_VERSION,
+                    "#define LIL_SRP_VERSION_MAJOR " + version.Major + Environment.NewLine +
+                    "            #define LIL_SRP_VERSION_MINOR " + version.Minor + Environment.NewLine +
+                    "            #define LIL_SRP_VERSION_PATCH " + version.Patch + Environment.NewLine
+                );
+            }
+            else
+            {
+                sb.Replace(LIL_SRP_VERSION, "");
+            }
             sb.Replace(LIL_PASS_SHADER_NAME,        passShaderName);
             sb.Replace(LIL_SUBSHADER_TAGS,          subShaderTags);
 

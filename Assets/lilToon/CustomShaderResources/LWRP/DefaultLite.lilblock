@@ -1,6 +1,7 @@
     SubShader
     {
         HLSLINCLUDE
+            *LIL_SRP_VERSION*
             #pragma exclude_renderers d3d11_9x
             #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_LITE
