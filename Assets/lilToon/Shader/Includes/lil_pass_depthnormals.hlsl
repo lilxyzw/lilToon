@@ -13,7 +13,8 @@
 #define LIL_V2F_POSITION_CS
 #define LIL_V2F_NORMAL_WS
 #if defined(LIL_V2F_FORCE_TEXCOORD0) || (LIL_RENDER > 0)
-    #define LIL_V2F_TEXCOORD0
+    #define LIL_V2F_PACKED_TEXCOORD01
+    #define LIL_V2F_PACKED_TEXCOORD23
 #endif
 #if defined(LIL_V2F_FORCE_POSITION_OS) || ((LIL_RENDER > 0) && !defined(LIL_LITE) && defined(LIL_FEATURE_DISSOLVE))
     #define LIL_V2F_POSITION_OS
@@ -23,13 +24,16 @@ struct v2f
 {
     float4 positionCS   : SV_POSITION;
     float3 normalWS     : TEXCOORD0;
-    #if defined(LIL_V2F_TEXCOORD0)
-        float2 uv0      : TEXCOORD1;
+    #if defined(LIL_V2F_PACKED_TEXCOORD01)
+        float4 uv01         : TEXCOORD1;
+    #endif
+    #if defined(LIL_V2F_PACKED_TEXCOORD23)
+        float4 uv23         : TEXCOORD2;
     #endif
     #if defined(LIL_V2F_POSITION_OS)
-        float3 positionOS   : TEXCOORD2;
+        float3 positionOS   : TEXCOORD3;
     #endif
-    LIL_CUSTOM_V2F_MEMBER(3,4,5,6,7,8,9,10)
+    LIL_CUSTOM_V2F_MEMBER(4,5,6,7,8,9,10,11)
     LIL_VERTEX_INPUT_INSTANCE_ID
     LIL_VERTEX_OUTPUT_STEREO
 };

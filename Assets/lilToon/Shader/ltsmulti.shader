@@ -844,6 +844,8 @@ Shader "_lil/lilToonMulti"
             #pragma shader_feature_local ETC1_EXTERNAL_ALPHA
 
             // Main
+            #pragma shader_feature_local _COLORADDSUBDIFF_ON
+            #pragma shader_feature_local _COLORCOLOR_ON
             #pragma shader_feature_local _FADING_ON
 
             // Replace keywords

@@ -701,7 +701,7 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Main 2nd
-#if defined(LIL_FEATURE_MAIN2ND) && defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && !defined(LIL_LITE)
+#if defined(LIL_FEATURE_MAIN2ND) && !defined(LIL_LITE)
     void lilGetMain2nd(inout lilFragData fd, inout float4 color2nd, inout float main2ndDissolveAlpha LIL_SAMP_IN_FUNC(samp))
     {
         #if !(defined(LIL_FEATURE_DECAL) && defined(LIL_FEATURE_ANIMATE_DECAL))
@@ -797,7 +797,7 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Main 3rd
-#if defined(LIL_FEATURE_MAIN3RD) && defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && !defined(LIL_LITE)
+#if defined(LIL_FEATURE_MAIN3RD) && !defined(LIL_LITE)
     void lilGetMain3rd(inout lilFragData fd, inout float4 color3rd, inout float main3rdDissolveAlpha LIL_SAMP_IN_FUNC(samp))
     {
         #if !(defined(LIL_FEATURE_DECAL) && defined(LIL_FEATURE_ANIMATE_DECAL))

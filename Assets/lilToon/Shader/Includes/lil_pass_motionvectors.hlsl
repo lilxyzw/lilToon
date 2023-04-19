@@ -36,7 +36,8 @@ float2 lilCalculateMotionVector(float4 positionCS, float4 previousPositionCS)
 #define LIL_V2F_POSITION_CS
 #define LIL_V2F_PREV_POSITION_CS
 #if defined(LIL_V2F_FORCE_TEXCOORD0) || (LIL_RENDER > 0)
-    #define LIL_V2F_TEXCOORD0
+    #define LIL_V2F_PACKED_TEXCOORD01
+    #define LIL_V2F_PACKED_TEXCOORD23
 #endif
 #if defined(LIL_V2F_FORCE_POSITION_OS) || ((LIL_RENDER > 0) && !defined(LIL_LITE) && defined(LIL_FEATURE_DISSOLVE))
     #define LIL_V2F_POSITION_OS
@@ -51,18 +52,21 @@ float2 lilCalculateMotionVector(float4 positionCS, float4 previousPositionCS)
 struct v2f
 {
     float4 positionCS   : SV_POSITION;
-    float4 previousPositionCS : TEXCOORD4;
-    #if defined(LIL_V2F_TEXCOORD0)
-        float2 uv0      : TEXCOORD0;
+    float4 previousPositionCS : TEXCOORD5;
+    #if defined(LIL_V2F_PACKED_TEXCOORD01)
+        float4 uv01         : TEXCOORD0;
+    #endif
+    #if defined(LIL_V2F_PACKED_TEXCOORD23)
+        float4 uv23         : TEXCOORD1;
     #endif
     #if defined(LIL_V2F_POSITION_OS)
-        float3 positionOS   : TEXCOORD1;
+        float3 positionOS   : TEXCOORD2;
     #endif
     #if defined(LIL_V2F_NORMAL_WS)
-        float3 normalWS     : TEXCOORD2;
+        float3 normalWS     : TEXCOORD3;
     #endif
     #if defined(LIL_FUR)
-        float furLayer      : TEXCOORD3;
+        float furLayer      : TEXCOORD4;
     #endif
     LIL_CUSTOM_V2F_MEMBER(7,8,9,10,11,12,13,14)
     LIL_VERTEX_INPUT_INSTANCE_ID
