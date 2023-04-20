@@ -1753,6 +1753,9 @@ float3 lilGetObjectPosition()
     // Shadow caster
     float3 _LightDirection;
     float3 _LightPosition;
+    #if LIL_SRP_VERSION_LOWER(5, 1)
+        float4 _ShadowBias;
+    #endif
     float4 URPShadowPos(float4 positionOS, float3 normalOS, float bias)
     {
         float3 positionWS = TransformObjectToWorld(positionOS.xyz);
@@ -1769,7 +1772,8 @@ float3 lilGetObjectPosition()
         #if LIL_SRP_VERSION_GREATER_EQUAL(5, 1)
             float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, lightDirectionWS));
         #else
-            float4 positionCS = TransformWorldToHClip(positionWS);
+            float biasN = _ShadowBias.y - saturate(dot(lightDirectionWS, normalWS)) * _ShadowBias.y;
+            float4 positionCS = TransformWorldToHClip(positionWS + lightDirectionWS * _ShadowBias.x + normalWS * biasN);
         #endif
 
         #if UNITY_REVERSED_Z
