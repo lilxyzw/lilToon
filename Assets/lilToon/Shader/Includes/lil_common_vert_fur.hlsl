@@ -56,7 +56,7 @@ v2g vert(appdata input)
     //------------------------------------------------------------------------------------------------------------------------------
     // Previous Position (for HDRP)
     #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
-        input.previousPositionOS = unity_MotionVectorsParams.x > 0.0 ? input.previousPositionOS : input.positionOS.xyz;
+        input.previousPositionOS = lilSelectPreviousPosition(input.previousPositionOS, input.positionOS.xyz);
         #if defined(_ADD_PRECOMPUTED_VELOCITY)
             input.previousPositionOS -= input.precomputedVelocity;
         #endif
@@ -75,7 +75,7 @@ v2g vert(appdata input)
         #else
             lilVertexNormalInputs previousVertexNormalInput = lilGetVertexNormalInputs();
         #endif
-        previousVertexInput.positionWS = TransformPreviousObjectToWorld(input.previousPositionOS);
+        previousVertexInput.positionWS = lilTransformPreviousObjectToWorld(input.previousPositionOS);
         lilCustomVertexWS(input, uvMain, previousVertexInput, previousVertexNormalInput);
         output.previousPositionWS = previousVertexInput.positionWS;
     #endif
@@ -275,7 +275,7 @@ void AppendFur(inout TriangleStream<v2f> outStream, inout v2f output, v2g input[
     #endif
     #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
         float3 previousPositionWS = lilLerp3(input[0].previousPositionWS, input[1].previousPositionWS, input[2].previousPositionWS, factor);
-        output.previousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousPositionWS, 1.0));
+        output.previousPositionCS = mul(LIL_MATRIX_PREV_VP, float4(previousPositionWS, 1.0));
     #endif
     #if defined(LIL_V2F_FURLAYER)
         output.furLayer = 0;
@@ -319,7 +319,7 @@ void AppendFur(inout TriangleStream<v2f> outStream, inout v2f output, v2g input[
     #endif
     #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
         previousPositionWS.xyz += mixVector;
-        output.previousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousPositionWS, 1.0));
+        output.previousPositionCS = mul(LIL_MATRIX_PREV_VP, float4(previousPositionWS, 1.0));
     #endif
     #if defined(LIL_V2F_FURLAYER)
         output.furLayer = 1;
@@ -387,7 +387,7 @@ void geom(triangle v2g input[3], inout TriangleStream<v2f> outStream)
                 outputBase[i].positionCS = lilTransformWStoCS(input[i].positionWS);
             #endif
             #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
-                outputBase[i].previousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(input[i].previousPositionWS, 1.0));
+                outputBase[i].previousPositionCS = mul(LIL_MATRIX_PREV_VP, float4(input[i].previousPositionWS, 1.0));
             #endif
             #if defined(LIL_V2F_TEXCOORD0)
                 outputBase[i].uv0 = input[i].uv0;

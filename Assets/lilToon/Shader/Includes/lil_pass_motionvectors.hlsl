@@ -5,29 +5,6 @@
 #include "lil_common_appdata.hlsl"
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Motion Vector
-float2 lilCalculateMotionVector(float4 positionCS, float4 previousPositionCS)
-{
-    positionCS.xy = positionCS.xy / LIL_SCREENPARAMS.xy * 2.0 - 1.0;
-    #if UNITY_UV_STARTS_AT_TOP
-        positionCS.y = -positionCS.y;
-    #endif
-    previousPositionCS.xy = previousPositionCS.xy / previousPositionCS.w;
-    float2 motionVec = (positionCS.xy - previousPositionCS.xy);
-
-    float2 microThreshold = 0.01f * _ScreenSize.zw;
-    motionVec.x = abs(motionVec.x) < microThreshold.x ? 0 : motionVec.x;
-    motionVec.y = abs(motionVec.y) < microThreshold.y ? 0 : motionVec.y;
-
-    motionVec = clamp(motionVec, -1.0f + microThreshold, 1.0f - microThreshold);
-
-    #if UNITY_UV_STARTS_AT_TOP
-        motionVec.y = -motionVec.y;
-    #endif
-    return motionVec;
-}
-
-//------------------------------------------------------------------------------------------------------------------------------
 // Structure
 #if !defined(LIL_CUSTOM_V2F_MEMBER)
     #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7)
@@ -35,6 +12,9 @@ float2 lilCalculateMotionVector(float4 positionCS, float4 previousPositionCS)
 
 #define LIL_V2F_POSITION_CS
 #define LIL_V2F_PREV_POSITION_CS
+#if defined(LIL_URP) && LIL_SRP_VERSION_GREATER_EQUAL(16, 0)
+    #define LIL_V2F_POSITION_CS_NO_JITTER
+#endif
 #if defined(LIL_V2F_FORCE_TEXCOORD0) || (LIL_RENDER > 0)
     #if defined(LIL_FUR)
         #define LIL_V2F_TEXCOORD0
@@ -59,27 +39,30 @@ float2 lilCalculateMotionVector(float4 positionCS, float4 previousPositionCS)
 struct v2f
 {
     float4 positionCS   : SV_POSITION;
-    float4 previousPositionCS : TEXCOORD6;
+    float4 previousPositionCS : TEXCOORD0;
+    #if defined(LIL_V2F_POSITION_CS_NO_JITTER)
+        float4 positionCSNoJitter : POSITION_CS_NO_JITTER;
+    #endif
     #if defined(LIL_V2F_TEXCOORD0)
-        float2 uv0         : TEXCOORD0;
+        float2 uv0         : TEXCOORD1;
     #endif
     #if defined(LIL_V2F_PACKED_TEXCOORD01)
-        float4 uv01         : TEXCOORD0;
+        float4 uv01         : TEXCOORD1;
     #endif
     #if defined(LIL_V2F_PACKED_TEXCOORD23)
-        float4 uv23         : TEXCOORD1;
+        float4 uv23         : TEXCOORD2;
     #endif
     #if defined(LIL_V2F_POSITION_OS)
-        float3 positionOS   : TEXCOORD2;
+        float3 positionOS   : TEXCOORD3;
     #endif
     #if defined(LIL_V2F_POSITION_WS)
-        float3 positionWS   : TEXCOORD3;
+        float3 positionWS   : TEXCOORD4;
     #endif
     #if defined(LIL_V2F_NORMAL_WS)
-        float3 normalWS     : TEXCOORD4;
+        float3 normalWS     : TEXCOORD5;
     #endif
     #if defined(LIL_FUR)
-        float furLayer      : TEXCOORD5;
+        float furLayer      : TEXCOORD6;
     #endif
     LIL_CUSTOM_V2F_MEMBER(9,10,11,12,13,14,15,16)
     LIL_VERTEX_INPUT_INSTANCE_ID
@@ -157,11 +140,12 @@ void frag(v2f input
 
     #include "lil_common_frag_alpha.hlsl"
 
-    float2 motionVector = lilCalculateMotionVector(input.positionCS, input.previousPositionCS);
-    outMotionVector = float4(motionVector * 0.5, 0.0, 0.0);
-
-    bool forceNoMotion = unity_MotionVectorsParams.y == 0.0;
-    if(forceNoMotion) outMotionVector = float4(2.0, 0.0, 0.0, 0.0);
+    #if defined(LIL_V2F_POSITION_CS_NO_JITTER)
+        float2 motionVector = lilCalculateMotionVector(input.positionCSNoJitter, input.previousPositionCS);
+    #else
+        float2 motionVector = lilCalculateMotionVector(input.positionCS, input.previousPositionCS);
+    #endif
+    outMotionVector = float4(motionVector, 0.0, 0.0);
 
     #ifdef WRITE_MSAA_DEPTH
         depthColor = fd.positionCS.z;

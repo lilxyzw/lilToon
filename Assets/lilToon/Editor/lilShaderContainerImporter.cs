@@ -1361,9 +1361,18 @@ namespace lilToon
             }
             else if(version.RP == lilRenderPipeline.URP)
             {
-                return GenerateIndentText(indent,
-                    "#pragma multi_compile_instancing",
-                    "#define LIL_PASS_MOTIONVECTORS");
+                if(version.Major >= 16)
+                {
+                    return GenerateIndentText(indent,
+                        "#pragma multi_compile_instancing",
+                        "#define LIL_PASS_MOTIONVECTORS");
+                }
+                else
+                {
+                    return GenerateIndentText(indent,
+                        "#pragma multi_compile_instancing",
+                        "#define LIL_PASS_MOTIONVECTORS");
+                }
             }
             else if(version.RP == lilRenderPipeline.HDRP)
             {

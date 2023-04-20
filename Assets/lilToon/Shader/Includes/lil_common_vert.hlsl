@@ -66,7 +66,7 @@ LIL_V2F_TYPE vert(appdata input)
     #if defined(LIL_OUTLINE) && !defined(LIL_LITE) && defined(USING_STEREO_MATRICES)
         #define LIL_VERTEX_CONDITION (_Invisible || _OutlineDisableInVR)
     #elif defined(LIL_OUTLINE) && !defined(LIL_LITE)
-        #define LIL_VERTEX_CONDITION (_Invisible || _OutlineDisableInVR && (abs(UNITY_MATRIX_P._m02) > 0.000001))
+        #define LIL_VERTEX_CONDITION (_Invisible || _OutlineDisableInVR && (abs(LIL_MATRIX_P._m02) > 0.000001))
     #else
         #define LIL_VERTEX_CONDITION (_Invisible)
     #endif
@@ -113,7 +113,7 @@ LIL_V2F_TYPE vert(appdata input)
     //------------------------------------------------------------------------------------------------------------------------------
     // Previous Position (for HDRP)
     #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
-        input.previousPositionOS = unity_MotionVectorsParams.x > 0.0 ? input.previousPositionOS : input.positionOS.xyz;
+        input.previousPositionOS = lilSelectPreviousPosition(input.previousPositionOS, input.positionOS.xyz);
         #if defined(_ADD_PRECOMPUTED_VELOCITY)
             input.previousPositionOS -= input.precomputedVelocity;
         #endif
@@ -136,18 +136,18 @@ LIL_V2F_TYPE vert(appdata input)
         #else
             lilVertexNormalInputs previousVertexNormalInput = lilGetVertexNormalInputs();
         #endif
-        previousVertexInput.positionWS = TransformPreviousObjectToWorld(input.previousPositionOS);
+        previousVertexInput.positionWS = lilTransformPreviousObjectToWorld(input.previousPositionOS.xyz);
         lilCustomVertexWS(input, uvMain, previousVertexInput, previousVertexNormalInput);
-        LIL_V2F_OUT_BASE.previousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousVertexInput.positionWS, 1.0));
+        LIL_V2F_OUT_BASE.previousPositionCS = mul(LIL_MATRIX_PREV_VP, float4(previousVertexInput.positionWS, 1.0));
 
         #if defined(LIL_ONEPASS_OUTLINE)
             #define LIL_MODIFY_PREVPOS
             #include "lil_vert_outline.hlsl"
             #undef LIL_MODIFY_PREVPOS
             LIL_VERTEX_POSITION_INPUTS(input.previousPositionOS, previousOLVertexInput);
-            previousOLVertexInput.positionWS = TransformPreviousObjectToWorld(input.previousPositionOS);
+            previousOLVertexInput.positionWS = lilTransformPreviousObjectToWorld(input.previousPositionOS.xyz);
             lilCustomVertexWS(input, uvMain, previousOLVertexInput, previousVertexNormalInput);
-            LIL_V2F_OUT.previousPositionCSOL = mul(UNITY_MATRIX_PREV_VP, float4(previousOLVertexInput.positionWS, 1.0));
+            LIL_V2F_OUT.previousPositionCSOL = mul(LIL_MATRIX_PREV_VP, float4(previousOLVertexInput.positionWS, 1.0));
         #endif
     #endif
 
@@ -207,6 +207,12 @@ LIL_V2F_TYPE vert(appdata input)
     #endif
     #if defined(LIL_V2F_POSITION_WS)
         LIL_V2F_OUT_BASE.positionWS     = vertexInput.positionWS;
+    #endif
+    #if defined(LIL_V2F_POSITION_CS_NO_JITTER)
+        LIL_V2F_OUT_BASE.positionCSNoJitter = mul(_NonJitteredViewProjMatrix, float4(vertexInput.positionWS.xyz, 1));
+        #if defined(LIL_V2F_POSITION_CS)
+            lilApplyMotionVectorZBias(LIL_V2F_OUT_BASE.positionCS);
+        #endif
     #endif
 
     // Normal

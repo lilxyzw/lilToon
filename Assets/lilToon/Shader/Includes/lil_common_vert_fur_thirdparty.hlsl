@@ -90,7 +90,7 @@ for(uint fl = 0; fl < _FurLayerNum; fl++)
         #endif
         #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
             float3 previousPositionWS = lerp(input[ii2].previousPositionWS,pwpc,lpmix);
-            output.previousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousPositionWS, 1.0));
+            output.previousPositionCS = mul(LIL_MATRIX_PREV_VP, float4(previousPositionWS, 1.0));
         #endif
         #if defined(LIL_V2F_FURLAYER)
             output.furLayer = 0;
@@ -133,7 +133,7 @@ for(uint fl = 0; fl < _FurLayerNum; fl++)
         #endif
         #if defined(LIL_PASS_MOTIONVECTOR_INCLUDED)
             previousPositionWS.xyz += fvmix;
-            output.previousPositionCS = mul(UNITY_MATRIX_PREV_VP, float4(previousPositionWS, 1.0));
+            output.previousPositionCS = mul(LIL_MATRIX_PREV_VP, float4(previousPositionWS, 1.0));
         #endif
         #if defined(LIL_V2F_FURLAYER)
             output.furLayer = 1;
