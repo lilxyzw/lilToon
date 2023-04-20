@@ -567,6 +567,13 @@ namespace lilToon
 
             var buildTarget = EditorUserBuildSettings.activeBuildTarget;
             var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildTarget);
+            #if UNITY_2021_3_OR_NEWER
+                var namedBuildTarget = NamedBuildTarget.FromBuildTargetGroup(buildTargetGroup);
+                var scriptingDefineSymbols = PlayerSettings.GetScriptingDefineSymbols(namedBuildTarget);
+            #else
+                var namedBuildTarget = buildTargetGroup;
+                var scriptingDefineSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup);
+            #endif
 
             sb.AppendLine("# Player Settings");
             sb.AppendLine("Color Space: " + PlayerSettings.colorSpace.ToString());
@@ -575,11 +582,10 @@ namespace lilToon
             {
                 sb.AppendLine("    " + api.ToString());
             }
-            sb.AppendLine("Scripting Backend: " + PlayerSettings.GetScriptingBackend(buildTargetGroup));
-            sb.AppendLine("Api Compatibility Level: " + PlayerSettings.GetApiCompatibilityLevel(buildTargetGroup));
-            sb.AppendLine("C++ Compiler Configuration: " + PlayerSettings.GetIl2CppCompilerConfiguration(buildTargetGroup));
-            sb.AppendLine("Use incremental GC: " + !PlayerSettings.GetIncrementalIl2CppBuild(buildTargetGroup));
-            sb.AppendLine("Scripting Define Symbols: " + PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup));
+            sb.AppendLine("Scripting Backend: " + PlayerSettings.GetScriptingBackend(namedBuildTarget));
+            sb.AppendLine("Api Compatibility Level: " + PlayerSettings.GetApiCompatibilityLevel(namedBuildTarget));
+            sb.AppendLine("C++ Compiler Configuration: " + PlayerSettings.GetIl2CppCompilerConfiguration(namedBuildTarget));
+            sb.AppendLine("Scripting Define Symbols: " + scriptingDefineSymbols);
             sb.AppendLine();
 
             sb.AppendLine("# Quality Settings");
