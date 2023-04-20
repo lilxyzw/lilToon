@@ -24,6 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed possible shader error when setting alpha mask to replace mode
 - Fixed script error in Unity 2018
 
+### Changed
+- Moved csc.rsp to the same directory as asmdef
+
 ## [1.3.7] - 2023-01-17
 ### Added
 - Support for `VRChat Package Manager`
