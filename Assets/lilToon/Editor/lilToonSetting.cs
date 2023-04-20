@@ -1412,7 +1412,7 @@ public class lilToonSetting : ScriptableObject
     private static List<Shader> GetTrueShaderLists(List<Shader> shaders)
     {
         shaders = shaders.Distinct().ToList();
-        foreach(var path in shaders.Select(s => AssetDatabase.GetAssetPath(s)).Where(p => !string.IsNullOrEmpty(p)))
+        foreach(var path in shaders.Select(s => AssetDatabase.GetAssetPath(s)).Where(p => !string.IsNullOrEmpty(p)).ToArray())
         {
             TextReader sr;
             if(path.Contains(".lilcontainer"))
