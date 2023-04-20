@@ -1095,7 +1095,9 @@ float3 lilGetObjectPosition()
     // HDRP Data
     uint lilGetRenderingLayer()
     {
-        #if defined(RENDERING_LIGHT_LAYERS_MASK)
+        #if !defined(DEFAULT_LIGHT_LAYERS)
+            return _EnableLightLayers ? asuint(unity_RenderingLayer.x) & RENDERING_LAYERS_MASK : RENDERING_LAYERS_MASK;
+        #elif defined(RENDERING_LIGHT_LAYERS_MASK)
             return _EnableLightLayers ? (asuint(unity_RenderingLayer.x) & RENDERING_LIGHT_LAYERS_MASK) >> RENDERING_LIGHT_LAYERS_MASK_SHIFT : DEFAULT_LIGHT_LAYERS;
         #else
             return _EnableLightLayers ? asuint(unity_RenderingLayer.x) : DEFAULT_LIGHT_LAYERS;
