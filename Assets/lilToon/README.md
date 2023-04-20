@@ -11,19 +11,20 @@ This shader is developed for services using avatars (VRChat, etc.) and has the f
 
 # Support
 Supported Unity versions
-- Unity 2018 - Unity 2022.2
+- Unity 2018.1 - Unity 2023.2
 
 Tested version
 - Unity 2018.1.0f2 (Built-in RP)
 - Unity 2018.4.20f1 (Built-in RP / LWRP 4.10.0 / HDRP 4.10.0)
 - Unity 2019.2.21f1 (Built-in RP / LWRP 6.9.2 / HDRP 6.9.2)
-- Unity 2019.3.0f6  (Built-in RP / URP 7.1.8 / HDRP 7.1.8)
+- Unity 2019.3.0f6 (Built-in RP / URP 7.1.8 / HDRP 7.1.8)
 - Unity 2019.4.31f1 (Built-in RP / URP 7.7.1 / HDRP 7.7.1)
-- Unity 2020.3.36f1 (Built-in RP / URP 10.9.0 / HDRP 10.9.0)
-- Unity 2021.3.19f1 (Built-in RP / URP 12.1.10 / HDRP 12.1.10)
-- Unity 2022.2.1f1 (Built-in RP / URP 14.0.4 / HDRP 14.0.4)
+- Unity 2020.3.47f1 (Built-in RP / URP 10.10.1 / HDRP 10.10.1)
+- Unity 2021.3.23f1 (Built-in RP / URP 12.1.11 / HDRP 12.1.11)
+- Unity 2022.2.15f1 (Built-in RP / URP 14.0.7 / HDRP 14.0.7)
+- Unity 2023.2.0a11 (Built-in RP / URP 16.0.1 / HDRP 16.0.1)
 
-I have confirmed that there is no error in `2021.3.16f1` and `2022.2.1f1`, but due to a problem on the Unity side, it may not be rendered correctly when using URP/HDRP. If you have any problems, please downgrade the version or update to the latest version as soon as it is fixed. ( [GameObjects doesn't get rendered when using "Unlit.Unlit_UsePass" Shader](https://issuetracker.unity3d.com/issues/sphere-gameobject-doesnt-get-rendered-when-using-unlit-dot-unlit-usepass-shader) )
+Some older versions of Unity 2021 and 2022 have problems such as not applying transforms or not rendering materials on URP/HDRP. If you have this issue, please update to the Unity version where the bug has been fixed. ( [GameObjects doesn't get rendered when using "Unlit.Unlit_UsePass" Shader](https://issuetracker.unity3d.com/issues/sphere-gameobject-doesnt-get-rendered-when-using-unlit-dot-unlit-usepass-shader) )
 
 Supported Shader Models
 - Normal: SM4.0 / ES3.0 or later
@@ -34,8 +35,8 @@ Supported Shader Models
 Supported Rendering Pipelines
 - Built-in Render Pipeline
 - Lightweight Render Pipeline 4.0.0 - 6.9.2
-- Universal Render Pipeline 7.0.0 - 14.0.3
-- High Definition Render Pipeline 4.0.0 - 14.0.3
+- Universal Render Pipeline 7.0.0 - 16.0.1
+- High Definition Render Pipeline 4.0.0 - 16.0.1
 
 # Features
 - Main color x3 layers (Decal, Layer mask, Gif animation, Normal / Additive / Multiplicative / Screen blending)
