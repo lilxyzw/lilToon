@@ -15,6 +15,16 @@
     "defineConstraints": [],
     "versionDefines": [
         {
+            "name": "com.vrchat.avatars",
+            "expression": "",
+            "define": "LILTOON_VRCSDK3_AVATARS"
+        },
+        {
+            "name": "com.vrchat.worlds",
+            "expression": "",
+            "define": "LILTOON_VRCSDK3_WORLDS"
+        },
+        {
             "name": "com.vrchat.base",
             "expression": "",
             "define": "LILTOON_VRCSDK3"

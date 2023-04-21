@@ -83,7 +83,7 @@ namespace lilToon
         private static void CheckAnimationClip(AnimationClip clip, Dictionary<string, TexProp> dicT, Dictionary<string, STProp> dicD, Dictionary<string, FloatProp> dicF, Dictionary<string, ColorProp> dicC)
         {
             if(clip == null) return;
-            CheckMaterials((IEnumerable<Material>)AnimationUtility.GetObjectReferenceCurveBindings(clip).SelectMany(b => AnimationUtility.GetObjectReferenceCurve(clip, b)).Where(f => f.value is Material), dicT, dicD, dicF, dicC);
+            CheckMaterials(AnimationUtility.GetObjectReferenceCurveBindings(clip).SelectMany(b => AnimationUtility.GetObjectReferenceCurve(clip, b)).Select(f => f.value as Material).Distinct(), dicT, dicD, dicF, dicC);
 
             foreach(var propname in AnimationUtility.GetCurveBindings(clip).Select(b => b.propertyName).Where(n => !string.IsNullOrEmpty(n) && n.Contains("material.")))
             {

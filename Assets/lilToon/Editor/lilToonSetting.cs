@@ -1,7 +1,9 @@
-#if VRC_SDK_VRCSDK3 && !UDON
-    #define LILTOON_VRCSDK3_AVATARS
-#elif VRC_SDK_VRCSDK3
-    #define LILTOON_VRCSDK3_WORLDS
+#if !LILTOON_VRCSDK3_AVATARS && !LILTOON_VRCSDK3_WORLDS && VRC_SDK_VRCSDK3
+    #if UDON
+        #define LILTOON_VRCSDK3_WORLDS
+    #else
+        #define LILTOON_VRCSDK3_AVATARS
+    #endif
 #endif
 #if UNITY_EDITOR
 using lilToon;
