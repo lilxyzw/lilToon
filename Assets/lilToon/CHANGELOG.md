@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Worked around an issue that conflicted with URP's variant reduction feature
 - Fixed possible shader error when setting alpha mask to replace mode
 - Fixed script error in Unity 2018
+- Fixed bounds becoming too large with `Fix Lighting`
 
 ### Changed
 - Moved csc.rsp to the same directory as asmdef
