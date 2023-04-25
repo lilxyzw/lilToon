@@ -220,7 +220,18 @@ namespace lilToon
         private static void PackageVersionChecker(string packageName)
         {
             int indexlil = packageName.IndexOf("lilToon_");
+            if(indexlil < 0) indexlil = packageName.IndexOf("jp.lilxyzw.liltoon-");
             if(indexlil < 0) return;
+
+            if(lilDirectoryManager.GetSettingLockPath().Contains("Packages"))
+            {
+                if(!EditorUtility.DisplayDialog("lilToon", lilLanguageManager.GetLoc("sDialogImportPackage"), lilLanguageManager.GetLoc("sYes"), lilLanguageManager.GetLoc("sNo")))
+                {
+                    CoroutineHandler.StartStaticCoroutine(ClosePackageImportWindow());
+                    return;
+                }
+            }
+
             string packageVerString = packageName.Substring(indexlil + 8);
 
             var semPackage = new SemVerParser(packageVerString, true);
@@ -229,8 +240,11 @@ namespace lilToon
 
             if(semPackage < semCurrent)
             {
-                if(EditorUtility.DisplayDialog("lilToon", lilLanguageManager.GetLoc("sDialogImportOldVer"), lilLanguageManager.GetLoc("sYes"), lilLanguageManager.GetLoc("sNo"))) return;
-                CoroutineHandler.StartStaticCoroutine(ClosePackageImportWindow());
+                if(!EditorUtility.DisplayDialog("lilToon", lilLanguageManager.GetLoc("sDialogImportOldVer"), lilLanguageManager.GetLoc("sYes"), lilLanguageManager.GetLoc("sNo")))
+                {
+                    CoroutineHandler.StartStaticCoroutine(ClosePackageImportWindow());
+                    return;
+                }
             }
         }
 
