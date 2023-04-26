@@ -1,84 +1,84 @@
         //----------------------------------------------------------------------------------------------------------------------
         // Base
-        [lilToggle]     _Invisible                  ("Invisible", Int) = 0
+        [lilToggle]     _Invisible                  ("sInvisible", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
-        [lilHDR] [MainColor] _Color                 ("Color", Color) = (0.925,0.7,0.74,1)
+        [lilHDR] [MainColor] _Color                 ("sColor", Color) = (0.925,0.7,0.74,1)
         [MainTexture]   _MainTex                    ("Texture", 2D) = "white" {}
-        [lilVec3Float]  _FakeShadowVector           ("Offset|Vector", Vector) = (0,0,0,0.05)
+        [lilVec3Float]  _FakeShadowVector           ("sFakeShadowVectors", Vector) = (0,0,0,0.05)
 
         //----------------------------------------------------------------------------------------------------------------------
         // Encryption
-        [lilToggle]     _IgnoreEncryption           ("Ignore Encryption", Int) = 0
-                        _Keys                       ("Keys", Vector) = (0,0,0,0)
-                        _BitKey0                    ("", Float) = 0
-                        _BitKey1                    ("", Float) = 0
-                        _BitKey2                    ("", Float) = 0
-                        _BitKey3                    ("", Float) = 0
-                        _BitKey4                    ("", Float) = 0
-                        _BitKey5                    ("", Float) = 0
-                        _BitKey6                    ("", Float) = 0
-                        _BitKey7                    ("", Float) = 0
-                        _BitKey8                    ("", Float) = 0
-                        _BitKey9                    ("", Float) = 0
-                        _BitKey10                   ("", Float) = 0
-                        _BitKey11                   ("", Float) = 0
-                        _BitKey12                   ("", Float) = 0
-                        _BitKey13                   ("", Float) = 0
-                        _BitKey14                   ("", Float) = 0
-                        _BitKey15                   ("", Float) = 0
-                        _BitKey16                   ("", Float) = 0
-                        _BitKey17                   ("", Float) = 0
-                        _BitKey18                   ("", Float) = 0
-                        _BitKey19                   ("", Float) = 0
-                        _BitKey20                   ("", Float) = 0
-                        _BitKey21                   ("", Float) = 0
-                        _BitKey22                   ("", Float) = 0
-                        _BitKey23                   ("", Float) = 0
-                        _BitKey24                   ("", Float) = 0
-                        _BitKey25                   ("", Float) = 0
-                        _BitKey26                   ("", Float) = 0
-                        _BitKey27                   ("", Float) = 0
-                        _BitKey28                   ("", Float) = 0
-                        _BitKey29                   ("", Float) = 0
-                        _BitKey30                   ("", Float) = 0
-                        _BitKey31                   ("", Float) = 0
+        [lilToggle]     _IgnoreEncryption           ("sIgnoreEncryption", Int) = 0
+                        _Keys                       ("sKeys", Vector) = (0,0,0,0)
+                        _BitKey0                    ("_BitKey0", Float) = 0
+                        _BitKey1                    ("_BitKey1", Float) = 0
+                        _BitKey2                    ("_BitKey2", Float) = 0
+                        _BitKey3                    ("_BitKey3", Float) = 0
+                        _BitKey4                    ("_BitKey4", Float) = 0
+                        _BitKey5                    ("_BitKey5", Float) = 0
+                        _BitKey6                    ("_BitKey6", Float) = 0
+                        _BitKey7                    ("_BitKey7", Float) = 0
+                        _BitKey8                    ("_BitKey8", Float) = 0
+                        _BitKey9                    ("_BitKey9", Float) = 0
+                        _BitKey10                   ("_BitKey10", Float) = 0
+                        _BitKey11                   ("_BitKey11", Float) = 0
+                        _BitKey12                   ("_BitKey12", Float) = 0
+                        _BitKey13                   ("_BitKey13", Float) = 0
+                        _BitKey14                   ("_BitKey14", Float) = 0
+                        _BitKey15                   ("_BitKey15", Float) = 0
+                        _BitKey16                   ("_BitKey16", Float) = 0
+                        _BitKey17                   ("_BitKey17", Float) = 0
+                        _BitKey18                   ("_BitKey18", Float) = 0
+                        _BitKey19                   ("_BitKey19", Float) = 0
+                        _BitKey20                   ("_BitKey20", Float) = 0
+                        _BitKey21                   ("_BitKey21", Float) = 0
+                        _BitKey22                   ("_BitKey22", Float) = 0
+                        _BitKey23                   ("_BitKey23", Float) = 0
+                        _BitKey24                   ("_BitKey24", Float) = 0
+                        _BitKey25                   ("_BitKey25", Float) = 0
+                        _BitKey26                   ("_BitKey26", Float) = 0
+                        _BitKey27                   ("_BitKey27", Float) = 0
+                        _BitKey28                   ("_BitKey28", Float) = 0
+                        _BitKey29                   ("_BitKey29", Float) = 0
+                        _BitKey30                   ("_BitKey30", Float) = 0
+                        _BitKey31                   ("_BitKey31", Float) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced
-        [lilEnum]                                       _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("SrcBlend", Int) = 2
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("DstBlend", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlpha      ("SrcBlendAlpha", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlpha      ("DstBlendAlpha", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOp            ("BlendOp", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlpha       ("BlendOpAlpha", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendFA         ("ForwardAdd SrcBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendFA         ("ForwardAdd DstBlend", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlphaFA    ("ForwardAdd SrcBlendAlpha", Int) = 0
-        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlphaFA    ("ForwardAdd DstBlendAlpha", Int) = 1
-        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpFA          ("ForwardAdd BlendOp", Int) = 4
-        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlphaFA     ("ForwardAdd BlendOpAlpha", Int) = 4
-        [lilToggle]                                     _ZClip              ("ZClip", Int) = 1
-        [lilToggle]                                     _ZWrite             ("ZWrite", Int) = 1
-        [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest              ("ZTest", Int) = 4
-        [IntRange]                                      _StencilRef         ("Stencil Reference Value", Range(0, 255)) = 51
-        [IntRange]                                      _StencilReadMask    ("Stencil ReadMask Value", Range(0, 255)) = 255
-        [IntRange]                                      _StencilWriteMask   ("Stencil WriteMask Value", Range(0, 255)) = 255
-        [Enum(UnityEngine.Rendering.CompareFunction)]   _StencilComp        ("Stencil Compare Function", Float) = 3
-        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilPass        ("Stencil Pass", Float) = 0
-        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilFail        ("Stencil Fail", Float) = 0
-        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilZFail       ("Stencil ZFail", Float) = 0
-                                                        _OffsetFactor       ("Offset Factor", Float) = 0
-                                                        _OffsetUnits        ("Offset Units", Float) = 0
-        [lilColorMask]                                  _ColorMask          ("Color Mask", Int) = 15
-        [lilToggle]                                     _AlphaToMask        ("AlphaToMask", Int) = 0
+        [lilEnum]                                       _Cull               ("sCullModes", Int) = 2
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("sSrcBlendRGB", Int) = 2
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlend           ("sDstBlendRGB", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlpha      ("sSrcBlendAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlpha      ("sDstBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOp            ("sBlendOpRGB", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlpha       ("sBlendOpAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendFA         ("sSrcBlendRGB", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendFA         ("sDstBlendRGB", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlendAlphaFA    ("sSrcBlendAlpha", Int) = 0
+        [Enum(UnityEngine.Rendering.BlendMode)]         _DstBlendAlphaFA    ("sDstBlendAlpha", Int) = 1
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpFA          ("sBlendOpRGB", Int) = 4
+        [Enum(UnityEngine.Rendering.BlendOp)]           _BlendOpAlphaFA     ("sBlendOpAlpha", Int) = 4
+        [lilToggle]                                     _ZClip              ("sZClip", Int) = 1
+        [lilToggle]                                     _ZWrite             ("sZWrite", Int) = 1
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _ZTest              ("sZTest", Int) = 4
+        [IntRange]                                      _StencilRef         ("Ref", Range(0, 255)) = 51
+        [IntRange]                                      _StencilReadMask    ("ReadMask", Range(0, 255)) = 255
+        [IntRange]                                      _StencilWriteMask   ("WriteMask", Range(0, 255)) = 255
+        [Enum(UnityEngine.Rendering.CompareFunction)]   _StencilComp        ("Comp", Float) = 3
+        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilPass        ("Pass", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilFail        ("Fail", Float) = 0
+        [Enum(UnityEngine.Rendering.StencilOp)]         _StencilZFail       ("ZFail", Float) = 0
+                                                        _OffsetFactor       ("sOffsetFactor", Float) = 0
+                                                        _OffsetUnits        ("sOffsetUnits", Float) = 0
+        [lilColorMask]                                  _ColorMask          ("sColorMask", Int) = 15
+        [lilToggle]                                     _AlphaToMask        ("sAlphaToMask", Int) = 0
                                                         _lilShadowCasterBias ("Shadow Caster Bias", Float) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Save (Unused)
-        [HideInInspector]                               _BaseColor          ("Color", Color) = (1,1,1,1)
+        [HideInInspector]                               _BaseColor          ("sColor", Color) = (1,1,1,1)
         [HideInInspector]                               _BaseMap            ("Texture", 2D) = "white" {}
         [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
         [HideInInspector]                               _lilToonVersion     ("Version", Int) = 0

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -57,6 +58,14 @@ namespace lilToon
         public static GUIContent shadow1stColorRGBAContent;
         public static GUIContent shadow2ndColorRGBAContent;
         public static GUIContent shadow3rdColorRGBAContent;
+        public static GUIContent blurMaskRGBContent;
+        public static GUIContent shadowAOMapContent;
+        public static GUIContent widthMaskContent;
+        public static GUIContent lengthMaskContent;
+        public static GUIContent triMaskContent;
+        public static GUIContent cubemapContent;
+        public static GUIContent audioLinkLocalMapContent;
+        public static GUIContent gradationMapContent;
         public static LanguageSettings langSet = new LanguageSettings();
 
         [Serializable]
@@ -147,6 +156,35 @@ namespace lilToon
 
         private static void InitializeLabels()
         {
+            loc["sCullModes"]                = BuildParams(GetLoc("sCullMode"), GetLoc("sCullModeOff"), GetLoc("sCullModeFront"), GetLoc("sCullModeBack"));
+            loc["sBlendModes"]               = BuildParams(GetLoc("sBlendMode"), GetLoc("sBlendModeNormal"), GetLoc("sBlendModeAdd"), GetLoc("sBlendModeScreen"), GetLoc("sBlendModeMul"));
+            loc["sAlphaModes"]               = BuildParams(GetLoc("sTransparentMode"), GetLoc("sAlphaMaskModeNone"), GetLoc("sAlphaMaskModeReplace"), GetLoc("sAlphaMaskModeMul"), GetLoc("sAlphaMaskModeAdd"), GetLoc("sAlphaMaskModeSub"));
+            loc["sAlphaMaskModes"]           = BuildParams(GetLoc("sAlphaMask"), GetLoc("sAlphaMaskModeNone"), GetLoc("sAlphaMaskModeReplace"), GetLoc("sAlphaMaskModeMul"), GetLoc("sAlphaMaskModeAdd"), GetLoc("sAlphaMaskModeSub"));
+            loc["sBlinkSettings"]              = BuildParams(GetLoc("sBlinkStrength"), GetLoc("sBlinkType"), GetLoc("sBlinkSpeed"), GetLoc("sBlinkOffset"));
+            loc["sDistanceFadeSettings"]      = BuildParams(GetLoc("sStartDistance"), GetLoc("sEndDistance"), GetLoc("sStrength"), GetLoc("sBackfaceForceShadow"));
+            loc["sDistanceFadeModes"]  = BuildParams("Mode", GetLoc("sVertex"), GetLoc("sDissolveModePosition"));
+            loc["sDissolveParams"]           = BuildParams(GetLoc("sDissolveMode"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"), GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"));
+            loc["sDissolveParamsModes"]       = BuildParams(GetLoc("sDissolve"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"));
+            loc["sDissolveParamsOther"]      = BuildParams(GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"), "Dummy");
+            //loc["sGlitterParams1"]           = BuildParams("Tiling", GetLoc("sParticleSize"), GetLoc("sContrast"));
+            loc["sGlitterParams2"]           = BuildParams(GetLoc("sBlinkSpeed"), GetLoc("sAngleLimit"), GetLoc("sRimLightDirection"), GetLoc("sColorRandomness"));
+            loc["sTransparentMode"]          = BuildParams(GetLoc("sRenderingMode"), GetLoc("sRenderingModeOpaque"), GetLoc("sRenderingModeCutout"), GetLoc("sRenderingModeTransparent"), GetLoc("sRenderingModeRefraction"), GetLoc("sRenderingModeFur"), GetLoc("sRenderingModeFurCutout"), GetLoc("sRenderingModeGem"));
+            loc["sOutlineVertexColorUsages"] = BuildParams(GetLoc("sVertexColor"), GetLoc("sNone"), GetLoc("sVertexR2Width"), GetLoc("sVertexRGBA2Normal"));
+            loc["sShadowColorTypes"]         = BuildParams(GetLoc("sColorType"), GetLoc("sColorTypeNormal"), GetLoc("sColorTypeLUT"));
+            loc["sShadowMaskTypes"]          = BuildParams(GetLoc("sMaskType"), GetLoc("sStrength"), GetLoc("sFlat"));
+            loc["sHSVGs"]                    = BuildParams(GetLoc("sHue"), GetLoc("sSaturation"), GetLoc("sValue"), GetLoc("sGamma"));
+            loc["sScrollRotates"]            = BuildParams(GetLoc("sAngle"), GetLoc("sUVAnimation"), GetLoc("sScroll"), GetLoc("sRotate"));
+            loc["sDecalAnimations"]          = BuildParams(GetLoc("sAnimation"), GetLoc("sXFrames"), GetLoc("sYFrames"), GetLoc("sFrames"), GetLoc("sFPS"));
+            loc["sDecalSubParams"]           = BuildParams(GetLoc("sXRatio"), GetLoc("sYRatio"), GetLoc("sFixBorder"));
+            loc["sAudioLinkUVModes"]           = BuildParams(GetLoc("sAudioLinkUVMode"), GetLoc("sAudioLinkUVModeNone"), GetLoc("sAudioLinkUVModeRim"), GetLoc("sAudioLinkUVModeUV"), GetLoc("sAudioLinkUVModeMask"), GetLoc("sAudioLinkUVModeMask") + " (Spectrum)", GetLoc("sAudioLinkUVModePosition"));
+            loc["sAudioLinkVertexUVModes"]           = BuildParams(GetLoc("sAudioLinkUVMode"), GetLoc("sAudioLinkUVModeNone"), GetLoc("sAudioLinkUVModePosition"), GetLoc("sAudioLinkUVModeUV"), GetLoc("sAudioLinkUVModeMask"));
+            loc["sAudioLinkVertexStrengths"]           = BuildParams(GetLoc("sAudioLinkMovingVector"), GetLoc("sAudioLinkNormalStrength"));
+            loc["sAudioLinkLocalMapParams"]         = BuildParams(GetLoc("sAudioLinkLocalMapBPM"), GetLoc("sAudioLinkLocalMapNotes"), GetLoc("sOffset"));
+            loc["sFakeShadowVectors"] = BuildParams(GetLoc("sVector"), GetLoc("sOffset"));
+            loc["sFurVectors"] = BuildParams(GetLoc("sVector"), GetLoc("sLength"));
+            loc["sPreOutTypes"] = BuildParams(GetLoc("sOutType"), GetLoc("sOutTypeNormal"), GetLoc("sOutTypeFlat"), GetLoc("sOutTypeMono"));
+            loc["sLightDirectionOverrides"] = BuildParams(GetLoc("sLightDirectionOverride"), GetLoc("sObjectFollowing"));
+
             sCullModes                      = BuildParams(GetLoc("sCullMode"), GetLoc("sCullModeOff"), GetLoc("sCullModeFront"), GetLoc("sCullModeBack"));
             sBlendModes                     = BuildParams(GetLoc("sBlendMode"), GetLoc("sBlendModeNormal"), GetLoc("sBlendModeAdd"), GetLoc("sBlendModeScreen"), GetLoc("sBlendModeMul"));
             sAlphaModes                     = BuildParams(GetLoc("sTransparentMode"), GetLoc("sAlphaMaskModeNone"), GetLoc("sAlphaMaskModeReplace"), GetLoc("sAlphaMaskModeMul"), GetLoc("sAlphaMaskModeAdd"), GetLoc("sAlphaMaskModeSub"));
@@ -190,6 +228,35 @@ namespace lilToon
             shadow1stColorRGBAContent       = new GUIContent(GetLoc("sShadow1stColor"),                     GetLoc("sTextureRGBA"));
             shadow2ndColorRGBAContent       = new GUIContent(GetLoc("sShadow2ndColor"),                     GetLoc("sTextureRGBA"));
             shadow3rdColorRGBAContent       = new GUIContent(GetLoc("sShadow3rdColor"),                     GetLoc("sTextureRGBA"));
+            blurMaskRGBContent              = new GUIContent(GetLoc("sBlurMask"),                           GetLoc("sBlurRGB"));
+            shadowAOMapContent              = new GUIContent("AO Map",                                      GetLoc("sBorderRGB"));
+            widthMaskContent                = new GUIContent(GetLoc("sWidth"),                              GetLoc("sWidthR"));
+            lengthMaskContent               = new GUIContent(GetLoc("sLengthMask"),                         GetLoc("sStrengthR"));
+            triMaskContent                  = new GUIContent(GetLoc("sTriMask"),                            GetLoc("sTriMaskRGB"));
+            cubemapContent                  = new GUIContent("Cubemap Fallback");
+            audioLinkLocalMapContent        = new GUIContent(GetLoc("sAudioLinkLocalMap"));
+            gradationMapContent             = new GUIContent(GetLoc("sGradationMap"));
+
+        }
+
+        public static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop)
+        {
+            string v = string.Join("|",
+                prop.displayName.Split('|').Select(
+                    n=>string.Join("",n.Split('+').Select(m=>GetLoc(m)).ToArray())
+                ).ToArray()
+            );
+            materialEditor.ShaderProperty(prop, v);
+        }
+
+        public static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop, int indent)
+        {
+            string v = string.Join("|",
+                prop.displayName.Split('|').Select(
+                    n=>string.Join("",n.Split('+').Select(m=>GetLoc(m)).ToArray())
+                ).ToArray()
+            );
+            materialEditor.ShaderProperty(prop, v, indent);
         }
     }
 }

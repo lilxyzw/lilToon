@@ -176,7 +176,7 @@ namespace lilToon
             ConvertGifToAtlas(tex, decalAnimation, decalSubParam, isDecal);
             // Toggle decal
             EditorGUI.BeginChangeCheck();
-            m_MaterialEditor.ShaderProperty(isDecal, GetLoc("sAsDecal"));
+            LocalizedProperty(m_MaterialEditor, isDecal);
             if(EditorGUI.EndChangeCheck() && isDecal.floatValue == 0.0f)
             {
                 isLeftOnly.floatValue = 0.0f;
@@ -329,16 +329,16 @@ namespace lilToon
                     tex.textureScaleAndOffset = new Vector4(scaleX, scaleY, posX, posY);
                 }
 
-                m_MaterialEditor.ShaderProperty(angle, GetLoc("sAngle"));
+                LocalizedProperty(m_MaterialEditor, angle);
                 ScrollAndRotateGUI(SR);
                 EditorGUI.indentLevel--;
-                m_MaterialEditor.ShaderProperty(decalAnimation, lilLanguageManager.BuildParams(GetLoc("sAnimation"), GetLoc("sXFrames"), GetLoc("sYFrames"), GetLoc("sFrames"), GetLoc("sFPS")));
-                m_MaterialEditor.ShaderProperty(decalSubParam, lilLanguageManager.BuildParams(GetLoc("sXRatio"), GetLoc("sYRatio"), GetLoc("sFixBorder")));
+                LocalizedProperty(m_MaterialEditor, decalAnimation);
+                LocalizedProperty(m_MaterialEditor, decalSubParam);
             }
             else
             {
                 m_MaterialEditor.TextureScaleOffsetProperty(tex);
-                m_MaterialEditor.ShaderProperty(angle, GetLoc("sAngle"));
+                LocalizedProperty(m_MaterialEditor, angle);
                 ScrollAndRotateGUI(SR);
             }
 
@@ -394,7 +394,7 @@ namespace lilToon
 
         public static void ToneCorrectionGUI(MaterialEditor m_MaterialEditor, MaterialProperty hsvg)
         {
-            m_MaterialEditor.ShaderProperty(hsvg, lilLanguageManager.BuildParams(GetLoc("sHue"), GetLoc("sSaturation"), GetLoc("sValue"), GetLoc("sGamma")));
+            LocalizedProperty(m_MaterialEditor, hsvg);
             // Reset
             if(EditorButton(GetLoc("sReset")))
             {
@@ -474,7 +474,7 @@ namespace lilToon
         {
             EditorGUILayout.LabelField(GetLoc("sUVSetting"), boldLabel);
             m_MaterialEditor.TextureScaleOffsetProperty(uvst);
-            m_MaterialEditor.ShaderProperty(uvsr, lilLanguageManager.BuildParams(GetLoc("sAngle"), GetLoc("sUVAnimation"), GetLoc("sScroll"), GetLoc("sRotate")));
+            LocalizedProperty(m_MaterialEditor, uvsr);
         }
 
         public static void InvBorderGUI(MaterialProperty prop)
@@ -509,12 +509,12 @@ namespace lilToon
             if(isShow)
             {
                 EditorGUI.indentLevel++;
-                m_MaterialEditor.ShaderProperty(srcRGB, GetLoc("sSrcBlendRGB"));
-                m_MaterialEditor.ShaderProperty(dstRGB, GetLoc("sDstBlendRGB"));
-                m_MaterialEditor.ShaderProperty(srcA, GetLoc("sSrcBlendAlpha"));
-                m_MaterialEditor.ShaderProperty(dstA, GetLoc("sDstBlendAlpha"));
-                m_MaterialEditor.ShaderProperty(opRGB, GetLoc("sBlendOpRGB"));
-                m_MaterialEditor.ShaderProperty(opA, GetLoc("sBlendOpAlpha"));
+                LocalizedProperty(m_MaterialEditor, srcRGB);
+                LocalizedProperty(m_MaterialEditor, dstRGB);
+                LocalizedProperty(m_MaterialEditor, srcA);
+                LocalizedProperty(m_MaterialEditor, dstA);
+                LocalizedProperty(m_MaterialEditor, opRGB);
+                LocalizedProperty(m_MaterialEditor, opA);
                 EditorGUI.indentLevel--;
             }
         }
@@ -611,10 +611,10 @@ namespace lilToon
             {
                 EditorGUI.indentLevel++;
                 m_MaterialEditor.TextureScaleOffsetProperty(textureName);
-                m_MaterialEditor.ShaderProperty(blendUV1, GetLoc("sBlendUV1"));
-                m_MaterialEditor.ShaderProperty(zRotCancel, GetLoc("sMatCapZRotCancel"));
-                m_MaterialEditor.ShaderProperty(perspective, GetLoc("sFixPerspective"));
-                m_MaterialEditor.ShaderProperty(vrParallaxStrength, GetLoc("sVRParallaxStrength"));
+                LocalizedProperty(m_MaterialEditor, blendUV1);
+                LocalizedProperty(m_MaterialEditor, zRotCancel);
+                LocalizedProperty(m_MaterialEditor, perspective);
+                LocalizedProperty(m_MaterialEditor, vrParallaxStrength);
                 EditorGUI.indentLevel--;
             }
         }
@@ -626,10 +626,10 @@ namespace lilToon
             {
                 EditorGUI.indentLevel++;
                 m_MaterialEditor.TextureScaleOffsetProperty(textureName);
-                m_MaterialEditor.ShaderProperty(blendUV1, GetLoc("sBlendUV1"));
-                m_MaterialEditor.ShaderProperty(zRotCancel, GetLoc("sMatCapZRotCancel"));
-                m_MaterialEditor.ShaderProperty(perspective, GetLoc("sFixPerspective"));
-                m_MaterialEditor.ShaderProperty(vrParallaxStrength, GetLoc("sVRParallaxStrength"));
+                LocalizedProperty(m_MaterialEditor, blendUV1);
+                LocalizedProperty(m_MaterialEditor, zRotCancel);
+                LocalizedProperty(m_MaterialEditor, perspective);
+                LocalizedProperty(m_MaterialEditor, vrParallaxStrength);
 
                 GUILayout.BeginHorizontal();
                 var position2 = EditorGUILayout.GetControlRect();
@@ -777,6 +777,8 @@ namespace lilToon
         #endregion
 
         private static string GetLoc(string value) { return lilLanguageManager.GetLoc(value); }
+        private static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop) {lilLanguageManager.LocalizedProperty(materialEditor, prop); }
+        private static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop, int indent) {lilLanguageManager.LocalizedProperty(materialEditor, prop, indent); }
     }
 }
 #endif
