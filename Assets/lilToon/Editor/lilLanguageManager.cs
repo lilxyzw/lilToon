@@ -239,24 +239,29 @@ namespace lilToon
 
         }
 
-        public static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop)
+        public static string GetDisplayLabel(MaterialProperty prop)
         {
-            string v = string.Join("|",
-                prop.displayName.Split('|').Select(
-                    n=>string.Join("",n.Split('+').Select(m=>GetLoc(m)).ToArray())
-                ).ToArray()
+            return string.Join("",
+                prop.displayName.Split('|').First().Split('+').Select(m=>GetLoc(m)).ToArray()
             );
-            materialEditor.ShaderProperty(prop, v);
         }
 
-        public static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop, int indent)
+        public static string GetDisplayName(MaterialProperty prop)
         {
-            string v = string.Join("|",
+            return string.Join("|",
                 prop.displayName.Split('|').Select(
                     n=>string.Join("",n.Split('+').Select(m=>GetLoc(m)).ToArray())
                 ).ToArray()
             );
-            materialEditor.ShaderProperty(prop, v, indent);
+        }
+
+        public static string GetDisplayName(string label)
+        {
+            return string.Join("|",
+                label.Split('|').Select(
+                    n=>string.Join("",n.Split('+').Select(m=>GetLoc(m)).ToArray())
+                ).ToArray()
+            );
         }
     }
 }

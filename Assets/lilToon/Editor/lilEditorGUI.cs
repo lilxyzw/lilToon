@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using System;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -167,12 +168,151 @@ namespace lilToon
             return pressed;
         }
 
+        public static bool Button(string label)
+        {
+            if(!CheckPropertyToDraw(label)) return false;
+            return GUI.Button(EditorGUI.IndentedRect(EditorGUILayout.GetControlRect()), label);
+        }
+
+        public static bool[] Buttons(string label, params string[] labels)
+        {
+            if(!CheckPropertyToDraw(label)) return Enumerable.Repeat(false,labels.Length).ToArray();
+            GUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel(label);
+            var res = labels.Select(l => GUILayout.Button(l)).ToArray();
+            GUILayout.EndHorizontal();
+            return res;
+        }
+
+        public static int Popup(string label, int i, params string[] labels)
+        {
+            if(CheckPropertyToDraw(label)) return EditorGUILayout.Popup(label, i, labels);
+            else                           return i;
+        }
+
+        public static int IntSlider(string label, int i, int min, int max)
+        {
+            if(CheckPropertyToDraw(label)) return EditorGUILayout.IntSlider(label, i, min, max);
+            else                           return i;
+        }
+
+        public static float Slider(string label, float i, float min, float max)
+        {
+            if(CheckPropertyToDraw(label)) return EditorGUILayout.Slider(label, i, min, max);
+            else                           return i;
+        }
+
+        public static float FloatField(string label, float f)
+        {
+            if(CheckPropertyToDraw(label)) return EditorGUILayout.FloatField(label, f);
+            else                           return f;
+        }
+
+        public static bool Toggle(string label, bool b)
+        {
+            if(CheckPropertyToDraw(label)) return EditorGUILayout.Toggle(label, b);
+            else                           return b;
+        }
+
+        public static Vector2 Vector2Field(string label, Vector2 v)
+        {
+            if(CheckPropertyToDraw(label)) return EditorGUILayout.Vector2Field(label, v);
+            else                           return v;
+        }
+
         //------------------------------------------------------------------------------------------------------------------------------
         // Property drawer
         #region
+        public static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop, bool shouldCheck = true)
+        {
+            if(!shouldCheck || CheckPropertyToDraw(prop))
+                materialEditor.ShaderProperty(prop, lilLanguageManager.GetDisplayName(prop));
+        }
+
+        public static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop, string label, bool shouldCheck = true)
+        {
+            if(!shouldCheck || CheckPropertyToDraw(prop))
+                materialEditor.ShaderProperty(prop, lilLanguageManager.GetDisplayName(label));
+        }
+
+        public static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop, int indent, bool shouldCheck = true)
+        {
+            if(!shouldCheck || CheckPropertyToDraw(prop))
+                materialEditor.ShaderProperty(prop, lilLanguageManager.GetDisplayName(prop), indent);
+        }
+
+        public static void LocalizedPropertyColorWithAlpha(MaterialEditor materialEditor, MaterialProperty prop, bool shouldCheck = true)
+        {
+            if(!shouldCheck || CheckPropertyToDraw(prop))
+            {
+                LocalizedProperty(materialEditor, prop);
+                DrawColorAsAlpha(prop);
+            }
+        }
+
+        public static void LocalizedPropertyTexture(MaterialEditor materialEditor, GUIContent content, MaterialProperty tex, bool shouldCheck = true)
+        {
+            if(!shouldCheck || CheckPropertyToDraw(tex) || CheckPropertyToDraw(content))
+                materialEditor.TexturePropertySingleLine(content, tex);
+        }
+
+        public static void LocalizedPropertyTexture(MaterialEditor materialEditor, GUIContent content, MaterialProperty tex, MaterialProperty color, bool shouldCheck = true)
+        {
+            if(!shouldCheck || CheckPropertyToDraw(tex) || CheckPropertyToDraw(color) || CheckPropertyToDraw(content))
+                materialEditor.TexturePropertySingleLine(content, tex, color);
+        }
+
+        public static void LocalizedPropertyTextureWithAlpha(MaterialEditor materialEditor, GUIContent content, MaterialProperty tex, MaterialProperty color, bool shouldCheck = true)
+        {
+            if(!shouldCheck || CheckPropertyToDraw(tex) || CheckPropertyToDraw(color) || CheckPropertyToDraw(content))
+            {
+                materialEditor.TexturePropertySingleLine(content, tex, color);
+                DrawColorAsAlpha(color);
+            }
+        }
+
+        public static void LocalizedPropertyAlpha(MaterialProperty prop, bool shouldCheck = true)
+        {
+            if(!shouldCheck || CheckPropertyToDraw(prop))
+                DrawColorAsAlpha(prop);
+        }
+
+        public static bool CheckPropertyToDraw(MaterialProperty prop)
+        {
+            return string.IsNullOrEmpty(lilToonInspector.edSet.searchKeyWord) || lilLanguageManager.GetDisplayName(prop).Contains(lilToonInspector.edSet.searchKeyWord) || prop.name.Contains(lilToonInspector.edSet.searchKeyWord);
+        }
+
+        public static bool CheckPropertyToDraw(params MaterialProperty[] props)
+        {
+            return string.IsNullOrEmpty(lilToonInspector.edSet.searchKeyWord) || props.Count(prop => lilLanguageManager.GetDisplayName(prop).Contains(lilToonInspector.edSet.searchKeyWord) || prop.name.Contains(lilToonInspector.edSet.searchKeyWord)) > 0;
+        }
+
+        public static bool CheckPropertyToDraw(GUIContent content)
+        {
+            return string.IsNullOrEmpty(lilToonInspector.edSet.searchKeyWord) ||
+                !string.IsNullOrEmpty(content.text) && content.text.Contains(lilToonInspector.edSet.searchKeyWord) ||
+                !string.IsNullOrEmpty(content.tooltip) && content.tooltip.Contains(lilToonInspector.edSet.searchKeyWord);
+        }
+
+        public static bool CheckPropertyToDraw(string label)
+        {
+            return string.IsNullOrEmpty(lilToonInspector.edSet.searchKeyWord) || label.Contains(lilToonInspector.edSet.searchKeyWord);
+        }
+
+        public static bool CheckPropertyToDraw(params string[] labels)
+        {
+            return string.IsNullOrEmpty(lilToonInspector.edSet.searchKeyWord) || labels.Count(l => lilLanguageManager.GetDisplayName(l).Contains(lilToonInspector.edSet.searchKeyWord)) > 0;
+        }
+
+        public static bool CheckPropertyToDraw()
+        {
+            return string.IsNullOrEmpty(lilToonInspector.edSet.searchKeyWord);
+        }
+
         public static void UV4Decal(MaterialEditor m_MaterialEditor, MaterialProperty isDecal, MaterialProperty isLeftOnly, MaterialProperty isRightOnly, MaterialProperty shouldCopy, MaterialProperty shouldFlipMirror, MaterialProperty shouldFlipCopy, MaterialProperty tex, MaterialProperty SR, MaterialProperty angle, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty uvMode)
         {
-            m_MaterialEditor.ShaderProperty(uvMode, "UV Mode|UV0|UV1|UV2|UV3|MatCap");
+            if(!CheckPropertyToDraw(isDecal, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, tex, SR, angle, decalAnimation, decalSubParam, uvMode)) return;
+            LocalizedProperty(m_MaterialEditor, uvMode, "UV Mode|UV0|UV1|UV2|UV3|MatCap");
             ConvertGifToAtlas(tex, decalAnimation, decalSubParam, isDecal);
             // Toggle decal
             EditorGUI.BeginChangeCheck();
@@ -201,7 +341,7 @@ namespace lilToon
                 if(isLeftOnly.floatValue == 1.0f) mirrorMode = 2;
 
                 EditorGUI.BeginChangeCheck();
-                mirrorMode = EditorGUILayout.Popup(GetLoc("sMirrorMode"),mirrorMode,new string[]{GetLoc("sMirrorModeNormal"),GetLoc("sMirrorModeFlip"),GetLoc("sMirrorModeLeft"),GetLoc("sMirrorModeRight"),GetLoc("sMirrorModeRightFlip")});
+                mirrorMode = Popup(GetLoc("sMirrorMode"),mirrorMode,new string[]{GetLoc("sMirrorModeNormal"),GetLoc("sMirrorModeFlip"),GetLoc("sMirrorModeLeft"),GetLoc("sMirrorModeRight"),GetLoc("sMirrorModeRightFlip")});
                 if(EditorGUI.EndChangeCheck())
                 {
                     if(mirrorMode == 0)
@@ -245,7 +385,7 @@ namespace lilToon
                 if(shouldFlipCopy.floatValue == 1.0f) copyMode = 2;
 
                 EditorGUI.BeginChangeCheck();
-                copyMode = EditorGUILayout.Popup(GetLoc("sCopyMode"),copyMode,new string[]{GetLoc("sCopyModeNormal"),GetLoc("sCopyModeSymmetry"),GetLoc("sCopyModeFlip")});
+                copyMode = Popup(GetLoc("sCopyMode"),copyMode,new string[]{GetLoc("sCopyModeNormal"),GetLoc("sCopyModeSymmetry"),GetLoc("sCopyModeFlip")});
                 if(EditorGUI.EndChangeCheck())
                 {
                     if(copyMode == 0)
@@ -337,12 +477,12 @@ namespace lilToon
             }
             else
             {
-                m_MaterialEditor.TextureScaleOffsetProperty(tex);
+                UVSettingGUI(m_MaterialEditor, tex);
                 LocalizedProperty(m_MaterialEditor, angle);
                 ScrollAndRotateGUI(SR);
             }
 
-            if(EditorButton(GetLoc("sReset")) && EditorUtility.DisplayDialog(GetLoc("sDialogResetUV"),GetLoc("sDialogResetUVMes"),GetLoc("sYes"),GetLoc("sNo")))
+            if(Button(GetLoc("sReset")) && EditorUtility.DisplayDialog(GetLoc("sDialogResetUV"),GetLoc("sDialogResetUVMes"),GetLoc("sYes"),GetLoc("sNo")))
             {
                 uvMode.floatValue = 0.0f;
                 isDecal.floatValue = 0.0f;
@@ -359,6 +499,7 @@ namespace lilToon
 
         private static void ScrollAndRotateGUI(MaterialProperty prop)
         {
+            if(!CheckPropertyToDraw(prop)) return;
             var scroll = new Vector2(prop.vectorValue.x, prop.vectorValue.y);
             float angle = Radian2Degree(prop.vectorValue.z);
             float rotate = RoundFloat1000000(prop.vectorValue.w / Mathf.PI * 0.5f);
@@ -396,7 +537,7 @@ namespace lilToon
         {
             LocalizedProperty(m_MaterialEditor, hsvg);
             // Reset
-            if(EditorButton(GetLoc("sReset")))
+            if(Button(GetLoc("sReset")))
             {
                 hsvg.vectorValue = lilConstants.defaultHSVG;
             }
@@ -411,6 +552,7 @@ namespace lilToon
 
         public static void DrawVectorAs4Float(MaterialProperty prop, string label0, string label1, string label2, string label3)
         {
+            if(!CheckPropertyToDraw(prop)) return;
             float param1 = prop.vectorValue.x;
             float param2 = prop.vectorValue.y;
             float param3 = prop.vectorValue.z;
@@ -432,6 +574,7 @@ namespace lilToon
 
         public static void DrawColorAsAlpha(MaterialProperty prop, string label)
         {
+            if(!CheckPropertyToDraw(label)) return;
             float alpha = prop.colorValue.a;
 
             EditorGUI.BeginChangeCheck();
@@ -452,7 +595,7 @@ namespace lilToon
 
         public static void RemoveUnusedPropertiesGUI(Material material)
         {
-            if(EditorButton(GetLoc("sRemoveUnused")))
+            if(Button(GetLoc("sRemoveUnused")))
             {
                 Undo.RecordObject(material, "Remove unused properties");
                 lilMaterialUtils.RemoveUnusedTexture(material, material.shader.name.Contains("Lite"));
@@ -461,7 +604,7 @@ namespace lilToon
 
         public static void SetAlphaIsTransparencyGUI(MaterialProperty tex)
         {
-            if(tex.textureValue is Texture2D && !((Texture2D)tex.textureValue).alphaIsTransparency && AutoFixHelpBox(GetLoc("sNotAlphaIsTransparency")))
+            if(CheckPropertyToDraw(tex) && tex.textureValue is Texture2D && !((Texture2D)tex.textureValue).alphaIsTransparency && AutoFixHelpBox(GetLoc("sNotAlphaIsTransparency")))
             {
                 string path = AssetDatabase.GetAssetPath(tex.textureValue);
                 var textureImporter = (TextureImporter)AssetImporter.GetAtPath(path);
@@ -470,15 +613,23 @@ namespace lilToon
             }
         }
 
+        public static void UVSettingGUI(MaterialEditor m_MaterialEditor, MaterialProperty uvst)
+        {
+            if(!CheckPropertyToDraw(uvst)) return;
+            m_MaterialEditor.TextureScaleOffsetProperty(uvst);
+        }
+
         public static void UVSettingGUI(MaterialEditor m_MaterialEditor, MaterialProperty uvst, MaterialProperty uvsr)
         {
+            if(!CheckPropertyToDraw(uvst, uvsr)) return;
             EditorGUILayout.LabelField(GetLoc("sUVSetting"), boldLabel);
-            m_MaterialEditor.TextureScaleOffsetProperty(uvst);
+            UVSettingGUI(m_MaterialEditor, uvst);
             LocalizedProperty(m_MaterialEditor, uvsr);
         }
 
         public static void InvBorderGUI(MaterialProperty prop)
         {
+            if(!CheckPropertyToDraw(prop)) return;
             float f = prop.floatValue;
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
@@ -492,6 +643,7 @@ namespace lilToon
 
         public static void MinusRangeGUI(MaterialProperty prop, string label)
         {
+            if(!CheckPropertyToDraw(prop)) return;
             float f = -prop.floatValue;
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
@@ -505,6 +657,7 @@ namespace lilToon
 
         public static void BlendSettingGUI(MaterialEditor m_MaterialEditor, bool isCustomEditor, ref bool isShow, string labelName, MaterialProperty srcRGB, MaterialProperty dstRGB, MaterialProperty srcA, MaterialProperty dstA, MaterialProperty opRGB, MaterialProperty opA)
         {
+            if(!CheckPropertyToDraw(srcRGB, dstRGB, srcA, dstA, opRGB, opA)) return;
             isShow = DrawSimpleFoldout(labelName, isShow, isCustomEditor);
             if(isShow)
             {
@@ -521,52 +674,57 @@ namespace lilToon
 
         public static void TextureGUI(MaterialEditor m_MaterialEditor, bool isCustomEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName)
         {
+            if(!CheckPropertyToDraw(guiContent) && !CheckPropertyToDraw(textureName)) return;
             isShow = DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, isShow, isCustomEditor);
             if(isShow)
             {
                 EditorGUI.indentLevel++;
-                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
+                UVSettingGUI(m_MaterialEditor, textureName);
                 EditorGUI.indentLevel--;
             }
         }
 
         public static void TextureGUI(MaterialEditor m_MaterialEditor, bool isCustomEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba)
         {
+            if(!CheckPropertyToDraw(guiContent) && !CheckPropertyToDraw(textureName, rgba)) return;
             isShow = DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
             if(isShow)
             {
                 EditorGUI.indentLevel++;
-                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
+                UVSettingGUI(m_MaterialEditor, textureName);
                 EditorGUI.indentLevel--;
             }
         }
 
         public static void TextureGUI(MaterialEditor m_MaterialEditor, bool isCustomEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty uvMode, string sUVMode)
         {
+            if(!CheckPropertyToDraw(guiContent) && !CheckPropertyToDraw(textureName, rgba, uvMode)) return;
             isShow = DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
             if(isShow)
             {
                 EditorGUI.indentLevel++;
-                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
-                m_MaterialEditor.ShaderProperty(uvMode, sUVMode);
+                UVSettingGUI(m_MaterialEditor, textureName);
+                LocalizedProperty(m_MaterialEditor, uvMode, sUVMode);
                 EditorGUI.indentLevel--;
             }
         }
 
         public static void TextureGUI(MaterialEditor m_MaterialEditor, bool isCustomEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate)
         {
+            if(!CheckPropertyToDraw(guiContent) && !CheckPropertyToDraw(textureName, rgba, scrollRotate)) return;
             isShow = DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
             if(isShow)
             {
                 EditorGUI.indentLevel++;
-                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
-                m_MaterialEditor.ShaderProperty(scrollRotate, GetLoc("sScroll"));
+                UVSettingGUI(m_MaterialEditor, textureName);
+                LocalizedProperty(m_MaterialEditor, scrollRotate, GetLoc("sScroll"));
                 EditorGUI.indentLevel--;
             }
         }
 
         public static void TextureGUI(MaterialEditor m_MaterialEditor, bool isCustomEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate, bool useCustomUV, bool useUVAnimation)
         {
+            if(!CheckPropertyToDraw(guiContent) && !CheckPropertyToDraw(textureName, rgba, scrollRotate)) return;
             if(useCustomUV)
             {
                 isShow = DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
@@ -574,7 +732,7 @@ namespace lilToon
                 {
                     EditorGUI.indentLevel++;
                     if(useUVAnimation)  UVSettingGUI(m_MaterialEditor, textureName, scrollRotate);
-                    else                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
+                    else                UVSettingGUI(m_MaterialEditor, textureName);
                     EditorGUI.indentLevel--;
                 }
             }
@@ -586,6 +744,7 @@ namespace lilToon
 
         public static void TextureGUI(MaterialEditor m_MaterialEditor, bool isCustomEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty scrollRotate, MaterialProperty uvMode, bool useCustomUV, bool useUVAnimation)
         {
+            if(!CheckPropertyToDraw(guiContent) && !CheckPropertyToDraw(textureName, rgba, scrollRotate, uvMode)) return;
             if(useCustomUV)
             {
                 isShow = DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
@@ -593,8 +752,8 @@ namespace lilToon
                 {
                     EditorGUI.indentLevel++;
                     if(useUVAnimation)  UVSettingGUI(m_MaterialEditor, textureName, scrollRotate);
-                    else                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
-                    m_MaterialEditor.ShaderProperty(uvMode, "UV Mode|UV0|UV1|UV2|UV3|Rim");
+                    else                UVSettingGUI(m_MaterialEditor, textureName);
+                    LocalizedProperty(m_MaterialEditor, uvMode, "UV Mode|UV0|UV1|UV2|UV3|Rim");
                     EditorGUI.indentLevel--;
                 }
             }
@@ -606,11 +765,12 @@ namespace lilToon
 
         public static void MatCapTextureGUI(MaterialEditor m_MaterialEditor, bool isCustomEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty blendUV1, MaterialProperty zRotCancel, MaterialProperty perspective, MaterialProperty vrParallaxStrength)
         {
+            if(!CheckPropertyToDraw(guiContent) && !CheckPropertyToDraw(blendUV1, zRotCancel, perspective, vrParallaxStrength)) return;
             isShow = DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, isShow, isCustomEditor);
             if(isShow)
             {
                 EditorGUI.indentLevel++;
-                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
+                UVSettingGUI(m_MaterialEditor, textureName);
                 LocalizedProperty(m_MaterialEditor, blendUV1);
                 LocalizedProperty(m_MaterialEditor, zRotCancel);
                 LocalizedProperty(m_MaterialEditor, perspective);
@@ -621,25 +781,20 @@ namespace lilToon
 
         public static void MatCapTextureGUI(MaterialEditor m_MaterialEditor, bool isCustomEditor, ref bool isShow, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, MaterialProperty blendUV1, MaterialProperty zRotCancel, MaterialProperty perspective, MaterialProperty vrParallaxStrength)
         {
+            if(!CheckPropertyToDraw(guiContent) && !CheckPropertyToDraw(blendUV1, zRotCancel, perspective, vrParallaxStrength)) return;
             isShow = DrawSimpleFoldout(m_MaterialEditor, guiContent, textureName, rgba, isShow, isCustomEditor);
             if(isShow)
             {
                 EditorGUI.indentLevel++;
-                m_MaterialEditor.TextureScaleOffsetProperty(textureName);
+                UVSettingGUI(m_MaterialEditor, textureName);
                 LocalizedProperty(m_MaterialEditor, blendUV1);
                 LocalizedProperty(m_MaterialEditor, zRotCancel);
                 LocalizedProperty(m_MaterialEditor, perspective);
                 LocalizedProperty(m_MaterialEditor, vrParallaxStrength);
 
-                GUILayout.BeginHorizontal();
-                var position2 = EditorGUILayout.GetControlRect();
-                var labelRect = new Rect(position2.x, position2.y, EditorGUIUtility.labelWidth, position2.height);
-                var buttonRect1 = new Rect(labelRect.x + labelRect.width, position2.y, (position2.width - EditorGUIUtility.labelWidth)*0.5f, position2.height);
-                var buttonRect2 = new Rect(buttonRect1.x + buttonRect1.width, position2.y, buttonRect1.width, position2.height);
-                EditorGUI.PrefixLabel(labelRect, new GUIContent("UV Preset"));
-                if(GUI.Button(buttonRect1, new GUIContent("MatCap"))) ApplyMatCapUVPreset(false, blendUV1, zRotCancel, perspective, vrParallaxStrength);
-                if(GUI.Button(buttonRect2, new GUIContent("AngelRing"))) ApplyMatCapUVPreset(true, blendUV1, zRotCancel, perspective, vrParallaxStrength);
-                GUILayout.EndHorizontal();
+                var buttons = Buttons("UV Preset", "MatCap", "AngelRing");
+                if(buttons[0]) ApplyMatCapUVPreset(false, blendUV1, zRotCancel, perspective, vrParallaxStrength);
+                if(buttons[1]) ApplyMatCapUVPreset(true, blendUV1, zRotCancel, perspective, vrParallaxStrength);
                 EditorGUI.indentLevel--;
             }
         }
@@ -713,6 +868,51 @@ namespace lilToon
             }
         }
 
+        public static void ConvertGifToAtlas(MaterialProperty tex, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty isDecal)
+        {
+            #if SYSTEM_DRAWING
+                if(tex.textureValue != null && AssetDatabase.GetAssetPath(tex.textureValue).EndsWith(".gif", StringComparison.OrdinalIgnoreCase) && Button(GetLoc("sConvertGif")))
+                {
+                    int frameCount, loopXY, duration;
+                    float xScale, yScale;
+                    string savePath = lilTextureUtils.ConvertGifToAtlas(tex.textureValue, out frameCount, out loopXY, out duration, out xScale, out yScale);
+
+                    tex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(savePath);
+                    decalAnimation.vectorValue = new Vector4(loopXY,loopXY,frameCount,100.0f/duration);
+                    decalSubParam.vectorValue = new Vector4(xScale,yScale,decalSubParam.vectorValue.z,decalSubParam.vectorValue.w);
+                    isDecal.floatValue = 1.0f;
+                }
+            #endif
+        }
+
+        public static void RenderQueueField(MaterialEditor materialEditor)
+        {
+            if(!CheckPropertyToDraw("Render Queue")) return;
+            materialEditor.RenderQueueField();
+        }
+
+        public static void EnableInstancingField(MaterialEditor materialEditor)
+        {
+            if(!CheckPropertyToDraw("Enable GPU Instancing")) return;
+            materialEditor.EnableInstancingField();
+        }
+
+        public static void DoubleSidedGIField(MaterialEditor materialEditor)
+        {
+            if(!CheckPropertyToDraw("Double Sided Global Illumination")) return;
+            materialEditor.DoubleSidedGIField();
+        }
+
+        public static void LightmapEmissionFlagsProperty(MaterialEditor materialEditor)
+        {
+            if(!CheckPropertyToDraw("Global Illumination")) return;
+            #if UNITY_2019_1_OR_NEWER
+                materialEditor.LightmapEmissionFlagsProperty(0, true, true);
+            #else
+                materialEditor.LightmapEmissionFlagsProperty(0, true);
+            #endif
+        }
+
         private static int IntClamp(int val, int min, int max)
         {
             return val < min ? min : (val > max ? max : val);
@@ -753,23 +953,6 @@ namespace lilToon
             return Mathf.Floor(val * 1000000.0f + 0.5f) * 0.000001f;
         }
 
-        public static void ConvertGifToAtlas(MaterialProperty tex, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty isDecal)
-        {
-            #if SYSTEM_DRAWING
-                if(tex.textureValue != null && AssetDatabase.GetAssetPath(tex.textureValue).EndsWith(".gif", StringComparison.OrdinalIgnoreCase) && EditorButton(GetLoc("sConvertGif")))
-                {
-                    int frameCount, loopXY, duration;
-                    float xScale, yScale;
-                    string savePath = lilTextureUtils.ConvertGifToAtlas(tex.textureValue, out frameCount, out loopXY, out duration, out xScale, out yScale);
-
-                    tex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(savePath);
-                    decalAnimation.vectorValue = new Vector4(loopXY,loopXY,frameCount,100.0f/duration);
-                    decalSubParam.vectorValue = new Vector4(xScale,yScale,decalSubParam.vectorValue.z,decalSubParam.vectorValue.w);
-                    isDecal.floatValue = 1.0f;
-                }
-            #endif
-        }
-
         public static bool EditorButton(string label)
         {
             return GUI.Button(EditorGUI.IndentedRect(EditorGUILayout.GetControlRect()), label);
@@ -777,8 +960,6 @@ namespace lilToon
         #endregion
 
         private static string GetLoc(string value) { return lilLanguageManager.GetLoc(value); }
-        private static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop) {lilLanguageManager.LocalizedProperty(materialEditor, prop); }
-        private static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop, int indent) {lilLanguageManager.LocalizedProperty(materialEditor, prop, indent); }
     }
 }
 #endif
