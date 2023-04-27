@@ -3952,7 +3952,7 @@ namespace lilToon
             else                                matPath = EditorUtility.SaveFilePanel("Save Material", "Assets", material.name + ".mat", "mat");
             if(!string.IsNullOrEmpty(matPath))  AssetDatabase.CreateAsset(mtoonMaterial, FileUtil.GetProjectRelativePath(matPath));
 
-            mtoonMaterial.SetColor("_Color",                    mainColor.colorValue);
+            mtoonMaterial.SetColor("_Color",                    new Color(Mathf.Clamp01(mainColor.colorValue.r), Mathf.Clamp01(mainColor.colorValue.g), Mathf.Clamp01(mainColor.colorValue.b), Mathf.Clamp01(mainColor.colorValue.a)));
             mtoonMaterial.SetFloat("_LightColorAttenuation",    0.0f);
             mtoonMaterial.SetFloat("_IndirectLightIntensity",   0.0f);
 

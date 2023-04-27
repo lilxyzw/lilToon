@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed possible shader error when setting alpha mask to replace mode
 - Fixed script error in Unity 2018
 - Fixed bounds becoming too large with `Fix Lighting`
+- Fixed `_Color` to be clamped in MToon conversion
 
 ### Changed
 - Moved csc.rsp to the same directory as asmdef

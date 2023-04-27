@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - アルファマスクを置換モードに設定した場合にシェーダーエラーになる可能性があった問題を修正
 - Unity 2018でスクリプトエラーになっていたのを修正
 - `Fix Lighting`でBoundsが過剰に大きくなるのを修正
+- MToon変換時に`_Color`がクランプされるように修正
 
 ### 変更
 - csc.rspをasmdefと同一階層に移動
