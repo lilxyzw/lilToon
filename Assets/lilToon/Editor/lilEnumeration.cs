@@ -29,6 +29,7 @@ namespace lilToon
         TwoPass
     }
 
+    [System.Obsolete]
     public enum BlendMode
     {
         Alpha,

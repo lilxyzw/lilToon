@@ -49,7 +49,7 @@ public class lilToonPreset : ScriptableObject
         public float value;
     }
 
-    [System.Serializable]
+    [Serializable]
     public struct lilPresetTexture
     {
         public string name;

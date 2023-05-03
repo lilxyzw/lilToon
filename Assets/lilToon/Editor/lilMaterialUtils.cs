@@ -9,6 +9,7 @@
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace lilToon
 {
@@ -281,14 +282,14 @@ namespace lilToon
             material.SetInt("_ColorMask", 15);
             material.SetInt("_SrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
             material.SetInt("_DstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            material.SetInt("_BlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
-            material.SetInt("_BlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
+            material.SetInt("_BlendOp", (int)BlendOp.Add);
+            material.SetInt("_BlendOpAlpha", (int)BlendOp.Add);
             material.SetInt("_SrcBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
             material.SetInt("_DstBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
             material.SetInt("_SrcBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.Zero);
             material.SetInt("_DstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
-            material.SetInt("_BlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
-            material.SetInt("_BlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
+            material.SetInt("_BlendOpFA", (int)BlendOp.Max);
+            material.SetInt("_BlendOpAlphaFA", (int)BlendOp.Max);
             if(isoutl)
             {
                 material.SetInt("_OutlineCull", 1);
@@ -299,14 +300,14 @@ namespace lilToon
                 material.SetInt("_OutlineColorMask", 15);
                 material.SetInt("_OutlineSrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
                 material.SetInt("_OutlineDstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                material.SetInt("_OutlineBlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
-                material.SetInt("_OutlineBlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
+                material.SetInt("_OutlineBlendOp", (int)BlendOp.Add);
+                material.SetInt("_OutlineBlendOpAlpha", (int)BlendOp.Add);
                 material.SetInt("_OutlineSrcBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
                 material.SetInt("_OutlineDstBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
                 material.SetInt("_OutlineSrcBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.Zero);
                 material.SetInt("_OutlineDstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_OutlineBlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
-                material.SetInt("_OutlineBlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
+                material.SetInt("_OutlineBlendOpFA", (int)BlendOp.Max);
+                material.SetInt("_OutlineBlendOpAlphaFA", (int)BlendOp.Max);
             }
             if(renderingMode == RenderingMode.Fur || renderingMode == RenderingMode.FurCutout || renderingMode == RenderingMode.FurTwoPass)
             {
@@ -316,14 +317,14 @@ namespace lilToon
                 material.SetInt("_FurColorMask", 15);
                 material.SetInt("_FurSrcBlendAlpha", (int)UnityEngine.Rendering.BlendMode.One);
                 material.SetInt("_FurDstBlendAlpha", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                material.SetInt("_FurBlendOp", (int)UnityEngine.Rendering.BlendOp.Add);
-                material.SetInt("_FurBlendOpAlpha", (int)UnityEngine.Rendering.BlendOp.Add);
+                material.SetInt("_FurBlendOp", (int)BlendOp.Add);
+                material.SetInt("_FurBlendOpAlpha", (int)BlendOp.Add);
                 material.SetInt("_FurSrcBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
                 material.SetInt("_FurDstBlendFA", (int)UnityEngine.Rendering.BlendMode.One);
                 material.SetInt("_FurSrcBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.Zero);
                 material.SetInt("_FurDstBlendAlphaFA", (int)UnityEngine.Rendering.BlendMode.One);
-                material.SetInt("_FurBlendOpFA", (int)UnityEngine.Rendering.BlendOp.Max);
-                material.SetInt("_FurBlendOpAlphaFA", (int)UnityEngine.Rendering.BlendOp.Max);
+                material.SetInt("_FurBlendOpFA", (int)BlendOp.Max);
+                material.SetInt("_FurBlendOpAlphaFA", (int)BlendOp.Max);
             }
         }
 
