@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Unity 2018でスクリプトエラーになっていたのを修正
 - `Fix Lighting`でBoundsが過剰に大きくなるのを修正
 - MToon変換時に`_Color`がクランプされるように修正
+- `VR時に非表示`がオンの場合に正しく深度が出力されないのを修正
 
 ### 変更
 - csc.rspをasmdefと同一階層に移動

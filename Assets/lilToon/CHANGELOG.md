@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed script error in Unity 2018
 - Fixed bounds becoming too large with `Fix Lighting`
 - Fixed `_Color` to be clamped in MToon conversion
+- Fixed incorrect depth output when `Disable in VR` is on
 
 ### Changed
 - Moved csc.rsp to the same directory as asmdef

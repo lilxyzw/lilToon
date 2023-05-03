@@ -63,9 +63,9 @@ LIL_V2F_TYPE vert(appdata input)
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Invisible
-    #if defined(LIL_OUTLINE) && !defined(LIL_LITE) && defined(USING_STEREO_MATRICES)
+    #if defined(LIL_OUTLINE) && !defined(LIL_LITE) && !defined(LIL_PASS_SHADOWCASTER) && defined(USING_STEREO_MATRICES)
         #define LIL_VERTEX_CONDITION (_Invisible || _OutlineDisableInVR)
-    #elif defined(LIL_OUTLINE) && !defined(LIL_LITE)
+    #elif defined(LIL_OUTLINE) && !defined(LIL_LITE) && !defined(LIL_PASS_SHADOWCASTER)
         #define LIL_VERTEX_CONDITION (_Invisible || _OutlineDisableInVR && (abs(LIL_MATRIX_P._m02) > 0.000001))
     #else
         #define LIL_VERTEX_CONDITION (_Invisible)
