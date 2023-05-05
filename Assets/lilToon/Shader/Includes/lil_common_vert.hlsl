@@ -71,7 +71,7 @@ LIL_V2F_TYPE vert(appdata input)
         #define LIL_VERTEX_CONDITION (_Invisible)
     #endif
 
-    #if defined(LIL_TESSELLATION) || defined(LIL_CUSTOM_SAFEVERT)
+    #if !defined(SHADER_STAGE_VERTEX) || defined(LIL_CUSTOM_SAFEVERT)
         if(!LIL_VERTEX_CONDITION)
         {
     #else
@@ -401,7 +401,7 @@ LIL_V2F_TYPE vert(appdata input)
         #endif
     #endif
 
-    #if defined(LIL_TESSELLATION) || defined(LIL_CUSTOM_SAFEVERT)
+    #if !defined(SHADER_STAGE_VERTEX) || defined(LIL_CUSTOM_SAFEVERT)
         }
     #endif
 
