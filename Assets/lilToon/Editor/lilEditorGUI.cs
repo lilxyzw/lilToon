@@ -312,7 +312,7 @@ namespace lilToon
         public static void UV4Decal(MaterialEditor m_MaterialEditor, MaterialProperty isDecal, MaterialProperty isLeftOnly, MaterialProperty isRightOnly, MaterialProperty shouldCopy, MaterialProperty shouldFlipMirror, MaterialProperty shouldFlipCopy, MaterialProperty tex, MaterialProperty SR, MaterialProperty angle, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty uvMode)
         {
             if(!CheckPropertyToDraw(isDecal, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, tex, SR, angle, decalAnimation, decalSubParam, uvMode)) return;
-            LocalizedProperty(m_MaterialEditor, uvMode, "UV Mode|UV0|UV1|UV2|UV3|MatCap");
+            LocalizedProperty(m_MaterialEditor, uvMode);
             ConvertGifToAtlas(tex, decalAnimation, decalSubParam, isDecal);
             // Toggle decal
             EditorGUI.BeginChangeCheck();
@@ -753,7 +753,7 @@ namespace lilToon
                     EditorGUI.indentLevel++;
                     if(useUVAnimation)  UVSettingGUI(m_MaterialEditor, textureName, scrollRotate);
                     else                UVSettingGUI(m_MaterialEditor, textureName);
-                    LocalizedProperty(m_MaterialEditor, uvMode, "UV Mode|UV0|UV1|UV2|UV3|Rim");
+                    LocalizedProperty(m_MaterialEditor, uvMode);
                     EditorGUI.indentLevel--;
                 }
             }

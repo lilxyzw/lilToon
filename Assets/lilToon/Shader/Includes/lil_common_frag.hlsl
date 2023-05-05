@@ -645,7 +645,12 @@
             #if defined(LIL_FEATURE_AudioLinkMask)
                 if(_AudioLinkUVMode == 3 || _AudioLinkUVMode == 4)
                 {
-                    audioLinkMask = LIL_SAMPLE_2D(_AudioLinkMask, sampler_AudioLinkMask, fd.uvMain);
+                    float2 uvMask = fd.uvMain;
+                    if(_AudioLinkMask_UVMode == 1) uvMask = fd.uv1;
+                    if(_AudioLinkMask_UVMode == 2) uvMask = fd.uv2;
+                    if(_AudioLinkMask_UVMode == 3) uvMask = fd.uv3;
+                    uvMask = lilCalcUV(uvMask, _AudioLinkMask_ST, _AudioLinkMask_ScrollRotate);
+                    audioLinkMask = LIL_SAMPLE_2D(_AudioLinkMask, sampler_AudioLinkMask, uvMask);
                     audioLinkUV = _AudioLinkUVMode == 3 ? audioLinkMask.rg : float2(frac(audioLinkMask.g * 2.0), 4.5/4.0 + floor(audioLinkMask.g * 2.0)/4.0);
                 }
             #endif

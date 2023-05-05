@@ -338,6 +338,8 @@ CBUFFER_START(UnityPerMaterial)
         float4  _DitherTex_TexelSize;
     #endif
     #if defined(LIL_MULTI_INPUTS_AUDIOLINK)
+        float4  _AudioLinkMask_ST;
+        float4  _AudioLinkMask_ScrollRotate;
         float4  _AudioLinkDefaultValue;
         float4  _AudioLinkUVParams;
         float4  _AudioLinkStart;
@@ -660,6 +662,7 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     #if defined(LIL_MULTI_INPUTS_AUDIOLINK)
         uint    _AudioLinkUVMode;
+        uint    _AudioLinkMask_UVMode;
         uint    _AudioLinkVertexUVMode;
     #endif
     #if defined(LIL_MULTI_INPUTS_DISTANCE_FADE)

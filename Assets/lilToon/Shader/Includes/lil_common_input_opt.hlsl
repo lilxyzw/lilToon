@@ -202,6 +202,8 @@ float4  _MainTex_ST;
 
 // AudioLink
 #if defined(LIL_FEATURE_AUDIOLINK)
+    float4  _AudioLinkMask_ST;
+    float4  _AudioLinkMask_ScrollRotate;
     float4  _AudioLinkDefaultValue;
     float4  _AudioLinkUVParams;
     float4  _AudioLinkStart;
@@ -585,6 +587,7 @@ uint    _Cull;
 #endif
 #if defined(LIL_FEATURE_AUDIOLINK)
     uint    _AudioLinkUVMode;
+    uint    _AudioLinkMask_UVMode;
     #if defined(LIL_FEATURE_AUDIOLINK_VERTEX)
         uint    _AudioLinkVertexUVMode;
     #endif

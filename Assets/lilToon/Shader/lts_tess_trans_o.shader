@@ -413,7 +413,9 @@ Shader "Hidden/lilToonTessellationTransparentOutline"
         [lilEnum]       _AudioLinkUVMode            ("sAudioLinkUVModes", Int) = 1
         [lilALUVParams] _AudioLinkUVParams          ("Scale|Offset|sAngle|Band|Bass|Low Mid|High Mid|Treble", Vector) = (0.25,0,0,0.125)
         [lilVec3]       _AudioLinkStart             ("sAudioLinkStartPosition", Vector) = (0.0,0.0,0.0,0.0)
-        [NoScaleOffset] _AudioLinkMask              ("Mask", 2D) = "blue" {}
+                        _AudioLinkMask              ("Mask", 2D) = "blue" {}
+        [lilUVAnim]     _AudioLinkMask_ScrollRotate ("sScrollRotates", Vector) = (0,0,0,0)
+        [lilEnum]       _AudioLinkMask_UVMode       ("UV Mode|UV0|UV1|UV2|UV3", Int) = 0
         [lilToggle]     _AudioLink2Main2nd          ("sMainColor2nd", Int) = 0
         [lilToggle]     _AudioLink2Main3rd          ("sMainColor3rd", Int) = 0
         [lilToggle]     _AudioLink2Emission         ("sEmission", Int) = 0

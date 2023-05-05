@@ -21,7 +21,12 @@
         #if defined(Use_AudioLinkMask)
             if(_AudioLinkVertexUVMode == 3)
             {
-                audioLinkMask = LIL_SAMPLE_2D_LOD(_AudioLinkMask, lil_sampler_linear_repeat, uvMain, 0);
+                float2 uvMask = uvMain;
+                if(_AudioLinkMask_UVMode == 1) uvMask = input.uv1.xy;
+                if(_AudioLinkMask_UVMode == 2) uvMask = input.uv2.xy;
+                if(_AudioLinkMask_UVMode == 3) uvMask = input.uv3.xy;
+                uvMask = lilCalcUV(uvMask, _AudioLinkMask_ST, _AudioLinkMask_ScrollRotate);
+                audioLinkMask = LIL_SAMPLE_2D_LOD(_AudioLinkMask, lil_sampler_linear_repeat, uvMask, 0);
                 audioLinkUV = audioLinkMask.rg;
             }
         #endif

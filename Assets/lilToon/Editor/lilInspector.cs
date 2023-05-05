@@ -158,6 +158,7 @@ namespace lilToon
             public bool isShowGlitterColorTex           = false;
             public bool isShowGlitterShapeTex           = false;
             public bool isShowGem                       = false;
+            public bool isShowAudioLinkMask             = false;
             public bool isShowDissolveMask              = false;
             public bool isShowDissolveNoiseMask         = false;
             public bool isShowIDMask                    = false;
@@ -670,6 +671,8 @@ namespace lilToon
         private readonly lilMaterialProperty audioLinkUVParams          = new lilMaterialProperty("_AudioLinkUVParams", PropertyBlock.AudioLink);
         private readonly lilMaterialProperty audioLinkStart             = new lilMaterialProperty("_AudioLinkStart", PropertyBlock.AudioLink);
         private readonly lilMaterialProperty audioLinkMask              = new lilMaterialProperty("_AudioLinkMask", true, PropertyBlock.AudioLink);
+        private readonly lilMaterialProperty audioLinkMask_ScrollRotate = new lilMaterialProperty("_AudioLinkMask_ScrollRotate", true, PropertyBlock.AudioLink);
+        private readonly lilMaterialProperty audioLinkMask_UVMode 　　　　= new lilMaterialProperty("_AudioLinkMask_UVMode", true, PropertyBlock.AudioLink);
         private readonly lilMaterialProperty audioLink2Main2nd          = new lilMaterialProperty("_AudioLink2Main2nd", PropertyBlock.AudioLink);
         private readonly lilMaterialProperty audioLink2Main3rd          = new lilMaterialProperty("_AudioLink2Main3rd", PropertyBlock.AudioLink);
         private readonly lilMaterialProperty audioLink2Emission         = new lilMaterialProperty("_AudioLink2Emission", PropertyBlock.AudioLink);
@@ -1264,6 +1267,8 @@ namespace lilToon
                 audioLinkUVParams,
                 audioLinkStart,
                 audioLinkMask,
+                audioLinkMask_ScrollRotate,
+                audioLinkMask_UVMode,
                 audioLink2Main2nd,
                 audioLink2Main3rd,
                 audioLink2Emission,
@@ -2925,10 +2930,10 @@ namespace lilToon
                             if(audioLinkUVMode.floatValue == 0) LocalizedProperty(audioLinkUVParams, sALParamsNone);
                             if(audioLinkUVMode.floatValue == 1) LocalizedProperty(audioLinkUVParams, sALParamsPos);
                             if(audioLinkUVMode.floatValue == 2) LocalizedProperty(audioLinkUVParams, sALParamsUV);
-                            if(audioLinkUVMode.floatValue == 3) LocalizedPropertyTexture(audioLinkMaskContent, audioLinkMask);
+                            if(audioLinkUVMode.floatValue == 3) TextureGUI(ref edSet.isShowAudioLinkMask, audioLinkMaskContent, audioLinkMask, null, audioLinkMask_ScrollRotate, audioLinkMask_UVMode, true, true);
                             if(audioLinkUVMode.floatValue == 4)
                             {
-                                LocalizedPropertyTexture(audioLinkMaskSpectrumContent, audioLinkMask);
+                                TextureGUI(ref edSet.isShowAudioLinkMask, audioLinkMaskSpectrumContent, audioLinkMask, null, audioLinkMask_ScrollRotate, audioLinkMask_UVMode, true, true);
                                 lilEditorGUI.DrawVectorAs4Float(audioLinkUVParams, "Volume", "Base Boost", "Treble Boost", "Line Width");
                             }
                             if(audioLinkUVMode.floatValue == 5)
@@ -2959,7 +2964,7 @@ namespace lilToon
                                 if(audioLinkVertexUVMode.floatValue == 0) LocalizedProperty(audioLinkVertexUVParams, sALParamsNone);
                                 if(audioLinkVertexUVMode.floatValue == 1) LocalizedProperty(audioLinkVertexUVParams, sALParamsPos);
                                 if(audioLinkVertexUVMode.floatValue == 2) LocalizedProperty(audioLinkVertexUVParams, sALParamsUV);
-                                if(audioLinkVertexUVMode.floatValue == 3) LocalizedPropertyTexture(audioLinkMaskContent, audioLinkMask);
+                                if(audioLinkVertexUVMode.floatValue == 3) TextureGUI(ref edSet.isShowAudioLinkMask, audioLinkMaskContent, audioLinkMask, null, audioLinkMask_ScrollRotate, audioLinkMask_UVMode, true, true);
                                 if(audioLinkVertexUVMode.floatValue == 1) LocalizedProperty(audioLinkVertexStart);
                                 lilEditorGUI.DrawLine();
                                 LocalizedProperty(audioLinkVertexStrength);
