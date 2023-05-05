@@ -170,4 +170,4 @@ lilToonのGUIStyleとして以下のものが利用できます。
 |void LoadCustomLanguage(string langFileGUID)|カスタム言語ファイルの追加読み込み|
 
 ## 作例
-- [ジオメトリシェーダー利用例（lilToonGeometryFX.unitypackage）](https://github.com/lilxyzw/lilToon/raw/Document/files/lilToonGeometryFX.unitypackage)
+- [ジオメトリシェーダー利用例（lilToonGeometryFX_1.0.1.unitypackage）](https://github.com/lilxyzw/lilToon/raw/Document/files/lilToonGeometryFX_1.0.1.unitypackage)
