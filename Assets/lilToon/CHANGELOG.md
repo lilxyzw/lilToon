@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Alpha replacement for main color 2nd/3rd
 - Property search
 - UV settings to AudioLink mask
+- Rim light for distance fade
 
 ### Fixed
 - Fixed lilToonMulti convert

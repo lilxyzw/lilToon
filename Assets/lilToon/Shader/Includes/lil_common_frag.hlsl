@@ -1967,13 +1967,21 @@
         #else
             distFade = fd.facing < (_DistanceFade.w-1.0) ? _DistanceFade.z : distFade * _DistanceFade.z;
         #endif
+
+        float3 fadeColor = _DistanceFadeColor.rgb;
+        #if defined(LIL_V2F_NORMAL_WS)
+            float nvabs = abs(dot(fd.origN,fd.headV));
+            float fadeRim = pow(saturate(1.0 - nvabs), _DistanceFadeRimFresnelPower);
+            fadeColor = lerp(fadeColor, _DistanceFadeRimColor.rgb * fd.col.rgb, fadeRim * _DistanceFadeRimColor.a);
+        #endif
+
         #if defined(LIL_PASS_FORWARDADD)
             fd.col.rgb = lerp(fd.col.rgb, 0.0, distFade);
         #elif LIL_RENDER == 2
-            fd.col.rgb = lerp(fd.col.rgb, _DistanceFadeColor.rgb * _DistanceFadeColor.a, distFade);
+            fd.col.rgb = lerp(fd.col.rgb, fadeColor * _DistanceFadeColor.a, distFade);
             fd.col.a = lerp(fd.col.a, fd.col.a * _DistanceFadeColor.a, distFade);
         #else
-            fd.col.rgb = lerp(fd.col.rgb, _DistanceFadeColor.rgb, distFade);
+            fd.col.rgb = lerp(fd.col.rgb, fadeColor, distFade);
         #endif
     }
 #endif

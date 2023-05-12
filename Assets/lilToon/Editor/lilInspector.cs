@@ -661,9 +661,11 @@ namespace lilToon
         private readonly lilMaterialProperty parallax       = new lilMaterialProperty("_Parallax", PropertyBlock.Parallax);
         private readonly lilMaterialProperty parallaxOffset = new lilMaterialProperty("_ParallaxOffset", PropertyBlock.Parallax);
 
-        private readonly lilMaterialProperty distanceFade       = new lilMaterialProperty("_DistanceFade", PropertyBlock.DistanceFade);
-        private readonly lilMaterialProperty distanceFadeColor  = new lilMaterialProperty("_DistanceFadeColor", PropertyBlock.DistanceFade);
-        private readonly lilMaterialProperty distanceFadeMode   = new lilMaterialProperty("_DistanceFadeMode", PropertyBlock.DistanceFade);
+        private readonly lilMaterialProperty distanceFade                = new lilMaterialProperty("_DistanceFade", PropertyBlock.DistanceFade);
+        private readonly lilMaterialProperty distanceFadeColor           = new lilMaterialProperty("_DistanceFadeColor", PropertyBlock.DistanceFade);
+        private readonly lilMaterialProperty distanceFadeMode            = new lilMaterialProperty("_DistanceFadeMode", PropertyBlock.DistanceFade);
+        private readonly lilMaterialProperty distanceFadeRimColor        = new lilMaterialProperty("_DistanceFadeRimColor", PropertyBlock.DistanceFade);
+        private readonly lilMaterialProperty distanceFadeRimFresnelPower = new lilMaterialProperty("_DistanceFadeRimFresnelPower", PropertyBlock.DistanceFade);
 
         private readonly lilMaterialProperty useAudioLink               = new lilMaterialProperty("_UseAudioLink", PropertyBlock.AudioLink);
         private readonly lilMaterialProperty audioLinkDefaultValue      = new lilMaterialProperty("_AudioLinkDefaultValue", PropertyBlock.AudioLink);
@@ -1260,6 +1262,8 @@ namespace lilToon
                 distanceFade,
                 distanceFadeColor,
                 distanceFadeMode,
+                distanceFadeRimColor,
+                distanceFadeRimFresnelPower,
 
                 useAudioLink,
                 audioLinkDefaultValue,
@@ -2903,6 +2907,13 @@ namespace lilToon
                         EditorGUI.indentLevel++;
                         LocalizedProperty(distanceFade);
                         LocalizedProperty(distanceFadeMode);
+                        EditorGUI.indentLevel--;
+                        DrawLine();
+                        EditorGUILayout.LabelField(GetLoc("sRimLight"));
+                        EditorGUI.indentLevel++;
+                        LocalizedProperty(distanceFadeRimColor);
+                        LocalizedPropertyAlpha(distanceFadeRimColor);
+                        LocalizedProperty(distanceFadeRimFresnelPower);
                         EditorGUI.indentLevel--;
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();

@@ -193,6 +193,7 @@ float4  _MainTex_ST;
 #if defined(LIL_FEATURE_DISTANCE_FADE)
     float4  _DistanceFade;
     float4  _DistanceFadeColor;
+    float4  _DistanceFadeRimColor;
 #endif
 
 // Dither
@@ -435,6 +436,9 @@ float   _AAStrength;
     float   _GlitterVRParallaxStrength;
     float   _GlitterBackfaceMask;
     float   _GlitterScaleRandomize;
+#endif
+#if defined(LIL_FEATURE_DISTANCE_FADE)
+    float   _DistanceFadeRimFresnelPower;
 #endif
 #if defined(LIL_FEATURE_EMISSION_1ST)
     float   _EmissionBlend;

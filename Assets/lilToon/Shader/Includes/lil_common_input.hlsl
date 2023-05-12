@@ -333,6 +333,7 @@ CBUFFER_START(UnityPerMaterial)
     #if defined(LIL_MULTI_INPUTS_DISTANCE_FADE)
         float4  _DistanceFade;
         float4  _DistanceFadeColor;
+        float4  _DistanceFadeRimColor;
     #endif
     #if defined(LIL_MULTI_INPUTS_DITHER)
         float4  _DitherTex_TexelSize;
@@ -527,6 +528,9 @@ CBUFFER_START(UnityPerMaterial)
         float   _GlitterVRParallaxStrength;
         float   _GlitterBackfaceMask;
         float   _GlitterScaleRandomize;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_DISTANCE_FADE)
+        float  _DistanceFadeRimFresnelPower;
     #endif
     #if defined(LIL_MULTI_INPUTS_EMISSION)
         float   _EmissionBlend;

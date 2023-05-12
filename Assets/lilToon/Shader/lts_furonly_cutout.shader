@@ -405,6 +405,8 @@ Shader "_lil/[Optional] lilToonFurOnlyCutout"
         [lilHDR]        _DistanceFadeColor          ("sColor", Color) = (0,0,0,1)
         [lilFFFB]       _DistanceFade               ("sDistanceFadeSettings", Vector) = (0.1,0.01,0,0)
         [lilEnum]       _DistanceFadeMode           ("sDistanceFadeModes", Int) = 0
+        [lilHDR]        _DistanceFadeRimColor       ("sColor", Color) = (0,0,0,0)
+        [PowerSlider(3.0)]_DistanceFadeRimFresnelPower ("sFresnelPower", Range(0.01, 50)) = 5.0
 
         //----------------------------------------------------------------------------------------------------------------------
         // AudioLink
