@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2023-05-12
+### Added
+- Mask by vertex id
+- Dither
+- Alpha replacement for main color 2nd/3rd
+- Property search
+- UV settings to AudioLink mask
+- Rim light for distance fade
+
+### Fixed
+- Fixed lilToonMulti convert
+- Fixed editor error in lilToonLite
+- Fixed scan when animations and materials are sub-assets
+- Changed to detect VRCSDK3 using Version Defines
+- Fixed locking settings when using UPM
+- Fixed save directory for presets when imported with UPM
+- Fixed emission not working properly
+- Fixed UV not being clamped when texture is not set for main color 2nd/3rd
+- Fixed unable to get the correct version of SLZURP
+- Worked around an issue that conflicted with URP's variant reduction feature
+- Fixed possible shader error when setting alpha mask to replace mode
+- Fixed script error in Unity 2018
+- Fixed bounds becoming too large with `Fix Lighting`
+- Fixed `_Color` to be clamped in MToon conversion
+- Fixed incorrect depth output when `Disable in VR` is on
+
+### Changed
+- Moved csc.rsp to the same directory as asmdef
+
 ## [1.3.7] - 2023-01-17
 ### Added
 - Support for `VRChat Package Manager`

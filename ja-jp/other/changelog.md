@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2023-05-12
+### 追加
+- 頂点IDによるマスクを追加
+- Ditherを追加
+- メインカラー2nd・3rdに透明度の置換機能を追加
+- プロパティの検索機能を追加
+- AudioLinkのマスクにUV設定を追加
+- 距離フェードにリムライトを追加
+
+### 修正
+- lilToonMultiの変換を修正
+- lilToonLiteのエディタエラーを修正
+- アニメーションやマテリアルがサブアセットである場合の検知を修正
+- VRCSDK3をVersion Definesを使って検知するように変更
+- UPMでインポートした場合に設定のロックが正しく機能しないのを修正
+- UPMでインポートした場合のプリセット保存ディレクトリを修正
+- 発光効果が正しく反映されていなかったのを修正
+- メインカラー2nd・3rdにテクスチャをセットしていない場合にデカール化されないのを修正
+- SLZURPの正しいバージョンが取得できないのを修正
+- URPのバリアント削減機能と競合していた問題を回避
+- アルファマスクを置換モードに設定した場合にシェーダーエラーになる可能性があった問題を修正
+- Unity 2018でスクリプトエラーになっていたのを修正
+- `Fix Lighting`でBoundsが過剰に大きくなるのを修正
+- MToon変換時に`_Color`がクランプされるように修正
+- `VR時に非表示`がオンの場合に正しく深度が出力されないのを修正
+
+### 変更
+- csc.rspをasmdefと同一階層に移動
+
 ## [1.3.7] - 2023-01-17
 ### 追加
 - `VRChat Package Manager`のサポート
