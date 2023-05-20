@@ -405,7 +405,7 @@ namespace lilToon
             float maxY = -10000.0f;
             float maxZ = -10000.0f;
             //foreach(var objTransform in gameObject.GetComponentsInChildren<Transform>(true))
-            foreach(var objTransform in skinnedMeshRenderers.SelectMany(s=>s.bones).Union(meshRenderers.Select(m=>m.transform)))
+            foreach(var objTransform in skinnedMeshRenderers.SelectMany(s=>s.bones).Union(meshRenderers.Select(m=>m.transform)).Where(t=>t!=null))
             {
                 minX = minX < objTransform.position.x ? minX : objTransform.position.x;
                 minY = minY < objTransform.position.y ? minY : objTransform.position.y;
