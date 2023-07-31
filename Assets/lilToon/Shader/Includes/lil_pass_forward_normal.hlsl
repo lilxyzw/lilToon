@@ -10,6 +10,11 @@
     #define LIL_CUSTOM_V2F_MEMBER(id0,id1,id2,id3,id4,id5,id6,id7)
 #endif
 
+bool IsInVRCCamera() {
+    return (_ScreenParams.x == 1280 &&
+        _ScreenParams.y == 720);
+}
+
 #if defined(LIL_OUTLINE)
     #define LIL_V2F_POSITION_CS
     #define LIL_V2F_PACKED_TEXCOORD01
@@ -121,6 +126,27 @@
 
 float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
 {
+
+    if (_NoMirror)
+    {
+        if (!LIL_MATRIX_P[2][2] <= 0)
+        {
+            clip(-1);
+        }
+    }
+
+    /*
+    else if (!IsInVRCCamera())
+    {
+        clip(-1);
+    }
+
+     if(LIL_MATRIX_P[2][2] > 0  && !IsInVRCCamera())
+    {
+         clip(-1);
+    }
+    */
+
     //------------------------------------------------------------------------------------------------------------------------------
     // Initialize
     LIL_SETUP_INSTANCE_ID(input);

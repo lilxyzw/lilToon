@@ -305,6 +305,8 @@ namespace lilToon
         // Material properties
         #region
         private readonly lilMaterialProperty invisible              = new lilMaterialProperty("_Invisible", PropertyBlock.Base);
+        private readonly lilMaterialProperty noMirror = new lilMaterialProperty("_NoMirror", PropertyBlock.Base);
+
         private readonly lilMaterialProperty cutoff                 = new lilMaterialProperty("_Cutoff", PropertyBlock.Base);
         private readonly lilMaterialProperty preColor               = new lilMaterialProperty("_PreColor", PropertyBlock.Base);
         private readonly lilMaterialProperty preOutType             = new lilMaterialProperty("_PreOutType", PropertyBlock.Base);
@@ -903,6 +905,7 @@ namespace lilToon
             return new[]
             {
                 invisible,
+                noMirror,
                 cutoff,
                 preColor,
                 preOutType,
@@ -4148,6 +4151,7 @@ namespace lilToon
             else                                AssetDatabase.CreateAsset(liteMaterial, FileUtil.GetProjectRelativePath(matPath));
 
             liteMaterial.SetFloat("_Invisible",                 invisible.floatValue);
+            liteMaterial.SetFloat("_NoMirror", noMirror.floatValue);
             liteMaterial.SetFloat("_Cutoff",                    cutoff.floatValue);
             liteMaterial.SetFloat("_SubpassCutoff",             subpassCutoff.floatValue);
             liteMaterial.SetFloat("_Cull",                      cull.floatValue);
@@ -4477,7 +4481,10 @@ namespace lilToon
                     }
                     LocalizedProperty(invisible);
                     LocalizedProperty(zwrite);
-                    if(zwrite.floatValue != 1.0f && !isGem && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpZWrite")))
+
+                    //プロパティ　トグルにnoMirrorをついあk
+                    LocalizedProperty(noMirror);
+                    if (zwrite.floatValue != 1.0f && !isGem && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpZWrite")))
                     {
                         zwrite.floatValue = 1.0f;
                     }
