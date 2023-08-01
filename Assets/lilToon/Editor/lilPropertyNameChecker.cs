@@ -43,6 +43,7 @@ namespace lilToon
             bool res = false;
             res = res || name == "_Invisible";
             res = res || name == "_NoMirror";
+            res = res || name == "_NoCamera";
             res = res || name == "_Cutoff";
             res = res || name == "_FlipNormal";
             res = res || name == "_BackfaceForceShadow";

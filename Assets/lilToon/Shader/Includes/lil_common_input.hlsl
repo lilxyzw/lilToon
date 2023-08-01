@@ -157,6 +157,7 @@ CBUFFER_START(UnityPerMaterial)
     uint    _OutlineVertexR2Width;
     lilBool _Invisible;
     lilBool _NoMirror;
+    lilBool _NoCamera;
     lilBool _UseShadow;
     lilBool _UseMatCap;
     lilBool _MatCapMul;
@@ -174,6 +175,7 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     lilBool _Invisible;
     lilBool _NoMirror;
+    lilBool _NoCamera;
     #if defined(LIL_FEATURE_ENCRYPTION)
         lilBool _IgnoreEncryption;
     #endif
@@ -687,6 +689,7 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     lilBool _Invisible;
     lilBool _NoMirror;
+    lilBool _NoCamera;
     lilBool _UseClippingCanceller;
     #if defined(LIL_MULTI_INPUTS_MAIN2ND)
         lilBool _Main2ndTexIsMSDF;

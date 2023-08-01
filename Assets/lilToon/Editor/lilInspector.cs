@@ -306,6 +306,7 @@ namespace lilToon
         #region
         private readonly lilMaterialProperty invisible              = new lilMaterialProperty("_Invisible", PropertyBlock.Base);
         private readonly lilMaterialProperty noMirror = new lilMaterialProperty("_NoMirror", PropertyBlock.Base);
+        private readonly lilMaterialProperty noCamera = new lilMaterialProperty("_NoCamera", PropertyBlock.Base);
 
         private readonly lilMaterialProperty cutoff                 = new lilMaterialProperty("_Cutoff", PropertyBlock.Base);
         private readonly lilMaterialProperty preColor               = new lilMaterialProperty("_PreColor", PropertyBlock.Base);
@@ -906,6 +907,7 @@ namespace lilToon
             {
                 invisible,
                 noMirror,
+                noCamera,
                 cutoff,
                 preColor,
                 preOutType,
@@ -4152,6 +4154,7 @@ namespace lilToon
 
             liteMaterial.SetFloat("_Invisible",                 invisible.floatValue);
             liteMaterial.SetFloat("_NoMirror", noMirror.floatValue);
+            liteMaterial.SetFloat("_NoCamera", noCamera.floatValue);
             liteMaterial.SetFloat("_Cutoff",                    cutoff.floatValue);
             liteMaterial.SetFloat("_SubpassCutoff",             subpassCutoff.floatValue);
             liteMaterial.SetFloat("_Cull",                      cull.floatValue);
@@ -4484,6 +4487,9 @@ namespace lilToon
 
                     //プロパティ　トグルにnoMirrorをついあk
                     LocalizedProperty(noMirror);
+                    LocalizedProperty(noCamera);
+
+
                     if (zwrite.floatValue != 1.0f && !isGem && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpZWrite")))
                     {
                         zwrite.floatValue = 1.0f;

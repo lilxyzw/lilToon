@@ -93,6 +93,7 @@ sLimEmission2nd	Emission 2nd	発光色2nd	발광색 2nd	第二发光	發光2nd
 sBaseSetting	Base Setting	基本設定	기본 설정	基本设置	基本設置
 sInvisible	Invisible	非表示	숨기기	不可见	不可見
 sNoMirror	NoMirror	NoMirror	NoMirror	NoMirror
+sNoCamera	NoCamera	NoCamera	NoCamera	NoCamera
 sAsUnlit	As Unlit	Unlit化	Unlit 화	作为 Unlit	作為Unlit
 sAsUnlitWarn	A non-zero value is set for "As Unlit". This can cause differences in brightness between materials and avatars.	"Unlit化"が0以外に設定されています。これはマテリアル間・アバター間での明るさの違いを発生させる可能性があります。	"Unlit 화" 에 0 이외의 값이 설정되어 있습니다.이는 머티리얼·아바타 간의 밝기 차이를 발생시킬 가능성이 있습니다.	“作为 Unlit”中设置了非零值。这可能会导致材质以及 Avatar 之间存在亮度差异。	“作為Unlit”中設置了0以外的值。這可能會導致material / avatar之間亮度的差異。
 sShaderType	Shader Type	シェーダーの種類	셰이더 유형	着色器类型	Shader Type

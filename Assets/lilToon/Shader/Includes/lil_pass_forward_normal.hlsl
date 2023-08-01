@@ -135,13 +135,17 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         }
     }
 
-    /*
-    else if (!IsInVRCCamera())
+    if (_NoCamera)
     {
-        clip(-1);
+        if (!IsInVRCCamera())
+        {
+            clip(-1);
+        }
     }
+   
 
-     if(LIL_MATRIX_P[2][2] > 0  && !IsInVRCCamera())
+    /*
+    if(LIL_MATRIX_P[2][2] > 0  && !IsInVRCCamera())
     {
          clip(-1);
     }
