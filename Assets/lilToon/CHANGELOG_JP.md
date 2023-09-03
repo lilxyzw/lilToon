@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 一部プロパティがプリセットに保存できないのを修正
 - カスタムシェーダーでTEXCOORDが重複するのを修正
 - スケールの変更でテッセレーションが正常に動作しない問題を修正
+- URPの`DepthOnly``DepthNormals``MotionVectors`パスでステンシルを使うように修正
 
 ## [1.4.0] - 2023-05-12
 ### 追加

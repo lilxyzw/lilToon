@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Some properties cannot be saved in presets
 - Duplicate TEXCOORD in custom shaders
 - Tessellation does not work properly when changing scale
+- Enable stencil in `DepthOnly`, `DepthNormals` and `MotionVectors` for URP
 
 ## [1.4.0] - 2023-05-12
 ### Added
