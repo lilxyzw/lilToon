@@ -5841,7 +5841,6 @@ namespace lilToon
         {
             if(lilDirectoryManager.ExistsEncryption() || lilDirectoryManager.ExistsAvaCryptV2())
             {
-                EditorGUILayout.HelpBox("This will be removed in the future.", MessageType.Warning);
                 if(!ShouldDrawBlock(PropertyBlock.Encryption)) return;
                 edSet.isShowEncryption = lilEditorGUI.Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
                 DrawMenuButton(GetLoc("sAnchorEncryption"), PropertyBlock.Encryption);
@@ -5851,6 +5850,7 @@ namespace lilToon
                     EditorGUILayout.LabelField(GetLoc("sEncryption"), customToggleFont);
                     DrawMenuButton(GetLoc("sAnchorEncryption"), PropertyBlock.Encryption);
                     EditorGUILayout.BeginVertical(boxInnerHalf);
+                    EditorGUILayout.HelpBox("This will be removed in the future.", MessageType.Warning);
                     LocalizedProperty(ignoreEncryption);
                     if(lilDirectoryManager.ExistsEncryption())
                     {
