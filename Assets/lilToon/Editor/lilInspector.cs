@@ -1511,6 +1511,11 @@ namespace lilToon
 
         public void DrawAllGUI(MaterialEditor materialEditor, MaterialProperty[] props, Material material)
         {
+            if(lilDirectoryManager.ExistsEncryption() || lilDirectoryManager.ExistsAvaCryptV2())
+            {
+                EditorGUILayout.HelpBox("Encryption will be removed in the future.", MessageType.Warning);
+            }
+
             //------------------------------------------------------------------------------------------------------------------------------
             // EditorAssets
             lilEditorGUI.InitializeGUIStyles();
@@ -5836,6 +5841,7 @@ namespace lilToon
         {
             if(lilDirectoryManager.ExistsEncryption() || lilDirectoryManager.ExistsAvaCryptV2())
             {
+                EditorGUILayout.HelpBox("This will be removed in the future.", MessageType.Warning);
                 if(!ShouldDrawBlock(PropertyBlock.Encryption)) return;
                 edSet.isShowEncryption = lilEditorGUI.Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
                 DrawMenuButton(GetLoc("sAnchorEncryption"), PropertyBlock.Encryption);
