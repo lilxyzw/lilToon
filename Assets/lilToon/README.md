@@ -6,12 +6,12 @@ This shader is developed for services using avatars (VRChat, etc.) and has the f
 - Easy to use (One-click settings from presets, Saving your own presets, Color correction and exporting textures)
 - Beautiful (Prevent overexposure, Anti-aliased shading)
 - Lightweight (Automatically rewrites shaders and turns features on / off)
-- Available in various versions (Unity 2018-2022, BRP/LWRP/URP/HDRP)
+- Available in various versions (Unity 2018-2023, BRP/LWRP/URP/HDRP)
 - Compatible with all lighting and similar in brightness to StandardShader
 
 # Support
 Supported Unity versions
-- Unity 2018.1 - Unity 2023.3
+- Unity 2018.1 - Unity 2023.2
 
 Tested version
 - Unity 2018.1.0f2 (Built-in RP)
