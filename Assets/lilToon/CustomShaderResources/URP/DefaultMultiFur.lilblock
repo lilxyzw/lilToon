@@ -360,6 +360,9 @@
             #pragma fragment frag
             #pragma lil_multi_compile_motionvectors
 
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
+
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
             #include "Includes/lil_pipeline_urp.hlsl"
@@ -404,6 +407,9 @@
             // Build Option
             #pragma vertex vert
             #pragma fragment frag
+
+            // Replace keywords
+            #include "Includes/lil_replace_keywords.hlsl"
 
             //----------------------------------------------------------------------------------------------------------------------
             // Pass
