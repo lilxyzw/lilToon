@@ -1650,7 +1650,7 @@ float3 lilGetObjectPosition()
     #define LIL_HDRP_DEEXPOSURE(col)
     #define LIL_HDRP_INVDEEXPOSURE(col)
 
-    #if LIL_SRP_VERSION_GREATER_EQUAL(16, 0)
+    #if LIL_SRP_VERSION_GREATER_EQUAL(12, 0)
         #define LIL_MATRIX_PREV_VP _PrevViewProjMatrix
         float3 lilSelectPreviousPosition(float3 previousPositionOS, float3 positionOS)
         {
@@ -1666,7 +1666,16 @@ float3 lilGetObjectPosition()
         {
             if(unity_MotionVectorsParams.y == 0) return float2(0.0, 0.0);
 
-            positionCS.xy = positionCS.xy / positionCS.w;
+            #if LIL_SRP_VERSION_GREATER_EQUAL(16, 0)
+                positionCS.xy = positionCS.xy / positionCS.w;
+            #else
+                positionCS.xy = (positionCS.xy / LIL_SCREENPARAMS.xy - 0.5) * 2.0;
+
+                #if UNITY_UV_STARTS_AT_TOP
+                    positionCS.y = -positionCS.y;
+                #endif
+            #endif
+
             previousPositionCS.xy = previousPositionCS.xy / previousPositionCS.w;
 
             #if defined(_FOVEATED_RENDERING_NON_UNIFORM_RASTER)
