@@ -140,7 +140,7 @@ namespace lilToon
         private const string LIL_LIGHTMODE_URP_9_FORWARD_0  = "SRPDefaultUnlit";
         private const string LIL_LIGHTMODE_URP_9_FORWARD_1  = "UniversalForward";
         private const string LIL_LIGHTMODE_URP_9_FORWARD_2  = "UniversalForwardOnly";
-
+        
         private const string csdShaderNameTag                   = "ShaderName";
         private const string csdEditorNameTag                   = "EditorName";
         private const string csdReplaceTag                      = "Replace";
@@ -176,6 +176,8 @@ namespace lilToon
         private static string insertUsePassPre = "";
         private static string insertUsePassPost = "";
 
+        private static string insertUsePassReference = "";
+
         private static PackageVersionInfos version = new PackageVersionInfos();
         private static int indent = 12;
 
@@ -199,6 +201,9 @@ namespace lilToon
             insertPassPost = "";
             insertUsePassPre = "";
             insertUsePassPost = "";
+            insertUsePassReference = File.ReadAllText(
+                GetCustomShaderResourcesFolderPath() + "/Misc/ReferenceUVs.lilblock"
+            );
             isOrigShaderNameLoaded = false;
             replaces = new Dictionary<string, string>();
 
@@ -236,6 +241,8 @@ namespace lilToon
             ReplaceMultiCompiles(ref insertPassPost, version, indent, false);
             ReplaceMultiCompiles(ref insertUsePassPre, version, indent, false);
             ReplaceMultiCompiles(ref insertUsePassPost, version, indent, false);
+            insertUsePassPost += insertUsePassReference;
+                
             sb.Replace(LIL_INSERT_PASS_PRE,         insertPassPre);
             sb.Replace(LIL_INSERT_PASS_POST,        insertPassPost);
             sb.Replace(LIL_INSERT_USEPASS_PRE,      insertUsePassPre);
