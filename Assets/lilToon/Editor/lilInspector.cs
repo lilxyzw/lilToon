@@ -1575,9 +1575,9 @@ namespace lilToon
                     if(isMulti) lilMaterialUtils.SetupMultiMaterial(material);
                     else        lilMaterialUtils.RemoveShaderKeywords(material);
                 }
-                if(mainColor != null && baseColor    != null) baseColor.colorValue      = mainColor.colorValue;
-                if(mainTex   != null && baseMap      != null) baseMap.textureValue      = mainTex.textureValue;
-                if(mainTex   != null && baseColorMap != null) baseColorMap.textureValue = mainTex.textureValue;
+                if(mainColor != null && baseColor    != null && !mainColor.hasMixedValue) baseColor.colorValue      = mainColor.colorValue;
+                if(mainTex   != null && baseMap      != null && !mainTex.hasMixedValue  ) baseMap.textureValue      = mainTex.textureValue;
+                if(mainTex   != null && baseColorMap != null && !mainTex.hasMixedValue  ) baseColorMap.textureValue = mainTex.textureValue;
 
                 if(lilShaderAPI.IsTextureLimitedAPI())
                 {
