@@ -227,6 +227,7 @@ namespace lilToon
         protected static bool isUseAlpha        = false;
         protected static bool isShowRenderMode  = true;
 
+        private Material[] materials;
         private static lilToonSetting shaderSetting;
         private static readonly lilToonVersion latestVersion = new lilToonVersion{latest_vertion_name = "", latest_vertion_value = 0};
         private static readonly Dictionary<string, MaterialProperty> copiedProperties = new Dictionary<string, MaterialProperty>();
@@ -1506,7 +1507,13 @@ namespace lilToon
         {
             isCustomEditor = false;
             isMultiVariants = false;
+            materials = materialEditor.targets.Select(t => t as Material).Where(m => m != null).ToArray();
             DrawAllGUI(materialEditor, props, (Material)materialEditor.target);
+        }
+
+        public void SetMaterials(Material[] materials2)
+        {
+            materials = materials2;
         }
 
         public void DrawAllGUI(MaterialEditor materialEditor, MaterialProperty[] props, Material material)
@@ -1971,7 +1978,7 @@ namespace lilToon
                         if(lilEditorGUI.Button(GetLoc("sRenderingReset")))
                         {
                             material.enableInstancing = false;
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
+                            SetupMaterialWithRenderingMode(renderingModeBuf, transparentModeBuf);
                         }
 
                         //------------------------------------------------------------------------------------------------------------------------------
@@ -1989,7 +1996,7 @@ namespace lilToon
                             {
                                 if(shaderType==0) isLite = false;
                                 if(shaderType==1) isLite = true;
-                                SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
+                                SetupMaterialWithRenderingMode(renderingModeBuf, transparentModeBuf);
                             }
 
                             //------------------------------------------------------------------------------------------------------------------------------
@@ -3158,7 +3165,7 @@ namespace lilToon
                         if(lilEditorGUI.Button(GetLoc("sRenderingReset")))
                         {
                             material.enableInstancing = false;
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
+                            SetupMaterialWithRenderingMode(renderingModeBuf, transparentModeBuf);
                         }
 
                         //------------------------------------------------------------------------------------------------------------------------------
@@ -3176,7 +3183,7 @@ namespace lilToon
                             {
                                 if(shaderType==0) isLite = false;
                                 if(shaderType==1) isLite = true;
-                                SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
+                                SetupMaterialWithRenderingMode(renderingModeBuf, transparentModeBuf);
                             }
 
                             //------------------------------------------------------------------------------------------------------------------------------
@@ -3304,7 +3311,7 @@ namespace lilToon
                         if(isTess != EditorGUILayout.ToggleLeft(GetLoc("sTessellation"), isTess, customToggleFont))
                         {
                             isTess = !isTess;
-                            SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
+                            SetupMaterialWithRenderingMode(renderingModeBuf, transparentModeBuf);
                         }
                         if(isTess)
                         {
@@ -3898,6 +3905,21 @@ namespace lilToon
         {
             SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isOutl, isLite, isTess);
         }
+
+        private void SetupMaterialWithRenderingMode(RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool istess, bool ismulti)
+        {
+            foreach(var material in materials) SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, istess, ismulti);
+        }
+
+        private void SetupMaterialWithRenderingMode(RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool istess)
+        {
+            foreach(var material in materials) SetupMaterialWithRenderingMode(material, renderingMode, transparentMode, isoutl, islite, istess);
+        }
+
+        private void SetupMaterialWithRenderingMode(RenderingMode renderingMode, TransparentMode transparentMode)
+        {
+            foreach(var material in materials) SetupMaterialWithRenderingMode(material, renderingMode, transparentMode);
+        }
         #endregion
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -4387,7 +4409,7 @@ namespace lilToon
                     else        renderingMode = (RenderingMode)lilEditorGUI.Popup(GetLoc("sRenderingMode"), (int)renderingModeBuf, sRenderingModeList);
                     if(renderingModeBuf != renderingMode)
                     {
-                        SetupMaterialWithRenderingMode(material, renderingMode, transparentModeBuf);
+                        SetupMaterialWithRenderingMode(renderingMode, transparentModeBuf);
                         if(renderingMode == RenderingMode.Cutout || renderingMode == RenderingMode.FurCutout) cutoff.floatValue = 0.5f;
                         if(renderingMode == RenderingMode.Transparent || renderingMode == RenderingMode.Fur || renderingMode == RenderingMode.FurTwoPass) cutoff.floatValue = 0.001f;
                         if(transparentModeBuf == TransparentMode.TwoPass)
@@ -4404,7 +4426,7 @@ namespace lilToon
                     m_MaterialEditor.ShaderProperty(transparentModeMat, sTransparentMode);
                     if(transparentModeMatBuf != transparentModeMat.floatValue)
                     {
-                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
+                        SetupMaterialWithRenderingMode(renderingModeBuf, transparentModeBuf);
                         if(transparentModeMat.floatValue == 1.0f || transparentModeMat.floatValue == 5.0f) cutoff.floatValue = 0.5f;
                         if(transparentModeMat.floatValue == 2.0f || transparentModeMat.floatValue == 4.0f) cutoff.floatValue = 0.001f;
                     }
@@ -4414,7 +4436,7 @@ namespace lilToon
                     var transparentMode = (TransparentMode)lilEditorGUI.Popup(GetLoc("sTransparentMode"), (int)transparentModeBuf, sTransparentModeList);
                     if(transparentModeBuf != transparentMode)
                     {
-                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentMode);
+                        SetupMaterialWithRenderingMode(renderingModeBuf, transparentMode);
                     }
                     if(transparentModeBuf == TransparentMode.OnePass && vertexLightStrength.floatValue != 1.0f && lilRenderPipelineReader.GetRP() == lilRenderPipeline.BRP && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpOnePassVertexLight")))
                     {
@@ -4681,7 +4703,7 @@ namespace lilToon
                     }
                     if(EditorGUI.EndChangeCheck())
                     {
-                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
+                        SetupMaterialWithRenderingMode(renderingModeBuf, transparentModeBuf);
                         int shaderRenderQueue = isMulti ? material.renderQueue : material.shader.renderQueue;
                         switch(stencilMode)
                         {
@@ -5562,7 +5584,7 @@ namespace lilToon
                     if(isOutl != EditorGUILayout.ToggleLeft(GetLoc("sOutline"), isOutl, customToggleFont))
                     {
                         isOutl = !isOutl;
-                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
+                        SetupMaterialWithRenderingMode(renderingModeBuf, transparentModeBuf);
                     }
                 }
                 else if(isCustomShader)
@@ -5652,7 +5674,7 @@ namespace lilToon
                     if(isOutl != EditorGUILayout.ToggleLeft(GetLoc("sOutline"), isOutl, customToggleFont))
                     {
                         isOutl = !isOutl;
-                        SetupMaterialWithRenderingMode(material, renderingModeBuf, transparentModeBuf);
+                        SetupMaterialWithRenderingMode(renderingModeBuf, transparentModeBuf);
                     }
                 }
                 else if(isCustomShader)
@@ -6823,22 +6845,23 @@ namespace lilToon
 
             private void OnGUI()
             {
-                Object[] objects = Selection.GetFiltered<Material>(SelectionMode.DeepAssets).Where(obj => obj.shader != null).Where(obj => obj.shader.name.Contains("lilToon")).ToArray();
-                if(objects.Length == 0) return;
+                var materials = Selection.GetFiltered<Material>(SelectionMode.DeepAssets).Where(m => m.shader != null).Where(m => m.shader.name.Contains("lilToon")).ToArray();
+                if(materials.Length == 0) return;
 
-                props = MaterialEditor.GetMaterialProperties(objects);
+                props = MaterialEditor.GetMaterialProperties(materials);
                 if(props == null) return;
 
-                material = (Material)objects[0];
+                material = materials[0];
                 isCustomEditor = true;
-                isMultiVariants = objects.Any(obj => ((Material)obj).shader != material.shader);
-                materialEditor = (MaterialEditor)Editor.CreateEditor(objects, typeof(MaterialEditor));
+                isMultiVariants = materials.Any(m => m.shader != material.shader);
+                materialEditor = (MaterialEditor)Editor.CreateEditor(materials, typeof(MaterialEditor));
                 var inspector = new lilToonInspector();
 
-                EditorGUILayout.LabelField("Selected Materials", string.Join(", ", objects.Select(obj => obj.name).ToArray()), EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Selected Materials", string.Join(", ", materials.Select(m => m.name).ToArray()), EditorStyles.boldLabel);
                 lilEditorGUI.DrawLine();
                 scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
                 EditorGUILayout.BeginVertical(InitializeMarginBox(20, 4, 4));
+                inspector.SetMaterials(materials);
                 inspector.DrawAllGUI(materialEditor, props, material);
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndScrollView();
