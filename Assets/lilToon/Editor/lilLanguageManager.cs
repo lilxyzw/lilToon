@@ -241,18 +241,22 @@ namespace lilToon
 
         public static string GetDisplayLabel(MaterialProperty prop)
         {
-            return string.Join("",
-                prop.displayName.Split('|').First().Split('+').Select(m=>GetLoc(m)).ToArray()
-            );
+            var labels = prop.displayName.Split('|').First().Split('+').Select(m=>GetLoc(m)).ToArray();
+            if(Event.current.alt) labels[0] = prop.name;
+            return string.Join("", labels);
         }
 
         public static string GetDisplayName(MaterialProperty prop)
         {
-            return string.Join("|",
-                prop.displayName.Split('|').Select(
-                    n=>string.Join("",n.Split('+').Select(m=>GetLoc(m)).ToArray())
-                ).ToArray()
-            );
+            var labels = prop.displayName.Split('|').Select(
+                n=>string.Join("",n.Split('+').Select(m=>GetLoc(m)).ToArray())
+            ).ToArray();
+            if(Event.current.alt)
+            {
+                if(labels[0].Contains("|")) labels[0] = prop.name + labels[0].Substring(labels[0].IndexOf("|"));
+                else labels[0] = prop.name;
+            }
+            return string.Join("|", labels);
         }
 
         public static string GetDisplayName(string label)

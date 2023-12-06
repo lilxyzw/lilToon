@@ -92,7 +92,7 @@ namespace lilToon
         public static bool DrawSimpleFoldout(MaterialEditor materialEditor, GUIContent guiContent, MaterialProperty textureName, MaterialProperty rgba, bool condition, bool isCustomEditor = true)
         {
             EditorGUI.indentLevel++;
-            var position = materialEditor.TexturePropertySingleLine(guiContent, textureName, rgba);
+            var position = TexturePropertySingleLine(materialEditor, guiContent, textureName, rgba);
             EditorGUI.indentLevel--;
 
             position.x += isCustomEditor ? 0 : 10;
@@ -102,7 +102,7 @@ namespace lilToon
         public static bool DrawSimpleFoldout(MaterialEditor materialEditor, GUIContent guiContent, MaterialProperty textureName, bool condition, bool isCustomEditor = true)
         {
             EditorGUI.indentLevel++;
-            var position = materialEditor.TexturePropertySingleLine(guiContent, textureName);
+            var position = TexturePropertySingleLine(materialEditor, guiContent, textureName);
             EditorGUI.indentLevel--;
 
             position.x += isCustomEditor ? 0 : 10;
@@ -232,7 +232,14 @@ namespace lilToon
         public static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop, string label, bool shouldCheck = true)
         {
             if(!shouldCheck || CheckPropertyToDraw(prop))
+            {
+                if(Event.current.alt)
+                {
+                    if(label.Contains("|")) label = prop.name + label.Substring(label.IndexOf("|"));
+                    else label = prop.name;
+                }
                 materialEditor.ShaderProperty(prop, lilLanguageManager.GetDisplayName(label));
+            }
         }
 
         public static void LocalizedProperty(MaterialEditor materialEditor, MaterialProperty prop, int indent, bool shouldCheck = true)
@@ -250,23 +257,39 @@ namespace lilToon
             }
         }
 
+        public static Rect TexturePropertySingleLine(MaterialEditor materialEditor, GUIContent content, MaterialProperty tex)
+        {
+            if(Event.current.alt) content = new GUIContent(tex.name);
+            return materialEditor.TexturePropertySingleLine(content, tex);
+        }
+
+        public static Rect TexturePropertySingleLine(MaterialEditor materialEditor, GUIContent content, MaterialProperty tex, MaterialProperty prop)
+        {
+            if(Event.current.alt)
+            {
+                if(prop == null) content = new GUIContent(tex.name);
+                else             content = new GUIContent(tex.name + ", " + prop.name);
+            }
+            return materialEditor.TexturePropertySingleLine(content, tex, prop);
+        }
+
         public static void LocalizedPropertyTexture(MaterialEditor materialEditor, GUIContent content, MaterialProperty tex, bool shouldCheck = true)
         {
             if(!shouldCheck || CheckPropertyToDraw(tex) || CheckPropertyToDraw(content))
-                materialEditor.TexturePropertySingleLine(content, tex);
+                TexturePropertySingleLine(materialEditor, content, tex);
         }
 
         public static void LocalizedPropertyTexture(MaterialEditor materialEditor, GUIContent content, MaterialProperty tex, MaterialProperty color, bool shouldCheck = true)
         {
             if(!shouldCheck || CheckPropertyToDraw(tex) || CheckPropertyToDraw(color) || CheckPropertyToDraw(content))
-                materialEditor.TexturePropertySingleLine(content, tex, color);
+                TexturePropertySingleLine(materialEditor, content, tex, color);
         }
 
         public static void LocalizedPropertyTextureWithAlpha(MaterialEditor materialEditor, GUIContent content, MaterialProperty tex, MaterialProperty color, bool shouldCheck = true)
         {
             if(!shouldCheck || CheckPropertyToDraw(tex) || CheckPropertyToDraw(color) || CheckPropertyToDraw(content))
             {
-                materialEditor.TexturePropertySingleLine(content, tex, color);
+                TexturePropertySingleLine(materialEditor, content, tex, color);
                 DrawColorAsAlpha(color);
             }
         }
@@ -341,7 +364,8 @@ namespace lilToon
                 if(isLeftOnly.floatValue == 1.0f) mirrorMode = 2;
 
                 EditorGUI.BeginChangeCheck();
-                mirrorMode = Popup(GetLoc("sMirrorMode"),mirrorMode,new string[]{GetLoc("sMirrorModeNormal"),GetLoc("sMirrorModeFlip"),GetLoc("sMirrorModeLeft"),GetLoc("sMirrorModeRight"),GetLoc("sMirrorModeRightFlip")});
+                string mmlabel = Event.current.alt ? isLeftOnly.name + ", " + isRightOnly.name + ", " + shouldFlipMirror.name : GetLoc("sMirrorMode");
+                mirrorMode = Popup(mmlabel,mirrorMode,new string[]{GetLoc("sMirrorModeNormal"),GetLoc("sMirrorModeFlip"),GetLoc("sMirrorModeLeft"),GetLoc("sMirrorModeRight"),GetLoc("sMirrorModeRightFlip")});
                 if(EditorGUI.EndChangeCheck())
                 {
                     if(mirrorMode == 0)
@@ -385,7 +409,8 @@ namespace lilToon
                 if(shouldFlipCopy.floatValue == 1.0f) copyMode = 2;
 
                 EditorGUI.BeginChangeCheck();
-                copyMode = Popup(GetLoc("sCopyMode"),copyMode,new string[]{GetLoc("sCopyModeNormal"),GetLoc("sCopyModeSymmetry"),GetLoc("sCopyModeFlip")});
+                string cmlabel = Event.current.alt ? shouldCopy.name + ", " + shouldFlipCopy.name : GetLoc("sCopyMode");
+                copyMode = Popup(cmlabel,copyMode,new string[]{GetLoc("sCopyModeNormal"),GetLoc("sCopyModeSymmetry"),GetLoc("sCopyModeFlip")});
                 if(EditorGUI.EndChangeCheck())
                 {
                     if(copyMode == 0)
@@ -443,17 +468,17 @@ namespace lilToon
                 if(copyMode > 0)
                 {
                     if(posX < 0.5f) posX = 1.0f - posX;
-                    posX = EditorGUILayout.Slider(GetLoc("sPositionX"), posX, 0.5f, 1.0f);
+                    posX = EditorGUILayout.Slider(Event.current.alt ? tex.name + "_ST.z" : GetLoc("sPositionX"), posX, 0.5f, 1.0f);
                 }
                 else
                 {
-                    posX = EditorGUILayout.Slider(GetLoc("sPositionX"), posX, 0.0f, 1.0f);
+                    posX = EditorGUILayout.Slider(Event.current.alt ? tex.name + "_ST.z" : GetLoc("sPositionX"), posX, 0.0f, 1.0f);
                 }
 
                 // Draw properties
-                posY = EditorGUILayout.Slider(GetLoc("sPositionY"), posY, 0.0f, 1.0f);
-                scaleX = EditorGUILayout.Slider(GetLoc("sScaleX"), scaleX, -1.0f, 1.0f);
-                scaleY = EditorGUILayout.Slider(GetLoc("sScaleY"), scaleY, -1.0f, 1.0f);
+                posY = EditorGUILayout.Slider(Event.current.alt ? tex.name + "_ST.w" : GetLoc("sPositionY"), posY, 0.0f, 1.0f);
+                scaleX = EditorGUILayout.Slider(Event.current.alt ? tex.name + "_ST.x" : GetLoc("sScaleX"), scaleX, -1.0f, 1.0f);
+                scaleY = EditorGUILayout.Slider(Event.current.alt ? tex.name + "_ST.y" : GetLoc("sScaleY"), scaleY, -1.0f, 1.0f);
                 if(EditorGUI.EndChangeCheck())
                 {
                     // Avoid division by zero
@@ -511,7 +536,7 @@ namespace lilToon
             // Scroll label
             float labelWidth = EditorGUIUtility.labelWidth;
             var labelRect = new Rect(positionVec2.x, positionVec2.y, labelWidth, positionVec2.height);
-            EditorGUI.PrefixLabel(labelRect, new GUIContent(GetLoc("sScroll")));
+            EditorGUI.PrefixLabel(labelRect, new GUIContent(Event.current.alt ? prop.name + "_ST.xy" : GetLoc("sScroll")));
 
             // Copy & Reset indent
             int indentBuf = EditorGUI.indentLevel;
@@ -525,7 +550,7 @@ namespace lilToon
             EditorGUI.indentLevel = indentBuf;
 
             // Rotate
-            rotate = EditorGUI.FloatField(EditorGUILayout.GetControlRect(), GetLoc("sRotate"), rotate);
+            rotate = EditorGUI.FloatField(EditorGUILayout.GetControlRect(), Event.current.alt ? prop.name + "_ST.w" : GetLoc("sRotate"), rotate);
 
             if(EditorGUI.EndChangeCheck())
             {
@@ -557,6 +582,13 @@ namespace lilToon
             float param2 = prop.vectorValue.y;
             float param3 = prop.vectorValue.z;
             float param4 = prop.vectorValue.w;
+            if(Event.current.alt)
+            {
+                label0 = prop.name + ".x";
+                label1 = prop.name + ".y";
+                label2 = prop.name + ".z";
+                label3 = prop.name + ".w";
+            }
 
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
@@ -579,7 +611,7 @@ namespace lilToon
 
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
-            alpha = EditorGUILayout.Slider(label, alpha, 0.0f, 1.0f);
+            alpha = EditorGUILayout.Slider(Event.current.alt ? prop.name + ".a" : label, alpha, 0.0f, 1.0f);
             EditorGUI.showMixedValue = false;
 
             if(EditorGUI.EndChangeCheck())
@@ -633,7 +665,7 @@ namespace lilToon
             float f = prop.floatValue;
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
-            f = 1.0f - EditorGUILayout.Slider(GetLoc("sBorder"), 1.0f - f, 0.0f, 1.0f);
+            f = 1.0f - EditorGUILayout.Slider(Event.current.alt ? prop.name : GetLoc("sBorder"), 1.0f - f, 0.0f, 1.0f);
             EditorGUI.showMixedValue = false;
             if(EditorGUI.EndChangeCheck())
             {
@@ -647,7 +679,7 @@ namespace lilToon
             float f = -prop.floatValue;
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
-            f = EditorGUILayout.Slider(label, f, 0.0f, 1.0f);
+            f = EditorGUILayout.Slider(Event.current.alt ? prop.name : label, f, 0.0f, 1.0f);
             EditorGUI.showMixedValue = false;
             if(EditorGUI.EndChangeCheck())
             {
@@ -738,7 +770,7 @@ namespace lilToon
             }
             else
             {
-                m_MaterialEditor.TexturePropertySingleLine(guiContent, textureName, rgba);
+                TexturePropertySingleLine(m_MaterialEditor, guiContent, textureName, rgba);
             }
         }
 
@@ -759,7 +791,7 @@ namespace lilToon
             }
             else
             {
-                m_MaterialEditor.TexturePropertySingleLine(guiContent, textureName, rgba);
+                TexturePropertySingleLine(m_MaterialEditor, guiContent, textureName, rgba);
             }
         }
 

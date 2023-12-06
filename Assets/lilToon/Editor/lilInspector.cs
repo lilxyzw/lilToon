@@ -3123,7 +3123,7 @@ namespace lilToon
                             int furLayerNum2 = (int)furLayerNum.floatValue;
                             EditorGUI.BeginChangeCheck();
                             EditorGUI.showMixedValue = furLayerNum.hasMixedValue;
-                            furLayerNum2 = lilEditorGUI.IntSlider(GetLoc("sLayerNum"), furLayerNum2, 1, 3);
+                            furLayerNum2 = lilEditorGUI.IntSlider(GetLoc(Event.current.alt ? furLayerNum.name : "sLayerNum"), furLayerNum2, 1, 3);
                             EditorGUI.showMixedValue = false;
                             if(EditorGUI.EndChangeCheck())
                             {
@@ -4542,7 +4542,7 @@ namespace lilToon
                     if(preSrcBlend.floatValue == 1.0f && preDstBlend.floatValue == 6.0f)  preBlendMode = 2; // Screen
                     if(preSrcBlend.floatValue == 0.0f && preDstBlend.floatValue == 3.0f)  preBlendMode = 3; // Mul
                     EditorGUI.BeginChangeCheck();
-                    preBlendMode = lilEditorGUI.Popup(GetLoc("sBlendMode"), preBlendMode, sBlendModeList);
+                    preBlendMode = lilEditorGUI.Popup(Event.current.alt ? preSrcBlend.name + ", " + preDstBlend.name : GetLoc("sBlendMode"), preBlendMode, sBlendModeList);
                     if(EditorGUI.EndChangeCheck())
                     {
                         switch(preBlendMode)
@@ -4826,7 +4826,7 @@ namespace lilToon
             int selecting = blendOpFA.floatValue == 0 ? 0 : (blendOpFA.floatValue == 4 ? 1 : 2);
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = blendOpFA.hasMixedValue;
-            selecting = lilEditorGUI.Popup(GetLoc("sLightBlending"), selecting, new string[]{GetLoc("sBlendingAdd"), GetLoc("sBlendingMax")});
+            selecting = lilEditorGUI.Popup(Event.current.alt ? blendOpFA.name : GetLoc("sLightBlending"), selecting, new string[]{GetLoc("sBlendingAdd"), GetLoc("sBlendingMax")});
             EditorGUI.showMixedValue = false;
 
             if(EditorGUI.EndChangeCheck())
@@ -4904,8 +4904,8 @@ namespace lilToon
 
                     EditorGUI.BeginChangeCheck();
                     EditorGUI.showMixedValue = alphaMaskScale.hasMixedValue || alphaMaskValue.hasMixedValue;
-                    invertAlphaMask = lilEditorGUI.Toggle("Invert", invertAlphaMask);
-                    transparency = lilEditorGUI.Slider("Transparency", transparency, -1.0f, 1.0f);
+                    invertAlphaMask = lilEditorGUI.Toggle(Event.current.alt ? alphaMaskScale.name : "Invert", invertAlphaMask);
+                    transparency = lilEditorGUI.Slider(Event.current.alt ? alphaMaskScale.name + ", " + alphaMaskValue.name : "Transparency", transparency, -1.0f, 1.0f);
                     EditorGUI.showMixedValue = false;
 
                     if(EditorGUI.EndChangeCheck())
@@ -5017,12 +5017,12 @@ namespace lilToon
                         float max3 = lilEditorGUI.GetRemapMaxValue(shadowAOShift2.vectorValue.x, shadowAOShift2.vectorValue.y);
                         EditorGUI.BeginChangeCheck();
                         EditorGUI.showMixedValue = alphaMaskScale.hasMixedValue || alphaMaskValue.hasMixedValue;
-                        min1 = lilEditorGUI.Slider("1st Min", min1, -0.01f, 1.01f);
-                        max1 = lilEditorGUI.Slider("1st Max", max1, -0.01f, 1.01f);
-                        min2 = lilEditorGUI.Slider("2nd Min", min2, -0.01f, 1.01f);
-                        max2 = lilEditorGUI.Slider("2nd Max", max2, -0.01f, 1.01f);
-                        min3 = lilEditorGUI.Slider("3rd Min", min3, -0.01f, 1.01f);
-                        max3 = lilEditorGUI.Slider("3rd Max", max3, -0.01f, 1.01f);
+                        min1 = lilEditorGUI.Slider(Event.current.alt ? shadowAOShift.name : "1st Min", min1, -0.01f, 1.01f);
+                        max1 = lilEditorGUI.Slider(Event.current.alt ? shadowAOShift.name : "1st Max", max1, -0.01f, 1.01f);
+                        min2 = lilEditorGUI.Slider(Event.current.alt ? shadowAOShift.name : "2nd Min", min2, -0.01f, 1.01f);
+                        max2 = lilEditorGUI.Slider(Event.current.alt ? shadowAOShift.name : "2nd Max", max2, -0.01f, 1.01f);
+                        min3 = lilEditorGUI.Slider(Event.current.alt ? shadowAOShift2.name : "3rd Min", min3, -0.01f, 1.01f);
+                        max3 = lilEditorGUI.Slider(Event.current.alt ? shadowAOShift2.name : "3rd Max", max3, -0.01f, 1.01f);
                         EditorGUI.showMixedValue = false;
 
                         if(EditorGUI.EndChangeCheck())
@@ -5518,15 +5518,15 @@ namespace lilToon
 
                     EditorGUI.BeginChangeCheck();
                     EditorGUI.showMixedValue = glitterParams1.hasMixedValue || glitterSensitivity.hasMixedValue;
-                    scale = lilEditorGUI.Vector2Field(GetLoc("sScale"), scale);
-                    size = lilEditorGUI.Slider(GetLoc("sParticleSize"), size, 0.0f, 2.0f);
+                    scale = lilEditorGUI.Vector2Field(Event.current.alt ? glitterParams1.name + ".xy" : GetLoc("sScale"), scale);
+                    size = lilEditorGUI.Slider(Event.current.alt ? glitterParams1.name + ".z" : GetLoc("sParticleSize"), size, 0.0f, 2.0f);
                     EditorGUI.showMixedValue = false;
 
                     LocalizedProperty(glitterScaleRandomize);
 
                     EditorGUI.showMixedValue = glitterParams1.hasMixedValue || glitterSensitivity.hasMixedValue;
-                    density = lilEditorGUI.Slider(GetLoc("sDensity"), density, 0.001f, 1.0f);
-                    sensitivity = lilEditorGUI.FloatField(GetLoc("sSensitivity"), sensitivity);
+                    density = lilEditorGUI.Slider(Event.current.alt ? glitterParams1.name + ".w" : GetLoc("sDensity"), density, 0.001f, 1.0f);
+                    sensitivity = lilEditorGUI.FloatField(Event.current.alt ? glitterSensitivity.name : GetLoc("sSensitivity"), sensitivity);
                     EditorGUI.showMixedValue = false;
 
                     if(EditorGUI.EndChangeCheck())
@@ -5592,8 +5592,8 @@ namespace lilToon
                         float max = lilEditorGUI.GetRemapMaxValue(outlineLitScale.floatValue, outlineLitOffset.floatValue);
                         EditorGUI.BeginChangeCheck();
                         EditorGUI.showMixedValue = alphaMaskScale.hasMixedValue || alphaMaskValue.hasMixedValue;
-                        min = lilEditorGUI.Slider("Min", min, -0.01f, 1.01f);
-                        max = lilEditorGUI.Slider("Max", max, -0.01f, 1.01f);
+                        min = lilEditorGUI.Slider(Event.current.alt ? outlineLitScale.name + ", " + outlineLitOffset.name : "Min", min, -0.01f, 1.01f);
+                        max = lilEditorGUI.Slider(Event.current.alt ? outlineLitScale.name + ", " + outlineLitOffset.name : "Max", max, -0.01f, 1.01f);
                         EditorGUI.showMixedValue = false;
                         if(EditorGUI.EndChangeCheck())
                         {
