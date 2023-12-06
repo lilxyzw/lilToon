@@ -613,10 +613,10 @@ Shader "lilToon"
         UsePass "Hidden/ltspass_opaque/FORWARD_ADD"
         UsePass "Hidden/ltspass_opaque/SHADOW_CASTER"
         UsePass "Hidden/ltspass_opaque/META"
-Pass
+        Pass
         {
             Tags { "LightMode" = "Never" }
-            CGPROGRAM
+            HLSLPROGRAM
 // Unity strips unused UV channels from meshes; unfortunately, in 2022.3.13f1, Unity fails to detect that UV channels
 // are used when they are referenced from a pass included via `UsePass`. This fake pass is #included directly into
 // each shader to work around this; because this has an invalid lightmode set, it will never actually be executed.
@@ -625,6 +625,7 @@ Pass
 #pragma vertex vert
 #pragma fragment frag
 
+// For some reason, using struct appdata from lil_common_appdata doesn't work as a workaround...
 //#include "Includes/lil_pipeline_brp.hlsl"
 //#include "Includes/lil_common.hlsl"
 //#include "Includes/lil_common_appdata.hlsl"
@@ -655,10 +656,11 @@ Pass
             struct v2f vert(struct appdata input)
             {
                 struct v2f output;
+                // Don't actually render to the screen, but pass UV-derived data all the way down to the fragment
+                // shader so it shows up as an input in the compiled shader program.
                 output.pos = float4(0,0,0,1);
-                output.col = float4(input.uv, input.uv1) + float4(input.uv2, input.uv3);
-                  //+ float4(input.uv4, input.uv5) + float4(input.uv6, input.uv7);
-                //output.col = float4(0,0,0,0);
+                output.col = float4(input.uv, input.uv1) + float4(input.uv2, input.uv3)
+                  + float4(input.uv4, input.uv5) + float4(input.uv6, input.uv7);
                 return output;
             }
 
@@ -666,7 +668,7 @@ Pass
             {
                 return i.col;
             }
-            ENDCG
+            ENDHLSL
         }
     }
     Fallback "Unlit/Texture"
