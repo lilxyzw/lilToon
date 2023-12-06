@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### 追加
+- altキーでプロパティ名を見られるようにした
+
+### 修正
+- 透過モードのラベルが壊れていたのを修正
+- URPでMotionVectorが正しく出力されていなかったのを修正
+- UnityがUVチャンネルを過剰に削除してしまうのを回避
+- 複数編集時の不具合を修正
+
 ## [1.4.1] - 2023-09-04
 ### 修正
 - ボーンが不足している場合に`Fix Lighting`が正しく動作しないのを修正
