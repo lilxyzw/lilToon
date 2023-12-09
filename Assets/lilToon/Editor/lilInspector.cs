@@ -3076,16 +3076,7 @@ namespace lilToon
                         EditorGUILayout.HelpBox("It is recommended that these properties be set from scripts.", MessageType.Warning);
                         EditorGUILayout.HelpBox("If you want to mask vertex ids 1000 to 1999, set:\r\n_IDMask1 = 1\r\n_IDMaskIndex1 = 1000\r\n_IDMaskIndex2 = 2000", MessageType.Info);
                         LocalizedProperty(idMaskFrom);
-                        try
-                        {
-                            if (idMaskIsBitmap.p != null && idMaskIsBitmap.name != null)
-                            {
-                                LocalizedProperty(idMaskIsBitmap);
-                            }
-                        }
-                        catch (NullReferenceException e)
-                        {
-                        }
+                        LocalizedProperty(idMaskIsBitmap);
 
                         LocalizedProperty(idMask1);
                         LocalizedProperty(idMask2);
@@ -3105,7 +3096,7 @@ namespace lilToon
                         LocalizedProperty(idMaskIndex8);
                         LocalizedProperty(idMaskControlsDissolve);
 
-                        if (idMaskControlsDissolve.p != null && idMaskControlsDissolve.floatValue > 0.5f)
+                        if(idMaskControlsDissolve.p != null && idMaskControlsDissolve.floatValue > 0.5f)
                         {
                             LocalizedProperty(idMaskPrior1);
                             LocalizedProperty(idMaskPrior2);
