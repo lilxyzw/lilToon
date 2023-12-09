@@ -57,7 +57,7 @@
             LIL_VECTOR_INTERPOLATION float4 tangentWS    : TEXCOORD4;
         #endif
         #if defined(LIL_V2F_POSITION_OS)
-            float3 positionOS   : TEXCOORD5;
+            float4 positionOSdissolve   : TEXCOORD5;
         #endif
         LIL_LIGHTCOLOR_COORDS(6)
         LIL_LIGHTDIRECTION_COORDS(7)

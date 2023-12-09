@@ -52,6 +52,9 @@ void lilCustomVertexWS(inout appdata input, inout float2 uvMain, inout lilVertex
 // Vertex shader
 LIL_V2F_TYPE vert(appdata input)
 {
+    bool dissolveActive = true;
+    bool dissolveInvert = false;
+    
     LIL_V2F_TYPE LIL_V2F_OUT;
     LIL_INITIALIZE_STRUCT(v2f, LIL_V2F_OUT_BASE);
     #if defined(LIL_ONEPASS_OUTLINE)
@@ -203,7 +206,7 @@ LIL_V2F_TYPE vert(appdata input)
         LIL_V2F_OUT_BASE.positionCS     = vertexInput.positionCS;
     #endif
     #if defined(LIL_V2F_POSITION_OS)
-        LIL_V2F_OUT_BASE.positionOS     = input.positionOS.xyz;
+        LIL_V2F_OUT_BASE.positionOSdissolve.xyz = input.positionOS.xyz;
     #endif
     #if defined(LIL_V2F_POSITION_WS)
         LIL_V2F_OUT_BASE.positionWS     = vertexInput.positionWS;
@@ -363,6 +366,7 @@ LIL_V2F_TYPE vert(appdata input)
     #if defined(LIL_FEATURE_IDMASK) && !defined(LIL_NOT_SUPPORT_VERTEXID) && !defined(LIL_LITE)
         int idMaskIndices[8] = {_IDMaskIndex1,_IDMaskIndex2,_IDMaskIndex3,_IDMaskIndex4,_IDMaskIndex5,_IDMaskIndex6,_IDMaskIndex7,_IDMaskIndex8};
         float idMaskFlags[8] = {_IDMask1,_IDMask2,_IDMask3,_IDMask4,_IDMask5,_IDMask6,_IDMask7,_IDMask8};
+        float idMaskPriorFlags[8] = {_IDMaskPrior1,_IDMaskPrior2,_IDMaskPrior3,_IDMaskPrior4,_IDMaskPrior5,_IDMaskPrior6,_IDMaskPrior7,_IDMaskPrior8};
         uint idMaskArg = 0;
         switch(_IDMaskFrom)
         {
@@ -394,6 +398,13 @@ LIL_V2F_TYPE vert(appdata input)
         }
         _IDMaskIsBitmap = round(_IDMaskIsBitmap);
         bool idMasked = IDMask(idMaskArg,_IDMaskIsBitmap,idMaskIndices,idMaskFlags);
+        if (_IDMaskControlsDissolve > 0.5f)
+        {
+            bool priorIdMasked = IDMask(idMaskArg, _IDMaskIsBitmap, idMaskIndices, idMaskPriorFlags);
+            dissolveActive = idMasked != priorIdMasked;
+            dissolveInvert = priorIdMasked;
+            idMasked = idMasked && priorIdMasked;
+        }
         #if defined(LIL_V2F_POSITION_CS)
             LIL_V2F_OUT_BASE.positionCS = idMasked ? 0.0/0.0 : LIL_V2F_OUT_BASE.positionCS;
         #endif
@@ -402,6 +413,10 @@ LIL_V2F_TYPE vert(appdata input)
         #endif
     #endif
 
+    #if defined(LIL_V2F_POSITION_OS)
+    LIL_V2F_OUT_BASE.positionOSdissolve.w = (dissolveActive | (dissolveInvert << 1));
+    #endif
+    
     #if !defined(SHADER_STAGE_VERTEX) || defined(LIL_CUSTOM_SAFEVERT)
         }
     #endif

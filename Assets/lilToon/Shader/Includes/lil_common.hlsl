@@ -80,6 +80,7 @@ struct lilFragData
     float2 ddxMain;
     float2 ddyMain;
     bool isRightHand;
+    bool dissolveActive, dissolveInvert;
 
     // Position
     float3 positionOS;
@@ -158,6 +159,8 @@ lilFragData lilInitFragData()
     fd.ddxMain = 0.0;
     fd.ddyMain = 0.0;
     fd.isRightHand = true;
+    fd.dissolveActive = true;
+    fd.dissolveInvert = false;
 
     fd.positionOS = 0.0;
     fd.positionWS = 0.0;

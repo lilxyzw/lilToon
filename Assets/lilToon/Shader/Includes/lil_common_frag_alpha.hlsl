@@ -58,7 +58,19 @@
     BEFORE_DISSOLVE
     #if !defined(LIL_LITE) && defined(LIL_FEATURE_DISSOLVE)
         float dissolveAlpha = 0.0;
-        OVERRIDE_DISSOLVE
+        if (fd.dissolveActive)
+        {
+            float priorAlpha = fd.col.a;
+            fd.col.a = 1.0f;
+            OVERRIDE_DISSOLVE
+            if (fd.dissolveInvert)
+            {
+                fd.col.a = 1.0f - fd.col.a;
+                dissolveAlpha = 1.0f - dissolveAlpha;
+            }
+                        
+            fd.col.a *= priorAlpha;
+        }
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------
