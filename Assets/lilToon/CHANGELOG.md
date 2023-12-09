@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Enabled to see property name with alt key
+- Mode that treats IDMask as bitmap and Dissolve support
 
 ### Fixed
 - Wrong label in transparent mode

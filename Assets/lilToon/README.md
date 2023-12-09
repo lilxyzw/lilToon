@@ -1,5 +1,5 @@
 # lilToon
-Version 1.4.1
+Version 1.5.0
 
 # Overview
 This shader is developed for services using avatars (VRChat, etc.) and has the following features.
@@ -21,10 +21,12 @@ Tested version
 - Unity 2019.4.31f1 (Built-in RP / URP 7.7.1 / HDRP 7.7.1)
 - Unity 2020.3.47f1 (Built-in RP / URP 10.10.1 / HDRP 10.10.1)
 - Unity 2021.3.23f1 (Built-in RP / URP 12.1.11 / HDRP 12.1.11)
-- Unity 2022.3.5f1 (Built-in RP / URP 14.0.8 / HDRP 14.0.8)
+- Unity 2022.3.15f1 (Built-in RP / URP 14.0.8 / HDRP 14.0.8)
 - Unity 2023.2.0a11 (Built-in RP / URP 16.0.1 / HDRP 16.0.1)
 
 Some older versions of Unity 2021 and 2022 have problems such as not applying transforms or not rendering materials on URP/HDRP. If you have this issue, please update to the Unity version where the bug has been fixed. ( [GameObjects doesn't get rendered when using "Unlit.Unlit_UsePass" Shader](https://issuetracker.unity3d.com/issues/sphere-gameobject-doesnt-get-rendered-when-using-unlit-dot-unlit-usepass-shader) )
+
+Some older versions of Unity 2022 and 2023 may crash when updating shaders. If you have this issue, please update to the Unity version where the bug has been fixed. ( [Crash on malloc_internal when recompiling a ShaderGraph used by another shader via UsePass](https://issuetracker.unity3d.com/issues/crash-on-malloc-internal-when-recompiling-a-shadergraph-used-by-another-shader-via-usepass) )
 
 Supported Shader Models
 - Normal: SM4.0 / ES3.0 or later

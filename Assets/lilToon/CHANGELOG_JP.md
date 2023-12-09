@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### 追加
 - altキーでプロパティ名を見られるようにした
+- IDMaskをbitmapとして扱うモードとDissolve対応
 
 ### 修正
 - 透過モードのラベルが壊れていたのを修正

@@ -1,6 +1,6 @@
 {
   "name": "jp.lilxyzw.liltoon",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "displayName": "lilToon",
   "description": "Feature-rich toon shader.",
   "unity": "2018.1",
@@ -9,7 +9,7 @@
   "licensesUrl": "https://github.com/lilxyzw/lilToon/blob/master/Assets/lilToon/LICENSE",
   "license": "MIT",
   "keywords": ["Toon", "Shader", "Material"],
-  "url" : "https://github.com/lilxyzw/lilToon/releases/download/1.4.1/jp.lilxyzw.liltoon-1.4.1.zip?",
+  "url" : "https://github.com/lilxyzw/lilToon/releases/download/1.5.0/jp.lilxyzw.liltoon-1.5.0.zip?",
   "repo" : "https://lilxyzw.github.io/vpm-repos/vpm.json",
   "legacyFolders" : {
     "Assets\\lilToon" : "05d1d116436047941ad97d1b9064ee05"
