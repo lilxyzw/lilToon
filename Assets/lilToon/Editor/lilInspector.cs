@@ -6114,11 +6114,11 @@ namespace lilToon
         private void TextureBake(Material material, int bakeType)
         {
             //bool shouldBake1st = (bakeType == 1 || bakeType == 4) && mainTex.textureValue != null;
-            bool shouldNotBakeColor = (bakeType == 1 || bakeType == 4) && mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == lilConstants.defaultHSVG;
+            bool shouldNotBakeColor = (bakeType == 1 || bakeType == 4) && mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == lilConstants.defaultHSVG && mainGradationStrength.floatValue == 0.0;
             bool cannotBake1st = mainTex.textureValue == null;
             bool shouldNotBake2nd = (bakeType == 2 || bakeType == 5) && useMain2ndTex.floatValue == 0.0;
             bool shouldNotBake3rd = (bakeType == 3 || bakeType == 6) && useMain3rdTex.floatValue == 0.0;
-            bool shouldNotBakeAll = bakeType == 0 && mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == lilConstants.defaultHSVG && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
+            bool shouldNotBakeAll = bakeType == 0 && mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == lilConstants.defaultHSVG && mainGradationStrength.floatValue == 0.0 && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
             if(cannotBake1st)
             {
                 EditorUtility.DisplayDialog(GetLoc("sDialogCannotBake"), GetLoc("sDialogSetMainTex"), GetLoc("sOK"));
@@ -6159,6 +6159,7 @@ namespace lilToon
                 hsvgMaterial.SetVector(mainTexHSVG.name,        mainTexHSVG.vectorValue);
                 hsvgMaterial.SetFloat(mainGradationStrength.name, mainGradationStrength.floatValue);
                 hsvgMaterial.SetTexture(mainGradationTex.name, mainGradationTex.textureValue);
+                hsvgMaterial.SetTexture(mainColorAdjustMask.name, mainColorAdjustMask.textureValue);
 
                 path = AssetDatabase.GetAssetPath(material.GetTexture(mainTex.name));
                 if(!string.IsNullOrEmpty(path))
@@ -6291,7 +6292,7 @@ namespace lilToon
 
         private Texture AutoBakeMainTexture(Material material)
         {
-            bool shouldNotBakeAll = mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == lilConstants.defaultHSVG && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
+            bool shouldNotBakeAll = mainColor.colorValue == Color.white && mainTexHSVG.vectorValue == lilConstants.defaultHSVG && mainGradationStrength.floatValue == 0.0 && useMain2ndTex.floatValue == 0.0 && useMain3rdTex.floatValue == 0.0;
             if(!shouldNotBakeAll && EditorUtility.DisplayDialog(GetLoc("sDialogRunBake"), GetLoc("sDialogBakeMain"), GetLoc("sYes"), GetLoc("sNo")))
             {
                 bool bake2nd = useMain2ndTex.floatValue != 0.0;
@@ -6310,9 +6311,9 @@ namespace lilToon
 
                 hsvgMaterial.SetColor(mainColor.name,           Color.white);
                 hsvgMaterial.SetVector(mainTexHSVG.name,        mainTexHSVG.vectorValue);
-                hsvgMaterial.SetTexture(mainColorAdjustMask.name, mainColorAdjustMask.textureValue);
                 hsvgMaterial.SetFloat(mainGradationStrength.name, mainGradationStrength.floatValue);
                 hsvgMaterial.SetTexture(mainGradationTex.name, mainGradationTex.textureValue);
+                hsvgMaterial.SetTexture(mainColorAdjustMask.name, mainColorAdjustMask.textureValue);
 
                 path = AssetDatabase.GetAssetPath(material.GetTexture(mainTex.name));
                 if(!string.IsNullOrEmpty(path))

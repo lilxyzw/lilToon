@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - URPでMotionVectorが正しく出力されていなかったのを修正
 - UnityがUVチャンネルを過剰に削除してしまうのを回避
 - 複数編集時の不具合を修正
+- 色調補正のベイクが正しく動作していなかったのを修正
 
 ### 変更
 - Temp配下に一時ファイルを生成しなくなった

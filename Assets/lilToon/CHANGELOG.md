@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MotionVector not being output correctly in URP
 - Avoid Unity removing too many UV channels
 - Problems when editing multiple materials
+- Baking color correction does not work correctly
 
 ### Changed
 - Temporary files are no longer generated under the Temp folder
