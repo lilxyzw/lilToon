@@ -611,6 +611,8 @@ void lilCalcDissolve(
     bool dissolveMaskEnabled
     LIL_SAMP_IN_FUNC(samp))
 {
+    dissolveParams.xy = round(dissolveParams.xy); // mode, shape
+    
     if(dissolveParams.r)
     {
         float dissolveMaskVal = 1.0;
@@ -655,6 +657,8 @@ void lilCalcDissolveWithNoise(
     float dissolveNoiseStrength
     LIL_SAMP_IN_FUNC(samp))
 {
+    dissolveParams.xy = round(dissolveParams.xy); // mode, shape
+    
     if(dissolveParams.r)
     {
         float dissolveMaskVal = 1.0;

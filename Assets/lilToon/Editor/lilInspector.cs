@@ -3026,11 +3026,14 @@ namespace lilToon
                         {
                             EditorGUILayout.BeginVertical(boxInnerHalf);
                             LocalizedProperty(dissolveParams, sDissolveParamsOther);
-                            if(dissolveParams.vectorValue.x == 1.0f)                                         TextureGUI(ref edSet.isShowDissolveMask, maskBlendContent, dissolveMask);
-                            if(dissolveParams.vectorValue.x == 2.0f && dissolveParams.vectorValue.y == 0.0f) LocalizedProperty(dissolvePos, "sPosition|2");
-                            if(dissolveParams.vectorValue.x == 2.0f && dissolveParams.vectorValue.y == 1.0f) LocalizedProperty(dissolvePos, "sVector|2");
-                            if(dissolveParams.vectorValue.x == 3.0f && dissolveParams.vectorValue.y == 0.0f) LocalizedProperty(dissolvePos, "sPosition|3");
-                            if(dissolveParams.vectorValue.x == 3.0f && dissolveParams.vectorValue.y == 1.0f) LocalizedProperty(dissolvePos, "sVector|3");
+                            float dissolveX = (float) Math.Round(dissolveParams.vectorValue.x);
+                            float dissolveY = (float) Math.Round(dissolveParams.vectorValue.y);
+                            
+                            if(dissolveX == 1.0f)                                         TextureGUI(ref edSet.isShowDissolveMask, maskBlendContent, dissolveMask);
+                            if(dissolveX == 2.0f && dissolveY == 0.0f) LocalizedProperty(dissolvePos, "sPosition|2");
+                            if(dissolveX == 2.0f && dissolveY == 1.0f) LocalizedProperty(dissolvePos, "sVector|2");
+                            if(dissolveX == 3.0f && dissolveY == 0.0f) LocalizedProperty(dissolvePos, "sPosition|3");
+                            if(dissolveX == 3.0f && dissolveY == 1.0f) LocalizedProperty(dissolvePos, "sVector|3");
                             TextureGUI(ref edSet.isShowDissolveNoiseMask, noiseMaskContent, dissolveNoiseMask, dissolveNoiseStrength, dissolveNoiseMask_ScrollRotate);
                             LocalizedProperty(dissolveColor);
                             EditorGUILayout.EndVertical();
