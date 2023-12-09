@@ -66,10 +66,9 @@ namespace lilToon
         public static GUIContent cubemapContent;
         public static GUIContent audioLinkLocalMapContent;
         public static GUIContent gradationMapContent;
-        public static LanguageSettings langSet = new LanguageSettings();
+        public static LanguageSettings langSet { get { return LanguageSettings.instance; } }
 
-        [Serializable]
-        public class LanguageSettings
+        public class LanguageSettings : ScriptableSingleton<LanguageSettings>
         {
             public int languageNum = -1;
             public string languageNames = "";
@@ -82,22 +81,6 @@ namespace lilToon
         public static bool ShouldApplyTemp()
         {
             return string.IsNullOrEmpty(langSet.languageNames);
-        }
-
-        public static void ApplySettingTemp()
-        {
-            if(!ShouldApplyTemp() || !File.Exists(lilDirectoryManager.languageSettingTempPath)) return;
-            StreamReader sr = new StreamReader(lilDirectoryManager.languageSettingTempPath);
-            string s = sr.ReadToEnd();
-            sr.Close();
-            if(!string.IsNullOrEmpty(s)) EditorJsonUtility.FromJsonOverwrite(s,langSet);
-        }
-
-        public static void SaveSettingTemp()
-        {
-            StreamWriter sw = new StreamWriter(lilDirectoryManager.languageSettingTempPath,false);
-            sw.Write(EditorJsonUtility.ToJson(langSet));
-            sw.Close();
         }
 
         public static void LoadCustomLanguage(string langFileGUID)
@@ -265,6 +248,9 @@ namespace lilToon
                 ).ToArray()
             );
         }
+
+        [Obsolete("This may be deleted in the future.")] public static void ApplySettingTemp(){}
+        [Obsolete("This may be deleted in the future.")] public static void SaveSettingTemp(){}
     }
 }
 #endif

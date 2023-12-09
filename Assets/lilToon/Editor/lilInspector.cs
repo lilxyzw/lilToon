@@ -108,8 +108,7 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Editor variables
         #region
-        [Serializable]
-        public class lilToonEditorSetting
+        public class lilToonEditorSetting : ScriptableSingleton<lilToonEditorSetting>
         {
             public EditorMode editorMode = EditorMode.Simple;
             public int currentVersionValue = 0;
@@ -206,7 +205,7 @@ namespace lilToon
         }
 
         public static lilToonPreset[] presets;
-        public static lilToonEditorSetting edSet = new lilToonEditorSetting();
+        public static lilToonEditorSetting edSet { get { return lilToonEditorSetting.instance; } }
         protected static MaterialEditor m_MaterialEditor;
         protected static RenderingMode renderingModeBuf;
         protected static TransparentMode transparentModeBuf;
@@ -1550,7 +1549,6 @@ namespace lilToon
             //------------------------------------------------------------------------------------------------------------------------------
             // Initialize Setting
             m_MaterialEditor = materialEditor;
-            ApplyEditorSettingTemp();
             lilShaderManager.InitializeShaders();
             lilToonSetting.InitializeShaderSetting(ref shaderSetting);
 
@@ -1616,8 +1614,6 @@ namespace lilToon
                         lilToonSetting.ApplyShaderSetting(shaderSetting);
                     }
                 }
-
-                SaveEditorSettingTemp();
             }
         }
 
@@ -3584,14 +3580,15 @@ namespace lilToon
         {
             if(string.IsNullOrEmpty(latestVersion.latest_vertion_name))
             {
-                if(File.Exists(lilDirectoryManager.versionInfoTempPath))
+                if(!string.IsNullOrEmpty(lilEditorParameters.instance.versionInfo))
                 {
-                    var sr = new StreamReader(lilDirectoryManager.versionInfoTempPath);
-                    string s = sr.ReadToEnd();
-                    sr.Close();
-                    if(!string.IsNullOrEmpty(s) && s.Contains("latest_vertion_name") && s.Contains("latest_vertion_value"))
+                    if(
+                        !string.IsNullOrEmpty(lilEditorParameters.instance.versionInfo) &&
+                        lilEditorParameters.instance.versionInfo.Contains("latest_vertion_name") &&
+                        lilEditorParameters.instance.versionInfo.Contains("latest_vertion_value")
+                    )
                     {
-                        EditorJsonUtility.FromJsonOverwrite(s,latestVersion);
+                        EditorJsonUtility.FromJsonOverwrite(lilEditorParameters.instance.versionInfo, latestVersion);
                         return;
                     }
                 }
@@ -3743,25 +3740,6 @@ namespace lilToon
         //------------------------------------------------------------------------------------------------------------------------------
         // Editor
         #region
-        public static void ApplyEditorSettingTemp()
-        {
-            if(!lilLanguageManager.ShouldApplyTemp()) return;
-            lilLanguageManager.ApplySettingTemp();
-            if(!File.Exists(lilDirectoryManager.editorSettingTempPath)) return;
-            var sr = new StreamReader(lilDirectoryManager.editorSettingTempPath);
-            string s = sr.ReadToEnd();
-            sr.Close();
-            if(!string.IsNullOrEmpty(s)) EditorJsonUtility.FromJsonOverwrite(s,edSet);
-        }
-
-        public static void SaveEditorSettingTemp()
-        {
-            lilLanguageManager.SaveSettingTemp();
-            var sw = new StreamWriter(lilDirectoryManager.editorSettingTempPath,false);
-            sw.Write(EditorJsonUtility.ToJson(edSet));
-            sw.Close();
-        }
-
         private void CheckShaderType(Material material)
         {
             isLite          = material.shader.name.Contains("Lite");
@@ -7115,6 +7093,9 @@ namespace lilToon
             SetupShaderSettingFromMaterial(material, ref shaderSetting);
         }
 
+        [Obsolete("This may be deleted in the future.")] public static void ApplyEditorSettingTemp(){}
+        [Obsolete("This may be deleted in the future.")] public static void SaveEditorSettingTemp(){}
+
         private const string WARN_ABOUT_DIRECTORY = "Methods related to directories have been moved to lilDirectoryManager.";
         [Obsolete(WARN_ABOUT_DIRECTORY)] public const string editorSettingTempPath           = lilDirectoryManager.editorSettingTempPath;
         [Obsolete(WARN_ABOUT_DIRECTORY)] public const string versionInfoTempPath             = lilDirectoryManager.versionInfoTempPath;
@@ -7148,7 +7129,7 @@ namespace lilToon
         [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetSettingFolderPath()         { return lilDirectoryManager.GetMainFolderPath(); }
         [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GetShaderSettingPath()         { return lilDirectoryManager.GetMainFolderPath() + "/ShaderSetting.asset"; }
         [Obsolete(WARN_ABOUT_DIRECTORY)] public static string GUIDToPath(string GUID)        { return lilDirectoryManager.GUIDToPath(GUID); }
-        [Obsolete(WARN_ABOUT_DIRECTORY)] public static bool ExistsEncryption() { return lilDirectoryManager.ExistsEncryption(); }
+        [Obsolete(WARN_ABOUT_DIRECTORY)] public static bool ExistsEncryption()               { return lilDirectoryManager.ExistsEncryption(); }
         #endregion
     }
 }

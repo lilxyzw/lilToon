@@ -383,7 +383,7 @@ namespace lilToon
                 !assetName.Contains("ltspass_lite") &&
                 !assetName.Contains("ltsl") &&
                 !assetName.Contains("fakeshadow") &&
-                File.Exists(lilDirectoryManager.postBuildTempPath)
+                !string.IsNullOrEmpty(lilEditorParameters.instance.modifiedShaders)
             )
             {
                 string pathOpt = AssetDatabase.GUIDToAssetPath("571051a232e4af44a98389bda858df27");
@@ -434,7 +434,7 @@ namespace lilToon
 
         public static string UnpackContainer(string assetPath, AssetImportContext ctx = null)
         {
-            bool doOptimize = File.Exists(lilDirectoryManager.postBuildTempPath);
+            bool doOptimize = !string.IsNullOrEmpty(lilEditorParameters.instance.modifiedShaders);
             return UnpackContainer(assetPath, ctx, doOptimize);
         }
 

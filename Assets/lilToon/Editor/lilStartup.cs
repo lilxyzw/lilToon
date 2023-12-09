@@ -18,7 +18,6 @@ namespace lilToon
         {
             //------------------------------------------------------------------------------------------------------------------------------
             // Variables
-            lilToonInspector.ApplyEditorSettingTemp();
             lilLanguageManager.InitializeLanguage();
 
             AssetDatabase.importPackageStarted -= PackageVersionChecker;
@@ -26,9 +25,9 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Create files
-            if(!File.Exists(lilDirectoryManager.startupTempPath))
+            if(!lilEditorParameters.instance.startupEnd)
             {
-                File.Create(lilDirectoryManager.startupTempPath);
+                lilEditorParameters.instance.startupEnd = true;
 
                 #if LILTOON_DISABLE_ASSET_MODIFICATION == false
                 #if !SYSTEM_DRAWING
@@ -122,7 +121,7 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Version check
-            if(!File.Exists(lilDirectoryManager.versionInfoTempPath))
+            if(string.IsNullOrEmpty(lilEditorParameters.instance.versionInfo))
             {
                 CoroutineHandler.StartStaticCoroutine(GetLatestVersionInfo());
             }
@@ -134,7 +133,6 @@ namespace lilToon
                 // Migrate Materials
                 MigrateMaterials();
                 lilToonInspector.edSet.currentVersionValue = lilConstants.currentVersionValue;
-                lilToonInspector.SaveEditorSettingTemp();
 
                 #if UNITY_2019_4_OR_NEWER
                     // Update custom shaders
@@ -161,7 +159,7 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Turn on all settings when auto
-            if(File.Exists(lilDirectoryManager.postBuildTempPath)) 
+            if(!string.IsNullOrEmpty(lilEditorParameters.instance.modifiedShaders)) 
             {
                 EditorApplication.delayCall -= lilToonSetting.SetShaderSettingAfterBuild;
                 EditorApplication.delayCall += lilToonSetting.SetShaderSettingAfterBuild;
@@ -179,9 +177,7 @@ namespace lilToon
                     if(!webRequest.isNetworkError)
                 #endif
                 {
-                    var sw = new StreamWriter(lilDirectoryManager.versionInfoTempPath,false);
-                    sw.Write(webRequest.downloadHandler.text);
-                    sw.Close();
+                    lilEditorParameters.instance.versionInfo = webRequest.downloadHandler.text;
                 }
             }
         }

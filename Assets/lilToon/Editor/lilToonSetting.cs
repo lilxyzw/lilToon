@@ -806,7 +806,7 @@ public class lilToonSetting : ScriptableObject
             var shaders = GetShaderListFromGameObject(materials, clips);
             if(shaders.Count() == 0) return;
 
-            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaders.Select(s => s.name).Distinct().ToArray()));
+            lilEditorParameters.instance.modifiedShaders = string.Join(",", shaders.Select(s => s.name).Distinct().ToArray());
 
             lilToonSetting shaderSetting = null;
             InitializeShaderSetting(ref shaderSetting);
@@ -843,7 +843,7 @@ public class lilToonSetting : ScriptableObject
         {
             if(!ShouldOptimization()) return;
             var shaders = GetShaderListFromProject();
-            File.WriteAllText(lilDirectoryManager.postBuildTempPath, string.Join(",", shaders.Select(s => s.name).Distinct().ToArray()));
+            lilEditorParameters.instance.modifiedShaders = string.Join(",", shaders.Select(s => s.name).Distinct().ToArray());
             ApplyShaderSettingOptimized(shaders);
         }
         catch(Exception e)
@@ -857,17 +857,16 @@ public class lilToonSetting : ScriptableObject
     {
         try
         {
-            if(!File.Exists(lilDirectoryManager.postBuildTempPath)) return;
-            var shaderNames = File.ReadAllText(lilDirectoryManager.postBuildTempPath).Split(',');
-            File.Delete(lilDirectoryManager.postBuildTempPath);
+            if(string.IsNullOrEmpty(lilEditorParameters.instance.modifiedShaders)) return;
+            var shaders = lilEditorParameters.instance.modifiedShaders.Split(',').Select(n => Shader.Find(n)).Where(s => s != null).ToList();
+            lilEditorParameters.instance.modifiedShaders = "";
             if(!ShouldOptimization()) return;
-            if(File.Exists(lilDirectoryManager.forceOptimizeBuildTempPath)) File.Delete(lilDirectoryManager.forceOptimizeBuildTempPath);
+            lilEditorParameters.instance.forceOptimize = false;
             lilToonSetting shaderSetting = null;
             InitializeShaderSetting(ref shaderSetting);
 
             lilOptimizer.ResetInputHLSL();
 
-            var shaders = shaderNames.Select(n => Shader.Find(n)).Where(s => s != null).ToList();
             if(shaderSetting.isDebugOptimize)
             {
                 ApplyShaderSettingOptimized();
@@ -1375,16 +1374,10 @@ public class lilToonSetting : ScriptableObject
         LIL_FEATURE_Tex = true;
     }
 
-    internal static void ForceOptimization()
-    {
-        if(File.Exists(lilDirectoryManager.forceOptimizeBuildTempPath)) return;
-        File.Create(lilDirectoryManager.forceOptimizeBuildTempPath);
-    }
-
     internal static bool ShouldOptimization()
     {
-        if(File.Exists(lilDirectoryManager.postBuildTempPath)) return false;
-        if(File.Exists(lilDirectoryManager.forceOptimizeBuildTempPath)) return true;
+        if(!string.IsNullOrEmpty(lilEditorParameters.instance.modifiedShaders)) return false;
+        if(lilEditorParameters.instance.forceOptimize) return true;
 
         lilToonSetting shaderSetting = null;
         InitializeShaderSetting(ref shaderSetting);

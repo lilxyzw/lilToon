@@ -28,7 +28,7 @@ namespace lilToon.External
             {
                 if(requestedBuildType == VRCSDKRequestedBuildType.Avatar)
                 {
-                    ForceOptimization();
+                    lilEditorParameters.instance.forceOptimize = true;
                 }
                 else
                 {
@@ -157,19 +157,6 @@ namespace lilToon.External
             {
                 var methodParams = method.GetParameters();
                 if(method.Name != "SetShaderSettingAfterBuild" || methodParams.Length != 0) continue;
-                method.Invoke(null, null);
-                break;
-            }
-        }
-
-        private static void ForceOptimization()
-        {
-            Type type = typeof(lilToonSetting);
-            var methods = type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic);
-            foreach(var method in methods)
-            {
-                var methodParams = method.GetParameters();
-                if(method.Name != "ForceOptimization" || methodParams.Length != 0) continue;
                 method.Invoke(null, null);
                 break;
             }

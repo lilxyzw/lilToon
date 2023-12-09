@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UnityがUVチャンネルを過剰に削除してしまうのを回避
 - 複数編集時の不具合を修正
 
+### 変更
+- Temp配下に一時ファイルを生成しなくなった
+
 ## [1.4.1] - 2023-09-04
 ### 修正
 - ボーンが不足している場合に`Fix Lighting`が正しく動作しないのを修正
