@@ -717,6 +717,15 @@ namespace lilToon
         private readonly lilMaterialProperty idMaskIndex6   = new lilMaterialProperty("_IDMaskIndex6", PropertyBlock.IDMask);
         private readonly lilMaterialProperty idMaskIndex7   = new lilMaterialProperty("_IDMaskIndex7", PropertyBlock.IDMask);
         private readonly lilMaterialProperty idMaskIndex8   = new lilMaterialProperty("_IDMaskIndex8", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskControlsDissolve = new lilMaterialProperty("_IDMaskControlsDissolve", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskPrior1   = new lilMaterialProperty("_IDMaskPrior1", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskPrior2   = new lilMaterialProperty("_IDMaskPrior2", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskPrior3   = new lilMaterialProperty("_IDMaskPrior3", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskPrior4   = new lilMaterialProperty("_IDMaskPrior4", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskPrior5   = new lilMaterialProperty("_IDMaskPrior5", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskPrior6   = new lilMaterialProperty("_IDMaskPrior6", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskPrior7   = new lilMaterialProperty("_IDMaskPrior7", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskPrior8   = new lilMaterialProperty("_IDMaskPrior8", PropertyBlock.IDMask);
 
         private readonly lilMaterialProperty ignoreEncryption   = new lilMaterialProperty("_IgnoreEncryption", PropertyBlock.Encryption);
         private readonly lilMaterialProperty keys               = new lilMaterialProperty("_Keys", PropertyBlock.Encryption);
@@ -1316,6 +1325,15 @@ namespace lilToon
                 idMaskIndex6,
                 idMaskIndex7,
                 idMaskIndex8,
+                idMaskControlsDissolve,
+                idMaskPrior1,
+                idMaskPrior2,
+                idMaskPrior3,
+                idMaskPrior4,
+                idMaskPrior5,
+                idMaskPrior6,
+                idMaskPrior7,
+                idMaskPrior8,
 
                 ignoreEncryption,
                 keys,
@@ -3085,6 +3103,20 @@ namespace lilToon
                         LocalizedProperty(idMaskIndex6);
                         LocalizedProperty(idMaskIndex7);
                         LocalizedProperty(idMaskIndex8);
+                        LocalizedProperty(idMaskControlsDissolve);
+
+                        if (idMaskControlsDissolve.p != null && idMaskControlsDissolve.floatValue > 0.5f)
+                        {
+                            LocalizedProperty(idMaskPrior1);
+                            LocalizedProperty(idMaskPrior2);
+                            LocalizedProperty(idMaskPrior3);
+                            LocalizedProperty(idMaskPrior4);
+                            LocalizedProperty(idMaskPrior5);
+                            LocalizedProperty(idMaskPrior6);
+                            LocalizedProperty(idMaskPrior7);
+                            LocalizedProperty(idMaskPrior8);
+                        }
+                        
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
@@ -5942,6 +5974,11 @@ namespace lilToon
         private void LocalizedProperty(MaterialProperty prop, bool shouldCheck = true)
         {
             lilEditorGUI.LocalizedProperty(m_MaterialEditor, prop, shouldCheck);
+        }
+
+        private void LocalizedProperty(lilMaterialProperty prop, bool shouldCheck = true)
+        {
+            if (prop.p != null) LocalizedProperty(prop.p, shouldCheck);
         }
 
         private void LocalizedProperty(MaterialProperty prop, string label, bool shouldCheck = true)

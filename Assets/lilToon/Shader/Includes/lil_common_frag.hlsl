@@ -178,7 +178,10 @@
 #endif
 
 #if defined(LIL_V2F_POSITION_OS)
-    #define LIL_UNPACK_POSITION_OS(i,o) o.positionOS = i.positionOS;
+    #define LIL_UNPACK_POSITION_OS(i,o) \
+        o.positionOS = i.positionOSdissolve.xyz; \
+        o.dissolveActive = ((int)round(i.positionOSdissolve.w)) & 1; \
+        o.dissolveInvert = ((int)round(i.positionOSdissolve.w)) & 2;
 #else
     #define LIL_UNPACK_POSITION_OS(i,o)
 #endif
