@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - altキーでプロパティ名を見られるようにした
 - IDMaskをbitmapとして扱うモードとDissolve対応
 
+### 変更
+- Temp配下に一時ファイルを生成しなくなった
+
 ### 修正
 - 透過モードのラベルが壊れていたのを修正
 - URPでMotionVectorが正しく出力されていなかったのを修正
@@ -16,8 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 複数編集時の不具合を修正
 - 色調補正のベイクが正しく動作していなかったのを修正
 
-### 変更
-- Temp配下に一時ファイルを生成しなくなった
+### 削除
+- `IPreprocessShaders`による最適化を削除
 
 ## [1.4.1] - 2023-09-04
 ### 修正

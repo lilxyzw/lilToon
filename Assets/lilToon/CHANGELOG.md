@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enabled to see property name with alt key
 - Mode that treats IDMask as bitmap and Dissolve support
 
+### Changed
+- Temporary files are no longer generated under the Temp folder
+
 ### Fixed
 - Wrong label in transparent mode
 - MotionVector not being output correctly in URP
@@ -16,8 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Problems when editing multiple materials
 - Baking color correction does not work correctly
 
-### Changed
-- Temporary files are no longer generated under the Temp folder
+### Removed
+- Optimization by `IPreprocessShaders`
 
 ## [1.4.1] - 2023-09-04
 ### Fixed
