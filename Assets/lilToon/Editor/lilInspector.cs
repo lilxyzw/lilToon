@@ -708,6 +708,7 @@ namespace lilToon
         private readonly lilMaterialProperty idMask6        = new lilMaterialProperty("_IDMask6", PropertyBlock.IDMask);
         private readonly lilMaterialProperty idMask7        = new lilMaterialProperty("_IDMask7", PropertyBlock.IDMask);
         private readonly lilMaterialProperty idMask8        = new lilMaterialProperty("_IDMask8", PropertyBlock.IDMask);
+        private readonly lilMaterialProperty idMaskIsBitmap = new lilMaterialProperty("_IDMaskIsBitmap", PropertyBlock.IDMask);
         private readonly lilMaterialProperty idMaskIndex1   = new lilMaterialProperty("_IDMaskIndex1", PropertyBlock.IDMask);
         private readonly lilMaterialProperty idMaskIndex2   = new lilMaterialProperty("_IDMaskIndex2", PropertyBlock.IDMask);
         private readonly lilMaterialProperty idMaskIndex3   = new lilMaterialProperty("_IDMaskIndex3", PropertyBlock.IDMask);
@@ -1298,6 +1299,7 @@ namespace lilToon
                 dissolvePos,
 
                 idMaskFrom,
+                idMaskIsBitmap,
                 idMask1,
                 idMask2,
                 idMask3,
@@ -3056,6 +3058,17 @@ namespace lilToon
                         EditorGUILayout.HelpBox("It is recommended that these properties be set from scripts.", MessageType.Warning);
                         EditorGUILayout.HelpBox("If you want to mask vertex ids 1000 to 1999, set:\r\n_IDMask1 = 1\r\n_IDMaskIndex1 = 1000\r\n_IDMaskIndex2 = 2000", MessageType.Info);
                         LocalizedProperty(idMaskFrom);
+                        try
+                        {
+                            if (idMaskIsBitmap.p != null && idMaskIsBitmap.name != null)
+                            {
+                                LocalizedProperty(idMaskIsBitmap);
+                            }
+                        }
+                        catch (NullReferenceException e)
+                        {
+                        }
+
                         LocalizedProperty(idMask1);
                         LocalizedProperty(idMask2);
                         LocalizedProperty(idMask3);

@@ -1113,7 +1113,8 @@ public class lilToonSetting : ScriptableObject
             material.HasProperty("_IDMask5") && material.GetFloat("_IDMask5") != 0.0f ||
             material.HasProperty("_IDMask6") && material.GetFloat("_IDMask6") != 0.0f ||
             material.HasProperty("_IDMask7") && material.GetFloat("_IDMask7") != 0.0f ||
-            material.HasProperty("_IDMask8") && material.GetFloat("_IDMask8") != 0.0f
+            material.HasProperty("_IDMask8") && material.GetFloat("_IDMask8") != 0.0f ||
+            material.HasProperty("_IDMaskIsBitmap") && material.GetFloat("_IDMaskIsBitmap") != 0.0f
         ))
         {
             Debug.Log("[lilToon] LIL_FEATURE_IDMASK : " + AssetDatabase.GetAssetPath(material));
