@@ -1427,9 +1427,18 @@ public class lilToonSetting : ScriptableObject
                 sr = new StreamReader(path);
             }
             string line;
+            bool isComment = false;
             while((line = sr.ReadLine()) != null)
             {
-                if(!line.Contains("UsePass")) continue;
+                isComment = line.Contains("/*");
+                if(isComment)
+                {
+                    if(!line.Contains("*/")) continue;
+                    isComment = false;
+                    line = line.Substring(line.IndexOf("*/") + 2);
+                }
+                line = line.Trim();
+                if(!line.StartsWith("UsePass")) continue;
                 int first = line.IndexOf('"') + 1;
                 int second = line.IndexOf('"', first);
                 if(line.Substring(0, first).Contains("//")) continue;
