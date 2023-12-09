@@ -392,7 +392,8 @@ LIL_V2F_TYPE vert(appdata input)
             #endif
             default: idMaskArg = input.vertexID; break;
         }
-        bool idMasked = IDMask(idMaskArg,idMaskIndices,idMaskFlags);
+        _IDMaskIsBitmap = round(_IDMaskIsBitmap);
+        bool idMasked = IDMask(idMaskArg,_IDMaskIsBitmap,idMaskIndices,idMaskFlags);
         #if defined(LIL_V2F_POSITION_CS)
             LIL_V2F_OUT_BASE.positionCS = idMasked ? 0.0/0.0 : LIL_V2F_OUT_BASE.positionCS;
         #endif

@@ -1197,10 +1197,24 @@ float IDToMeshNum(uint vertexID, int indices[8])
     return dot(masks[0],float4(1,2,3,4)) + dot(masks[1],float4(5,6,7,8));
 }
 
-bool IDMask(uint vertexID, int indices[8], float flags[8])
+bool IDMask(uint maskInput, bool isBitmask, int indices[8], float flags[8])
 {
-    float4x4 masks = IDToMeshMask(vertexID,indices);
-    return dot(masks[0],float4(flags[0],flags[1],flags[2],flags[3])) + dot(masks[1],float4(flags[4],flags[5],flags[6],flags[7]));
+    if (isBitmask) {
+        uint enableMask = dot(
+            round(float4(flags[0], flags[1], flags[2], flags[3])),
+            float4(1, 2, 4, 8)
+        ) + dot(
+            round(float4(flags[4], flags[5], flags[6], flags[7])),
+            float4(16, 32, 64, 128)
+        );
+        // If only some if the bits flagged against this mask are 1, return 0; this ensures that we only hide a vertex
+        // if all of the "parts" it belongs to are hidden. This is useful when dealing with "boundary" polygons between
+        // two hidable areas, where we don't want to move only some of the vertices of the polygon.
+        return (enableMask & maskInput) == maskInput; 
+    } else {
+        float4x4 masks = IDToMeshMask(maskInput,indices);
+        return dot(masks[0],float4(flags[0],flags[1],flags[2],flags[3])) + dot(masks[1],float4(flags[4],flags[5],flags[6],flags[7]));
+    }
 }
 
 #endif

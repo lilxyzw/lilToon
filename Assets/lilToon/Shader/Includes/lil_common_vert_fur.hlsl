@@ -219,7 +219,7 @@ v2g vert(appdata input)
             #endif
             default: idMaskArg = input.vertexID; break;
         }
-        bool idMasked = IDMask(idMaskArg,idMaskIndices,idMaskFlags);
+        bool idMasked = IDMask(idMaskArg,_IDMaskIsBitmask,idMaskIndices,idMaskFlags);
         #if defined(LIL_V2G_POSITION_WS)
             output.positionWS = idMasked ? 0.0/0.0 : output.positionWS;
         #endif

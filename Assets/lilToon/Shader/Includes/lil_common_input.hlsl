@@ -614,6 +614,7 @@ CBUFFER_START(UnityPerMaterial)
         int     _IDMaskIndex7;
         int     _IDMaskIndex8;
         uint    _IDMaskFrom;
+        uint    _IDMaskIsBitmap;
     #endif
     uint    _Cull;
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
