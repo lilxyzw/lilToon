@@ -800,6 +800,7 @@ public class lilToonSetting : ScriptableObject
 
     internal static void SetShaderSettingBeforeBuild(Material[] materials, AnimationClip[] clips)
     {
+        #if !LILTOON_DISABLE_OPTIMIZATION
         try
         {
             if(!ShouldOptimization()) return;
@@ -835,10 +836,12 @@ public class lilToonSetting : ScriptableObject
             Debug.LogException(e);
             Debug.Log("[lilToon] SetShaderSettingBeforeBuild() failed");
         }
+        #endif
     }
 
     internal static void SetShaderSettingBeforeBuild()
     {
+        #if !LILTOON_DISABLE_OPTIMIZATION
         try
         {
             if(!ShouldOptimization()) return;
@@ -851,6 +854,7 @@ public class lilToonSetting : ScriptableObject
             Debug.LogException(e);
             Debug.Log("[lilToon] Optimization failed");
         }
+        #endif
     }
 
     internal static void SetShaderSettingAfterBuild()
