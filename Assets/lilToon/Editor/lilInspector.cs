@@ -3447,6 +3447,7 @@ namespace lilToon
 
             EditorGUI.BeginChangeCheck();
             ToggleGUI(GetLoc("sShaderSettingOptimizeInEditor"), ref shaderSetting.isDebugOptimize);
+            ToggleGUI("Migrate materials in startup", ref shaderSetting.isMigrateInStartUp);
             edSet.isShowShaderSetting = lilEditorGUI.Foldout(GetLoc("sShaderSetting"), edSet.isShowShaderSetting);
             lilEditorGUI.DrawHelpButton(GetLoc("sAnchorShaderSetting"));
             if(edSet.isShowShaderSetting)

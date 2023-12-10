@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enabled to see property name with alt key
 - Mode that treats IDMask as bitmap and Dissolve support
 - `LILTOON_DISABLE_OPTIMIZATION` symbol that allows you to force disable optimization
+- `Assets/lilToon/[Material] Run migration`
 
 ### Changed
 - Temporary files are no longer generated under the Temp folder

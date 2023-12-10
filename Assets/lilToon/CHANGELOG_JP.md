@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - altキーでプロパティ名を見られるようにした
 - IDMaskをbitmapとして扱うモードとDissolve対応
 - 最適化を強制的に無効化できる`LILTOON_DISABLE_OPTIMIZATION`シンボルを追加
+- `Assets/lilToon/[Material] Run migration`を追加
 
 ### 変更
 - Temp配下に一時ファイルを生成しなくなった

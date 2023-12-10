@@ -23,6 +23,7 @@ namespace lilToon
         private const string menuPathGameObject             = "GameObject/lilToon/";
         private const string menuPathRefreshShaders         = menuPathAssets + "[Shader] Refresh shaders";
         private const string menuPathRemoveUnusedProperties = menuPathAssets + "[Material] Remove unused properties";
+        private const string menuPathRunMigration           = menuPathAssets + "[Material] Run migration";
         private const string menuPathConvertNormal          = menuPathAssets + "[Texture] Convert normal map (DirectX <-> OpenGL)";
         private const string menuPathPixelArtReduction      = menuPathAssets + "[Texture] Pixel art reduction";
         private const string menuPathConvertGifToAtlas      = menuPathAssets + "[Texture] Convert Gif to Atlas";
@@ -34,11 +35,12 @@ namespace lilToon
         private const int menuPriorityGameObject = 21; // This must be 21 or less
         private const int menuPriorityRefreshShaders            = menuPriorityAssets + 0;
         private const int menuPriorityRemoveUnusedProperties    = menuPriorityAssets + 20;
-        private const int menuPriorityConvertNormal             = menuPriorityAssets + 21;
-        private const int menuPriorityPixelArtReduction         = menuPriorityAssets + 22;
-        private const int menuPriorityConvertGifToAtlas         = menuPriorityAssets + 23;
-        private const int menuPriorityConvertLUTToPNG           = menuPriorityAssets + 24;
-        private const int menuPrioritySetupFromFBX              = menuPriorityAssets + 25;
+        private const int menuPriorityRunMigration              = menuPriorityAssets + 21;
+        private const int menuPriorityConvertNormal             = menuPriorityAssets + 22;
+        private const int menuPriorityPixelArtReduction         = menuPriorityAssets + 23;
+        private const int menuPriorityConvertGifToAtlas         = menuPriorityAssets + 24;
+        private const int menuPriorityConvertLUTToPNG           = menuPriorityAssets + 25;
+        private const int menuPrioritySetupFromFBX              = menuPriorityAssets + 26;
         private const int menuPriorityFixLighting               = menuPriorityGameObject;
 
         private const string anchorName = "AutoAnchorObject";
@@ -85,6 +87,15 @@ namespace lilToon
         private static bool CheckRemoveUnusedProperties()
         {
             return CheckExtension(".mat");
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Assets/lilToon/Run migration
+        [MenuItem(menuPathRunMigration, false, menuPriorityRunMigration)]
+        private static void RunMigration()
+        {
+            lilStartup.MigrateMaterials();
+            EditorUtility.DisplayDialog("[lilToon] Run migration",GetLoc("sComplete"),GetLoc("sOK"));
         }
 
         //------------------------------------------------------------------------------------------------------------------------------

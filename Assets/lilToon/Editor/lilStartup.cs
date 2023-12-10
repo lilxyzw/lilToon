@@ -131,7 +131,9 @@ namespace lilToon
             if(lilToonInspector.edSet.currentVersionValue != lilConstants.currentVersionValue)
             {
                 // Migrate Materials
-                MigrateMaterials();
+                lilToonSetting shaderSetting = null;
+                lilToonSetting.InitializeShaderSetting(ref shaderSetting);
+                if(shaderSetting.isMigrateInStartUp) EditorApplication.delayCall += MigrateMaterials;
                 lilToonInspector.edSet.currentVersionValue = lilConstants.currentVersionValue;
 
                 #if UNITY_2019_4_OR_NEWER
@@ -182,24 +184,26 @@ namespace lilToon
             }
         }
 
-        private static void MigrateMaterials()
+        internal static void MigrateMaterials()
         {
+            EditorApplication.delayCall -= MigrateMaterials;
+            var id = Shader.PropertyToID("_lilToonVersion");
             foreach(var material in lilDirectoryManager.FindAssets<Material>("t:material"))
             {
-                MigrateMaterial(material);
+                MigrateMaterial(material, id);
             }
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
 
-        private static void MigrateMaterial(Material material)
+        private static void MigrateMaterial(Material material, int id)
         {
             if(!lilMaterialUtils.CheckShaderIslilToon(material)) return;
             int version = 0;
-            if(material.HasProperty("_lilToonVersion")) version = (int)material.GetFloat("_lilToonVersion");
+            if(material.HasProperty(id)) version = (int)material.GetFloat(id);
             if(version >= lilConstants.currentVersionValue) return;
             Debug.Log("[lilToon]Run migration: " + material.name);
-            material.SetFloat("_lilToonVersion", lilConstants.currentVersionValue);
+            material.SetFloat(id, lilConstants.currentVersionValue);
 
             // 1.2.7 -> 1.2.8
             if(version < 21)

@@ -127,6 +127,7 @@ public class lilToonSetting : ScriptableObject
     public bool isLocked = false;
     public bool isDebugOptimize = false;
     public bool isOptimizeInTestBuild = false;
+    public bool isMigrateInStartUp = true;
 
     public float defaultAsUnlit = 0.0f;
     public float defaultVertexLightStrength = 0.0f;
@@ -169,6 +170,7 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP          = lockedSetting.LIL_OPTIMIZE_USE_LIGHTMAP;
             shaderSetting.isDebugOptimize                    = lockedSetting.isDebugOptimize;
             shaderSetting.isOptimizeInTestBuild              = lockedSetting.isOptimizeInTestBuild;
+            shaderSetting.isMigrateInStartUp                 = lockedSetting.isMigrateInStartUp;
             shaderSetting.mainLightModeName                  = lockedSetting.mainLightModeName;
             shaderSetting.outlineLightModeName               = lockedSetting.outlineLightModeName;
             shaderSetting.preLightModeName                   = lockedSetting.preLightModeName;
