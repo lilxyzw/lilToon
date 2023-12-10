@@ -1542,6 +1542,14 @@ namespace lilToon
                 EditorGUILayout.HelpBox("Encryption will be removed in the future.", MessageType.Warning);
             }
 
+            // workaround for Unity bug (https://issuetracker.unity3d.com/issues/uv1-data-is-lost-during-assetbundle-build-when-optimize-mesh-data-is-on)
+            #if UNITY_2021_1_OR_NEWER
+            if(PlayerSettings.stripUnusedMeshComponents && lilEditorGUI.AutoFixHelpBox(GetLoc("sWarnOptimiseMeshData")))
+            {
+                PlayerSettings.stripUnusedMeshComponents = false;
+            }
+            #endif
+
             //------------------------------------------------------------------------------------------------------------------------------
             // EditorAssets
             lilEditorGUI.InitializeGUIStyles();
