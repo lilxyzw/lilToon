@@ -1,8 +1,36 @@
-# 変更履歴
+# Changelog
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.5.0] - 2023-12-10
+### Added
+- Enabled to see property name with alt key
+- Mode that treats IDMask as bitmap and Dissolve support
+- `LILTOON_DISABLE_OPTIMIZATION` symbol that allows you to force disable optimization
+- `Assets/lilToon/[Material] Run migration`
+
+### Changed
+- Temporary files are no longer generated under the Temp folder
+
+### Fixed
+- Wrong label in transparent mode
+- MotionVector not being output correctly in URP
+- Avoid Unity removing too many UV channels
+- Problems when editing multiple materials
+- Baking color correction does not work correctly
+
+### Removed
+- Optimization by `IPreprocessShaders`
+
+## [1.4.1] - 2023-09-04
+### Fixed
+- `Fix Lighting` does not work properly when bones are missing
+- Some properties cannot be saved in presets
+- Duplicate TEXCOORD in custom shaders
+- Tessellation does not work properly when changing scale
+- Enable stencil in `DepthOnly`, `DepthNormals` and `MotionVectors` for URP
 
 ## [1.4.0] - 2023-05-12
 ### Added

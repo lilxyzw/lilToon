@@ -10,6 +10,7 @@
 |GameObject/lilToon/[GameObject] Fix lighting|複数メッシュを持つオブジェクト向け。MeshRendererの設定の統一、マテリアルの頂点ライティングの無効化を行うことでメッシュごとの明るさの違いを緩和します。|
 |Assets/lilToon/[Shader] Refresh shaders|レンダーパイプラインとシェーダー設定の再適用を行いエラーの自動修復を試みます。|
 |Assets/lilToon/[Material] Remove unused properties|不要なプロパティを削除しビルドサイズを削減します。|
+|Assets/lilToon/[Material] Run migration|全マテリアルのバージョン移行を手動で実行します。|
 |Assets/lilToon/[Texture] Convert normal map (DirectX <-> OpenGL)|ノーマルマップをDirectX仕様とOpenGL仕様で相互変換します。|
 |Assets/lilToon/[Texture] Pixel art reduction|ぼかしなしでドット絵の縮小を行います。|
 |Assets/lilToon/[Texture] Convert Gif to Atlas|Gifからアトラステクスチャを生成します。処理内容はマテリアル設定の`Convert Gif`と同等です。|
