@@ -398,7 +398,7 @@ LIL_V2F_TYPE vert(appdata input)
         }
         _IDMaskIsBitmap = round(_IDMaskIsBitmap);
         bool idMasked = IDMask(idMaskArg,_IDMaskIsBitmap,idMaskIndices,idMaskFlags);
-        if (_IDMaskControlsDissolve > 0.5f)
+        if(_IDMaskControlsDissolve)
         {
             bool priorIdMasked = IDMask(idMaskArg, _IDMaskIsBitmap, idMaskIndices, idMaskPriorFlags);
             dissolveActive = idMasked != priorIdMasked;
