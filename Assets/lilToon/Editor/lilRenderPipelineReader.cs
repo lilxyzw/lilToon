@@ -16,10 +16,17 @@ namespace lilToon
             // URP : Universal.UniversalRenderPipelineAsset
             // HDRP : HighDefinition.HDRenderPipelineAsset
             string renderPipelineName = "";
-            if(GraphicsSettings.renderPipelineAsset != null)
-            {
-                renderPipelineName = GraphicsSettings.renderPipelineAsset.ToString();
-            }
+            #if UNITY_2019_3_OR_NEWER
+                if(GraphicsSettings.currentRenderPipeline != null)
+                {
+                    renderPipelineName = GraphicsSettings.currentRenderPipeline.ToString();
+                }
+            #else
+                if(GraphicsSettings.renderPipelineAsset != null)
+                {
+                    renderPipelineName = GraphicsSettings.renderPipelineAsset.ToString();
+                }
+            #endif
             if(renderPipelineName.Contains("Universal"))
             {
                 return lilRenderPipeline.URP;
@@ -38,10 +45,17 @@ namespace lilToon
         public static PackageVersionInfos GetRPInfos()
         {
             string renderPipelineName = "";
-            if(GraphicsSettings.renderPipelineAsset != null)
-            {
-                renderPipelineName = GraphicsSettings.renderPipelineAsset.ToString();
-            }
+            #if UNITY_2019_3_OR_NEWER
+                if(GraphicsSettings.currentRenderPipeline != null)
+                {
+                    renderPipelineName = GraphicsSettings.currentRenderPipeline.ToString();
+                }
+            #else
+                if(GraphicsSettings.renderPipelineAsset != null)
+                {
+                    renderPipelineName = GraphicsSettings.renderPipelineAsset.ToString();
+                }
+            #endif
             if(renderPipelineName.Contains("Universal"))
             {
                 return GetURPVersion();

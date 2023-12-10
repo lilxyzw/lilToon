@@ -45,7 +45,7 @@ struct v2f
         float4 uv23         : TEXCOORD1;
     #endif
     #if defined(LIL_V2F_POSITION_OS)
-        float3 positionOS   : TEXCOORD2;
+        float4 positionOSdissolve   : TEXCOORD2;
     #endif
     #if defined(LIL_V2F_POSITION_WS)
         float3 positionWS   : TEXCOORD3;
