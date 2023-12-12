@@ -445,6 +445,11 @@ Shader "Hidden/lilToonTessellationTwoPassTransparentOutline"
 
         //----------------------------------------------------------------------------------------------------------------------
         // ID Mask
+        // _IDMaskCompile will enable compilation of IDMask-related systems. For compatibility, setting certain
+        // parameters to non-zero values will also enable the IDMask feature, but this enable switch ensures that
+        // animator-controlled IDMasked meshes will be compiled correctly. Note that this _only_ controls compilation,
+        // and is ignored at runtime.
+        [ToggleUI]      _IDMaskCompile              ("_IDMaskCompile", Int) = 0
         [lilEnum]       _IDMaskFrom                 ("_IDMaskFrom|0: UV0|1: UV1|2: UV2|3: UV3|4: UV4|5: UV5|6: UV6|7: UV7|8: VertexID", Int) = 8
         [ToggleUI]      _IDMask1                    ("_IDMask1", Int) = 0
         [ToggleUI]      _IDMask2                    ("_IDMask2", Int) = 0
