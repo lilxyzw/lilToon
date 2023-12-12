@@ -800,9 +800,33 @@ public class lilToonSetting : ScriptableObject
         shaderSettingText = BuildShaderSettingString(shaderSetting, false);
     }
 
+    #if UNITY_2022_1_OR_NEWER || (UNITY_2023_1_OR_NEWER && !UNITY_2023_2_OR_NEWER)
+    private static bool WorkaroundForUsePassBug()
+    {
+        // Normally, there is no problem if you update Unity.
+        // This workaround exists for unusual cases.
+        // https://issuetracker.unity3d.com/issues/crash-on-malloc-internal-when-recompiling-a-shadergraph-used-by-another-shader-via-usepass
+        var regex = new Regex(@"(\d*)\.(\d*)\.(\d*)");
+        var match = regex.Match(Application.unityVersion);
+
+        if(!match.Success) return true;
+        var major = int.Parse(match.Groups[1].Value);
+        var minor = int.Parse(match.Groups[2].Value);
+        var patch = int.Parse(match.Groups[3].Value);
+
+        if(major == 2022 && (minor < 3 || patch < 14)) return true;
+        if(major == 2023 && patch < 20) return true;
+
+        return false;
+    }
+    #endif
+
     internal static void SetShaderSettingBeforeBuild(Material[] materials, AnimationClip[] clips)
     {
         #if !LILTOON_DISABLE_OPTIMIZATION
+        #if UNITY_2022_1_OR_NEWER || (UNITY_2023_1_OR_NEWER && !UNITY_2023_2_OR_NEWER)
+            if(WorkaroundForUsePassBug()){ Debug.Log("[lilToon] Skip Optimization"); return; }
+        #endif
         try
         {
             if(!ShouldOptimization()) return;
@@ -844,6 +868,9 @@ public class lilToonSetting : ScriptableObject
     internal static void SetShaderSettingBeforeBuild()
     {
         #if !LILTOON_DISABLE_OPTIMIZATION
+        #if UNITY_2022_1_OR_NEWER || (UNITY_2023_1_OR_NEWER && !UNITY_2023_2_OR_NEWER)
+            if(WorkaroundForUsePassBug()){ Debug.Log("[lilToon] Skip Optimization"); return; }
+        #endif
         try
         {
             if(!ShouldOptimization()) return;
