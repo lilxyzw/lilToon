@@ -396,7 +396,6 @@ LIL_V2F_TYPE vert(appdata input)
             #endif
             default: idMaskArg = input.vertexID; break;
         }
-        _IDMaskIsBitmap = round(_IDMaskIsBitmap);
         bool idMasked = IDMask(idMaskArg,_IDMaskIsBitmap,idMaskIndices,idMaskFlags);
         if(_IDMaskControlsDissolve)
         {
