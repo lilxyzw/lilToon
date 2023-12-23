@@ -111,7 +111,6 @@ namespace lilToon
         public class lilToonEditorSetting : ScriptableSingleton<lilToonEditorSetting>
         {
             public EditorMode editorMode = EditorMode.Simple;
-            public int currentVersionValue = 0;
             public bool isShowBase                      = false;
             public bool isShowPrePreset                 = false;
             public bool isShowMainUV                    = false;

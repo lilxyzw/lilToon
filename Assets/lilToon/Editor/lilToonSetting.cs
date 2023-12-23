@@ -12,9 +12,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
+#if UNITY_2022_1_OR_NEWER || (UNITY_2023_1_OR_NEWER && !UNITY_2023_2_OR_NEWER)
+    using System.Text.RegularExpressions;
+#endif
 
 public class lilToonSetting : ScriptableObject
 {
@@ -149,6 +151,9 @@ public class lilToonSetting : ScriptableObject
     public lilToonPreset presetFace;
     public lilToonPreset presetHair;
     public lilToonPreset presetCloth;
+
+    // This is not a shader setting, but the version number is stored here for material migration.
+    public int previousVersion = 0;
 
     // Lock
     internal static void SaveLockedSetting(lilToonSetting shaderSetting)

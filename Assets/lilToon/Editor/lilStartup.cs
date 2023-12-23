@@ -69,6 +69,8 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Shader setting
+            lilToonSetting shaderSetting = null;
+            lilToonSetting.InitializeShaderSetting(ref shaderSetting);
             string currentRPPath = lilDirectoryManager.GetCurrentRPPath();
             if(File.Exists(currentRPPath))
             {
@@ -99,8 +101,6 @@ namespace lilToon
                 swRP.Close();
                 if(shouldRewrite)
                 {
-                    lilToonSetting shaderSetting = null;
-                    lilToonSetting.InitializeShaderSetting(ref shaderSetting);
                     if(shaderSetting.isDebugOptimize)
                     {
                         lilToonSetting.ApplyShaderSettingOptimized();
@@ -128,13 +128,12 @@ namespace lilToon
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Update
-            if(lilToonInspector.edSet.currentVersionValue != lilConstants.currentVersionValue)
+            if(shaderSetting.previousVersion != lilConstants.currentVersionValue)
             {
                 // Migrate Materials
-                lilToonSetting shaderSetting = null;
-                lilToonSetting.InitializeShaderSetting(ref shaderSetting);
                 if(shaderSetting.isMigrateInStartUp) EditorApplication.delayCall += MigrateMaterials;
-                lilToonInspector.edSet.currentVersionValue = lilConstants.currentVersionValue;
+                shaderSetting.previousVersion = lilConstants.currentVersionValue;
+                lilToonSetting.SaveShaderSetting(shaderSetting);
 
                 #if UNITY_2019_4_OR_NEWER
                     // Update custom shaders
@@ -196,7 +195,7 @@ namespace lilToon
             AssetDatabase.Refresh();
         }
 
-        private static void MigrateMaterial(Material material, int id)
+        internal static void MigrateMaterial(Material material, int id)
         {
             if(!lilMaterialUtils.CheckShaderIslilToon(material)) return;
             int version = 0;
