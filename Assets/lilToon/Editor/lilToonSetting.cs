@@ -835,6 +835,14 @@ public class lilToonSetting : ScriptableObject
         #endif
         try
         {
+            #if UNITY_2022_1_OR_NEWER
+                var materialParents = new HashSet<Material>();
+                foreach(var m in materials)
+                {
+                    GetMaterialParents(materialParents, m);
+                }
+                materials = materials.Union(materialParents).ToArray();
+            #endif
             if(!ShouldOptimization()) return;
             var shaders = GetShaderListFromGameObject(materials, clips);
             if(shaders.Count() == 0) return;
@@ -870,6 +878,16 @@ public class lilToonSetting : ScriptableObject
         }
         #endif
     }
+
+    #if UNITY_2022_1_OR_NEWER
+    private static void GetMaterialParents(HashSet<Material> parents, Material material)
+    {
+        var p = material.parent;
+        if(p == null) return;
+        parents.Add(p);
+        GetMaterialParents(parents, p);
+    }
+    #endif
 
     internal static void SetShaderSettingBeforeBuild()
     {
