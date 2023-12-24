@@ -558,7 +558,7 @@ Shader "Hidden/lilToonOutline"
         [HideInInspector]                               _BaseColor          ("sColor", Color) = (1,1,1,1)
         [HideInInspector]                               _BaseMap            ("Texture", 2D) = "white" {}
         [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
-        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 36
+        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 37
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced
