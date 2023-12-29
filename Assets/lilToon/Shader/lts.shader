@@ -558,7 +558,7 @@ Shader "lilToon"
         [HideInInspector]                               _BaseColor          ("sColor", Color) = (1,1,1,1)
         [HideInInspector]                               _BaseMap            ("Texture", 2D) = "white" {}
         [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
-        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 37
+        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 38
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced
@@ -632,19 +632,20 @@ Shader "lilToon"
         Pass
         {
             Tags { "LightMode" = "Never" }
-            HLSLPROGRAM
-// Unity strips unused UV channels from meshes; unfortunately, in 2022.3.13f1, Unity fails to detect that UV channels
-// are used when they are referenced from a pass included via `UsePass`. This fake pass is #included directly into
-// each shader to work around this; because this has an invalid lightmode set, it will never actually be executed.
-//
-// Unity bug report ID: IN-60271
-#pragma vertex vert
-#pragma fragment frag
 
-// For some reason, using struct appdata from lil_common_appdata doesn't work as a workaround...
-//#include "Includes/lil_pipeline_brp.hlsl"
-//#include "Includes/lil_common.hlsl"
-//#include "Includes/lil_common_appdata.hlsl"
+            HLSLPROGRAM
+            // Unity strips unused UV channels from meshes; unfortunately, in 2022.3.13f1, Unity fails to detect that UV channels
+            // are used when they are referenced from a pass included via `UsePass`. This fake pass is #included directly into
+            // each shader to work around this; because this has an invalid lightmode set, it will never actually be executed.
+            //
+            // Unity bug report ID: IN-60271
+            #pragma vertex vert
+            #pragma fragment frag
+
+            // For some reason, using struct appdata from lil_common_appdata doesn't work as a workaround...
+            //#include "Includes/lil_pipeline_brp.hlsl"
+            //#include "Includes/lil_common.hlsl"
+            //#include "Includes/lil_common_appdata.hlsl"
 
 
             struct appdata
@@ -653,12 +654,18 @@ Shader "lilToon"
                 float2 uv1 : TEXCOORD1;
                 float2 uv2 : TEXCOORD2;
                 float2 uv3 : TEXCOORD3;
-                
+
                 float2 uv4 : TEXCOORD4;
                 float2 uv5 : TEXCOORD5;
                 float2 uv6 : TEXCOORD6;
                 float2 uv7 : TEXCOORD7;
-                
+
+                float4 color        : COLOR;
+                float3 normalOS     : NORMAL;
+                float4 tangentOS    : TANGENT;
+                #if !defined(SHADER_API_MOBILE) && !defined(SHADER_API_GLES)
+                uint vertexID       : SV_VertexID;
+                #endif
 
                 float4 pos : POSITION;
             };
@@ -676,7 +683,13 @@ Shader "lilToon"
                 // shader so it shows up as an input in the compiled shader program.
                 output.pos = float4(0,0,0,1);
                 output.col = float4(input.uv, input.uv1) + float4(input.uv2, input.uv3)
-                  + float4(input.uv4, input.uv5) + float4(input.uv6, input.uv7);
+                  + float4(input.uv4, input.uv5) + float4(input.uv6, input.uv7)
+                  + input.color + float4(input.normalOS, 1) + input.tangentOS;
+
+                #if !defined(SHADER_API_MOBILE) && !defined(SHADER_API_GLES)
+                output.col.a += input.vertexID;
+                #endif
+
                 return output;
             }
 

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.2] - 2023-12-30
+### 修正
+- AssetBundleビルド時に必要な頂点データが消されてしまう場合があるのを修正
+
 ## [1.5.1] - 2023-12-27
 ### 修正
 - 特定Unityバージョンにおけるクラッシュ問題を回避

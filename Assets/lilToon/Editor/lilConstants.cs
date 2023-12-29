@@ -6,8 +6,8 @@ namespace lilToon
 {
     public class lilConstants
     {
-        public const string currentVersionName = "1.5.1";
-        public const int currentVersionValue = 37;
+        public const string currentVersionName = "1.5.2";
+        public const int currentVersionValue = 38;
 
         internal const string boothURL = "https://lilxyzw.booth.pm/";
         internal const string githubURL = "https://github.com/lilxyzw/lilToon";
