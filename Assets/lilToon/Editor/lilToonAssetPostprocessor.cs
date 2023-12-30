@@ -6,7 +6,7 @@ namespace lilToon
 {
     internal class lilToonAssetPostprocessor : AssetPostprocessor
     {
-        static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
+        static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             var id = Shader.PropertyToID("_lilToonVersion");
             foreach(var path in importedAssets)

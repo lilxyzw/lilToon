@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.3] - 2023-12-31
+### 修正
+- AssetPostprocessorが正しく動作していなかったのを修正
+
 ## [1.5.2] - 2023-12-30
 ### 修正
 - AssetBundleビルド時に必要な頂点データが消されてしまう場合があるのを修正
