@@ -11,6 +11,7 @@
     - [- メインカラー2nd・3rd](ja-jp/color/maincolor_layer.md "メインカラー2nd・3rd - lilToon")
     - [- アルファマスク](ja-jp/color/alphamask.md "アルファマスク - lilToon")
     - [- 影設定](ja-jp/color/shadow.md "影設定 - lilToon")
+    - [- RimShade](ja-jp/color/rimshade.md "RimShade - lilToon")
     - [- 発光設定](ja-jp/color/emission.md "発光設定 - lilToon")
 - **ノーマルマップ・光沢設定**
     - [- ノーマルマップ設定](ja-jp/reflections/normal.md "ノーマルマップ設定 - lilToon")

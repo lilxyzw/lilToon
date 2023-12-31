@@ -11,6 +11,7 @@
     - [- Main Color 2nd / 3rd](en-us/color/maincolor_layer.md "Main Color 2nd / 3rd - lilToon")
     - [- Alpha Mask](en-us/color/alphamask.md "Alpha Mask - lilToon")
     - [- Shadow](en-us/color/shadow.md "Shadow - lilToon")
+    - [- RimShade](en-us/color/rimshade.md "RimShade - lilToon")
     - [- Emission](en-us/color/emission.md "Emission - lilToon")
 - **Normal Map & Reflection**
     - [- Normal Map](en-us/reflections/normal.md "Normal Map - lilToon")
