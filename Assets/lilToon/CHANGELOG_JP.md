@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.5.3] - 2023-12-31
+## [1.6.0] - 2023-12-31
+### 追加
+- RimShadeを追加
+
 ### 修正
 - AssetPostprocessorが正しく動作していなかったのを修正
 - シェーダーキーワードの非互換による不具合を回避

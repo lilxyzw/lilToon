@@ -105,6 +105,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             #define LIL_FEATURE_RECEIVE_SHADOW
             #define LIL_FEATURE_SHADOW_3RD
             #define LIL_FEATURE_SHADOW_LUT
+            #define LIL_FEATURE_RIMSHADE
             #define LIL_FEATURE_EMISSION_1ST
             #define LIL_FEATURE_EMISSION_2ND
             #define LIL_FEATURE_ANIMATE_EMISSION_UV

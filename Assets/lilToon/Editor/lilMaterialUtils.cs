@@ -354,6 +354,7 @@ namespace lilToon
             int tpmode = 0;
             if(material.HasProperty("_TransparentMode")) tpmode = (int)material.GetFloat("_TransparentMode");
             bool useShadow = IsFeatureOnFloat(material, "_UseShadow");
+            bool useRimShade = IsFeatureOnFloat(material, "_UseRimShade");
             bool useDistanceFade = IsFeatureOnVectorZ(material, "_DistanceFade");
             bool useEmission = IsFeatureOnFloat(material, "_UseEmission");
             bool useEmission2nd = IsFeatureOnFloat(material, "_UseEmission2nd");
@@ -403,11 +404,13 @@ namespace lilToon
             if(isGem)
             {
                 SetShaderKeywords(material, "_REQUIRE_UV2",                         false);
+                SetShaderKeywords(material, "AUTO_KEY_VALUE",                       false);
                 SetShaderKeywords(material, "_FADING_ON",                           false);
             }
             else
             {
                 SetShaderKeywords(material, "_REQUIRE_UV2",                         useShadow);
+                SetShaderKeywords(material, "AUTO_KEY_VALUE",                       useRimShade);
                 SetShaderKeywords(material, "_FADING_ON",                           useDistanceFade);
             }
 
@@ -560,6 +563,10 @@ namespace lilToon
                     material.SetTexture("_ShadowColorTex", null);
                     material.SetTexture("_Shadow2ndColorTex", null);
                     material.SetTexture("_Shadow3rdColorTex", null);
+                }
+                if(material.GetFloat("_UseRimShade") == 0.0f)
+                {
+                    material.SetTexture("_RimShadeMask", null);
                 }
                 if(material.GetFloat("_UseEmission") == 0.0f)
                 {

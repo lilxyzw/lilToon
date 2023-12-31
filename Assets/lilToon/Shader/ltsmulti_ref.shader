@@ -194,6 +194,16 @@ Shader "Hidden/lilToonMultiRefraction"
                         _ShadowFlatBlur             ("sBlur", Range(0.001, 2)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Rim Shade
+        [lilToggleLeft] _UseRimShade                ("RimShade", Int) = 0
+                        _RimShadeColor              ("sColor", Color) = (0.5,0.5,0.5,1.0)
+        [NoScaleOffset] _RimShadeMask               ("Mask", 2D) = "white" {}
+                        _RimShadeNormalStrength     ("sNormalStrength", Range(0, 1)) = 1.0
+                        _RimShadeBorder             ("sBorder", Range(0, 1)) = 0.5
+                        _RimShadeBlur               ("sBlur", Range(0, 1)) = 1.0
+        [PowerSlider(3.0)]_RimShadeFresnelPower     ("sFresnelPower", Range(0.01, 50)) = 1.0
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Reflection
         [lilToggleLeft] _UseReflection              ("sReflection", Int) = 0
         // Smoothness
@@ -612,6 +622,7 @@ Shader "Hidden/lilToonMultiRefraction"
             #define LIL_MULTI_INPUTS_MAIN3RD
             #define LIL_MULTI_INPUTS_ALPHAMASK
             #define LIL_MULTI_INPUTS_SHADOW
+            #define LIL_MULTI_INPUTS_RIMSHADE
             #define LIL_MULTI_INPUTS_BACKLIGHT
             #define LIL_MULTI_INPUTS_EMISSION
             #define LIL_MULTI_INPUTS_EMISSION_2ND
@@ -687,6 +698,7 @@ Shader "Hidden/lilToonMultiRefraction"
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
             #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local AUTO_KEY_VALUE
             #pragma shader_feature_local ANTI_FLICKER
             #pragma shader_feature_local _EMISSION
             #pragma shader_feature_local GEOM_TYPE_BRANCH
@@ -773,6 +785,7 @@ Shader "Hidden/lilToonMultiRefraction"
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
             #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local AUTO_KEY_VALUE
             #pragma shader_feature_local _NORMALMAP
             #pragma shader_feature_local EFFECT_BUMP
             #pragma shader_feature_local SOURCE_GBUFFER

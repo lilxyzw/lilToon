@@ -257,6 +257,9 @@ CBUFFER_START(UnityPerMaterial)
         float4  _ShadowAOShift;
         float4  _ShadowAOShift2;
     #endif
+    #if defined(LIL_MULTI_INPUTS_RIMSHADE)
+        float4  _RimShadeColor;
+    #endif
     #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
         float4  _BacklightColor;
         float4  _BacklightColorTex_ST;
@@ -436,6 +439,12 @@ CBUFFER_START(UnityPerMaterial)
         float   _Shadow3rdReceive;
         float   _ShadowFlatBlur;
         float   _ShadowFlatBorder;
+    #endif
+    #if defined(LIL_MULTI_INPUTS_RIMSHADE)
+        float _RimShadeNormalStrength;
+        float _RimShadeBorder;
+        float _RimShadeBlur;
+        float _RimShadeFresnelPower;
     #endif
     #if defined(LIL_MULTI_INPUTS_BACKLIGHT)
         float   _BacklightNormalStrength;
@@ -822,6 +831,7 @@ TEXTURE2D(_ShadowStrengthMask);
 TEXTURE2D(_ShadowColorTex);
 TEXTURE2D(_Shadow2ndColorTex);
 TEXTURE2D(_Shadow3rdColorTex);
+TEXTURE2D(_RimShadeMask);
 TEXTURE2D(_BacklightColorTex);
 TEXTURE2D(_SmoothnessTex);
 TEXTURE2D(_MetallicGlossMap);

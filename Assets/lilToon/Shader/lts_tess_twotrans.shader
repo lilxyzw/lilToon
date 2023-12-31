@@ -194,6 +194,16 @@ Shader "Hidden/lilToonTessellationTwoPassTransparent"
                         _ShadowFlatBlur             ("sBlur", Range(0.001, 2)) = 1
 
         //----------------------------------------------------------------------------------------------------------------------
+        // Rim Shade
+        [lilToggleLeft] _UseRimShade                ("RimShade", Int) = 0
+                        _RimShadeColor              ("sColor", Color) = (0.5,0.5,0.5,1.0)
+        [NoScaleOffset] _RimShadeMask               ("Mask", 2D) = "white" {}
+                        _RimShadeNormalStrength     ("sNormalStrength", Range(0, 1)) = 1.0
+                        _RimShadeBorder             ("sBorder", Range(0, 1)) = 0.5
+                        _RimShadeBlur               ("sBlur", Range(0, 1)) = 1.0
+        [PowerSlider(3.0)]_RimShadeFresnelPower     ("sFresnelPower", Range(0.01, 50)) = 1.0
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Reflection
         [lilToggleLeft] _UseReflection              ("sReflection", Int) = 0
         // Smoothness

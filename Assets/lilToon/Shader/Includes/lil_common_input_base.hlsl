@@ -80,6 +80,11 @@ float4  _MainTex_ST;
     #endif
 #endif
 
+// Rim Shade
+#if defined(LIL_FEATURE_RIMSHADE)
+    float4  _RimShadeColor;
+#endif
+
 // Backlight
 #if defined(LIL_FEATURE_BACKLIGHT)
     float4  _BacklightColor;
@@ -338,6 +343,12 @@ float   _AAStrength;
     #endif
     float   _ShadowFlatBlur;
     float   _ShadowFlatBorder;
+#endif
+#if defined(LIL_FEATURE_RIMSHADE)
+    float _RimShadeNormalStrength;
+    float _RimShadeBorder;
+    float _RimShadeBlur;
+    float _RimShadeFresnelPower;
 #endif
 #if defined(LIL_FEATURE_BACKLIGHT)
     float   _BacklightNormalStrength;
@@ -651,6 +662,9 @@ lilBool _Invisible;
 #if defined(LIL_FEATURE_SHADOW)
     lilBool _UseShadow;
     lilBool _ShadowPostAO;
+#endif
+#if defined(LIL_FEATURE_SHADOW)
+    lilBool _UseRimShade;
 #endif
 #if defined(LIL_FEATURE_BACKLIGHT)
     lilBool _UseBacklight;

@@ -33,6 +33,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_RECEIVE_SHADOW = true;
     public bool LIL_FEATURE_SHADOW_3RD = true;
     public bool LIL_FEATURE_SHADOW_LUT = true;
+    public bool LIL_FEATURE_RIMSHADE = true;
     public bool LIL_FEATURE_EMISSION_1ST = true;
     public bool LIL_FEATURE_EMISSION_2ND = true;
     public bool LIL_FEATURE_ANIMATE_EMISSION_UV = true;
@@ -252,6 +253,7 @@ public class lilToonSetting : ScriptableObject
         shaderSetting.LIL_FEATURE_SHADOW_3RD = false;
         shaderSetting.LIL_FEATURE_SHADOW_LUT = false;
         shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = false;
+        shaderSetting.LIL_FEATURE_RIMSHADE = false;
         shaderSetting.LIL_FEATURE_EMISSION_1ST = false;
         shaderSetting.LIL_FEATURE_EMISSION_2ND = false;
         shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV = false;
@@ -360,6 +362,7 @@ public class lilToonSetting : ScriptableObject
         shaderSetting.LIL_FEATURE_SHADOW_3RD = true;
         shaderSetting.LIL_FEATURE_SHADOW_LUT = true;
         shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = true;
+        shaderSetting.LIL_FEATURE_RIMSHADE = true;
         shaderSetting.LIL_FEATURE_EMISSION_1ST = true;
         shaderSetting.LIL_FEATURE_EMISSION_2ND = true;
         shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV = true;
@@ -543,6 +546,7 @@ public class lilToonSetting : ScriptableObject
             if(shaderSetting.LIL_FEATURE_SHADOW_3RD) sb.AppendLine("#define LIL_FEATURE_SHADOW_3RD");
             if(shaderSetting.LIL_FEATURE_SHADOW_LUT) sb.AppendLine("#define LIL_FEATURE_SHADOW_LUT");
         }
+        if(shaderSetting.LIL_FEATURE_RIMSHADE) sb.AppendLine("#define LIL_FEATURE_RIMSHADE");
 
         if(shaderSetting.LIL_FEATURE_EMISSION_1ST) sb.AppendLine("#define LIL_FEATURE_EMISSION_1ST");
         if(shaderSetting.LIL_FEATURE_EMISSION_2ND) sb.AppendLine("#define LIL_FEATURE_EMISSION_2ND");
@@ -957,6 +961,11 @@ public class lilToonSetting : ScriptableObject
             Debug.Log("[lilToon] LIL_FEATURE_SHADOW : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_SHADOW = true;
         }
+        if(!shaderSetting.LIL_FEATURE_RIMSHADE && material.HasProperty("_UseRimShade") && material.GetFloat("_UseRimShade") != 0.0f)
+        {
+            Debug.Log("[lilToon] LIL_FEATURE_RIMSHADE : " + AssetDatabase.GetAssetPath(material));
+            shaderSetting.LIL_FEATURE_RIMSHADE = true;
+        }
         if(!shaderSetting.LIL_FEATURE_RECEIVE_SHADOW && material.HasProperty("_UseShadow") && material.GetFloat("_UseShadow") != 0.0f && (
             (material.HasProperty("_ShadowReceive") && material.GetFloat("_ShadowReceive") > 0.0f) ||
             (material.HasProperty("_Shadow2ndReceive") && material.GetFloat("_Shadow2ndReceive") > 0.0f) ||
@@ -1231,6 +1240,7 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.LIL_FEATURE_DISTANCE_FADE = shaderSetting.LIL_FEATURE_DISTANCE_FADE || propname.Contains("_DistanceFade");
             shaderSetting.LIL_FEATURE_SHADOW_3RD = shaderSetting.LIL_FEATURE_SHADOW_3RD || propname.Contains("_Shadow3rdColor");
             shaderSetting.LIL_FEATURE_SHADOW_LUT = shaderSetting.LIL_FEATURE_SHADOW_LUT || propname.Contains("_ShadowColorType");
+            shaderSetting.LIL_FEATURE_RIMSHADE = shaderSetting.LIL_FEATURE_RIMSHADE || propname.Contains("_UseRimShade");
 
             shaderSetting.LIL_FEATURE_FUR_COLLISION = shaderSetting.LIL_FEATURE_FUR_COLLISION || propname.Contains("_FurTouchStrength");
 

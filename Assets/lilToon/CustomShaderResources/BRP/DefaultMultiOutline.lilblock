@@ -10,6 +10,7 @@
             #define LIL_MULTI_INPUTS_MAIN3RD
             #define LIL_MULTI_INPUTS_ALPHAMASK
             #define LIL_MULTI_INPUTS_SHADOW
+            #define LIL_MULTI_INPUTS_RIMSHADE
             #define LIL_MULTI_INPUTS_BACKLIGHT
             #define LIL_MULTI_INPUTS_EMISSION
             #define LIL_MULTI_INPUTS_EMISSION_2ND
@@ -87,6 +88,7 @@
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
             #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local AUTO_KEY_VALUE
             #pragma shader_feature_local ANTI_FLICKER
             #pragma shader_feature_local _EMISSION
             #pragma shader_feature_local GEOM_TYPE_BRANCH
@@ -243,6 +245,7 @@
             #pragma shader_feature_local _SUNDISK_NONE
             #pragma shader_feature_local GEOM_TYPE_FROND
             #pragma shader_feature_local _REQUIRE_UV2
+            #pragma shader_feature_local AUTO_KEY_VALUE
             #pragma shader_feature_local _NORMALMAP
             #pragma shader_feature_local EFFECT_BUMP
             #pragma shader_feature_local SOURCE_GBUFFER

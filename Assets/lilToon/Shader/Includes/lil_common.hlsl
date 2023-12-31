@@ -30,6 +30,7 @@
     #define _UseMain2ndTex true
     #define _UseMain3rdTex true
     #define _UseShadow true
+    #define _UseRimShade true
     #define _UseBacklight true
     #define _UseBumpMap true
     #define _UseBump2ndMap true

@@ -118,6 +118,7 @@ namespace lilToon
             public bool isShowMainTone                  = false;
             public bool isShowShadow                    = false;
             public bool isShowShadowAO                  = false;
+            public bool isShowRimShade                  = false;
             public bool isShowBump                      = false;
             public bool isShowReflections               = false;
             public bool isShowEmission                  = false;
@@ -441,6 +442,14 @@ namespace lilToon
         private readonly lilMaterialProperty shadowFlatBorder           = new lilMaterialProperty("_ShadowFlatBorder", PropertyBlock.Shadow);
         private readonly lilMaterialProperty shadowFlatBlur             = new lilMaterialProperty("_ShadowFlatBlur", PropertyBlock.Shadow);
         private readonly lilMaterialProperty lilShadowCasterBias        = new lilMaterialProperty("_lilShadowCasterBias", PropertyBlock.Shadow, PropertyBlock.Rendering);
+
+        private readonly lilMaterialProperty useRimShade            = new lilMaterialProperty("_UseRimShade", PropertyBlock.RimShade);
+        private readonly lilMaterialProperty rimShadeColor          = new lilMaterialProperty("_RimShadeColor", PropertyBlock.RimShade);
+        private readonly lilMaterialProperty rimShadeMask           = new lilMaterialProperty("_RimShadeMask", PropertyBlock.RimShade);
+        private readonly lilMaterialProperty rimShadeNormalStrength = new lilMaterialProperty("_RimShadeNormalStrength", PropertyBlock.RimShade);
+        private readonly lilMaterialProperty rimShadeBorder         = new lilMaterialProperty("_RimShadeBorder", PropertyBlock.RimShade);
+        private readonly lilMaterialProperty rimShadeBlur           = new lilMaterialProperty("_RimShadeBlur", PropertyBlock.RimShade);
+        private readonly lilMaterialProperty rimShadeFresnelPower   = new lilMaterialProperty("_RimShadeFresnelPower", PropertyBlock.RimShade);
 
         private readonly lilMaterialProperty useEmission                    = new lilMaterialProperty("_UseEmission", PropertyBlock.Emission, PropertyBlock.Emission1st);
         private readonly lilMaterialProperty emissionColor                  = new lilMaterialProperty("_EmissionColor", PropertyBlock.Emission, PropertyBlock.Emission1st);
@@ -1050,6 +1059,14 @@ namespace lilToon
                 shadowFlatBorder,
                 shadowFlatBlur,
                 lilShadowCasterBias,
+
+                useRimShade,
+                rimShadeColor,
+                rimShadeMask,
+                rimShadeNormalStrength,
+                rimShadeBorder,
+                rimShadeBlur,
+                rimShadeFresnelPower,
 
                 useEmission,
                 emissionColor,
@@ -2590,6 +2607,34 @@ namespace lilToon
                 if(!isGem)
                 {
                     DrawShadowSettings();
+                }
+
+                //------------------------------------------------------------------------------------------------------------------------------
+                // Rim Shade
+                if(!isGem)
+                {
+                    if(ShouldDrawBlock(PropertyBlock.RimShade))
+                    {
+                        edSet.isShowRimShade = lilEditorGUI.Foldout("RimShade", edSet.isShowRimShade);
+                        DrawMenuButton(GetLoc("sAnchorRimShade"), PropertyBlock.RimShade);
+                        if(edSet.isShowRimShade)
+                        {
+                            EditorGUILayout.BeginVertical(boxOuter);
+                            LocalizedProperty(useRimShade, false);
+                            DrawMenuButton(GetLoc("sAnchorRimShade"), PropertyBlock.RimShade);
+                            if(useRimShade.floatValue == 1)
+                            {
+                                EditorGUILayout.BeginVertical(boxInnerHalf);
+                                LocalizedPropertyTexture(colorMaskRGBAContent, rimShadeMask, rimShadeColor);
+                                LocalizedProperty(rimShadeNormalStrength);
+                                LocalizedProperty(rimShadeBorder);
+                                LocalizedProperty(rimShadeBlur);
+                                LocalizedProperty(rimShadeFresnelPower);
+                                EditorGUILayout.EndVertical();
+                            }
+                            EditorGUILayout.EndVertical();
+                        }
+                    }
                 }
 
                 //------------------------------------------------------------------------------------------------------------------------------

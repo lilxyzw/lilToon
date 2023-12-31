@@ -443,6 +443,13 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
+        // Rim Shade
+        BEFORE_RIMSHADE
+        #if defined(LIL_FEATURE_RIMSHADE)
+            OVERRIDE_RIMSHADE
+        #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
         // Backlight
         BEFORE_BACKLIGHT
         #if !defined(LIL_PASS_FORWARDADD)
