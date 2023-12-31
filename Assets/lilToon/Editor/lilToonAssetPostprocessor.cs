@@ -13,7 +13,13 @@ namespace lilToon
             {
                 if(!path.EndsWith(".mat")) continue;
                 var material = AssetDatabase.LoadAssetAtPath<Material>(path);
+                if(!lilMaterialUtils.CheckShaderIslilToon(material)) continue;
+
                 lilStartup.MigrateMaterial(material, id);
+                if(material.shader.name.Contains("Multi"))
+                {
+                    lilMaterialUtils.SetupMultiMaterial(material);
+                }
             }
         }
     }

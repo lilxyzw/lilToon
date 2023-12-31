@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.5.3] - 2023-12-31
 ### 修正
 - AssetPostprocessorが正しく動作していなかったのを修正
+- シェーダーキーワードの非互換による不具合を回避
 
 ## [1.5.2] - 2023-12-30
 ### 修正

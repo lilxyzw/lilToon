@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.5.3] - 2023-12-31
 ### Fixed
 - AssetPostprocessor not working properly
+- Avoid problems caused by incompatibility of shader keywords
 
 ## [1.5.2] - 2023-12-30
 ### Fixed
