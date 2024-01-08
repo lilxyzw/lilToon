@@ -15,7 +15,7 @@ namespace lilToon
                 var material = AssetDatabase.LoadAssetAtPath<Material>(path);
                 if(!lilMaterialUtils.CheckShaderIslilToon(material)) continue;
 
-                lilStartup.MigrateMaterial(material, id);
+                lilStartup.MigrateMaterial(material);
                 if(material.shader.name.Contains("Multi"))
                 {
                     lilMaterialUtils.SetupMultiMaterial(material);
