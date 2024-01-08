@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### 修正
 - マテリアルのバージョン取得が正しくなかったのを修正
+- lilcontainerにシェーダーコードのテキストを追加
 
 ## [1.6.0] - 2023-12-31
 ### 追加

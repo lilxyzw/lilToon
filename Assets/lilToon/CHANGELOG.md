@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Incorrect material versioning
+- Add shader code text asset to lilcontainer
 
 ## [1.6.0] - 2023-12-31
 ### Added
