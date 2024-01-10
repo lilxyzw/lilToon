@@ -736,6 +736,7 @@ namespace lilToon
         private readonly lilMaterialProperty idMaskPrior7   = new lilMaterialProperty("_IDMaskPrior7", PropertyBlock.IDMask);
         private readonly lilMaterialProperty idMaskPrior8   = new lilMaterialProperty("_IDMaskPrior8", PropertyBlock.IDMask);
         
+        private readonly lilMaterialProperty udimDiscardCompile    = new lilMaterialProperty("_UDIMDiscardCompile", PropertyBlock.UDIMDiscard);
         private readonly lilMaterialProperty udimDiscardUV         = new lilMaterialProperty("_UDIMDiscardUV", PropertyBlock.UDIMDiscard);
         private readonly lilMaterialProperty udimDiscardMethod     = new lilMaterialProperty("_UDIMDiscardMode", PropertyBlock.UDIMDiscard);
         private readonly lilMaterialProperty udimDiscardRow3_0     = new lilMaterialProperty("_UDIMDiscardRow3_0", PropertyBlock.UDIMDiscard);
@@ -1372,6 +1373,7 @@ namespace lilToon
                 idMaskPrior7,
                 idMaskPrior8,
                 
+                udimDiscardCompile,
                 udimDiscardUV,
                 udimDiscardMethod,
                 udimDiscardRow3_0,
@@ -3155,50 +3157,58 @@ namespace lilToon
                 // IDMask
                 if(ShouldDrawBlock(PropertyBlock.IDMask))
                 {
-                    edSet.isShowIDMask = lilEditorGUI.Foldout("ID Mask", edSet.isShowIDMask);
+                    edSet.isShowIDMask = lilEditorGUI.Foldout(GetLoc("sIDMask"), edSet.isShowIDMask);
                     DrawMenuButton(GetLoc("sAnchorIDMask"), PropertyBlock.IDMask);
                     if(edSet.isShowIDMask)
                     {
                         EditorGUILayout.BeginVertical(boxOuter);
-                        EditorGUILayout.LabelField(GetLoc("ID Mask"), customToggleFont);
-                        EditorGUILayout.BeginVertical(boxInnerHalf);
-                        EditorGUILayout.HelpBox("It is recommended that these properties be set from scripts.", MessageType.Warning);
-                        EditorGUILayout.HelpBox("If you want to mask vertex ids 1000 to 1999, set:\r\n_IDMask1 = 1\r\n_IDMaskIndex1 = 1000\r\n_IDMaskIndex2 = 2000", MessageType.Info);
-                        LocalizedProperty(idMaskCompile);
-                        LocalizedProperty(idMaskFrom);
-                        LocalizedProperty(idMaskIsBitmap);
-
-                        LocalizedProperty(idMask1);
-                        LocalizedProperty(idMask2);
-                        LocalizedProperty(idMask3);
-                        LocalizedProperty(idMask4);
-                        LocalizedProperty(idMask5);
-                        LocalizedProperty(idMask6);
-                        LocalizedProperty(idMask7);
-                        LocalizedProperty(idMask8);
-                        LocalizedProperty(idMaskIndex1);
-                        LocalizedProperty(idMaskIndex2);
-                        LocalizedProperty(idMaskIndex3);
-                        LocalizedProperty(idMaskIndex4);
-                        LocalizedProperty(idMaskIndex5);
-                        LocalizedProperty(idMaskIndex6);
-                        LocalizedProperty(idMaskIndex7);
-                        LocalizedProperty(idMaskIndex8);
-                        LocalizedProperty(idMaskControlsDissolve);
-
-                        if(idMaskControlsDissolve.p != null && idMaskControlsDissolve.floatValue > 0.5f)
+                        LocalizedProperty(idMaskCompile); 
+                        DrawMenuButton(GetLoc("sIDMask"), PropertyBlock.IDMask);
+                        if (idMaskCompile.floatValue == 1)
                         {
-                            LocalizedProperty(idMaskPrior1);
-                            LocalizedProperty(idMaskPrior2);
-                            LocalizedProperty(idMaskPrior3);
-                            LocalizedProperty(idMaskPrior4);
-                            LocalizedProperty(idMaskPrior5);
-                            LocalizedProperty(idMaskPrior6);
-                            LocalizedProperty(idMaskPrior7);
-                            LocalizedProperty(idMaskPrior8);
+                            //EditorGUILayout.LabelField(GetLoc("sIDMask"), customToggleFont);
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            EditorGUILayout.HelpBox("It is recommended that these properties be set from scripts.",
+                                MessageType.Warning);
+                            EditorGUILayout.HelpBox(
+                                "If you want to mask vertex ids 1000 to 1999, set:\r\n_IDMask1 = 1\r\n_IDMaskIndex1 = 1000\r\n_IDMaskIndex2 = 2000",
+                                MessageType.Info);
+                            LocalizedProperty(idMaskFrom);
+                            LocalizedProperty(idMaskIsBitmap);
+
+                            LocalizedProperty(idMask1);
+                            LocalizedProperty(idMask2);
+                            LocalizedProperty(idMask3);
+                            LocalizedProperty(idMask4);
+                            LocalizedProperty(idMask5);
+                            LocalizedProperty(idMask6);
+                            LocalizedProperty(idMask7);
+                            LocalizedProperty(idMask8);
+                            LocalizedProperty(idMaskIndex1);
+                            LocalizedProperty(idMaskIndex2);
+                            LocalizedProperty(idMaskIndex3);
+                            LocalizedProperty(idMaskIndex4);
+                            LocalizedProperty(idMaskIndex5);
+                            LocalizedProperty(idMaskIndex6);
+                            LocalizedProperty(idMaskIndex7);
+                            LocalizedProperty(idMaskIndex8);
+                            LocalizedProperty(idMaskControlsDissolve);
+
+                            if (idMaskControlsDissolve.p != null && idMaskControlsDissolve.floatValue > 0.5f)
+                            {
+                                LocalizedProperty(idMaskPrior1);
+                                LocalizedProperty(idMaskPrior2);
+                                LocalizedProperty(idMaskPrior3);
+                                LocalizedProperty(idMaskPrior4);
+                                LocalizedProperty(idMaskPrior5);
+                                LocalizedProperty(idMaskPrior6);
+                                LocalizedProperty(idMaskPrior7);
+                                LocalizedProperty(idMaskPrior8);
+                            }
+
+                            EditorGUILayout.EndVertical();
                         }
-                        
-                        EditorGUILayout.EndVertical();
+
                         EditorGUILayout.EndVertical();
                     }
                 }
@@ -3207,53 +3217,60 @@ namespace lilToon
                 // UDIM Discard
                 if (ShouldDrawBlock(PropertyBlock.UDIMDiscard))
                 {
-                    edSet.isShowUDIMDiscard = lilEditorGUI.Foldout("UV Tile Discard", edSet.isShowUDIMDiscard);
+                    edSet.isShowUDIMDiscard = lilEditorGUI.Foldout(GetLoc("sUDIMDiscard"), edSet.isShowUDIMDiscard);
                     DrawMenuButton(GetLoc("sAnchorUDIMDiscard"), PropertyBlock.UDIMDiscard);
                     if(edSet.isShowUDIMDiscard)
                     {
                         EditorGUILayout.BeginVertical(boxOuter);
-                        EditorGUILayout.BeginVertical(boxInnerHalf);
-                        EditorGUILayout.HelpBox("Your model needs to be set up for this feature! Also known as UDIM Discard.",
-                            MessageType.Warning);
-                        EditorGUILayout.HelpBox("Place groups of vertexes on different whole number UV tiles.",
-                            MessageType.Info);
-                        LocalizedProperty(udimDiscardUV);
-                        LocalizedProperty(udimDiscardMethod);
+                        LocalizedProperty(udimDiscardCompile); 
+                        DrawMenuButton(GetLoc("sUDIMDiscard"), PropertyBlock.UDIMDiscard);
+                        if (udimDiscardCompile.floatValue == 1)
+                        {
+                            EditorGUILayout.BeginVertical(boxInnerHalf);
+                            EditorGUILayout.HelpBox(
+                                "Your model needs to be set up for this feature! Also known as UDIM Discard.",
+                                MessageType.Warning);
+                            EditorGUILayout.HelpBox("Place groups of vertexes on different whole number UV tiles.",
+                                MessageType.Info);
+                            LocalizedProperty(udimDiscardUV);
+                            LocalizedProperty(udimDiscardMethod);
 
-                        lilEditorGUI.DrawLine();
-                        GUILayout.Label("Row 3", boldLabel);
-                        EditorGUI.indentLevel++;
-                        LocalizedProperty(udimDiscardRow3_3);
-                        LocalizedProperty(udimDiscardRow3_2);
-                        LocalizedProperty(udimDiscardRow3_1);
-                        LocalizedProperty(udimDiscardRow3_0);
-                        EditorGUI.indentLevel--;
-                        lilEditorGUI.DrawLine();
-                        GUILayout.Label("Row 2", boldLabel);
-                        EditorGUI.indentLevel++;
-                        LocalizedProperty(udimDiscardRow2_3);
-                        LocalizedProperty(udimDiscardRow2_2);
-                        LocalizedProperty(udimDiscardRow2_1);
-                        LocalizedProperty(udimDiscardRow2_0);
-                        EditorGUI.indentLevel--;
-                        lilEditorGUI.DrawLine();
-                        GUILayout.Label("Row 1", boldLabel);
-                        EditorGUI.indentLevel++;
-                        LocalizedProperty(udimDiscardRow1_3);
-                        LocalizedProperty(udimDiscardRow1_2);
-                        LocalizedProperty(udimDiscardRow1_1);
-                        LocalizedProperty(udimDiscardRow1_0);
-                        EditorGUI.indentLevel--;
-                        lilEditorGUI.DrawLine();
-                        GUILayout.Label("Row 0", boldLabel);
-                        EditorGUI.indentLevel++;
-                        LocalizedProperty(udimDiscardRow0_3);
-                        LocalizedProperty(udimDiscardRow0_2);
-                        LocalizedProperty(udimDiscardRow0_1);
-                        LocalizedProperty(udimDiscardRow0_0);
-                        EditorGUI.indentLevel--;
-                        
-                        EditorGUILayout.EndVertical();
+                            lilEditorGUI.DrawLine();
+                            GUILayout.Label("Row 3", boldLabel);
+                            EditorGUI.indentLevel++;
+                            LocalizedProperty(udimDiscardRow3_3);
+                            LocalizedProperty(udimDiscardRow3_2);
+                            LocalizedProperty(udimDiscardRow3_1);
+                            LocalizedProperty(udimDiscardRow3_0);
+                            EditorGUI.indentLevel--;
+                            lilEditorGUI.DrawLine();
+                            GUILayout.Label("Row 2", boldLabel);
+                            EditorGUI.indentLevel++;
+                            LocalizedProperty(udimDiscardRow2_3);
+                            LocalizedProperty(udimDiscardRow2_2);
+                            LocalizedProperty(udimDiscardRow2_1);
+                            LocalizedProperty(udimDiscardRow2_0);
+                            EditorGUI.indentLevel--;
+                            lilEditorGUI.DrawLine();
+                            GUILayout.Label("Row 1", boldLabel);
+                            EditorGUI.indentLevel++;
+                            LocalizedProperty(udimDiscardRow1_3);
+                            LocalizedProperty(udimDiscardRow1_2);
+                            LocalizedProperty(udimDiscardRow1_1);
+                            LocalizedProperty(udimDiscardRow1_0);
+                            EditorGUI.indentLevel--;
+                            lilEditorGUI.DrawLine();
+                            GUILayout.Label("Row 0", boldLabel);
+                            EditorGUI.indentLevel++;
+                            LocalizedProperty(udimDiscardRow0_3);
+                            LocalizedProperty(udimDiscardRow0_2);
+                            LocalizedProperty(udimDiscardRow0_1);
+                            LocalizedProperty(udimDiscardRow0_0);
+                            EditorGUI.indentLevel--;
+
+                            EditorGUILayout.EndVertical();
+                        }
+
                         EditorGUILayout.EndVertical();
                     }
                 }

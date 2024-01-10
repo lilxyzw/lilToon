@@ -570,6 +570,7 @@ CBUFFER_START(UnityPerMaterial)
         float   _DissolveNoiseStrength;
     #endif
     #if defined(LIL_MULTI_INPUTS_IDMASK)
+        float   _IDMaskCompile;
         float   _IDMask1;
         float   _IDMask2;
         float   _IDMask3;
@@ -588,6 +589,7 @@ CBUFFER_START(UnityPerMaterial)
         float   _IDMaskPrior8;
     #endif
     #if defined(LIL_MULTI_INPUTS_UDIMDISCARD)
+        float _UDIMDiscardCompile;
         float _UDIMDiscardMode;
         float _UDIMDiscardUV;
         float _UDIMDiscardRow3_0;

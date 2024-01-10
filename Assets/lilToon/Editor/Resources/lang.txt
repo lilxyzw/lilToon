@@ -298,6 +298,8 @@ sDissolveModePosition	Position	座標	좌표	坐标	職位
 sDissolveShape	Shape	形状	모양	形状	形狀
 sDissolveShapePoint	Point	点	점	点	點
 sDissolveShapeLine	Line	線	선	线	線
+sIDMask	ID Mask	ID Mask	ID Mask	ID Mask	ID Mask
+sUDIMDiscard	UV Tile Discard	UVタイルを無視	UV 타일 무시	UV平铺丢弃	UV平鋪丟棄
 sUDIMDiscardUV	Discard UV	UVを無視	UV를 무시	丢弃UV	丟棄UV
 sUDIMDiscardMode	Discard Mode	無視モード	무시 모드	丢弃模式	丟棄模式
 sUDIMDiscardColumn0	Discard Column 0	0列目を無視	0열을 무시	丢弃第0列	丟棄第0列

@@ -1209,7 +1209,8 @@ public class lilToonSetting : ScriptableObject
                 material.HasProperty("_UDIMDiscardRow0_0") && material.GetFloat("_UDIMDiscardRow0_0") != 0.0f ||
                 material.HasProperty("_UDIMDiscardRow0_1") && material.GetFloat("_UDIMDiscardRow0_1") != 0.0f ||
                 material.HasProperty("_UDIMDiscardRow0_2") && material.GetFloat("_UDIMDiscardRow0_2") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow0_3") && material.GetFloat("_UDIMDiscardRow0_3") != 0.0f
+                material.HasProperty("_UDIMDiscardRow0_3") && material.GetFloat("_UDIMDiscardRow0_3") != 0.0f ||
+                material.HasProperty("_UDIMDiscardCompile") && material.GetFloat("_UDIMDiscardCompile") != 0.0f
             ))
         {
             Debug.Log("[lilToon] LIL_FEATURE_UDIMDISCARD : " + AssetDatabase.GetAssetPath(material));

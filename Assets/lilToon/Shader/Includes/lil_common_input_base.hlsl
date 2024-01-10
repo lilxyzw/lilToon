@@ -484,6 +484,7 @@ float   _AAStrength;
     float   _DissolveNoiseStrength;
 #endif
 #if defined(LIL_FEATURE_IDMASK)
+    float   _IDMaskCompile;
     float   _IDMask1;
     float   _IDMask2;
     float   _IDMask3;
@@ -502,6 +503,7 @@ float   _AAStrength;
     float   _IDMaskPrior8;
 #endif
 #if defined(LIL_FEATURE_UDIMDISCARD)
+float _UDIMDiscardCompile;
 float _UDIMDiscardMode;
 float _UDIMDiscardUV;
 float _UDIMDiscardRow3_0;
