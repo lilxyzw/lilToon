@@ -29,6 +29,7 @@
             #define LIL_MULTI_INPUTS_AUDIOLINK
             #define LIL_MULTI_INPUTS_DISSOLVE
             #define LIL_MULTI_INPUTS_IDMASK
+            #define LIL_MULTI_INPUTS_UDIMDISCARD
 
             #pragma lil_skip_variants_decals
             #pragma lil_skip_variants_addlightshadows

@@ -29,6 +29,7 @@
             #define LIL_MULTI_INPUTS_DISSOLVE
             #define LIL_MULTI_INPUTS_DITHER
             #define LIL_MULTI_INPUTS_IDMASK
+            #define LIL_MULTI_INPUTS_UDIMDISCARD
             #define LIL_MULTI_INPUTS_OUTLINE
 
             #pragma lil_skip_variants_decals
