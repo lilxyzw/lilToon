@@ -1191,28 +1191,7 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.LIL_FEATURE_IDMASK = true;
         }
 
-        if (!shaderSetting.LIL_FEATURE_UDIMDISCARD && (
-                material.HasProperty("_UDIMDiscardMode") && material.GetFloat("_UDIMDiscardMode") != 0.0f ||
-                material.HasProperty("_UDIMDiscardUV") && material.GetFloat("_UDIMDiscardUV") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow3_0") && material.GetFloat("_UDIMDiscardRow3_0") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow3_1") && material.GetFloat("_UDIMDiscardRow3_1") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow3_2") && material.GetFloat("_UDIMDiscardRow3_2") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow3_3") && material.GetFloat("_UDIMDiscardRow3_3") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow2_0") && material.GetFloat("_UDIMDiscardRow2_0") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow2_1") && material.GetFloat("_UDIMDiscardRow2_1") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow2_2") && material.GetFloat("_UDIMDiscardRow2_2") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow2_3") && material.GetFloat("_UDIMDiscardRow2_3") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow1_0") && material.GetFloat("_UDIMDiscardRow1_0") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow1_1") && material.GetFloat("_UDIMDiscardRow1_1") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow1_2") && material.GetFloat("_UDIMDiscardRow1_2") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow1_3") && material.GetFloat("_UDIMDiscardRow1_3") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow0_0") && material.GetFloat("_UDIMDiscardRow0_0") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow0_1") && material.GetFloat("_UDIMDiscardRow0_1") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow0_2") && material.GetFloat("_UDIMDiscardRow0_2") != 0.0f ||
-                material.HasProperty("_UDIMDiscardRow0_3") && material.GetFloat("_UDIMDiscardRow0_3") != 0.0f ||
-                material.HasProperty("_UDIMDiscardCompile") && material.GetFloat("_UDIMDiscardCompile") != 0.0f
-            ))
-        {
+        if(!shaderSetting.LIL_FEATURE_UDIMDISCARD && material.HasProperty("_UDIMDiscardCompile") && material.GetFloat("_UDIMDiscardCompile") != 0.0f) {
             Debug.Log("[lilToon] LIL_FEATURE_UDIMDISCARD : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_UDIMDISCARD = true;
         }
@@ -1319,20 +1298,7 @@ public class lilToonSetting : ScriptableObject
                 shaderSetting.LIL_FEATURE_IDMASK = true;
             }
 
-            if (!shaderSetting.LIL_FEATURE_UDIMDISCARD && (
-                propname.Contains("_UDIMDiscardMode") || propname.Contains("_UDIMDiscardUV") ||
-                propname.Contains("_UDIMDiscardRow3_0") || propname.Contains("_UDIMDiscardRow3_1") ||
-                propname.Contains("_UDIMDiscardRow3_2") || propname.Contains("_UDIMDiscardRow3_3") ||
-                propname.Contains("_UDIMDiscardRow2_0") || propname.Contains("_UDIMDiscardRow2_1") ||
-                propname.Contains("_UDIMDiscardRow2_2") || propname.Contains("_UDIMDiscardRow2_3") ||
-                propname.Contains("_UDIMDiscardRow1_0") || propname.Contains("_UDIMDiscardRow1_1") ||
-                propname.Contains("_UDIMDiscardRow1_2") || propname.Contains("_UDIMDiscardRow1_3") ||
-                propname.Contains("_UDIMDiscardRow0_0") || propname.Contains("_UDIMDiscardRow0_1") ||
-                propname.Contains("_UDIMDiscardRow0_2") || propname.Contains("_UDIMDiscardRow0_3")
-            ))
-            {
-                shaderSetting.LIL_FEATURE_UDIMDISCARD = true;
-            }
+            shaderSetting.LIL_FEATURE_UDIMDISCARD = shaderSetting.LIL_FEATURE_UDIMDISCARD || propname.Contains("_UDIMDiscardCompile");
             
             shaderSetting.LIL_FEATURE_ENCRYPTION = shaderSetting.LIL_FEATURE_ENCRYPTION || propname.Contains("_BitKey0");
 

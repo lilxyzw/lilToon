@@ -123,8 +123,7 @@ LIL_V2F_TYPE vert(appdata input)
     LIL_SETUP_INSTANCE_ID(input);
     LIL_TRANSFER_INSTANCE_ID(input, LIL_V2F_OUT_BASE);
     LIL_INITIALIZE_VERTEX_OUTPUT_STEREO(LIL_V2F_OUT_BASE);
-    
-    
+
     //------------------------------------------------------------------------------------------------------------------------------
     // UV
     float2 uvMain = lilCalcUV(input.uv0, _MainTex_ST);
@@ -435,55 +434,52 @@ LIL_V2F_TYPE vert(appdata input)
     //------------------------------------------------------------------------------------------------------------------------------
     // IDMask
     #if defined(LIL_FEATURE_IDMASK) && !defined(LIL_NOT_SUPPORT_VERTEXID) && !defined(LIL_LITE)
-        if (_IDMaskCompile == 1)
+        int idMaskIndices[8] = {_IDMaskIndex1,_IDMaskIndex2,_IDMaskIndex3,_IDMaskIndex4,_IDMaskIndex5,_IDMaskIndex6,_IDMaskIndex7,_IDMaskIndex8};
+        float idMaskFlags[8] = {_IDMask1,_IDMask2,_IDMask3,_IDMask4,_IDMask5,_IDMask6,_IDMask7,_IDMask8};
+        float idMaskPriorFlags[8] = {_IDMaskPrior1,_IDMaskPrior2,_IDMaskPrior3,_IDMaskPrior4,_IDMaskPrior5,_IDMaskPrior6,_IDMaskPrior7,_IDMaskPrior8};
+        uint idMaskArg = 0;
+        switch(_IDMaskFrom)
         {
-            int idMaskIndices[8] = {_IDMaskIndex1,_IDMaskIndex2,_IDMaskIndex3,_IDMaskIndex4,_IDMaskIndex5,_IDMaskIndex6,_IDMaskIndex7,_IDMaskIndex8};
-            float idMaskFlags[8] = {_IDMask1,_IDMask2,_IDMask3,_IDMask4,_IDMask5,_IDMask6,_IDMask7,_IDMask8};
-            float idMaskPriorFlags[8] = {_IDMaskPrior1,_IDMaskPrior2,_IDMaskPrior3,_IDMaskPrior4,_IDMaskPrior5,_IDMaskPrior6,_IDMaskPrior7,_IDMaskPrior8};
-            uint idMaskArg = 0;
-            switch(_IDMaskFrom)
-            {
-                #if defined(LIL_APP_TEXCOORD0)
-            case 0: idMaskArg = input.uv0.x; break;
-                #endif
-                #if defined(LIL_APP_TEXCOORD1)
-            case 1: idMaskArg = input.uv1.x; break;
-                #endif
-                #if defined(LIL_APP_TEXCOORD2)
-            case 2: idMaskArg = input.uv2.x; break;
-                #endif
-                #if defined(LIL_APP_TEXCOORD3)
-            case 3: idMaskArg = input.uv3.x; break;
-                #endif
-                #if defined(LIL_APP_TEXCOORD4)
-            case 4: idMaskArg = input.uv4.x; break;
-                #endif
-                #if defined(LIL_APP_TEXCOORD5)
-            case 5: idMaskArg = input.uv5.x; break;
-                #endif
-                #if defined(LIL_APP_TEXCOORD6)
-            case 6: idMaskArg = input.uv6.x; break;
-                #endif
-                #if defined(LIL_APP_TEXCOORD7)
-            case 7: idMaskArg = input.uv7.x; break;
-                #endif
+            #if defined(LIL_APP_TEXCOORD0)
+                case 0: idMaskArg = input.uv0.x; break;
+            #endif
+            #if defined(LIL_APP_TEXCOORD1)
+                case 1: idMaskArg = input.uv1.x; break;
+            #endif
+            #if defined(LIL_APP_TEXCOORD2)
+                case 2: idMaskArg = input.uv2.x; break;
+            #endif
+            #if defined(LIL_APP_TEXCOORD3)
+                case 3: idMaskArg = input.uv3.x; break;
+            #endif
+            #if defined(LIL_APP_TEXCOORD4)
+                case 4: idMaskArg = input.uv4.x; break;
+            #endif
+            #if defined(LIL_APP_TEXCOORD5)
+                case 5: idMaskArg = input.uv5.x; break;
+            #endif
+            #if defined(LIL_APP_TEXCOORD6)
+                case 6: idMaskArg = input.uv6.x; break;
+            #endif
+            #if defined(LIL_APP_TEXCOORD7)
+                case 7: idMaskArg = input.uv7.x; break;
+            #endif
             default: idMaskArg = input.vertexID; break;
-            }
-            bool idMasked = IDMask(idMaskArg,_IDMaskIsBitmap,idMaskIndices,idMaskFlags);
-            if(_IDMaskControlsDissolve)
-            {
-                bool priorIdMasked = IDMask(idMaskArg, _IDMaskIsBitmap, idMaskIndices, idMaskPriorFlags);
-                dissolveActive = idMasked != priorIdMasked;
-                dissolveInvert = priorIdMasked;
-                idMasked = idMasked && priorIdMasked;
-            }
-            #if defined(LIL_V2F_POSITION_CS)
-            LIL_V2F_OUT_BASE.positionCS = idMasked ? 0.0/0.0 : LIL_V2F_OUT_BASE.positionCS;
-            #endif
-            #if defined(LIL_ONEPASS_OUTLINE)
-            LIL_V2F_OUT.positionCSOL = idMasked ? 0.0/0.0 : LIL_V2F_OUT.positionCSOL;
-            #endif
         }
+        bool idMasked = IDMask(idMaskArg,_IDMaskIsBitmap,idMaskIndices,idMaskFlags);
+        if(_IDMaskControlsDissolve)
+        {
+            bool priorIdMasked = IDMask(idMaskArg, _IDMaskIsBitmap, idMaskIndices, idMaskPriorFlags);
+            dissolveActive = idMasked != priorIdMasked;
+            dissolveInvert = priorIdMasked;
+            idMasked = idMasked && priorIdMasked;
+        }
+        #if defined(LIL_V2F_POSITION_CS)
+            LIL_V2F_OUT_BASE.positionCS = idMasked ? 0.0/0.0 : LIL_V2F_OUT_BASE.positionCS;
+        #endif
+        #if defined(LIL_ONEPASS_OUTLINE)
+            LIL_V2F_OUT.positionCSOL = idMasked ? 0.0/0.0 : LIL_V2F_OUT.positionCSOL;
+        #endif
     #endif
 
     #if defined(LIL_V2F_POSITION_OS)

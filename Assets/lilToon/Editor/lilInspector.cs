@@ -3162,53 +3162,45 @@ namespace lilToon
                     if(edSet.isShowIDMask)
                     {
                         EditorGUILayout.BeginVertical(boxOuter);
-                        LocalizedProperty(idMaskCompile); 
-                        DrawMenuButton(GetLoc("sIDMask"), PropertyBlock.IDMask);
-                        if (idMaskCompile.floatValue == 1)
+                        EditorGUILayout.LabelField(GetLoc("ID Mask"), customToggleFont);
+                        EditorGUILayout.BeginVertical(boxInnerHalf);
+                        EditorGUILayout.HelpBox("It is recommended that these properties be set from scripts.", MessageType.Warning);
+                        EditorGUILayout.HelpBox("If you want to mask vertex ids 1000 to 1999, set:\r\n_IDMask1 = 1\r\n_IDMaskIndex1 = 1000\r\n_IDMaskIndex2 = 2000", MessageType.Info);
+                        LocalizedProperty(idMaskCompile);
+                        LocalizedProperty(idMaskFrom);
+                        LocalizedProperty(idMaskIsBitmap);
+
+                        LocalizedProperty(idMask1);
+                        LocalizedProperty(idMask2);
+                        LocalizedProperty(idMask3);
+                        LocalizedProperty(idMask4);
+                        LocalizedProperty(idMask5);
+                        LocalizedProperty(idMask6);
+                        LocalizedProperty(idMask7);
+                        LocalizedProperty(idMask8);
+                        LocalizedProperty(idMaskIndex1);
+                        LocalizedProperty(idMaskIndex2);
+                        LocalizedProperty(idMaskIndex3);
+                        LocalizedProperty(idMaskIndex4);
+                        LocalizedProperty(idMaskIndex5);
+                        LocalizedProperty(idMaskIndex6);
+                        LocalizedProperty(idMaskIndex7);
+                        LocalizedProperty(idMaskIndex8);
+                        LocalizedProperty(idMaskControlsDissolve);
+
+                        if(idMaskControlsDissolve.p != null && idMaskControlsDissolve.floatValue > 0.5f)
                         {
-                            //EditorGUILayout.LabelField(GetLoc("sIDMask"), customToggleFont);
-                            EditorGUILayout.BeginVertical(boxInnerHalf);
-                            EditorGUILayout.HelpBox("It is recommended that these properties be set from scripts.",
-                                MessageType.Warning);
-                            EditorGUILayout.HelpBox(
-                                "If you want to mask vertex ids 1000 to 1999, set:\r\n_IDMask1 = 1\r\n_IDMaskIndex1 = 1000\r\n_IDMaskIndex2 = 2000",
-                                MessageType.Info);
-                            LocalizedProperty(idMaskFrom);
-                            LocalizedProperty(idMaskIsBitmap);
-
-                            LocalizedProperty(idMask1);
-                            LocalizedProperty(idMask2);
-                            LocalizedProperty(idMask3);
-                            LocalizedProperty(idMask4);
-                            LocalizedProperty(idMask5);
-                            LocalizedProperty(idMask6);
-                            LocalizedProperty(idMask7);
-                            LocalizedProperty(idMask8);
-                            LocalizedProperty(idMaskIndex1);
-                            LocalizedProperty(idMaskIndex2);
-                            LocalizedProperty(idMaskIndex3);
-                            LocalizedProperty(idMaskIndex4);
-                            LocalizedProperty(idMaskIndex5);
-                            LocalizedProperty(idMaskIndex6);
-                            LocalizedProperty(idMaskIndex7);
-                            LocalizedProperty(idMaskIndex8);
-                            LocalizedProperty(idMaskControlsDissolve);
-
-                            if (idMaskControlsDissolve.p != null && idMaskControlsDissolve.floatValue > 0.5f)
-                            {
-                                LocalizedProperty(idMaskPrior1);
-                                LocalizedProperty(idMaskPrior2);
-                                LocalizedProperty(idMaskPrior3);
-                                LocalizedProperty(idMaskPrior4);
-                                LocalizedProperty(idMaskPrior5);
-                                LocalizedProperty(idMaskPrior6);
-                                LocalizedProperty(idMaskPrior7);
-                                LocalizedProperty(idMaskPrior8);
-                            }
-
-                            EditorGUILayout.EndVertical();
+                            LocalizedProperty(idMaskPrior1);
+                            LocalizedProperty(idMaskPrior2);
+                            LocalizedProperty(idMaskPrior3);
+                            LocalizedProperty(idMaskPrior4);
+                            LocalizedProperty(idMaskPrior5);
+                            LocalizedProperty(idMaskPrior6);
+                            LocalizedProperty(idMaskPrior7);
+                            LocalizedProperty(idMaskPrior8);
                         }
-
+                        
+                        EditorGUILayout.EndVertical();
                         EditorGUILayout.EndVertical();
                     }
                 }

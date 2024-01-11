@@ -484,7 +484,6 @@ float   _AAStrength;
     float   _DissolveNoiseStrength;
 #endif
 #if defined(LIL_FEATURE_IDMASK)
-    float   _IDMaskCompile;
     float   _IDMask1;
     float   _IDMask2;
     float   _IDMask3;
