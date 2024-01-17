@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2024-01-17
+### 追加
+- UV Tile Discardを追加
+
+### 修正
+- マテリアルのバージョン取得が正しくなかったのを修正
+- lilcontainerにシェーダーコードのテキストを追加
+
+## [1.6.0] - 2023-12-31
+### 追加
+- RimShadeを追加
+
+### 修正
+- AssetPostprocessorが正しく動作していなかったのを修正
+- シェーダーキーワードの非互換による不具合を回避
+
+## [1.5.2] - 2023-12-30
+### 修正
+- AssetBundleビルド時に必要な頂点データが消されてしまう場合があるのを修正
+
+## [1.5.1] - 2023-12-27
+### 修正
+- 特定Unityバージョンにおけるクラッシュ問題を回避
+- マテリアルバリアントへの対応
+- マテリアルのマイグレーションを発生しにくくした
+
 ## [1.5.0] - 2023-12-10
 ### 追加
 - altキーでプロパティ名を見られるようにした
