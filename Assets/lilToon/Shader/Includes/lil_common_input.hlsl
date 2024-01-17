@@ -587,6 +587,27 @@ CBUFFER_START(UnityPerMaterial)
         float   _IDMaskPrior7;
         float   _IDMaskPrior8;
     #endif
+    #if defined(LIL_MULTI_INPUTS_UDIMDISCARD)
+        float _UDIMDiscardCompile;
+        float _UDIMDiscardMode;
+        float _UDIMDiscardUV;
+        float _UDIMDiscardRow3_0;
+        float _UDIMDiscardRow3_1;
+        float _UDIMDiscardRow3_2;
+        float _UDIMDiscardRow3_3;
+        float _UDIMDiscardRow2_0;
+        float _UDIMDiscardRow2_1;
+        float _UDIMDiscardRow2_2;
+        float _UDIMDiscardRow2_3;
+        float _UDIMDiscardRow1_0;
+        float _UDIMDiscardRow1_1;
+        float _UDIMDiscardRow1_2;
+        float _UDIMDiscardRow1_3;
+        float _UDIMDiscardRow0_0;
+        float _UDIMDiscardRow0_1;
+        float _UDIMDiscardRow0_2;
+        float _UDIMDiscardRow0_3;
+    #endif
     float   _lilShadowCasterBias;
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
         float   _OutlineLitScale;

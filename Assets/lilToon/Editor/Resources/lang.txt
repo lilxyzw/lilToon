@@ -298,6 +298,14 @@ sDissolveModePosition	Position	座標	좌표	坐标	職位
 sDissolveShape	Shape	形状	모양	形状	形狀
 sDissolveShapePoint	Point	点	점	点	點
 sDissolveShapeLine	Line	線	선	线	線
+sIDMask	ID Mask	ID Mask	ID Mask	ID Mask	ID Mask
+sUDIMDiscard	UV Tile Discard	UVタイルを無視	UV 타일 무시	UV平铺丢弃	UV平鋪丟棄
+sUDIMDiscardUV	Discard UV	UVを無視	UV를 무시	丢弃UV	丟棄UV
+sUDIMDiscardMode	Discard Mode	無視モード	무시 모드	丢弃模式	丟棄模式
+sUDIMDiscardColumn0	Discard Column 0	0列目を無視	0열을 무시	丢弃第0列	丟棄第0列
+sUDIMDiscardColumn1	Discard Column 1	1列目を無視	1열을 무시	丢弃第1列	丟棄第1列
+sUDIMDiscardColumn2	Discard Column 2	2列目を無視	2열을 무시	丢弃第2列	丟棄第2列
+sUDIMDiscardColumn3	Discard Column 3	3列目を無視	3열을 무시	丢弃第3列	丟棄第3列
 sEncryption	Encryption	暗号化	암호화	加密	加密
 sEncryptionTips	Decrypt the mesh from 4 keys.	4つのキーによってメッシュを復号化します	4개의 키를 사용하여 메쉬를 복호화합니다	用 4 个密钥解密该网格	從4個密鑰解密該網狀
 sIgnoreEncryption	Ignore Encryption	Ignore Encryption	Ignore Encryption	Ignore Encryption	Ignore Encryption
@@ -511,6 +519,7 @@ sAnchorDistanceFade	advanced/distancefade	advanced/distancefade	advanced/distanc
 sAnchorAudioLink	advanced/audiolink	advanced/audiolink	advanced/audiolink	advanced/audiolink	advanced/audiolink
 sAnchorDissolve	advanced/dissolve	advanced/dissolve	advanced/dissolve	advanced/dissolve	advanced/dissolve
 sAnchorIDMask	advanced/idmask	advanced/idmask	advanced/idmask	advanced/idmask	advanced/idmask
+sAnchorUDIMDiscard	advanced/uvtilediscard	advanced/uvtilediscard	advanced/uvtilediscard	advanced/uvtilediscard	advanced/uvtilediscard
 sAnchorEncryption	advanced/encryption	advanced/encryption	advanced/encryption	advanced/encryption	advanced/encryption
 sAnchorStencil	advanced/stencil	advanced/stencil	advanced/stencil	advanced/stencil	advanced/stencil
 sAnchorRendering	advanced/rendering	advanced/rendering	advanced/rendering	advanced/rendering	advanced/rendering

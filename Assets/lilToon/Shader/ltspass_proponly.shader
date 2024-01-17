@@ -486,6 +486,27 @@ Shader "Hidden/ltspass_proponly"
         [ToggleUI]      _IDMaskPrior8               ("_IDMaskPrior8", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
+        // UDIM Discard
+        [lilToggleLeft]  _UDIMDiscardCompile        ("sUDIMDiscard", Int) = 0
+        [lilEnum]        _UDIMDiscardUV             ("sUDIMDiscardUV|0: UV0|1: UV1|2: UV2|3: UV3", Int) = 0
+        [lilEnum]        _UDIMDiscardMode           ("sUDIMDiscardMode|0: Vertex|1: Pixel (slower)", Int) = 0
+        [lilToggle]      _UDIMDiscardRow3_3         ("sUDIMDiscardColumn3", Int) = 0
+        [lilToggle]      _UDIMDiscardRow3_2         ("sUDIMDiscardColumn2", Int) = 0
+        [lilToggle]      _UDIMDiscardRow3_1         ("sUDIMDiscardColumn1", Int) = 0
+        [lilToggle]      _UDIMDiscardRow3_0         ("sUDIMDiscardColumn0", Int) = 0
+        [lilToggle]      _UDIMDiscardRow2_3         ("sUDIMDiscardColumn3", Int) = 0
+        [lilToggle]      _UDIMDiscardRow2_2         ("sUDIMDiscardColumn2", Int) = 0
+        [lilToggle]      _UDIMDiscardRow2_1         ("sUDIMDiscardColumn1", Int) = 0
+        [lilToggle]      _UDIMDiscardRow2_0         ("sUDIMDiscardColumn0", Int) = 0
+        [lilToggle]      _UDIMDiscardRow1_3         ("sUDIMDiscardColumn3", Int) = 0
+        [lilToggle]      _UDIMDiscardRow1_2         ("sUDIMDiscardColumn2", Int) = 0
+        [lilToggle]      _UDIMDiscardRow1_1         ("sUDIMDiscardColumn1", Int) = 0
+        [lilToggle]      _UDIMDiscardRow1_0         ("sUDIMDiscardColumn0", Int) = 0
+        [lilToggle]      _UDIMDiscardRow0_3         ("sUDIMDiscardColumn3", Int) = 0
+        [lilToggle]      _UDIMDiscardRow0_2         ("sUDIMDiscardColumn2", Int) = 0
+        [lilToggle]      _UDIMDiscardRow0_1         ("sUDIMDiscardColumn1", Int) = 0
+        [lilToggle]      _UDIMDiscardRow0_0         ("sUDIMDiscardColumn0", Int) = 0
+        //----------------------------------------------------------------------------------------------------------------------
         // Encryption
         [lilToggle]     _IgnoreEncryption           ("sIgnoreEncryption", Int) = 0
                         _Keys                       ("sKeys", Vector) = (0,0,0,0)
