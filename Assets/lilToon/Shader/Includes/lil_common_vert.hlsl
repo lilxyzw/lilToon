@@ -82,41 +82,6 @@ LIL_V2F_TYPE vert(appdata input)
     #endif
 
     #undef LIL_VERTEX_CONDITION
-
-    //------------------------------------------------------------------------------------------------------------------------------
-    // UDIM Discard (UV Tile Discard, original implementation by Razgriz for Poiyomi)
-    #if defined(LIL_FEATURE_UDIMDISCARD) && !defined(LIL_LITE)
-    if(_UDIMDiscardMode == 0 && _UDIMDiscardCompile == 1) // Discard Vertices instead of just pixels
-    {
-        // Branchless (inspired by s-ilent)
-        float2 udim = 0; 
-        // Select UV
-        udim += (input.uv0.xy * (_UDIMDiscardUV == 0));
-        udim += (input.uv1.xy * (_UDIMDiscardUV == 1));
-        udim += (input.uv2.xy * (_UDIMDiscardUV == 2));
-        udim += (input.uv3.xy * (_UDIMDiscardUV == 3));
-
-        float isDiscarded = 0;
-        float4 xMask = float4(  (udim.x >= 0 && udim.x < 1), 
-                                (udim.x >= 1 && udim.x < 2),
-                                (udim.x >= 2 && udim.x < 3),
-                                (udim.x >= 3 && udim.x < 4));
-
-        isDiscarded += (udim.y >= 0 && udim.y < 1) * dot(float4(_UDIMDiscardRow0_0, _UDIMDiscardRow0_1, _UDIMDiscardRow0_2, _UDIMDiscardRow0_3), xMask);
-        isDiscarded += (udim.y >= 1 && udim.y < 2) * dot(float4(_UDIMDiscardRow1_0, _UDIMDiscardRow1_1, _UDIMDiscardRow1_2, _UDIMDiscardRow1_3), xMask);
-        isDiscarded += (udim.y >= 2 && udim.y < 3) * dot(float4(_UDIMDiscardRow2_0, _UDIMDiscardRow2_1, _UDIMDiscardRow2_2, _UDIMDiscardRow2_3), xMask);
-        isDiscarded += (udim.y >= 3 && udim.y < 4) * dot(float4(_UDIMDiscardRow3_0, _UDIMDiscardRow3_1, _UDIMDiscardRow3_2, _UDIMDiscardRow3_3), xMask);
-
-        isDiscarded *= any(float4(udim.y >= 0, udim.y < 4, udim.x >= 0, udim.x < 4)); // never discard outside 4x4 grid in pos coords 
-
-        // Use a threshold so that there's some room for animations to be close to 0, but not exactly 0
-        const float threshold = 0.001;
-        if(isDiscarded > threshold) // Early Return skips rest of vertex shader
-        {
-            return LIL_V2F_OUT;
-        }
-    }
-    #endif
     
     //------------------------------------------------------------------------------------------------------------------------------
     // Single Pass Instanced rendering
@@ -284,41 +249,6 @@ LIL_V2F_TYPE vert(appdata input)
     // Fog & Lighting
     lilFragData fd = lilInitFragData();
     LIL_GET_HDRPDATA(vertexInput,fd);
-        // UDIM Discard (UV Tile Discard, original implementation by Razgriz for Poiyomi)
-    #if defined(LIL_FEATURE_UDIMDISCARD) && !defined(LIL_LITE)
-    if(_UDIMDiscardMode == 0 && _UDIMDiscardCompile == 1) // Discard Vertices instead of just pixels
-    {
-        // Branchless (inspired by s-ilent)
-        float2 udim = 0; 
-        // Select UV
-        udim += (input.uv0.xy * (_UDIMDiscardUV == 0));
-        udim += (input.uv1.xy * (_UDIMDiscardUV == 1));
-        udim += (input.uv2.xy * (_UDIMDiscardUV == 2));
-        udim += (input.uv3.xy * (_UDIMDiscardUV == 3));
-
-        float isDiscarded = 0;
-        float4 xMask = float4(  (udim.x >= 0 && udim.x < 1), 
-                                (udim.x >= 1 && udim.x < 2),
-                                (udim.x >= 2 && udim.x < 3),
-                                (udim.x >= 3 && udim.x < 4));
-
-        isDiscarded += (udim.y >= 0 && udim.y < 1) * dot(float4(_UDIMDiscardRow0_0, _UDIMDiscardRow0_1, _UDIMDiscardRow0_2, _UDIMDiscardRow0_3), xMask);
-        isDiscarded += (udim.y >= 1 && udim.y < 2) * dot(float4(_UDIMDiscardRow1_0, _UDIMDiscardRow1_1, _UDIMDiscardRow1_2, _UDIMDiscardRow1_3), xMask);
-        isDiscarded += (udim.y >= 2 && udim.y < 3) * dot(float4(_UDIMDiscardRow2_0, _UDIMDiscardRow2_1, _UDIMDiscardRow2_2, _UDIMDiscardRow2_3), xMask);
-        isDiscarded += (udim.y >= 3 && udim.y < 4) * dot(float4(_UDIMDiscardRow3_0, _UDIMDiscardRow3_1, _UDIMDiscardRow3_2, _UDIMDiscardRow3_3), xMask);
-
-        isDiscarded *= any(float4(udim.y >= 0, udim.y < 4, udim.x >= 0, udim.x < 4)); // never discard outside 4x4 grid in pos coords 
-
-        // Use a threshold so that there's some room for animations to be close to 0, but not exactly 0
-        const float threshold = 0.001;
-        if(isDiscarded > threshold) // Early Return skips rest of vertex shader
-        {
-            // Discard Vertex
-            LIL_V2F_OUT_BASE.positionCS = 0.0/0.0;
-            return LIL_V2F_OUT;
-        }
-    }
-    #endif
     #if defined(LIL_V2F_LIGHTCOLOR) || defined(LIL_V2F_LIGHTDIRECTION) || defined(LIL_V2F_INDLIGHTCOLOR) || defined(LIL_V2F_NDOTL)
         LIL_CALC_MAINLIGHT(vertexInput, lightdataInput);
     #endif
@@ -480,6 +410,20 @@ LIL_V2F_TYPE vert(appdata input)
         #if defined(LIL_ONEPASS_OUTLINE)
             LIL_V2F_OUT.positionCSOL = idMasked ? 0.0/0.0 : LIL_V2F_OUT.positionCSOL;
         #endif
+    #endif
+
+    //------------------------------------------------------------------------------------------------------------------------------
+    // UDIM Discard
+    #if defined(LIL_FEATURE_UDIMDISCARD) && !defined(LIL_LITE)
+        if(_UDIMDiscardMode == 0 && _UDIMDiscardCompile == 1 && LIL_CHECK_UDIMDISCARD(input)) // Discard Vertices instead of just pixels
+        {
+            #if defined(LIL_V2F_POSITION_CS)
+                LIL_V2F_OUT_BASE.positionCS = 0.0/0.0;
+            #endif
+            #if defined(LIL_ONEPASS_OUTLINE)
+                LIL_V2F_OUT.positionCSOL = 0.0/0.0;
+            #endif
+        }
     #endif
 
     #if defined(LIL_V2F_POSITION_OS)

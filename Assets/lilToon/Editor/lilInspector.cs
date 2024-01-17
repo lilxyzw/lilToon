@@ -3219,46 +3219,32 @@ namespace lilToon
                         if (udimDiscardCompile.floatValue == 1)
                         {
                             EditorGUILayout.BeginVertical(boxInnerHalf);
-                            EditorGUILayout.HelpBox(
-                                "Your model needs to be set up for this feature! Also known as UDIM Discard.",
-                                MessageType.Warning);
-                            EditorGUILayout.HelpBox("Place groups of vertexes on different whole number UV tiles.",
-                                MessageType.Info);
+                            EditorGUILayout.HelpBox("Your model needs to be set up for this feature! Place groups of vertexes on different whole number UV tiles.", MessageType.Info);
                             LocalizedProperty(udimDiscardUV);
                             LocalizedProperty(udimDiscardMethod);
 
-                            lilEditorGUI.DrawLine();
-                            GUILayout.Label("Row 3", boldLabel);
-                            EditorGUI.indentLevel++;
-                            LocalizedProperty(udimDiscardRow3_3);
-                            LocalizedProperty(udimDiscardRow3_2);
-                            LocalizedProperty(udimDiscardRow3_1);
-                            LocalizedProperty(udimDiscardRow3_0);
-                            EditorGUI.indentLevel--;
-                            lilEditorGUI.DrawLine();
-                            GUILayout.Label("Row 2", boldLabel);
-                            EditorGUI.indentLevel++;
-                            LocalizedProperty(udimDiscardRow2_3);
-                            LocalizedProperty(udimDiscardRow2_2);
-                            LocalizedProperty(udimDiscardRow2_1);
-                            LocalizedProperty(udimDiscardRow2_0);
-                            EditorGUI.indentLevel--;
-                            lilEditorGUI.DrawLine();
-                            GUILayout.Label("Row 1", boldLabel);
-                            EditorGUI.indentLevel++;
-                            LocalizedProperty(udimDiscardRow1_3);
-                            LocalizedProperty(udimDiscardRow1_2);
-                            LocalizedProperty(udimDiscardRow1_1);
-                            LocalizedProperty(udimDiscardRow1_0);
-                            EditorGUI.indentLevel--;
-                            lilEditorGUI.DrawLine();
-                            GUILayout.Label("Row 0", boldLabel);
-                            EditorGUI.indentLevel++;
-                            LocalizedProperty(udimDiscardRow0_3);
-                            LocalizedProperty(udimDiscardRow0_2);
-                            LocalizedProperty(udimDiscardRow0_1);
-                            LocalizedProperty(udimDiscardRow0_0);
-                            EditorGUI.indentLevel--;
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow3_0, GUIContent.none, 0);
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow2_0, GUIContent.none, 0);
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow1_0, GUIContent.none, 0);
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow0_0, GUIContent.none, 0);
+                            EditorGUILayout.Space(-82);
+
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow3_1, GUIContent.none, 2);
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow2_1, GUIContent.none, 2);
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow1_1, GUIContent.none, 2);
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow0_1, GUIContent.none, 2);
+                            EditorGUILayout.Space(-82);
+
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow3_2, GUIContent.none, 4);
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow2_2, GUIContent.none, 4);
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow1_2, GUIContent.none, 4);
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow0_2, GUIContent.none, 4);
+                            EditorGUILayout.Space(-82);
+
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow3_3, GUIContent.none, 6);
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow2_3, GUIContent.none, 6);
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow1_3, GUIContent.none, 6);
+                            m_MaterialEditor.ShaderProperty(udimDiscardRow0_3, GUIContent.none, 6);
 
                             EditorGUILayout.EndVertical();
                         }

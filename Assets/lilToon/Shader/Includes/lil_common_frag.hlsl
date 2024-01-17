@@ -712,55 +712,10 @@
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
-// UDIM Discard (UV Tile Discard, original implementation by Razgriz for Poiyomi)
-#if defined(LIL_FEATURE_UDIMDISCARD)
-void lilUDIMDiscardFrag(inout lilFragData fd)
-    {
-        if(_UDIMDiscardMode == 1) // Don't run if in vertex mode
-        {
-            float2 udim;
-            switch(_UDIMDiscardUV) {
-            case 0:
-                udim = floor(fd.uv0);
-                break;
-            case 1:
-                udim = floor(fd.uv1);
-                break;
-            case 2:
-                udim = floor(fd.uv2);
-                break;
-            case 3:
-                udim = floor(fd.uv3);
-                break;
-            default:
-                udim = floor(fd.uv0);
-                break;
-            }
-
-            float isDiscarded = 0;
-            float4 xMask = float4(  (udim.x >= 0 && udim.x < 1), 
-                                    (udim.x >= 1 && udim.x < 2),
-                                    (udim.x >= 2 && udim.x < 3),
-                                    (udim.x >= 3 && udim.x < 4));
-
-            isDiscarded += (udim.y >= 0 && udim.y < 1) * dot(float4(_UDIMDiscardRow0_0, _UDIMDiscardRow0_1, _UDIMDiscardRow0_2, _UDIMDiscardRow0_3), xMask);
-            isDiscarded += (udim.y >= 1 && udim.y < 2) * dot(float4(_UDIMDiscardRow1_0, _UDIMDiscardRow1_1, _UDIMDiscardRow1_2, _UDIMDiscardRow1_3), xMask);
-            isDiscarded += (udim.y >= 2 && udim.y < 3) * dot(float4(_UDIMDiscardRow2_0, _UDIMDiscardRow2_1, _UDIMDiscardRow2_2, _UDIMDiscardRow2_3), xMask);
-            isDiscarded += (udim.y >= 3 && udim.y < 4) * dot(float4(_UDIMDiscardRow3_0, _UDIMDiscardRow3_1, _UDIMDiscardRow3_2, _UDIMDiscardRow3_3), xMask);
-
-            isDiscarded *= any(float4(udim.y >= 0, udim.y < 4, udim.x >= 0, udim.x < 4)); // never discard outside 4x4 grid in pos coords 
-
-            const float threshold = 0.001;
-            clip(threshold - isDiscarded); // Clip if discarded
-        }
-
-        return;
-    }
-#endif
-
+// UDIM Discard
 #if !defined(OVERRIDE_UDIMDISCARD)
     #define OVERRIDE_UDIMDISCARD \
-        lilUDIMDiscardFrag(fd);
+        if(_UDIMDiscardMode == 1 && LIL_CHECK_UDIMDISCARD(fd)) discard;
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------

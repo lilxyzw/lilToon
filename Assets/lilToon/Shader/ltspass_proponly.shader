@@ -3,6 +3,17 @@ Shader "Hidden/ltspass_proponly"
     Properties
     {
         //----------------------------------------------------------------------------------------------------------------------
+        // Dummy
+        _DummyProperty ("If you are seeing this, some script is broken.", Float) = 0
+        _DummyProperty ("This also happens if something other than lilToon is broken.", Float) = 0
+        _DummyProperty ("You need to check the error on the console and take appropriate action, such as reinstalling the relevant tool.", Float) = 0
+        _DummyProperty (" ", Float) = 0
+        _DummyProperty ("これが表示されている場合、なんらかのスクリプトが壊れています。", Float) = 0
+        _DummyProperty ("これはlilToon以外のものが壊れている場合にも発生します。", Float) = 0
+        _DummyProperty ("コンソールでエラーを確認し、該当するツールを入れ直すなどの対処を行う必要があります。", Float) = 0
+        [Space(1000)]
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Base
         [lilToggle]     _Invisible                  ("sInvisible", Int) = 0
                         _AsUnlit                    ("sAsUnlit", Range(0, 1)) = 0
@@ -487,25 +498,25 @@ Shader "Hidden/ltspass_proponly"
 
         //----------------------------------------------------------------------------------------------------------------------
         // UDIM Discard
-        [lilToggleLeft]  _UDIMDiscardCompile        ("sUDIMDiscard", Int) = 0
-        [lilEnum]        _UDIMDiscardUV             ("sUDIMDiscardUV|0: UV0|1: UV1|2: UV2|3: UV3", Int) = 0
-        [lilEnum]        _UDIMDiscardMode           ("sUDIMDiscardMode|0: Vertex|1: Pixel (slower)", Int) = 0
-        [lilToggle]      _UDIMDiscardRow3_3         ("sUDIMDiscardColumn3", Int) = 0
-        [lilToggle]      _UDIMDiscardRow3_2         ("sUDIMDiscardColumn2", Int) = 0
-        [lilToggle]      _UDIMDiscardRow3_1         ("sUDIMDiscardColumn1", Int) = 0
-        [lilToggle]      _UDIMDiscardRow3_0         ("sUDIMDiscardColumn0", Int) = 0
-        [lilToggle]      _UDIMDiscardRow2_3         ("sUDIMDiscardColumn3", Int) = 0
-        [lilToggle]      _UDIMDiscardRow2_2         ("sUDIMDiscardColumn2", Int) = 0
-        [lilToggle]      _UDIMDiscardRow2_1         ("sUDIMDiscardColumn1", Int) = 0
-        [lilToggle]      _UDIMDiscardRow2_0         ("sUDIMDiscardColumn0", Int) = 0
-        [lilToggle]      _UDIMDiscardRow1_3         ("sUDIMDiscardColumn3", Int) = 0
-        [lilToggle]      _UDIMDiscardRow1_2         ("sUDIMDiscardColumn2", Int) = 0
-        [lilToggle]      _UDIMDiscardRow1_1         ("sUDIMDiscardColumn1", Int) = 0
-        [lilToggle]      _UDIMDiscardRow1_0         ("sUDIMDiscardColumn0", Int) = 0
-        [lilToggle]      _UDIMDiscardRow0_3         ("sUDIMDiscardColumn3", Int) = 0
-        [lilToggle]      _UDIMDiscardRow0_2         ("sUDIMDiscardColumn2", Int) = 0
-        [lilToggle]      _UDIMDiscardRow0_1         ("sUDIMDiscardColumn1", Int) = 0
-        [lilToggle]      _UDIMDiscardRow0_0         ("sUDIMDiscardColumn0", Int) = 0
+        [lilToggleLeft] _UDIMDiscardCompile         ("sUDIMDiscard", Int) = 0
+        [lilEnum]       _UDIMDiscardUV              ("sUDIMDiscardUV|0: UV0|1: UV1|2: UV2|3: UV3", Int) = 0
+        [lilEnum]       _UDIMDiscardMode            ("sUDIMDiscardMode|0: Vertex|1: Pixel (slower)", Int) = 0
+        [lilToggle]     _UDIMDiscardRow3_3          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow3_2          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow3_1          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow3_0          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow2_3          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow2_2          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow2_1          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow2_0          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow1_3          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow1_2          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow1_1          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow1_0          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow0_3          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow0_2          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow0_1          ("", Int) = 0
+        [lilToggle]     _UDIMDiscardRow0_0          ("", Int) = 0
         //----------------------------------------------------------------------------------------------------------------------
         // Encryption
         [lilToggle]     _IgnoreEncryption           ("sIgnoreEncryption", Int) = 0

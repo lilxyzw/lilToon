@@ -113,4 +113,85 @@ bool lilCheckAudioLink()
 #include "GTModelDecode.cginc"
 #endif
 
+//------------------------------------------------------------------------------------------------------------------------------
+// UDIM Discard (UV Tile Discard, original implementation by Razgriz for Poiyomi)
+// https://github.com/poiyomi/PoiyomiToonShader/blob/master/LICENSE
+bool lilUDIMDiscard(
+    float2 uv0,
+    float2 uv1,
+    float2 uv2,
+    float2 uv3,
+    float udimDiscardCompile,
+    float udimDiscardMode,
+    float udimDiscardUV,
+    float udimDiscardRow3_0,
+    float udimDiscardRow3_1,
+    float udimDiscardRow3_2,
+    float udimDiscardRow3_3,
+    float udimDiscardRow2_0,
+    float udimDiscardRow2_1,
+    float udimDiscardRow2_2,
+    float udimDiscardRow2_3,
+    float udimDiscardRow1_0,
+    float udimDiscardRow1_1,
+    float udimDiscardRow1_2,
+    float udimDiscardRow1_3,
+    float udimDiscardRow0_0,
+    float udimDiscardRow0_1,
+    float udimDiscardRow0_2,
+    float udimDiscardRow0_3
+)
+{
+    // Branchless (inspired by s-ilent)
+    float2 udim = 0; 
+    // Select UV
+    udim += (uv0 * (udimDiscardUV == 0));
+    udim += (uv1 * (udimDiscardUV == 1));
+    udim += (uv2 * (udimDiscardUV == 2));
+    udim += (uv3 * (udimDiscardUV == 3));
+
+    float isDiscarded = 0;
+    float4 xMask = float4(  (udim.x >= 0 && udim.x < 1), 
+                            (udim.x >= 1 && udim.x < 2),
+                            (udim.x >= 2 && udim.x < 3),
+                            (udim.x >= 3 && udim.x < 4));
+
+    isDiscarded += (udim.y >= 0 && udim.y < 1) * dot(float4(udimDiscardRow0_0, udimDiscardRow0_1, udimDiscardRow0_2, udimDiscardRow0_3), xMask);
+    isDiscarded += (udim.y >= 1 && udim.y < 2) * dot(float4(udimDiscardRow1_0, udimDiscardRow1_1, udimDiscardRow1_2, udimDiscardRow1_3), xMask);
+    isDiscarded += (udim.y >= 2 && udim.y < 3) * dot(float4(udimDiscardRow2_0, udimDiscardRow2_1, udimDiscardRow2_2, udimDiscardRow2_3), xMask);
+    isDiscarded += (udim.y >= 3 && udim.y < 4) * dot(float4(udimDiscardRow3_0, udimDiscardRow3_1, udimDiscardRow3_2, udimDiscardRow3_3), xMask);
+
+    isDiscarded *= any(float4(udim.y >= 0, udim.y < 4, udim.x >= 0, udim.x < 4)); // never discard outside 4x4 grid in pos coords 
+
+    // Use a threshold so that there's some room for animations to be close to 0, but not exactly 0
+    const float threshold = 0.001;
+    return isDiscarded > threshold;
+}
+
+#define LIL_CHECK_UDIMDISCARD(i) lilUDIMDiscard( \
+    i.uv0.xy, \
+    i.uv1.xy, \
+    i.uv2.xy, \
+    i.uv3.xy, \
+    _UDIMDiscardCompile, \
+    _UDIMDiscardMode, \
+    _UDIMDiscardUV, \
+    _UDIMDiscardRow3_0, \
+    _UDIMDiscardRow3_1, \
+    _UDIMDiscardRow3_2, \
+    _UDIMDiscardRow3_3, \
+    _UDIMDiscardRow2_0, \
+    _UDIMDiscardRow2_1, \
+    _UDIMDiscardRow2_2, \
+    _UDIMDiscardRow2_3, \
+    _UDIMDiscardRow1_0, \
+    _UDIMDiscardRow1_1, \
+    _UDIMDiscardRow1_2, \
+    _UDIMDiscardRow1_3, \
+    _UDIMDiscardRow0_0, \
+    _UDIMDiscardRow0_1, \
+    _UDIMDiscardRow0_2, \
+    _UDIMDiscardRow0_3 \
+)
+
 #endif
