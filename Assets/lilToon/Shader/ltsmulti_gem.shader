@@ -652,6 +652,7 @@ Shader "Hidden/lilToonMultiGem"
         Pass
         {
             Name "FORWARD_PRE"
+            Tags {"LightMode" = "ForwardBase"}
             Stencil
             {
                 Ref [_StencilRef]
