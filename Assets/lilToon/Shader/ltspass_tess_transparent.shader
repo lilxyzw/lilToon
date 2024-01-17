@@ -12,6 +12,7 @@ Shader "Hidden/ltspass_tess_transparent"
         _DummyProperty ("これはlilToon以外のものが壊れている場合にも発生します。", Float) = 0
         _DummyProperty ("コンソールでエラーを確認し、該当するツールを入れ直すなどの対処を行う必要があります。", Float) = 0
         [Space(1000)]
+        _DummyProperty ("", Float) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
         // Base
@@ -601,7 +602,7 @@ Shader "Hidden/ltspass_tess_transparent"
         [HideInInspector]                               _BaseColor          ("sColor", Color) = (1,1,1,1)
         [HideInInspector]                               _BaseMap            ("Texture", 2D) = "white" {}
         [HideInInspector]                               _BaseColorMap       ("Texture", 2D) = "white" {}
-        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 40
+        [HideInInspector]                               _lilToonVersion     ("Version", Int) = 41
 
         //----------------------------------------------------------------------------------------------------------------------
         // Advanced
