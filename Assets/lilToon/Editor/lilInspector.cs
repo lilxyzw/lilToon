@@ -3223,28 +3223,44 @@ namespace lilToon
                             LocalizedProperty(udimDiscardUV);
                             LocalizedProperty(udimDiscardMethod);
 
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow3_0, GUIContent.none, 0);
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow2_0, GUIContent.none, 0);
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow1_0, GUIContent.none, 0);
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow0_0, GUIContent.none, 0);
-                            EditorGUILayout.Space(-82);
+                            void UVDIMToggle(Rect position, MaterialProperty prop)
+                            {
+                                bool value = prop.floatValue != 0.0f;
+                                EditorGUI.BeginChangeCheck();
+                                EditorGUI.showMixedValue = prop.hasMixedValue;
+                                value = EditorGUI.Toggle(position, GUIContent.none, value);
+                                EditorGUI.showMixedValue = false;
 
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow3_1, GUIContent.none, 2);
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow2_1, GUIContent.none, 2);
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow1_1, GUIContent.none, 2);
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow0_1, GUIContent.none, 2);
-                            EditorGUILayout.Space(-82);
+                                if(EditorGUI.EndChangeCheck())
+                                {
+                                    prop.floatValue = value ? 1.0f : 0.0f;
+                                }
+                            }
 
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow3_2, GUIContent.none, 4);
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow2_2, GUIContent.none, 4);
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow1_2, GUIContent.none, 4);
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow0_2, GUIContent.none, 4);
-                            EditorGUILayout.Space(-82);
+                            var r0 = EditorGUILayout.GetControlRect(false); r0.width = 16;
+                            var r1 = EditorGUILayout.GetControlRect(false); r1.width = 16;
+                            var r2 = EditorGUILayout.GetControlRect(false); r2.width = 16;
+                            var r3 = EditorGUILayout.GetControlRect(false); r3.width = 16;
 
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow3_3, GUIContent.none, 6);
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow2_3, GUIContent.none, 6);
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow1_3, GUIContent.none, 6);
-                            m_MaterialEditor.ShaderProperty(udimDiscardRow0_3, GUIContent.none, 6);
+                            UVDIMToggle(r0, udimDiscardRow3_0); r0.x += 40;
+                            UVDIMToggle(r1, udimDiscardRow2_0); r1.x += 40;
+                            UVDIMToggle(r2, udimDiscardRow1_0); r2.x += 40;
+                            UVDIMToggle(r3, udimDiscardRow0_0); r3.x += 40;
+
+                            UVDIMToggle(r0, udimDiscardRow3_1); r0.x += 40;
+                            UVDIMToggle(r1, udimDiscardRow2_1); r1.x += 40;
+                            UVDIMToggle(r2, udimDiscardRow1_1); r2.x += 40;
+                            UVDIMToggle(r3, udimDiscardRow0_1); r3.x += 40;
+
+                            UVDIMToggle(r0, udimDiscardRow3_2); r0.x += 40;
+                            UVDIMToggle(r1, udimDiscardRow2_2); r1.x += 40;
+                            UVDIMToggle(r2, udimDiscardRow1_2); r2.x += 40;
+                            UVDIMToggle(r3, udimDiscardRow0_2); r3.x += 40;
+
+                            UVDIMToggle(r0, udimDiscardRow3_3);
+                            UVDIMToggle(r1, udimDiscardRow2_3);
+                            UVDIMToggle(r2, udimDiscardRow1_3);
+                            UVDIMToggle(r3, udimDiscardRow0_3);
 
                             EditorGUILayout.EndVertical();
                         }
