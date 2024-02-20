@@ -5,7 +5,7 @@ sEditorModeSimple	Simple	簡易設定	간이 설정	简易设置	簡單設定
 sEditorModeAdvanced	Advanced	詳細設定	상세 설정	详细设置	詳細設定
 sEditorModePreset	Preset	プリセット	프리셋	预设	預設
 sEditorModeShaderSetting	Shader Setting	シェーダー設定	쉐이더 설정	着色器设置	著色器設定
-sHelpSelectOverlay	Currently lilToonOverray is selected. Change to lilToon for normal use.	現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。	현재 lilToonOverray가 선택되어있습니다.일반 용도에서는 lilToon으로 변경해주세요.	您目前选择了 lilToonOverray，如果是通常用途的话请更改为 lilToon。	目前正在選擇lilToonOverray。如果是通常用途的話請變更為lilToon。
+sHelpSelectOverlay	Currently lilToonOverray is selected. Change to lilToon for normal use.	現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。	현재 lilToonOverray가 선택되어있습니다.일반 용도에서는 lilToon으로 변경해주세요.	你目前选择了 lilToonOverray，如果是通常用途的话请更改为 lilToon。	目前正在選擇lilToonOverray。如果是通常用途的話請變更為lilToon。
 sColor	Color	色	색	颜色	顏色
 sAlpha	Alpha	透明度	투명도	透明度	透明度
 sColorAlpha	Color / Alpha	色 / 透明度	색 / 투명도	颜色 / 透明度	顏色 / 透明度
@@ -422,7 +422,7 @@ sDialogBakeTriMask	Do you want to bake TriMask (Mask of Matcap / Rim / Emission)
 sDialogBakeOutline	Do you want to bake outline texture?	輪郭線の色のテクスチャをベイクしますか?	윤곽선 색의 질감을 구워 하시겠습니까?	你要烘培轮廓纹理吗？	你要烘培輪廓紋理嗎？
 sDialogGifToAtlas	Convert Gif to Atlas	Gifをアトラス化	Gif를 아틀라스 화	将 Gif 转换成图集	將 Gif 轉換成 Atlas
 sDialogTexPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャ全体の解像度を2の累乗に合わせますか?	텍스처 전체 해상도를 2의 거듭 제곱에 맞게 하시겠습니까?	你要把纹理分辨率调整为 2 的幂吗？	你要把紋理分辨率調整為 2 的冪嗎？
-sDialogImportOldVer	The package you are importing is an older version than the already imported lilToon. Do you want to continue?	インポートしようとしているパッケージは既にインポートされているlilToonよりも古いバージョンです。続行しますか？	Import하고 있는 패키지는 이미 Import된 lilToon보다 오래된 버전입니다.속행할까요?	您要导入的 lilToon 版本早于已导入的 lilToon 版本。是否继续？	你要導入的包版本早於已導入的lilToon版本。是否繼續？
+sDialogImportOldVer	The package you are importing is an older version than the already imported lilToon. Do you want to continue?	インポートしようとしているパッケージは既にインポートされているlilToonよりも古いバージョンです。続行しますか？	Import하고 있는 패키지는 이미 Import된 lilToon보다 오래된 버전입니다.속행할까요?	你要导入的 lilToon 版本早于已导入的 lilToon 版本。是否继续？	你要導入的包版本早於已導入的lilToon版本。是否繼續？
 sDialogImportPackage	The UPM version of lilToon has already been imported. Do you want to continue importing the unitypackage version? (This may cause script errors, etc.)	既にUPM版lilToonがインポートされています。unitypackage版のインポートを続行しますか？（これはスクリプトエラー等を引き起こす可能性があります。）	이미 UPM 버전 lilToon이 임포트 되어 있습니다.unity package 버전 가져오기를 계속하시겠습니까?(이것은 스크립트 에러등을 일으킬 가능성이 있습니다.)	已经导入了UPM版lilToon。是否继续导入unitypackage版本？（可能会导致脚本错误等一系列问题。）	已經導入了 UPM 版 lilToon。是否繼續導入 unitypackage 版？（這可能會導致腳本錯誤等。）
 sWarnOptimiseMeshData	Due to a bug in Unity, even necessary vertex data may be deleted. If the problem occurs, please turn off "Project Settings/Player/Optimize Mesh Data".	Unityのバグにより必要な頂点データまで削除されることがあります。不具合が発生する場合は"Project Settings/Player/Optimize Mesh Data"をオフにしてください。	Unity 버그로 인해 필요한 정점 데이터까지 삭제될 수 있습니다.오류가 발생할 경우 "Project Settings/Player/Optimize Mesh Data"를 꺼주세요.	Unity可能会错误删除所需的顶点数据。发生问题时，请关闭“Project Setting/Prer/Optimize Mesh Data” 选项。	Unity 錯誤可能會刪除所需的頂點資料。 發生故障時，請關閉「Project Setting/Prer/Optimize Mesh Data」。
 sPresets	Presets	プリセット	프리셋	预设	預設
@@ -528,9 +528,9 @@ sReadmeURL	https://lilxyzw.github.io/lilToon/#/ja-jp/	https://lilxyzw.github.io/
 sReadmeAnchorProblem	other/qa	other/qa	other/qa	other/qa	other/qa
 sHelp	Help	ヘルプ	헬프	帮助	幫助
 sCommonProblems	Common Problems	Q&A	일반적인 문제	常见问题	常見問題
-sUtilGif2AtlasPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャの解像度を2の累乗に合わせますか？	텍스처의 해상도를 2의 거듭 제곱에 맞게 싶으십니까?	您想将纹理分辨率匹配到 2 的幂吗？	你想將紋理分辨率匹配到 2 的冪嗎？
+sUtilGif2AtlasPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャの解像度を2の累乗に合わせますか？	텍스처의 해상도를 2의 거듭 제곱에 맞게 싶으십니까?	你想将纹理分辨率匹配到 2 的幂吗？	你想將紋理分辨率匹配到 2 的冪嗎？
 sUtilDotTexRedRatio	Select a reduction ratio	縮小率を選択してください。	축소 비율을 선택하십시오.	请选择一个缩小比例。	請選擇一個縮小比例。
 sUtilShaderNotFound	Shader is not found.	シェーダーが見つかりません。	쉐이더가 없습니다.	未找到着色器。	未找到著色器。
 sUtilSelectPresets	Select presets	プリセットを選択してください。	사전 설정을 선택하십시오.	请选择一个预设。	請選擇一個預設。
-sUtilMaterialAlreadyExist	Materials may already exist. Are you sure you want to overwrite it?	マテリアルが既に存在している可能性があります。上書きしてもよろしいですか？	재료가 이미있을 수 있습니다. 덮어 하시겠습니까?	该材质可能已经存在，您确定要覆盖它吗？	該材質可能已經存在。 你確定要覆蓋它嗎？
+sUtilMaterialAlreadyExist	Materials may already exist. Are you sure you want to overwrite it?	マテリアルが既に存在している可能性があります。上書きしてもよろしいですか？	재료가 이미있을 수 있습니다. 덮어 하시겠습니까?	该材质可能已经存在，你确定要覆盖它吗？	該材質可能已經存在。 你確定要覆蓋它嗎？
 sUtilInvalidFormat	Invalid format.	フォーマットが不正です。	Invalid format.	无效格式。	無效的格式。
