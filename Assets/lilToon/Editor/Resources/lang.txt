@@ -261,7 +261,7 @@ sParallaxR	Parallax (R)	Parallax (R)	시차 (R)	视差 (R)	視差 (R)
 sParallaxOffset	Offset	オフセット	오프셋	偏移	偏移
 sPOM	[high-load] POM	[高負荷] POM	[과부하] POM	[高负载] POM	[高負荷] POM
 sDistanceFade	Distance Fade	距離フェード	거리 페이드	距离淡化	距離淡化
-sDistanceFadeTips	You can set the color change depending on the distance.	距離に応じて色の変更ができます	거리에 따라 색상을 변경할 수 있습니다	你可以根据距离来设置颜色的变化。	你可以根據距離來設定顏色的變化。
+sDistanceFadeTips	You can set the color change depending on the distance.	距離に応じて色の変更ができます	거리에 따라 색상을 변경할 수 있습니다	你可以根据距离来设置整体色调的变化。	你可以根據距離來設定顏色的變化。
 sStartDistance	Start Distance	開始距離	시작 거리	开始距离	開始距離
 sEndDistance	End Distance	終了距離	종료 거리	结束距离	結束距離
 sAudioLink	AudioLink	AudioLink	AudioLink	AudioLink	AudioLink
@@ -316,7 +316,7 @@ sAnisotropy	Anisotropy	異方性反射	애니소트로픽	各向异性反射	各
 sTangentWidth	Tangent Width	タンジェント方向の幅	Tangent Width	Tangent Width	Tangent Width
 sBitangentWidth	Bitangent Width	バイタンジェント方向の幅	Bitangent Width	Bitangent Width	Bitangent Width
 sReflectionsSetting	Reflections	光沢設定	광택 설정	反射设置	反射設定
-sReflectionsTips	You can set the Reflections.	光沢に関する設定ができます	광택 관한 설정을 할 수 있습니다	你可以设置反射。	你可以設定反射。
+sReflectionsTips	You can set the Reflections.	光沢に関する設定ができます	광택 관한 설정을 할 수 있습니다	设置材质的反射效果。	你可以設定反射。
 sReflection	Reflection	反射	반사	启用反射效果	反射
 sSmoothness	Smoothness	滑らかさ	부드러움	平滑度	平滑度
 sSmoothnessR	Smoothness (R)	滑らかさ (R)	부드러움 (R)	平滑度 (R)	平滑度（R）
@@ -378,7 +378,7 @@ sBlendOpAlpha	BlendOp Alpha	BlendOp Alpha	BlendOp Alpha	BlendOp Alpha	BlendOp Al
 sRenderingReset	Reset Rendering Properties	レンダリング設定を初期化	렌더링 설정을 초기화	重置渲染设置	重置渲染設定
 sLightBakeSetting	Light Bake	ライトベイク設定	Light Bake	光照烘培设置	Light Bake
 sOptimization	Optimization	最適化	최적화	优化	優化
-sOptimizationTips	You can optimize the material to reduce the load.	マテリアルを最適化して負荷を低減できます	머티리얼을최적화하여부하를저감할수있습니다	你可以对材质进行优化，以减少负荷。	你可以對材質進行優化，以減少負荷。
+sOptimizationTips	You can optimize the material to reduce the load.	マテリアルを最適化して負荷を低減できます	머티리얼을최적화하여부하를저감할수있습니다	你可以对材质进行优化，以减少系统负荷。	你可以對材質進行優化，以減少負荷。
 sCustomProperties	Custom Properties	カスタムプロパティ	커스텀 프로퍼티	自定义属性	自定義屬性
 sCustomPropertiesTips	Displays the properties added by the user.	ユーザーが追加したプロパティが表示されます	사용자가 추가한 속성이 표시됩니다	显示用户添加的属性	顯示用戶添加的屬性
 sBake	Bake	焼き込み	굽기	烘培	烘培
