@@ -5,7 +5,7 @@ sEditorModeSimple	Simple	簡易設定	간이 설정	简易设置	簡易設定
 sEditorModeAdvanced	Advanced	詳細設定	상세 설정	详细设置	詳細設定
 sEditorModePreset	Preset	プリセット	프리셋	预设	預設
 sEditorModeShaderSetting	Shader Setting	シェーダー設定	쉐이더 설정	着色器设置	著色器設定
-sHelpSelectOverlay	Currently lilToonOverray is selected. Change to lilToon for normal use.	現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。	현재 lilToonOverray가 선택되어있습니다.일반 용도에서는 lilToon으로 변경해주세요.	您目前选择了 lilToonOverray，如果是一般用途的话请更改为 lilToon。	目前正在選擇lilToonOverray。如果是通常用途的話請變更為 lilToon。
+sHelpSelectOverlay	Currently lilToonOverray is selected. Change to lilToon for normal use.	現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。	현재 lilToonOverray가 선택되어있습니다.일반 용도에서는 lilToon으로 변경해주세요.	您目前选择了 lilToonOverray，如果是一般用途的话请更改为 lilToon。	目前選擇了 lilToonOverray。如果是通常用途的話請變更為 lilToon。
 sColor	Color	色	색	颜色	顏色
 sAlpha	Alpha	透明度	투명도	透明度	透明度
 sColorAlpha	Color / Alpha	色 / 透明度	색 / 투명도	颜色 / 透明度	顏色 / 透明度
@@ -123,7 +123,7 @@ sCullModeFront	Front	Front (裏面のみ描画)	Front	Front	Front
 sCullModeBack	Back	Back (前面のみ描画)	Back	Back	Back
 sFlipBackfaceNormal	Flip Backface Normal	裏面の法線を反転	뒷면의 법선을 반전	翻转背面法线	翻轉背面法線
 sShiftBackfaceUV	Shift Backface UV	裏面のUVをずらす	뒷면의 UV를 드티다	移动背面 UV	移動背面 UV
-sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면에 그림자를 드리우다	背面强制阴影	背面陰影力量
+sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면에 그림자를 드리우다	背面强制阴影	背面強制陰影
 sAAShading	Anti-aliasing shading	アンチエイリアスシェーディング	Anti-aliasing shading	抗锯齿阴影	Anti-aliasing shading
 sDither	Dither	Dither	Dither	Dither	Dither
 sSimpleStencilSettings	Simple Stencil Settings	簡易ステンシル設定	간이 스텐실 설정	简易 Stencil 设置	簡易 Stencil 設定
@@ -156,7 +156,7 @@ sLightingPresetStable	Stable	安定	안정	稳定	穩定
 sLightingPresetSemiMonochrome	Semi-monochrome	半モノクロ	세미 모노크롬	半单色	半單色
 sHelpRenderingTransparent	When two transparent materials overlap, one of them may become invisible. In this case, increase the "Render Queue" value of the material in the foreground to fix the problem.	透過マテリアル同士が重なったときに片方が見えなくなる場合があります。その場合は手前に表示されるマテリアルのRender Queueの値を上げることで改善されます。	투명 Material끼리 겹친 때 한쪽이 보이지 않을 수 있습니다. 이 경우는 앞에 표시되는 머티리얼의 "Render Queue" 값을 올림으로써 수정됩니다.	当两个透明材质重叠时，其中一个可能会变得不可见。这种情况下，通过提高前面显示的材质的"Render Queue"值来修正。	當兩個透明材質重疊時，其中一個可能會變得不可見。這種情況下，通過提高前面顯示的材質的「Render Queue」值來修正。
 sHelpRenderingFur	Limited features applied to fur parts for performance.	ファーでは負荷軽減のためにファー部分に適用される機能が制限されています。	퍼포먼스를 위해 퍼에 적용되는 기능이 제한되어 있습니다.	由于性能原因，应用于毛发的功能受到限制。	由於性能原因，應用於毛皮的功能受到限制。
-sHelpTransparentForWorld	Setting Render Queue to 2999 or lower for transparent materials can make other materials in the back invisible, causing problems such as clothes and hair to disappear. For world projects, it is recommended to set it above 3000 or turn off ZWrite.	透過マテリアルでRenderQueueを2999以下に設定すると奥にある他のマテリアルを見えなくし、服や髪が消えるなどの問題が発生する可能性があります。ワールド用途であれば3000以上に設定したりZWriteをオフにしたりする設定がオススメです。	투과머티리얼에서 Render Queue 2999 이하로 설정하면 안쪽에 있는 다른 머티리얼을 볼 수 없어 옷이나 머리카락이 사라지는 등의 문제가 발생할 수 있습니다. 월드 용도라면 3000 이상으로 설정하거나 ZWrite를 끄거나 하는 설정을 추천합니다.	将透明材质的 Render Queue 设置为 2999 或更低，会使后面的其他材质不可见，造成衣服和头发消失等问题。对于 World 项目，推荐设定为 3000 以上或关闭 ZWrite 设定。	如果在透明材質中將 Render Queue 設定為 2999 以下，則可能會出現看不見裡面的其他材質、衣服和頭髮消失等問題。如果是 World 用途的話，推薦設定為 3000 以上或關閉 ZWrite 設定。
+sHelpTransparentForWorld	Setting Render Queue to 2999 or lower for transparent materials can make other materials in the back invisible, causing problems such as clothes and hair to disappear. For world projects, it is recommended to set it above 3000 or turn off ZWrite.	透過マテリアルでRenderQueueを2999以下に設定すると奥にある他のマテリアルを見えなくし、服や髪が消えるなどの問題が発生する可能性があります。ワールド用途であれば3000以上に設定したりZWriteをオフにしたりする設定がオススメです。	투과머티리얼에서 Render Queue 2999 이하로 설정하면 안쪽에 있는 다른 머티리얼을 볼 수 없어 옷이나 머리카락이 사라지는 등의 문제가 발생할 수 있습니다. 월드 용도라면 3000 이상으로 설정하거나 ZWrite를 끄거나 하는 설정을 추천합니다.	将透明材质的 Render Queue 设置为 2999 或更低，会使后面的其他材质不可见，造成衣服和头发消失等问题。对于 World 项目，推荐设定为 3000 以上或关闭 ZWrite 设定。	若將透明材質的 Render Queue 設定為 2999 以下，則可能會出現看不見後方的其他材質、衣服和頭髮消失等問題。對於 World 項目，推薦設定為 3000 以上或關閉 ZWrite 設定。
 sHelpGrabPass	Reflection and gem use GrabPass, which can have a significant impact on performance on mobile GPUs.	屈折・宝石はGrabPassを利用するため、モバイル環境においてパフォーマンスに大きな影響を及ぼす可能性があります。	굴절·보석은 GrabPass를 사용하기 때문에 모바일 GPU에서 성능에 큰 영향을 미칠 수 있습니다.	反射和宝石使用 GrabPass，因此可能对移动端 GPU 产生很大的性能影响。	折射和寶石使用 GrabPass，因此在移動端 GPU 中可能對性能產生極大影響。
 sHelpGeometryShader	Geometry shaders do not work on iOS or Mac, so it is recommended to change to another rendering mode.	ジオメトリシェーダーはiOSやMacで動作しないため、他レンダリングモードに置き換えることを推奨します。	지오메트리셰이더는 iOS나 Mac에서 작동하지 않으므로 타 렌더링 모드로 변경하는 것이 좋습니다.	由于几何体着色器在 iOS 或 Mac 上不起作用，因此建议将其更改为其他渲染模式。	由於幾何體著色器在 iOS 或 Mac 上不起作用，因此建議將其更改為其他渲染模式。
 sHelpOnePassVertexLight	When using One Pass Transparent, it is recommended to set Vertex Light Strength to 1.0.	1パス使用時は頂点ライトの強度を1.0にしておくことをオススメします。	One Pass Transparent 사용 시에는 Vertex Light Strength를 1.0으로 설정할 것을 권장합니다.	使用 One Pass Transparent 时，建议将顶点灯强度设定为 1.0。	使用 One Pass Transparent 時推薦將頂點燈強度設定為 1.0。
@@ -186,7 +186,7 @@ sMainColor2nd	Main Color 2nd	メインカラー2nd	메인 컬러 2nd	第二主�
 sMainColor3rd	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	第三主色	主色 3rd
 sColorAdjust	Color Adjust	色調補正	색조 보정	色调校正	色調校正
 sGradationMap	Gradation Map	グラデーションマップ	그라디언트 맵	渐变映射	漸變映射
-sNotAlphaIsTransparency	This texture is not marked as AlphaIsTransparency	このテクスチャはAlphaIsTransparencyとして設定されていません	이 텍스처는 Alpha Is Transparency로 설정되어 있지 않습니다	此纹理的 Alpha 未被设置为透明	此紋理未被設定為AlphaIsTransparency
+sNotAlphaIsTransparency	This texture is not marked as AlphaIsTransparency	このテクスチャはAlphaIsTransparencyとして設定されていません	이 텍스처는 Alpha Is Transparency로 설정되어 있지 않습니다	此纹理的 Alpha 未被设置为透明	此紋理未被設定為 AlphaIsTransparency
 sAlphaMask	Alpha Mask	アルファマスク	알파 마스크	Alpha 蒙版	Alpha蒙版
 sAlphaMaskWarnOpaque	If you want to use Alpha Mask, you need to change the "Rendering Mode" to Cutout or Transparent.	アルファマスクを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。	알파 마스크를 사용하려면 "렌더링 모드"를 단편 또는 반투명로 변경해야합니다.	如果要使用 Alpha 蒙版，需要将“渲染模式”改为镂空或透明。	如果要使用 Alpha 蒙版，則需要將「渲染模式」更改為鏤空或透明。
 sAlphaMaskModeNone	None	None	None	无	無
@@ -413,7 +413,7 @@ sDialogSetMainTex	You need to set texture to Main Color.	メインカラーに�
 sDialogNoChange	You are not changing the color.	色を変更していません。	색상을 변경하지 않습니다.	您没有更改颜色。	你沒有改變顏色。
 sDialogNotUse2nd	You are not using the 2nd layer.	メインカラー2ndを利用していません。	메인 컬러 2nd를 이용하지 않습니다.	您没有使用第二层。	你沒有使用 2nd。
 sDialogNotUse3rd	You are not using the 3rd layer.	メインカラー3rdを利用していません。	메인 컬러 3rd를 이용하지 않습니다.	您没有使用第三层。	你沒有使用 3rd。
-sDialogNotUseAll	You are not changing the color and not using layers.	色の変更とメインカラー2nd・3rdを使用していません。	색상 변경과 기본 색상 2nd · 3rd를 사용하지 않습니다.	您既没有更改颜色，也没有使用图层。	你沒有改變顏色，沒有使用圖層。
+sDialogNotUseAll	You are not changing the color and not using layers.	色の変更とメインカラー2nd・3rdを使用していません。	색상 변경과 기본 색상 2nd · 3rd를 사용하지 않습니다.	您既没有更改颜色，也没有使用图层。	你沒有改變顏色，也沒有使用圖層。
 sDialogRunBake	Run bake?	焼き込みを実行しますか?	굽기를 실행 하시겠습니까?	进行烘培？	運行烘培？
 sDialogBakeMain	Do you want to bake main texture?	メインカラーをベイクしますか?	메인 컬러를 구워 하시겠습니까?	您确定要烘培主纹理吗？	你要烘培主紋理嗎？
 sDialogBakeShadow	Do you want to bake shadow texture?	影テクスチャをベイクしますか?	그림자 텍스처를 구워 하시겠습니까?	您确定要烘培阴影纹理吗？	你要烘培陰影紋理嗎？
@@ -533,4 +533,4 @@ sUtilDotTexRedRatio	Select a reduction ratio	縮小率を選択してくださ�
 sUtilShaderNotFound	Shader is not found.	シェーダーが見つかりません。	쉐이더가 없습니다.	未找到着色器。	未找到著色器。
 sUtilSelectPresets	Select presets	プリセットを選択してください。	사전 설정을 선택하십시오.	请选择一个预设。	請選擇一個預設。
 sUtilMaterialAlreadyExist	Materials may already exist. Are you sure you want to overwrite it?	マテリアルが既に存在している可能性があります。上書きしてもよろしいですか？	재료가 이미있을 수 있습니다. 덮어 하시겠습니까?	该材质可能已经存在，您确定要覆盖它吗？	該材質可能已經存在。 你確定要覆蓋它嗎？
-sUtilInvalidFormat	Invalid format.	フォーマットが不正です。	Invalid format.	无效格式。	無效的格式。
+sUtilInvalidFormat	Invalid format.	フォーマットが不正です。	Invalid format.	无效格式。	無效格式。
