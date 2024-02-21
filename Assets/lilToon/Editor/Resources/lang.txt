@@ -1,11 +1,11 @@
 Language	English	Japanese	Korean	Chinese Simplified	Chinese Traditional
 sLanguageWarning			기계번역을 사용하고 있기 때문에 번역이 정확하지 않을 수 있습니다.	翻译可能不准确，因为使用了机器翻译。长按 Alt 可显示对应英文术语。	翻譯可能不准確，因為使用了機器翻譯。
 sEditorMode	Editor Mode	編集モード	편집 모드	编辑器模式	編輯器模式
-sEditorModeSimple	Simple	簡易設定	간이 설정	简易设置	簡單設定
+sEditorModeSimple	Simple	簡易設定	간이 설정	简易设置	簡易設定
 sEditorModeAdvanced	Advanced	詳細設定	상세 설정	详细设置	詳細設定
 sEditorModePreset	Preset	プリセット	프리셋	预设	預設
 sEditorModeShaderSetting	Shader Setting	シェーダー設定	쉐이더 설정	着色器设置	著色器設定
-sHelpSelectOverlay	Currently lilToonOverray is selected. Change to lilToon for normal use.	現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。	현재 lilToonOverray가 선택되어있습니다.일반 용도에서는 lilToon으로 변경해주세요.	您目前选择了 lilToonOverray，如果是一般用途的话请更改为 lilToon。	目前正在選擇lilToonOverray。如果是通常用途的話請變更為lilToon。
+sHelpSelectOverlay	Currently lilToonOverray is selected. Change to lilToon for normal use.	現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。	현재 lilToonOverray가 선택되어있습니다.일반 용도에서는 lilToon으로 변경해주세요.	您目前选择了 lilToonOverray，如果是一般用途的话请更改为 lilToon。	目前正在選擇lilToonOverray。如果是通常用途的話請變更為 lilToon。
 sColor	Color	色	색	颜色	顏色
 sAlpha	Alpha	透明度	투명도	透明度	透明度
 sColorAlpha	Color / Alpha	色 / 透明度	색 / 투명도	颜色 / 透明度	顏色 / 透明度
@@ -88,12 +88,12 @@ sBackfaceMask	Backface Mask	裏面で無効化	후면에서 무효화	背面蒙�
 sRandomize	Randomize	ランダム化	임의화	随机化	隨機化
 sLimShadowStrength	Shadow Strength	影の強さ	그림자 강도	阴影强度	陰影強度
 sLimOutline	Outline	輪郭線の色	윤곽선의 색	轮廓	輪廓
-sLimEmission	Emission	発光色	발광색	发光	自發光
-sLimEmission2nd	Emission 2nd	発光色2nd	발광색 2nd	第二发光	自發光 2nd
+sLimEmission	Emission	発光色	발광색	发光	發光
+sLimEmission2nd	Emission 2nd	発光色2nd	발광색 2nd	第二发光	發光 2nd
 sBaseSetting	Base Setting	基本設定	기본 설정	基本设置	基本設定
 sInvisible	Invisible	非表示	숨기기	不可见	不可見
 sAsUnlit	As Unlit	Unlit化	Unlit 화	Unlit化	作為 Unlit
-sAsUnlitWarn	A non-zero value is set for "As Unlit". This can cause differences in brightness between materials and avatars.	"Unlit化"が0以外に設定されています。これはマテリアル間・アバター間での明るさの違いを発生させる可能性があります。	"Unlit 화" 에 0 이외의 값이 설정되어 있습니다.이는 머티리얼·아바타 간의 밝기 차이를 발생시킬 가능성이 있습니다.	“Unlit 化”中设置了非零值。这可能会导致材质以及 Avatar 之间存在亮度差异。	“作為Unlit”中設定了0以外的值。這可能會導致材質以及 Avatar 之間存在亮度差異。
+sAsUnlitWarn	A non-zero value is set for "As Unlit". This can cause differences in brightness between materials and avatars.	"Unlit化"が0以外に設定されています。これはマテリアル間・アバター間での明るさの違いを発生させる可能性があります。	"Unlit 화" 에 0 이외의 값이 설정되어 있습니다.이는 머티리얼·아바타 간의 밝기 차이를 발생시킬 가능성이 있습니다.	“Unlit 化”中设置了非零值。这可能会导致材质以及 Avatar 之间存在亮度差异。	“作為Unlit”中設定了 0 以外的值。這可能會導致材質以及 Avatar 之間存在亮度差異。
 sShaderType	Shader Type	シェーダーの種類	셰이더 유형	着色器类型	著色器類型
 sShaderTypeNormal	Normal	Normal (通常版)	Normal	Normal	Normal
 sShaderTypeLite	Lite	Lite (軽量版)	Lite	Lite	Lite
@@ -126,7 +126,7 @@ sShiftBackfaceUV	Shift Backface UV	裏面のUVをずらす	뒷면의 UV를 드�
 sBackfaceForceShadow	Backface Force Shadow	裏面を影にする	뒷면에 그림자를 드리우다	背面强制阴影	背面陰影力量
 sAAShading	Anti-aliasing shading	アンチエイリアスシェーディング	Anti-aliasing shading	抗锯齿阴影	Anti-aliasing shading
 sDither	Dither	Dither	Dither	Dither	Dither
-sSimpleStencilSettings	Simple Stencil Settings	簡易ステンシル設定	간이 스텐실 설정	简易 Stencil 设置	簡單 Stencil 設定
+sSimpleStencilSettings	Simple Stencil Settings	簡易ステンシル設定	간이 스텐실 설정	简易 Stencil 设置	簡易 Stencil 設定
 sStencilModeNormal	Normal	通常	Normal	Normal	Normal
 sStencilModeWriter	Writer	Writer	Writer	Writer	Writer
 sStencilModeReader	Reader	Reader	Reader	Reader	Reader
@@ -154,12 +154,12 @@ sLightingPreset	Apply Preset	プリセットを適用	프리셋 적용	应用预
 sLightingPresetDefault	Default	通常	디폴트	通常	通常
 sLightingPresetStable	Stable	安定	안정	稳定	穩定
 sLightingPresetSemiMonochrome	Semi-monochrome	半モノクロ	세미 모노크롬	半单色	半單色
-sHelpRenderingTransparent	When two transparent materials overlap, one of them may become invisible. In this case, increase the "Render Queue" value of the material in the foreground to fix the problem.	透過マテリアル同士が重なったときに片方が見えなくなる場合があります。その場合は手前に表示されるマテリアルのRender Queueの値を上げることで改善されます。	투명 Material끼리 겹친 때 한쪽이 보이지 않을 수 있습니다. 이 경우는 앞에 표시되는 머티리얼의 "Render Queue" 값을 올림으로써 수정됩니다.	当两个透明材质重叠时，其中一个可能会变得不可见。这种情况下，通过提高前面显示的材质的"Render Queue"值来修正。	當兩個透明材質重疊時，其中一個可能會變得不可見。這種情況下，通過提高前面顯示的材質的"Render Queue"值來修正。
+sHelpRenderingTransparent	When two transparent materials overlap, one of them may become invisible. In this case, increase the "Render Queue" value of the material in the foreground to fix the problem.	透過マテリアル同士が重なったときに片方が見えなくなる場合があります。その場合は手前に表示されるマテリアルのRender Queueの値を上げることで改善されます。	투명 Material끼리 겹친 때 한쪽이 보이지 않을 수 있습니다. 이 경우는 앞에 표시되는 머티리얼의 "Render Queue" 값을 올림으로써 수정됩니다.	当两个透明材质重叠时，其中一个可能会变得不可见。这种情况下，通过提高前面显示的材质的"Render Queue"值来修正。	當兩個透明材質重疊時，其中一個可能會變得不可見。這種情況下，通過提高前面顯示的材質的「Render Queue」值來修正。
 sHelpRenderingFur	Limited features applied to fur parts for performance.	ファーでは負荷軽減のためにファー部分に適用される機能が制限されています。	퍼포먼스를 위해 퍼에 적용되는 기능이 제한되어 있습니다.	由于性能原因，应用于毛发的功能受到限制。	由於性能原因，應用於毛皮的功能受到限制。
 sHelpTransparentForWorld	Setting Render Queue to 2999 or lower for transparent materials can make other materials in the back invisible, causing problems such as clothes and hair to disappear. For world projects, it is recommended to set it above 3000 or turn off ZWrite.	透過マテリアルでRenderQueueを2999以下に設定すると奥にある他のマテリアルを見えなくし、服や髪が消えるなどの問題が発生する可能性があります。ワールド用途であれば3000以上に設定したりZWriteをオフにしたりする設定がオススメです。	투과머티리얼에서 Render Queue 2999 이하로 설정하면 안쪽에 있는 다른 머티리얼을 볼 수 없어 옷이나 머리카락이 사라지는 등의 문제가 발생할 수 있습니다. 월드 용도라면 3000 이상으로 설정하거나 ZWrite를 끄거나 하는 설정을 추천합니다.	将透明材质的 Render Queue 设置为 2999 或更低，会使后面的其他材质不可见，造成衣服和头发消失等问题。对于 World 项目，推荐设定为 3000 以上或关闭 ZWrite 设定。	如果在透明材質中將 Render Queue 設定為 2999 以下，則可能會出現看不見裡面的其他材質、衣服和頭髮消失等問題。如果是 World 用途的話，推薦設定為 3000 以上或關閉 ZWrite 設定。
-sHelpGrabPass	Reflection and gem use GrabPass, which can have a significant impact on performance on mobile GPUs.	屈折・宝石はGrabPassを利用するため、モバイル環境においてパフォーマンスに大きな影響を及ぼす可能性があります。	굴절·보석은 GrabPass를 사용하기 때문에 모바일 GPU에서 성능에 큰 영향을 미칠 수 있습니다.	反射和宝石使用 GrabPass，因此可能对移动端 GPU 产生很大的性能影响。	折射和寶石使用 GrabPass，因此在移動端 GPU 中可能對性能產生很大的影響。
+sHelpGrabPass	Reflection and gem use GrabPass, which can have a significant impact on performance on mobile GPUs.	屈折・宝石はGrabPassを利用するため、モバイル環境においてパフォーマンスに大きな影響を及ぼす可能性があります。	굴절·보석은 GrabPass를 사용하기 때문에 모바일 GPU에서 성능에 큰 영향을 미칠 수 있습니다.	反射和宝石使用 GrabPass，因此可能对移动端 GPU 产生很大的性能影响。	折射和寶石使用 GrabPass，因此在移動端 GPU 中可能對性能產生極大影響。
 sHelpGeometryShader	Geometry shaders do not work on iOS or Mac, so it is recommended to change to another rendering mode.	ジオメトリシェーダーはiOSやMacで動作しないため、他レンダリングモードに置き換えることを推奨します。	지오메트리셰이더는 iOS나 Mac에서 작동하지 않으므로 타 렌더링 모드로 변경하는 것이 좋습니다.	由于几何体着色器在 iOS 或 Mac 上不起作用，因此建议将其更改为其他渲染模式。	由於幾何體著色器在 iOS 或 Mac 上不起作用，因此建議將其更改為其他渲染模式。
-sHelpOnePassVertexLight	When using One Pass Transparent, it is recommended to set Vertex Light Strength to 1.0.	1パス使用時は頂点ライトの強度を1.0にしておくことをオススメします。	One Pass Transparent 사용 시에는 Vertex Light Strength를 1.0으로 설정할 것을 권장합니다.	使用 One Pass Transparent 时，建议将顶点灯强度设定为 1.0。	使用 One Pass Transparent 時推薦將 Vertex Light Strength 設定為 1.0。
+sHelpOnePassVertexLight	When using One Pass Transparent, it is recommended to set Vertex Light Strength to 1.0.	1パス使用時は頂点ライトの強度を1.0にしておくことをオススメします。	One Pass Transparent 사용 시에는 Vertex Light Strength를 1.0으로 설정할 것을 권장합니다.	使用 One Pass Transparent 时，建议将顶点灯强度设定为 1.0。	使用 One Pass Transparent 時推薦將頂點燈強度設定為 1.0。
 sHelpCullMode	If the material does not look right, set the CullMode to Off or Back.	表示がおかしい場合はCullModeをOffもしくはBackにしてください	표시가 이상한 경우는 CullMode을 Off 또는 Back합니다	如果材质看起来不正确，请将 CullMode 设置为 Off 或 Back。	如果材質看起來不對，請將 CullMode 設定為 Off 或 Back。
 sHelpZWrite	If the material does not look right, turn on ZWrite.	表示がおかしい場合はZWriteをオンにしてください	표시가 이상한 경우는 ZWrite을 선택하십시오	如果材质看起来不正确，请打开 ZWrite。	如果材質看起來不對，請打開 ZWrite。
 sAlphaBoostFA	[Built-in RP] Alpha Boost (Point / Spot Light)	[Built-in RP] 透明度ブースト (Point / Spot Light)	[Built-in RP] Alpha Boost (Point / Spot Light)	[Built-in RP] 透明度提升 (点光源 / 聚光灯)	[Built-in RP] Alpha Boost (Point / Spot Light)
@@ -188,7 +188,7 @@ sColorAdjust	Color Adjust	色調補正	색조 보정	色调校正	色調校正
 sGradationMap	Gradation Map	グラデーションマップ	그라디언트 맵	渐变映射	漸變映射
 sNotAlphaIsTransparency	This texture is not marked as AlphaIsTransparency	このテクスチャはAlphaIsTransparencyとして設定されていません	이 텍스처는 Alpha Is Transparency로 설정되어 있지 않습니다	此纹理的 Alpha 未被设置为透明	此紋理未被設定為AlphaIsTransparency
 sAlphaMask	Alpha Mask	アルファマスク	알파 마스크	Alpha 蒙版	Alpha蒙版
-sAlphaMaskWarnOpaque	If you want to use Alpha Mask, you need to change the "Rendering Mode" to Cutout or Transparent.	アルファマスクを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。	알파 마스크를 사용하려면 "렌더링 모드"를 단편 또는 반투명로 변경해야합니다.	如果要使用 Alpha 蒙版，需要将“渲染模式”改为镂空或透明。	如果要使用Alpha蒙版，則需要將“渲染模式”更改為鏤空或透明。
+sAlphaMaskWarnOpaque	If you want to use Alpha Mask, you need to change the "Rendering Mode" to Cutout or Transparent.	アルファマスクを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。	알파 마스크를 사용하려면 "렌더링 모드"를 단편 또는 반투명로 변경해야합니다.	如果要使用 Alpha 蒙版，需要将“渲染模式”改为镂空或透明。	如果要使用 Alpha 蒙版，則需要將「渲染模式」更改為鏤空或透明。
 sAlphaMaskModeNone	None	None	None	无	無
 sAlphaMaskModeReplace	Replace	置き換え	Replace	Replace	Replace
 sAlphaMaskModeMul	Multiply	乗算	Multiply	Multiply	Multiply
@@ -207,9 +207,9 @@ sShadowBorderColor	Border Color	境界の色	경계의 색	边界颜色	邊界�
 sShadowBorderRange	Border Range	境界の幅	경계의 폭	边界范围	邊界範圍
 sIgnoreBorderProperties	Ignore border properties	影範囲設定を無視して適用	범위 설정 무시	忽略边界设置	忽略邊界設定
 sFlat	Flat	平面化	플랫	平的	平的
-sBacklightSetting	Backlight	逆光ライト	Backlight 설정	Backlight设置（背光）	Backlight 設定（背光燈）
+sBacklightSetting	Backlight	逆光ライト	Backlight 설정	Backlight设置（背光）	Backlight 設定
 sBacklight	Backlight	逆光ライト	Backlight	启用背光效果	Backlight（背光燈）
-sBacklightTips	Add a backlight when the light is behind the model.	逆光時に光を乗せる表現ができます	라이트가 모델 뒤에 있을 때 백라이트를 추가하다	当摄像机对准模型的背光面时，为模型的受光面添加高光效果	當照明在模型後面時添加背光燈。
+sBacklightTips	Add a backlight when the light is behind the model.	逆光時に光を乗せる表現ができます	라이트가 모델 뒤에 있을 때 백라이트를 추가하다	当摄像机对准模型的背光面时，为模型的受光面添加高光效果	當照明在模型後面時添加 Backlight。
 sDirectivity	Directivity	指向性	지향성	指向性	指向性
 sViewDirectionStrength	View direction strength	視線方向の影響度	뷰 방향의 영향도	视线方向强度	視線方向影響
 sOutlineSetting	Outline	輪郭線設定	윤곽선 설정	轮廓设置	輪廓設定
@@ -242,10 +242,10 @@ sTessellationTips	You can set the tessellation.	テッセレーションのか�
 sTessellationEdge	Threshold length	閾値	길이의 한계	阈值长度	閾值長度
 sTessellationShrink	Shrink	縮小補正	축소	缩减	縮減
 sTessellationFactor	Max Factor	最大分割数	최대 분할수	最大系数	最大係數
-sEmissionSetting	Emission	発光設定	발광 설정	Emission设置（发光）	自發光設定
+sEmissionSetting	Emission	発光設定	발광 설정	Emission设置（发光）	發光設定
 sEmissionTips	You can set the color and blinking of the light.	発光の色や点滅に関する設定ができます	발광의 색이나 점멸에 관한 설정이 가능합니다	您可以在此设置灯光颜色和闪烁。	你可以設定燈光的顏色和閃爍。
-sEmission	Emission	発光テクスチャ	발광	启用发光效果	自發光
-sEmission2nd	Emission 2nd	発光テクスチャ2nd	발광 2nd	第二发光	自發光 2nd
+sEmission	Emission	発光テクスチャ	발광	启用发光效果	發光
+sEmission2nd	Emission 2nd	発光テクスチャ2nd	발광 2nd	第二发光	發光 2nd
 sBlinkStrength	Blink Strength	点滅の強さ	점멸 힘	闪烁强度	閃爍強度
 sBlinkType	Blink Type	点滅タイプ	점멸 타입	闪烁类型	閃爍類型
 sBlinkSpeed	Blink Speed	点滅の速度	점멸 속도	闪烁速度	閃爍速度
@@ -265,7 +265,7 @@ sDistanceFadeTips	You can set the color change depending on the distance.	距離
 sStartDistance	Start Distance	開始距離	시작 거리	开始距离	開始距離
 sEndDistance	End Distance	終了距離	종료 거리	结束距离	結束距離
 sAudioLink	AudioLink	AudioLink	AudioLink	AudioLink	AudioLink
-sAudioLinkTips	This setting allows you to change the appearance of a material through the AudioLink system.	AudioLinkシステムに合わせてマテリアルを変化させられます	AudioLink 시스템에 의해 재료의 외형을 변화시키는 설정입니다.	根据 AudioLink 系统更改材质外观时使用的设置。	根據 AudioLink 系統更改材質外觀的設定。
+sAudioLinkTips	This setting allows you to change the appearance of a material through the AudioLink system.	AudioLinkシステムに合わせてマテリアルを変化させられます	AudioLink 시스템에 의해 재료의 외형을 변화시키는 설정입니다.	根据 AudioLink 系统更改材质外观时使用的设置。	此設定會根據 AudioLink 系統更改材質的外觀。
 sAudioLinkUVMode	UV Mode	UV Mode	UV Mode	UV 模式	UV Mode
 sAudioLinkUVModeNone	None	None	None	None	None
 sAudioLinkUVModeRim	Rim	Rim	Rim	Rim	Rim
@@ -289,7 +289,7 @@ sAudioLinkLocalMapNotes	Notes	拍数	Notes	Notes	Notes
 sAudioLinkDefaultValue	Default value for no AudioLink	AudioLink無効時の初期値	AudioLink 비활성화 시 기본값	没有使用 AudioLink 时的默认值	無 AudioLink 的默認值
 sDissolve	Dissolve	Dissolve	Dissolve	Dissolve（溶解）	Dissolve
 sDissolveTips	Settings for dissolving a material	マテリアルが溶けるような表現ができます	머티리얼이 녹는듯한 표현을 할 수 있습니다	设置材质的溶解效果	用於溶解材質的設定
-sDissolveWarnOpaque	If you want to use Dissolve, you need to change the "Rendering Mode" to Cutout or Transparent.	Dissolveを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。	Dissolve를 사용하는 경우 "렌더링 모드"를 컷아웃이나 투명한으로 변경해야 합니다	如果要使用溶解，则需要将“渲染模式”更改为镂空或透明。	如果要使用Dissolve，則需要將“Rendering Mode”更改為鏤空或透明。
+sDissolveWarnOpaque	If you want to use Dissolve, you need to change the "Rendering Mode" to Cutout or Transparent.	Dissolveを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。	Dissolve를 사용하는 경우 "렌더링 모드"를 컷아웃이나 투명한으로 변경해야 합니다	如果要使用溶解，则需要将“渲染模式”更改为镂空或透明。	如果要使用 Dissolve，請將「渲染模式」更改為鏤空或透明。
 sDissolveMode	Dissolve Mode	Dissolve Mode	Dissolve Mode	Dissolve Mode(溶解模式)	Dissolve Mode
 sDissolveModeNone	None	None	None	None	None
 sDissolveModeAlpha	Alpha	透明度	Alpha	Alpha	Alpha
@@ -303,7 +303,7 @@ sUDIMDiscard	UV Tile Discard	UV Tile Discard	UV Tile Discard	UV Tile Discard	UV 
 sUDIMDiscardUV	Discard UV	Discard UV	Discard UV	Discard UV	Discard UV
 sUDIMDiscardMode	Discard Mode	削除モード	무시 모드	丢弃模式	丟棄模式
 sEncryption	Encryption	暗号化	암호화	加密	加密
-sEncryptionTips	Decrypt the mesh from 4 keys.	4つのキーによってメッシュを復号化します	4개의 키를 사용하여 메쉬를 복호화합니다	用 4 个密钥解密该网格	從4個密鑰解密該網狀
+sEncryptionTips	Decrypt the mesh from 4 keys.	4つのキーによってメッシュを復号化します	4개의 키를 사용하여 메쉬를 복호화합니다	用 4 个密钥解密该网格	從 4 個密鑰解密該網格
 sIgnoreEncryption	Ignore Encryption	Ignore Encryption	Ignore Encryption	Ignore Encryption	Ignore Encryption
 sKeys	Keys	Keys	Keys	Keys	Keys
 sNormalMapReflection	Normal Map & Reflection	ノーマルマップ・光沢設定	노멀 맵 광택 설정	法线贴图 & 反射设置	法線貼圖 & 反射設定
@@ -334,17 +334,17 @@ sMatCap	MatCap	マットキャップ	매트 캡	MatCap	MatCap
 sMatCap2nd	MatCap 2nd	マットキャップ2nd	매트 캡 2nd	第二 MatCap	MatCap 2nd
 sBlendUV1	Blend UV1	UV1を合成	Blend UV1	Blend UV1	Blend UV1
 sMatCapZRotCancel	Z-axis rotation cancellation	Z軸回転キャンセル	Z축 회전 취소	Z轴旋转取消	Z 軸旋轉取消
-sFixPerspective	Fix Perspective	パース補正	Fix Perspective	透视校正	Fix Perspective
-sHelpMatCapBlending	Turn off "Enable Lighting" in multiply mode.	乗算モードでは"ライティングを適用"を0にしてください	곱셈 모드에서는 "라이팅을 적용"을 0으로 해 주세요	关闭 Multiply 模式下的“启用照明”。	關閉 Multiply 模式下的啟用照明。
+sFixPerspective	Fix Perspective	パース補正	Fix Perspective	透视校正	透視校正
+sHelpMatCapBlending	Turn off "Enable Lighting" in multiply mode.	乗算モードでは"ライティングを適用"を0にしてください	곱셈 모드에서는 "라이팅을 적용"을 0으로 해 주세요	关闭 Multiply 模式下的“启用照明”。	關閉 Multiply 模式下的「啟用照明」。
 sMatCapCustomNormal	Custom normal map	カスタムノーマルマップ	커스텀 노멀 맵	自定义法线贴图	自定義法線貼圖
-sRimLightSetting	Rim Light	リムライト設定	림 라이트 설정	Rim Light 设置（轮廓光）	Rim Light 設定（輪廓光）
-sRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light（輪廓光）
+sRimLightSetting	Rim Light	リムライト設定	림 라이트 설정	Rim Light 设置（轮廓光）	Rim Light 設定
+sRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
 sFresnelPower	Fresnel Power	リムライトの細さ	림 라이트의 벌금	菲涅尔折射率	菲涅爾功率
 sRimLightDirection	Light direction strength	ライト方向の影響度	라이트 방향의 영향도	光线方向影响	光線方向影響
 sRimDirectionRange	Direct light width	直接光の幅	직접 빛의 폭	直射光宽	直射光寬
 sRimIndirectionRange	Indirect light width	間接光の幅	간접 조명의 폭	间接光宽	間接光寬
-sGlitterSetting	Glitter	ラメ設定	Glitter 설정	Glitter 设置（闪烁效果）	Glitter 設定（亮片）
-sGlitter	Glitter	ラメ	Glitter	Glitter	Glitter（亮片）
+sGlitterSetting	Glitter	ラメ設定	Glitter 설정	Glitter 设置（闪烁效果）	Glitter 設定
+sGlitter	Glitter	ラメ	Glitter	Glitter	Glitter
 sParticleSize	Particle Size	パーティクルサイズ	파티클 사이즈	粒子大小	粒子大小
 sContrast	Contrast	コントラスト	콘트라스트	对比度	對比度
 sPostContrast	Post Contrast	コントラスト（後処理）	콘트라스트(후처리)	对比度（后处理）	對比度（後處理）
@@ -384,8 +384,8 @@ sCustomPropertiesTips	Displays the properties added by the user.	ユーザーが
 sBake	Bake	焼き込み	굽기	烘培	烘培
 sBakeAll	Bake all layer	全て焼き込み	모든 굽기	烘培所有层	烘培所有層
 sBake1st	Bake Color Shift	色替えを焼き込み	색상 기준을 굽기	烘培颜色转移	烘培顏色轉移
-sBake2nd	Bake 2nd Layer	レイヤー2を焼き込み	레이어 2를 굽기	烘培第二层	烘培第二層
-sBake3rd	Bake 3rd layer	レイヤー3を焼き込み	레이어 3을 굽기	烘培第三层	烘焙第三層
+sBake2nd	Bake 2nd Layer	レイヤー2を焼き込み	레이어 2를 굽기	烘培第二层	烘培 2nd
+sBake3rd	Bake 3rd layer	レイヤー3を焼き込み	레이어 3을 굽기	烘培第三层	烘焙 3rd
 sBakeAlphamask	Bake Alphamask	アルファマスクを焼き込み	알파 마스크를 굽기	烘焙 Alpha 蒙版	烘焙 Alphamask
 sSelectAlphamask	Select Alphamask	アルファマスクを選択してください	알파 마스크를 선택하십시오	选择 Alpha 蒙版	選擇 Alphamask
 sRemoveUnused	Remove unused textures	未使用のテクスチャを外す	미사용 텍스처 해제	移除未使用的纹理	移除未使用的紋理
@@ -410,19 +410,19 @@ sDialogResetUVMes	Are you sure you want to reset UV setting?	UV設定を初期�
 sDialogCannotBake	Cannot run a bake	焼き込みを実行できません	버닝을 실행할 수 없습니다	目前不能运行烘培	不能運行烘培
 sDialogNoNeedBake	No need to run a bake	焼き込む必要はありません	구울 필요가 없습니다	目前不需要运行烘培	不需要運行烘培
 sDialogSetMainTex	You need to set texture to Main Color.	メインカラーにテクスチャを設定する必要があります。	메인 컬러에 질감을 설정해야합니다.	您需要将纹理设置为主色。	你需要將紋理設定為主色。
-sDialogNoChange	You are not changing the color.	色を変更していません。	색상을 변경하지 않습니다.	您没有更改颜色。	你不改變顏色。
-sDialogNotUse2nd	You are not using the 2nd layer.	メインカラー2ndを利用していません。	메인 컬러 2nd를 이용하지 않습니다.	您没有使用第二层。	你沒有使用2nd。
+sDialogNoChange	You are not changing the color.	色を変更していません。	색상을 변경하지 않습니다.	您没有更改颜色。	你沒有改變顏色。
+sDialogNotUse2nd	You are not using the 2nd layer.	メインカラー2ndを利用していません。	메인 컬러 2nd를 이용하지 않습니다.	您没有使用第二层。	你沒有使用 2nd。
 sDialogNotUse3rd	You are not using the 3rd layer.	メインカラー3rdを利用していません。	메인 컬러 3rd를 이용하지 않습니다.	您没有使用第三层。	你沒有使用 3rd。
 sDialogNotUseAll	You are not changing the color and not using layers.	色の変更とメインカラー2nd・3rdを使用していません。	색상 변경과 기본 색상 2nd · 3rd를 사용하지 않습니다.	您既没有更改颜色，也没有使用图层。	你沒有改變顏色，沒有使用圖層。
 sDialogRunBake	Run bake?	焼き込みを実行しますか?	굽기를 실행 하시겠습니까?	进行烘培？	運行烘培？
 sDialogBakeMain	Do you want to bake main texture?	メインカラーをベイクしますか?	메인 컬러를 구워 하시겠습니까?	您确定要烘培主纹理吗？	你要烘培主紋理嗎？
 sDialogBakeShadow	Do you want to bake shadow texture?	影テクスチャをベイクしますか?	그림자 텍스처를 구워 하시겠습니까?	您确定要烘培阴影纹理吗？	你要烘培陰影紋理嗎？
 sDialogBakeMatCap	Do you want to bake matcap?	マットキャップをベイクしますか?	매트 캡을 구워 하시겠습니까?	您确定要烘培 matcap 吗？	你要烘培 matcap 嗎？
-sDialogBakeTriMask	Do you want to bake TriMask (Mask of Matcap / Rim / Emission)?	TriMask(マットキャップ、リムライト、発光のマスク)をベイクしますか?	TriMask (매트 모자, 림 라이트 발광 마스크)를 구워 하시겠습니까?	您确定要烘培这三个蒙版（MatCap/Rim/发光）吗？	你要烘培這三個蒙版（MatCap/Rim/自發光）嗎？
+sDialogBakeTriMask	Do you want to bake TriMask (Mask of Matcap / Rim / Emission)?	TriMask(マットキャップ、リムライト、発光のマスク)をベイクしますか?	TriMask (매트 모자, 림 라이트 발광 마스크)를 구워 하시겠습니까?	您确定要烘培这三个蒙版（MatCap/Rim/发光）吗？	你要烘培這三個蒙版（MatCap/Rim/發光）嗎？
 sDialogBakeOutline	Do you want to bake outline texture?	輪郭線の色のテクスチャをベイクしますか?	윤곽선 색의 질감을 구워 하시겠습니까?	您确定要烘培轮廓纹理吗？	你要烘培輪廓紋理嗎？
 sDialogGifToAtlas	Convert Gif to Atlas	Gifをアトラス化	Gif를 아틀라스 화	将 Gif 转换成图集	將 Gif 轉換成 Atlas
 sDialogTexPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャ全体の解像度を2の累乗に合わせますか?	텍스처 전체 해상도를 2의 거듭 제곱에 맞게 하시겠습니까?	你要把纹理分辨率调整为 2 的幂吗？	你要把紋理分辨率調整為 2 的冪嗎？
-sDialogImportOldVer	The package you are importing is an older version than the already imported lilToon. Do you want to continue?	インポートしようとしているパッケージは既にインポートされているlilToonよりも古いバージョンです。続行しますか？	Import하고 있는 패키지는 이미 Import된 lilToon보다 오래된 버전입니다.속행할까요?	您要导入的 lilToon 版本早于已导入的 lilToon 版本。是否继续？	你要導入的包版本早於已導入的lilToon版本。是否繼續？
+sDialogImportOldVer	The package you are importing is an older version than the already imported lilToon. Do you want to continue?	インポートしようとしているパッケージは既にインポートされているlilToonよりも古いバージョンです。続行しますか？	Import하고 있는 패키지는 이미 Import된 lilToon보다 오래된 버전입니다.속행할까요?	您要导入的 lilToon 版本早于已导入的 lilToon 版本。是否继续？	你要導入的包版本早於已導入的 lilToon 版本。是否繼續？
 sDialogImportPackage	The UPM version of lilToon has already been imported. Do you want to continue importing the unitypackage version? (This may cause script errors, etc.)	既にUPM版lilToonがインポートされています。unitypackage版のインポートを続行しますか？（これはスクリプトエラー等を引き起こす可能性があります。）	이미 UPM 버전 lilToon이 임포트 되어 있습니다.unity package 버전 가져오기를 계속하시겠습니까?(이것은 스크립트 에러등을 일으킬 가능성이 있습니다.)	已经导入了UPM版lilToon。是否继续导入unitypackage版本？（可能会导致脚本错误等一系列问题。）	已經導入了 UPM 版 lilToon。是否繼續導入 unitypackage 版？（這可能會導致腳本錯誤等。）
 sWarnOptimiseMeshData	Due to a bug in Unity, even necessary vertex data may be deleted. If the problem occurs, please turn off "Project Settings/Player/Optimize Mesh Data".	Unityのバグにより必要な頂点データまで削除されることがあります。不具合が発生する場合は"Project Settings/Player/Optimize Mesh Data"をオフにしてください。	Unity 버그로 인해 필요한 정점 데이터까지 삭제될 수 있습니다.오류가 발생할 경우 "Project Settings/Player/Optimize Mesh Data"를 꺼주세요.	Unity可能会错误删除所需的顶点数据。发生问题时，请关闭“Project Setting/Prer/Optimize Mesh Data” 选项。	Unity 錯誤可能會刪除所需的頂點資料。 發生故障時，請關閉「Project Setting/Prer/Optimize Mesh Data」。
 sPresets	Presets	プリセット	프리셋	预设	預設
@@ -448,21 +448,21 @@ sPresetMainTex2Outline	Apply main texture to outline	メインテクスチャを
 sPresetMain	Main Color	メインカラー	메인 컬러	主色	主色
 sPresetMain2	Main Color 2nd	メインカラー2nd	메인 컬러 2nd	第二主色	主色 2nd
 sPresetMain2Mask	Main Color 2nd Mask	メインカラー2ndマスク	메인 컬러 2nd 마스크	第二主色蒙版	主色 2nd 蒙版
-sPresetMain3	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	第三主色	主色3rd
+sPresetMain3	Main Color 3rd	メインカラー3rd	메인 컬러 3rd	第三主色	主色 3rd
 sPresetMain3Mask	Main Color 3rd Mask	メインカラー3rdマスク	메인 컬러 3rd 마스크	第三主色蒙版	主色 3rd 蒙版
-sPresetShadowBorder	Shadow AO	影AO	그림자 AO	阴影 AO	陰影AO
+sPresetShadowBorder	Shadow AO	影AO	그림자 AO	阴影 AO	陰影 AO
 sPresetShadowBlur	Shadow Blur	影ぼかし	그림자 흐림	阴影模糊	陰影模糊
 sPresetShadowStrength	Shadow Mask	影マスク	그림자 마스크	阴影蒙版	陰影蒙版
 sPresetShadowColor	Shadow Color	影色	그림자 색	阴影颜色	陰影顏色
 sPresetShadowColor2	Shadow Color 2nd	影色2	그림자 색 2	阴影颜色 2	陰影顏色 2
-sPresetEmissionColor	Emission Color	発光色	발광색	发光颜色	自發光顏色
-sPresetEmissionMask	Emission Mask	発光マスク	발광 마스크	发光蒙版	自發光蒙版
-sPresetEmissionGrad	Emission Grad	発光グラデーション	발광 그라데이션	发光渐变	自發光漸變
-sPresetEmission2Color	Emission 2nd Color	発光2nd色	발광 2nd 색상	第二发光颜色	自發光 2nd 顏色
-sPresetEmission2Mask	Emission 2nd Mask	発光2ndマスク	발광 2nd 마스크	第二发光蒙版	自發光 2nd 蒙版
-sPresetEmission2Grad	Emission 2nd Grad	発光2ndグラデーション	발광 2nd 그라데이션	第二发光渐变	自發光 2nd 漸變
+sPresetEmissionColor	Emission Color	発光色	발광색	发光颜色	發光顏色
+sPresetEmissionMask	Emission Mask	発光マスク	발광 마스크	发光蒙版	發光蒙版
+sPresetEmissionGrad	Emission Grad	発光グラデーション	발광 그라데이션	发光渐变	發光漸變
+sPresetEmission2Color	Emission 2nd Color	発光2nd色	발광 2nd 색상	第二发光颜色	發光 2nd 顏色
+sPresetEmission2Mask	Emission 2nd Mask	発光2ndマスク	발광 2nd 마스크	第二发光蒙版	發光 2nd 蒙版
+sPresetEmission2Grad	Emission 2nd Grad	発光2ndグラデーション	발광 2nd 그라데이션	第二发光渐变	發光 2nd 漸變
 sPresetNormal	Normal Map	ノーマルマップ	노멀 맵	法线贴图	法線貼圖
-sPresetNormal2	Normal Map 2nd	ノーマルマップ2nd	노멀 맵 2nd	法线贴图2nd	法線貼圖2nd
+sPresetNormal2	Normal Map 2nd	ノーマルマップ2nd	노멀 맵 2nd	法线贴图2nd	法線貼圖 2nd
 sPresetNormal2Mask	Normal Map 2nd Mask	ノーマルマップ2ndマスク	노멀 맵 2nd 마스크	第二法线贴图蒙版	法線貼圖 2nd 蒙版
 sPresetReflectionSmoothness	Smoothness	滑らかさ	부드러움	平滑度	平滑度
 sPresetReflectionMetallic	Metallic	金属度	금속도	金属度	金屬程度
@@ -477,13 +477,13 @@ sPresetFurNormal	Fur Normal	ファーノーマルマップ	퍼 노멀 맵	毛发
 sPresetFurNoise	Fur Noise	ファーノイズ	파 노이즈	毛发噪声	毛皮噪聲
 sPresetFurMask	Fur Mask	ファーマスク	퍼 마스크	毛发蒙版	毛皮蒙版
 sShaderSetting	Shader Setting (for all materials)	シェーダー設定 (全マテリアル共通)	쉐이더 설정 (전체 재료 공통)	着色器设置（用于所有材质）	著色器設定（用於所有材質）
-sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	此处关闭的功能将从着色器中删除。通过关闭未使用的功能，可以减少你的 Avatar 的大小，同时还能减少负载。	在這里關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的 Avatar 的大小，同時也可以減少負載。​​
+sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	此处关闭的功能将从着色器中删除。通过关闭未使用的功能，可以减少你的 Avatar 的大小，同时还能减少负载。	此處關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的 Avatar 的大小，同時也能減少負載。​​
 sSettingLock	Lock	ロック	Lock	锁定	鎖定
 sShaderSettingOptimizeInTestBuild	Optimize in test build	テストビルドでも最適化を行う	테스트 빌드로 최적화	为测试构建优化	在測試構建中優化
 sShaderSettingOptimizeInEditor	[Debug] Optimize in editor	[Debug] エディタ上で最適化	[Debug] 에디터로 최적화	[Debug] 为编辑器优化	[Debug] 在編輯器中優化
 sSettingClippingCanceller	Distance Clipping Canceller	距離クリッピングキャンセラー	거리 클리핑 취소 기	距离裁剪消除器	距離剪裁取消器
 sSettingTexOutlineColor	Outline Color Texture	輪郭線色テクスチャ	윤곽선 색상 질감	轮廓颜色纹理	輪廓顏色紋理
-sSettingDefaultValue	Default Value (used for "Fix Lighting" and lighting presets)	初期値 (Fix Lightingやライティングプリセットに使用)	초기값 (Fix Lighting이나 라이팅 프리셋에 사용)	初始值 (用于“Fix Lighting”以及照明预设)	初始值（用於 Fix Lighting 或照明預設（）
+sSettingDefaultValue	Default Value (used for "Fix Lighting" and lighting presets)	初期値 (Fix Lightingやライティングプリセットに使用)	초기값 (Fix Lighting이나 라이팅 프리셋에 사용)	初始值 (用于“Fix Lighting”以及照明预设)	初始值（用於 Fix Lighting 和照明預設）
 sSettingBuildSizeOptimization	Build size optimization (for all materials)	ビルドサイズの最適化 (全マテリアル共通)	빌드 사이즈 최적화 (전체 재료 공통)	优化构建大小（用于所有材质）	優化構建大小（用於所有材質）
 sSettingApplyShadowFA	Enable shadow in ForwardAdd	ForwardAddパスで影を有効化	ForwardAdd로 그림자 활성화	通过 ForwardAdd 启用阴影	通過 ForwardAdd 啟用陰影
 sSettingUseForwardAdd	Use ForwardAdd	ForwardAddパスを使用	ForwardAdd 사용	使用ForwardAdd	使用 ForwardAdd
