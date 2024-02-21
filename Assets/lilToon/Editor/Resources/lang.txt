@@ -407,8 +407,8 @@ sOpenManual	Open manual	マニュアルを表示	매뉴얼 표시	打开手册	�
 sFixNow	Fix Now	自動修正	자동 수정	自动修复	自動修改
 sDialogResetUV	Reset UV Setting	UV設定の初期化	UV 설정 초기화	重置 UV 设置	重置 UV 設定
 sDialogResetUVMes	Are you sure you want to reset UV setting?	UV設定を初期化しますか?	UV 설정을 초기화 하시겠습니까?	您确定要重置 UV 设置吗？	你確定要重置 UV 設定嗎？
-sDialogCannotBake	Cannot run a bake	焼き込みを実行できません	버닝을 실행할 수 없습니다	目前不能运行烘培	不能運行烘培
-sDialogNoNeedBake	No need to run a bake	焼き込む必要はありません	구울 필요가 없습니다	目前不需要运行烘培	不需要運行烘培
+sDialogCannotBake	Cannot run a bake	焼き込みを実行できません	버닝을 실행할 수 없습니다	目前不能进行烘培	不能運行烘培
+sDialogNoNeedBake	No need to run a bake	焼き込む必要はありません	구울 필요가 없습니다	目前不需要进行烘培	不需要運行烘培
 sDialogSetMainTex	You need to set texture to Main Color.	メインカラーにテクスチャを設定する必要があります。	메인 컬러에 질감을 설정해야합니다.	您需要将纹理设置为主色。	你需要將紋理設定為主色。
 sDialogNoChange	You are not changing the color.	色を変更していません。	색상을 변경하지 않습니다.	您没有更改颜色。	你沒有改變顏色。
 sDialogNotUse2nd	You are not using the 2nd layer.	メインカラー2ndを利用していません。	메인 컬러 2nd를 이용하지 않습니다.	您没有使用第二层。	你沒有使用 2nd。
