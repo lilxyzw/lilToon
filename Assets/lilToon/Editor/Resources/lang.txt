@@ -272,9 +272,9 @@ sAudioLinkUVModeRim	Rim	Rim	Rim	Rim	Rim
 sAudioLinkUVModeUV	UV	UV	UV	UV	UV
 sAudioLinkUVModeMask	Mask	マスク	마스크	蒙版	蒙版
 sAudioLinkUVModePosition	Position	座標	좌표	坐标	座標
-sAudioLinkMaskRGB	RGB = Delay / Band / Strength	RGB = 遅延 / 帯域 / 強度	RGB = Delay / Band / Strength	RGB = Delay / Band / Strength	RGB = Delay / Band / Strength
-sAudioLinkMaskRGBSpectrum	RGB = Volume / Band / Strength	RGB = 音量 / 帯域 / 強度	RGB = Volume / Band / Strength	RGB = Volume / Band / Strength	RGB = Volume / Band / Strength
-sAudioLinkBand	Band	帯域	Band	Band	Band
+sAudioLinkMaskRGB	RGB = Delay / Band / Strength	RGB = 遅延 / 帯域 / 強度	RGB = Delay / Band / Strength	RGB = 延迟 / 频宽 / 强度	RGB = Delay / Band / Strength
+sAudioLinkMaskRGBSpectrum	RGB = Volume / Band / Strength	RGB = 音量 / 帯域 / 強度	RGB = Volume / Band / Strength	RGB = 音量 / 频宽 / 强度	RGB = Volume / Band / Strength
+sAudioLinkBand	Band	帯域	Band	频段	Band
 sAudioLinkBandBass	Bass	Bass	Bass	Bass	Bass
 sAudioLinkBandLowMid	Low Mid	Low Mid	Low Mid	Low Mid	Low Mid
 sAudioLinkBandHighMid	High Mid	High Mid	High Mid	High Mid	High Mid
@@ -380,7 +380,7 @@ sLightBakeSetting	Light Bake	ライトベイク設定	Light Bake	光照烘培设
 sOptimization	Optimization	最適化	최적화	优化	優化
 sOptimizationTips	You can optimize the material to reduce the load.	マテリアルを最適化して負荷を低減できます	머티리얼을최적화하여부하를저감할수있습니다	您可以在此对材质进行优化，以减少系统负荷。	你可以對材質進行優化，以減少負荷。
 sCustomProperties	Custom Properties	カスタムプロパティ	커스텀 프로퍼티	自定义属性	自定義屬性
-sCustomPropertiesTips	Displays the properties added by the user.	ユーザーが追加したプロパティが表示されます	사용자가 추가한 속성이 표시됩니다	显示用户添加的属性	顯示用戶添加的屬性
+sCustomPropertiesTips	Displays the properties added by the user.	ユーザーが追加したプロパティが表示されます	사용자가 추가한 속성이 표시됩니다	显示由用户添加的属性	顯示用戶添加的屬性
 sBake	Bake	焼き込み	굽기	烘培	烘培
 sBakeAll	Bake all layer	全て焼き込み	모든 굽기	烘培所有层	烘培所有層
 sBake1st	Bake Color Shift	色替えを焼き込み	색상 기준을 굽기	烘培颜色转移	烘培顏色轉移
@@ -407,8 +407,8 @@ sOpenManual	Open manual	マニュアルを表示	매뉴얼 표시	打开手册	�
 sFixNow	Fix Now	自動修正	자동 수정	自动修复	自動修改
 sDialogResetUV	Reset UV Setting	UV設定の初期化	UV 설정 초기화	重置 UV 设置	重置 UV 設定
 sDialogResetUVMes	Are you sure you want to reset UV setting?	UV設定を初期化しますか?	UV 설정을 초기화 하시겠습니까?	您确定要重置 UV 设置吗？	你確定要重置 UV 設定嗎？
-sDialogCannotBake	Cannot run a bake	焼き込みを実行できません	버닝을 실행할 수 없습니다	不能运行烘培	不能運行烘培
-sDialogNoNeedBake	No need to run a bake	焼き込む必要はありません	구울 필요가 없습니다	不需要运行烘培	不需要運行烘培
+sDialogCannotBake	Cannot run a bake	焼き込みを実行できません	버닝을 실행할 수 없습니다	目前不能运行烘培	不能運行烘培
+sDialogNoNeedBake	No need to run a bake	焼き込む必要はありません	구울 필요가 없습니다	目前不需要运行烘培	不需要運行烘培
 sDialogSetMainTex	You need to set texture to Main Color.	メインカラーにテクスチャを設定する必要があります。	메인 컬러에 질감을 설정해야합니다.	您需要将纹理设置为主色。	你需要將紋理設定為主色。
 sDialogNoChange	You are not changing the color.	色を変更していません。	색상을 변경하지 않습니다.	您没有更改颜色。	你不改變顏色。
 sDialogNotUse2nd	You are not using the 2nd layer.	メインカラー2ndを利用していません。	메인 컬러 2nd를 이용하지 않습니다.	您没有使用第二层。	你沒有使用2nd。
