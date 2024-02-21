@@ -5,7 +5,7 @@ sEditorModeSimple	Simple	簡易設定	간이 설정	简易设置	簡單設定
 sEditorModeAdvanced	Advanced	詳細設定	상세 설정	详细设置	詳細設定
 sEditorModePreset	Preset	プリセット	프리셋	预设	預設
 sEditorModeShaderSetting	Shader Setting	シェーダー設定	쉐이더 설정	着色器设置	著色器設定
-sHelpSelectOverlay	Currently lilToonOverray is selected. Change to lilToon for normal use.	現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。	현재 lilToonOverray가 선택되어있습니다.일반 용도에서는 lilToon으로 변경해주세요.	您目前选择了 lilToonOverray，如果是通常用途的话请更改为 lilToon。	目前正在選擇lilToonOverray。如果是通常用途的話請變更為lilToon。
+sHelpSelectOverlay	Currently lilToonOverray is selected. Change to lilToon for normal use.	現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。	현재 lilToonOverray가 선택되어있습니다.일반 용도에서는 lilToon으로 변경해주세요.	您目前选择了 lilToonOverray，如果是一般用途的话请更改为 lilToon。	目前正在選擇lilToonOverray。如果是通常用途的話請變更為lilToon。
 sColor	Color	色	색	颜色	顏色
 sAlpha	Alpha	透明度	투명도	透明度	透明度
 sColorAlpha	Color / Alpha	色 / 透明度	색 / 투명도	颜色 / 透明度	顏色 / 透明度
