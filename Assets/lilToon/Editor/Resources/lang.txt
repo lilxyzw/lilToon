@@ -1,5 +1,5 @@
 Language	English	Japanese	Korean	Chinese Simplified	Chinese Traditional
-sLanguageWarning			기계번역을 사용하고 있기 때문에 번역이 정확하지 않을 수 있습니다.	翻译可能不准确，因为使用了机器翻译。长按Alt可显示对应英文术语。	翻譯可能不准確，因為使用了機器翻譯。
+sLanguageWarning			기계번역을 사용하고 있기 때문에 번역이 정확하지 않을 수 있습니다.	翻译可能不准确，因为使用了机器翻译。长按 Alt 可显示对应英文术语。	翻譯可能不准確，因為使用了機器翻譯。
 sEditorMode	Editor Mode	編集モード	편집 모드	编辑器模式	編輯器模式
 sEditorModeSimple	Simple	簡易設定	간이 설정	简易设置	簡單設定
 sEditorModeAdvanced	Advanced	詳細設定	상세 설정	详细设置	詳細設定
@@ -175,11 +175,11 @@ sTriMask	TriMask (Mat/Rim/Emi)	TriMask (Mat/Rim/Emi)	TriMask (Mat/Rim/Emi)	TriMa
 sTriMaskRGB	Mask (R:MatCap G:Rim B:Emission)	Mask (R:MatCap G:Rim B:Emission)	Mask (R:MatCap G:Rim B:Emission)	Mask (R:MatCap G:Rim B:Emission)	Mask (R:MatCap G:Rim B:Emission)
 sApplyTo	Apply to	適用先	적용처	应用到	應用到
 sMainUV	UV Setting	UV設定	UV 설정	UV 设置	UV 設定
-sMainUVTips	You can set the UV position, scale and animation.	UVの位置やサイズ、アニメーションの設定ができます	UV의 위치 나 크기, 애니메이션을 설정할 수 있습니다	你可以设置 UV 坐标、比例和动画。	你可以設定 UV 座標、比例和動畫。
+sMainUVTips	You can set the UV position, scale and animation.	UVの位置やサイズ、アニメーションの設定ができます	UV의 위치 나 크기, 애니메이션을 설정할 수 있습니다	您可以在此设置 UV 坐标、比例和动画。	你可以設定 UV 座標、比例和動畫。
 sColors	Color	色設定	색상 설정	颜色设置	顏色設定
 sMainColorSetting	Main Color / Alpha	メインカラー / 透過設定	메인 컬러 / 알파 설정	主色 / Alpha 设置	主色 / Alpha 設定
 sMainColorSettingSimple	Main Color / Alpha	メインカラー / 透過設定 (色替え)	메인 컬러 / 알파 설정	主色 / Alpha 设置	主色 / Alpha 設定
-sMainColorTips	You can set the color and transparency.	色や透明度の設定ができます	색상과 투명도를 설정할 수 있습니다	你可以设置颜色和透明度。	你可以設定顏色和透明度。
+sMainColorTips	You can set the color and transparency.	色や透明度の設定ができます	색상과 투명도를 설정할 수 있습니다	您可以在此设置颜色和透明度。	你可以設定顏色和透明度。
 sMainColorAlpha	Main Color / Alpha	メインカラー / 透過	메인 컬러 / 알파	主色 / 透明度	主色 / Alpha
 sMainColor	Main Color	メインカラー	메인 컬러	主色	主色
 sMainColor2nd	Main Color 2nd	メインカラー2nd	메인 컬러 2nd	第二主色	主色 2nd
@@ -195,7 +195,7 @@ sAlphaMaskModeMul	Multiply	乗算	Multiply	Multiply	Multiply
 sAlphaMaskModeAdd	Add	加算	Add	Add	Add
 sAlphaMaskModeSub	Subtract	減算	Subtract	Subtract	Subtract
 sShadowSetting	Shadow	影設定	그림자 설정	阴影设置	陰影設定
-sShadowTips	You can set the color and range of the shadow.	影の色や範囲の設定ができます	그림자의 색상과 범위를 설정할 수 있습니다	你可以设置阴影的颜色和范围。	你可以設定陰影的顏色和範圍。
+sShadowTips	You can set the color and range of the shadow.	影の色や範囲の設定ができます	그림자의 색상과 범위를 설정할 수 있습니다	您可以在此设置阴影的颜色和范围。	你可以設定陰影的顏色和範圍。
 sShadow	Shadow	影	그림자	阴影	陰影
 sReceiveShadow	Receive Shadow	影を受け取る	그림자를받는	接收阴影	接收陰影
 sShadowColor	ShadowColor	影色	그림자 색	阴影颜色	陰影顏色
@@ -213,7 +213,7 @@ sBacklightTips	Add a backlight when the light is behind the model.	逆光時に�
 sDirectivity	Directivity	指向性	지향성	指向性	指向性
 sViewDirectionStrength	View direction strength	視線方向の影響度	뷰 방향의 영향도	视线方向强度	視線方向影響
 sOutlineSetting	Outline	輪郭線設定	윤곽선 설정	轮廓设置	輪廓設定
-sOutlineTips	You can set the color and thickness of the outline.	輪郭線の色や太さの設定ができます	윤곽선의 색과 굵기를 설정할 수 있습니다	你可以设置轮廓的颜色和厚度。	你可以設定輪廓的顏色和厚度。
+sOutlineTips	You can set the color and thickness of the outline.	輪郭線の色や太さの設定ができます	윤곽선의 색과 굵기를 설정할 수 있습니다	您可以在此设置轮廓的颜色和厚度。	你可以設定輪廓的顏色和厚度。
 sOutline	Outline	輪郭線	윤곽선	显示轮廓	輪廓
 sHighlight	Highlight	ハイライト	하이라이트	高亮颜色	高亮顏色
 sWidth	Mask & Width	マスクと太さ	마스크와 굵기	蒙版 & 宽度	蒙版 & 寬度
@@ -224,12 +224,12 @@ sVertexRGBA2Normal	RGBA -> Normal & Width	RGBA -> Normal & Width	RGBA -> Normal 
 sDeleteMesh0	Remove zero width vertices	太さ0の頂点を削除	굵기 0의 꼭짓점 삭제	删除宽度为 0 的顶点	刪除寬度為 0 的頂點
 sDisableInVR	Disable in VR	VR時に非表示	VR에서 사용 안 함	在 VR 中禁用	在 VR 中禁用
 sRefractionSetting	Refraction	屈折設定	굴절 설정	折射设置	折射設定
-sRefractionTips	You can set the refraction strength and color.	屈折の強さや色の設定ができます	굴절의 강도나 색을 설정할 수 있습니다	你可以设置折射强度和颜色。	你可以設定折射強度和顏色。
+sRefractionTips	You can set the refraction strength and color.	屈折の強さや色の設定ができます	굴절의 강도나 색을 설정할 수 있습니다	您可以在此设置折射强度和颜色。	你可以設定折射強度和顏色。
 sRefraction	Refraction	屈折	굴절	折射	折射
 sRefractionFresnel	Fresnel	フレネル	프레넬	菲涅尔	菲涅爾
 sColorFromMain	Get color from Main	メインカラーから色を取得	메인 컬러에서 색상 가져 오기	从主色获取颜色	從主色獲取顏色
 sFurSetting	Fur	ファー設定	퍼 설정	毛发设置	毛皮設定
-sFurTips	You can set the length and direction of the fur.	ファーの長さや向き、質感の設定ができます	퍼의 길이와 방향, 질감을 설정할 수 있습니다	你可以设置毛发的长度和方向。	你可以設定毛皮的長度和方向。
+sFurTips	You can set the length and direction of the fur.	ファーの長さや向き、質感の設定ができます	퍼의 길이와 방향, 질감을 설정할 수 있습니다	您可以在此设置毛发的长度和方向。	你可以設定毛皮的長度和方向。
 sFur	Fur	ファー	퍼	毛发	毛皮
 sGravity	Gravity	重力	중력	重力	重力
 sAO	AO	陰影	AO	AO	AO
@@ -238,13 +238,13 @@ sLayerNum	Layer Counts	レイヤー数	레이어 수	层数	層數
 sRootWidth	Root Width	根本の太さ	근본 굵기	根厚度	根厚度
 sTouchStrength	Touch strength	接触強度	접촉 강도	接触强度	接觸強度
 sTessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	镶嵌 (极高负载)	Tessellation（極高的負荷）
-sTessellationTips	You can set the tessellation.	テッセレーションのかかり方を設定できます	텟세레이션을 설정할 수 있습니다.	你可以设置镶嵌选项。	你可以設定 Tessellation。
+sTessellationTips	You can set the tessellation.	テッセレーションのかかり方を設定できます	텟세레이션을 설정할 수 있습니다.	您可以在此设置镶嵌选项。	你可以設定 Tessellation。
 sTessellationEdge	Threshold length	閾値	길이의 한계	阈值长度	閾值長度
 sTessellationShrink	Shrink	縮小補正	축소	缩减	縮減
 sTessellationFactor	Max Factor	最大分割数	최대 분할수	最大系数	最大係數
-sEmissionSetting	Emission	発光設定	발광 설정	发光设置	自發光設定
-sEmissionTips	You can set the color and blinking of the light.	発光の色や点滅に関する設定ができます	발광의 색이나 점멸에 관한 설정이 가능합니다	你可以设置灯光颜色和闪烁。	你可以設定燈光的顏色和閃爍。
-sEmission	Emission	発光テクスチャ	발광	发光	自發光
+sEmissionSetting	Emission	発光設定	발광 설정	Emission设置（发光）	自發光設定
+sEmissionTips	You can set the color and blinking of the light.	発光の色や点滅に関する設定ができます	발광의 색이나 점멸에 관한 설정이 가능합니다	您可以在此设置灯光颜色和闪烁。	你可以設定燈光的顏色和閃爍。
+sEmission	Emission	発光テクスチャ	발광	启用发光效果	自發光
 sEmission2nd	Emission 2nd	発光テクスチャ2nd	발광 2nd	第二发光	自發光 2nd
 sBlinkStrength	Blink Strength	点滅の強さ	점멸 힘	闪烁强度	閃爍強度
 sBlinkType	Blink Type	点滅タイプ	점멸 타입	闪烁类型	閃爍類型
@@ -256,12 +256,12 @@ sGradColor	Color	色	색	颜色	顏色
 sParallaxDepth	Parallax Depth	視差の強さ	시차의 강도	视差深度	視差深度
 sFluorescence	Fluorescence	蛍光	형광	荧光	螢光
 sParallax	Parallax	視差マップ	시차	视差	視差
-sParallaxTips	You can set the parallax.	視差マップに関する設定ができます	시차에 대한 설정을 할 수 있습니다	你可以设置视差。	你可以設定視差。
+sParallaxTips	You can set the parallax.	視差マップに関する設定ができます	시차에 대한 설정을 할 수 있습니다	您可以在此设置视差。	你可以設定視差。
 sParallaxR	Parallax (R)	Parallax (R)	시차 (R)	视差 (R)	視差 (R)
 sParallaxOffset	Offset	オフセット	오프셋	偏移	偏移
 sPOM	[high-load] POM	[高負荷] POM	[과부하] POM	[高负载] POM	[高負荷] POM
 sDistanceFade	Distance Fade	距離フェード	거리 페이드	距离淡化	距離淡化
-sDistanceFadeTips	You can set the color change depending on the distance.	距離に応じて色の変更ができます	거리에 따라 색상을 변경할 수 있습니다	你可以根据距离来设置整体色调的变化。	你可以根據距離來設定顏色的變化。
+sDistanceFadeTips	You can set the color change depending on the distance.	距離に応じて色の変更ができます	거리에 따라 색상을 변경할 수 있습니다	您可以在此设置整体色调跟随距离的变化。	你可以根據距離來設定顏色的變化。
 sStartDistance	Start Distance	開始距離	시작 거리	开始距离	開始距離
 sEndDistance	End Distance	終了距離	종료 거리	结束距离	結束距離
 sAudioLink	AudioLink	AudioLink	AudioLink	AudioLink	AudioLink
@@ -307,8 +307,8 @@ sEncryptionTips	Decrypt the mesh from 4 keys.	4つのキーによってメッシ
 sIgnoreEncryption	Ignore Encryption	Ignore Encryption	Ignore Encryption	Ignore Encryption	Ignore Encryption
 sKeys	Keys	Keys	Keys	Keys	Keys
 sNormalMapReflection	Normal Map & Reflection	ノーマルマップ・光沢設定	노멀 맵 광택 설정	法线贴图 & 反射设置	法線貼圖 & 反射設定
-sNormalMapSetting	Normal Map	ノーマルマップ設定	노멀 맵 설정	法线贴图设置	法線貼圖設定
-sNormalMapTips	You can set the normal map.	ノーマルマップの設定ができます	노멀 맵을 설정할 수 있습니다	你可以设置法线贴图。	你可以設定法線貼圖。
+sNormalMapSetting	Normal Map	ノーマルマップ設定	노멀 맵 설정	NormalMap设置（法线贴图）	法線貼圖設定
+sNormalMapTips	You can set the normal map.	ノーマルマップの設定ができます	노멀 맵을 설정할 수 있습니다	您可以在此设置法线贴图。	你可以設定法線貼圖。
 sNormalMap	Normal Map	ノーマルマップ	노멀 맵	法线贴图	法線貼圖
 sNormalMap2nd	Normal Map 2nd	ノーマルマップ2nd	노멀 맵 2nd	第二法线贴图	法線貼圖 2nd
 sNormalRGB	Normal (RGB)	ノーマル (RGB)	노멀 (RGB)	法线 (RGB)	法線（RGB）
@@ -356,10 +356,10 @@ sChromaticAberration	Chromatic Aberration	色収差	색수차	色差	色差
 sEnvironmentColor	Environment Color	環境光の色	환경광 색상	环境光颜色	環境光色
 sParticleLoop	Particle Loop	パーティクルループ数	파티클 루프 수	粒子循环数	粒子循環數
 sStencilSetting	Stencil	ステンシル設定	Stencil 설정	Stencil 设置	Stencil 設定
-sStencilTips	You can set the Stencil	ステンシル(眉毛を髪の上に表示するなど)の設定ができます	Stencil (눈썹을 머리 위에 표시하는 등)을 설정할 수 있습니다	你可以配置详细的 Stencil 设置。	你可以配置詳細的 Stencil 設定。
+sStencilTips	You can set the Stencil	ステンシル(眉毛を髪の上に表示するなど)の設定ができます	Stencil (눈썹을 머리 위에 표시하는 등)을 설정할 수 있습니다	您可以在此配置详细的 Stencil 设置。	你可以配置詳細的 Stencil 設定。
 sAdvanced	Advanced	拡張設定	확장 설정	扩展设置	擴展設定
 sRenderingSetting	Rendering	レンダリング設定	렌더링 설정	渲染设置	渲染設定
-sRenderingTips	You can configure detailed rendering settings.	細かいレンダリングの設定ができます。	세세한 렌더링 설정을 할 수 있습니다.	你可以配置详细的渲染设置。	你可以配置詳細的渲染設定。
+sRenderingTips	You can configure detailed rendering settings.	細かいレンダリングの設定ができます。	세세한 렌더링 설정을 할 수 있습니다.	您可以在此配置详细的渲染设置。	你可以配置詳細的渲染設定。
 sZClip	ZClip	ZClip	ZClip	ZClip	ZClip
 sZWrite	ZWrite	ZWrite	ZWrite	ZWrite	ZWrite
 sZTest	ZTest	ZTest	ZTest	ZTest	ZTest
@@ -378,7 +378,7 @@ sBlendOpAlpha	BlendOp Alpha	BlendOp Alpha	BlendOp Alpha	BlendOp Alpha	BlendOp Al
 sRenderingReset	Reset Rendering Properties	レンダリング設定を初期化	렌더링 설정을 초기화	重置渲染设置	重置渲染設定
 sLightBakeSetting	Light Bake	ライトベイク設定	Light Bake	光照烘培设置	Light Bake
 sOptimization	Optimization	最適化	최적화	优化	優化
-sOptimizationTips	You can optimize the material to reduce the load.	マテリアルを最適化して負荷を低減できます	머티리얼을최적화하여부하를저감할수있습니다	你可以对材质进行优化，以减少系统负荷。	你可以對材質進行優化，以減少負荷。
+sOptimizationTips	You can optimize the material to reduce the load.	マテリアルを最適化して負荷を低減できます	머티리얼을최적화하여부하를저감할수있습니다	您可以在此对材质进行优化，以减少系统负荷。	你可以對材質進行優化，以減少負荷。
 sCustomProperties	Custom Properties	カスタムプロパティ	커스텀 프로퍼티	自定义属性	自定義屬性
 sCustomPropertiesTips	Displays the properties added by the user.	ユーザーが追加したプロパティが表示されます	사용자가 추가한 속성이 표시됩니다	显示用户添加的属性	顯示用戶添加的屬性
 sBake	Bake	焼き込み	굽기	烘培	烘培
@@ -406,20 +406,20 @@ sReset	Reset	初期化	초기화	重置	重置
 sOpenManual	Open manual	マニュアルを表示	매뉴얼 표시	打开手册	打開手冊
 sFixNow	Fix Now	自動修正	자동 수정	自动修复	自動修改
 sDialogResetUV	Reset UV Setting	UV設定の初期化	UV 설정 초기화	重置 UV 设置	重置 UV 設定
-sDialogResetUVMes	Are you sure you want to reset UV setting?	UV設定を初期化しますか?	UV 설정을 초기화 하시겠습니까?	你确定要重置 UV 设置吗？	你確定要重置 UV 設定嗎？
+sDialogResetUVMes	Are you sure you want to reset UV setting?	UV設定を初期化しますか?	UV 설정을 초기화 하시겠습니까?	您确定要重置 UV 设置吗？	你確定要重置 UV 設定嗎？
 sDialogCannotBake	Cannot run a bake	焼き込みを実行できません	버닝을 실행할 수 없습니다	不能运行烘培	不能運行烘培
 sDialogNoNeedBake	No need to run a bake	焼き込む必要はありません	구울 필요가 없습니다	不需要运行烘培	不需要運行烘培
-sDialogSetMainTex	You need to set texture to Main Color.	メインカラーにテクスチャを設定する必要があります。	메인 컬러에 질감을 설정해야합니다.	你需要将纹理设置为主色。	你需要將紋理設定為主色。
-sDialogNoChange	You are not changing the color.	色を変更していません。	색상을 변경하지 않습니다.	你没有更改颜色。	你不改變顏色。
-sDialogNotUse2nd	You are not using the 2nd layer.	メインカラー2ndを利用していません。	메인 컬러 2nd를 이용하지 않습니다.	你没有使用第二层。	你沒有使用2nd。
-sDialogNotUse3rd	You are not using the 3rd layer.	メインカラー3rdを利用していません。	메인 컬러 3rd를 이용하지 않습니다.	你没有使用第三层。	你沒有使用 3rd。
-sDialogNotUseAll	You are not changing the color and not using layers.	色の変更とメインカラー2nd・3rdを使用していません。	색상 변경과 기본 색상 2nd · 3rd를 사용하지 않습니다.	你既没有更改颜色，也没有使用图层。	你沒有改變顏色，沒有使用圖層。
+sDialogSetMainTex	You need to set texture to Main Color.	メインカラーにテクスチャを設定する必要があります。	메인 컬러에 질감을 설정해야합니다.	您需要将纹理设置为主色。	你需要將紋理設定為主色。
+sDialogNoChange	You are not changing the color.	色を変更していません。	색상을 변경하지 않습니다.	您没有更改颜色。	你不改變顏色。
+sDialogNotUse2nd	You are not using the 2nd layer.	メインカラー2ndを利用していません。	메인 컬러 2nd를 이용하지 않습니다.	您没有使用第二层。	你沒有使用2nd。
+sDialogNotUse3rd	You are not using the 3rd layer.	メインカラー3rdを利用していません。	메인 컬러 3rd를 이용하지 않습니다.	您没有使用第三层。	你沒有使用 3rd。
+sDialogNotUseAll	You are not changing the color and not using layers.	色の変更とメインカラー2nd・3rdを使用していません。	색상 변경과 기본 색상 2nd · 3rd를 사용하지 않습니다.	您既没有更改颜色，也没有使用图层。	你沒有改變顏色，沒有使用圖層。
 sDialogRunBake	Run bake?	焼き込みを実行しますか?	굽기를 실행 하시겠습니까?	进行烘培？	運行烘培？
-sDialogBakeMain	Do you want to bake main texture?	メインカラーをベイクしますか?	메인 컬러를 구워 하시겠습니까?	你要烘培主纹理吗？	你要烘培主紋理嗎？
-sDialogBakeShadow	Do you want to bake shadow texture?	影テクスチャをベイクしますか?	그림자 텍스처를 구워 하시겠습니까?	你要烘培阴影纹理吗？	你要烘培陰影紋理嗎？
-sDialogBakeMatCap	Do you want to bake matcap?	マットキャップをベイクしますか?	매트 캡을 구워 하시겠습니까?	你要烘培 matcap 吗？	你要烘培 matcap 嗎？
-sDialogBakeTriMask	Do you want to bake TriMask (Mask of Matcap / Rim / Emission)?	TriMask(マットキャップ、リムライト、発光のマスク)をベイクしますか?	TriMask (매트 모자, 림 라이트 발광 마스크)를 구워 하시겠습니까?	你要烘培这三个蒙版（MatCap/Rim/自发光）吗？	你要烘培這三個蒙版（MatCap/Rim/自發光）嗎？
-sDialogBakeOutline	Do you want to bake outline texture?	輪郭線の色のテクスチャをベイクしますか?	윤곽선 색의 질감을 구워 하시겠습니까?	你要烘培轮廓纹理吗？	你要烘培輪廓紋理嗎？
+sDialogBakeMain	Do you want to bake main texture?	メインカラーをベイクしますか?	메인 컬러를 구워 하시겠습니까?	您确定要烘培主纹理吗？	你要烘培主紋理嗎？
+sDialogBakeShadow	Do you want to bake shadow texture?	影テクスチャをベイクしますか?	그림자 텍스처를 구워 하시겠습니까?	您确定要烘培阴影纹理吗？	你要烘培陰影紋理嗎？
+sDialogBakeMatCap	Do you want to bake matcap?	マットキャップをベイクしますか?	매트 캡을 구워 하시겠습니까?	您确定要烘培 matcap 吗？	你要烘培 matcap 嗎？
+sDialogBakeTriMask	Do you want to bake TriMask (Mask of Matcap / Rim / Emission)?	TriMask(マットキャップ、リムライト、発光のマスク)をベイクしますか?	TriMask (매트 모자, 림 라이트 발광 마스크)를 구워 하시겠습니까?	您确定要烘培这三个蒙版（MatCap/Rim/发光）吗？	你要烘培這三個蒙版（MatCap/Rim/自發光）嗎？
+sDialogBakeOutline	Do you want to bake outline texture?	輪郭線の色のテクスチャをベイクしますか?	윤곽선 색의 질감을 구워 하시겠습니까?	您确定要烘培轮廓纹理吗？	你要烘培輪廓紋理嗎？
 sDialogGifToAtlas	Convert Gif to Atlas	Gifをアトラス化	Gif를 아틀라스 화	将 Gif 转换成图集	將 Gif 轉換成 Atlas
 sDialogTexPow2	Do you want to adjust the texture resolution to power of 2?	テクスチャ全体の解像度を2の累乗に合わせますか?	텍스처 전체 해상도를 2의 거듭 제곱에 맞게 하시겠습니까?	你要把纹理分辨率调整为 2 的幂吗？	你要把紋理分辨率調整為 2 的冪嗎？
 sDialogImportOldVer	The package you are importing is an older version than the already imported lilToon. Do you want to continue?	インポートしようとしているパッケージは既にインポートされているlilToonよりも古いバージョンです。続行しますか？	Import하고 있는 패키지는 이미 Import된 lilToon보다 오래된 버전입니다.속행할까요?	您要导入的 lilToon 版本早于已导入的 lilToon 版本。是否继续？	你要導入的包版本早於已導入的lilToon版本。是否繼續？
@@ -455,7 +455,7 @@ sPresetShadowBlur	Shadow Blur	影ぼかし	그림자 흐림	阴影模糊	陰影�
 sPresetShadowStrength	Shadow Mask	影マスク	그림자 마스크	阴影蒙版	陰影蒙版
 sPresetShadowColor	Shadow Color	影色	그림자 색	阴影颜色	陰影顏色
 sPresetShadowColor2	Shadow Color 2nd	影色2	그림자 색 2	阴影颜色 2	陰影顏色 2
-sPresetEmissionColor	Emission Color	発光色	발광색	发光色	自發光顏色
+sPresetEmissionColor	Emission Color	発光色	발광색	发光颜色	自發光顏色
 sPresetEmissionMask	Emission Mask	発光マスク	발광 마스크	发光蒙版	自發光蒙版
 sPresetEmissionGrad	Emission Grad	発光グラデーション	발광 그라데이션	发光渐变	自發光漸變
 sPresetEmission2Color	Emission 2nd Color	発光2nd色	발광 2nd 색상	第二发光颜色	自發光 2nd 顏色
