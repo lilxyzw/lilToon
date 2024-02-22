@@ -38,7 +38,7 @@ sBlurR	Blur (R)	ぼかし (R)	흐리게 (R)	模糊 (R)	模糊 (R)
 sBlurRGB	Blur (RGB = 1st/2nd/3rd)	ぼかし (RGB = 1st/2nd/3rd)	흐리게 (RGB = 1st/2nd/3rd)	模糊 (RGB = 第一/第二/第三)	模糊 (RGB = 1st/2nd/3rd)
 sBlurMask	Blur Mask	ぼかし量マスク	흐림 효과 마스크	模糊噪声	模糊掩碼
 sAlphaR	Alpha (R)	透明度 (R)	투명도 (R)	透明度 (R)	透明度 (R)
-sMainColorPower	Main Color Power	メインカラーの強度	메인 컬러의 강도	主色功率	主色功率
+sMainColorPower	Main Color Power	メインカラーの強度	메인 컬러의 강도	主色强度	主色功率
 sEnableLighting	Enable Lighting	ライトの明るさを反映	라이팅을 적용	启用照明	啟用照明
 sUVSetting	UV Setting	UV設定	UV 설정	UV设置	UV 設定
 sUVAnimation	UV Animation	UVアニメーション	UV 애니메이션	UV 动画	UV 動畫
@@ -242,6 +242,7 @@ sTessellationTips	You can set the tessellation.	テッセレーションのか�
 sTessellationEdge	Threshold length	閾値	길이의 한계	阈值长度	閾值長度
 sTessellationShrink	Shrink	縮小補正	축소	缩减	縮減
 sTessellationFactor	Max Factor	最大分割数	최대 분할수	最大系数	最大係數
+RimShade	RimShade	RimShade	RimShade	启用边缘阴影	RimShade
 sEmissionSetting	Emission	発光設定	발광 설정	Emission设置（发光效果）	發光設定
 sEmissionTips	You can set the color and blinking of the light.	発光の色や点滅に関する設定ができます	발광의 색이나 점멸에 관한 설정이 가능합니다	您可以在此设置灯光颜色和闪烁。	你可以設定燈光的顏色和閃爍。
 sEmission	Emission	発光テクスチャ	발광	启用发光效果	發光
