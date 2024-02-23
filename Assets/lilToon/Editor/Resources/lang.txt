@@ -249,7 +249,7 @@ sEmissionTips	You can set the color and blinking of the light.	発光の色や�
 sEmission	Emission	発光テクスチャ	발광	自发光效果	發光
 sEmission2nd	Emission 2nd	発光テクスチャ2nd	발광 2nd	次要自发光	發光 2nd
 sBlinkStrength	Blink Strength	点滅の強さ	점멸 힘	闪烁强度	閃爍強度
-sBlinkType	Blink Type	点滅タイプ	점멸 타입	不使用渐变闪烁	閃爍類型
+sBlinkType	Blink Type	点滅タイプ	점멸 타입	禁用渐变闪烁	閃爍類型
 sBlinkSpeed	Blink Speed	点滅の速度	점멸 속도	闪烁速度	閃爍速度
 sBlinkOffset	Blink Offset	点滅のズレ	점멸의 차이	闪烁偏移	閃爍偏移
 sGradation	Gradation	グラデーション	그라데이션	渐变	漸變
