@@ -479,7 +479,7 @@ sPresetFurNormal	Fur Normal	ファーノーマルマップ	퍼 노멀 맵	毛发
 sPresetFurNoise	Fur Noise	ファーノイズ	파 노이즈	毛发噪声	毛皮噪聲
 sPresetFurMask	Fur Mask	ファーマスク	퍼 마스크	毛发蒙版	毛皮蒙版
 sShaderSetting	Shader Setting (for all materials)	シェーダー設定 (全マテリアル共通)	쉐이더 설정 (전체 재료 공통)	着色器设置（用于所有材质）	著色器設定（用於所有材質）
-sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	此处关闭的功能将从着色器中删除。通过关闭未使用的功能，可以减少你的 Avatar 的大小，同时还能减少负载。	此處關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的 Avatar 的大小，同時也能減少負載。​​
+sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	此处关闭的功能将从着色器中删除。通过关闭未使用的功能，可以减少你的 Avatar 的大小，同时还能减少负载。	此處關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的 Avatar 的大小，同時也能減少負載。
 sSettingLock	Lock	ロック	Lock	锁定	鎖定
 sShaderSettingOptimizeInTestBuild	Optimize in test build	テストビルドでも最適化を行う	테스트 빌드로 최적화	为测试构建优化	在測試構建中優化
 sShaderSettingOptimizeInEditor	[Debug] Optimize in editor	[Debug] エディタ上で最適化	[Debug] 에디터로 최적화	[Debug] 为编辑器优化	[Debug] 在編輯器中優化
@@ -535,4 +535,4 @@ sUtilDotTexRedRatio	Select a reduction ratio	縮小率を選択してくださ�
 sUtilShaderNotFound	Shader is not found.	シェーダーが見つかりません。	쉐이더가 없습니다.	未找到着色器。	未找到著色器。
 sUtilSelectPresets	Select presets	プリセットを選択してください。	사전 설정을 선택하십시오.	请选择一个预设。	請選擇一個預設。
 sUtilMaterialAlreadyExist	Materials may already exist. Are you sure you want to overwrite it?	マテリアルが既に存在している可能性があります。上書きしてもよろしいですか？	재료가 이미있을 수 있습니다. 덮어 하시겠습니까?	该材质可能已经存在，您确定要覆盖它吗？	該材質可能已經存在。 你確定要覆蓋它嗎？
-sUtilInvalidFormat	Invalid format.	フォーマットが不正です。	Invalid format.	无效格式。	無效格式。
+sUtilInvalidFormat	Invalid format.	フォーマットが不正です。	Invalid format.	无效的格式。	無效的格式。
