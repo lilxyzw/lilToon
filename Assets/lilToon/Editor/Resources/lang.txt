@@ -1,5 +1,5 @@
-Language	English	Japanese	Korean	Chinese Simplified	Chinese Traditional
-sLanguageWarning			기계번역을 사용하고 있기 때문에 번역이 정확하지 않을 수 있습니다.	翻译可能不准确，因为你们的大狐狸没时间捏。	翻譯可能不准確，因為使用了機器翻譯。
+Language	English	Japanese	Korean	简体中文	Chinese Traditional
+sLanguageWarning			기계번역을 사용하고 있기 때문에 번역이 정확하지 않을 수 있습니다.	翻译可能不准确，长按 Alt 键可显示原文。	翻譯可能不准確，因為使用了機器翻譯。
 sEditorMode	Editor Mode	編集モード	편집 모드	编辑器模式	編輯器模式
 sEditorModeSimple	Simple	簡易設定	간이 설정	简易设置	簡易設定
 sEditorModeAdvanced	Advanced	詳細設定	상세 설정	详细设置	詳細設定
@@ -70,7 +70,7 @@ sCopyModeFlip	Flip	反転	반전	翻转	翻轉
 sPosition	Position	座標	좌표	坐标	座標
 sPositionX	Position X	X座標	X좌표	X 坐标	X 座標
 sPositionY	Position Y	Y座標	Y좌표	Y 坐标	Y 座標
-sScale	Scale	サイズ	크기	尺寸	尺寸
+sScale	Scale	サイズ	크기	平铺大小	尺寸
 sScaleX	Scale X	X軸サイズ	X축 크기	X 尺寸	X 尺寸
 sScaleY	Scale Y	Y軸サイズ	Y축 크기	Y 尺寸	Y 尺寸
 sVector	Vector	向き	방향	向量	向量
@@ -214,7 +214,7 @@ sDirectivity	Directivity	指向性	지향성	指向性	指向性
 sViewDirectionStrength	View direction strength	視線方向の影響度	뷰 방향의 영향도	视线方向强度	視線方向影響
 sOutlineSetting	Outline	輪郭線設定	윤곽선 설정	Outline 设置       （描边效果）	輪廓設定
 sOutlineTips	You can set the color and thickness of the outline.	輪郭線の色や太さの設定ができます	윤곽선의 색과 굵기를 설정할 수 있습니다	您可以在此设置轮廓的颜色和厚度。	你可以設定輪廓的顏色和厚度。
-sOutline	Outline	輪郭線	윤곽선	显示轮廓	輪廓
+sOutline	Outline	輪郭線	윤곽선	描边效果	輪廓
 sHighlight	Highlight	ハイライト	하이라이트	高亮颜色	高亮顏色
 sWidth	Mask & Width	マスクと太さ	마스크와 굵기	蒙版 & 宽度	蒙版 & 寬度
 sWidthR	Width (R)	太さ (R)	굵기 (R)	宽度 (R)	寬度 (R)
@@ -237,11 +237,12 @@ sVertexColor2Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> V
 sLayerNum	Layer Counts	レイヤー数	레이어 수	层数	層數
 sRootWidth	Root Width	根本の太さ	근본 굵기	根厚度	根厚度
 sTouchStrength	Touch strength	接触強度	접촉 강도	接触强度	接觸強度
-sTessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	镶嵌 (极高负载)	Tessellation（極高的負荷）
+sTessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	镶嵌化处理 (极高负载)	Tessellation（極高的負荷）
+Tessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	镶嵌化处理	Tessellation（極高的負荷）
 sTessellationTips	You can set the tessellation.	テッセレーションのかかり方を設定できます	텟세레이션을 설정할 수 있습니다.	您可以在此设置镶嵌选项。	你可以設定 Tessellation。
-sTessellationEdge	Threshold length	閾値	길이의 한계	阈值长度	閾值長度
-sTessellationShrink	Shrink	縮小補正	축소	缩减	縮減
-sTessellationFactor	Max Factor	最大分割数	최대 분할수	最大系数	最大係數
+sTessellationEdge	Threshold length	閾値	길이의 한계	阈值	閾值長度
+sTessellationShrink	Shrink	縮小補正	축소	收缩幅度	縮減
+sTessellationFactor	Max Factor	最大分割数	최대 분할수	最大细分数	最大係數
 RimShade	RimShade	RimShade	RimShade	启用边缘阴影	RimShade
 sEmissionSetting	Emission	発光設定	발광 설정	Emission设置     （自发光效果）	發光設定
 sEmissionTips	You can set the color and blinking of the light.	発光の色や点滅に関する設定ができます	발광의 색이나 점멸에 관한 설정이 가능합니다	您可以在此设置灯光颜色和闪烁。	你可以設定燈光的顏色和閃爍。
@@ -345,7 +346,7 @@ sRimLightDirection	Light direction strength	ライト方向の影響度	라이�
 sRimDirectionRange	Direct light width	直接光の幅	직접 빛의 폭	直射光宽	直射光寬
 sRimIndirectionRange	Indirect light width	間接光の幅	간접 조명의 폭	间接光宽	間接光寬
 sGlitterSetting	Glitter	ラメ設定	Glitter 설정	Glitter 设置         （亮片效果）	Glitter 設定
-sGlitter	Glitter	ラメ	Glitter	启用闪烁效果	Glitter
+sGlitter	Glitter	ラメ	Glitter	启用亮片 (闪烁) 效果	Glitter
 sParticleSize	Particle Size	パーティクルサイズ	파티클 사이즈	粒子大小	粒子大小
 sContrast	Contrast	コントラスト	콘트라스트	对比度	對比度
 sPostContrast	Post Contrast	コントラスト（後処理）	콘트라스트(후처리)	对比度（后处理）	對比度（後處理）
