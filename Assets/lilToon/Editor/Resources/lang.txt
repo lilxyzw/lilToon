@@ -207,12 +207,12 @@ sShadowBorderColor	Border Color	境界の色	경계의 색	边界颜色	邊界�
 sShadowBorderRange	Border Range	境界の幅	경계의 폭	边界范围	邊界範圍
 sIgnoreBorderProperties	Ignore border properties	影範囲設定を無視して適用	범위 설정 무시	忽略边界设置	忽略邊界設定
 sFlat	Flat	平面化	플랫	平展    	平的
-sBacklightSetting	Backlight	逆光ライト	Backlight 설정	Backlight 设置    （背光效果）	背光效果設定（Backlight）
+sBacklightSetting	Backlight	逆光ライト	Backlight 설정	Backlight 设置      (背光效果)	背光效果設定（Backlight）
 sBacklight	Backlight	逆光ライト	Backlight	背光效果	背光效果
 sBacklightTips	Add a backlight when the light is behind the model.	逆光時に光を乗せる表現ができます	라이트가 모델 뒤에 있을 때 백라이트를 추가하다	当摄像机对准模型的背光面时，为模型的受光面添加高光效果	當照明在模型後方時添加 Backlight。
 sDirectivity	Directivity	指向性	지향성	指向性	指向性
 sViewDirectionStrength	View direction strength	視線方向の影響度	뷰 방향의 영향도	视线方向强度	視線方向影響
-sOutlineSetting	Outline	輪郭線設定	윤곽선 설정	Outline 设置       （描边效果）	輪廓設定
+sOutlineSetting	Outline	輪郭線設定	윤곽선 설정	Outline 设置      (描边效果)	輪廓設定
 sOutlineTips	You can set the color and thickness of the outline.	輪郭線の色や太さの設定ができます	윤곽선의 색과 굵기를 설정할 수 있습니다	您可以在此设置轮廓的颜色和厚度。	你可以設定輪廓的顏色和厚度。
 sOutline	Outline	輪郭線	윤곽선	描边效果	輪廓
 sHighlight	Highlight	ハイライト	하이라이트	高亮颜色	高亮顏色
@@ -244,7 +244,7 @@ sTessellationEdge	Threshold length	閾値	길이의 한계	阈值	閾值長度
 sTessellationShrink	Shrink	縮小補正	축소	收缩幅度	縮減
 sTessellationFactor	Max Factor	最大分割数	최대 분할수	最大细分数	最大係數
 RimShade	RimShade	RimShade	RimShade	边缘阴影	邊緣陰影設定（RimShade）
-sEmissionSetting	Emission	発光設定	발광 설정	Emission 设置    （自发光效果）	自發光設定
+sEmissionSetting	Emission	発光設定	발광 설정	Emission 设置      (自发光效果)	自發光設定
 sEmissionTips	You can set the color and blinking of the light.	発光の色や点滅に関する設定ができます	발광의 색이나 점멸에 관한 설정이 가능합니다	您可以在此设置灯光颜色和闪烁。	你可以設定燈光的顏色和閃爍。
 sEmission	Emission	発光テクスチャ	발광	自发光效果	自發光
 sEmission2nd	Emission 2nd	発光テクスチャ2nd	발광 2nd	次要自发光	自發光 2nd
@@ -309,7 +309,7 @@ sEncryptionTips	Decrypt the mesh from 4 keys.	4つのキーによってメッシ
 sIgnoreEncryption	Ignore Encryption	Ignore Encryption	Ignore Encryption	Ignore Encryption	Ignore Encryption
 sKeys	Keys	Keys	Keys	Keys	Keys
 sNormalMapReflection	Normal Map & Reflection	ノーマルマップ・光沢設定	노멀 맵 광택 설정	法线贴图 & 反射设置	法線貼圖 & 反射設定
-sNormalMapSetting	Normal Map	ノーマルマップ設定	노멀 맵 설정	NormalMap 设置（法线贴图）	法線貼圖設定
+sNormalMapSetting	Normal Map	ノーマルマップ設定	노멀 맵 설정	NormalMap 设置      (法线贴图)	法線貼圖設定
 sNormalMapTips	You can set the normal map.	ノーマルマップの設定ができます	노멀 맵을 설정할 수 있습니다	您可以在此设置法线贴图。	你可以設定法線貼圖。
 sNormalMap	Normal Map	ノーマルマップ	노멀 맵	法线贴图	法線貼圖
 sNormalMap2nd	Normal Map 2nd	ノーマルマップ2nd	노멀 맵 2nd	第二法线贴图	法線貼圖 2nd
@@ -317,7 +317,7 @@ sNormalRGB	Normal (RGB)	ノーマル (RGB)	노멀 (RGB)	法线 (RGB)	法線（RG
 sAnisotropy	Anisotropy	異方性反射	애니소트로픽	各向异性反射	各向異性反射
 sTangentWidth	Tangent Width	タンジェント方向の幅	Tangent Width	Tangent Width	Tangent Width
 sBitangentWidth	Bitangent Width	バイタンジェント方向の幅	Bitangent Width	Bitangent Width	Bitangent Width
-sReflectionsSetting	Reflections	光沢設定	광택 설정	Refection 设置    （反射效果）	反射效果設定（Refection）
+sReflectionsSetting	Reflections	光沢設定	광택 설정	Refection 设置      (反射效果)	反射效果設定（Refection）
 sReflectionsTips	You can set the Reflections.	光沢に関する設定ができます	광택 관한 설정을 할 수 있습니다	设置材质的反射效果。	你可以設定反射效果。
 sReflection	Reflection	反射	반사	反射效果	反射效果
 sSmoothness	Smoothness	滑らかさ	부드러움	平滑度	平滑度
@@ -331,7 +331,7 @@ sSpecularReal	Realistic	リアル	리얼	现实	現實
 sSpecularToon	Toon	トゥーン	툰	卡通	卡通
 sMultiLightSpecular	Multi Light Specular	複数ライトから光沢を生成	복수 라이트에서 광택 생성	从多个光源生成反射	從多個光源生成反射
 sApplyReflection	Environment Reflections	環境光の反射	환경광 반사	环境反射	環境反射
-sMatCapSetting	MatCap	マットキャップ設定	매트 캡 설정	MatCap 设置       （材质捕获）	MatCap 設定
+sMatCapSetting	MatCap	マットキャップ設定	매트 캡 설정	MatCap 设置      (材质捕获)	MatCap 設定
 sMatCap	MatCap	マットキャップ	매트 캡	MatCap	MatCap
 sMatCap2nd	MatCap 2nd	マットキャップ2nd	매트 캡 2nd	第二 MatCap	MatCap 2nd
 sBlendUV1	Blend UV1	UV1を合成	Blend UV1	Blend UV1	Blend UV1
@@ -339,13 +339,13 @@ sMatCapZRotCancel	Z-axis rotation cancellation	Z軸回転キャンセル	Z축 �
 sFixPerspective	Fix Perspective	パース補正	Fix Perspective	透视校正	透視校正
 sHelpMatCapBlending	Turn off "Enable Lighting" in multiply mode.	乗算モードでは"ライティングを適用"を0にしてください	곱셈 모드에서는 "라이팅을 적용"을 0으로 해 주세요	关闭 Multiply 模式下的“启用照明”。	關閉 Multiply 模式下的「啟用照明」。
 sMatCapCustomNormal	Custom normal map	カスタムノーマルマップ	커스텀 노멀 맵	自定义法线贴图	自定義法線貼圖
-sRimLightSetting	Rim Light	リムライト設定	림 라이트 설정	Rim Light 设置    （轮廓光）	輪廓光效果設定（Rim Light）
+sRimLightSetting	Rim Light	リムライト設定	림 라이트 설정	Rim Light 设置      (轮廓光)	輪廓光效果設定（Rim Light）
 sRimLight	Rim Light	リムライト	림 라이트	轮廓光	輪廓光
 sFresnelPower	Fresnel Power	リムライトの細さ	림 라이트의 벌금	菲涅尔折射率	菲涅爾功率
 sRimLightDirection	Light direction strength	ライト方向の影響度	라이트 방향의 영향도	光线方向影响	光線方向影響
 sRimDirectionRange	Direct light width	直接光の幅	직접 빛의 폭	直射光宽	直射光寬
 sRimIndirectionRange	Indirect light width	間接光の幅	간접 조명의 폭	间接光宽	間接光寬
-sGlitterSetting	Glitter	ラメ設定	Glitter 설정	Glitter 设置          （亮片效果）	亮粉效果設定（Glitter）
+sGlitterSetting	Glitter	ラメ設定	Glitter 설정	Glitter 设置      (亮片效果)	亮粉效果設定（Glitter）
 sGlitter	Glitter	ラメ	Glitter	亮片效果	亮粉效果
 sParticleSize	Particle Size	パーティクルサイズ	파티클 사이즈	粒子大小	粒子大小
 sContrast	Contrast	コントラスト	콘트라스트	对比度	對比度
@@ -362,12 +362,12 @@ sStencilTips	You can set the Stencil	ステンシル(眉毛を髪の上に表示
 sAdvanced	Advanced	拡張設定	확장 설정	扩展设置	進階設定
 sRenderingSetting	Rendering	レンダリング設定	렌더링 설정	渲染设置	渲染設定
 sRenderingTips	You can configure detailed rendering settings.	細かいレンダリングの設定ができます。	세세한 렌더링 설정을 할 수 있습니다.	您可以在此配置详细的渲染设置。	你可以配置詳細的渲染設定。
-sZClip	ZClip	ZClip	ZClip	ZClip           (深度剪裁)	ZClip
-sZWrite	ZWrite	ZWrite	ZWrite	ZWrite         (写入深度)	ZWrite
-sZTest	ZTest	ZTest	ZTest	ZTest           (遮挡方式)	ZTest
+sZClip	ZClip	ZClip	ZClip	ZClip   (深度剪裁)	ZClip
+sZWrite	ZWrite	ZWrite	ZWrite	ZWrite   (写入深度)	ZWrite
+sZTest	ZTest	ZTest	ZTest	ZTest   (遮挡方式)	ZTest
 sOffsetFactor	Offset Factor	Offset Factor	Offset Factor	Offset Factor	Offset Factor
 sOffsetUnits	Offset Units	Offset Units	Offset Units	Offset Units	Offset Units
-sColorMask	Color Mask	Color Mask	Color Mask	Color Mask  (色彩通道)	Color Mask
+sColorMask	Color Mask	Color Mask	Color Mask	Color Mask   (色彩通道)	Color Mask
 sAlphaToMask	AlphaToMask	AlphaToMask	AlphaToMask	AlphaToMask	AlphaToMask
 sForward	Forward	Forward	Forward	Forward	Forward
 sForwardAdd	ForwardAdd	ForwardAdd	ForwardAdd	ForwardAdd	ForwardAdd
@@ -535,4 +535,4 @@ sUtilDotTexRedRatio	Select a reduction ratio	縮小率を選択してくださ�
 sUtilShaderNotFound	Shader is not found.	シェーダーが見つかりません。	쉐이더가 없습니다.	未找到着色器。	未找到著色器。
 sUtilSelectPresets	Select presets	プリセットを選択してください。	사전 설정을 선택하십시오.	请选择一个预设。	請選擇一個預設。
 sUtilMaterialAlreadyExist	Materials may already exist. Are you sure you want to overwrite it?	マテリアルが既に存在している可能性があります。上書きしてもよろしいですか？	재료가 이미있을 수 있습니다. 덮어 하시겠습니까?	该材质可能已经存在，您确定要覆盖它吗？	該材質可能已經存在。 你確定要覆蓋它嗎？
-sUtilInvalidFormat	Invalid format.	フォーマットが不正です。	Invalid format.	无效的格式。	無效格式。
+sUtilInvalidFormat	Invalid format.	フォーマットが不正です。	Invalid format.	无效格式。	無效格式。
