@@ -1183,6 +1183,14 @@ public class lilToonSetting : ScriptableObject
             material.HasProperty("_IDMask6") && material.GetFloat("_IDMask6") != 0.0f ||
             material.HasProperty("_IDMask7") && material.GetFloat("_IDMask7") != 0.0f ||
             material.HasProperty("_IDMask8") && material.GetFloat("_IDMask8") != 0.0f ||
+            material.HasProperty("_IDMaskPrior1") && material.GetFloat("_IDMaskPrior1") != 0.0f ||
+            material.HasProperty("_IDMaskPrior2") && material.GetFloat("_IDMaskPrior2") != 0.0f ||
+            material.HasProperty("_IDMaskPrior3") && material.GetFloat("_IDMaskPrior3") != 0.0f ||
+            material.HasProperty("_IDMaskPrior4") && material.GetFloat("_IDMaskPrior4") != 0.0f ||
+            material.HasProperty("_IDMaskPrior5") && material.GetFloat("_IDMaskPrior5") != 0.0f ||
+            material.HasProperty("_IDMaskPrior6") && material.GetFloat("_IDMaskPrior6") != 0.0f ||
+            material.HasProperty("_IDMaskPrior7") && material.GetFloat("_IDMaskPrior7") != 0.0f ||
+            material.HasProperty("_IDMaskPrior8") && material.GetFloat("_IDMaskPrior8") != 0.0f ||
             material.HasProperty("_IDMaskIsBitmap") && material.GetFloat("_IDMaskIsBitmap") != 0.0f ||
             material.HasProperty("_IDMaskCompile") && material.GetFloat("_IDMaskCompile") != 0.0f
         ))
@@ -1285,14 +1293,14 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.LIL_FEATURE_DITHER = shaderSetting.LIL_FEATURE_DITHER || propname.Contains("_UseDither");
 
             if(!shaderSetting.LIL_FEATURE_IDMASK && (
-                propname.Contains("_IDMask1") || propname.Contains("_IDMaskIndex1") ||
-                propname.Contains("_IDMask2") || propname.Contains("_IDMaskIndex2") ||
-                propname.Contains("_IDMask3") || propname.Contains("_IDMaskIndex3") ||
-                propname.Contains("_IDMask4") || propname.Contains("_IDMaskIndex4") ||
-                propname.Contains("_IDMask5") || propname.Contains("_IDMaskIndex5") ||
-                propname.Contains("_IDMask6") || propname.Contains("_IDMaskIndex6") ||
-                propname.Contains("_IDMask7") || propname.Contains("_IDMaskIndex7") ||
-                propname.Contains("_IDMask8") || propname.Contains("_IDMaskIndex8")
+                propname.Contains("_IDMask1") || propname.Contains("_IDMaskIndex1") || propname.Contains("_IDMaskPrior1") ||
+                propname.Contains("_IDMask2") || propname.Contains("_IDMaskIndex2") || propname.Contains("_IDMaskPrior2") ||
+                propname.Contains("_IDMask3") || propname.Contains("_IDMaskIndex3") || propname.Contains("_IDMaskPrior3") ||
+                propname.Contains("_IDMask4") || propname.Contains("_IDMaskIndex4") || propname.Contains("_IDMaskPrior4") ||
+                propname.Contains("_IDMask5") || propname.Contains("_IDMaskIndex5") || propname.Contains("_IDMaskPrior5") ||
+                propname.Contains("_IDMask6") || propname.Contains("_IDMaskIndex6") || propname.Contains("_IDMaskPrior6") ||
+                propname.Contains("_IDMask7") || propname.Contains("_IDMaskIndex7") || propname.Contains("_IDMaskPrior7") ||
+                propname.Contains("_IDMask8") || propname.Contains("_IDMaskIndex8") || propname.Contains("_IDMaskPrior8")
             ))
             {
                 shaderSetting.LIL_FEATURE_IDMASK = true;
