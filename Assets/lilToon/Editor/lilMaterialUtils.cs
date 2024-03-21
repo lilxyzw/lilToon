@@ -597,6 +597,7 @@ namespace lilToon
                     material.SetTexture("_SmoothnessTex", null);
                     material.SetTexture("_MetallicGlossMap", null);
                     material.SetTexture("_ReflectionColorTex", null);
+                    material.SetTexture("_ReflectionCubeTex", null);
                 }
                 if(material.GetFloat("_UseMatCap") == 0.0f)
                 {
@@ -607,6 +608,12 @@ namespace lilToon
                 {
                     material.SetTexture("_MatCap2ndTex", null);
                     material.SetTexture("_MatCap2ndBlendMask", null);
+                }
+                if(!material.shader.name.Contains("Outline"))
+                {
+                    material.SetTexture("_OutlineTex", null);
+                    material.SetTexture("_OutlineWidthMask", null);
+                    material.SetTexture("_OutlineVectorTex", null);
                 }
                 if(material.GetFloat("_UseRim") == 0.0f) material.SetTexture("_RimColorTex", null);
                 if(material.GetFloat("_UseGlitter") == 0.0f) material.SetTexture("_GlitterColorTex", null);
