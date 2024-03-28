@@ -241,6 +241,8 @@ namespace lilToon
                         var v = dicC[name];
                         Color c = ShouldLinear(shader, name) ? v.c.linear : v.c;
                         sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + LilF2S(c.r) + "," + LilF2S(c.g) + "," + LilF2S(c.b) + "," + LilF2S(c.a) + ")");
+
+                        if(name == "_Color" && (v.c.r + v.c.g + v.c.b <= 0.001f)) sb.AppendLine(GetIndent(indF4 - 8) + "#define sampler_MainTex lil_sampler_linear_repeat_");
                         continue;
                     }
                 }
