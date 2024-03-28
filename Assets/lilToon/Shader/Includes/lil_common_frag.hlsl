@@ -1189,7 +1189,7 @@
             float rim = pow(saturate(1.0 - nvabs), _RimShadeFresnelPower);
             rim = lilTooningScale(_AAStrength, rim, _RimShadeBorder, _RimShadeBlur);
             rim *= _RimShadeColor.a;
-            #if defined(LIL_FEATURE_ShadowColorTex)
+            #if defined(LIL_FEATURE_RimShadeMask)
                 rim *= LIL_SAMPLE_2D(_RimShadeMask, samp, fd.uvMain).r;
             #endif
             fd.col.rgb = lerp(fd.col.rgb, fd.col.rgb * _RimShadeColor.rgb, rim);
