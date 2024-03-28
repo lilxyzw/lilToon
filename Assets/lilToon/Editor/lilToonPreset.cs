@@ -147,6 +147,7 @@ public class lilToonPreset : ScriptableObject
         private bool shouldSaveNormalMap = true;
         private bool shouldSaveNormalMap2nd = true;
         private bool shouldSaveAnisotropy = true;
+        private bool shouldSaveRimShade = true;
         private bool shouldSaveBacklight = true;
         private bool shouldSaveReflection = true;
         private bool shouldSaveMatCap = true;
@@ -277,6 +278,7 @@ public class lilToonPreset : ScriptableObject
                 shouldSaveNormalMap                 = EditorGUILayout.ToggleLeft(GetLoc("sNormalMap"), shouldSaveNormalMap);
                 shouldSaveNormalMap2nd              = EditorGUILayout.ToggleLeft(GetLoc("sNormalMap2nd"), shouldSaveNormalMap2nd);
                 shouldSaveAnisotropy                = EditorGUILayout.ToggleLeft(GetLoc("sAnisotropy"), shouldSaveAnisotropy);
+                shouldSaveRimShade                  = EditorGUILayout.ToggleLeft(GetLoc("sRimShade"), shouldSaveRimShade);
                 shouldSaveBacklight                 = EditorGUILayout.ToggleLeft(GetLoc("sBacklight"), shouldSaveBacklight);
                 shouldSaveReflection                = EditorGUILayout.ToggleLeft(GetLoc("sReflection"), shouldSaveReflection);
                 shouldSaveMatCap                    = EditorGUILayout.ToggleLeft(GetLoc("sMatCap"), shouldSaveMatCap);
@@ -410,6 +412,7 @@ public class lilToonPreset : ScriptableObject
                     shouldSaveNormalMap && lilPropertyNameChecker.IsNormalMapProperty(propName) ||
                     shouldSaveNormalMap2nd && lilPropertyNameChecker.IsNormalMap2ndProperty(propName) ||
                     shouldSaveAnisotropy && lilPropertyNameChecker.IsAnisotropyProperty(propName) ||
+                    shouldSaveRimShade && lilPropertyNameChecker.IsRimShadeProperty(propName) ||
                     shouldSaveBacklight && lilPropertyNameChecker.IsBacklightProperty(propName) ||
                     shouldSaveReflection && lilPropertyNameChecker.IsReflectionProperty(propName) ||
                     shouldSaveMatCap && lilPropertyNameChecker.IsMatCapProperty(propName) ||
@@ -489,6 +492,7 @@ public class lilToonPreset : ScriptableObject
             shouldSaveNormalMap = val;
             shouldSaveNormalMap2nd = val;
             shouldSaveAnisotropy = val;
+            shouldSaveRimShade = val;
             shouldSaveBacklight = val;
             shouldSaveReflection = val;
             shouldSaveMatCap = val;

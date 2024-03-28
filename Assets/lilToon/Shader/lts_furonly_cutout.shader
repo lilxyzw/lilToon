@@ -207,7 +207,7 @@ Shader "_lil/[Optional] lilToonFurOnlyCutout"
 
         //----------------------------------------------------------------------------------------------------------------------
         // Rim Shade
-        [lilToggleLeft] _UseRimShade                ("RimShade", Int) = 0
+        [lilToggleLeft] _UseRimShade                ("sRimShade", Int) = 0
                         _RimShadeColor              ("sColor", Color) = (0.5,0.5,0.5,1.0)
         [NoScaleOffset] _RimShadeMask               ("Mask", 2D) = "white" {}
                         _RimShadeNormalStrength     ("sNormalStrength", Range(0, 1)) = 1.0

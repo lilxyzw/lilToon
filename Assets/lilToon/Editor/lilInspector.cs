@@ -2656,7 +2656,7 @@ namespace lilToon
                 {
                     if(ShouldDrawBlock(PropertyBlock.RimShade))
                     {
-                        edSet.isShowRimShade = lilEditorGUI.Foldout("RimShade", edSet.isShowRimShade);
+                        edSet.isShowRimShade = lilEditorGUI.Foldout(GetLoc("sRimShade"), edSet.isShowRimShade);
                         DrawMenuButton(GetLoc("sAnchorRimShade"), PropertyBlock.RimShade);
                         if(edSet.isShowRimShade)
                         {
