@@ -28,6 +28,9 @@
 #if defined(LIL_V2G_NORMAL_WS)
     float3 ndc = (input[0].normalWS     +input[1].normalWS      +input[2].normalWS)     *0.333333333333;
 #endif
+#if defined(LIL_V2F_LIGHTCOLOR) && defined(LIL_FEATURE_LTCGI) && defined(LIL_PASS_FORWARD)
+    float3 lcc = (input[0].lightColor   +input[1].lightColor    +input[2].lightColor)   * 0.333333333333;
+#endif
 #if defined(LIL_V2G_VERTEXLIGHT_FOG) && !(!defined(LIL_USE_ADDITIONALLIGHT_VS) && defined(LIL_HDRP))
     LIL_VERTEXLIGHT_FOG_TYPE vlfc = (input[0].vlf + input[1].vlf + input[2].vlf) * 0.333333333333;
 #endif
@@ -64,6 +67,9 @@ for(uint fl = 0; fl < _FurLayerNum; fl++)
         #endif
         #if defined(LIL_V2F_NORMAL_WS)
             output.normalWS = lerp(input[ii2].normalWS,ndc,lpmix);
+        #endif
+        #if defined(LIL_V2F_LIGHTCOLOR) && defined(LIL_FEATURE_LTCGI) && defined(LIL_PASS_FORWARD)
+            output.lightColor = lerp(input[ii2].lightColor,lcc,lpmix);
         #endif
         #if defined(LIL_V2F_VERTEXLIGHT_FOG) && !(!defined(LIL_USE_ADDITIONALLIGHT_VS) && defined(LIL_HDRP))
             output.vlf = lerp(input[ii2].vlf,vlfc,lpmix);

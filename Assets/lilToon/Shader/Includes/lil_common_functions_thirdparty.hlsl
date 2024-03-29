@@ -107,6 +107,39 @@ bool lilCheckAudioLink()
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
+// LTCGI
+// https://github.com/PiMaker/ltcgi
+#if defined(LIL_FEATURE_LTCGI)
+#define Sample(smp,uv) SampleLevel(smp,uv,0)
+#include "Packages/at.pimaker.ltcgi/Shaders/LTCGI_structs.cginc"
+struct lil_ltcgi_struct
+{
+    float3 diff;
+    float3 spec;
+};
+void callback_diffuse(inout lil_ltcgi_struct acc, in ltcgi_output output)
+{
+    acc.diff += output.intensity * output.color * 1.5;
+}
+void callback_specular(inout lil_ltcgi_struct acc, in ltcgi_output output)
+{
+    acc.spec += output.intensity * output.color * 1.5;
+}
+#define LTCGI_V2_CUSTOM_INPUT lil_ltcgi_struct
+#define LTCGI_V2_DIFFUSE_CALLBACK callback_diffuse
+#define LTCGI_V2_SPECULAR_CALLBACK callback_specular
+#include "Packages/at.pimaker.ltcgi/Shaders/LTCGI.cginc"
+
+float3 lilLTCGI(float3 positionWS, float3 N, float3 V, float2 uv1)
+{
+    lil_ltcgi_struct ltcgi = (lil_ltcgi_struct)0;
+    LTCGI_Contribution(ltcgi, positionWS, normalize(N+V*2), V, 1, uv1);
+    return ltcgi.diff + ltcgi.spec;
+}
+#undef Sample
+#endif
+
+//------------------------------------------------------------------------------------------------------------------------------
 // GTAvaCrypt
 // https://github.com/rygo6/GTAvaCrypt/blob/master/LICENSE
 #if defined(LIL_FEATURE_ENCRYPTION)

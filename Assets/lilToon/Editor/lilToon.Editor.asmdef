@@ -18,6 +18,11 @@
             "name": "com.vrchat.base",
             "expression": "",
             "define": "LILTOON_VRCSDK3"
+        },
+        {
+            "name": "at.pimaker.ltcgi",
+            "expression": "1.4",
+            "define": "LILTOON_LTCGI"
         }
     ]
 }

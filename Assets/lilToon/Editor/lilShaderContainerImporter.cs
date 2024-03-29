@@ -829,6 +829,9 @@ namespace lilToon
             }
 
             subShaderTags = line.Substring(first, second - first);
+            #if LILTOON_LTCGI
+            subShaderTags += "\"LTCGI\"=\"ALWAYS\"";
+            #endif
         }
 
         private static string ReadTextFile(string path)
@@ -1218,6 +1221,9 @@ namespace lilToon
                     "#pragma multi_compile_fwdbase",
                     "#pragma multi_compile_vertex _ FOG_LINEAR FOG_EXP FOG_EXP2",
                     "#pragma multi_compile_instancing",
+                    #if LILTOON_LTCGI
+                    "#define LIL_FEATURE_LTCGI",
+                    #endif
                     "#define LIL_PASS_FORWARD");
             }
         }
