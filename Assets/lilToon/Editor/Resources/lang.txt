@@ -231,6 +231,7 @@ sColorFromMain	Get color from Main	メインカラーから色を取得	메인 �
 sFurSetting	Fur	ファー設定	퍼 설정	毛发设置	毛皮設置
 sFurTips	You can set the length and direction of the fur.	ファーの長さや向き、質感の設定ができます	퍼의 길이와 방향, 질감을 설정할 수 있습니다	你可以设置毛发的长度和方向。	你可以設置毛皮的長度和方向。
 sFur	Fur	ファー	퍼	毛发	毛皮
+sAntiLight	Anti Light	Anti Light	Anti Light	Anti Light	Anti Light
 sGravity	Gravity	重力	중력	重力	重力
 sAO	AO	陰影	AO	AO	AO
 sVertexColor2Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> Vector

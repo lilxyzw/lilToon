@@ -259,6 +259,7 @@ float4  _MainTex_ST;
 #if defined(LIL_FUR)
     float4  _FurNoiseMask_ST;
     float4  _FurVector;
+    float4  _FurRimColor;
 #endif
 
 // Refraction
@@ -541,6 +542,8 @@ float   _lilShadowCasterBias;
     float   _FurRootOffset;
     float   _FurRandomize;
     float   _FurCutoutLength;
+    float   _FurRimFresnelPower;
+    float   _FurRimAntiLight;
     #if defined(LIL_FEATURE_FUR_COLLISION)
         float   _FurTouchStrength;
     #endif

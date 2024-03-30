@@ -46,6 +46,9 @@
                         _FurRootOffset              ("sRootWidth", Range(-1,0)) = 0
                         _FurCutoutLength            ("sLength+ (Cutout)", Float) = 0.8
                         _FurTouchStrength           ("sTouchStrength", Range(0, 1)) = 0
+                        _FurRimColor                ("sColor", Color) = (0.0,0.0,0.0,1.0)
+        [PowerSlider(3.0)]_FurRimFresnelPower       ("sFresnelPower", Range(0.01, 50)) = 3.0
+                        _FurRimAntiLight            ("sAntiLight", Range(0, 1)) = 0.5
 
         //----------------------------------------------------------------------------------------------------------------------
         // Fur Advanced
