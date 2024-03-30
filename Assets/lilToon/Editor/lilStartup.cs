@@ -79,14 +79,22 @@ namespace lilToon
                 var srRP = new StreamReader(currentRPPath);
                 string shaderRP = srRP.ReadLine();
                 string shaderAPI = srRP.ReadLine();
+                string shaderLTCGI = srRP.ReadLine();
                 srRP.Close();
 
                 bool shouldRewrite = false;
                 string projectRP = lilRenderPipelineReader.GetRP().ToString();
                 string projectAPI = SystemInfo.graphicsDeviceType.ToString();
+                #if LILTOON_LTCGI
+                string projectLTCGI = "LTCGI";
+                #else
+                string projectLTCGI = "";
+                #endif
                 var swRP = new StreamWriter(currentRPPath,false);
                 swRP.WriteLine(projectRP);
                 swRP.WriteLine(projectAPI);
+                swRP.WriteLine(projectLTCGI);
+                swRP.Close();
 
                 if(shaderRP != projectRP)
                 {
@@ -100,7 +108,12 @@ namespace lilToon
                     shouldRewrite = true;
                 }
 
-                swRP.Close();
+                if(shaderLTCGI != projectLTCGI)
+                {
+                    Debug.Log("[lilToon] Switch LTCGI");
+                    shouldRewrite = true;
+                }
+
                 if(shouldRewrite)
                 {
                     if(shaderSetting.isDebugOptimize)
