@@ -830,7 +830,7 @@ namespace lilToon
 
             subShaderTags = line.Substring(first, second - first);
             #if LILTOON_LTCGI
-            subShaderTags += "\"LTCGI\"=\"ALWAYS\"";
+            subShaderTags += " \"LTCGI\"=\"ALWAYS\"";
             #endif
         }
 

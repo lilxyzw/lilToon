@@ -2086,7 +2086,7 @@ struct lilLightData
 #endif
 
 #if defined(LIL_FEATURE_LTCGI)
-    #define LIL_APPLY_LTCGI(o) o.lightColor += lilLTCGI(vertexInput.positionWS, normalize(vertexNormalInput.normalWS), normalize(lilHeadDirection(lilToAbsolutePositionWS(vertexInput.positionWS))), input.uv1);
+    #define LIL_APPLY_LTCGI(o) lilLTCGI(o, vertexInput.positionWS, normalize(vertexNormalInput.normalWS), normalize(lilHeadDirection(lilToAbsolutePositionWS(vertexInput.positionWS))), input.uv1);
 #else
     #define LIL_APPLY_LTCGI(o)
 #endif
