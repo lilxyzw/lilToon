@@ -8,16 +8,18 @@
 - Shaders/lilCustomShaderDatas.lilblock
 - Shaders/lilCustomShaderProperties.lilblock
 - Editor/CustomInspector.cs
+- Editor/TemplateFull.asmdef
 
 バリエーション数が多いため、適宜不要なバリエーションを削除してください。またルートのフォルダ名（Template）はわかりやすいように任意の名前に変更してください。
 
 ## シェーダー名の設定
-シェーダー名を変更するには以下の二箇所を編集します。
+シェーダー名を変更するには以下の3箇所を編集します。
 
 |ファイル|該当箇所|
 |-|-|
 |Shaders/lilCustomShaderDatas.lilblock|`ShaderName ""`タグ内|
 |Editor/CustomInspector.cs|`shaderName`変数|
+|Editor/TemplateFull.asmdef|`name`およびファイル名自体|
 
 ## マテリアル変数の追加
 まず、`lilCustomShaderProperties.lilblock`内に任意のプロパティを追加してください。ShaderLabsの`Properties`ブロックと同様の書式で記述します。今回は例として以下のものを追加します。

@@ -1,5 +1,6 @@
 - [概要](ja-jp/ "lilToon")
 - [はじめに](ja-jp/first.md "はじめに - lilToon")
+- [【重要】バージョン1.xから2.xへの移行について](ja-jp/migrate1to2.md "【重要】バージョン1.xから2.xへの移行について - lilToon")
 - **基本設定**
     - [- 基本設定](ja-jp/base/base.md "基本設定 - lilToon")
     - [- FakeShadow設定](ja-jp/base/fakeshadow.md "FakeShadow設定 - lilToon")

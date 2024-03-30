@@ -1,5 +1,6 @@
 - [Overview](en-us/ "Overview")
 - [First](en-us/first.md "First - lilToon")
+- [【Important】 About migrating from version 1.x to 2.x](en-us/migrate1to2.md "【Important】 About migrating from version 1.x to 2.x - lilToon")
 - **Base Setting**
     - [- Base Setting](en-us/base/base.md "Base Setting - lilToon")
     - [- FakeShadow](en-us/base/fakeshadow.md "FakeShadow - lilToon")
