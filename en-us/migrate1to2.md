@@ -88,7 +88,27 @@
 |public static bool ExistsEncryption()|Delete|
 
 ### lilLanguageManager
+
 |Name|Destination|
 |-|-|
 |public static void ApplySettingTemp()|Delete|
 |public static void SaveSettingTemp()|Delete|
+|public static void InitializeLanguage()|Delete|
+
+### lilToonEditorUtils
+
+|Name|Destination|
+|-|-|
+|public static string GetLoc()|Delete|
+
+### lilPresetWindow
+
+|Name|Destination|
+|-|-|
+|public static string GetLoc()|Delete|
+
+### lilDirectoryManager
+
+|Name|Destination|
+|-|-|
+|public static string GetEditorLanguageFileGUID()|Delete|
