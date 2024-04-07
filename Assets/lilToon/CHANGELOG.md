@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.3] - 2024-04-08
+### Fixed
+- ShadowCaster disappears when the outline is deleted
+- Some textures are not deleted in `Remove Unused Texture`
+- Optimization breaks IDMaskPrior function
+- Shader error when set color to black
+- RimShade mask now working
+- Saving RimShade presets
+- Set keywords on build
+
 ## [1.7.2] - 2024-01-18
 ### Fixed
 - Toggle doesn't work well in Unity 2019

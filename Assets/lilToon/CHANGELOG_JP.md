@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.3] - 2024-04-08
+### 修正
+- アウトラインの頂点が削除される場合に深度の書き出しが正しく動作しない問題を修正
+- `Remove Unused Texture`で一部テクスチャが残る問題を修正
+- 最適化でIDMaskPriorが正しく動作しなくなるのを修正
+- マテリアルの色を完全な黒に設定したときに最適化時にシェーダーが正しく動作しなくなるのを修正
+- RimShadeのマスクが正しく動作していないのを修正
+- RimShadeがプリセットに保存されないのを修正
+- 一部シェーダーキーワードをビルド時にセットするように修正
+
 ## [1.7.2] - 2024-01-18
 ### 修正
 - Unity 2019でトグルがうまく動作しないのを修正
