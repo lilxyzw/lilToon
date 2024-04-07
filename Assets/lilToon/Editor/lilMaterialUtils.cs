@@ -473,7 +473,7 @@ namespace lilToon
 
         public static void SetupMultiMaterial(Material[] materials, AnimationClip[] clips)
         {
-            var ms = materials.Where(m => new lilToonInspector.MaterialType(m, false).isMulti).ToArray();
+            var ms = materials.Where(m => m.shader.name.Contains("Multi")).ToArray();
             foreach(var binding in clips.SelectMany(c => AnimationUtility.GetCurveBindings(c)).ToArray())
             {
                 string propname = binding.propertyName;
