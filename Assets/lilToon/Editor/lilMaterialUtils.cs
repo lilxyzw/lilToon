@@ -471,6 +471,30 @@ namespace lilToon
             SetShaderKeywords(material, "BILLBOARD_FACE_CAMERA_POS",            false);
         }
 
+        public static void SetupMultiMaterial(Material[] materials, AnimationClip[] clips)
+        {
+            var ms = materials.Where(m => new lilToonInspector.MaterialType(m, false).isMulti).ToArray();
+            foreach(var binding in clips.SelectMany(c => AnimationUtility.GetCurveBindings(c)).ToArray())
+            {
+                string propname = binding.propertyName;
+                if(string.IsNullOrEmpty(propname) || !propname.Contains("material.")) continue;
+
+                void Set(string name, string keyword)
+                {
+                    if(propname.Contains(name))
+                        foreach(var m in ms)
+                        {
+                            m.EnableKeyword(keyword);
+                            EditorUtility.SetDirty(m);
+                        }
+                }
+                Set("_RimDirStrength", "GEOM_TYPE_LEAF");
+                Set("_MainTexHSVG", "EFFECT_HUE_VARIATION");
+                Set("_MainGradationStrength", "EFFECT_HUE_VARIATION");
+            }
+            AssetDatabase.SaveAssets();
+        }
+
         private static bool IsFeatureOnFloat(Material material, string propname)
         {
             if(material.HasProperty(propname)) return material.GetFloat(propname) != 0.0f;
