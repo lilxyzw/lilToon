@@ -1,5 +1,7 @@
 # 【Important】 About migrating from version 1.x to 2.x
 
+## [Note] lilToon 2.0.0 has not been released yet!
+
 ## Information for general users
 - Support for Unity 201**8** will end. It seems that many users are using 2019 or later, so you can continue to use lilToon 2.0 or later.
 - **Except for mesh encryption (AvatarEncryption)**, which is rarely used, it can be used as is.
@@ -10,6 +12,7 @@
 - **Auto Referenced in lilToon's asmdef has been turned off**, so tools and custom shaders that cause errors need to be addressed. The solution is as follows.
   1. If there is no asmdef in the script that causes the error, add it
   2. Added `lilToon.Editor` to Assembly Definition References in asmdef
+- By turning off `Auto Referenced` in `lilToon/Editor/lilToon.Editor.asmdef`, you can check errors even in versions earlier than 2.0.0.
 - Since we removed the Obsolete part from the C# script, we need to migrate to the modified function. The compatibility table is in [Migration destination for obsolete parts of C# scripts](#migration-destination-for-obsolete-parts-of-c-scripts).
 - By using asmdef's Version Defines, you can change the script's behavior depending on the lilToon version. However, **this will not work unless lilToon is under the Packages folder**, so if you do not need to use a preprocessor, you can also get the version of lilToon directly with `lilConstants.currentVersionName`. Parsing of semver can be done with `lilToon.SemVerParser`.
 - Mesh encryption (AvatarEncryption) has been removed. Basically, it seems that no tools are affected, but if you are, please fix the error.

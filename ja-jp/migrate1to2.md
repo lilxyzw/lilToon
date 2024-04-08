@@ -1,5 +1,7 @@
 # 【重要】バージョン1.xから2.xへの移行について
 
+## 【注意】lilToon 2.0.0はまだ公開されていません！
+
 ## 一般ユーザー向け情報
 - Unity 201**8**のサポートが終了します。多くのユーザーは2019以降を利用していると思われるのでlilToon 2.0以降も引き続き利用できます。
 - ほとんど使われていなかった**メッシュ暗号化（AvatarEncryption）以外はそのまま使用可能**です。
@@ -10,6 +12,7 @@
 - lilToon本体の**asmdefのAuto Referencedがオフになった**ため、エラーになるツールやカスタムシェーダーは対応が必要です。対応方法は以下の通りです。
   1. エラーになるスクリプトにasmdefがなければ追加
   2. asmdefのAssembly Definition Referencesに`lilToon.Editor`を追加
+- `lilToon/Editor/lilToon.Editor.asmdef`の`Auto Referenced`をオフにすることで2.0.0以前のバージョンでも動作の確認ができます。
 - C#スクリプトからObsoleteになっていた部分を削除したため、変更後の関数に移行する必要があります。対応表は[C#スクリプトの廃止（Obsolete）した部分及び移行先](#cスクリプトの廃止obsoleteした部分及び移行先)にあります。
 - asmdefのVersion Definesを使用することでlilToonのバージョンに応じてスクリプトの動作を変更できます。ただしこちらは**lilToonがPackagesフォルダ配下にないと動作しない**ため、プリプロセッサを使用する必要がない場合は`lilConstants.currentVersionName`で直接lilToonのバージョンを取得して対処するのも手です。semverのパースは`lilToon.SemVerParser`で行えます。
 - メッシュ暗号化（AvatarEncryption）が削除されました。基本的に影響を受けるツールは無いと思われますが、もし影響を受けた場合は該当部分を削除するなどの対応を行ってください。
