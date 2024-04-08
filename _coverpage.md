@@ -1,4 +1,4 @@
-<h1>lilToon<small>1.7.2</small></h1>
+<h1>lilToon<small>1.7.3</small></h1>
 
 > Feature-rich shaders for avatars
 
