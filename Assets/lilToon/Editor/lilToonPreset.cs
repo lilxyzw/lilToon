@@ -180,6 +180,7 @@ public class lilToonPreset : ScriptableObject
         private bool isShowFeatures = false;
         private bool isShowTextures = false;
 
+        #pragma warning disable CS0612
         private void OnGUI()
         {
             if(!(Selection.activeObject is Material)){
@@ -390,6 +391,7 @@ public class lilToonPreset : ScriptableObject
 
             EditorGUILayout.EndScrollView();
         }
+        #pragma warning restore CS0612
 
         private void CopyPropertiesToPreset(Material material)
         {
@@ -528,7 +530,7 @@ public class lilToonPreset : ScriptableObject
             }
         }
 
-        public static string GetLoc(string value) { return lilLanguageManager.GetLoc(value); }
+        [Obsolete] public static string GetLoc(string value) { return lilLanguageManager.GetLoc(value); }
     }
     #endregion
 }

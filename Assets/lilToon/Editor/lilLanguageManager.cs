@@ -88,6 +88,7 @@ namespace lilToon
             LoadLanguage(lilDirectoryManager.GUIDToPath(langFileGUID));
         }
 
+        [Obsolete]
         public static void InitializeLanguage()
         {
             if(langSet.languageNum == -1)
@@ -107,14 +108,18 @@ namespace lilToon
 
         public static void UpdateLanguage()
         {
+            #pragma warning disable CS0612
             string langPath = lilDirectoryManager.GetEditorLanguageFileGUID();
+            #pragma warning restore CS0612
             LoadLanguage(langPath);
             InitializeLabels();
         }
 
         public static void SelectLang()
         {
+            #pragma warning disable CS0612
             InitializeLanguage();
+            #pragma warning restore CS0612
             int numbuf = langSet.languageNum;
             langSet.languageNum = EditorGUILayout.Popup("Language", langSet.languageNum, langSet.languageNames.Split('\t'));
             if(numbuf != langSet.languageNum) UpdateLanguage();
