@@ -697,71 +697,82 @@ public class lilToonSetting : ScriptableObject
         var toVisit = new Queue<UnityEngine.Object>();
         var visited = new HashSet<UnityEngine.Object>();
 
-        foreach (var root in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects())
+        var startScenePath = UnityEngine.SceneManagement.SceneManager.GetActiveScene().path;
+        for (int i = -1; i < UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings; i++)
         {
-            toVisit.Enqueue(root.transform);
-            visited.Add(root.transform);
-        }
-
-        // use unity reflection to walk all properties in all objects referenced from the scene
-        while (toVisit.Count > 0)
-        {
-            var next = toVisit.Dequeue();
-            if (next == null) continue;
-            
-            callback.Invoke(next);
-
-            if (next is Transform)
+            if (i >= 0)
             {
-                var t = (Transform)next;
-                foreach (Transform child in t)
-                {
-                    if (!visited.Contains(child))
-                    {
-                        toVisit.Enqueue(child);
-                        visited.Add(child);
-                    }
-                }
-
-                foreach (var c in t.GetComponents(typeof(Component)))
-                {
-                    if (!(c is Transform) && !visited.Contains(c))
-                    {
-                        toVisit.Enqueue(c);
-                        visited.Add(c);
-                    }
-                }
+                var scenePath = UnityEngine.SceneManagement.SceneUtility.GetScenePathByBuildIndex(i);
+                UnityEditor.SceneManagement.EditorSceneManager.OpenScene(scenePath);
             }
-            else
+
+            foreach (var root in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects())
             {
-                var so = new SerializedObject(next);
-                var prop = so.GetIterator();
+                toVisit.Enqueue(root.transform);
+                visited.Add(root.transform);
+            }
 
-                bool enterChildren = true;
-                while (prop.Next(enterChildren))
+            // use unity reflection to walk all properties in all objects referenced from the scene
+            while (toVisit.Count > 0)
+            {
+                var next = toVisit.Dequeue();
+                if (next == null) continue;
+            
+                callback.Invoke(next);
+
+                if (next is Transform)
                 {
-                    enterChildren = true;
-
-                    switch (prop.propertyType)
+                    var t = (Transform)next;
+                    foreach (Transform child in t)
                     {
-                        case SerializedPropertyType.String:
-                            enterChildren = false;
-                            break;
-                        case SerializedPropertyType.ObjectReference:
+                        if (!visited.Contains(child))
                         {
-                            var obj = prop.objectReferenceValue;
-                            if (obj != null && !visited.Contains(obj))
-                            {
-                                toVisit.Enqueue(obj);
-                                visited.Add(obj);
-                            }
+                            toVisit.Enqueue(child);
+                            visited.Add(child);
+                        }
+                    }
 
-                            break;
+                    foreach (var c in t.GetComponents(typeof(Component)))
+                    {
+                        if (!(c is Transform) && !visited.Contains(c))
+                        {
+                            toVisit.Enqueue(c);
+                            visited.Add(c);
+                        }
+                    }
+                }
+                else
+                {
+                    var so = new SerializedObject(next);
+                    var prop = so.GetIterator();
+
+                    bool enterChildren = true;
+                    while (prop.Next(enterChildren))
+                    {
+                        enterChildren = true;
+
+                        switch (prop.propertyType)
+                        {
+                            case SerializedPropertyType.String:
+                                enterChildren = false;
+                                break;
+                            case SerializedPropertyType.ObjectReference:
+                            {
+                                var obj = prop.objectReferenceValue;
+                                if (obj != null && !visited.Contains(obj))
+                                {
+                                    toVisit.Enqueue(obj);
+                                    visited.Add(obj);
+                                }
+
+                                break;
+                            }
                         }
                     }
                 }
             }
         }
+        UnityEditor.SceneManagement.EditorSceneManager.OpenScene(startScenePath);
     }
     
     internal static void ApplyShaderSettingOptimized(List<Shader> shaders = null)
