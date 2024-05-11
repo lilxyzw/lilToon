@@ -125,10 +125,18 @@ namespace lilToon
             ltsfur      = Shader.Find("Hidden/lilToonFur");
             ltsfurc     = Shader.Find("Hidden/lilToonFurCutout");
             ltsfurtwo   = Shader.Find("Hidden/lilToonFurTwoPass");
+            ltsfuro     = Shader.Find("_lil/[Optional] lilToonFurOnlyTransparent");
+            ltsfuroc    = Shader.Find("_lil/[Optional] lilToonFurOnlyCutout");
+            ltsfurotwo  = Shader.Find("_lil/[Optional] lilToonFurOnlyTwoPass");
 
             ltsgem      = Shader.Find("Hidden/lilToonGem");
 
             ltsfs       = Shader.Find("_lil/[Optional] lilToonFakeShadow");
+
+            ltsover     = Shader.Find("_lil/[Optional] lilToonOverlay");
+            ltsoover    = Shader.Find("_lil/[Optional] lilToonOverlayOnePass");
+            ltslover    = Shader.Find("_lil/[Optional] lilToonLiteOverlay");
+            ltsloover   = Shader.Find("_lil/[Optional] lilToonLiteOverlayOnePass");
 
             ltsbaker    = Shader.Find("Hidden/ltsother_baker");
             ltspo       = Shader.Find("Hidden/ltspass_opaque");
