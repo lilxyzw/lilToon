@@ -124,6 +124,18 @@ v2g vert(appdata input)
     LIL_CUSTOM_VERT_COPY
 
     //------------------------------------------------------------------------------------------------------------------------------
+    // UDIM Discard
+    #if defined(LIL_FEATURE_UDIMDISCARD) && !defined(LIL_LITE)
+        if(_UDIMDiscardMode == 0 && _UDIMDiscardCompile == 1 && LIL_CHECK_UDIMDISCARD(input)) // Discard Vertices instead of just pixels
+        {
+            #if defined(LIL_V2F_POSITION_CS)
+            output.positionWS = 0.0/0.0;
+            #endif
+            return output;
+        }
+    #endif
+    
+    //------------------------------------------------------------------------------------------------------------------------------
     // Fog & Lighting
     lilFragData fd = lilInitFragData();
     LIL_GET_HDRPDATA(vertexInput,fd);
@@ -223,17 +235,6 @@ v2g vert(appdata input)
         #if defined(LIL_V2G_POSITION_WS)
             output.positionWS = idMasked ? 0.0/0.0 : output.positionWS;
         #endif
-    #endif
-
-    //------------------------------------------------------------------------------------------------------------------------------
-    // UDIM Discard
-    #if defined(LIL_FEATURE_UDIMDISCARD) && !defined(LIL_LITE)
-        if(_UDIMDiscardMode == 0 && _UDIMDiscardCompile == 1 && LIL_CHECK_UDIMDISCARD(input)) // Discard Vertices instead of just pixels
-        {
-            #if defined(LIL_V2F_POSITION_CS)
-            output.positionWS = 0.0/0.0;
-            #endif
-        }
     #endif
 
     return output;
