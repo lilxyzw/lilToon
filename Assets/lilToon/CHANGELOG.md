@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2024-06-05
+### Added
+- Property animations can now be taken into account when optimizing materials from external tools
+
+### Fixed
+- Fixed to search all scenes when building
+- UV Discard not working with ShadowCaster
+
 ## [1.7.3] - 2024-04-08
 ### Fixed
 - ShadowCaster disappears when the outline is deleted
