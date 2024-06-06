@@ -546,6 +546,11 @@ namespace lilToon
         public static void RemoveUnusedTexture(Material material, bool islite, params string[] animatedProps)
         {
             RemoveUnusedProperties(material);
+            RemoveUnusedTextureOnly(material, islite, animatedProps);
+        }
+
+        public static void RemoveUnusedTextureOnly(Material material, bool islite, params string[] animatedProps)
+        {
             if(islite)
             {
                 if(IsPropZero(material, "_UseShadow", animatedProps))
@@ -649,7 +654,7 @@ namespace lilToon
 
         private static bool IsPropZero(Material material, string name, string[] animatedProps)
         {
-            return material.GetFloat(name) == 0.0f && animatedProps.Contains(name);
+            return material.GetFloat(name) == 0.0f && !animatedProps.Contains(name);
         }
 
         public static void RemoveShaderKeywords(Material material)
