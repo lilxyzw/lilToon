@@ -74,7 +74,8 @@ namespace lilToon.External
             {
                 materials.AddRange(renderer.sharedMaterials);
             }
-            return materials.ToArray();
+            // sharedMaterials may a Material[null] on Unity 2022.3.22f1 if there is no material on a renderer.
+            return materials.Where(m => m != null).ToArray();
         }
 
         private static AnimationClip[] GetAnimationClipsFromGameObject(GameObject gameObject)
