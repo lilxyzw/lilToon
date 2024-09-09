@@ -31,7 +31,7 @@ lilToon is a shader developed for avatar-based services and has the following fe
 
 <div class="flex2">
 <h3>Stable</h3>
-<p>It is compatible with all types of Unity lighting, so the brightness is close to that of Standard Shader. It also supports a wide range of Unity versions for use in a variety of environments over a long period of time, reducing the need for shader migration. (Unity2017 - 2021, BRP/LWRP/URP/HDRP)</p>
+<p>It is compatible with all types of Unity lighting, so the brightness is close to that of Standard Shader. It also supports a wide range of Unity versions for use in a variety of environments over a long period of time, reducing the need for shader migration. (Unity2018 - 2023, BRP/LWRP/URP/HDRP)</p>
 </div>
 </div>
 

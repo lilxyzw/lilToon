@@ -29,7 +29,7 @@
 
 <div class="flex2">
 <h3>安定</h3>
-<p>Unityの全ライティングに対応済みでStandard Shaderに近い明るさに。さらに長期間、様々な環境で利用できるように幅広いUnityバージョンに対応しており、シェーダー移行の手間を減らします。（Unity2017 - 2021、BRP/LWRP/URP/HDRP）</p>
+<p>Unityの全ライティングに対応済みでStandard Shaderに近い明るさに。さらに長期間、様々な環境で利用できるように幅広いUnityバージョンに対応しており、シェーダー移行の手間を減らします。（Unity2018 - 2023、BRP/LWRP/URP/HDRP）</p>
 </div>
 </div>
 
