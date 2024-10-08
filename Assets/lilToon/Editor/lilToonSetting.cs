@@ -155,6 +155,8 @@ public class lilToonSetting : ScriptableObject
     public lilToonPreset presetHair;
     public lilToonPreset presetCloth;
 
+    private static HashSet<string> logs = new HashSet<string>();
+
     // This is not a shader setting, but the version number is stored here for material migration.
     public int previousVersion = 0;
 
@@ -858,6 +860,7 @@ public class lilToonSetting : ScriptableObject
         #endif
         try
         {
+            logs.Clear();
             #if UNITY_2022_1_OR_NEWER
                 var materialParents = new HashSet<Material>();
                 foreach(var m in materials)
@@ -893,6 +896,7 @@ public class lilToonSetting : ScriptableObject
             // Apply
             ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild", shaders, true);
             AssetDatabase.Refresh();
+            Debug.Log(string.Join(Environment.NewLine, logs));
         }
         catch(Exception e)
         {
@@ -921,9 +925,11 @@ public class lilToonSetting : ScriptableObject
         try
         {
             if(!ShouldOptimization()) return;
+            logs.Clear();
             var shaders = GetShaderListFromProject();
             lilEditorParameters.instance.modifiedShaders = string.Join(",", shaders.Select(s => s.name).Distinct().ToArray());
             ApplyShaderSettingOptimized(shaders);
+            Debug.Log(string.Join(Environment.NewLine, logs));
         }
         catch(Exception e)
         {
@@ -972,17 +978,17 @@ public class lilToonSetting : ScriptableObject
 
         if(!shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV && material.HasProperty("_MainTex_ScrollRotate") && material.GetVector("_MainTex_ScrollRotate") != lilConstants.defaultScrollRotate)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_ANIMATE_MAIN_UV : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_ANIMATE_MAIN_UV : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV = true;
         }
         if(!shaderSetting.LIL_FEATURE_SHADOW && material.HasProperty("_UseShadow") && material.GetFloat("_UseShadow") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_SHADOW : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_SHADOW : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_SHADOW = true;
         }
         if(!shaderSetting.LIL_FEATURE_RIMSHADE && material.HasProperty("_UseRimShade") && material.GetFloat("_UseRimShade") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_RIMSHADE : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_RIMSHADE : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_RIMSHADE = true;
         }
         if(!shaderSetting.LIL_FEATURE_RECEIVE_SHADOW && material.HasProperty("_UseShadow") && material.GetFloat("_UseShadow") != 0.0f && (
@@ -991,22 +997,22 @@ public class lilToonSetting : ScriptableObject
             (material.HasProperty("_Shadow3rdReceive") && material.GetFloat("_Shadow3rdReceive") > 0.0f))
         )
         {
-            Debug.Log("[lilToon] LIL_FEATURE_RECEIVE_SHADOW : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_RECEIVE_SHADOW : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_RECEIVE_SHADOW = true;
         }
         if(!shaderSetting.LIL_FEATURE_DISTANCE_FADE && material.HasProperty("_DistanceFade") && material.GetVector("_DistanceFade").z != lilConstants.defaultDistanceFadeParams.z)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_DISTANCE_FADE : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_DISTANCE_FADE : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_DISTANCE_FADE = true;
         }
         if(!shaderSetting.LIL_FEATURE_SHADOW_3RD && material.HasProperty("_Shadow3rdColor") && material.GetColor("_Shadow3rdColor").a != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_SHADOW_3RD : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_SHADOW_3RD : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_SHADOW_3RD = true;
         }
         if(!shaderSetting.LIL_FEATURE_SHADOW_LUT && material.HasProperty("_ShadowColorType") && material.GetFloat("_ShadowColorType") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_SHADOW_LUT : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_SHADOW_LUT : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_SHADOW_LUT = true;
         }
 
@@ -1014,8 +1020,8 @@ public class lilToonSetting : ScriptableObject
         {
             if(!shaderSetting.LIL_FEATURE_FUR_COLLISION && material.HasProperty("_FurTouchStrength") && material.GetFloat("_FurTouchStrength") != 0.0f)
             {
-                Debug.Log("[lilToon] LIL_FEATURE_FUR_COLLISION : " + AssetDatabase.GetAssetPath(material));
-                Debug.Log("[lilToon] LIL_OPTIMIZE_USE_VERTEXLIGHT : " + AssetDatabase.GetAssetPath(material));
+                logs.Add("[lilToon] LIL_FEATURE_FUR_COLLISION : " + AssetDatabase.GetAssetPath(material));
+                logs.Add("[lilToon] LIL_OPTIMIZE_USE_VERTEXLIGHT : " + AssetDatabase.GetAssetPath(material));
                 shaderSetting.LIL_FEATURE_FUR_COLLISION = true;
                 shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT = true;
             }
@@ -1023,22 +1029,22 @@ public class lilToonSetting : ScriptableObject
 
         if(!shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION && material.HasProperty("_MainTexHSVG") && material.GetVector("_MainTexHSVG") != lilConstants.defaultHSVG)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_MAIN_TONE_CORRECTION : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_MAIN_TONE_CORRECTION : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_MAIN_TONE_CORRECTION = true;
         }
         if(!shaderSetting.LIL_FEATURE_MAIN_GRADATION_MAP && material.HasProperty("_MainGradationStrength") && material.GetFloat("_MainGradationStrength") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_MAIN_GRADATION_MAP : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_MAIN_GRADATION_MAP : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_MAIN_GRADATION_MAP = true;
         }
         if(!shaderSetting.LIL_FEATURE_MAIN2ND && material.HasProperty("_UseMain2ndTex") && material.GetFloat("_UseMain2ndTex") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_MAIN2ND : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_MAIN2ND : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_MAIN2ND = true;
         }
         if(!shaderSetting.LIL_FEATURE_MAIN3RD && material.HasProperty("_UseMain3rdTex") && material.GetFloat("_UseMain3rdTex") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_MAIN3RD : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_MAIN3RD : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_MAIN3RD = true;
         }
         if(!shaderSetting.LIL_FEATURE_DECAL && (
@@ -1046,7 +1052,7 @@ public class lilToonSetting : ScriptableObject
             (material.HasProperty("_Main3rdTexIsDecal") && material.GetFloat("_Main3rdTexIsDecal") != 0.0f))
         )
         {
-            Debug.Log("[lilToon] LIL_FEATURE_DECAL : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_DECAL : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_DECAL = true;
         }
         if(!shaderSetting.LIL_FEATURE_ANIMATE_DECAL && (
@@ -1054,7 +1060,7 @@ public class lilToonSetting : ScriptableObject
             (material.HasProperty("_Main3rdTexDecalAnimation") && material.GetVector("_Main3rdTexDecalAnimation") != lilConstants.defaultDecalAnim))
         )
         {
-            Debug.Log("[lilToon] LIL_FEATURE_ANIMATE_DECAL : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_ANIMATE_DECAL : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_ANIMATE_DECAL = true;
         }
         if(!shaderSetting.LIL_FEATURE_LAYER_DISSOLVE && (
@@ -1062,22 +1068,22 @@ public class lilToonSetting : ScriptableObject
             (material.HasProperty("_Main3rdDissolveParams") && material.GetVector("_Main3rdDissolveParams").x != lilConstants.defaultDissolveParams.x))
         )
         {
-            Debug.Log("[lilToon] LIL_FEATURE_LAYER_DISSOLVE : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_LAYER_DISSOLVE : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_LAYER_DISSOLVE = true;
         }
         if(!shaderSetting.LIL_FEATURE_ALPHAMASK && material.HasProperty("_AlphaMaskMode") && material.GetFloat("_AlphaMaskMode") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_ALPHAMASK : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_ALPHAMASK : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_ALPHAMASK = true;
         }
         if(!shaderSetting.LIL_FEATURE_EMISSION_1ST && material.HasProperty("_UseEmission") && material.GetFloat("_UseEmission") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_EMISSION_1ST : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_EMISSION_1ST : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_EMISSION_1ST = true;
         }
         if(!shaderSetting.LIL_FEATURE_EMISSION_2ND && material.HasProperty("_UseEmission2nd") && material.GetFloat("_UseEmission2nd") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_EMISSION_2ND : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_EMISSION_2ND : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_EMISSION_2ND = true;
         }
         if(!shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV && (
@@ -1085,7 +1091,7 @@ public class lilToonSetting : ScriptableObject
             (material.HasProperty("_Emission2ndMap_ScrollRotate") && material.GetVector("_Emission2ndMap_ScrollRotate") != lilConstants.defaultScrollRotate))
         )
         {
-            Debug.Log("[lilToon] LIL_FEATURE_ANIMATE_EMISSION_UV : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_ANIMATE_EMISSION_UV : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_UV = true;
         }
         if(!shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_MASK_UV && (
@@ -1093,7 +1099,7 @@ public class lilToonSetting : ScriptableObject
             (material.HasProperty("_Emission2ndBlendMask_ScrollRotate") && material.GetVector("_Emission2ndBlendMask_ScrollRotate") != lilConstants.defaultScrollRotate))
         )
         {
-            Debug.Log("[lilToon] LIL_FEATURE_ANIMATE_EMISSION_MASK_UV : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_ANIMATE_EMISSION_MASK_UV : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_ANIMATE_EMISSION_MASK_UV = true;
         }
         if(!shaderSetting.LIL_FEATURE_EMISSION_GRADATION && (
@@ -1101,92 +1107,92 @@ public class lilToonSetting : ScriptableObject
             (material.HasProperty("_Emission2ndUseGrad") && material.GetFloat("_Emission2ndUseGrad") != 0.0f))
         )
         {
-            Debug.Log("[lilToon] LIL_FEATURE_EMISSION_GRADATION : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_EMISSION_GRADATION : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_EMISSION_GRADATION = true;
         }
         if(!shaderSetting.LIL_FEATURE_NORMAL_1ST && material.HasProperty("_UseBumpMap") && material.GetFloat("_UseBumpMap") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_NORMAL_1ST : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_NORMAL_1ST : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_NORMAL_1ST = true;
         }
         if(!shaderSetting.LIL_FEATURE_NORMAL_2ND && material.HasProperty("_UseBump2ndMap") && material.GetFloat("_UseBump2ndMap") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_NORMAL_2ND : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_NORMAL_2ND : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_NORMAL_2ND = true;
         }
         if(!shaderSetting.LIL_FEATURE_ANISOTROPY && material.HasProperty("_UseAnisotropy") && material.GetFloat("_UseAnisotropy") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_ANISOTROPY : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_ANISOTROPY : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_ANISOTROPY = true;
         }
         if(!shaderSetting.LIL_FEATURE_REFLECTION && material.HasProperty("_UseReflection") && material.GetFloat("_UseReflection") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_REFLECTION : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_REFLECTION : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_REFLECTION = true;
         }
         if(!shaderSetting.LIL_FEATURE_MATCAP && material.HasProperty("_UseMatCap") && material.GetFloat("_UseMatCap") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_MATCAP : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_MATCAP : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_MATCAP = true;
         }
         if(!shaderSetting.LIL_FEATURE_MATCAP_2ND && material.HasProperty("_UseMatCap2nd") && material.GetFloat("_UseMatCap2nd") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_MATCAP_2ND : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_MATCAP_2ND : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_MATCAP_2ND = true;
         }
         if(!shaderSetting.LIL_FEATURE_RIMLIGHT && material.HasProperty("_UseRim") && material.GetFloat("_UseRim") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_RIMLIGHT : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_RIMLIGHT : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_RIMLIGHT = true;
         }
         if(!shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION && material.HasProperty("_RimDirStrength") && material.GetFloat("_RimDirStrength") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_RIMLIGHT_DIRECTION : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_RIMLIGHT_DIRECTION : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_RIMLIGHT_DIRECTION = true;
         }
         if(!shaderSetting.LIL_FEATURE_GLITTER && material.HasProperty("_UseGlitter") && material.GetFloat("_UseGlitter") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_GLITTER : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_GLITTER : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_GLITTER = true;
         }
         if(!shaderSetting.LIL_FEATURE_BACKLIGHT && material.HasProperty("_UseBacklight") && material.GetFloat("_UseBacklight") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_BACKLIGHT : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_BACKLIGHT : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_BACKLIGHT = true;
         }
         if(!shaderSetting.LIL_FEATURE_PARALLAX && material.HasProperty("_UseParallax") && material.GetFloat("_UseParallax") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_PARALLAX : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_PARALLAX : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_PARALLAX = true;
             if(!shaderSetting.LIL_FEATURE_POM && material.HasProperty("_UsePOM") && material.GetFloat("_UsePOM") != 0.0f)
             {
-                Debug.Log("[lilToon] LIL_FEATURE_POM : " + AssetDatabase.GetAssetPath(material));
+                logs.Add("[lilToon] LIL_FEATURE_POM : " + AssetDatabase.GetAssetPath(material));
                 shaderSetting.LIL_FEATURE_POM = true;
             }
         }
         if(!shaderSetting.LIL_FEATURE_AUDIOLINK && material.HasProperty("_UseAudioLink") && material.GetFloat("_UseAudioLink") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_AUDIOLINK : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_AUDIOLINK : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_AUDIOLINK = true;
         }
         if(!shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX && material.HasProperty("_AudioLink2Vertex") && material.GetFloat("_AudioLink2Vertex") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_AUDIOLINK_VERTEX : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_AUDIOLINK_VERTEX : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_AUDIOLINK_VERTEX = true;
         }
         if(!shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL && material.HasProperty("_AudioLinkAsLocal") && material.GetFloat("_AudioLinkAsLocal") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_AUDIOLINK_LOCAL : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_AUDIOLINK_LOCAL : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_AUDIOLINK_LOCAL = true;
         }
         if(!shaderSetting.LIL_FEATURE_DISSOLVE && material.HasProperty("_DissolveParams") && material.GetVector("_DissolveParams").x != lilConstants.defaultDissolveParams.x)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_DISSOLVE : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_DISSOLVE : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_DISSOLVE = true;
         }
         if(!shaderSetting.LIL_FEATURE_DITHER && material.HasProperty("_UseDither") && material.GetFloat("_UseDither") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_FEATURE_DITHER : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_DITHER : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_DITHER = true;
         }
         if(!shaderSetting.LIL_FEATURE_IDMASK && (
@@ -1210,12 +1216,12 @@ public class lilToonSetting : ScriptableObject
             material.HasProperty("_IDMaskCompile") && material.GetFloat("_IDMaskCompile") != 0.0f
         ))
         {
-            Debug.Log("[lilToon] LIL_FEATURE_IDMASK : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_IDMASK : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_IDMASK = true;
         }
 
         if(!shaderSetting.LIL_FEATURE_UDIMDISCARD && material.HasProperty("_UDIMDiscardCompile") && material.GetFloat("_UDIMDiscardCompile") != 0.0f) {
-            Debug.Log("[lilToon] LIL_FEATURE_UDIMDISCARD : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_FEATURE_UDIMDISCARD : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_FEATURE_UDIMDISCARD = true;
         }
            
@@ -1224,24 +1230,24 @@ public class lilToonSetting : ScriptableObject
         {
             if(!shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV && material.HasProperty("_OutlineTex_ScrollRotate") && material.GetVector("_OutlineTex_ScrollRotate") != lilConstants.defaultScrollRotate)
             {
-                Debug.Log("[lilToon] LIL_FEATURE_ANIMATE_OUTLINE_UV : " + AssetDatabase.GetAssetPath(material));
+                logs.Add("[lilToon] LIL_FEATURE_ANIMATE_OUTLINE_UV : " + AssetDatabase.GetAssetPath(material));
                 shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV = true;
             }
             if(!shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION && material.HasProperty("_OutlineTexHSVG") && material.GetVector("_OutlineTexHSVG") != lilConstants.defaultHSVG)
             {
-                Debug.Log("[lilToon] LIL_FEATURE_OUTLINE_TONE_CORRECTION : " + AssetDatabase.GetAssetPath(material));
+                logs.Add("[lilToon] LIL_FEATURE_OUTLINE_TONE_CORRECTION : " + AssetDatabase.GetAssetPath(material));
                 shaderSetting.LIL_FEATURE_OUTLINE_TONE_CORRECTION = true;
             }
             if(!shaderSetting.LIL_FEATURE_OUTLINE_RECEIVE_SHADOW && material.HasProperty("_OutlineLitShadowReceive") && material.GetFloat("_OutlineLitShadowReceive") != 0.0f)
             {
-                Debug.Log("[lilToon] LIL_FEATURE_OUTLINE_RECEIVE_SHADOW : " + AssetDatabase.GetAssetPath(material));
+                logs.Add("[lilToon] LIL_FEATURE_OUTLINE_RECEIVE_SHADOW : " + AssetDatabase.GetAssetPath(material));
                 shaderSetting.LIL_FEATURE_OUTLINE_RECEIVE_SHADOW = true;
             }
         }
 
         if(!shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT && material.HasProperty("_VertexLightStrength") && material.GetFloat("_VertexLightStrength") != 0.0f)
         {
-            Debug.Log("[lilToon] LIL_OPTIMIZE_USE_VERTEXLIGHT : " + AssetDatabase.GetAssetPath(material));
+            logs.Add("[lilToon] LIL_OPTIMIZE_USE_VERTEXLIGHT : " + AssetDatabase.GetAssetPath(material));
             shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT = true;
         }
 
@@ -1474,7 +1480,7 @@ public class lilToonSetting : ScriptableObject
     private static void CheckTexture(ref bool LIL_FEATURE_Tex, string propname, Material material)
     {
         if(LIL_FEATURE_Tex || !material.HasProperty(propname) || material.GetTexture(propname) == null) return;
-        Debug.Log("[lilToon] " + propname + " : " + AssetDatabase.GetAssetPath(material));
+        logs.Add("[lilToon] " + propname + " : " + AssetDatabase.GetAssetPath(material));
         LIL_FEATURE_Tex = true;
     }
 
