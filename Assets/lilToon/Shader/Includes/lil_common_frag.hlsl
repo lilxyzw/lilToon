@@ -931,13 +931,44 @@
                 #endif
             #endif
 
-            // Shade
-            float4 lns = 1.0;
-            lns.x = saturate(dot(fd.L,N1)*0.5+0.5);
-            lns.y = saturate(dot(fd.L,N2)*0.5+0.5);
-            #if defined(LIL_FEATURE_SHADOW_3RD)
-                lns.z = saturate(dot(fd.L,N3)*0.5+0.5);
+            float2 shadowStrengthMask = 1;
+            #if defined(LIL_FEATURE_ShadowStrengthMask)
+                #if defined(_ShadowStrengthMaskLOD)
+                    shadowStrengthMask = LIL_SAMPLE_2D(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain).rg;
+                    if(_ShadowStrengthMaskLOD) shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).rg;
+                #else
+                    shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).rg;
+                #endif
             #endif
+
+            // Shade
+            float aastrencth = _AAStrength;
+            float4 lns = 1.0;
+            if(_ShadowMaskType == 2)
+            {
+                float3 faceR = mul((float3x3)LIL_MATRIX_M, float3(1.0,0.0,0.0));
+                float LdotR = dot(fd.L.xz, faceR.xz);
+                float sdf = LdotR < 0 ? shadowStrengthMask.g : shadowStrengthMask.r;
+
+                float3 faceF = mul((float3x3)LIL_MATRIX_M, float3(0.0,0.0,-1.0)).xyz;
+                faceF.y *= _ShadowFlatBlur;
+                faceF = dot(faceF,faceF) == 0 ? 0 : normalize(faceF);
+                float3 faceL = fd.L.xyz;
+                faceL.y *= _ShadowFlatBlur;
+                faceL = dot(faceL,faceL) == 0 ? 0 : normalize(faceL);
+
+                float lnSDF = dot(faceL,faceF);
+                lns = saturate(lnSDF * 0.5 + sdf * 0.5 + 0.25);
+                aastrencth = 0;
+            }
+            else
+            {
+                lns.x = saturate(dot(fd.L,N1)*0.5+0.5);
+                lns.y = saturate(dot(fd.L,N2)*0.5+0.5);
+                #if defined(LIL_FEATURE_SHADOW_3RD)
+                    lns.z = saturate(dot(fd.L,N3)*0.5+0.5);
+                #endif
+            }
 
             // Shadow
             #if (defined(LIL_USE_SHADOW) || defined(LIL_LIGHTMODE_SHADOWMASK)) && defined(LIL_FEATURE_RECEIVE_SHADOW)
@@ -985,21 +1016,21 @@
                 lns.xyz = _ShadowPostAO ? lns.xyz : lns.xyz * shadowBorderMask.rgb;
 
                 lns.w = lns.x;
-                lns.x = lilTooningNoSaturateScale(_AAStrength, lns.x, _ShadowBorder, shadowBlur);
-                lns.y = lilTooningNoSaturateScale(_AAStrength, lns.y, _Shadow2ndBorder, shadow2ndBlur);
-                lns.w = lilTooningNoSaturateScale(_AAStrength, lns.w, _ShadowBorder, shadowBlur, _ShadowBorderRange);
+                lns.x = lilTooningNoSaturateScale(aastrencth, lns.x, _ShadowBorder, shadowBlur);
+                lns.y = lilTooningNoSaturateScale(aastrencth, lns.y, _Shadow2ndBorder, shadow2ndBlur);
+                lns.w = lilTooningNoSaturateScale(aastrencth, lns.w, _ShadowBorder, shadowBlur, _ShadowBorderRange);
                 #if defined(LIL_FEATURE_SHADOW_3RD)
-                    lns.z = lilTooningNoSaturateScale(_AAStrength, lns.z, _Shadow3rdBorder, shadow3rdBlur);
+                    lns.z = lilTooningNoSaturateScale(aastrencth, lns.z, _Shadow3rdBorder, shadow3rdBlur);
                 #endif
                 lns = _ShadowPostAO ? lns * shadowBorderMask.rgbr : lns;
                 lns = saturate(lns);
             #else
                 lns.w = lns.x;
-                lns.x = lilTooningScale(_AAStrength, lns.x, _ShadowBorder, shadowBlur);
-                lns.y = lilTooningScale(_AAStrength, lns.y, _Shadow2ndBorder, shadow2ndBlur);
-                lns.w = lilTooningScale(_AAStrength, lns.w, _ShadowBorder, shadowBlur, _ShadowBorderRange);
+                lns.x = lilTooningScale(aastrencth, lns.x, _ShadowBorder, shadowBlur);
+                lns.y = lilTooningScale(aastrencth, lns.y, _Shadow2ndBorder, shadow2ndBlur);
+                lns.w = lilTooningScale(aastrencth, lns.w, _ShadowBorder, shadowBlur, _ShadowBorderRange);
                 #if defined(LIL_FEATURE_SHADOW_3RD)
-                    lns.z = lilTooningScale(_AAStrength, lns.z, _Shadow3rdBorder, shadow3rdBlur);
+                    lns.z = lilTooningScale(aastrencth, lns.z, _Shadow3rdBorder, shadow3rdBlur);
                 #endif
             #endif
 
@@ -1014,33 +1045,23 @@
 
             // Copy
             fd.shadowmix = lns.x;
-
             // Strength
             float shadowStrength = _ShadowStrength;
             #ifdef LIL_COLORSPACE_GAMMA
                 shadowStrength = lilSRGBToLinear(shadowStrength);
             #endif
-            float shadowStrengthMask = 1;
-            #if defined(LIL_FEATURE_ShadowStrengthMask)
-                #if defined(_ShadowStrengthMaskLOD)
-                    shadowStrengthMask = LIL_SAMPLE_2D(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain).r;
-                    if(_ShadowStrengthMaskLOD) shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).r;
-                #else
-                    shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).r;
-                #endif
-            #endif
-            if(_ShadowMaskType)
+            if(_ShadowMaskType == 1)
             {
                 float3 flatN = normalize(mul((float3x3)LIL_MATRIX_M, float3(0.0,0.25,1.0)));//normalize(LIL_MATRIX_M._m02_m12_m22);
                 float lnFlat = saturate((dot(flatN, fd.L) + _ShadowFlatBorder) / _ShadowFlatBlur);
                 #if (defined(LIL_USE_SHADOW) || defined(LIL_LIGHTMODE_SHADOWMASK)) && defined(LIL_FEATURE_RECEIVE_SHADOW)
                     lnFlat *= lerp(1.0, calculatedShadow, _ShadowReceive);
                 #endif
-                lns = lerp(lnFlat, lns, shadowStrengthMask);
+                lns = lerp(lnFlat, lns, shadowStrengthMask.r);
             }
-            else
+            else if(_ShadowMaskType == 0)
             {
-                shadowStrength *= shadowStrengthMask;
+                shadowStrength *= shadowStrengthMask.r;
             }
             lns.x = lerp(1.0, lns.x, shadowStrength);
 

@@ -5154,6 +5154,15 @@ namespace lilToon
                         EditorGUI.indentLevel -= 2;
                         LocalizedProperty(shadowStrength);
                     }
+                    else if(shadowMaskType.floatValue == 2.0f)
+                    {
+                        LocalizedPropertyTexture(new GUIContent("SDF", "Right (R), Left (G)"), shadowStrengthMask);
+                        EditorGUI.indentLevel += 2;
+                            LocalizedProperty(shadowStrengthMaskLOD);
+                            LocalizedProperty(shadowFlatBlur, "Blend Y Direction");
+                        EditorGUI.indentLevel -= 2;
+                        LocalizedProperty(shadowStrength);
+                    }
                     else
                     {
                         LocalizedPropertyTexture(maskStrengthContent, shadowStrengthMask, shadowStrength);
@@ -5291,6 +5300,15 @@ namespace lilToon
                         EditorGUI.indentLevel += 2;
                             LocalizedProperty(shadowFlatBorder);
                             LocalizedProperty(shadowFlatBlur);
+                        EditorGUI.indentLevel -= 2;
+                        LocalizedProperty(shadowStrength);
+                    }
+                    else if(shadowMaskType.floatValue == 2.0f)
+                    {
+                        LocalizedPropertyTexture(new GUIContent("SDF", "Right (R), Left (G)"), shadowStrengthMask);
+                        EditorGUI.indentLevel += 2;
+                            LocalizedProperty(shadowStrengthMaskLOD);
+                            LocalizedProperty(shadowFlatBlur, "Blend Y Direction");
                         EditorGUI.indentLevel -= 2;
                         LocalizedProperty(shadowStrength);
                     }
