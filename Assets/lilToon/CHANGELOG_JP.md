@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 追加
 - 外部ツールからマテリアルの最適化を行う際にアニメーションを考慮できるようにした
 - SDF顔影機能を追加
+- LTCGIに対応
+- ファーのリムライト
 
 ### 修正
 - ビルド時に全シーンを探索するように修正

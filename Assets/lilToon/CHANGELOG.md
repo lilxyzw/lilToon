@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Property animations can now be taken into account when optimizing materials from external tools
 - SDF Face Shadow
+- LTCGI
+- Rim light for fur
 
 ### Fixed
 - Fixed to search all scenes when building
