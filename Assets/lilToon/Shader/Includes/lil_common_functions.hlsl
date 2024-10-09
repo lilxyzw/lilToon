@@ -513,8 +513,11 @@ float2 lilCalcDecalUV(
 
 float2 lilCalcAtlasAnimation(float2 uv, float4 decalAnimation, float4 decalSubParam)
 {
+    
     float2 outuv = lerp(float2(uv.x, 1.0-uv.y), 0.5, decalSubParam.z);
-    uint animTime = (uint)(LIL_TIME * decalAnimation.w) % (uint)decalAnimation.z;
+    uint animTime;
+    if (decalSubParam.w == -1) animTime = (uint)(LIL_TIME * decalAnimation.w) % (uint)decalAnimation.z;
+    else animTime = decalSubParam.w % decalAnimation.z;
     uint offsetX = animTime % (uint)decalAnimation.x;
     uint offsetY = animTime / (uint)decalAnimation.x;
     outuv = (outuv + float2(offsetX,offsetY)) * decalSubParam.xy / decalAnimation.xy;
