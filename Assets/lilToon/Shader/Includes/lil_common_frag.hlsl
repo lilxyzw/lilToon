@@ -946,11 +946,11 @@
             float4 lns = 1.0;
             if(_ShadowMaskType == 2)
             {
-                float3 faceR = mul((float3x3)LIL_MATRIX_M, float3(1.0,0.0,0.0));
+                float3 faceR = mul((float3x3)LIL_MATRIX_M, float3(-1.0,0.0,0.0));
                 float LdotR = dot(fd.L.xz, faceR.xz);
                 float sdf = LdotR < 0 ? shadowStrengthMask.g : shadowStrengthMask.r;
 
-                float3 faceF = mul((float3x3)LIL_MATRIX_M, float3(0.0,0.0,-1.0)).xyz;
+                float3 faceF = mul((float3x3)LIL_MATRIX_M, float3(0.0,0.0,1.0)).xyz;
                 faceF.y *= _ShadowFlatBlur;
                 faceF = dot(faceF,faceF) == 0 ? 0 : normalize(faceF);
                 float3 faceL = fd.L.xyz;
