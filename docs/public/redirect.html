@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>lilycalInventory</title>
+        <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
+        <script>
+            const url = `${location.protocol}//${location.host}/lilToon/`;
+            const hash = location.hash.substring(1);
+            if(hash.startsWith('/ja-jp/') || hash.startsWith('/en-us/'))
+            {
+                hash = hash.substring(7);
+            }
+            const lang = window.navigator.language || window.navigator.userLanguage || window.navigator.browserLanguage;
+            if(lang.startsWith('ja')) location.href = `${url}ja_JP/${hash}`;
+            else location.href = `${url}ja_JP/${hash}`;
+        </script>
+    </head>
+</html>
