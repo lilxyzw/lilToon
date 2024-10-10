@@ -7,6 +7,7 @@ import markdownItMDinMD from '../theme/md/markdownItMDinMD'
 export const shared = defineConfig({
   base: '/lilToon/',
   title: "lilToon",
+  description: "アバターを用いたサービス向けに開発した多機能トゥーンシェーダーです。",
   head: [
     ['link', {rel: 'icon', type: 'image/svg+xml', href: '/lilToon/images/logo.svg'}],
     ['meta', {property: 'og:type', content: 'website'}],
