@@ -774,7 +774,10 @@ public class lilToonSetting : ScriptableObject
                 }
             }
         }
-        UnityEditor.SceneManagement.EditorSceneManager.OpenScene(startScenePath);
+        if (UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings > 0)
+        {
+            UnityEditor.SceneManagement.EditorSceneManager.OpenScene(startScenePath);
+        }
     }
     
     internal static void ApplyShaderSettingOptimized(List<Shader> shaders = null)
