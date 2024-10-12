@@ -4,8 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.2] - 2024-10-12
+### 修正
+- VRChatのワールドSDKで使用した場合のみビルドに失敗する
+
 ## [1.8.1] - 2024-10-09
-### Fixed
+### 修正
 - SDF顔影の処理の方向を修正
 
 ## [1.8.0] - 2024-10-09
