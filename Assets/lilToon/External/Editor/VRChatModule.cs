@@ -6,10 +6,11 @@
     #endif
 #endif
 #if UNITY_EDITOR && (LILTOON_VRCSDK3_AVATARS || LILTOON_VRCSDK3_WORLDS || VRC_SDK_VRCSDK2)
-using UnityEditor;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
 using VRC.SDKBase.Editor.BuildPipeline;
 
 namespace lilToon.External
