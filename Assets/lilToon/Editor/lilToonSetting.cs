@@ -901,8 +901,8 @@ public class lilToonSetting : ScriptableObject
     #if UNITY_2022_1_OR_NEWER
     private static void GetMaterialParents(HashSet<Material> parents, Material material)
     {
+        if(!material || !material.parent) return;
         var p = material.parent;
-        if(p == null) return;
         parents.Add(p);
         GetMaterialParents(parents, p);
     }
