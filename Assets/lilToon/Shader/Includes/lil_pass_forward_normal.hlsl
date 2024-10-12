@@ -259,6 +259,13 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         OVERRIDE_MAIN
 
         //------------------------------------------------------------------------------------------------------------------------------
+        // AudioLink
+        BEFORE_AUDIOLINK
+        #if defined(LIL_FEATURE_AUDIOLINK)
+            OVERRIDE_AUDIOLINK
+        #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
         // Layer Color
         #if defined(LIL_V2F_TANGENT_WS)
             fd.isRightHand = input.tangentWS.w > 0.0;
@@ -396,13 +403,6 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         BEFORE_ANISOTROPY
         #if defined(LIL_FEATURE_ANISOTROPY)
             OVERRIDE_ANISOTROPY
-        #endif
-
-        //------------------------------------------------------------------------------------------------------------------------------
-        // AudioLink
-        BEFORE_AUDIOLINK
-        #if defined(LIL_FEATURE_AUDIOLINK)
-            OVERRIDE_AUDIOLINK
         #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
