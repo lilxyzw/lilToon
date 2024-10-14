@@ -6,6 +6,10 @@ if(hash.length != 0)
     {
         hash = hash.substring(7);
     }
+    if(hash.startsWith('/'))
+    {
+        hash = hash.substring(1);
+    }
     const lang = window.navigator.language || window.navigator.userLanguage || window.navigator.browserLanguage;
     if(lang.startsWith('ja')) location.href = `${url}ja_JP/${hash}`;
     else location.href = `${url}ja_JP/${hash}`;
