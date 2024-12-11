@@ -134,6 +134,7 @@ public class lilToonSetting : ScriptableObject
     public bool isLocked = false;
     public bool isDebugOptimize = false;
     public bool isOptimizeInTestBuild = false;
+    public bool isOptimizeInNDMF = false;
     public bool isMigrateInStartUp = true;
 
     public float defaultAsUnlit = 0.0f;

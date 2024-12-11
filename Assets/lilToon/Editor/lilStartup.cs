@@ -24,6 +24,8 @@ namespace lilToon
 
             AssetDatabase.importPackageStarted -= PackageVersionChecker;
             AssetDatabase.importPackageStarted += PackageVersionChecker;
+            EditorApplication.playModeStateChanged -= PlayModeStateChanged;
+            EditorApplication.playModeStateChanged += PlayModeStateChanged;
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Create files
@@ -179,6 +181,14 @@ namespace lilToon
             {
                 EditorApplication.delayCall -= lilToonSetting.SetShaderSettingAfterBuild;
                 EditorApplication.delayCall += lilToonSetting.SetShaderSettingAfterBuild;
+            }
+        }
+
+        private static void PlayModeStateChanged(PlayModeStateChange playModeStateChange)
+        {
+            if(playModeStateChange == PlayModeStateChange.EnteredEditMode)
+            {
+                lilToonSetting.SetShaderSettingAfterBuild();
             }
         }
 

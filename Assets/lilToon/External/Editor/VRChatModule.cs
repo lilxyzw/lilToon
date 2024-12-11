@@ -48,6 +48,12 @@ namespace lilToon.External
         {
             try
             {
+                lilToonSetting shaderSetting = null;
+                lilToonSetting.InitializeShaderSetting(ref shaderSetting);
+                var caller = new System.Diagnostics.StackFrame(2, false);
+                var callerMethod = caller.GetMethod();
+                if(!shaderSetting.isOptimizeInNDMF && callerMethod.DeclaringType.FullName == "nadena.dev.ndmf.ApplyOnPlay") return true;
+
                 var materials = GetMaterialsFromGameObject(avatarGameObject);
                 var clips = GetAnimationClipsFromGameObject(avatarGameObject);
                 lilToonSetting.SetShaderSettingBeforeBuild(materials, clips);
