@@ -2,6 +2,13 @@
 // Alpha in PS
 // This is included in the subpass fragment shader
 #define LIL_ALPHA_PS
+
+//------------------------------------------------------------------------------------------------------------------------------
+// UDIM Discard
+#if defined(LIL_FEATURE_UDIMDISCARD)
+    OVERRIDE_UDIMDISCARD
+#endif
+
 #if LIL_RENDER > 0
     #if defined(LIL_V2F_POSITION_WS)
         LIL_GET_POSITION_WS_DATA(input,fd);
@@ -13,12 +20,6 @@
     #else
         BEFORE_ANIMATE_MAIN_UV
         OVERRIDE_ANIMATE_MAIN_UV
-    #endif
-
-    //------------------------------------------------------------------------------------------------------------------------------
-    // UDIM Discard
-    #if defined(LIL_FEATURE_UDIMDISCARD)
-        OVERRIDE_UDIMDISCARD
     #endif
 
     //------------------------------------------------------------------------------------------------------------------------------

@@ -417,7 +417,7 @@ LIL_V2F_TYPE vert(appdata input)
     #if defined(LIL_FEATURE_UDIMDISCARD) && !defined(LIL_LITE)
     if(_UDIMDiscardMode == 0 && _UDIMDiscardCompile == 1 && LIL_CHECK_UDIMDISCARD(input)) // Discard Vertices instead of just pixels
     {
-        #if defined(LIL_V2F_POSITION_CS)
+        #if defined(LIL_V2F_POSITION_CS) || defined(LIL_V2F_SHADOW_CASTER_OUTPUT)
         LIL_V2F_OUT_BASE.positionCS = 0.0/0.0;
         #endif
         #if defined(LIL_ONEPASS_OUTLINE)
