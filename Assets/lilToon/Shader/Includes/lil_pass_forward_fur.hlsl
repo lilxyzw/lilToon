@@ -33,11 +33,8 @@
 
 // g2f
 #define LIL_V2F_POSITION_CS
+#define LIL_V2F_POSITION_WS
 #define LIL_V2F_TEXCOORD0
-
-#if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
-    #define LIL_V2F_POSITION_WS
-#endif
 
 #if defined(LIL_V2F_FORCE_NORMAL_WS) || defined(LIL_SHOULD_NORMAL)
     #define LIL_V2F_NORMAL_WS
