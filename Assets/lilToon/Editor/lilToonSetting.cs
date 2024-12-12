@@ -511,7 +511,14 @@ public class lilToonSetting : ScriptableObject
             if(shaderPath.Contains(".lilcontainer")) continue;
 
             string baseShaderPath = baseShaderFolderPath + Path.AltDirectorySeparatorChar + Path.GetFileNameWithoutExtension(shaderPath) + ".lilinternal";
-            if(File.Exists(baseShaderPath)) File.WriteAllText(shaderPath, lilShaderContainer.UnpackContainer(baseShaderPath, null, doOptimize));
+            if(!File.Exists(baseShaderPath)) continue;
+
+            // Change without updating FileInfo
+            var fi = new FileInfo(shaderPath);
+            var timeC = fi.CreationTime;
+            var timeW = fi.LastWriteTime;
+            File.WriteAllText(shaderPath, lilShaderContainer.UnpackContainer(baseShaderPath, null, doOptimize));
+            new FileInfo(shaderPath){CreationTime = timeC, LastWriteTime = timeW};
         }
         foreach(var shaderPath in shaderPathes)
         {
