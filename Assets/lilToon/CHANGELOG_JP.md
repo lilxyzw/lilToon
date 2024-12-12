@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 修正
 - 最適化後のファーのリムライトの計算が正しくない場合がある
 - UV Tile Discardが正しく動作していない
+- LTCGIの距離減衰の調整
 
 ## [1.8.3] - 2024-10-16
 ### 修正

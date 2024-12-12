@@ -148,7 +148,7 @@ float lilLTCGIAttenuation(inout lil_ltcgi_struct ltcgi, in ltcgi_output output)
     float3 L = normalize(lerp(P, C, 0.3));
     float dist = lerp(length(P), length(C), 0.3) + 1;
     float rim = saturate(1 - abs(dot(ltcgi.N,ltcgi.V)) * 2 + dot(ltcgi.N,L));
-    float atten = abs(dot(N, normalize(P))) / (pow(dist, 4));
+    float atten = abs(dot(N, normalize(P))) / (pow(dist, 3));
     atten *= lerp(rim, 1, saturate(dot(ltcgi.V,L) * 0.5 + 0.5));
     ltcgi.L += atten * dot(output.color,0.333333) * L;
     return atten;
