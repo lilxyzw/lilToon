@@ -9,7 +9,7 @@ export const ja_JP = defineConfig({
     logo: '/images/logo.svg',
     nav: [
       { text: 'ホーム', link: langName + '/' },
-      { text: 'ドキュメント', link: langName + '/docs/', activeMatch: '/docs/' }
+      { text: 'ドキュメント', link: langName + '/first', activeMatch: '/first' }
     ],
     sidebar: [
       { text: 'はじめに', link: langName + '/first' },
