@@ -259,6 +259,43 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         OVERRIDE_MAIN
 
         //------------------------------------------------------------------------------------------------------------------------------
+        // Normal
+        #if defined(LIL_V2F_NORMAL_WS)
+            #if defined(LIL_FEATURE_NORMAL_1ST) || defined(LIL_FEATURE_NORMAL_2ND)
+                float3 normalmap = float3(0.0,0.0,1.0);
+
+                // 1st
+                BEFORE_NORMAL_1ST
+                #if defined(LIL_FEATURE_NORMAL_1ST)
+                    OVERRIDE_NORMAL_1ST
+                #endif
+
+                // 2nd
+                BEFORE_NORMAL_2ND
+                #if defined(LIL_FEATURE_NORMAL_2ND)
+                    OVERRIDE_NORMAL_2ND
+                #endif
+
+                fd.N = normalize(mul(normalmap, fd.TBN));
+                fd.N = fd.facing < (_FlipNormal-1.0) ? -fd.N : fd.N;
+            #else
+                fd.N = normalize(input.normalWS);
+                fd.N = fd.facing < (_FlipNormal-1.0) ? -fd.N : fd.N;
+            #endif
+            fd.ln = dot(fd.L, fd.N);
+            #if defined(LIL_V2F_POSITION_WS)
+                fd.nv = saturate(dot(fd.N, fd.V));
+                fd.nvabs = abs(dot(fd.N, fd.V));
+                fd.uvRim = float2(fd.nvabs,fd.nvabs);
+            #endif
+            fd.origN = normalize(input.normalWS);
+            fd.uvMat = mul(fd.cameraMatrix, fd.N).xy * 0.5 + 0.5;
+        #endif
+        fd.reflectionN = fd.N;
+        fd.matcapN = fd.N;
+        fd.matcap2ndN = fd.N;
+
+        //------------------------------------------------------------------------------------------------------------------------------
         // AudioLink
         BEFORE_AUDIOLINK
         #if defined(LIL_FEATURE_AUDIOLINK)
@@ -360,43 +397,6 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
             #endif
             fd.col.rgb *= 1.0-furAO;
         #endif
-
-        //------------------------------------------------------------------------------------------------------------------------------
-        // Normal
-        #if defined(LIL_V2F_NORMAL_WS)
-            #if defined(LIL_FEATURE_NORMAL_1ST) || defined(LIL_FEATURE_NORMAL_2ND)
-                float3 normalmap = float3(0.0,0.0,1.0);
-
-                // 1st
-                BEFORE_NORMAL_1ST
-                #if defined(LIL_FEATURE_NORMAL_1ST)
-                    OVERRIDE_NORMAL_1ST
-                #endif
-
-                // 2nd
-                BEFORE_NORMAL_2ND
-                #if defined(LIL_FEATURE_NORMAL_2ND)
-                    OVERRIDE_NORMAL_2ND
-                #endif
-
-                fd.N = normalize(mul(normalmap, fd.TBN));
-                fd.N = fd.facing < (_FlipNormal-1.0) ? -fd.N : fd.N;
-            #else
-                fd.N = normalize(input.normalWS);
-                fd.N = fd.facing < (_FlipNormal-1.0) ? -fd.N : fd.N;
-            #endif
-            fd.ln = dot(fd.L, fd.N);
-            #if defined(LIL_V2F_POSITION_WS)
-                fd.nv = saturate(dot(fd.N, fd.V));
-                fd.nvabs = abs(dot(fd.N, fd.V));
-                fd.uvRim = float2(fd.nvabs,fd.nvabs);
-            #endif
-            fd.origN = normalize(input.normalWS);
-            fd.uvMat = mul(fd.cameraMatrix, fd.N).xy * 0.5 + 0.5;
-        #endif
-        fd.reflectionN = fd.N;
-        fd.matcapN = fd.N;
-        fd.matcap2ndN = fd.N;
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Anisotropy

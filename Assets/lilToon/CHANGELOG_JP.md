@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UV Tile Discardが正しく動作していない
 - LTCGIの距離減衰の調整
 - 特定条件下でLTCGIが動作しない
+- AudioLinkの一部モードが正しく動作しない
 
 ## [1.8.3] - 2024-10-16
 ### 修正
