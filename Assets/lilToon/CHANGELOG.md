@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fur rim light calculations may be incorrect after optimization
 - UV Tile Discard not working properly
 - Attenuation of LTCGI
+- LTCGI does not work under certain conditions
 
 ## [1.8.3] - 2024-10-16
 ### Fixed
