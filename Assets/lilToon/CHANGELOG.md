@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Shader optimization can now be skipped in NDMF's `Apply on Play`
 
+### Changed
+- Apply rim shade on fur
+
 ### Fixed
 - Fur rim light calculations may be incorrect after optimization
 - UV Tile Discard not working properly

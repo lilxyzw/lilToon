@@ -17,9 +17,7 @@
 // v2g
 #define LIL_V2G_TEXCOORD0
 #define LIL_V2G_POSITION_WS
-#if defined(LIL_V2G_FORCE_NORMAL_WS) || defined(LIL_SHOULD_NORMAL)
-    #define LIL_V2G_NORMAL_WS
-#endif
+#define LIL_V2G_NORMAL_WS
 #if !defined(LIL_PASS_FORWARDADD)
     #define LIL_V2G_LIGHTCOLOR
     #define LIL_V2G_LIGHTDIRECTION
@@ -35,10 +33,8 @@
 #define LIL_V2F_POSITION_CS
 #define LIL_V2F_POSITION_WS
 #define LIL_V2F_TEXCOORD0
+#define LIL_V2F_NORMAL_WS
 
-#if defined(LIL_V2F_FORCE_NORMAL_WS) || defined(LIL_SHOULD_NORMAL)
-    #define LIL_V2F_NORMAL_WS
-#endif
 #if !defined(LIL_PASS_FORWARDADD)
     #define LIL_V2F_LIGHTCOLOR
     #define LIL_V2F_LIGHTDIRECTION
@@ -55,9 +51,7 @@ struct v2g
     float3 positionWS   : TEXCOORD1;
     float3 furVector    : TEXCOORD2;
     uint vertexID       : TEXCOORD3;
-    #if defined(LIL_V2G_NORMAL_WS)
-        float3 normalWS     : TEXCOORD4;
-    #endif
+    float3 normalWS     : TEXCOORD4;
     LIL_LIGHTCOLOR_COORDS(5)
     LIL_LIGHTDIRECTION_COORDS(6)
     LIL_INDLIGHTCOLOR_COORDS(7)
@@ -71,12 +65,8 @@ struct v2f
 {
     float4 positionCS   : SV_POSITION;
     float2 uv0          : TEXCOORD0;
-    #if defined(LIL_V2F_POSITION_WS)
-        float3 positionWS   : TEXCOORD1;
-    #endif
-    #if defined(LIL_V2F_NORMAL_WS)
-        LIL_VECTOR_INTERPOLATION float3 normalWS     : TEXCOORD2;
-    #endif
+    float3 positionWS   : TEXCOORD1;
+    LIL_VECTOR_INTERPOLATION float3 normalWS     : TEXCOORD2;
     float furLayer      : TEXCOORD3;
     LIL_LIGHTCOLOR_COORDS(4)
     LIL_LIGHTDIRECTION_COORDS(5)
@@ -152,12 +142,14 @@ float4 frag(v2f input) : SV_Target
         clip(fd.col.a - _Cutoff);
     #endif
 
+    fd.origN = normalize(input.normalWS);
+    fd.N = normalize(input.normalWS);
+
     BEFORE_SHADOW
     #ifndef LIL_PASS_FORWARDADD
         //------------------------------------------------------------------------------------------------------------------------------
         // Lighting
         #if defined(LIL_FEATURE_SHADOW)
-            fd.N = normalize(input.normalWS);
             fd.ln = dot(fd.L, fd.N);
             OVERRIDE_SHADOW
             fd.col.rgb += fd.albedo * fd.addLightColor;
@@ -167,7 +159,6 @@ float4 frag(v2f input) : SV_Target
         #endif
     #else
         #if defined(LIL_FEATURE_SHADOW) && defined(LIL_OPTIMIZE_APPLY_SHADOW_FA)
-            fd.N = normalize(input.normalWS);
             fd.ln = dot(fd.L, fd.N);
             OVERRIDE_SHADOW
         #else
@@ -179,7 +170,14 @@ float4 frag(v2f input) : SV_Target
         #endif
     #endif
 
-    fd.col.rgb += input.furLayer * pow((1-abs(dot(normalize(input.normalWS), fd.V))), _FurRimFresnelPower) * lerp(1,lilGray(fd.invLighting), _FurRimAntiLight) * _FurRimColor.rgb * fd.lightColor;
+    //------------------------------------------------------------------------------------------------------------------------------
+    // Rim Shade
+    BEFORE_RIMSHADE
+    #if defined(LIL_FEATURE_RIMSHADE)
+        OVERRIDE_RIMSHADE
+    #endif
+
+    fd.col.rgb += input.furLayer * pow((1-abs(dot(normalize(fd.N), fd.V))), _FurRimFresnelPower) * lerp(1,lilGray(fd.invLighting), _FurRimAntiLight) * _FurRimColor.rgb * fd.lightColor;
 
     //------------------------------------------------------------------------------------------------------------------------------
     // Distance Fade
