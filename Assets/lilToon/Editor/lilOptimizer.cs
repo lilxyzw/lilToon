@@ -192,13 +192,9 @@ namespace lilToon
         {
             string optHLSL = RewriteInputHLSLText(dicT, dicD, dicF, dicC);
             string pathOpt = AssetDatabase.GUIDToAssetPath("571051a232e4af44a98389bda858df27");
-            var fi = new FileInfo(pathOpt);
-            var timeC = fi.CreationTime;
-            var timeW = fi.LastWriteTime;
             var sw = new StreamWriter(pathOpt, false);
             sw.Write(optHLSL);
             sw.Close();
-            new FileInfo(pathOpt){CreationTime = timeC, LastWriteTime = timeW};
         }
 
         private static string RewriteInputHLSLText(Dictionary<string, TexProp> dicT, Dictionary<string, STProp> dicD, Dictionary<string, FloatProp> dicF, Dictionary<string, ColorProp> dicC)
@@ -319,15 +315,11 @@ namespace lilToon
             string pathBase = AssetDatabase.GUIDToAssetPath("8ff7f7d9c86e1154fb3aac5a8a8681bb");
             string pathOpt = AssetDatabase.GUIDToAssetPath("571051a232e4af44a98389bda858df27");
             if(string.IsNullOrEmpty(pathBase) || string.IsNullOrEmpty(pathOpt) || !File.Exists(pathBase) || !File.Exists(pathOpt)) return;
-            var fi = new FileInfo(pathOpt);
-            var timeC = fi.CreationTime;
-            var timeW = fi.LastWriteTime;
             var sw = new StreamWriter(pathOpt, false);
             var sr = new StreamReader(pathBase);
             sw.Write(sr.ReadToEnd());
             sw.Close();
             sr.Close();
-            new FileInfo(pathOpt){CreationTime = timeC, LastWriteTime = timeW};
         }
 
         private static string GetIndent(int indent)
