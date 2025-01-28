@@ -3,7 +3,7 @@
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: linear-gradient(160deg, #5e91dd, #e06d6d, #eebf3d);
 
-  --vp-font-family-base: 'Inter', 'SF Pro Text', 'Helvetica', 'Arial', 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Kaku Gothic Pro', 'Yu Gothic UI', 'Meiryo', sans-serif;
+  --vp-font-family-base: 'Inter', 'SF Pro Text', 'Helvetica', 'Segoe UI', 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
   --vp-font-family-mono: 'Noto Sans Mono', 'ui-monospace', 'SFMono-Regular', 'SF Mono', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
 }
 
