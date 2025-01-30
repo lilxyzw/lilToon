@@ -931,13 +931,13 @@
                 #endif
             #endif
 
-            float2 shadowStrengthMask = 1;
+            float3 shadowStrengthMask = 1;
             #if defined(LIL_FEATURE_ShadowStrengthMask)
                 #if defined(_ShadowStrengthMaskLOD)
-                    shadowStrengthMask = LIL_SAMPLE_2D(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain).rg;
-                    if(_ShadowStrengthMaskLOD) shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).rg;
+                    shadowStrengthMask = LIL_SAMPLE_2D(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain).rgb;
+                    if(_ShadowStrengthMaskLOD) shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).rgb;
                 #else
-                    shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).rg;
+                    shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).rgb;
                 #endif
             #endif
 
@@ -1062,6 +1062,10 @@
             else if(_ShadowMaskType == 0)
             {
                 shadowStrength *= shadowStrengthMask.r;
+            }
+            else if(_ShadowMaskType == 2)
+            {
+                shadowStrength *= shadowStrengthMask.b;
             }
             lns.x = lerp(1.0, lns.x, shadowStrength);
 
