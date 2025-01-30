@@ -653,9 +653,11 @@ namespace lilToon
         private readonly lilMaterialProperty triMask                = new lilMaterialProperty("_TriMask", true, PropertyBlock.Base);
         private readonly lilMaterialProperty matcapMul              = new lilMaterialProperty("_MatCapMul", PropertyBlock.MatCaps, PropertyBlock.MatCap1st);
         private readonly lilMaterialProperty fakeShadowVector       = new lilMaterialProperty("_FakeShadowVector", PropertyBlock.Base);
+
+        private lilMaterialProperty[] allProperty;
         private lilMaterialProperty[] AllProperties()
         {
-            return new[]
+            return allProperty ??= new[]
             {
                 invisible,
                 cutoff,
@@ -1293,6 +1295,33 @@ namespace lilToon
                 matcapMul,
                 fakeShadowVector,
             };
+        }
+
+        private void SetProperties(MaterialProperty[] propsSource)
+        {
+            var allProps = AllProperties();
+#if UNITY_2022_3_OR_NEWER
+            var dictonary = UnityEngine.Pool.DictionaryPool<string, MaterialProperty>.Get();
+#else
+            var dictonary = new Dictionary<string,MaterialProperty>();
+#endif
+            for (var i = 0; propsSource.Length > i; i += 1)
+            {
+                var p = propsSource[i];
+                if (p == null) { continue; }
+                dictonary[p.name] = p;
+            }
+
+            for (var i = 0; allProps.Length > i; i += 1)
+            {
+                var lilPorp = allProps[i];
+                if (dictonary.TryGetValue(lilPorp.propertyName, out var materialProperty))
+                    lilPorp.p = materialProperty;
+            }
+
+#if UNITY_2022_3_OR_NEWER
+            UnityEngine.Pool.DictionaryPool<string, MaterialProperty>.Release(dictonary);
+#endif
         }
     }
 }
