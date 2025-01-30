@@ -1323,6 +1323,29 @@ namespace lilToon
             UnityEngine.Pool.DictionaryPool<string, MaterialProperty>.Release(dictonary);
 #endif
         }
+
+        private Dictionary<PropertyBlock, List<lilMaterialProperty>> block2Propertes;
+        private Dictionary<PropertyBlock, List<lilMaterialProperty>> GetBlock2Properties()
+        {
+            if (block2Propertes is null)
+            {
+                block2Propertes = new Dictionary<PropertyBlock, List<lilMaterialProperty>>();
+                var allProps = AllProperties();
+
+                for (var i = 0; allProps.Length > i; i += 1)
+                {
+                    var lilPorp = allProps[i];
+                    foreach(var block in lilPorp.blocks)
+                    {
+                        if(block2Propertes.ContainsKey(block) is false) { block2Propertes[block] = new(); }
+                        block2Propertes[block].Add(lilPorp);
+                    }
+                }
+            }
+            return block2Propertes;
+        }
+
+
     }
 }
 #endif

@@ -275,7 +275,7 @@ namespace lilToon
         {
             foreach(var p in AllProperties().Where(p =>
                 p.p != null &&
-                p.blocks.Any(b => b == propertyBlock)
+                p.blocks.Contains(propertyBlock)
             ))
             {
                 copiedProperties[p.name] = p.p;
@@ -286,7 +286,7 @@ namespace lilToon
         {
             foreach(var p in AllProperties().Where(p =>
                 p.p != null &&
-                p.blocks.Any(b => b == propertyBlock) &&
+                p.blocks.Contains(propertyBlock) &&
                 !(!shouldCopyTex && p.isTexture) &&
                 copiedProperties.ContainsKey(p.name) &&
                 copiedProperties[p.name] != null
@@ -306,7 +306,7 @@ namespace lilToon
             #if UNITY_2019_3_OR_NEWER
             foreach(var p in AllProperties().Where(p =>
                 p.p != null &&
-                p.blocks.Any(b => b == propertyBlock) &&
+                p.blocks.Contains(propertyBlock) &&
                 p.targets[0] is Material &&
                 ((Material)p.targets[0]).shader != null
             ))
@@ -328,7 +328,14 @@ namespace lilToon
         {
             if(propertyBlock == PropertyBlock.Base && lilEditorGUI.CheckPropertyToDraw("Render Queue")) return true;
             if(propertyBlock == PropertyBlock.Rendering && lilEditorGUI.CheckPropertyToDraw("Render Queue", "Enable GPU Instancing")) return true;
-            return AllProperties().Count(p => p.p != null && p.blocks.Any(b => b == propertyBlock) && lilEditorGUI.CheckPropertyToDraw(p)) > 0;
+
+            foreach (var p in GetBlock2Properties()[propertyBlock])
+            {
+                if (p.p == null ) { continue; }
+                if (lilEditorGUI.CheckPropertyToDraw(p) is false) { continue; }
+                return true;
+            }
+            return false;
         }
 
         private bool ShouldDrawBlock(params string[] labels)
