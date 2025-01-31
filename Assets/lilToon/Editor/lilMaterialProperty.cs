@@ -9,7 +9,7 @@ namespace lilToon
     internal class lilMaterialProperty
     {
         public MaterialProperty p;
-        public List<PropertyBlock> blocks;
+        public HashSet<PropertyBlock> blocks;
         public string propertyName;
         public bool isTexture;
 
@@ -94,7 +94,7 @@ namespace lilToon
         public lilMaterialProperty()
         {
             p = null;
-            blocks = new List<PropertyBlock>();
+            blocks = new HashSet<PropertyBlock>();
             isTexture = false;
             propertyName = null;
         }
@@ -102,7 +102,7 @@ namespace lilToon
         public lilMaterialProperty(string name, params PropertyBlock[] inBrocks)
         {
             p = null;
-            blocks = inBrocks.ToList();
+            blocks = inBrocks.ToHashSet();
             isTexture = false;
             propertyName = name;
         }
@@ -110,7 +110,7 @@ namespace lilToon
         public lilMaterialProperty(string name, bool isTex, params PropertyBlock[] inBrocks)
         {
             p = null;
-            blocks = inBrocks.ToList();
+            blocks = inBrocks.ToHashSet();
             isTexture = isTex;
             propertyName = name;
         }
