@@ -633,11 +633,13 @@ namespace lilToon
                 {
                     material.SetTexture("_MatCapTex", null);
                     material.SetTexture("_MatCapBlendMask", null);
+                    material.SetTexture("_MatCapBumpMap", null);
                 }
                 if(IsPropZero(material, "_UseMatCap2nd", animatedProps))
                 {
                     material.SetTexture("_MatCap2ndTex", null);
                     material.SetTexture("_MatCap2ndBlendMask", null);
+                    material.SetTexture("_MatCap2ndBumpMap", null);
                 }
                 if(!material.shader.name.Contains("Outline"))
                 {
