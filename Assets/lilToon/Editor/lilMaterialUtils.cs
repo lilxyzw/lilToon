@@ -647,6 +647,13 @@ namespace lilToon
                     material.SetTexture("_OutlineWidthMask", null);
                     material.SetTexture("_OutlineVectorTex", null);
                 }
+                if(!material.shader.name.Contains("Fur"))
+                {
+                    material.SetTexture("_FurVectorTex", null);
+                    material.SetTexture("_FurLengthMask", null);
+                    material.SetTexture("_FurNoiseMask", null);
+                    material.SetTexture("_FurMask", null);
+                }
                 if(IsPropZero(material, "_UseRim", animatedProps)) material.SetTexture("_RimColorTex", null);
                 if(IsPropZero(material, "_UseGlitter", animatedProps)) material.SetTexture("_GlitterColorTex", null);
                 if(IsPropZero(material, "_UseParallax", animatedProps)) material.SetTexture("_ParallaxMap", null);
