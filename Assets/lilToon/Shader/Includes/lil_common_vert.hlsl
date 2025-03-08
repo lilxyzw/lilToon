@@ -286,13 +286,13 @@ LIL_V2F_TYPE vert(appdata input)
     #if defined(LIL_V2F_POSITION_CS) && defined(LIL_FEATURE_CLIPPING_CANCELLER) && !defined(LIL_LITE) && !defined(LIL_PASS_SHADOWCASTER_INCLUDED) && !defined(LIL_PASS_META_INCLUDED)
         #if defined(UNITY_REVERSED_Z)
             // DirectX
-            if(LIL_V2F_OUT_BASE.positionCS.w < _ProjectionParams.y * 1.01 && LIL_V2F_OUT_BASE.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING)
+            if(LIL_V2F_OUT_BASE.positionCS.w < _ProjectionParams.y * 1.01 && LIL_V2F_OUT_BASE.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING && !LIL_IS_MIRROR)
             {
                 LIL_V2F_OUT_BASE.positionCS.z = LIL_V2F_OUT_BASE.positionCS.z * 0.0001 + LIL_V2F_OUT_BASE.positionCS.w * 0.999;
             }
         #else
             // OpenGL
-            if(LIL_V2F_OUT_BASE.positionCS.w < _ProjectionParams.y * 1.01 && LIL_V2F_OUT_BASE.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING)
+            if(LIL_V2F_OUT_BASE.positionCS.w < _ProjectionParams.y * 1.01 && LIL_V2F_OUT_BASE.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING && !LIL_IS_MIRROR)
             {
                 LIL_V2F_OUT_BASE.positionCS.z = LIL_V2F_OUT_BASE.positionCS.z * 0.0001 - LIL_V2F_OUT_BASE.positionCS.w * 0.999;
             }
@@ -315,13 +315,13 @@ LIL_V2F_TYPE vert(appdata input)
         #if defined(LIL_FEATURE_CLIPPING_CANCELLER) && !defined(LIL_LITE) && !defined(LIL_PASS_SHADOWCASTER_INCLUDED) && !defined(LIL_PASS_META_INCLUDED)
             #if defined(UNITY_REVERSED_Z)
                 // DirectX
-                if(LIL_V2F_OUT.positionCSOL.w < _ProjectionParams.y * 1.01 && LIL_V2F_OUT.positionCSOL.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING)
+                if(LIL_V2F_OUT.positionCSOL.w < _ProjectionParams.y * 1.01 && LIL_V2F_OUT.positionCSOL.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING && !LIL_IS_MIRROR)
                 {
                     LIL_V2F_OUT.positionCSOL.z = LIL_V2F_OUT.positionCSOL.z * 0.0001 + LIL_V2F_OUT.positionCSOL.w * 0.999;
                 }
             #else
                 // OpenGL
-                if(LIL_V2F_OUT.positionCSOL.w < _ProjectionParams.y * 1.01 && LIL_V2F_OUT.positionCSOL.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING)
+                if(LIL_V2F_OUT.positionCSOL.w < _ProjectionParams.y * 1.01 && LIL_V2F_OUT.positionCSOL.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING && !LIL_IS_MIRROR)
                 {
                     LIL_V2F_OUT.positionCSOL.z = LIL_V2F_OUT.positionCSOL.z * 0.0001 - LIL_V2F_OUT.positionCSOL.w * 0.999;
                 }
