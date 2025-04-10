@@ -53,9 +53,9 @@ v2f vert(appdata input)
     #else
         float3 lightDirection = normalize(lilGetLightDirection() + length(_FakeShadowVector.xyz) * normalize(mul((float3x3)LIL_MATRIX_M, _FakeShadowVector.xyz)));
     #endif
-    float2 lightShift = mul((float3x3)LIL_MATRIX_VP, lightDirection * _FakeShadowVector.w).xy;
+    float4 lightShift = mul(LIL_MATRIX_VP, float4(lightDirection * _FakeShadowVector.w, 0));
     output.positionCS = vertexInput.positionCS;
-    output.positionCS.xy -= lightShift.xy;
+    output.positionCS -= lightShift;
     output.uv0 = input.uv0 * _MainTex_ST.xy + _MainTex_ST.zw;
     LIL_TRANSFER_FOG(vertexInput, output);
 
