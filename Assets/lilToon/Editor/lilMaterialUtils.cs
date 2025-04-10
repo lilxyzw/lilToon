@@ -664,7 +664,7 @@ namespace lilToon
 
         private static bool IsPropZero(Material material, string name, string[] animatedProps)
         {
-            return material.GetFloat(name) == 0.0f && !animatedProps.Contains(name);
+            return !material.HasProperty(name) || material.GetFloat(name) == 0.0f && !animatedProps.Contains(name);
         }
 
         public static void RemoveShaderKeywords(Material material)
