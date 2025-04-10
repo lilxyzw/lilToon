@@ -300,13 +300,13 @@ void AppendFur(inout TriangleStream<v2f> outStream, inout v2f output, v2g input[
         // Clipping Canceller
         #if defined(UNITY_REVERSED_Z)
             // DirectX
-            if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING)
+            if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING && !LIL_IS_MIRROR)
             {
                 output.positionCS.z = output.positionCS.z * 0.0001 + output.positionCS.w * 0.999;
             }
         #else
             // OpenGL
-            if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING)
+            if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING && !LIL_IS_MIRROR)
             {
                 output.positionCS.z = output.positionCS.z * 0.0001 - output.positionCS.w * 0.999;
             }
@@ -344,13 +344,13 @@ void AppendFur(inout TriangleStream<v2f> outStream, inout v2f output, v2g input[
         // Clipping Canceller
         #if defined(UNITY_REVERSED_Z)
             // DirectX
-            if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING)
+            if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING && !LIL_IS_MIRROR)
             {
                 output.positionCS.z = output.positionCS.z * 0.0001 + output.positionCS.w * 0.999;
             }
         #else
             // OpenGL
-            if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING)
+            if(output.positionCS.w < _ProjectionParams.y * 1.01 && output.positionCS.w > 0 && _ProjectionParams.y < LIL_NEARCLIP_THRESHOLD LIL_MULTI_SHOULD_CLIPPING && !LIL_IS_MIRROR)
             {
                 output.positionCS.z = output.positionCS.z * 0.0001 - output.positionCS.w * 0.999;
             }
