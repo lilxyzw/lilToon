@@ -1116,6 +1116,17 @@ Shader "Hidden/lilToonFurTwoPass"
         {
             Name "SHADOW_CASTER"
             Tags {"LightMode" = "ShadowCaster"}
+
+            Stencil
+            {
+                Ref [_StencilRef]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+                Comp [_StencilComp]
+                Pass [_StencilPass]
+                Fail [_StencilFail]
+                ZFail [_StencilZFail]
+            }
             Offset 1, 1
             Cull [_Cull]
 
