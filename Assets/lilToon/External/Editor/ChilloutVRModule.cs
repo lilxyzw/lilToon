@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine.Events;
+using System.Linq;
 
 namespace lilToon.External
 {
@@ -56,7 +57,7 @@ namespace lilToon.External
             var materials = new List<Material>();
             foreach(var renderer in gameObject.GetComponentsInChildren<Renderer>(true))
             {
-                materials.AddRange(renderer.sharedMaterials);
+                materials.AddRange(renderer.sharedMaterials.Where(m => m != null));
             }
             return materials.ToArray();
         }
@@ -79,7 +80,7 @@ namespace lilToon.External
                     var overrides = (AnimatorOverrideController)overridesField.GetValue(descriptor);
                     if(overrides != null)
                     {
-                        clips.AddRange(overrides.animationClips);
+                        clips.AddRange(overrides.animationClips.Where(clip => clip != null));
                     }
                 }
             }
