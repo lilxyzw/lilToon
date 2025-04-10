@@ -633,17 +633,26 @@ namespace lilToon
                 {
                     material.SetTexture("_MatCapTex", null);
                     material.SetTexture("_MatCapBlendMask", null);
+                    material.SetTexture("_MatCapBumpMap", null);
                 }
                 if(IsPropZero(material, "_UseMatCap2nd", animatedProps))
                 {
                     material.SetTexture("_MatCap2ndTex", null);
                     material.SetTexture("_MatCap2ndBlendMask", null);
+                    material.SetTexture("_MatCap2ndBumpMap", null);
                 }
                 if(!material.shader.name.Contains("Outline"))
                 {
                     material.SetTexture("_OutlineTex", null);
                     material.SetTexture("_OutlineWidthMask", null);
                     material.SetTexture("_OutlineVectorTex", null);
+                }
+                if(!material.shader.name.Contains("Fur"))
+                {
+                    material.SetTexture("_FurVectorTex", null);
+                    material.SetTexture("_FurLengthMask", null);
+                    material.SetTexture("_FurNoiseMask", null);
+                    material.SetTexture("_FurMask", null);
                 }
                 if(IsPropZero(material, "_UseRim", animatedProps)) material.SetTexture("_RimColorTex", null);
                 if(IsPropZero(material, "_UseGlitter", animatedProps)) material.SetTexture("_GlitterColorTex", null);
