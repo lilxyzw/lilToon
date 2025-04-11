@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] - 2025-04-11
+### 追加
+- 影のSDFモードでBチャンネルを通常の影とのブレンド、Aチャンネルを影の強度として使用できるように
+
+### 変更
+- Inspectorの大幅な高速化
+- ミラー内で距離クリッピングキャンセラーが適用されないように
+- カスタムシェーダーでAudioLink.cgincを使用してもエラーにならないように
+
+### 修正
+- 「未使用のテクスチャを外す」で一部テクスチャが残るのを修正
+- ステンシルで非表示になっている部分に影が表示されるのを修正
+- FakeShadowのVR時の視差を修正
+- 外部ツールからマテリアル最適化メソッドを呼び出した際にFakeShadowでエラーになるのを修正
+
 ## [1.8.5] - 2024-12-20
 ### 変更
 - 不具合検証のため1.8.4の変更箇所のうち影響のない部分を差し戻し

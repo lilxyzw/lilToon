@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] - 2025-04-11
+### Added
+- Shadow SDF mode now uses the B channel as a blend with normal shadows and the A channel as the shadow strength
+
+### Changed
+- Significantly faster inspector
+- Distance clipping canceller is no longer applied in mirrors
+- Using AudioLink.cginc in a custom shader no longer causes an error
+
+### Fixed
+- Some textures remain after "Remove unused textures"
+- Shadows are displayed in areas hidden by stencils
+- FakeShadow's parallax in VR
+- An error occurs in FakeShadow when calling the material optimization method from an external tool
+
 ## [1.8.5] - 2024-12-20
 ### Changed
 - Reverted the unaffected parts of the 1.8.4 changes to verify bugs
