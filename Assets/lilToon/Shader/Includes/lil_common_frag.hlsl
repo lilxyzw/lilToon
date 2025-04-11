@@ -931,19 +931,24 @@
                 #endif
             #endif
 
-            float3 shadowStrengthMask = 1;
+            float4 shadowStrengthMask = 1;
             #if defined(LIL_FEATURE_ShadowStrengthMask)
                 #if defined(_ShadowStrengthMaskLOD)
-                    shadowStrengthMask = LIL_SAMPLE_2D(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain).rgb;
-                    if(_ShadowStrengthMaskLOD) shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).rgb;
+                    shadowStrengthMask = LIL_SAMPLE_2D(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain);
+                    if(_ShadowStrengthMaskLOD) shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD));
                 #else
-                    shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD)).rgb;
+                    shadowStrengthMask = LIL_SAMPLE_2D_GRAD(_ShadowStrengthMask, lil_sampler_linear_repeat, fd.uvMain, max(fd.ddxMain, _ShadowStrengthMaskLOD), max(fd.ddyMain, _ShadowStrengthMaskLOD));
                 #endif
             #endif
 
             // Shade
             float aastrencth = _AAStrength;
             float4 lns = 1.0;
+            lns.x = saturate(dot(fd.L,N1)*0.5+0.5);
+            lns.y = saturate(dot(fd.L,N2)*0.5+0.5);
+            #if defined(LIL_FEATURE_SHADOW_3RD)
+                lns.z = saturate(dot(fd.L,N3)*0.5+0.5);
+            #endif
             if(_ShadowMaskType == 2)
             {
                 float3 faceR = mul((float3x3)LIL_MATRIX_M, float3(-1.0,0.0,0.0));
@@ -958,16 +963,10 @@
                 faceL = dot(faceL,faceL) == 0 ? 0 : normalize(faceL);
 
                 float lnSDF = dot(faceL,faceF);
-                lns = saturate(lnSDF * 0.5 + sdf * 0.5 + 0.25);
+                lns = lerp(saturate(lnSDF * 0.5 + sdf * 0.5 + 0.25), lns, shadowStrengthMask.b);
                 aastrencth = 0;
-            }
-            else
-            {
-                lns.x = saturate(dot(fd.L,N1)*0.5+0.5);
-                lns.y = saturate(dot(fd.L,N2)*0.5+0.5);
-                #if defined(LIL_FEATURE_SHADOW_3RD)
-                    lns.z = saturate(dot(fd.L,N3)*0.5+0.5);
-                #endif
+
+                shadowStrengthMask.r = shadowStrengthMask.a;
             }
 
             // Shadow
@@ -1059,13 +1058,9 @@
                 #endif
                 lns = lerp(lnFlat, lns, shadowStrengthMask.r);
             }
-            else if(_ShadowMaskType == 0)
+            else
             {
                 shadowStrength *= shadowStrengthMask.r;
-            }
-            else if(_ShadowMaskType == 2)
-            {
-                shadowStrength *= shadowStrengthMask.b;
             }
             lns.x = lerp(1.0, lns.x, shadowStrength);
 
