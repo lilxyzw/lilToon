@@ -57,7 +57,7 @@ namespace lilToon.External
             var materials = new List<Material>();
             foreach(var renderer in gameObject.GetComponentsInChildren<Renderer>(true))
             {
-                materials.AddRange(renderer.sharedMaterials.Where(m => m != null));
+                materials.AddRange(renderer.sharedMaterials.Where(m => m));
             }
             return materials.ToArray();
         }
@@ -68,7 +68,7 @@ namespace lilToon.External
 
             foreach(var animator in gameObject.GetComponentsInChildren<Animator>(true))
             {
-                if(animator.runtimeAnimatorController != null) clips.AddRange(animator.runtimeAnimatorController.animationClips);
+                if(animator.runtimeAnimatorController) clips.AddRange(animator.runtimeAnimatorController.animationClips);
             }
 
             try
@@ -78,9 +78,9 @@ namespace lilToon.External
                 foreach(var descriptor in gameObject.GetComponentsInChildren(type,true))
                 {
                     var overrides = (AnimatorOverrideController)overridesField.GetValue(descriptor);
-                    if(overrides != null)
+                    if(overrides)
                     {
-                        clips.AddRange(overrides.animationClips.Where(clip => clip != null));
+                        clips.AddRange(overrides.animationClips.Where(clip => clip));
                     }
                 }
             }
@@ -129,7 +129,7 @@ namespace lilToon.External
                 foreach(var descriptor in Selection.activeGameObject.GetComponentsInChildren(type,true))
                 {
                     var overrides = (AnimatorOverrideController)overridesField.GetValue(descriptor);
-                    if(overrides != null)
+                    if(overrides)
                     {
                         clips.AddRange(overrides.animationClips);
                     }
@@ -161,7 +161,7 @@ namespace lilToon.External
             try
             {
                 var type = Assembly.Load("Assembly-CSharp").GetType("ABI.CCK.Components.CVRAvatar");
-                return Selection.activeGameObject.GetComponent(type) != null;
+                return Selection.activeGameObject.GetComponent(type);
             }
             catch(Exception e)
             {

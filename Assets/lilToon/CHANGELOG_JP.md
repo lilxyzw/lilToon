@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ステンシルで非表示になっている部分に影が表示されるのを修正
 - FakeShadowのVR時の視差を修正
 - 外部ツールからマテリアル最適化メソッドを呼び出した際にFakeShadowでエラーになるのを修正
+- ChilloutVRビルドでアニメーションやマテリアルスロットが空の場合にエラーになっていたのを修正
 
 ## [1.8.5] - 2024-12-20
 ### 変更
