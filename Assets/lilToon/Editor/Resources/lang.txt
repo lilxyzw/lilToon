@@ -238,8 +238,8 @@ sVertexColor2Vector	VertexColor -> Vector	VertexColor -> Vector	VertexColor -> V
 sLayerNum	Layer Counts	レイヤー数	레이어 수	层数	層數
 sRootWidth	Root Width	根本の太さ	근본 굵기	根厚度	根厚度
 sTouchStrength	Touch strength	接触強度	접촉 강도	接触强度	接觸強度
-sTessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	镶嵌化处理 (极高负载)	Tessellation（極高的負荷）
-Tessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	镶嵌化处理	Tessellation（極高的負荷）
+sTessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	镶嵌化处理 (极高负载)	Tessellation（極高負荷）
+Tessellation	Tessellation (Extremely high load)	テッセレーション (非常に高負荷)	테셀레이션 (매우 높음)	镶嵌化处理	Tessellation（極高負荷）
 sTessellationTips	You can set the tessellation.	テッセレーションのかかり方を設定できます	텟세레이션을 설정할 수 있습니다.	您可以在此设置镶嵌选项。	你可以設定 Tessellation。
 sTessellationEdge	Threshold length	閾値	길이의 한계	阈值	閾值長度
 sTessellationShrink	Shrink	縮小補正	축소	收缩幅度	縮減
@@ -290,7 +290,7 @@ sAudioLinkLocalMap	Local Map	ローカルマップ	Local Map	本地 Map	Local Ma
 sAudioLinkLocalMapBPM	BPM	BPM	BPM	BPM	BPM
 sAudioLinkLocalMapNotes	Notes	拍数	Notes	Notes	Notes
 sAudioLinkDefaultValue	Default value for no AudioLink	AudioLink無効時の初期値	AudioLink 비활성화 시 기본값	没有使用 AudioLink 时的默认值	没有使用 AudioLink 時的默認值
-sDissolve	Dissolve	Dissolve	Dissolve	溶解效果	溶解效果設定（Dissolve）
+sDissolve	Dissolve	Dissolve	Dissolve	溶解效果	溶解效果設定
 sDissolveTips	Settings for dissolving a material	マテリアルが溶けるような表現ができます	머티리얼이 녹는듯한 표현을 할 수 있습니다	设置材质的溶解效果	設定材質的溶解效果
 sDissolveWarnOpaque	If you want to use Dissolve, you need to change the "Rendering Mode" to Cutout or Transparent.	Dissolveを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。	Dissolve를 사용하는 경우 "렌더링 모드"를 컷아웃이나 투명한으로 변경해야 합니다	如果要使用溶解，则需要将“渲染模式”更改为镂空或透明。	如果要使用溶解效果，請將「渲染模式」更改為鏤空或透明。
 sDissolveMode	Dissolve Mode	Dissolve Mode	Dissolve Mode	Dissolve Mode(溶解模式)	溶解模式（Dissolve Mode）
@@ -346,7 +346,7 @@ sFresnelPower	Fresnel Power	リムライトの細さ	림 라이트의 벌금	菲
 sRimLightDirection	Light direction strength	ライト方向の影響度	라이트 방향의 영향도	光线方向影响	光線方向影響
 sRimDirectionRange	Direct light width	直接光の幅	직접 빛의 폭	直射光宽	直射光寬
 sRimIndirectionRange	Indirect light width	間接光の幅	간접 조명의 폭	间接光宽	間接光寬
-sGlitterSetting	Glitter	ラメ設定	Glitter 설정	Glitter 设置          （亮片效果）	亮粉設定
+sGlitterSetting	Glitter	ラメ設定	Glitter 설정	Glitter 设置          （亮片效果）	亮粉效果設定
 sGlitter	Glitter	ラメ	Glitter	亮片效果	亮粉效果（Glitter）
 sParticleSize	Particle Size	パーティクルサイズ	파티클 사이즈	粒子大小	粒子大小
 sContrast	Contrast	コントラスト	콘트라스트	对比度	對比度
@@ -482,8 +482,8 @@ sPresetFurMask	Fur Mask	ファーマスク	퍼 마스크	毛发蒙版	毛髮遮�
 sShaderSetting	Shader Setting (for all materials)	シェーダー設定 (全マテリアル共通)	쉐이더 설정 (전체 재료 공통)	着色器设置（用于所有材质）	著色器設定（用於所有材質）
 sHelpShaderSetting	Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load.	ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。	여기에 끈 기능은 쉐이더에서 제거됩니다. 불필요한 기능을 해제하여 아바타의 용량을 줄이면서 부하도 줄일 수 있습니다.	此处关闭的功能将从着色器中删除。通过关闭未使用的功能，可以减少你的 Avatar 的大小，同时还能减少负载。	此處關閉的功能將從著色器中刪除。通過關閉不使用的功能，可以減少你的 Avatar 的大小和負載。​​
 sSettingLock	Lock	ロック	Lock	锁定	鎖定
-sShaderSettingOptimizeInTestBuild	Optimize in test build	テストビルドでも最適化を行う	테스트 빌드로 최적화	为测试构建优化	在測試構建中優化
-sShaderSettingOptimizeInEditor	[Debug] Optimize in editor	[Debug] エディタ上で最適化	[Debug] 에디터로 최적화	[Debug] 为编辑器优化	[Debug] 在編輯器中優化
+sShaderSettingOptimizeInTestBuild	Optimize in test build	テストビルドでも最適化を行う	테스트 빌드로 최적화	为测试构建优化	為測試構建優化
+sShaderSettingOptimizeInEditor	[Debug] Optimize in editor	[Debug] エディタ上で最適化	[Debug] 에디터로 최적화	[Debug] 为编辑器优化	[Debug] 為編輯器優化
 sSettingClippingCanceller	Distance Clipping Canceller	距離クリッピングキャンセラー	거리 클리핑 취소 기	距离裁剪消除器	距離剪裁取消器
 sSettingTexOutlineColor	Outline Color Texture	輪郭線色テクスチャ	윤곽선 색상 질감	描边颜色纹理	輪廓顏色貼圖
 sSettingDefaultValue	Default Value (used for "Fix Lighting" and lighting presets)	初期値 (Fix Lightingやライティングプリセットに使用)	초기값 (Fix Lighting이나 라이팅 프리셋에 사용)	初始值 (用于“Fix Lighting”以及照明预设)	初始值（用於 Fix Lighting 和照明預設）
