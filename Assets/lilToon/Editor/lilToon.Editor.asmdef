@@ -23,6 +23,11 @@
             "name": "at.pimaker.ltcgi",
             "expression": "1.4",
             "define": "LILTOON_LTCGI"
+        },
+        {
+            "name": "red.sim.lightvolumes",
+            "expression": "",
+            "define": "LILTOON_VRCLIGHTVOLUMES"
         }
     ]
 }
