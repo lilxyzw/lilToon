@@ -82,6 +82,7 @@ namespace lilToon
                 string shaderRP = srRP.ReadLine();
                 string shaderAPI = srRP.ReadLine();
                 string shaderLTCGI = srRP.ReadLine();
+                string shaderVRCLightVolumes = srRP.ReadLine();
                 srRP.Close();
 
                 bool shouldRewrite = false;
@@ -92,10 +93,16 @@ namespace lilToon
                 #else
                 string projectLTCGI = "";
                 #endif
+                #if LILTOON_VRCLIGHTVOLUMES
+                string projectVRCLightVolumes = "VRCLightVolumes";
+                #else
+                string projectVRCLightVolumes = "";
+                #endif
                 var swRP = new StreamWriter(currentRPPath,false);
                 swRP.WriteLine(projectRP);
                 swRP.WriteLine(projectAPI);
                 swRP.WriteLine(projectLTCGI);
+                swRP.WriteLine(projectVRCLightVolumes);
                 swRP.Close();
 
                 if(shaderRP != projectRP)
@@ -113,6 +120,12 @@ namespace lilToon
                 if(shaderLTCGI != projectLTCGI)
                 {
                     Debug.Log("[lilToon] Switch LTCGI");
+                    shouldRewrite = true;
+                }
+
+                if(shaderVRCLightVolumes != projectVRCLightVolumes)
+                {
+                    Debug.Log("[lilToon] Switch VRCLightVolumes");
                     shouldRewrite = true;
                 }
 

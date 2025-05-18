@@ -99,7 +99,7 @@ namespace lilToon
 
         private static void SelectEditorMode()
         {
-            string[] sEditorModeList = {GetLoc("sEditorModeSimple"),GetLoc("sEditorModeAdvanced"),GetLoc("sEditorModePreset"),GetLoc("sEditorModeShaderSetting")};
+            string[] sEditorModeList = {GetLoc("sEditorModeAdvanced"),GetLoc("sEditorModePreset"),GetLoc("sEditorModeShaderSetting")};
             edSet.editorMode = (EditorMode)GUILayout.Toolbar((int)edSet.editorMode, sEditorModeList);
         }
 
@@ -137,18 +137,20 @@ namespace lilToon
                     if(shouldSetTag)
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                        string[] sFallbackShaderTypes = {"Unlit", "Standard", "VertexLit", "Toon", "Particle", "Sprite", "Matcap", "MobileToon", "Hidden"};
+                        string[] sFallbackShaderTypes = {"Unlit", "Standard", "VertexLit", "Toon", "Particle", "Sprite", "Matcap", "MobileToon", "Hidden", "toonstandard", "toonstandardoutline"};
                         string[] sFallbackRenderTypes = {"Opaque", "Cutout", "Transparent", "Fade"};
                         string[] sFallbackCullTypes = {"Default", "DoubleSided"};
 
-                        int fallbackShaderType = tag.Contains("Standard")       ? 1 : 0;
-                            fallbackShaderType = tag.Contains("VertexLit")      ? 2 : fallbackShaderType;
-                            fallbackShaderType = tag.Contains("Toon")           ? 3 : fallbackShaderType;
-                            fallbackShaderType = tag.Contains("Particle")       ? 4 : fallbackShaderType;
-                            fallbackShaderType = tag.Contains("Sprite")         ? 5 : fallbackShaderType;
-                            fallbackShaderType = tag.Contains("Matcap")         ? 6 : fallbackShaderType;
-                            fallbackShaderType = tag.Contains("MobileToon")     ? 7 : fallbackShaderType;
-                            fallbackShaderType = tag.Contains("Hidden")         ? 8 : fallbackShaderType;
+                        int fallbackShaderType = tag.Contains("Standard")            ? 1 : 0;
+                            fallbackShaderType = tag.Contains("VertexLit")           ? 2 : fallbackShaderType;
+                            fallbackShaderType = tag.Contains("Toon")                ? 3 : fallbackShaderType;
+                            fallbackShaderType = tag.Contains("Particle")            ? 4 : fallbackShaderType;
+                            fallbackShaderType = tag.Contains("Sprite")              ? 5 : fallbackShaderType;
+                            fallbackShaderType = tag.Contains("Matcap")              ? 6 : fallbackShaderType;
+                            fallbackShaderType = tag.Contains("MobileToon")          ? 7 : fallbackShaderType;
+                            fallbackShaderType = tag.Contains("Hidden")              ? 8 : fallbackShaderType;
+                            fallbackShaderType = tag.Contains("toonstandard")        ? 9 : fallbackShaderType;
+                            fallbackShaderType = tag.Contains("toonstandardoutline") ? 10 : fallbackShaderType;
 
                         int fallbackRenderType = tag.Contains("Cutout")         ? 1 : 0;
                             fallbackRenderType = tag.Contains("Transparent")    ? 2 : fallbackRenderType;
@@ -162,15 +164,17 @@ namespace lilToon
 
                         switch(fallbackShaderType)
                         {
-                            case 0: tag = "Unlit"; break;
-                            case 1: tag = "Standard"; break;
-                            case 2: tag = "VertexLit"; break;
-                            case 3: tag = "Toon"; break;
-                            case 4: tag = "Particle"; break;
-                            case 5: tag = "Sprite"; break;
-                            case 6: tag = "Matcap"; break;
-                            case 7: tag = "MobileToon"; break;
-                            case 8: tag = "Hidden"; break;
+                            case  0: tag = "Unlit"; break;
+                            case  1: tag = "Standard"; break;
+                            case  2: tag = "VertexLit"; break;
+                            case  3: tag = "Toon"; break;
+                            case  4: tag = "Particle"; break;
+                            case  5: tag = "Sprite"; break;
+                            case  6: tag = "Matcap"; break;
+                            case  7: tag = "MobileToon"; break;
+                            case  8: tag = "Hidden"; break;
+                            case  9: tag = "toonstandard"; break;
+                            case 10: tag = "toonstandardoutline"; break;
                             default: tag = "Unlit"; break;
                         }
                         switch(fallbackRenderType)

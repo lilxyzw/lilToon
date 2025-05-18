@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.0] - 2025-05-18
+### Added
+- Supports VRC Light Volumes
+- Added toonstandard and toonstandardoutline as fallbacks
+- Bake the ramp
+
+### Changed
+- Delete simple settings
+
+### Fixed
+- Error in Unity 2019
+- NaN could occur when converting to MToon
+- Gem material editor showing distance fade settings
+
 ## [1.9.0] - 2025-04-11
 ### Added
 - Shadow SDF mode now uses the B channel as a blend with normal shadows and the A channel as the shadow strength
