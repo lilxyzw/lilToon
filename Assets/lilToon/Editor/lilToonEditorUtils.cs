@@ -29,6 +29,7 @@ namespace lilToon
         private const string menuPathPixelArtReduction      = menuPathAssets + "[Texture] Pixel art reduction";
         private const string menuPathConvertGifToAtlas      = menuPathAssets + "[Texture] Convert Gif to Atlas";
         private const string menuPathConvertLUTToPNG        = menuPathAssets + "[Texture] Convert LUT to PNG";
+        private const string menuPathGenerateRamp           = menuPathAssets + "[Texture] Generate Ramp";
         private const string menuPathSetupFromFBX           = menuPathAssets + "[Model] Setup from FBX";
         private const string menuPathFixLighting            = menuPathGameObject + "[GameObject] Fix lighting";
 
@@ -41,7 +42,8 @@ namespace lilToon
         private const int menuPriorityPixelArtReduction         = menuPriorityAssets + 23;
         private const int menuPriorityConvertGifToAtlas         = menuPriorityAssets + 24;
         private const int menuPriorityConvertLUTToPNG           = menuPriorityAssets + 25;
-        private const int menuPrioritySetupFromFBX              = menuPriorityAssets + 26;
+        private const int menuPriorityGenerateRamp              = menuPriorityAssets + 26;
+        private const int menuPrioritySetupFromFBX              = menuPriorityAssets + 27;
         private const int menuPriorityFixLighting               = menuPriorityGameObject;
 
         private const string anchorName = "AutoAnchorObject";
@@ -160,6 +162,24 @@ namespace lilToon
         private static bool CheckConvertLUTToPNG()
         {
             return CheckExtension(".cube");
+        }
+
+        //------------------------------------------------------------------------------------------------------------------------------
+        // Assets/lilToon/Generate Ramp
+        [MenuItem(menuPathGenerateRamp, false, menuPriorityGenerateRamp)]
+        private static void GenerateRamp()
+        {
+            foreach (var o in Selection.objects)
+            {
+                if(o is not Material m || !lilMaterialUtils.CheckShaderIslilToon(m)) continue;
+                    lilToon2Ramp.ConvertAndSave(m);
+            }
+        }
+
+        [MenuItem(menuPathGenerateRamp, true, menuPriorityGenerateRamp)]
+        private static bool CheckGenerateRamp()
+        {
+            return CheckExtension(".mat");
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
