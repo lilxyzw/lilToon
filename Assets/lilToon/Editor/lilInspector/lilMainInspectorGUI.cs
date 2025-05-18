@@ -1348,7 +1348,7 @@ namespace lilToon
 
                 //------------------------------------------------------------------------------------------------------------------------------
                 // Distance Fade
-                if(ShouldDrawBlock(PropertyBlock.DistanceFade))
+                if(!isGem && ShouldDrawBlock(PropertyBlock.DistanceFade))
                 {
                     edSet.isShowDistanceFade = lilEditorGUI.Foldout(GetLoc("sDistanceFade"), edSet.isShowDistanceFade);
                     DrawMenuButton(GetLoc("sAnchorDistanceFade"), PropertyBlock.DistanceFade);
