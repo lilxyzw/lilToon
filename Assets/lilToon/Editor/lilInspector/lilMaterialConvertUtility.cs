@@ -90,7 +90,7 @@ namespace lilToon
             if(useShadow.floatValue == 1.0f)
             {
                 float shadeShift = (Mathf.Clamp01(shadowBorder.floatValue - (shadowBlur.floatValue * 0.5f)) * 2.0f) - 1.0f;
-                float shadeToony = (2.0f - (Mathf.Clamp01(shadowBorder.floatValue + (shadowBlur.floatValue * 0.5f)) * 2.0f)) / (1.0f - shadeShift);
+                float shadeToony = shadeShift == 1.0f ? 1.0f : (2.0f - (Mathf.Clamp01(shadowBorder.floatValue + (shadowBlur.floatValue * 0.5f)) * 2.0f)) / (1.0f - shadeShift);
                 if(shadowStrengthMask.textureValue != null || shadowMainStrength.floatValue != 0.0f)
                 {
                     var bakedShadowTex = AutoBakeShadowTexture(material, bakedMainTex);
