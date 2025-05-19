@@ -1224,9 +1224,6 @@ namespace lilToon
                     #if LILTOON_LTCGI
                     "#define LIL_FEATURE_LTCGI",
                     #endif
-                    #if LILTOON_VRCLIGHTVOLUMES
-                    "#define LIL_FEATURE_VRCLIGHTVOLUMES",
-                    #endif
                     "#define LIL_PASS_FORWARD");
             }
         }

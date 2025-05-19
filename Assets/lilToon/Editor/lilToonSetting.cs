@@ -129,6 +129,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_OPTIMIZE_USE_FORWARDADD_SHADOW = false;
     public bool LIL_OPTIMIZE_USE_VERTEXLIGHT = true;
     public bool LIL_OPTIMIZE_USE_LIGHTMAP = false;
+    public bool LIL_OPTIMIZE_USE_VRCLIGHTVOLUMES = true;
     public bool LIL_OPTIMIZE_DEFFERED = false;
 
     public bool isLocked = false;
@@ -181,6 +182,7 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD        = lockedSetting.LIL_OPTIMIZE_USE_FORWARDADD;
             shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD_SHADOW = lockedSetting.LIL_OPTIMIZE_USE_FORWARDADD_SHADOW;
             shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP          = lockedSetting.LIL_OPTIMIZE_USE_LIGHTMAP;
+            shaderSetting.LIL_OPTIMIZE_USE_VRCLIGHTVOLUMES   = lockedSetting.LIL_OPTIMIZE_USE_VRCLIGHTVOLUMES;
             shaderSetting.isDebugOptimize                    = lockedSetting.isDebugOptimize;
             shaderSetting.isOptimizeInTestBuild              = lockedSetting.isOptimizeInTestBuild;
             shaderSetting.isMigrateInStartUp                 = lockedSetting.isMigrateInStartUp;
@@ -665,7 +667,12 @@ public class lilToonSetting : ScriptableObject
         if(shaderSetting.LIL_OPTIMIZE_USE_FORWARDADD_SHADOW) sb.AppendLine("#define LIL_OPTIMIZE_USE_FORWARDADD_SHADOW");
         if(shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT) sb.AppendLine("#define LIL_OPTIMIZE_USE_VERTEXLIGHT");
         if(shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP) sb.AppendLine("#define LIL_OPTIMIZE_USE_LIGHTMAP");
-        if(isFile)
+        #if LILTOON_VRCLIGHTVOLUMES
+        if(shaderSetting.LIL_OPTIMIZE_USE_VRCLIGHTVOLUMES) sb.AppendLine("#define LIL_FEATURE_VRCLIGHTVOLUMES");
+        #elif LILTOON_VRCSDK3
+        if(shaderSetting.LIL_OPTIMIZE_USE_VRCLIGHTVOLUMES) sb.AppendLine("#define LIL_FEATURE_VRCLIGHTVOLUMES_WITHOUTPACKAGE");
+        #endif
+        if (isFile)
         {
             sb.AppendLine("");
             sb.AppendLine("#endif");

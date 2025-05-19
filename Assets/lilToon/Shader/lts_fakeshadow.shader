@@ -194,6 +194,7 @@ Shader "_lil/[Optional] lilToonFakeShadow"
             #define LIL_OPTIMIZE_APPLY_SHADOW_FA
             #define LIL_OPTIMIZE_USE_FORWARDADD
             #define LIL_OPTIMIZE_USE_VERTEXLIGHT
+            #define LIL_FEATURE_VRCLIGHTVOLUMES_WITHOUTPACKAGE
             #pragma skip_variants LIGHTMAP_ON DYNAMICLIGHTMAP_ON LIGHTMAP_SHADOW_MIXING SHADOWS_SHADOWMASK DIRLIGHTMAP_COMBINED _MIXED_LIGHTING_SUBTRACTIVE
             #pragma target 3.5
             #pragma fragmentoption ARB_precision_hint_fastest
