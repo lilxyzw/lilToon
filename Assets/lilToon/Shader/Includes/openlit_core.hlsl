@@ -133,25 +133,31 @@ float3 ShadeSH9ToonIndirect()
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Lighting
-#if defined(OPENLIT_VRCLIGHTVOLUMES)
+
 // VRC Light Volumes
 // https://github.com/REDSIM/VRCLightVolumes
+#if defined(OPENLIT_VRCLIGHTVOLUMES)
 #include "Packages/red.sim.lightvolumes/Shaders/LightVolumes.cginc"
+#elif defined(OPENLIT_VRCLIGHTVOLUMES_WITHOUTPACKAGE)
+#include "VRC Light Volumes/LightVolumes.cginc"
 #endif
 
 void ComputeSHLightsAndDirection(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float4 lightDirectionOverride, float3 positionWS = 0)
 {
-    #if defined(OPENLIT_VRCLIGHTVOLUMES)
-    float3 L0, L1r, L1g, L1b = 0;
-    LightVolumeSH(positionWS, L0, L1r, L1g, L1b);
-    
-    unity_SHAr = float4(L1r, L0.r);
-    unity_SHAg = float4(L1g, L0.g);
-    unity_SHAb = float4(L1b, L0.b);
-    unity_SHBr = 0;
-    unity_SHBg = 0;
-    unity_SHBb = 0;
-    unity_SHC = 0;
+    #if defined(OPENLIT_VRCLIGHTVOLUMES) || defined(OPENLIT_VRCLIGHTVOLUMES_WITHOUTPACKAGE)
+    if(_UdonLightVolumeEnabled && _UdonLightVolumeCount != 0)
+    {
+        float3 L0, L1r, L1g, L1b = 0;
+        LightVolumeSH(positionWS, L0, L1r, L1g, L1b);
+        
+        unity_SHAr = float4(L1r, L0.r);
+        unity_SHAg = float4(L1g, L0.g);
+        unity_SHAb = float4(L1b, L0.b);
+        unity_SHBr = 0;
+        unity_SHBg = 0;
+        unity_SHBb = 0;
+        unity_SHC = 0;
+    }
     #endif
 
     float3 lightDirectionForSH9;
