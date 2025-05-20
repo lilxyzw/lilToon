@@ -2,6 +2,7 @@
     {
         Tags {*LIL_SUBSHADER_TAGS*}
         HLSLINCLUDE
+            *LIL_SHADER_SETTING_MULTI*
             #pragma target 3.5
             #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_GEM

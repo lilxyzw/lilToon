@@ -109,6 +109,7 @@ namespace lilToon
         private const string LIL_SUBSHADER_INSERT           = "*LIL_SUBSHADER_INSERT*";
         private const string LIL_SUBSHADER_INSERT_POST      = "*LIL_SUBSHADER_INSERT_POST*";
         private const string LIL_SHADER_SETTING             = "*LIL_SHADER_SETTING*";
+        private const string LIL_SHADER_SETTING_MULTI       = "*LIL_SHADER_SETTING_MULTI*";
         private const string LIL_SRP_VERSION                = "*LIL_SRP_VERSION*";
         private const string LIL_PASS_SHADER_NAME           = "*LIL_PASS_SHADER_NAME*";
         private const string LIL_SUBSHADER_TAGS             = "*LIL_SUBSHADER_TAGS*";
@@ -166,6 +167,7 @@ namespace lilToon
         private static string insertText = "";
         private static string insertPostText = "";
         private static string shaderSettingText = "";
+        private static string shaderSettingMultiText = "";
         private static string resourcesFolderPath = "";
         private static string assetFolderPath = "";
         private static string shaderLibsPath = "";
@@ -200,6 +202,7 @@ namespace lilToon
             shaderLibsPath = lilDirectoryManager.GetShaderFolderPath() + "/Includes";
             assetName = Path.GetFileName(assetPath);
             shaderSettingText = BuildShaderSettingString(false, ref useBaseShadow, ref useOutlineShadow).Replace(Environment.NewLine, Environment.NewLine + "            ");
+            shaderSettingMultiText = lilToonSetting.BuildShaderSettingStringMulti().Replace(Environment.NewLine, Environment.NewLine + "            ");
             shaderName = "";
             editorName = "";
             origShaderName = "";
@@ -258,6 +261,7 @@ namespace lilToon
             sb.Replace(LIL_SUBSHADER_INSERT,        insertText);
             sb.Replace(LIL_SUBSHADER_INSERT_POST,   insertPostText);
             sb.Replace(LIL_SHADER_SETTING,          shaderSettingText);
+            sb.Replace(LIL_SHADER_SETTING_MULTI,    shaderSettingMultiText);
             if(version.RP != lilRenderPipeline.BRP && version.Major > 0)
             {
                 sb.Replace(
