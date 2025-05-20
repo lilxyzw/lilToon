@@ -449,27 +449,30 @@ namespace lilToon
             float scaleX = prop.vectorValue.x;
             float scaleY = prop.vectorValue.y;
             float border = prop.vectorValue.z;
-            float unused = prop.vectorValue.w;
+            int currentframe = (int)prop.vectorValue.w;
             if(Event.current.alt)
             {
                 labels[0] = prop.name + ".x";
                 labels[1] = prop.name + ".y";
                 labels[2] = prop.name + ".z";
+                labels[3] = prop.name + ".w";
             }
 
             EditorGUI.indentLevel++;
             var position1 = EditorGUILayout.GetControlRect();
             var position2 = EditorGUILayout.GetControlRect();
+            var position3 = EditorGUILayout.GetControlRect();
 
             EditorGUI.BeginChangeCheck();
             scaleX = EditorGUI.Slider(position, labels[0], scaleX, 0.0f, 1.0f);
             scaleY = EditorGUI.Slider(position1, labels[1], scaleY, 0.0f, 1.0f);
             border = EditorGUI.Slider(position2, labels[2], border, 0.0f, 1.0f);
+            currentframe = EditorGUI.IntField(position3, labels[3], currentframe);
             EditorGUI.indentLevel--;
 
             if(EditorGUI.EndChangeCheck())
             {
-                prop.vectorValue = new Vector4(scaleX, scaleY, border, unused);
+                prop.vectorValue = new Vector4(scaleX, scaleY, border, currentframe);
             }
         }
     }

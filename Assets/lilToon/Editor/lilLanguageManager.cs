@@ -161,7 +161,7 @@ namespace lilToon
             loc["sHSVGs"]                    = BuildParams(GetLoc("sHue"), GetLoc("sSaturation"), GetLoc("sValue"), GetLoc("sGamma"));
             loc["sScrollRotates"]            = BuildParams(GetLoc("sAngle"), GetLoc("sUVAnimation"), GetLoc("sScroll"), GetLoc("sRotate"));
             loc["sDecalAnimations"]          = BuildParams(GetLoc("sAnimation"), GetLoc("sXFrames"), GetLoc("sYFrames"), GetLoc("sFrames"), GetLoc("sFPS"));
-            loc["sDecalSubParams"]           = BuildParams(GetLoc("sXRatio"), GetLoc("sYRatio"), GetLoc("sFixBorder"));
+            loc["sDecalSubParams"]           = BuildParams(GetLoc("sXRatio"), GetLoc("sYRatio"), GetLoc("sFixBorder"), GetLoc("sCurrentFrame"));
             loc["sAudioLinkUVModes"]           = BuildParams(GetLoc("sAudioLinkUVMode"), GetLoc("sAudioLinkUVModeNone"), GetLoc("sAudioLinkUVModeRim"), GetLoc("sAudioLinkUVModeUV"), GetLoc("sAudioLinkUVModeMask"), GetLoc("sAudioLinkUVModeMask") + " (Spectrum)", GetLoc("sAudioLinkUVModePosition"));
             loc["sAudioLinkVertexUVModes"]           = BuildParams(GetLoc("sAudioLinkUVMode"), GetLoc("sAudioLinkUVModeNone"), GetLoc("sAudioLinkUVModePosition"), GetLoc("sAudioLinkUVModeUV"), GetLoc("sAudioLinkUVModeMask"));
             loc["sAudioLinkVertexStrengths"]           = BuildParams(GetLoc("sAudioLinkMovingVector"), GetLoc("sAudioLinkNormalStrength"));

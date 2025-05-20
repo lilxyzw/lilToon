@@ -56,6 +56,7 @@ sFPS	FPS	FPS	FPS	FPS	FPS
 sXRatio	Ratio X	X軸比率	X축 비율	X 比率	X比率
 sYRatio	Ratio Y	Y軸比率	Y축 비율	Y 比率	Y比率
 sFixBorder	Fix Border	境界を調整	경계 이동	修复边界	修復邊界
+sCurrentFrame	Current Frame	現在のフレーム	현재 프레임	當前幀	當前幀
 sConvertGif	Convert Gif	Gifを変換	GIF 변환	转换 Gif	轉換Gif
 sMirrorMode	Mirror Mode	ミラーモード	거울 모드	镜像模式	鏡像模式
 sMirrorModeNormal	Normal	通常	보통	正常	正常
