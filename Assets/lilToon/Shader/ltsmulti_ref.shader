@@ -647,6 +647,10 @@ Shader "Hidden/lilToonMultiRefraction"
     {
         Tags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
         HLSLINCLUDE
+            #define LIL_OPTIMIZE_APPLY_SHADOW_FA
+            #define LIL_OPTIMIZE_USE_FORWARDADD
+            #define LIL_OPTIMIZE_USE_VERTEXLIGHT
+            #define LIL_FEATURE_VRCLIGHTVOLUMES_WITHOUTPACKAGE
             #pragma target 3.5
             #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_REFRACTION

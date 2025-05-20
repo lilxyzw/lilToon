@@ -691,6 +691,10 @@ Shader "Hidden/lilToonMultiFur"
     {
         Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
         HLSLINCLUDE
+            #define LIL_OPTIMIZE_APPLY_SHADOW_FA
+            #define LIL_OPTIMIZE_USE_FORWARDADD
+            #define LIL_OPTIMIZE_USE_VERTEXLIGHT
+            #define LIL_FEATURE_VRCLIGHTVOLUMES_WITHOUTPACKAGE
             #pragma require geometry
             #pragma fragmentoption ARB_precision_hint_fastest
             #define LIL_FUR
