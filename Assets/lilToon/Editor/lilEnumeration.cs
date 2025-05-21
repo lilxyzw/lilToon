@@ -3,7 +3,6 @@ namespace lilToon
 {
     public enum EditorMode
     {
-        Simple,
         Advanced,
         Preset,
         Settings

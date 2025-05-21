@@ -274,7 +274,7 @@ void AppendFur(inout TriangleStream<v2f> outStream, inout v2f output, v2g input[
     #if defined(LIL_V2F_NORMAL_WS)
         output.normalWS = lilLerp3(input[0].normalWS, input[1].normalWS, input[2].normalWS, factor);
     #endif
-    #if defined(LIL_V2F_LIGHTCOLOR) && defined(LIL_FEATURE_LTCGI) && defined(LIL_PASS_FORWARD)
+    #if defined(LIL_V2F_LIGHTCOLOR) && (defined(LIL_FEATURE_LTCGI) || defined(LIL_FEATURE_VRCLIGHTVOLUMES) || defined(LIL_FEATURE_VRCLIGHTVOLUMES_WITHOUTPACKAGE)) && defined(LIL_PASS_FORWARD)
         output.lightColor = lilLerp3(input[0].lightColor, input[1].lightColor, input[2].lightColor, factor);
     #endif
     #if defined(LIL_V2F_VERTEXLIGHT_FOG) && !(!defined(LIL_USE_ADDITIONALLIGHT_VS) && defined(LIL_HDRP))

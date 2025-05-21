@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.3] - 2025-05-20
+### 修正
+- lilToonMultiでVRC Light Volumesが動作しない
+- ファーマテリアルでのVRC Light Volumesの補間を改善
+
+## [1.10.2] - 2025-05-19
+### 修正
+- GPU Instancing使用時にエラー
+
+## [1.10.1] - 2025-05-19
+### 変更
+- VRC Light Volumesを追加パッケージなしでも利用可能に
+
+## [1.10.0] - 2025-05-18
+### 追加
+- VRC Light Volumesに対応
+- toonstandard・toonstandardoutlineをフォールバックに追加
+- Rampをベイクする機能を追加
+
+### 変更
+- 簡易設定を削除
+
+### 修正
+- Unity 2019でエラー
+- MToon変換時にNaNが発生する可能性があった
+- 宝石シェーダーのエディタで距離フェードの設定が表示されていた
+
 ## [1.9.0] - 2025-04-11
 ### 追加
 - 影のSDFモードでBチャンネルを通常の影とのブレンド、Aチャンネルを影の強度として使用できるように

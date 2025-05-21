@@ -20,7 +20,7 @@ namespace lilToon
         // Editor variables
         public class lilToonEditorSetting : ScriptableSingleton<lilToonEditorSetting>
         {
-            public EditorMode editorMode = EditorMode.Simple;
+            public EditorMode editorMode = EditorMode.Advanced;
             public bool isShowBase                      = false;
             public bool isShowPrePreset                 = false;
             public bool isShowMainUV                    = false;

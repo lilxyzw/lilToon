@@ -105,45 +105,6 @@ namespace lilToon
             }
         }
 
-        private void DrawOutlineSettingsSimple(Material material)
-        {
-            if(!ShouldDrawBlock(PropertyBlock.Outline)) return;
-            if(isMultiVariants || isRefr || isFur || isGem || isFakeShadow || material.shader.name.Contains("Overlay")) return;
-            edSet.isShowOutline = lilEditorGUI.Foldout(GetLoc("sOutlineSetting"), edSet.isShowOutline);
-            DrawMenuButton(GetLoc("sAnchorOutline"), PropertyBlock.Outline);
-            if(edSet.isShowOutline)
-            {
-                EditorGUILayout.BeginVertical(boxOuter);
-                if(isShowRenderMode)
-                {
-                    if(isOutl != EditorGUILayout.ToggleLeft(GetLoc("sOutline"), isOutl, customToggleFont))
-                    {
-                        isOutl = !isOutl;
-                        SetupMaterialWithRenderingMode(renderingModeBuf, transparentModeBuf);
-                    }
-                }
-                else if(isCustomShader)
-                {
-                    EditorGUILayout.LabelField(GetLoc("sOutline"), customToggleFont);
-                }
-                if(!isLite && isOutl)
-                {
-                    EditorGUILayout.BeginVertical(boxInnerHalf);
-                    TextureGUI(ref edSet.isShowOutlineMap, mainColorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
-                    LocalizedPropertyTexture(widthMaskContent, outlineWidthMask, outlineWidth);
-                    EditorGUILayout.EndVertical();
-                }
-                else if(isOutl)
-                {
-                    EditorGUILayout.BeginVertical(boxInnerHalf);
-                    TextureGUI(ref edSet.isShowOutlineMap, mainColorRGBAContent, outlineTex, outlineColor, outlineTex_ScrollRotate, true, true);
-                    LocalizedPropertyTexture(widthMaskContent, outlineWidthMask, outlineWidth);
-                    EditorGUILayout.EndVertical();
-                }
-                EditorGUILayout.EndVertical();
-            }
-        }
-
         private void DrawSpecularMode()
         {
             int specularMode = 0;

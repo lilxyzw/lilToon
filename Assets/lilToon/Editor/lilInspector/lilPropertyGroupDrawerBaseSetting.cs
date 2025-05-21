@@ -489,26 +489,6 @@ namespace lilToon
                 blendOpFA.floatValue = selecting == 0 ? 0 : (selecting == 1 ? 4 : blendOpFA.floatValue);
             }
         }
-
-        private void DrawLightingSettingsSimple()
-        {
-            if(!ShouldDrawBlock(PropertyBlock.Lighting)) return;
-            edSet.isShowLightingSettings = lilEditorGUI.Foldout(GetLoc("sLightingSettings"), edSet.isShowLightingSettings);
-            DrawMenuButton(GetLoc("sAnchorLighting"), PropertyBlock.Lighting);
-            if(edSet.isShowLightingSettings)
-            {
-                EditorGUILayout.LabelField(GetLoc("sBaseSetting"));
-                EditorGUILayout.BeginVertical(customBox);
-                    LocalizedProperty(lightMinLimit);
-                    LocalizedProperty(lightMaxLimit);
-                    LocalizedProperty(monochromeLighting);
-                    if(shadowEnvStrength != null) LocalizedProperty(shadowEnvStrength);
-                    var button = lilEditorGUI.Buttons(GetLoc("sLightingPreset"), GetLoc("sLightingPresetDefault"), GetLoc("sLightingPresetSemiMonochrome"));
-                    if(button[0]) ApplyLightingPreset(LightingPreset.Default);
-                    if(button[1]) ApplyLightingPreset(LightingPreset.SemiMonochrome);
-                EditorGUILayout.EndVertical();
-            }
-        }
     }
 }
 #endif

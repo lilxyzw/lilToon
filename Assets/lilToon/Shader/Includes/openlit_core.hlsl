@@ -13,6 +13,50 @@
 #define OPENLIT_FALLBACK_DIRECTION  float4(0.001,0.002,0.001,0)
 
 //------------------------------------------------------------------------------------------------------------------------------
+// VRC Light Volumes
+// https://github.com/REDSIM/VRCLightVolumes
+#if defined(OPENLIT_VRCLIGHTVOLUMES)
+#include "Packages/red.sim.lightvolumes/Shaders/LightVolumes.cginc"
+#elif defined(OPENLIT_VRCLIGHTVOLUMES_WITHOUTPACKAGE)
+#include "VRC Light Volumes/LightVolumes.cginc"
+#endif
+
+static float4 olSHAr = 0;
+static float4 olSHAg = 0;
+static float4 olSHAb = 0;
+static float4 olSHBr = 0;
+static float4 olSHBg = 0;
+static float4 olSHBb = 0;
+static float4 olSHC  = 0;
+
+void InitializeSH(float3 positionWS)
+{
+    olSHAr = unity_SHAr;
+    olSHAg = unity_SHAg;
+    olSHAb = unity_SHAb;
+    olSHBr = unity_SHBr;
+    olSHBg = unity_SHBg;
+    olSHBb = unity_SHBb;
+    olSHC  = unity_SHC ;
+
+    #if defined(OPENLIT_VRCLIGHTVOLUMES) || defined(OPENLIT_VRCLIGHTVOLUMES_WITHOUTPACKAGE)
+    if(_UdonLightVolumeEnabled && _UdonLightVolumeCount != 0)
+    {
+        float3 L0, L1r, L1g, L1b = 0;
+        LightVolumeSH(positionWS, L0, L1r, L1g, L1b);
+        
+        olSHAr = float4(L1r, L0.r);
+        olSHAg = float4(L1g, L0.g);
+        olSHAb = float4(L1b, L0.b);
+        olSHBr = 0;
+        olSHBg = 0;
+        olSHBb = 0;
+        olSHC = 0;
+    }
+    #endif
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
 // SRGB <-> Linear
 float3 OpenLitLinearToSRGB(float3 col)
 {
@@ -62,7 +106,7 @@ void ComputeLightDirection(out float3 lightDirection, out float3 lightDirectionF
 {
     float3 mainDir = OPENLIT_LIGHT_DIRECTION * OpenLitLuminance(OPENLIT_LIGHT_COLOR);
     #if !defined(LIGHTMAP_ON) && UNITY_SHOULD_SAMPLE_SH
-        float3 sh9Dir = unity_SHAr.xyz * 0.333333 + unity_SHAg.xyz * 0.333333 + unity_SHAb.xyz * 0.333333;
+        float3 sh9Dir = olSHAr.xyz * 0.333333 + olSHAg.xyz * 0.333333 + olSHAb.xyz * 0.333333;
         float3 sh9DirAbs = float3(sh9Dir.x, abs(sh9Dir.y), sh9Dir.z);
     #else
         float3 sh9Dir = 0;
@@ -88,16 +132,16 @@ void ShadeSH9ToonDouble(float3 lightDirection, out float3 shMax, out float3 shMi
         float3 N = lightDirection * 0.666666;
         float4 vB = N.xyzz * N.yzzx;
         // L0 L2
-        float3 res = float3(unity_SHAr.w,unity_SHAg.w,unity_SHAb.w);
-        res.r += dot(unity_SHBr, vB);
-        res.g += dot(unity_SHBg, vB);
-        res.b += dot(unity_SHBb, vB);
-        res += unity_SHC.rgb * (N.x * N.x - N.y * N.y);
+        float3 res = float3(olSHAr.w,olSHAg.w,olSHAb.w);
+        res.r += dot(olSHBr, vB);
+        res.g += dot(olSHBg, vB);
+        res.b += dot(olSHBb, vB);
+        res += olSHC.rgb * (N.x * N.x - N.y * N.y);
         // L1
         float3 l1;
-        l1.r = dot(unity_SHAr.rgb, N);
-        l1.g = dot(unity_SHAg.rgb, N);
-        l1.b = dot(unity_SHAb.rgb, N);
+        l1.r = dot(olSHAr.rgb, N);
+        l1.g = dot(olSHAg.rgb, N);
+        l1.b = dot(olSHAb.rgb, N);
         shMax = res + l1;
         shMin = res - l1;
         #if defined(UNITY_COLORSPACE_GAMMA)
@@ -133,38 +177,39 @@ float3 ShadeSH9ToonIndirect()
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Lighting
-void ComputeSHLightsAndDirection(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float4 lightDirectionOverride)
+void ComputeSHLightsAndDirection(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float4 lightDirectionOverride, float3 positionWS = 0)
 {
+    InitializeSH(positionWS);
     float3 lightDirectionForSH9;
     ComputeLightDirection(lightDirection, lightDirectionForSH9, lightDirectionOverride);
     ShadeSH9ToonDouble(lightDirectionForSH9, directLight, indirectLight);
 }
 
-void ComputeSHLightsAndDirection(out float3 lightDirection, out float3 directLight, out float3 indirectLight)
+void ComputeSHLightsAndDirection(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float3 positionWS = 0)
 {
-    ComputeSHLightsAndDirection(lightDirection, directLight, indirectLight, OPENLIT_FALLBACK_DIRECTION);
+    ComputeSHLightsAndDirection(lightDirection, directLight, indirectLight, OPENLIT_FALLBACK_DIRECTION, positionWS);
 }
 
-void ComputeLights(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float4 lightDirectionOverride)
+void ComputeLights(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float4 lightDirectionOverride, float3 positionWS = 0)
 {
-    ComputeSHLightsAndDirection(lightDirection, directLight, indirectLight, lightDirectionOverride);
+    ComputeSHLightsAndDirection(lightDirection, directLight, indirectLight, lightDirectionOverride, positionWS);
     directLight += OPENLIT_LIGHT_COLOR;
 }
 
-void ComputeLights(out float3 lightDirection, out float3 directLight, out float3 indirectLight)
+void ComputeLights(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float3 positionWS = 0)
 {
-    ComputeSHLightsAndDirection(lightDirection, directLight, indirectLight);
+    ComputeSHLightsAndDirection(lightDirection, directLight, indirectLight, positionWS);
     directLight += OPENLIT_LIGHT_COLOR;
 }
 
-void ComputeLights(out OpenLitLightDatas lightDatas, float4 lightDirectionOverride)
+void ComputeLights(out OpenLitLightDatas lightDatas, float4 lightDirectionOverride, float3 positionWS = 0)
 {
-    ComputeLights(lightDatas.lightDirection, lightDatas.directLight, lightDatas.indirectLight, lightDirectionOverride);
+    ComputeLights(lightDatas.lightDirection, lightDatas.directLight, lightDatas.indirectLight, lightDirectionOverride, positionWS);
 }
 
-void ComputeLights(out OpenLitLightDatas lightDatas)
+void ComputeLights(out OpenLitLightDatas lightDatas, float3 positionWS = 0)
 {
-    ComputeLights(lightDatas.lightDirection, lightDatas.directLight, lightDatas.indirectLight);
+    ComputeLights(lightDatas.lightDirection, lightDatas.directLight, lightDatas.indirectLight, positionWS);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------

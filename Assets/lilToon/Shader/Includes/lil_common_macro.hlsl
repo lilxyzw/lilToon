@@ -2112,7 +2112,7 @@ struct lilLightData
 #elif defined(LIL_BRP)
     #define LIL_CALC_MAINLIGHT(i,o) \
         OpenLitLightDatas lightDatas; \
-        ComputeLights(lightDatas, _LightDirectionOverride); \
+        ComputeLights(lightDatas, _LightDirectionOverride, i.positionWS); \
         lilLightData o; \
         o.lightDirection    = lightDatas.lightDirection; \
         o.lightColor        = lightDatas.directLight; \

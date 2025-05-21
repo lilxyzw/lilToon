@@ -102,7 +102,7 @@ namespace lilToon
         public lilMaterialProperty(string name, params PropertyBlock[] inBrocks)
         {
             p = null;
-            blocks = inBrocks.ToHashSet();
+            blocks = new HashSet<PropertyBlock>(inBrocks);
             isTexture = false;
             propertyName = name;
         }
@@ -110,7 +110,7 @@ namespace lilToon
         public lilMaterialProperty(string name, bool isTex, params PropertyBlock[] inBrocks)
         {
             p = null;
-            blocks = inBrocks.ToHashSet();
+            blocks = new HashSet<PropertyBlock>(inBrocks);
             isTexture = isTex;
             propertyName = name;
         }

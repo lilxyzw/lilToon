@@ -108,7 +108,6 @@ namespace lilToon
             // Main GUI
             switch(edSet.editorMode)
             {
-                case EditorMode.Simple:     DrawSimpleGUI(material); break;
                 case EditorMode.Advanced:   DrawAdvancedGUI(material); break;
                 case EditorMode.Preset:     DrawPresetGUI(); break;
                 case EditorMode.Settings:   DrawSettingsGUI(); break;
