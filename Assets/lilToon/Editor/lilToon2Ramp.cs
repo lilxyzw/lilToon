@@ -29,7 +29,11 @@ namespace lilToon
         {
             var tex = Convert(origin, width);
 
-            if(string.IsNullOrEmpty(path)) path = AssetDatabase.GetAssetPath(origin)[..^4] + "_ramp.png";
+            if(string.IsNullOrEmpty(path))
+            {
+                path = AssetDatabase.GetAssetPath(origin);
+                path = path.Substring(0, path.Length - 4) + "_ramp.png";
+            }
             File.WriteAllBytes(path, tex.EncodeToPNG());
             Object.DestroyImmediate(tex);
 
