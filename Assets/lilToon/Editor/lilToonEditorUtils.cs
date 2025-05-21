@@ -171,8 +171,8 @@ namespace lilToon
         {
             foreach (var o in Selection.objects)
             {
-                if(o is not Material m || !lilMaterialUtils.CheckShaderIslilToon(m)) continue;
-                    lilToon2Ramp.ConvertAndSave(m);
+                if(!(o is Material m) || !lilMaterialUtils.CheckShaderIslilToon(m)) continue;
+                lilToon2Ramp.ConvertAndSave(m);
             }
         }
 
