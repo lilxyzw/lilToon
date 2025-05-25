@@ -140,6 +140,28 @@ namespace lilToon
                         string[] sFallbackShaderTypes = {"Unlit", "Standard", "VertexLit", "Toon", "Particle", "Sprite", "Matcap", "MobileToon", "Hidden", "toonstandard", "toonstandardoutline"};
                         string[] sFallbackRenderTypes = {"Opaque", "Cutout", "Transparent", "Fade"};
                         string[] sFallbackCullTypes = {"Default", "DoubleSided"};
+                        string[] sFallbackShadingTypes =
+                        {
+                            "Flat",
+                            "Realistic",
+                            "Realistic Soft",
+                            "Realistic Very Soft",
+                            "Toon 2 Band",
+                            "Toon 3 Band",
+                            "Toon 4 Band",
+                            "Custom",
+                        };
+                        string[] sFallbackRampGuids =
+                        {
+                            "8ed41581528c4fa4fa11970aca4edb8d",
+                            "348500adef1d2da428abc7b720b8b699",
+                            "636cf1b5dfca6f54b94ca3d2ff8216c9",
+                            "5f304bf7a07313d43b8562d9eabce646",
+                            "dfafc89321615114fb6dbecdba0c8214",
+                            "5d1b50be612cf1248b6e101f8d1c5b53",
+                            "0d6a7a9ec31ab7448a777f0e2daef4af",
+                            "",
+                        };
 
                         int fallbackShaderType = tag.Contains("Standard")            ? 1 : 0;
                             fallbackShaderType = tag.Contains("VertexLit")           ? 2 : fallbackShaderType;
@@ -157,6 +179,18 @@ namespace lilToon
                             fallbackRenderType = tag.Contains("Fade")           ? 3 : fallbackRenderType;
 
                         int fallbackCullType = tag.Contains("DoubleSided") ? 1 : 0;
+
+                        int fallbackShadingType = -1;
+                        if(ramp.textureValue)
+                        {
+                            var path = AssetDatabase.GetAssetPath(ramp.textureValue);
+                            var guid = AssetDatabase.AssetPathToGUID(path);
+                            fallbackShadingType = Array.IndexOf(sFallbackRampGuids, guid);
+                        }
+                        if(fallbackShadingType < 0)
+                        {
+                            fallbackShadingType = Array.IndexOf(sFallbackShadingTypes, "Custom");
+                        }
 
                         fallbackShaderType = lilEditorGUI.Popup("Shader Type", fallbackShaderType, sFallbackShaderTypes);
                         fallbackRenderType = lilEditorGUI.Popup("Rendering Mode", fallbackRenderType, sFallbackRenderTypes);
@@ -191,12 +225,40 @@ namespace lilToon
                             case 1: tag += "DoubleSided"; break;
                             default: break;
                         }
-                        EditorGUILayout.LabelField("Result:", '"' + tag + '"');
+
+                        if(tag.Contains("toonstandard"))
+                        {
+                            EditorGUI.BeginChangeCheck();
+                            fallbackShadingType = lilEditorGUI.Popup("Shading", fallbackShadingType, sFallbackShadingTypes);
+                            if(EditorGUI.EndChangeCheck())
+                            {
+                                var guid = sFallbackRampGuids[fallbackShadingType];
+                                var path = AssetDatabase.GUIDToAssetPath(guid);
+                                ramp.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+                            }
+                            if(sFallbackShadingTypes[fallbackShadingType] == "Custom")
+                            {
+                                LocalizedPropertyTexture(new GUIContent(ramp.displayName), ramp);
+                            }
+                            EditorGUILayout.BeginHorizontal();
+                            EditorGUILayout.LabelField("Result", '"' + tag + '"');
+                            EditorGUI.BeginDisabledGroup(true);
+                            EditorGUILayout.ObjectField(ramp.textureValue, typeof(Texture2D), false, GUILayout.Width(32));
+                            EditorGUI.EndDisabledGroup();
+                            EditorGUILayout.EndHorizontal();
+                        }
+                        else
+                        {
+                            ramp.textureValue = null;
+                            EditorGUILayout.LabelField("Result", '"' + tag + '"');
+                        }
+
                         EditorGUILayout.EndVertical();
                     }
                     else
                     {
                         tag = "";
+                        ramp.textureValue = null;
                     }
                     EditorGUI.showMixedValue = false;
                     if(EditorGUI.EndChangeCheck())

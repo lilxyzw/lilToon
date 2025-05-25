@@ -600,6 +600,10 @@ Shader "Hidden/ltspass_proponly"
         [HideInInspector]                               _lilToonVersion     ("Version", Int) = 45
 
         //----------------------------------------------------------------------------------------------------------------------
+        // VRChat
+        _Ramp ("Shadow Ramp", 2D) = "white" {}
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilEnum]                                       _Cull               ("sCullModes", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("sSrcBlendRGB", Int) = 1
