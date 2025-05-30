@@ -654,6 +654,8 @@ namespace lilToon
         private readonly lilMaterialProperty matcapMul              = new lilMaterialProperty("_MatCapMul", PropertyBlock.MatCaps, PropertyBlock.MatCap1st);
         private readonly lilMaterialProperty fakeShadowVector       = new lilMaterialProperty("_FakeShadowVector", PropertyBlock.Base);
 
+        private readonly lilMaterialProperty ramp = new lilMaterialProperty("_Ramp", true);
+
         private lilMaterialProperty[] allProperty;
         private lilMaterialProperty[] AllProperties()
         {
@@ -1294,6 +1296,8 @@ namespace lilToon
                 triMask,
                 matcapMul,
                 fakeShadowVector,
+
+                ramp,
             };
         }
 
