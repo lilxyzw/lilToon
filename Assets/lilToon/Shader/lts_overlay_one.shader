@@ -605,6 +605,10 @@ Shader "_lil/[Optional] lilToonOverlayOnePass"
         [HideInInspector]                               _lilToonVersion     ("Version", Int) = 45
 
         //----------------------------------------------------------------------------------------------------------------------
+        // VRChat
+        _Ramp ("Shadow Ramp", 2D) = "white" {}
+
+        //----------------------------------------------------------------------------------------------------------------------
         // Advanced
         [lilEnum]                                       _Cull               ("Cull Mode|Off|Front|Back", Int) = 2
         [Enum(UnityEngine.Rendering.BlendMode)]         _SrcBlend           ("sSrcBlendRGB", Int) = 1
