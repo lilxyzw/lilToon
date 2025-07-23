@@ -1,0 +1,1615 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja-JP\n"
+
+msgid "sLanguageWarning"
+msgstr ""
+
+msgid "sEditorMode"
+msgstr "編集モード"
+
+msgid "sEditorModeSimple"
+msgstr "簡易設定"
+
+msgid "sEditorModeAdvanced"
+msgstr "詳細設定"
+
+msgid "sEditorModePreset"
+msgstr "プリセット"
+
+msgid "sEditorModeShaderSetting"
+msgstr "シェーダー設定"
+
+msgid "sHelpSelectOverlay"
+msgstr "現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。"
+
+msgid "sColor"
+msgstr "色"
+
+msgid "sAlpha"
+msgstr "透明度"
+
+msgid "sColorAlpha"
+msgstr "色 / 透明度"
+
+msgid "sGamma"
+msgstr "ガンマ"
+
+msgid "sHue"
+msgstr "色相"
+
+msgid "sSaturation"
+msgstr "彩度"
+
+msgid "sValue"
+msgstr "明度"
+
+msgid "sStrength"
+msgstr "強度"
+
+msgid "sStrengthMask"
+msgstr "マスクと強度"
+
+msgid "sStrengthR"
+msgstr "強度 (R)"
+
+msgid "sLength"
+msgstr "長さ"
+
+msgid "sLengthMask"
+msgstr "長さマスク"
+
+msgid "sTexture"
+msgstr "テクスチャ"
+
+msgid "sTextureRGB"
+msgstr "色(RGB)"
+
+msgid "sTextureRGBA"
+msgstr "色(RGB)と透明度(A)"
+
+msgid "sMask"
+msgstr "マスク"
+
+msgid "sMaskType"
+msgstr "マスクタイプ"
+
+msgid "sBlendR"
+msgstr "合成度 (R)"
+
+msgid "sBlendMode"
+msgstr "合成モード"
+
+msgid "sBlendModeNormal"
+msgstr "通常"
+
+msgid "sBlendModeAdd"
+msgstr "加算"
+
+msgid "sBlendModeScreen"
+msgstr "スクリーン"
+
+msgid "sBlendModeMul"
+msgstr "乗算"
+
+msgid "sBorder"
+msgstr "範囲"
+
+msgid "sBorderAO"
+msgstr "AOと影範囲"
+
+msgid "sBorderR"
+msgstr "範囲 (R)"
+
+msgid "sBorderRGB"
+msgstr "範囲 (RGB = 1st/2nd/3rd)"
+
+msgid "sBlur"
+msgstr "ぼかし"
+
+msgid "sBlurR"
+msgstr "ぼかし (R)"
+
+msgid "sBlurRGB"
+msgstr "ぼかし (RGB = 1st/2nd/3rd)"
+
+msgid "sBlurMask"
+msgstr "ぼかし量マスク"
+
+msgid "sAlphaR"
+msgstr "透明度 (R)"
+
+msgid "sMainColorPower"
+msgstr "メインカラーの強度"
+
+msgid "sEnableLighting"
+msgstr "ライトの明るさを反映"
+
+msgid "sUVSetting"
+msgstr "UV設定"
+
+msgid "sUVAnimation"
+msgstr "UVアニメーション"
+
+msgid "sOffset"
+msgstr "Offset"
+
+msgid "sScroll"
+msgstr "スクロール"
+
+msgid "sAngle"
+msgstr "角度"
+
+msgid "sRotate"
+msgstr "回転速度"
+
+msgid "sAsMSDF"
+msgstr "MSDFテクスチャ"
+
+msgid "sAsDecal"
+msgstr "デカール化"
+
+msgid "sAnimation"
+msgstr "アニメーション"
+
+msgid "sXFrames"
+msgstr "X軸のフレーム数"
+
+msgid "sYFrames"
+msgstr "Y軸のフレーム数"
+
+msgid "sFrames"
+msgstr "合計フレーム数"
+
+msgid "sFPS"
+msgstr "FPS"
+
+msgid "sXRatio"
+msgstr "X軸比率"
+
+msgid "sYRatio"
+msgstr "Y軸比率"
+
+msgid "sFixBorder"
+msgstr "境界を調整"
+
+msgid "sConvertGif"
+msgstr "Gifを変換"
+
+msgid "sMirrorMode"
+msgstr "ミラーモード"
+
+msgid "sMirrorModeNormal"
+msgstr "通常"
+
+msgid "sMirrorModeFlip"
+msgstr "反転"
+
+msgid "sMirrorModeLeft"
+msgstr "左のみ"
+
+msgid "sMirrorModeRight"
+msgstr "右のみ"
+
+msgid "sMirrorModeRightFlip"
+msgstr "右のみ・反転"
+
+msgid "sCopyMode"
+msgstr "複製モード"
+
+msgid "sCopyModeNormal"
+msgstr "通常"
+
+msgid "sCopyModeSymmetry"
+msgstr "左右対称"
+
+msgid "sCopyModeFlip"
+msgstr "反転"
+
+msgid "sPosition"
+msgstr "座標"
+
+msgid "sPositionX"
+msgstr "X座標"
+
+msgid "sPositionY"
+msgstr "Y座標"
+
+msgid "sScale"
+msgstr "サイズ"
+
+msgid "sScaleX"
+msgstr "X軸サイズ"
+
+msgid "sScaleY"
+msgstr "Y軸サイズ"
+
+msgid "sVector"
+msgstr "向き"
+
+msgid "sVertex"
+msgstr "頂点"
+
+msgid "sVertexColor"
+msgstr "頂点カラー"
+
+msgid "sThreshold"
+msgstr "閾値"
+
+msgid "sDensity"
+msgstr "密度"
+
+msgid "sSensitivity"
+msgstr "感度"
+
+msgid "sNormalStrength"
+msgstr "ノーマルマップ強度"
+
+msgid "sColorAlphaZeroWarn"
+msgstr "プロパティを有効にするには透明度の値を上げて下さい。"
+
+msgid "sApplyTransparency"
+msgstr "透明度を適用"
+
+msgid "sVRParallaxStrength"
+msgstr "VR時の視差の強さ"
+
+msgid "sShadowMask"
+msgstr "影部分で無効化"
+
+msgid "sBackfaceMask"
+msgstr "裏面で無効化"
+
+msgid "sRandomize"
+msgstr "ランダム化"
+
+msgid "sLimShadowStrength"
+msgstr "影の強さ"
+
+msgid "sLimOutline"
+msgstr "輪郭線の色"
+
+msgid "sLimEmission"
+msgstr "発光色"
+
+msgid "sLimEmission2nd"
+msgstr "発光色2nd"
+
+msgid "sBaseSetting"
+msgstr "基本設定"
+
+msgid "sInvisible"
+msgstr "非表示"
+
+msgid "sAsUnlit"
+msgstr "Unlit化"
+
+msgid "sAsUnlitWarn"
+msgstr ""Unlit化"が0以外に設定されています。これはマテリアル間・アバター間での明るさの違いを発生させる可能性があります。"
+
+msgid "sShaderType"
+msgstr "シェーダーの種類"
+
+msgid "sShaderTypeNormal"
+msgstr "Normal (通常版)"
+
+msgid "sShaderTypeLite"
+msgstr "Lite (軽量版)"
+
+msgid "sRenderingMode"
+msgstr "描画モード"
+
+msgid "sRenderingModeOpaque"
+msgstr "不透明"
+
+msgid "sRenderingModeCutout"
+msgstr "カットアウト"
+
+msgid "sRenderingModeTransparent"
+msgstr "半透明"
+
+msgid "sRenderingModeRefraction"
+msgstr "[高負荷] 屈折"
+
+msgid "sRenderingModeRefractionBlur"
+msgstr "[高負荷] 屈折ぼかし"
+
+msgid "sRenderingModeFur"
+msgstr "[高負荷] ファー"
+
+msgid "sRenderingModeFurCutout"
+msgstr "[高負荷] ファー (カットアウト)"
+
+msgid "sRenderingModeFurTwoPass"
+msgstr "[高負荷] ファー (2パス)"
+
+msgid "sRenderingModeGem"
+msgstr "[高負荷] 宝石"
+
+msgid "sTransparentMode"
+msgstr "透過モード"
+
+msgid "sTransparentModeNormal"
+msgstr "通常"
+
+msgid "sTransparentModeOnePass"
+msgstr "1パス"
+
+msgid "sTransparentModeTwoPass"
+msgstr "2パス"
+
+msgid "sColorType"
+msgstr "カラータイプ"
+
+msgid "sColorTypeNormal"
+msgstr "通常"
+
+msgid "sColorTypeLUT"
+msgstr "LUT"
+
+msgid "sAsOverlay"
+msgstr "Overlayマテリアル"
+
+msgid "sCutoff"
+msgstr "Cutoff (完全透明にする範囲)"
+
+msgid "sSubpassCutoff"
+msgstr "Subpass Cutoff (完全透明にする範囲)"
+
+msgid "sCullMode"
+msgstr "Cull Mode (描画面)"
+
+msgid "sCullModeOff"
+msgstr "Off (両面を描画)"
+
+msgid "sCullModeFront"
+msgstr "Front (裏面のみ描画)"
+
+msgid "sCullModeBack"
+msgstr "Back (前面のみ描画)"
+
+msgid "sFlipBackfaceNormal"
+msgstr "裏面の法線を反転"
+
+msgid "sShiftBackfaceUV"
+msgstr "裏面のUVをずらす"
+
+msgid "sBackfaceForceShadow"
+msgstr "裏面を影にする"
+
+msgid "sAAShading"
+msgstr "アンチエイリアスシェーディング"
+
+msgid "sDither"
+msgstr "Dither"
+
+msgid "sSimpleStencilSettings"
+msgstr "簡易ステンシル設定"
+
+msgid "sStencilModeNormal"
+msgstr "通常"
+
+msgid "sStencilModeWriter"
+msgstr "Writer"
+
+msgid "sStencilModeReader"
+msgstr "Reader"
+
+msgid "sStencilModeReaderInvert"
+msgstr "Reader (反転)"
+
+msgid "sStencilModeReaderFade"
+msgstr "Reader (半透明)"
+
+msgid "sTransparentPresetsPreWriteDepth"
+msgstr "深度を事前に書き込み"
+
+msgid "sTransparentPresetsColorTransparent"
+msgstr "色付き透過"
+
+msgid "sTransparentPresetsBackAndFront"
+msgstr "裏面 & 表面"
+
+msgid "sTransparentPresetsCutoutAndTransparent"
+msgstr "カットアウト & 透過"
+
+msgid "sTransparentPresetsFadeStencil"
+msgstr "透過ステンシル"
+
+msgid "sOutType"
+msgstr "出力タイプ"
+
+msgid "sOutTypeNormal"
+msgstr "通常"
+
+msgid "sOutTypeFlat"
+msgstr "フラット"
+
+msgid "sOutTypeMono"
+msgstr "単色"
+
+msgid "sLightingSettings"
+msgstr "ライティング・明るさ設定"
+
+msgid "sVertexLightStrength"
+msgstr "頂点ライトの強度"
+
+msgid "sLightMinLimit"
+msgstr "明るさの下限"
+
+msgid "sLightMaxLimit"
+msgstr "明るさの上限"
+
+msgid "sMonochromeLighting"
+msgstr "ライトのモノクロ化"
+
+msgid "sLightDirectionOverride"
+msgstr "ライト方向のオーバーライド"
+
+msgid "sObjectFollowing"
+msgstr "オブジェクトの向きに追従"
+
+msgid "sDirectionalLightStrength"
+msgstr "[HDRP] Directional Lightの強さ"
+
+msgid "sBeforeExposureLimit"
+msgstr "[HDRP] Before exposure limit"
+
+msgid "sLightingPreset"
+msgstr "プリセットを適用"
+
+msgid "sLightingPresetDefault"
+msgstr "通常"
+
+msgid "sLightingPresetStable"
+msgstr "安定"
+
+msgid "sLightingPresetSemiMonochrome"
+msgstr "半モノクロ"
+
+msgid "sHelpRenderingTransparent"
+msgstr "透過マテリアル同士が重なったときに片方が見えなくなる場合があります。その場合は手前に表示されるマテリアルのRender Queueの値を上げることで改善されます。"
+
+msgid "sHelpRenderingFur"
+msgstr "ファーでは負荷軽減のためにファー部分に適用される機能が制限されています。"
+
+msgid "sHelpTransparentForWorld"
+msgstr "透過マテリアルでRenderQueueを2999以下に設定すると奥にある他のマテリアルを見えなくし、服や髪が消えるなどの問題が発生する可能性があります。ワールド用途であれば3000以上に設定したりZWriteをオフにしたりする設定がオススメです。"
+
+msgid "sHelpGrabPass"
+msgstr "屈折・宝石はGrabPassを利用するため、モバイル環境においてパフォーマンスに大きな影響を及ぼす可能性があります。"
+
+msgid "sHelpGeometryShader"
+msgstr "ジオメトリシェーダーはiOSやMacで動作しないため、他レンダリングモードに置き換えることを推奨します。"
+
+msgid "sHelpOnePassVertexLight"
+msgstr "1パス使用時は頂点ライトの強度を1.0にしておくことをオススメします。"
+
+msgid "sHelpCullMode"
+msgstr "表示がおかしい場合はCullModeをOffもしくはBackにしてください"
+
+msgid "sHelpZWrite"
+msgstr "表示がおかしい場合はZWriteをオンにしてください"
+
+msgid "sAlphaBoostFA"
+msgstr "[Built-in RP] 透明度ブースト (Point / Spot Light)"
+
+msgid "sLightBlending"
+msgstr "[Built-in RP] ライトの合成"
+
+msgid "sBlendingAdd"
+msgstr "加算"
+
+msgid "sBlendingMax"
+msgstr "比較（明）"
+
+msgid "sMaskTiling"
+msgstr "Mask UV Tiling"
+
+msgid "sMaskOffset"
+msgstr "Mask UV Offset"
+
+msgid "sNoise"
+msgstr "ノイズ"
+
+msgid "sNoiseR"
+msgstr "Noise (R)"
+
+msgid "sNoiseStrength"
+msgstr "ノイズの強度"
+
+msgid "sTriMask"
+msgstr "TriMask (Mat/Rim/Emi)"
+
+msgid "sTriMaskRGB"
+msgstr "Mask (R:MatCap G:Rim B:Emission)"
+
+msgid "sApplyTo"
+msgstr "適用先"
+
+msgid "sMainUV"
+msgstr "UV設定"
+
+msgid "sMainUVTips"
+msgstr "UVの位置やサイズ、アニメーションの設定ができます"
+
+msgid "sColors"
+msgstr "色設定"
+
+msgid "sMainColorSetting"
+msgstr "メインカラー / 透過設定"
+
+msgid "sMainColorSettingSimple"
+msgstr "メインカラー / 透過設定 (色替え)"
+
+msgid "sMainColorTips"
+msgstr "色や透明度の設定ができます"
+
+msgid "sMainColorAlpha"
+msgstr "メインカラー / 透過"
+
+msgid "sMainColor"
+msgstr "メインカラー"
+
+msgid "sMainColor2nd"
+msgstr "メインカラー2nd"
+
+msgid "sMainColor3rd"
+msgstr "メインカラー3rd"
+
+msgid "sColorAdjust"
+msgstr "色調補正"
+
+msgid "sGradationMap"
+msgstr "グラデーションマップ"
+
+msgid "sNotAlphaIsTransparency"
+msgstr "このテクスチャはAlphaIsTransparencyとして設定されていません"
+
+msgid "sAlphaMask"
+msgstr "アルファマスク"
+
+msgid "sAlphaMaskWarnOpaque"
+msgstr "アルファマスクを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。"
+
+msgid "sAlphaMaskModeNone"
+msgstr "None"
+
+msgid "sAlphaMaskModeReplace"
+msgstr "置き換え"
+
+msgid "sAlphaMaskModeMul"
+msgstr "乗算"
+
+msgid "sAlphaMaskModeAdd"
+msgstr "加算"
+
+msgid "sAlphaMaskModeSub"
+msgstr "減算"
+
+msgid "sShadowSetting"
+msgstr "影設定"
+
+msgid "sShadowTips"
+msgstr "影の色や範囲の設定ができます"
+
+msgid "sShadow"
+msgstr "影"
+
+msgid "sReceiveShadow"
+msgstr "影を受け取る"
+
+msgid "sShadowColor"
+msgstr "影色"
+
+msgid "sShadow1stColor"
+msgstr "影色1"
+
+msgid "sShadow2ndColor"
+msgstr "影色2"
+
+msgid "sShadow3rdColor"
+msgstr "影色3"
+
+msgid "sShadowEnvStrength"
+msgstr "影色への環境光影響度"
+
+msgid "sShadowBorderColor"
+msgstr "境界の色"
+
+msgid "sShadowBorderRange"
+msgstr "境界の幅"
+
+msgid "sIgnoreBorderProperties"
+msgstr "影範囲設定を無視して適用"
+
+msgid "sFlat"
+msgstr "平面化"
+
+msgid "sBacklightSetting"
+msgstr "逆光ライト"
+
+msgid "sBacklight"
+msgstr "逆光ライト"
+
+msgid "sBacklightTips"
+msgstr "逆光時に光を乗せる表現ができます"
+
+msgid "sDirectivity"
+msgstr "指向性"
+
+msgid "sViewDirectionStrength"
+msgstr "視線方向の影響度"
+
+msgid "sOutlineSetting"
+msgstr "輪郭線設定"
+
+msgid "sOutlineTips"
+msgstr "輪郭線の色や太さの設定ができます"
+
+msgid "sOutline"
+msgstr "輪郭線"
+
+msgid "sHighlight"
+msgstr "ハイライト"
+
+msgid "sWidth"
+msgstr "マスクと太さ"
+
+msgid "sWidthR"
+msgstr "太さ (R)"
+
+msgid "sFixWidth"
+msgstr "距離に応じた太さ補正"
+
+msgid "sVertexR2Width"
+msgstr "R -> Width"
+
+msgid "sVertexRGBA2Normal"
+msgstr "RGBA -> Normal & Width"
+
+msgid "sDeleteMesh0"
+msgstr "太さ0の頂点を削除"
+
+msgid "sDisableInVR"
+msgstr "VR時に非表示"
+
+msgid "sRefractionSetting"
+msgstr "屈折設定"
+
+msgid "sRefractionTips"
+msgstr "屈折の強さや色の設定ができます"
+
+msgid "sRefraction"
+msgstr "屈折"
+
+msgid "sRefractionFresnel"
+msgstr "フレネル"
+
+msgid "sColorFromMain"
+msgstr "メインカラーから色を取得"
+
+msgid "sFurSetting"
+msgstr "ファー設定"
+
+msgid "sFurTips"
+msgstr "ファーの長さや向き、質感の設定ができます"
+
+msgid "sFur"
+msgstr "ファー"
+
+msgid "sAntiLight"
+msgstr "Anti Light"
+
+msgid "sGravity"
+msgstr "重力"
+
+msgid "sAO"
+msgstr "陰影"
+
+msgid "sVertexColor2Vector"
+msgstr "VertexColor -> Vector"
+
+msgid "sLayerNum"
+msgstr "レイヤー数"
+
+msgid "sRootWidth"
+msgstr "根本の太さ"
+
+msgid "sTouchStrength"
+msgstr "接触強度"
+
+msgid "sTessellation"
+msgstr "テッセレーション (非常に高負荷)"
+
+msgid "sTessellationTips"
+msgstr "テッセレーションのかかり方を設定できます"
+
+msgid "sTessellationEdge"
+msgstr "閾値"
+
+msgid "sTessellationShrink"
+msgstr "縮小補正"
+
+msgid "sTessellationFactor"
+msgstr "最大分割数"
+
+msgid "sEmissionSetting"
+msgstr "発光設定"
+
+msgid "sEmissionTips"
+msgstr "発光の色や点滅に関する設定ができます"
+
+msgid "sEmission"
+msgstr "発光テクスチャ"
+
+msgid "sEmission2nd"
+msgstr "発光テクスチャ2nd"
+
+msgid "sBlinkStrength"
+msgstr "点滅の強さ"
+
+msgid "sBlinkType"
+msgstr "点滅タイプ"
+
+msgid "sBlinkSpeed"
+msgstr "点滅の速度"
+
+msgid "sBlinkOffset"
+msgstr "点滅のズレ"
+
+msgid "sGradation"
+msgstr "グラデーション"
+
+msgid "sGradTexSpeed"
+msgstr "テクスチャ & 変化速度"
+
+msgid "sGradColor"
+msgstr "色"
+
+msgid "sParallaxDepth"
+msgstr "視差の強さ"
+
+msgid "sFluorescence"
+msgstr "蛍光"
+
+msgid "sParallax"
+msgstr "視差マップ"
+
+msgid "sParallaxTips"
+msgstr "視差マップに関する設定ができます"
+
+msgid "sParallaxR"
+msgstr "Parallax (R)"
+
+msgid "sParallaxOffset"
+msgstr "オフセット"
+
+msgid "sPOM"
+msgstr "[高負荷] POM"
+
+msgid "sDistanceFade"
+msgstr "距離フェード"
+
+msgid "sDistanceFadeTips"
+msgstr "距離に応じて色の変更ができます"
+
+msgid "sStartDistance"
+msgstr "開始距離"
+
+msgid "sEndDistance"
+msgstr "終了距離"
+
+msgid "sAudioLink"
+msgstr "AudioLink"
+
+msgid "sAudioLinkTips"
+msgstr "AudioLinkシステムに合わせてマテリアルを変化させられます"
+
+msgid "sAudioLinkUVMode"
+msgstr "UV Mode"
+
+msgid "sAudioLinkUVModeNone"
+msgstr "None"
+
+msgid "sAudioLinkUVModeRim"
+msgstr "Rim"
+
+msgid "sAudioLinkUVModeUV"
+msgstr "UV"
+
+msgid "sAudioLinkUVModeMask"
+msgstr "マスク"
+
+msgid "sAudioLinkUVModePosition"
+msgstr "座標"
+
+msgid "sAudioLinkMaskRGB"
+msgstr "RGB = 遅延 / 帯域 / 強度"
+
+msgid "sAudioLinkMaskRGBSpectrum"
+msgstr "RGB = 音量 / 帯域 / 強度"
+
+msgid "sAudioLinkBand"
+msgstr "帯域"
+
+msgid "sAudioLinkBandBass"
+msgstr "Bass"
+
+msgid "sAudioLinkBandLowMid"
+msgstr "Low Mid"
+
+msgid "sAudioLinkBandHighMid"
+msgstr "High Mid"
+
+msgid "sAudioLinkBandTreble"
+msgstr "Treble"
+
+msgid "sAudioLinkStartPosition"
+msgstr "開始点"
+
+msgid "sAudioLinkMovingVector"
+msgstr "移動方向"
+
+msgid "sAudioLinkNormalStrength"
+msgstr "法線方向の強度"
+
+msgid "sAudioLinkAsLocal"
+msgstr "ローカル化"
+
+msgid "sAudioLinkLocalMap"
+msgstr "ローカルマップ"
+
+msgid "sAudioLinkLocalMapBPM"
+msgstr "BPM"
+
+msgid "sAudioLinkLocalMapNotes"
+msgstr "拍数"
+
+msgid "sAudioLinkDefaultValue"
+msgstr "AudioLink無効時の初期値"
+
+msgid "sDissolve"
+msgstr "Dissolve"
+
+msgid "sDissolveTips"
+msgstr "マテリアルが溶けるような表現ができます"
+
+msgid "sDissolveWarnOpaque"
+msgstr "Dissolveを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。"
+
+msgid "sDissolveMode"
+msgstr "Dissolve Mode"
+
+msgid "sDissolveModeNone"
+msgstr "None"
+
+msgid "sDissolveModeAlpha"
+msgstr "透明度"
+
+msgid "sDissolveModeUV"
+msgstr "UV"
+
+msgid "sDissolveModePosition"
+msgstr "座標"
+
+msgid "sDissolveShape"
+msgstr "形状"
+
+msgid "sDissolveShapePoint"
+msgstr "点"
+
+msgid "sDissolveShapeLine"
+msgstr "線"
+
+msgid "sIDMask"
+msgstr "ID Mask"
+
+msgid "sUDIMDiscard"
+msgstr "UV Tile Discard"
+
+msgid "sUDIMDiscardUV"
+msgstr "Discard UV"
+
+msgid "sUDIMDiscardMode"
+msgstr "削除モード"
+
+msgid "sEncryption"
+msgstr "暗号化"
+
+msgid "sEncryptionTips"
+msgstr "4つのキーによってメッシュを復号化します"
+
+msgid "sIgnoreEncryption"
+msgstr "Ignore Encryption"
+
+msgid "sKeys"
+msgstr "Keys"
+
+msgid "sNormalMapReflection"
+msgstr "ノーマルマップ・光沢設定"
+
+msgid "sNormalMapSetting"
+msgstr "ノーマルマップ設定"
+
+msgid "sNormalMapTips"
+msgstr "ノーマルマップの設定ができます"
+
+msgid "sNormalMap"
+msgstr "ノーマルマップ"
+
+msgid "sNormalMap2nd"
+msgstr "ノーマルマップ2nd"
+
+msgid "sNormalRGB"
+msgstr "ノーマル (RGB)"
+
+msgid "sAnisotropy"
+msgstr "異方性反射"
+
+msgid "sTangentWidth"
+msgstr "タンジェント方向の幅"
+
+msgid "sBitangentWidth"
+msgstr "バイタンジェント方向の幅"
+
+msgid "sReflectionsSetting"
+msgstr "光沢設定"
+
+msgid "sReflectionsTips"
+msgstr "光沢に関する設定ができます"
+
+msgid "sReflection"
+msgstr "反射"
+
+msgid "sSmoothness"
+msgstr "滑らかさ"
+
+msgid "sSmoothnessR"
+msgstr "滑らかさ (R)"
+
+msgid "sMetallic"
+msgstr "金属度"
+
+msgid "sMetallicR"
+msgstr "金属度 (R)"
+
+msgid "sReflectance"
+msgstr "反射率"
+
+msgid "sSpecularMode"
+msgstr "光沢のタイプ"
+
+msgid "sSpecularNone"
+msgstr "無効"
+
+msgid "sSpecularReal"
+msgstr "リアル"
+
+msgid "sSpecularToon"
+msgstr "トゥーン"
+
+msgid "sMultiLightSpecular"
+msgstr "複数ライトから光沢を生成"
+
+msgid "sApplyReflection"
+msgstr "環境光の反射"
+
+msgid "sMatCapSetting"
+msgstr "マットキャップ設定"
+
+msgid "sMatCap"
+msgstr "マットキャップ"
+
+msgid "sMatCap2nd"
+msgstr "マットキャップ2nd"
+
+msgid "sBlendUV1"
+msgstr "UV1を合成"
+
+msgid "sMatCapZRotCancel"
+msgstr "Z軸回転キャンセル"
+
+msgid "sFixPerspective"
+msgstr "パース補正"
+
+msgid "sHelpMatCapBlending"
+msgstr "乗算モードでは"ライトの明るさを反映"を0にしてください"
+
+msgid "sMatCapCustomNormal"
+msgstr "カスタムノーマルマップ"
+
+msgid "sRimLightSetting"
+msgstr "リムライト設定"
+
+msgid "sRimLight"
+msgstr "リムライト"
+
+msgid "sFresnelPower"
+msgstr "リムライトの細さ"
+
+msgid "sRimLightDirection"
+msgstr "ライト方向の影響度"
+
+msgid "sRimDirectionRange"
+msgstr "直接光の幅"
+
+msgid "sRimIndirectionRange"
+msgstr "間接光の幅"
+
+msgid "sGlitterSetting"
+msgstr "ラメ設定"
+
+msgid "sGlitter"
+msgstr "ラメ"
+
+msgid "sParticleSize"
+msgstr "パーティクルサイズ"
+
+msgid "sContrast"
+msgstr "コントラスト"
+
+msgid "sPostContrast"
+msgstr "コントラスト（後処理）"
+
+msgid "sAngleLimit"
+msgstr "角度制限"
+
+msgid "sColorRandomness"
+msgstr "ランダムカラー"
+
+msgid "sGemSetting"
+msgstr "宝石設定"
+
+msgid "sGem"
+msgstr "宝石"
+
+msgid "sChromaticAberration"
+msgstr "色収差"
+
+msgid "sEnvironmentColor"
+msgstr "環境光の色"
+
+msgid "sParticleLoop"
+msgstr "パーティクルループ数"
+
+msgid "sStencilSetting"
+msgstr "ステンシル設定"
+
+msgid "sStencilTips"
+msgstr "ステンシル(眉毛を髪の上に表示するなど)の設定ができます"
+
+msgid "sAdvanced"
+msgstr "拡張設定"
+
+msgid "sRenderingSetting"
+msgstr "レンダリング設定"
+
+msgid "sRenderingTips"
+msgstr "細かいレンダリングの設定ができます。"
+
+msgid "sZClip"
+msgstr "ZClip"
+
+msgid "sZWrite"
+msgstr "ZWrite"
+
+msgid "sZTest"
+msgstr "ZTest"
+
+msgid "sOffsetFactor"
+msgstr "Offset Factor"
+
+msgid "sOffsetUnits"
+msgstr "Offset Units"
+
+msgid "sColorMask"
+msgstr "Color Mask"
+
+msgid "sAlphaToMask"
+msgstr "AlphaToMask"
+
+msgid "sForward"
+msgstr "Forward"
+
+msgid "sForwardAdd"
+msgstr "ForwardAdd"
+
+msgid "sSrcBlendRGB"
+msgstr "SrcBlend RGB"
+
+msgid "sDstBlendRGB"
+msgstr "DstBlend RGB"
+
+msgid "sSrcBlendAlpha"
+msgstr "SrcBlend Alpha"
+
+msgid "sDstBlendAlpha"
+msgstr "DstBlend Alpha"
+
+msgid "sBlendOpRGB"
+msgstr "BlendOp RGB"
+
+msgid "sBlendOpAlpha"
+msgstr "BlendOp Alpha"
+
+msgid "sRenderingReset"
+msgstr "レンダリング設定を初期化"
+
+msgid "sLightBakeSetting"
+msgstr "ライトベイク設定"
+
+msgid "sOptimization"
+msgstr "最適化"
+
+msgid "sOptimizationTips"
+msgstr "マテリアルを最適化して負荷を低減できます"
+
+msgid "sCustomProperties"
+msgstr "カスタムプロパティ"
+
+msgid "sCustomPropertiesTips"
+msgstr "ユーザーが追加したプロパティが表示されます"
+
+msgid "sBake"
+msgstr "焼き込み"
+
+msgid "sBakeAll"
+msgstr "全て焼き込み"
+
+msgid "sBake1st"
+msgstr "色替えを焼き込み"
+
+msgid "sBake2nd"
+msgstr "レイヤー2を焼き込み"
+
+msgid "sBake3rd"
+msgstr "レイヤー3を焼き込み"
+
+msgid "sBakeAlphamask"
+msgstr "アルファマスクを焼き込み"
+
+msgid "sSelectAlphamask"
+msgstr "アルファマスクを選択してください"
+
+msgid "sRemoveUnused"
+msgstr "未使用のテクスチャを外す"
+
+msgid "sConvertLite"
+msgstr "lilToonLiteに変換"
+
+msgid "sConvertMulti"
+msgstr "lilToonMultiに変換"
+
+msgid "sConvertMToon"
+msgstr "MToon(VRM)に変換"
+
+msgid "sOptimizeForEvents"
+msgstr "イベント入稿用に最適化"
+
+msgid "sYes"
+msgstr "はい"
+
+msgid "sNo"
+msgstr "いいえ"
+
+msgid "sOK"
+msgstr "OK"
+
+msgid "sCancel"
+msgstr "キャンセル"
+
+msgid "sNone"
+msgstr "None"
+
+msgid "sComplete"
+msgstr "完了しました。"
+
+msgid "sCopy"
+msgstr "コピー"
+
+msgid "sPaste"
+msgstr "貼り付け"
+
+msgid "sPasteWithTexture"
+msgstr "貼り付け（テクスチャを含む）"
+
+msgid "sReset"
+msgstr "初期化"
+
+msgid "sOpenManual"
+msgstr "マニュアルを表示"
+
+msgid "sFixNow"
+msgstr "自動修正"
+
+msgid "sDialogResetUV"
+msgstr "UV設定の初期化"
+
+msgid "sDialogResetUVMes"
+msgstr "UV設定を初期化しますか?"
+
+msgid "sDialogCannotBake"
+msgstr "焼き込みを実行できません"
+
+msgid "sDialogNoNeedBake"
+msgstr "焼き込む必要はありません"
+
+msgid "sDialogSetMainTex"
+msgstr "メインカラーにテクスチャを設定する必要があります。"
+
+msgid "sDialogNoChange"
+msgstr "色を変更していません。"
+
+msgid "sDialogNotUse2nd"
+msgstr "メインカラー2ndを利用していません。"
+
+msgid "sDialogNotUse3rd"
+msgstr "メインカラー3rdを利用していません。"
+
+msgid "sDialogNotUseAll"
+msgstr "色の変更とメインカラー2nd・3rdを使用していません。"
+
+msgid "sDialogRunBake"
+msgstr "焼き込みを実行しますか?"
+
+msgid "sDialogBakeMain"
+msgstr "メインカラーをベイクしますか?"
+
+msgid "sDialogBakeShadow"
+msgstr "影テクスチャをベイクしますか?"
+
+msgid "sDialogBakeMatCap"
+msgstr "マットキャップをベイクしますか?"
+
+msgid "sDialogBakeTriMask"
+msgstr "TriMask(マットキャップ、リムライト、発光のマスク)をベイクしますか?"
+
+msgid "sDialogBakeOutline"
+msgstr "輪郭線の色のテクスチャをベイクしますか?"
+
+msgid "sDialogGifToAtlas"
+msgstr "Gifをアトラス化"
+
+msgid "sDialogTexPow2"
+msgstr "テクスチャ全体の解像度を2の累乗に合わせますか?"
+
+msgid "sDialogImportOldVer"
+msgstr "インポートしようとしているパッケージは既にインポートされているlilToonよりも古いバージョンです。続行しますか？"
+
+msgid "sDialogImportPackage"
+msgstr "既にUPM版lilToonがインポートされています。unitypackage版のインポートを続行しますか？（これはスクリプトエラー等を引き起こす可能性があります。）"
+
+msgid "sWarnOptimiseMeshData"
+msgstr "Unityのバグにより必要な頂点データまで削除されることがあります。不具合が発生する場合は"Project Settings/Player/Optimize Mesh Data"をオフにしてください。"
+
+msgid "sPresets"
+msgstr "プリセット"
+
+msgid "sPresetsNotAvailable"
+msgstr "プリセットはこのシェーダーでは利用できません。"
+
+msgid "sPresetIsMaterial"
+msgstr "マテリアル以外が選択されています。"
+
+msgid "sPresetRefresh"
+msgstr "リストを更新"
+
+msgid "sPresetSave"
+msgstr "プリセットを保存"
+
+msgid "sPresetCategory"
+msgstr "カテゴリー"
+
+msgid "sPresetCategorySkin"
+msgstr "肌"
+
+msgid "sPresetCategoryHair"
+msgstr "髪"
+
+msgid "sPresetCategoryCloth"
+msgstr "布"
+
+msgid "sPresetCategoryNature"
+msgstr "自然物"
+
+msgid "sPresetCategoryInorganic"
+msgstr "無機物"
+
+msgid "sPresetCategoryEffect"
+msgstr "エフェクト"
+
+msgid "sPresetCategoryOther"
+msgstr "その他"
+
+msgid "sPresetName"
+msgstr "プリセット名"
+
+msgid "sPresetSaveTarget"
+msgstr "保存対象"
+
+msgid "sPresetTexture"
+msgstr "保存対象のテクスチャ"
+
+msgid "sPresetShader"
+msgstr "シェーダー"
+
+msgid "sPresetQueue"
+msgstr "Render Queue"
+
+msgid "sPresetStencil"
+msgstr "ステンシル"
+
+msgid "sPresetMainTex2Outline"
+msgstr "メインテクスチャを輪郭線に適用"
+
+msgid "sPresetMain"
+msgstr "メインカラー"
+
+msgid "sPresetMain2"
+msgstr "メインカラー2nd"
+
+msgid "sPresetMain2Mask"
+msgstr "メインカラー2ndマスク"
+
+msgid "sPresetMain3"
+msgstr "メインカラー3rd"
+
+msgid "sPresetMain3Mask"
+msgstr "メインカラー3rdマスク"
+
+msgid "sPresetShadowBorder"
+msgstr "影AO"
+
+msgid "sPresetShadowBlur"
+msgstr "影ぼかし"
+
+msgid "sPresetShadowStrength"
+msgstr "影マスク"
+
+msgid "sPresetShadowColor"
+msgstr "影色"
+
+msgid "sPresetShadowColor2"
+msgstr "影色2"
+
+msgid "sPresetEmissionColor"
+msgstr "発光色"
+
+msgid "sPresetEmissionMask"
+msgstr "発光マスク"
+
+msgid "sPresetEmissionGrad"
+msgstr "発光グラデーション"
+
+msgid "sPresetEmission2Color"
+msgstr "発光2nd色"
+
+msgid "sPresetEmission2Mask"
+msgstr "発光2ndマスク"
+
+msgid "sPresetEmission2Grad"
+msgstr "発光2ndグラデーション"
+
+msgid "sPresetNormal"
+msgstr "ノーマルマップ"
+
+msgid "sPresetNormal2"
+msgstr "ノーマルマップ2nd"
+
+msgid "sPresetNormal2Mask"
+msgstr "ノーマルマップ2ndマスク"
+
+msgid "sPresetReflectionSmoothness"
+msgstr "滑らかさ"
+
+msgid "sPresetReflectionMetallic"
+msgstr "金属度"
+
+msgid "sPresetReflectionColor"
+msgstr "反射色"
+
+msgid "sPresetMatcap"
+msgstr "マットキャップ"
+
+msgid "sPresetMatcapMask"
+msgstr "マットキャップマスク"
+
+msgid "sPresetRim"
+msgstr "リムライト色"
+
+msgid "sPresetParallax"
+msgstr "視差マップ"
+
+msgid "sPresetOutlineTex"
+msgstr "輪郭線カラー"
+
+msgid "sPresetOutlineWidth"
+msgstr "輪郭線の幅"
+
+msgid "sPresetFurNormal"
+msgstr "ファーノーマルマップ"
+
+msgid "sPresetFurNoise"
+msgstr "ファーノイズ"
+
+msgid "sPresetFurMask"
+msgstr "ファーマスク"
+
+msgid "sShaderSetting"
+msgstr "シェーダー設定 (全マテリアル共通)"
+
+msgid "sHelpShaderSetting"
+msgstr "ここでオフにした機能はシェーダーから除去されます。不要な機能をオフにすることでアバターの容量を削減しつつ、負荷も抑えることができます。"
+
+msgid "sSettingLock"
+msgstr "ロック"
+
+msgid "sShaderSettingOptimizeInTestBuild"
+msgstr "テストビルドでも最適化を行う"
+
+msgid "sShaderSettingOptimizeInEditor"
+msgstr "[Debug] エディタ上で最適化"
+
+msgid "sSettingClippingCanceller"
+msgstr "距離クリッピングキャンセラー"
+
+msgid "sSettingTexOutlineColor"
+msgstr "輪郭線色テクスチャ"
+
+msgid "sSettingDefaultValue"
+msgstr "初期値 (Fix Lightingやライティングプリセットに使用)"
+
+msgid "sSettingBuildSizeOptimization"
+msgstr "ビルドサイズの最適化 (全マテリアル共通)"
+
+msgid "sSettingApplyShadowFA"
+msgstr "ForwardAddパスで影を有効化"
+
+msgid "sSettingUseForwardAdd"
+msgstr "ForwardAddパスを使用"
+
+msgid "sSettingUseForwardAddShadow"
+msgstr "ForwardAddパスで影を受け取り"
+
+msgid "sSettingUseVertexLight"
+msgstr "頂点ライトを使用"
+
+msgid "sSettingUseLightmap"
+msgstr "ライトマップを使用"
+
+msgid "sManualURL"
+msgstr "https://lilxyzw.github.io/lilToon/#/ja-jp/"
+
+msgid "sAnchorBaseSetting"
+msgstr "base/base"
+
+msgid "sAnchorLighting"
+msgstr "base/lighting"
+
+msgid "sAnchorUVSetting"
+msgstr "base/uv"
+
+msgid "sAnchorMainColor"
+msgstr "color/maincolor"
+
+msgid "sAnchorMainColor1"
+msgstr "color/maincolor"
+
+msgid "sAnchorMainColor2"
+msgstr "color/maincolor_layer"
+
+msgid "sAnchorAlphaMask"
+msgstr "color/alphamask"
+
+msgid "sAnchorShadow"
+msgstr "color/shadow"
+
+msgid "sAnchorRimShade"
+msgstr "color/rimshade"
+
+msgid "sAnchorEmission"
+msgstr "color/emission"
+
+msgid "sAnchorNormalMap"
+msgstr "reflections/normal"
+
+msgid "sAnchorAnisotropy"
+msgstr "reflections/anisotropy"
+
+msgid "sAnchorBacklight"
+msgstr "reflections/backlight"
+
+msgid "sAnchorReflection"
+msgstr "reflections/reflection"
+
+msgid "sAnchorMatCap"
+msgstr "reflections/matcap"
+
+msgid "sAnchorRimLight"
+msgstr "reflections/rimlight"
+
+msgid "sAnchorGlitter"
+msgstr "reflections/glitter"
+
+msgid "sAnchorGem"
+msgstr "reflections/gem"
+
+msgid "sAnchorOutline"
+msgstr "advanced/outline"
+
+msgid "sAnchorParallax"
+msgstr "advanced/parallax"
+
+msgid "sAnchorDistanceFade"
+msgstr "advanced/distancefade"
+
+msgid "sAnchorAudioLink"
+msgstr "advanced/audiolink"
+
+msgid "sAnchorDissolve"
+msgstr "advanced/dissolve"
+
+msgid "sAnchorIDMask"
+msgstr "advanced/idmask"
+
+msgid "sAnchorUDIMDiscard"
+msgstr "advanced/uvtilediscard"
+
+msgid "sAnchorEncryption"
+msgstr "advanced/encryption"
+
+msgid "sAnchorStencil"
+msgstr "advanced/stencil"
+
+msgid "sAnchorRendering"
+msgstr "advanced/rendering"
+
+msgid "sAnchorTessellation"
+msgstr "advanced/tessellation"
+
+msgid "sAnchorRefraction"
+msgstr "advanced/refraction"
+
+msgid "sAnchorFur"
+msgstr "advanced/fur"
+
+msgid "sAnchorOptimization"
+msgstr "other?id=最適化"
+
+msgid "sAnchorShaderSetting"
+msgstr "other?id=シェーダー設定"
+
+msgid "sReadmeURL"
+msgstr "https://lilxyzw.github.io/lilToon/#/ja-jp/"
+
+msgid "sReadmeAnchorProblem"
+msgstr "other/qa"
+
+msgid "sHelp"
+msgstr "ヘルプ"
+
+msgid "sCommonProblems"
+msgstr "Q&A"
+
+msgid "sUtilGif2AtlasPow2"
+msgstr "テクスチャの解像度を2の累乗に合わせますか？"
+
+msgid "sUtilDotTexRedRatio"
+msgstr "縮小率を選択してください。"
+
+msgid "sUtilShaderNotFound"
+msgstr "シェーダーが見つかりません。"
+
+msgid "sUtilSelectPresets"
+msgstr "プリセットを選択してください。"
+
+msgid "sUtilMaterialAlreadyExist"
+msgstr "マテリアルが既に存在している可能性があります。上書きしてもよろしいですか？"
+
+msgid "sUtilInvalidFormat"
+msgstr "フォーマットが不正です。"
+

@@ -1119,10 +1119,9 @@
             // Apply Light
             float3 directCol = fd.albedo * fd.lightColor;
             indirectCol = indirectCol * fd.lightColor;
-
             #if !defined(LIL_PASS_FORWARDADD)
                 // Environment Light
-                indirectCol = lerp(indirectCol, fd.albedo, fd.indLightColor);
+                indirectCol = lerp(indirectCol, fd.albedo, fd.indLightColor * _ShadowEnvStrength);
             #endif
             // Fix
             indirectCol = min(indirectCol, directCol);
@@ -1172,10 +1171,10 @@
             float3 directCol = fd.albedo * fd.lightColor;
             indirectCol = indirectCol * fd.lightColor;
 
-            // Environment Light
-            indirectCol = lerp(indirectCol, fd.albedo, fd.indLightColor);
             // Fix
             indirectCol = min(indirectCol, directCol);
+            // Environment Light
+            indirectCol = lerp(indirectCol, fd.albedo, fd.indLightColor * _ShadowEnvStrength);
             // Gradation
             indirectCol = lerp(indirectCol, directCol, lnB * _ShadowBorderColor.rgb);
 

@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -70,14 +71,17 @@ namespace lilToon
 
         public class LanguageSettings : ScriptableSingleton<LanguageSettings>
         {
-            public int languageNum = -1;
-            public string languageNames = "";
-            public string languageName = "English";
+            private static readonly string[] oldLangCodes = new[] { "en-US", "ja-JP", "ko-KR", "zh-Hans", "zh-Hant" };
+            public int languageNum => Array.IndexOf(oldLangCodes, Settings.instance.language) == -1 ? 0 : Array.IndexOf(oldLangCodes, Settings.instance.language);
+            [Obsolete] public string languageNames = "";
+            public string languageName => Settings.instance.language;
         }
 
-        public static string GetLoc(string value) { return loc.ContainsKey(value) ? loc[value] : value; }
+        public static string GetLoc(string value) => loc.ContainsKey(value) ? loc[value] : L10n.L(value);
+
         public static string BuildParams(params string[] labels) { return string.Join("|", labels); }
 
+        [Obsolete]
         public static bool ShouldApplyTemp()
         {
             return string.IsNullOrEmpty(langSet.languageNames);
@@ -88,56 +92,42 @@ namespace lilToon
             LoadLanguage(lilDirectoryManager.GUIDToPath(langFileGUID));
         }
 
-        [Obsolete]
-        public static void InitializeLanguage()
+        internal static void InitializeLanguage()
         {
-            if(langSet.languageNum == -1)
-            {
-                if(Application.systemLanguage == SystemLanguage.Japanese)                   langSet.languageNum = 1;
-                else if(Application.systemLanguage == SystemLanguage.Korean)                langSet.languageNum = 2;
-                else if(Application.systemLanguage == SystemLanguage.ChineseSimplified)     langSet.languageNum = 3;
-                else if(Application.systemLanguage == SystemLanguage.ChineseTraditional)    langSet.languageNum = 4;
-                else                                                                        langSet.languageNum = 0;
-            }
-
-            if(loc.Count == 0)
-            {
-                UpdateLanguage();
-            }
+            if(loc.Count == 0) UpdateLanguage();
         }
 
         public static void UpdateLanguage()
         {
-            #pragma warning disable CS0612
-            string langPath = lilDirectoryManager.GetEditorLanguageFileGUID();
-            #pragma warning restore CS0612
-            LoadLanguage(langPath);
+            L10n.Load();
             InitializeLabels();
         }
 
         public static void SelectLang()
         {
-            #pragma warning disable CS0612
             InitializeLanguage();
-            #pragma warning restore CS0612
-            int numbuf = langSet.languageNum;
-            langSet.languageNum = EditorGUILayout.Popup("Language", langSet.languageNum, langSet.languageNames.Split('\t'));
-            if(numbuf != langSet.languageNum) UpdateLanguage();
-            if(!string.IsNullOrEmpty(GetLoc("sLanguageWarning"))) EditorGUILayout.HelpBox(GetLoc("sLanguageWarning"),MessageType.Warning);
+            var langs = L10n.GetLanguages();
+            EditorGUI.BeginChangeCheck();
+            var index = EditorGUILayout.Popup("Language", Array.IndexOf(langs, Settings.instance.language), L10n.GetLanguageNames());
+            if (EditorGUI.EndChangeCheck())
+            {
+                Settings.instance.language = langs[index];
+                Settings.instance.Save();
+                UpdateLanguage();
+            }
+            if (GetLoc("sLanguageWarning") != "sLanguageWarning") EditorGUILayout.HelpBox(GetLoc("sLanguageWarning"), MessageType.Warning);
         }
 
         private static void LoadLanguage(string langPath)
         {
             if(string.IsNullOrEmpty(langPath) || !File.Exists(langPath)) return;
-            StreamReader sr = new StreamReader(langPath);
+            var sr = new StreamReader(langPath);
 
-            string str = sr.ReadLine();
-            langSet.languageNames = str.Substring(str.IndexOf("\t")+1);
-            langSet.languageName = langSet.languageNames.Split('\t')[langSet.languageNum];
-            while((str = sr.ReadLine()) != null)
+            var str = sr.ReadLine();
+            while ((str = sr.ReadLine()) != null)
             {
                 var lineContents = str.Split('\t');
-                loc[lineContents[0]] = lineContents[langSet.languageNum+1];
+                loc[lineContents[0]] = lineContents[langSet.languageNum + 1];
             }
             sr.Close();
         }
@@ -253,9 +243,6 @@ namespace lilToon
                 ).ToArray()
             );
         }
-
-        [Obsolete("This may be deleted in the future.")] public static void ApplySettingTemp(){}
-        [Obsolete("This may be deleted in the future.")] public static void SaveSettingTemp(){}
     }
 }
 #endif

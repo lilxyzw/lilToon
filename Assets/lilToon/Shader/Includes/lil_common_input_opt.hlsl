@@ -235,11 +235,6 @@ float4  _MainTex_ST;
     #endif
 #endif
 
-// Encryption
-#if defined(LIL_FEATURE_ENCRYPTION)
-    float4  _Keys;
-#endif
-
 // Outline
 #if !defined(LIL_FUR) && !defined(LIL_REFRACTION) && !defined(LIL_GEM)
     float4  _OutlineColor;
@@ -288,6 +283,8 @@ float   _LightMinLimit;
 float   _LightMaxLimit;
 float   _MonochromeLighting;
 float   _AAStrength;
+float   _EnvRimBorder;
+float   _EnvRimBlur;
 #if defined(LIL_BRP)
     float   _AlphaBoostFA;
 #endif
@@ -653,7 +650,6 @@ uint    _Cull;
 #endif
 #if defined(LIL_FUR)
     uint    _FurLayerNum;
-    uint    _FurMeshType;
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -786,9 +782,6 @@ lilBool _Invisible;
     #if defined(LIL_FEATURE_AUDIOLINK_LOCAL)
         lilBool _AudioLinkAsLocal;
     #endif
-#endif
-#if defined(LIL_FEATURE_ENCRYPTION)
-    lilBool _IgnoreEncryption;
 #endif
 
 #if !defined(LIL_FUR) && !defined(LIL_REFRACTION) && !defined(LIL_GEM)

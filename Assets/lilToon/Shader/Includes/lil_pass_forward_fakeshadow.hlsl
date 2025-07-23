@@ -36,10 +36,6 @@ v2f vert(appdata input)
     LIL_TRANSFER_INSTANCE_ID(input, output);
     LIL_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-    //------------------------------------------------------------------------------------------------------------------------------
-    // Encryption
-    #include "lil_vert_encryption.hlsl"
-
     LIL_VERTEX_POSITION_INPUTS(input.positionOS, vertexInput);
     #if defined(LIL_HDRP)
         LIL_VERTEX_NORMAL_INPUTS(input.normalOS, vertexNormalInput);

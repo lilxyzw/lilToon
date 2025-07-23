@@ -1,0 +1,1615 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh-Hans\n"
+
+msgid "sLanguageWarning"
+msgstr "翻译可能不准确，因为使用了机器翻译。"
+
+msgid "sEditorMode"
+msgstr "编辑器模式"
+
+msgid "sEditorModeSimple"
+msgstr "简单设置"
+
+msgid "sEditorModeAdvanced"
+msgstr "详细设置"
+
+msgid "sEditorModePreset"
+msgstr "预设"
+
+msgid "sEditorModeShaderSetting"
+msgstr "着色器设置"
+
+msgid "sHelpSelectOverlay"
+msgstr "目前选择了 lilToonOverray，如果是通常用途的话请变更为 lilToon。"
+
+msgid "sColor"
+msgstr "颜色"
+
+msgid "sAlpha"
+msgstr "透明度"
+
+msgid "sColorAlpha"
+msgstr "颜色 / 透明度"
+
+msgid "sGamma"
+msgstr "伽玛"
+
+msgid "sHue"
+msgstr "色相"
+
+msgid "sSaturation"
+msgstr "饱和度"
+
+msgid "sValue"
+msgstr "亮度"
+
+msgid "sStrength"
+msgstr "强度"
+
+msgid "sStrengthMask"
+msgstr "蒙版 & 强度"
+
+msgid "sStrengthR"
+msgstr "强度 (R)"
+
+msgid "sLength"
+msgstr "长度"
+
+msgid "sLengthMask"
+msgstr "长度蒙版"
+
+msgid "sTexture"
+msgstr "纹理"
+
+msgid "sTextureRGB"
+msgstr "颜色 (RGB)"
+
+msgid "sTextureRGBA"
+msgstr "颜色 (RGB) & 透明度 (A)"
+
+msgid "sMask"
+msgstr "蒙版"
+
+msgid "sMaskType"
+msgstr "蒙版类型"
+
+msgid "sBlendR"
+msgstr "混合 (R)"
+
+msgid "sBlendMode"
+msgstr "混合模式"
+
+msgid "sBlendModeNormal"
+msgstr "Normal"
+
+msgid "sBlendModeAdd"
+msgstr "Add"
+
+msgid "sBlendModeScreen"
+msgstr "Screen"
+
+msgid "sBlendModeMul"
+msgstr "Multiply"
+
+msgid "sBorder"
+msgstr "边界"
+
+msgid "sBorderAO"
+msgstr "AO & 边界"
+
+msgid "sBorderR"
+msgstr "边界 (R)"
+
+msgid "sBorderRGB"
+msgstr "边界 (RGB = 第一/第二/第三)"
+
+msgid "sBlur"
+msgstr "模糊"
+
+msgid "sBlurR"
+msgstr "模糊 (R)"
+
+msgid "sBlurRGB"
+msgstr "模糊 (RGB = 第一/第二/第三)"
+
+msgid "sBlurMask"
+msgstr "模糊掩码"
+
+msgid "sAlphaR"
+msgstr "透明度 (R)"
+
+msgid "sMainColorPower"
+msgstr "主色功率"
+
+msgid "sEnableLighting"
+msgstr "启用照明"
+
+msgid "sUVSetting"
+msgstr "UV设置"
+
+msgid "sUVAnimation"
+msgstr "UV 动画"
+
+msgid "sOffset"
+msgstr "Offset"
+
+msgid "sScroll"
+msgstr "滚动"
+
+msgid "sAngle"
+msgstr "角度"
+
+msgid "sRotate"
+msgstr "旋转"
+
+msgid "sAsMSDF"
+msgstr "MSDF 纹理"
+
+msgid "sAsDecal"
+msgstr "作为 Decal"
+
+msgid "sAnimation"
+msgstr "动画"
+
+msgid "sXFrames"
+msgstr "X轴帧数"
+
+msgid "sYFrames"
+msgstr "Y轴帧数"
+
+msgid "sFrames"
+msgstr "总帧数"
+
+msgid "sFPS"
+msgstr "FPS"
+
+msgid "sXRatio"
+msgstr "X 比率"
+
+msgid "sYRatio"
+msgstr "Y 比率"
+
+msgid "sFixBorder"
+msgstr "修复边界"
+
+msgid "sConvertGif"
+msgstr "转换 Gif"
+
+msgid "sMirrorMode"
+msgstr "镜像模式"
+
+msgid "sMirrorModeNormal"
+msgstr "正常"
+
+msgid "sMirrorModeFlip"
+msgstr "翻转"
+
+msgid "sMirrorModeLeft"
+msgstr "只向左"
+
+msgid "sMirrorModeRight"
+msgstr "只向右"
+
+msgid "sMirrorModeRightFlip"
+msgstr "只向右翻转"
+
+msgid "sCopyMode"
+msgstr "复制模式"
+
+msgid "sCopyModeNormal"
+msgstr "正常"
+
+msgid "sCopyModeSymmetry"
+msgstr "对称"
+
+msgid "sCopyModeFlip"
+msgstr "翻转"
+
+msgid "sPosition"
+msgstr "坐标"
+
+msgid "sPositionX"
+msgstr "X 坐标"
+
+msgid "sPositionY"
+msgstr "Y 坐标"
+
+msgid "sScale"
+msgstr "尺寸"
+
+msgid "sScaleX"
+msgstr "X 尺寸"
+
+msgid "sScaleY"
+msgstr "Y 尺寸"
+
+msgid "sVector"
+msgstr "向量"
+
+msgid "sVertex"
+msgstr "顶点"
+
+msgid "sVertexColor"
+msgstr "顶点颜色"
+
+msgid "sThreshold"
+msgstr "阈值"
+
+msgid "sDensity"
+msgstr "密度"
+
+msgid "sSensitivity"
+msgstr "灵敏度"
+
+msgid "sNormalStrength"
+msgstr "法线贴图强度"
+
+msgid "sColorAlphaZeroWarn"
+msgstr "增加 Alpha 值以启用该属性。"
+
+msgid "sApplyTransparency"
+msgstr "应用透明度"
+
+msgid "sVRParallaxStrength"
+msgstr "VR 视差强度"
+
+msgid "sShadowMask"
+msgstr "阴影蒙版"
+
+msgid "sBackfaceMask"
+msgstr "背面蒙版"
+
+msgid "sRandomize"
+msgstr "随机化"
+
+msgid "sLimShadowStrength"
+msgstr "阴影强度"
+
+msgid "sLimOutline"
+msgstr "轮廓"
+
+msgid "sLimEmission"
+msgstr "发光"
+
+msgid "sLimEmission2nd"
+msgstr "第二发光"
+
+msgid "sBaseSetting"
+msgstr "基本设置"
+
+msgid "sInvisible"
+msgstr "不可见"
+
+msgid "sAsUnlit"
+msgstr "作为 Unlit"
+
+msgid "sAsUnlitWarn"
+msgstr "“作为 Unlit”中设置了非零值。这可能会导致材质以及 Avatar 之间存在亮度差异。"
+
+msgid "sShaderType"
+msgstr "着色器类型"
+
+msgid "sShaderTypeNormal"
+msgstr "Normal"
+
+msgid "sShaderTypeLite"
+msgstr "Lite"
+
+msgid "sRenderingMode"
+msgstr "渲染模式"
+
+msgid "sRenderingModeOpaque"
+msgstr "不透明"
+
+msgid "sRenderingModeCutout"
+msgstr "镂空"
+
+msgid "sRenderingModeTransparent"
+msgstr "透明"
+
+msgid "sRenderingModeRefraction"
+msgstr "[高负载] 折射"
+
+msgid "sRenderingModeRefractionBlur"
+msgstr "[高负载] 折射模糊"
+
+msgid "sRenderingModeFur"
+msgstr "[高负载] 毛发"
+
+msgid "sRenderingModeFurCutout"
+msgstr "[高负载] 毛发(镂空)"
+
+msgid "sRenderingModeFurTwoPass"
+msgstr "[高负载] 毛发(2 pass)"
+
+msgid "sRenderingModeGem"
+msgstr "[高负载] 宝石"
+
+msgid "sTransparentMode"
+msgstr "透明模式"
+
+msgid "sTransparentModeNormal"
+msgstr "Normal"
+
+msgid "sTransparentModeOnePass"
+msgstr "One Pass"
+
+msgid "sTransparentModeTwoPass"
+msgstr "Two Pass"
+
+msgid "sColorType"
+msgstr "颜色类型"
+
+msgid "sColorTypeNormal"
+msgstr "Normal"
+
+msgid "sColorTypeLUT"
+msgstr "LUT"
+
+msgid "sAsOverlay"
+msgstr "As Overlay"
+
+msgid "sCutoff"
+msgstr "Cutoff"
+
+msgid "sSubpassCutoff"
+msgstr "Subpass Cutoff"
+
+msgid "sCullMode"
+msgstr "Cull Mode"
+
+msgid "sCullModeOff"
+msgstr "Off"
+
+msgid "sCullModeFront"
+msgstr "Front"
+
+msgid "sCullModeBack"
+msgstr "Back"
+
+msgid "sFlipBackfaceNormal"
+msgstr "翻转背面法线"
+
+msgid "sShiftBackfaceUV"
+msgstr "移动背面 UV"
+
+msgid "sBackfaceForceShadow"
+msgstr "背面阴影力量"
+
+msgid "sAAShading"
+msgstr "抗锯齿阴影"
+
+msgid "sDither"
+msgstr "Dither"
+
+msgid "sSimpleStencilSettings"
+msgstr "简易 Stencil 设置"
+
+msgid "sStencilModeNormal"
+msgstr "Normal"
+
+msgid "sStencilModeWriter"
+msgstr "Writer"
+
+msgid "sStencilModeReader"
+msgstr "Reader"
+
+msgid "sStencilModeReaderInvert"
+msgstr "Reader (翻转)"
+
+msgid "sStencilModeReaderFade"
+msgstr "Reader (透明)"
+
+msgid "sTransparentPresetsPreWriteDepth"
+msgstr "预先写入深度"
+
+msgid "sTransparentPresetsColorTransparent"
+msgstr "彩色透明"
+
+msgid "sTransparentPresetsBackAndFront"
+msgstr "背面 & 表面"
+
+msgid "sTransparentPresetsCutoutAndTransparent"
+msgstr "镂空 & 透明"
+
+msgid "sTransparentPresetsFadeStencil"
+msgstr "淡出 Stencil"
+
+msgid "sOutType"
+msgstr "输出类型"
+
+msgid "sOutTypeNormal"
+msgstr "Normal"
+
+msgid "sOutTypeFlat"
+msgstr "Flat"
+
+msgid "sOutTypeMono"
+msgstr "Mono"
+
+msgid "sLightingSettings"
+msgstr "照明设置"
+
+msgid "sVertexLightStrength"
+msgstr "顶点灯强度"
+
+msgid "sLightMinLimit"
+msgstr "亮度下限"
+
+msgid "sLightMaxLimit"
+msgstr "亮度上限"
+
+msgid "sMonochromeLighting"
+msgstr "单色照明"
+
+msgid "sLightDirectionOverride"
+msgstr "定向光覆盖"
+
+msgid "sObjectFollowing"
+msgstr "跟随对象方向"
+
+msgid "sDirectionalLightStrength"
+msgstr "[HDRP] 定向光强度"
+
+msgid "sBeforeExposureLimit"
+msgstr "[HDRP] Before exposure limit"
+
+msgid "sLightingPreset"
+msgstr "应用预设"
+
+msgid "sLightingPresetDefault"
+msgstr "通常"
+
+msgid "sLightingPresetStable"
+msgstr "稳定"
+
+msgid "sLightingPresetSemiMonochrome"
+msgstr "半单色"
+
+msgid "sHelpRenderingTransparent"
+msgstr "当两个透明材质重叠时，其中一个可能会变得不可见。这种情况下，通过提高前面显示的材质的"Render Queue"值来修正。"
+
+msgid "sHelpRenderingFur"
+msgstr "由于性能原因，应用于毛发的功能受到限制。"
+
+msgid "sHelpTransparentForWorld"
+msgstr "将透明材质的 Render Queue 设置为 2999 或更低，会使后面的其他材质不可见，造成衣服和头发消失等问题。对于 World 项目，推荐设定为 3000 以上或关闭 ZWrite 设定。"
+
+msgid "sHelpGrabPass"
+msgstr "反射和宝石使用 GrabPass，因此在可能对移动端 GPU 中产生很大的性能影响。"
+
+msgid "sHelpGeometryShader"
+msgstr "由于几何体着色器在 iOS 或 Mac 上不起作用，因此建议将其更改为其他渲染模式。"
+
+msgid "sHelpOnePassVertexLight"
+msgstr "使用 One Pass Transparent 时，建议将顶点灯强度设定为 1.0。"
+
+msgid "sHelpCullMode"
+msgstr "如果材质看起来不正确，请将 CullMode 设置为 Off 或 Back。"
+
+msgid "sHelpZWrite"
+msgstr "如果材质看起来不正确，请打开 ZWrite。"
+
+msgid "sAlphaBoostFA"
+msgstr "[Built-in RP] 透明度提升 (点光源 / 聚光灯)"
+
+msgid "sLightBlending"
+msgstr "[Built-in RP] 混合光"
+
+msgid "sBlendingAdd"
+msgstr "Add"
+
+msgid "sBlendingMax"
+msgstr "Max"
+
+msgid "sMaskTiling"
+msgstr "蒙版 UV Tiling"
+
+msgid "sMaskOffset"
+msgstr "蒙版 UV Offset"
+
+msgid "sNoise"
+msgstr "噪点"
+
+msgid "sNoiseR"
+msgstr "Noise (R)"
+
+msgid "sNoiseStrength"
+msgstr "噪点强度"
+
+msgid "sTriMask"
+msgstr "TriMask (Mat/Rim/Emi)"
+
+msgid "sTriMaskRGB"
+msgstr "Mask (R:MatCap G:Rim B:Emission)"
+
+msgid "sApplyTo"
+msgstr "应用到"
+
+msgid "sMainUV"
+msgstr "UV 设置"
+
+msgid "sMainUVTips"
+msgstr "你可以设置 UV 坐标、比例和动画。"
+
+msgid "sColors"
+msgstr "颜色设置"
+
+msgid "sMainColorSetting"
+msgstr "主色 / Alpha 設置"
+
+msgid "sMainColorSettingSimple"
+msgstr "主色 / Alpha 設置"
+
+msgid "sMainColorTips"
+msgstr "你可以设置颜色和透明度。"
+
+msgid "sMainColorAlpha"
+msgstr "主色 / 透明度"
+
+msgid "sMainColor"
+msgstr "主色"
+
+msgid "sMainColor2nd"
+msgstr "第二主色"
+
+msgid "sMainColor3rd"
+msgstr "第三主色"
+
+msgid "sColorAdjust"
+msgstr "色调校正"
+
+msgid "sGradationMap"
+msgstr "渐变映射"
+
+msgid "sNotAlphaIsTransparency"
+msgstr "此纹理未被设置为 Alpha 是透明的"
+
+msgid "sAlphaMask"
+msgstr "Alpha 蒙版"
+
+msgid "sAlphaMaskWarnOpaque"
+msgstr "如果要使用 Alpha 蒙版，需要将“渲染模式”改为镂空或透明。"
+
+msgid "sAlphaMaskModeNone"
+msgstr "无"
+
+msgid "sAlphaMaskModeReplace"
+msgstr "Replace"
+
+msgid "sAlphaMaskModeMul"
+msgstr "Multiply"
+
+msgid "sAlphaMaskModeAdd"
+msgstr "Add"
+
+msgid "sAlphaMaskModeSub"
+msgstr "Subtract"
+
+msgid "sShadowSetting"
+msgstr "阴影设置"
+
+msgid "sShadowTips"
+msgstr "你可以设置阴影的颜色和范围。"
+
+msgid "sShadow"
+msgstr "阴影"
+
+msgid "sReceiveShadow"
+msgstr "接收阴影"
+
+msgid "sShadowColor"
+msgstr "阴影颜色"
+
+msgid "sShadow1stColor"
+msgstr "颜色 1"
+
+msgid "sShadow2ndColor"
+msgstr "颜色 2"
+
+msgid "sShadow3rdColor"
+msgstr "颜色 3"
+
+msgid "sShadowEnvStrength"
+msgstr "阴影颜色的环境强度"
+
+msgid "sShadowBorderColor"
+msgstr "边界颜色"
+
+msgid "sShadowBorderRange"
+msgstr "边界范围"
+
+msgid "sIgnoreBorderProperties"
+msgstr "忽略边界设置"
+
+msgid "sFlat"
+msgstr "平的"
+
+msgid "sBacklightSetting"
+msgstr "背光灯设置"
+
+msgid "sBacklight"
+msgstr "背光灯"
+
+msgid "sBacklightTips"
+msgstr "当照明在模型后面时添加背光灯"
+
+msgid "sDirectivity"
+msgstr "指向性"
+
+msgid "sViewDirectionStrength"
+msgstr "视线方向强度"
+
+msgid "sOutlineSetting"
+msgstr "轮廓设置"
+
+msgid "sOutlineTips"
+msgstr "你可以设置轮廓的颜色和厚度。"
+
+msgid "sOutline"
+msgstr "轮廓"
+
+msgid "sHighlight"
+msgstr "高亮颜色"
+
+msgid "sWidth"
+msgstr "蒙版 & 宽度"
+
+msgid "sWidthR"
+msgstr "宽度 (R)"
+
+msgid "sFixWidth"
+msgstr "按距离修正宽度"
+
+msgid "sVertexR2Width"
+msgstr "R -> Width"
+
+msgid "sVertexRGBA2Normal"
+msgstr "RGBA -> Normal & Width"
+
+msgid "sDeleteMesh0"
+msgstr "删除宽度为 0 的顶点"
+
+msgid "sDisableInVR"
+msgstr "在 VR 中禁用"
+
+msgid "sRefractionSetting"
+msgstr "折射设置"
+
+msgid "sRefractionTips"
+msgstr "你可以设置折射强度和颜色。"
+
+msgid "sRefraction"
+msgstr "折射"
+
+msgid "sRefractionFresnel"
+msgstr "菲涅尔"
+
+msgid "sColorFromMain"
+msgstr "从主色获取颜色"
+
+msgid "sFurSetting"
+msgstr "毛发设置"
+
+msgid "sFurTips"
+msgstr "你可以设置毛发的长度和方向。"
+
+msgid "sFur"
+msgstr "毛发"
+
+msgid "sAntiLight"
+msgstr "Anti Light"
+
+msgid "sGravity"
+msgstr "重力"
+
+msgid "sAO"
+msgstr "AO"
+
+msgid "sVertexColor2Vector"
+msgstr "VertexColor -> Vector"
+
+msgid "sLayerNum"
+msgstr "层数"
+
+msgid "sRootWidth"
+msgstr "根厚度"
+
+msgid "sTouchStrength"
+msgstr "接触强度"
+
+msgid "sTessellation"
+msgstr "镶嵌 (极高负载)"
+
+msgid "sTessellationTips"
+msgstr "你可以设置镶嵌。"
+
+msgid "sTessellationEdge"
+msgstr "阈值长度"
+
+msgid "sTessellationShrink"
+msgstr "缩减"
+
+msgid "sTessellationFactor"
+msgstr "最大系数"
+
+msgid "sEmissionSetting"
+msgstr "发光设置"
+
+msgid "sEmissionTips"
+msgstr "你可以设置灯光颜色和闪烁。"
+
+msgid "sEmission"
+msgstr "发光"
+
+msgid "sEmission2nd"
+msgstr "第二发光"
+
+msgid "sBlinkStrength"
+msgstr "闪烁强度"
+
+msgid "sBlinkType"
+msgstr "闪烁类型"
+
+msgid "sBlinkSpeed"
+msgstr "闪烁速度"
+
+msgid "sBlinkOffset"
+msgstr "闪烁偏移"
+
+msgid "sGradation"
+msgstr "渐变"
+
+msgid "sGradTexSpeed"
+msgstr "纹理 & 速度"
+
+msgid "sGradColor"
+msgstr "颜色"
+
+msgid "sParallaxDepth"
+msgstr "视差深度"
+
+msgid "sFluorescence"
+msgstr "荧光"
+
+msgid "sParallax"
+msgstr "视差"
+
+msgid "sParallaxTips"
+msgstr "你可以设置视差。"
+
+msgid "sParallaxR"
+msgstr "视差 (R)"
+
+msgid "sParallaxOffset"
+msgstr "偏移"
+
+msgid "sPOM"
+msgstr "[高负载] POM"
+
+msgid "sDistanceFade"
+msgstr "距离淡化"
+
+msgid "sDistanceFadeTips"
+msgstr "你可以根据距离来设置颜色的变化。"
+
+msgid "sStartDistance"
+msgstr "开始距离"
+
+msgid "sEndDistance"
+msgstr "结束距离"
+
+msgid "sAudioLink"
+msgstr "AudioLink"
+
+msgid "sAudioLinkTips"
+msgstr "根据 AudioLink 系统更改材质外观的设置。"
+
+msgid "sAudioLinkUVMode"
+msgstr "UV 模式"
+
+msgid "sAudioLinkUVModeNone"
+msgstr "None"
+
+msgid "sAudioLinkUVModeRim"
+msgstr "Rim"
+
+msgid "sAudioLinkUVModeUV"
+msgstr "UV"
+
+msgid "sAudioLinkUVModeMask"
+msgstr "蒙版"
+
+msgid "sAudioLinkUVModePosition"
+msgstr "坐标"
+
+msgid "sAudioLinkMaskRGB"
+msgstr "RGB = Delay / Band / Strength"
+
+msgid "sAudioLinkMaskRGBSpectrum"
+msgstr "RGB = Volume / Band / Strength"
+
+msgid "sAudioLinkBand"
+msgstr "Band"
+
+msgid "sAudioLinkBandBass"
+msgstr "Bass"
+
+msgid "sAudioLinkBandLowMid"
+msgstr "Low Mid"
+
+msgid "sAudioLinkBandHighMid"
+msgstr "High Mid"
+
+msgid "sAudioLinkBandTreble"
+msgstr "Treble"
+
+msgid "sAudioLinkStartPosition"
+msgstr "初始点"
+
+msgid "sAudioLinkMovingVector"
+msgstr "运动方向"
+
+msgid "sAudioLinkNormalStrength"
+msgstr "法线强度"
+
+msgid "sAudioLinkAsLocal"
+msgstr "作为本地"
+
+msgid "sAudioLinkLocalMap"
+msgstr "本地 Map"
+
+msgid "sAudioLinkLocalMapBPM"
+msgstr "BPM"
+
+msgid "sAudioLinkLocalMapNotes"
+msgstr "Notes"
+
+msgid "sAudioLinkDefaultValue"
+msgstr "没有 AudioLink 的默认值"
+
+msgid "sDissolve"
+msgstr "Dissolve"
+
+msgid "sDissolveTips"
+msgstr "用于溶解材质的设置"
+
+msgid "sDissolveWarnOpaque"
+msgstr "如果要使用溶解，则需要将“渲染模式”更改为镂空或透明。"
+
+msgid "sDissolveMode"
+msgstr "溶解模式"
+
+msgid "sDissolveModeNone"
+msgstr "None"
+
+msgid "sDissolveModeAlpha"
+msgstr "Alpha"
+
+msgid "sDissolveModeUV"
+msgstr "UV"
+
+msgid "sDissolveModePosition"
+msgstr "坐标"
+
+msgid "sDissolveShape"
+msgstr "形状"
+
+msgid "sDissolveShapePoint"
+msgstr "点"
+
+msgid "sDissolveShapeLine"
+msgstr "线"
+
+msgid "sIDMask"
+msgstr "ID Mask"
+
+msgid "sUDIMDiscard"
+msgstr "UV Tile Discard"
+
+msgid "sUDIMDiscardUV"
+msgstr "Discard UV"
+
+msgid "sUDIMDiscardMode"
+msgstr "丢弃模式"
+
+msgid "sEncryption"
+msgstr "加密"
+
+msgid "sEncryptionTips"
+msgstr "用 4 个密钥解密该网格"
+
+msgid "sIgnoreEncryption"
+msgstr "Ignore Encryption"
+
+msgid "sKeys"
+msgstr "Keys"
+
+msgid "sNormalMapReflection"
+msgstr "法线贴图 & 反射设置"
+
+msgid "sNormalMapSetting"
+msgstr "法线贴图设置"
+
+msgid "sNormalMapTips"
+msgstr "你可以设置法线贴图。"
+
+msgid "sNormalMap"
+msgstr "法线贴图"
+
+msgid "sNormalMap2nd"
+msgstr "第二法线贴图"
+
+msgid "sNormalRGB"
+msgstr "法线 (RGB)"
+
+msgid "sAnisotropy"
+msgstr "各向异性反射"
+
+msgid "sTangentWidth"
+msgstr "Tangent Width"
+
+msgid "sBitangentWidth"
+msgstr "Bitangent Width"
+
+msgid "sReflectionsSetting"
+msgstr "反射设置"
+
+msgid "sReflectionsTips"
+msgstr "你可以设置反射。"
+
+msgid "sReflection"
+msgstr "反射"
+
+msgid "sSmoothness"
+msgstr "平滑度"
+
+msgid "sSmoothnessR"
+msgstr "平滑度 (R)"
+
+msgid "sMetallic"
+msgstr "金属程度"
+
+msgid "sMetallicR"
+msgstr "金属程度 (R)"
+
+msgid "sReflectance"
+msgstr "反射率"
+
+msgid "sSpecularMode"
+msgstr "反射模式"
+
+msgid "sSpecularNone"
+msgstr "无"
+
+msgid "sSpecularReal"
+msgstr "现实"
+
+msgid "sSpecularToon"
+msgstr "卡通"
+
+msgid "sMultiLightSpecular"
+msgstr "从多个光源生成反射"
+
+msgid "sApplyReflection"
+msgstr "环境反射"
+
+msgid "sMatCapSetting"
+msgstr "MatCap 设置"
+
+msgid "sMatCap"
+msgstr "MatCap"
+
+msgid "sMatCap2nd"
+msgstr "第二 MatCap"
+
+msgid "sBlendUV1"
+msgstr "Blend UV1"
+
+msgid "sMatCapZRotCancel"
+msgstr "Z轴旋转取消"
+
+msgid "sFixPerspective"
+msgstr "透视校正"
+
+msgid "sHelpMatCapBlending"
+msgstr "关闭 Multiply 模式下的“启用照明”。"
+
+msgid "sMatCapCustomNormal"
+msgstr "自定义法线贴图"
+
+msgid "sRimLightSetting"
+msgstr "Rim Light 设置"
+
+msgid "sRimLight"
+msgstr "Rim Light"
+
+msgid "sFresnelPower"
+msgstr "菲涅尔折射率"
+
+msgid "sRimLightDirection"
+msgstr "光线方向影响"
+
+msgid "sRimDirectionRange"
+msgstr "直射光宽"
+
+msgid "sRimIndirectionRange"
+msgstr "间接光宽"
+
+msgid "sGlitterSetting"
+msgstr "Glitter 设置"
+
+msgid "sGlitter"
+msgstr "Glitter"
+
+msgid "sParticleSize"
+msgstr "粒子大小"
+
+msgid "sContrast"
+msgstr "对比度"
+
+msgid "sPostContrast"
+msgstr "对比度（后处理）"
+
+msgid "sAngleLimit"
+msgstr "角度限制"
+
+msgid "sColorRandomness"
+msgstr "随机颜色"
+
+msgid "sGemSetting"
+msgstr "宝石设置"
+
+msgid "sGem"
+msgstr "宝石"
+
+msgid "sChromaticAberration"
+msgstr "色差"
+
+msgid "sEnvironmentColor"
+msgstr "环境光色"
+
+msgid "sParticleLoop"
+msgstr "粒子循环数"
+
+msgid "sStencilSetting"
+msgstr "Stencil 设置"
+
+msgid "sStencilTips"
+msgstr "你可以配置详细的 Stencil 设置。"
+
+msgid "sAdvanced"
+msgstr "扩展设置"
+
+msgid "sRenderingSetting"
+msgstr "渲染设置"
+
+msgid "sRenderingTips"
+msgstr "你可以配置详细的渲染设置。"
+
+msgid "sZClip"
+msgstr "ZClip"
+
+msgid "sZWrite"
+msgstr "ZWrite"
+
+msgid "sZTest"
+msgstr "ZTest"
+
+msgid "sOffsetFactor"
+msgstr "Offset Factor"
+
+msgid "sOffsetUnits"
+msgstr "Offset Units"
+
+msgid "sColorMask"
+msgstr "Color Mask"
+
+msgid "sAlphaToMask"
+msgstr "AlphaToMask"
+
+msgid "sForward"
+msgstr "Forward"
+
+msgid "sForwardAdd"
+msgstr "ForwardAdd"
+
+msgid "sSrcBlendRGB"
+msgstr "SrcBlend RGB"
+
+msgid "sDstBlendRGB"
+msgstr "DstBlend RGB"
+
+msgid "sSrcBlendAlpha"
+msgstr "SrcBlend Alpha"
+
+msgid "sDstBlendAlpha"
+msgstr "DstBlend Alpha"
+
+msgid "sBlendOpRGB"
+msgstr "BlendOp RGB"
+
+msgid "sBlendOpAlpha"
+msgstr "BlendOp Alpha"
+
+msgid "sRenderingReset"
+msgstr "重置渲染设置"
+
+msgid "sLightBakeSetting"
+msgstr "光照烘培设置"
+
+msgid "sOptimization"
+msgstr "优化"
+
+msgid "sOptimizationTips"
+msgstr "你可以对材质进行优化，以减少负荷。"
+
+msgid "sCustomProperties"
+msgstr "自定义属性"
+
+msgid "sCustomPropertiesTips"
+msgstr "显示用户添加的属性"
+
+msgid "sBake"
+msgstr "烘培"
+
+msgid "sBakeAll"
+msgstr "烘培所有层"
+
+msgid "sBake1st"
+msgstr "烘培颜色转移"
+
+msgid "sBake2nd"
+msgstr "烘培第二层"
+
+msgid "sBake3rd"
+msgstr "烘培第三层"
+
+msgid "sBakeAlphamask"
+msgstr "烘焙 Alpha 蒙版"
+
+msgid "sSelectAlphamask"
+msgstr "选择Alpha 蒙版"
+
+msgid "sRemoveUnused"
+msgstr "移除未使用的纹理"
+
+msgid "sConvertLite"
+msgstr "转换为 lilToonLite"
+
+msgid "sConvertMulti"
+msgstr "转换为 lilToonMulti"
+
+msgid "sConvertMToon"
+msgstr "转换为 MToon (VRM)"
+
+msgid "sOptimizeForEvents"
+msgstr "优化以提交到事件"
+
+msgid "sYes"
+msgstr "是"
+
+msgid "sNo"
+msgstr "否"
+
+msgid "sOK"
+msgstr "好"
+
+msgid "sCancel"
+msgstr "取消"
+
+msgid "sNone"
+msgstr "None"
+
+msgid "sComplete"
+msgstr "完成！"
+
+msgid "sCopy"
+msgstr "复制"
+
+msgid "sPaste"
+msgstr "粘贴"
+
+msgid "sPasteWithTexture"
+msgstr "粘贴（包括纹理）"
+
+msgid "sReset"
+msgstr "重置"
+
+msgid "sOpenManual"
+msgstr "打开手册"
+
+msgid "sFixNow"
+msgstr "自动修改"
+
+msgid "sDialogResetUV"
+msgstr "重置 UV 设置"
+
+msgid "sDialogResetUVMes"
+msgstr "你确定要重置 UV 设置吗？"
+
+msgid "sDialogCannotBake"
+msgstr "不能运行烘培"
+
+msgid "sDialogNoNeedBake"
+msgstr "不需要运行烘培"
+
+msgid "sDialogSetMainTex"
+msgstr "你需要将纹理设置为主色。"
+
+msgid "sDialogNoChange"
+msgstr "你没有更改颜色。"
+
+msgid "sDialogNotUse2nd"
+msgstr "你没有使用第二层。"
+
+msgid "sDialogNotUse3rd"
+msgstr "你没有使用第三层。"
+
+msgid "sDialogNotUseAll"
+msgstr "你没有更改颜色，没有使用图层。"
+
+msgid "sDialogRunBake"
+msgstr "进行烘培？"
+
+msgid "sDialogBakeMain"
+msgstr "你要烘培主纹理吗？"
+
+msgid "sDialogBakeShadow"
+msgstr "你要烘培阴影纹理吗？"
+
+msgid "sDialogBakeMatCap"
+msgstr "你要烘培 matcap 吗？"
+
+msgid "sDialogBakeTriMask"
+msgstr "你要烘培这三个蒙版（MatCap/Rim/发光）吗？"
+
+msgid "sDialogBakeOutline"
+msgstr "你要烘培轮廓纹理吗？"
+
+msgid "sDialogGifToAtlas"
+msgstr "将 Gif 转换成图集"
+
+msgid "sDialogTexPow2"
+msgstr "你要把纹理分辨率调整为 2 的幂吗？"
+
+msgid "sDialogImportOldVer"
+msgstr "您要导入的包版本早于已导入的 lilToon 版本。是否继续？"
+
+msgid "sDialogImportPackage"
+msgstr "已经导入了UPM版lilToon。是否继续导入unitypackage版？（这可能会导致脚本错误等。）"
+
+msgid "sWarnOptimiseMeshData"
+msgstr "Unity错误可能会删除所需的顶点数据。发生故障时，请关闭“Project Setting/Prer/Optimize Mesh Data”。"
+
+msgid "sPresets"
+msgstr "预设"
+
+msgid "sPresetsNotAvailable"
+msgstr "预设在此着色器中不可用。"
+
+msgid "sPresetIsMaterial"
+msgstr "当前选择的不是材质。"
+
+msgid "sPresetRefresh"
+msgstr "刷新列表"
+
+msgid "sPresetSave"
+msgstr "保存预设"
+
+msgid "sPresetCategory"
+msgstr "类别"
+
+msgid "sPresetCategorySkin"
+msgstr "皮肤"
+
+msgid "sPresetCategoryHair"
+msgstr "头发"
+
+msgid "sPresetCategoryCloth"
+msgstr "布料"
+
+msgid "sPresetCategoryNature"
+msgstr "自然"
+
+msgid "sPresetCategoryInorganic"
+msgstr "无机物"
+
+msgid "sPresetCategoryEffect"
+msgstr "效果"
+
+msgid "sPresetCategoryOther"
+msgstr "其他"
+
+msgid "sPresetName"
+msgstr "预设名称"
+
+msgid "sPresetSaveTarget"
+msgstr "保存目标"
+
+msgid "sPresetTexture"
+msgstr "保存目标纹理"
+
+msgid "sPresetShader"
+msgstr "着色器"
+
+msgid "sPresetQueue"
+msgstr "Render Queue"
+
+msgid "sPresetStencil"
+msgstr "Stencil"
+
+msgid "sPresetMainTex2Outline"
+msgstr "将主纹理应用于轮廓"
+
+msgid "sPresetMain"
+msgstr "主色"
+
+msgid "sPresetMain2"
+msgstr "第二主色"
+
+msgid "sPresetMain2Mask"
+msgstr "第二主色蒙版"
+
+msgid "sPresetMain3"
+msgstr "第三主色"
+
+msgid "sPresetMain3Mask"
+msgstr "第三主色蒙版"
+
+msgid "sPresetShadowBorder"
+msgstr "阴影 AO"
+
+msgid "sPresetShadowBlur"
+msgstr "阴影模糊"
+
+msgid "sPresetShadowStrength"
+msgstr "阴影蒙版"
+
+msgid "sPresetShadowColor"
+msgstr "阴影颜色"
+
+msgid "sPresetShadowColor2"
+msgstr "阴影颜色 2"
+
+msgid "sPresetEmissionColor"
+msgstr "发光色"
+
+msgid "sPresetEmissionMask"
+msgstr "发光蒙版"
+
+msgid "sPresetEmissionGrad"
+msgstr "发光渐变"
+
+msgid "sPresetEmission2Color"
+msgstr "第二发光颜色"
+
+msgid "sPresetEmission2Mask"
+msgstr "第二发光蒙版"
+
+msgid "sPresetEmission2Grad"
+msgstr "第二发光渐变"
+
+msgid "sPresetNormal"
+msgstr "法线贴图"
+
+msgid "sPresetNormal2"
+msgstr "法线贴图2nd"
+
+msgid "sPresetNormal2Mask"
+msgstr "第二法线贴图蒙版"
+
+msgid "sPresetReflectionSmoothness"
+msgstr "平滑度"
+
+msgid "sPresetReflectionMetallic"
+msgstr "金属度"
+
+msgid "sPresetReflectionColor"
+msgstr "反射颜色"
+
+msgid "sPresetMatcap"
+msgstr "MatCap"
+
+msgid "sPresetMatcapMask"
+msgstr "MatCap 蒙版"
+
+msgid "sPresetRim"
+msgstr "Rim 颜色"
+
+msgid "sPresetParallax"
+msgstr "视差"
+
+msgid "sPresetOutlineTex"
+msgstr "轮廓纹理"
+
+msgid "sPresetOutlineWidth"
+msgstr "轮廓宽度"
+
+msgid "sPresetFurNormal"
+msgstr "毛发法线"
+
+msgid "sPresetFurNoise"
+msgstr "毛发噪声"
+
+msgid "sPresetFurMask"
+msgstr "毛发蒙版"
+
+msgid "sShaderSetting"
+msgstr "着色器设置（用于所有材质）"
+
+msgid "sHelpShaderSetting"
+msgstr "此处关闭的功能将从着色器中删除。通过关闭未使用的功能，可以减少你的 Avatar 的大小，同时还能减少负载。"
+
+msgid "sSettingLock"
+msgstr "锁定"
+
+msgid "sShaderSettingOptimizeInTestBuild"
+msgstr "在测试构建中优化"
+
+msgid "sShaderSettingOptimizeInEditor"
+msgstr "[Debug] 在编辑器中优化"
+
+msgid "sSettingClippingCanceller"
+msgstr "距离裁剪消除器"
+
+msgid "sSettingTexOutlineColor"
+msgstr "轮廓颜色纹理"
+
+msgid "sSettingDefaultValue"
+msgstr "初始值 (用于“Fix Lighting”以及照明预设)"
+
+msgid "sSettingBuildSizeOptimization"
+msgstr "优化构建大小（用于所有材质）"
+
+msgid "sSettingApplyShadowFA"
+msgstr "通过 ForwardAdd 启用阴影"
+
+msgid "sSettingUseForwardAdd"
+msgstr "使用ForwardAdd"
+
+msgid "sSettingUseForwardAddShadow"
+msgstr "在 ForwardAdd 路径中接收阴影"
+
+msgid "sSettingUseVertexLight"
+msgstr "使用顶点灯"
+
+msgid "sSettingUseLightmap"
+msgstr "使用光照贴图"
+
+msgid "sManualURL"
+msgstr "https://lilxyzw.github.io/lilToon/#/en-us/"
+
+msgid "sAnchorBaseSetting"
+msgstr "base/base"
+
+msgid "sAnchorLighting"
+msgstr "base/lighting"
+
+msgid "sAnchorUVSetting"
+msgstr "base/uv"
+
+msgid "sAnchorMainColor"
+msgstr "color/maincolor"
+
+msgid "sAnchorMainColor1"
+msgstr "color/maincolor"
+
+msgid "sAnchorMainColor2"
+msgstr "color/maincolor_layer"
+
+msgid "sAnchorAlphaMask"
+msgstr "color/alphamask"
+
+msgid "sAnchorShadow"
+msgstr "color/shadow"
+
+msgid "sAnchorRimShade"
+msgstr "color/rimshade"
+
+msgid "sAnchorEmission"
+msgstr "color/emission"
+
+msgid "sAnchorNormalMap"
+msgstr "reflections/normal"
+
+msgid "sAnchorAnisotropy"
+msgstr "reflections/anisotropy"
+
+msgid "sAnchorBacklight"
+msgstr "reflections/backlight"
+
+msgid "sAnchorReflection"
+msgstr "reflections/reflection"
+
+msgid "sAnchorMatCap"
+msgstr "reflections/matcap"
+
+msgid "sAnchorRimLight"
+msgstr "reflections/rimlight"
+
+msgid "sAnchorGlitter"
+msgstr "reflections/glitter"
+
+msgid "sAnchorGem"
+msgstr "reflections/gem"
+
+msgid "sAnchorOutline"
+msgstr "advanced/outline"
+
+msgid "sAnchorParallax"
+msgstr "advanced/parallax"
+
+msgid "sAnchorDistanceFade"
+msgstr "advanced/distancefade"
+
+msgid "sAnchorAudioLink"
+msgstr "advanced/audiolink"
+
+msgid "sAnchorDissolve"
+msgstr "advanced/dissolve"
+
+msgid "sAnchorIDMask"
+msgstr "advanced/idmask"
+
+msgid "sAnchorUDIMDiscard"
+msgstr "advanced/uvtilediscard"
+
+msgid "sAnchorEncryption"
+msgstr "advanced/encryption"
+
+msgid "sAnchorStencil"
+msgstr "advanced/stencil"
+
+msgid "sAnchorRendering"
+msgstr "advanced/rendering"
+
+msgid "sAnchorTessellation"
+msgstr "advanced/tessellation"
+
+msgid "sAnchorRefraction"
+msgstr "advanced/refraction"
+
+msgid "sAnchorFur"
+msgstr "advanced/fur"
+
+msgid "sAnchorOptimization"
+msgstr "other?id=Optimization"
+
+msgid "sAnchorShaderSetting"
+msgstr "other?id=Shader-Setting"
+
+msgid "sReadmeURL"
+msgstr "https://lilxyzw.github.io/lilToon/#/ja-jp/"
+
+msgid "sReadmeAnchorProblem"
+msgstr "other/qa"
+
+msgid "sHelp"
+msgstr "帮助"
+
+msgid "sCommonProblems"
+msgstr "常见问题"
+
+msgid "sUtilGif2AtlasPow2"
+msgstr "您想将纹理分辨率匹配到 2 的幂吗？"
+
+msgid "sUtilDotTexRedRatio"
+msgstr "请选择一个缩小比例。"
+
+msgid "sUtilShaderNotFound"
+msgstr "未找到着色器。"
+
+msgid "sUtilSelectPresets"
+msgstr "请选择一个预设。"
+
+msgid "sUtilMaterialAlreadyExist"
+msgstr "该材质可能已经存在，您确定要覆盖它吗？"
+
+msgid "sUtilInvalidFormat"
+msgstr "无效的格式。"
+

@@ -1,0 +1,1615 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh-Hant\n"
+
+msgid "sLanguageWarning"
+msgstr "翻譯可能不准確，因為使用了機器翻譯。"
+
+msgid "sEditorMode"
+msgstr "編輯器模式"
+
+msgid "sEditorModeSimple"
+msgstr "簡單設置"
+
+msgid "sEditorModeAdvanced"
+msgstr "詳細設置"
+
+msgid "sEditorModePreset"
+msgstr "預設"
+
+msgid "sEditorModeShaderSetting"
+msgstr "著色器設置"
+
+msgid "sHelpSelectOverlay"
+msgstr "目前正在選擇lilToonOverray。如果是通常的用途的話請變更為lilToon。"
+
+msgid "sColor"
+msgstr "顏色"
+
+msgid "sAlpha"
+msgstr "透明度"
+
+msgid "sColorAlpha"
+msgstr "顏色 / 透明度"
+
+msgid "sGamma"
+msgstr "伽瑪"
+
+msgid "sHue"
+msgstr "色相"
+
+msgid "sSaturation"
+msgstr "飽和度"
+
+msgid "sValue"
+msgstr "亮度"
+
+msgid "sStrength"
+msgstr "強度"
+
+msgid "sStrengthMask"
+msgstr "蒙版 & 強度"
+
+msgid "sStrengthR"
+msgstr "強度 (R)"
+
+msgid "sLength"
+msgstr "長度"
+
+msgid "sLengthMask"
+msgstr "長度蒙版"
+
+msgid "sTexture"
+msgstr "紋理"
+
+msgid "sTextureRGB"
+msgstr "顏色 (RGB)"
+
+msgid "sTextureRGBA"
+msgstr "顏色 (RGB) & 透明度 (A)"
+
+msgid "sMask"
+msgstr "蒙版"
+
+msgid "sMaskType"
+msgstr "蒙版類型"
+
+msgid "sBlendR"
+msgstr "混合 (R)"
+
+msgid "sBlendMode"
+msgstr "混合模式"
+
+msgid "sBlendModeNormal"
+msgstr "Normal"
+
+msgid "sBlendModeAdd"
+msgstr "Add"
+
+msgid "sBlendModeScreen"
+msgstr "Screen"
+
+msgid "sBlendModeMul"
+msgstr "Multiply"
+
+msgid "sBorder"
+msgstr "邊界"
+
+msgid "sBorderAO"
+msgstr "AO & 邊界"
+
+msgid "sBorderR"
+msgstr "邊界 (R)"
+
+msgid "sBorderRGB"
+msgstr "邊界 (RGB = 1st/2nd/3rd)"
+
+msgid "sBlur"
+msgstr "模糊"
+
+msgid "sBlurR"
+msgstr "模糊 (R)"
+
+msgid "sBlurRGB"
+msgstr "模糊 (RGB = 1st/2nd/3rd)"
+
+msgid "sBlurMask"
+msgstr "模糊掩碼"
+
+msgid "sAlphaR"
+msgstr "透明度 (R)"
+
+msgid "sMainColorPower"
+msgstr "主色功率"
+
+msgid "sEnableLighting"
+msgstr "啟用照明"
+
+msgid "sUVSetting"
+msgstr "UV設置"
+
+msgid "sUVAnimation"
+msgstr "UV動畫"
+
+msgid "sOffset"
+msgstr "Offset"
+
+msgid "sScroll"
+msgstr "滾動"
+
+msgid "sAngle"
+msgstr "角度"
+
+msgid "sRotate"
+msgstr "旋轉"
+
+msgid "sAsMSDF"
+msgstr "MSDF紋理"
+
+msgid "sAsDecal"
+msgstr "作為Decal"
+
+msgid "sAnimation"
+msgstr "動畫"
+
+msgid "sXFrames"
+msgstr "X軸幀數"
+
+msgid "sYFrames"
+msgstr "Y軸幀數"
+
+msgid "sFrames"
+msgstr "總幀數"
+
+msgid "sFPS"
+msgstr "FPS"
+
+msgid "sXRatio"
+msgstr "X比率"
+
+msgid "sYRatio"
+msgstr "Y比率"
+
+msgid "sFixBorder"
+msgstr "修復邊界"
+
+msgid "sConvertGif"
+msgstr "轉換Gif"
+
+msgid "sMirrorMode"
+msgstr "鏡像模式"
+
+msgid "sMirrorModeNormal"
+msgstr "正常"
+
+msgid "sMirrorModeFlip"
+msgstr "翻轉"
+
+msgid "sMirrorModeLeft"
+msgstr "只向左"
+
+msgid "sMirrorModeRight"
+msgstr "只向右"
+
+msgid "sMirrorModeRightFlip"
+msgstr "只向右翻轉"
+
+msgid "sCopyMode"
+msgstr "複製模式"
+
+msgid "sCopyModeNormal"
+msgstr "正常"
+
+msgid "sCopyModeSymmetry"
+msgstr "對稱性"
+
+msgid "sCopyModeFlip"
+msgstr "翻轉"
+
+msgid "sPosition"
+msgstr "職位"
+
+msgid "sPositionX"
+msgstr "X職位"
+
+msgid "sPositionY"
+msgstr "Y職位"
+
+msgid "sScale"
+msgstr "尺度"
+
+msgid "sScaleX"
+msgstr "X尺度"
+
+msgid "sScaleY"
+msgstr "Y尺度"
+
+msgid "sVector"
+msgstr "向量"
+
+msgid "sVertex"
+msgstr "頂點"
+
+msgid "sVertexColor"
+msgstr "Vertex Color"
+
+msgid "sThreshold"
+msgstr "閾值"
+
+msgid "sDensity"
+msgstr "密集"
+
+msgid "sSensitivity"
+msgstr "靈敏度"
+
+msgid "sNormalStrength"
+msgstr "法線貼圖強度"
+
+msgid "sColorAlphaZeroWarn"
+msgstr "增加 Alpha 值以啟用該屬性。"
+
+msgid "sApplyTransparency"
+msgstr "應用透明度"
+
+msgid "sVRParallaxStrength"
+msgstr "VR Parallax Strength"
+
+msgid "sShadowMask"
+msgstr "陰影蒙版"
+
+msgid "sBackfaceMask"
+msgstr "背面蒙版"
+
+msgid "sRandomize"
+msgstr "隨機化"
+
+msgid "sLimShadowStrength"
+msgstr "陰影強度"
+
+msgid "sLimOutline"
+msgstr "輪廓"
+
+msgid "sLimEmission"
+msgstr "發光"
+
+msgid "sLimEmission2nd"
+msgstr "發光2nd"
+
+msgid "sBaseSetting"
+msgstr "基本設置"
+
+msgid "sInvisible"
+msgstr "不可見"
+
+msgid "sAsUnlit"
+msgstr "作為Unlit"
+
+msgid "sAsUnlitWarn"
+msgstr "“作為Unlit”中設置了0以外的值。這可能會導致material / avatar之間亮度的差異。"
+
+msgid "sShaderType"
+msgstr "Shader Type"
+
+msgid "sShaderTypeNormal"
+msgstr "Normal"
+
+msgid "sShaderTypeLite"
+msgstr "Lite"
+
+msgid "sRenderingMode"
+msgstr "Rendering Mode"
+
+msgid "sRenderingModeOpaque"
+msgstr "不透明"
+
+msgid "sRenderingModeCutout"
+msgstr "鏤空"
+
+msgid "sRenderingModeTransparent"
+msgstr "透明"
+
+msgid "sRenderingModeRefraction"
+msgstr "[高負荷] 折射"
+
+msgid "sRenderingModeRefractionBlur"
+msgstr "[高負荷] 折射模糊"
+
+msgid "sRenderingModeFur"
+msgstr "[高負荷] 毛皮"
+
+msgid "sRenderingModeFurCutout"
+msgstr "[高負荷] 毛皮(鏤空)"
+
+msgid "sRenderingModeFurTwoPass"
+msgstr "[高負荷] 毛皮(2 pass)"
+
+msgid "sRenderingModeGem"
+msgstr "[高負荷] 寶石"
+
+msgid "sTransparentMode"
+msgstr "Transparent Mode"
+
+msgid "sTransparentModeNormal"
+msgstr "Normal"
+
+msgid "sTransparentModeOnePass"
+msgstr "One Pass"
+
+msgid "sTransparentModeTwoPass"
+msgstr "Two Pass"
+
+msgid "sColorType"
+msgstr "Color Type"
+
+msgid "sColorTypeNormal"
+msgstr "Normal"
+
+msgid "sColorTypeLUT"
+msgstr "LUT"
+
+msgid "sAsOverlay"
+msgstr "As Overlay"
+
+msgid "sCutoff"
+msgstr "Cutoff"
+
+msgid "sSubpassCutoff"
+msgstr "Subpass Cutoff"
+
+msgid "sCullMode"
+msgstr "Cull Mode"
+
+msgid "sCullModeOff"
+msgstr "Off"
+
+msgid "sCullModeFront"
+msgstr "Front"
+
+msgid "sCullModeBack"
+msgstr "Back"
+
+msgid "sFlipBackfaceNormal"
+msgstr "翻轉背影法線"
+
+msgid "sShiftBackfaceUV"
+msgstr "移動背面的UV"
+
+msgid "sBackfaceForceShadow"
+msgstr "背面的力量陰影"
+
+msgid "sAAShading"
+msgstr "Anti-aliasing shading"
+
+msgid "sDither"
+msgstr "Dither"
+
+msgid "sSimpleStencilSettings"
+msgstr "簡單Stencil設置"
+
+msgid "sStencilModeNormal"
+msgstr "Normal"
+
+msgid "sStencilModeWriter"
+msgstr "Writer"
+
+msgid "sStencilModeReader"
+msgstr "Reader"
+
+msgid "sStencilModeReaderInvert"
+msgstr "Reader (翻轉)"
+
+msgid "sStencilModeReaderFade"
+msgstr "Reader (透明)"
+
+msgid "sTransparentPresetsPreWriteDepth"
+msgstr "預先寫入深度"
+
+msgid "sTransparentPresetsColorTransparent"
+msgstr "彩色透明"
+
+msgid "sTransparentPresetsBackAndFront"
+msgstr "背面 & 表面"
+
+msgid "sTransparentPresetsCutoutAndTransparent"
+msgstr "鏤空 & 透明"
+
+msgid "sTransparentPresetsFadeStencil"
+msgstr "淡出Stencil"
+
+msgid "sOutType"
+msgstr "輸出類型"
+
+msgid "sOutTypeNormal"
+msgstr "Normal"
+
+msgid "sOutTypeFlat"
+msgstr "Flat"
+
+msgid "sOutTypeMono"
+msgstr "Mono"
+
+msgid "sLightingSettings"
+msgstr "照明設置"
+
+msgid "sVertexLightStrength"
+msgstr "頂點燈的強度"
+
+msgid "sLightMinLimit"
+msgstr "亮度下限"
+
+msgid "sLightMaxLimit"
+msgstr "亮度上限"
+
+msgid "sMonochromeLighting"
+msgstr "光的單色化"
+
+msgid "sLightDirectionOverride"
+msgstr "燈光方向超控"
+
+msgid "sObjectFollowing"
+msgstr "跟隨對象方向"
+
+msgid "sDirectionalLightStrength"
+msgstr "[HDRP] Directional Light Strength"
+
+msgid "sBeforeExposureLimit"
+msgstr "[HDRP] Before exposure limit"
+
+msgid "sLightingPreset"
+msgstr "應用預設"
+
+msgid "sLightingPresetDefault"
+msgstr "通常"
+
+msgid "sLightingPresetStable"
+msgstr "穩定"
+
+msgid "sLightingPresetSemiMonochrome"
+msgstr "半單色"
+
+msgid "sHelpRenderingTransparent"
+msgstr "當兩個透明Material重疊時，其中一個可能會變得不可見。這種情況下，通過提高前面顯示的材料的"Render Queue"值來修正。"
+
+msgid "sHelpRenderingFur"
+msgstr "由於性能原因，應用於毛髮的功能受到限制。"
+
+msgid "sHelpTransparentForWorld"
+msgstr "如果在透明材質中將Render Queue設置為2999以下，則可能會出現看不見裡面的其他材質、衣服和頭髮消失等問題。如果是World用途的話，推薦設定為3000以上或關閉ZWrite的設定。"
+
+msgid "sHelpGrabPass"
+msgstr "折射和寶石使用GrabPass，因此在移動GPU中可能對性能產生很大影響。"
+
+msgid "sHelpGeometryShader"
+msgstr "由於幾何體材質球在iOS或Mac上不起作用，因此建議將其更改為其他渲染模式。"
+
+msgid "sHelpOnePassVertexLight"
+msgstr "使用One Pass Transparent時推薦將Vertex Light Strength設定為1.0。"
+
+msgid "sHelpCullMode"
+msgstr "如果材質看起來不對，請將CullMode設置為Off或Back。"
+
+msgid "sHelpZWrite"
+msgstr "如果材質看起來不對，請打開ZWrite。"
+
+msgid "sAlphaBoostFA"
+msgstr "[Built-in RP] Alpha Boost (Point / Spot Light)"
+
+msgid "sLightBlending"
+msgstr "[Built-in RP] Light Blending"
+
+msgid "sBlendingAdd"
+msgstr "Add"
+
+msgid "sBlendingMax"
+msgstr "Max"
+
+msgid "sMaskTiling"
+msgstr "蒙版UV Tiling"
+
+msgid "sMaskOffset"
+msgstr "蒙版UV Offset"
+
+msgid "sNoise"
+msgstr "噪點"
+
+msgid "sNoiseR"
+msgstr "Noise (R)"
+
+msgid "sNoiseStrength"
+msgstr "噪點強度"
+
+msgid "sTriMask"
+msgstr "TriMask (Mat/Rim/Emi)"
+
+msgid "sTriMaskRGB"
+msgstr "Mask (R:MatCap G:Rim B:Emission)"
+
+msgid "sApplyTo"
+msgstr "申請"
+
+msgid "sMainUV"
+msgstr "UV設置"
+
+msgid "sMainUVTips"
+msgstr "你可以設置UV位置、比例和動畫。"
+
+msgid "sColors"
+msgstr "顏色設置"
+
+msgid "sMainColorSetting"
+msgstr "主色 / Alpha設置"
+
+msgid "sMainColorSettingSimple"
+msgstr "主色 / Alpha設置"
+
+msgid "sMainColorTips"
+msgstr "你可以設置顏色和透明度。"
+
+msgid "sMainColorAlpha"
+msgstr "主色 / Alpha"
+
+msgid "sMainColor"
+msgstr "主色"
+
+msgid "sMainColor2nd"
+msgstr "主色2nd"
+
+msgid "sMainColor3rd"
+msgstr "主色3rd"
+
+msgid "sColorAdjust"
+msgstr "色調校正"
+
+msgid "sGradationMap"
+msgstr "漸變映射"
+
+msgid "sNotAlphaIsTransparency"
+msgstr "此紋理未被設置為AlphaIsTransparency"
+
+msgid "sAlphaMask"
+msgstr "Alpha蒙版"
+
+msgid "sAlphaMaskWarnOpaque"
+msgstr "如果要使用Alpha蒙版，則需要將“Rendering Mode”更改為鏤空或透明。"
+
+msgid "sAlphaMaskModeNone"
+msgstr "None"
+
+msgid "sAlphaMaskModeReplace"
+msgstr "Replace"
+
+msgid "sAlphaMaskModeMul"
+msgstr "Multiply"
+
+msgid "sAlphaMaskModeAdd"
+msgstr "Add"
+
+msgid "sAlphaMaskModeSub"
+msgstr "Subtract"
+
+msgid "sShadowSetting"
+msgstr "陰影設置"
+
+msgid "sShadowTips"
+msgstr "你可以設置陰影的顏色和範圍。"
+
+msgid "sShadow"
+msgstr "陰影"
+
+msgid "sReceiveShadow"
+msgstr "接收陰影"
+
+msgid "sShadowColor"
+msgstr "陰影顏色"
+
+msgid "sShadow1stColor"
+msgstr "顏色1"
+
+msgid "sShadow2ndColor"
+msgstr "顏色2"
+
+msgid "sShadow3rdColor"
+msgstr "顏色3"
+
+msgid "sShadowEnvStrength"
+msgstr "陰影顏色的環境強度"
+
+msgid "sShadowBorderColor"
+msgstr "邊界顏色"
+
+msgid "sShadowBorderRange"
+msgstr "邊界範圍"
+
+msgid "sIgnoreBorderProperties"
+msgstr "忽略邊界設置"
+
+msgid "sFlat"
+msgstr "平的"
+
+msgid "sBacklightSetting"
+msgstr "Backlight設置"
+
+msgid "sBacklight"
+msgstr "Backlight"
+
+msgid "sBacklightTips"
+msgstr "當照明在模型後面時添加背光燈"
+
+msgid "sDirectivity"
+msgstr "指向性"
+
+msgid "sViewDirectionStrength"
+msgstr "視線方向影響"
+
+msgid "sOutlineSetting"
+msgstr "輪廓設置"
+
+msgid "sOutlineTips"
+msgstr "你可以設置輪廓的顏色和厚度。"
+
+msgid "sOutline"
+msgstr "輪廓"
+
+msgid "sHighlight"
+msgstr "高亮顏色"
+
+msgid "sWidth"
+msgstr "蒙版 & 寬度"
+
+msgid "sWidthR"
+msgstr "寬度 (R)"
+
+msgid "sFixWidth"
+msgstr "按距離正確寬度"
+
+msgid "sVertexR2Width"
+msgstr "R -> Width"
+
+msgid "sVertexRGBA2Normal"
+msgstr "RGBA -> Normal & Width"
+
+msgid "sDeleteMesh0"
+msgstr "刪除寬度0的頂點"
+
+msgid "sDisableInVR"
+msgstr "在 VR 中禁用"
+
+msgid "sRefractionSetting"
+msgstr "折射設置"
+
+msgid "sRefractionTips"
+msgstr "你可以設置折射強度和顏色。"
+
+msgid "sRefraction"
+msgstr "折射"
+
+msgid "sRefractionFresnel"
+msgstr "菲涅爾"
+
+msgid "sColorFromMain"
+msgstr "從主色獲取顏色"
+
+msgid "sFurSetting"
+msgstr "毛皮設置"
+
+msgid "sFurTips"
+msgstr "你可以設置毛皮的長度和方向。"
+
+msgid "sFur"
+msgstr "毛皮"
+
+msgid "sAntiLight"
+msgstr "Anti Light"
+
+msgid "sGravity"
+msgstr "重力"
+
+msgid "sAO"
+msgstr "AO"
+
+msgid "sVertexColor2Vector"
+msgstr "VertexColor -> Vector"
+
+msgid "sLayerNum"
+msgstr "層數"
+
+msgid "sRootWidth"
+msgstr "根厚度"
+
+msgid "sTouchStrength"
+msgstr "接觸強度"
+
+msgid "sTessellation"
+msgstr "Tessellation (極高的負荷)"
+
+msgid "sTessellationTips"
+msgstr "你可以設置Tessellation。"
+
+msgid "sTessellationEdge"
+msgstr "閾值長度"
+
+msgid "sTessellationShrink"
+msgstr "縮減"
+
+msgid "sTessellationFactor"
+msgstr "最大係數"
+
+msgid "sEmissionSetting"
+msgstr "發光設置"
+
+msgid "sEmissionTips"
+msgstr "你可以設置燈光的顏色和閃爍。"
+
+msgid "sEmission"
+msgstr "發光"
+
+msgid "sEmission2nd"
+msgstr "發光2nd"
+
+msgid "sBlinkStrength"
+msgstr "閃爍強度"
+
+msgid "sBlinkType"
+msgstr "閃爍類型"
+
+msgid "sBlinkSpeed"
+msgstr "閃爍速度"
+
+msgid "sBlinkOffset"
+msgstr "閃爍偏移"
+
+msgid "sGradation"
+msgstr "漸變"
+
+msgid "sGradTexSpeed"
+msgstr "紋理 & 速度"
+
+msgid "sGradColor"
+msgstr "顏色"
+
+msgid "sParallaxDepth"
+msgstr "視差深度"
+
+msgid "sFluorescence"
+msgstr "熒光"
+
+msgid "sParallax"
+msgstr "視差"
+
+msgid "sParallaxTips"
+msgstr "你可以設置視差。"
+
+msgid "sParallaxR"
+msgstr "視差 (R)"
+
+msgid "sParallaxOffset"
+msgstr "偏移"
+
+msgid "sPOM"
+msgstr "[高負荷] POM"
+
+msgid "sDistanceFade"
+msgstr "距離淡化"
+
+msgid "sDistanceFadeTips"
+msgstr "你可以根據距離來設置顏色的變化。"
+
+msgid "sStartDistance"
+msgstr "開始距離"
+
+msgid "sEndDistance"
+msgstr "結束距離"
+
+msgid "sAudioLink"
+msgstr "AudioLink"
+
+msgid "sAudioLinkTips"
+msgstr "根據AudioLink系統更改Material外觀的設置。"
+
+msgid "sAudioLinkUVMode"
+msgstr "UV Mode"
+
+msgid "sAudioLinkUVModeNone"
+msgstr "None"
+
+msgid "sAudioLinkUVModeRim"
+msgstr "Rim"
+
+msgid "sAudioLinkUVModeUV"
+msgstr "UV"
+
+msgid "sAudioLinkUVModeMask"
+msgstr "蒙版"
+
+msgid "sAudioLinkUVModePosition"
+msgstr "職位"
+
+msgid "sAudioLinkMaskRGB"
+msgstr "RGB = Delay / Band / Strength"
+
+msgid "sAudioLinkMaskRGBSpectrum"
+msgstr "RGB = Volume / Band / Strength"
+
+msgid "sAudioLinkBand"
+msgstr "Band"
+
+msgid "sAudioLinkBandBass"
+msgstr "Bass"
+
+msgid "sAudioLinkBandLowMid"
+msgstr "Low Mid"
+
+msgid "sAudioLinkBandHighMid"
+msgstr "High Mid"
+
+msgid "sAudioLinkBandTreble"
+msgstr "Treble"
+
+msgid "sAudioLinkStartPosition"
+msgstr "初始點"
+
+msgid "sAudioLinkMovingVector"
+msgstr "運動方向"
+
+msgid "sAudioLinkNormalStrength"
+msgstr "法線強度"
+
+msgid "sAudioLinkAsLocal"
+msgstr "當地"
+
+msgid "sAudioLinkLocalMap"
+msgstr "Local Map"
+
+msgid "sAudioLinkLocalMapBPM"
+msgstr "BPM"
+
+msgid "sAudioLinkLocalMapNotes"
+msgstr "Notes"
+
+msgid "sAudioLinkDefaultValue"
+msgstr "無 AudioLink 的默認值"
+
+msgid "sDissolve"
+msgstr "Dissolve"
+
+msgid "sDissolveTips"
+msgstr "用於溶解材料的設置"
+
+msgid "sDissolveWarnOpaque"
+msgstr "如果要使用Dissolve，則需要將“Rendering Mode”更改為鏤空或透明。"
+
+msgid "sDissolveMode"
+msgstr "Dissolve Mode"
+
+msgid "sDissolveModeNone"
+msgstr "None"
+
+msgid "sDissolveModeAlpha"
+msgstr "Alpha"
+
+msgid "sDissolveModeUV"
+msgstr "UV"
+
+msgid "sDissolveModePosition"
+msgstr "職位"
+
+msgid "sDissolveShape"
+msgstr "形狀"
+
+msgid "sDissolveShapePoint"
+msgstr "點"
+
+msgid "sDissolveShapeLine"
+msgstr "線"
+
+msgid "sIDMask"
+msgstr "ID Mask"
+
+msgid "sUDIMDiscard"
+msgstr "UV Tile Discard"
+
+msgid "sUDIMDiscardUV"
+msgstr "Discard UV"
+
+msgid "sUDIMDiscardMode"
+msgstr "丟棄模式"
+
+msgid "sEncryption"
+msgstr "加密"
+
+msgid "sEncryptionTips"
+msgstr "從4個密鑰解密該網狀"
+
+msgid "sIgnoreEncryption"
+msgstr "Ignore Encryption"
+
+msgid "sKeys"
+msgstr "Keys"
+
+msgid "sNormalMapReflection"
+msgstr "法線貼圖 & 反射設置"
+
+msgid "sNormalMapSetting"
+msgstr "法線貼圖設置"
+
+msgid "sNormalMapTips"
+msgstr "你可以設置法線貼圖。"
+
+msgid "sNormalMap"
+msgstr "法線貼圖"
+
+msgid "sNormalMap2nd"
+msgstr "法線貼圖2nd"
+
+msgid "sNormalRGB"
+msgstr "法線 (RGB)"
+
+msgid "sAnisotropy"
+msgstr "各向異性反射"
+
+msgid "sTangentWidth"
+msgstr "Tangent Width"
+
+msgid "sBitangentWidth"
+msgstr "Bitangent Width"
+
+msgid "sReflectionsSetting"
+msgstr "反射設置"
+
+msgid "sReflectionsTips"
+msgstr "你可以設置反射。"
+
+msgid "sReflection"
+msgstr "反射"
+
+msgid "sSmoothness"
+msgstr "平滑度"
+
+msgid "sSmoothnessR"
+msgstr "平滑度 (R)"
+
+msgid "sMetallic"
+msgstr "金屬程度"
+
+msgid "sMetallicR"
+msgstr "金屬程度 (R)"
+
+msgid "sReflectance"
+msgstr "反射率"
+
+msgid "sSpecularMode"
+msgstr "反射模式"
+
+msgid "sSpecularNone"
+msgstr "無"
+
+msgid "sSpecularReal"
+msgstr "現實"
+
+msgid "sSpecularToon"
+msgstr "卡通"
+
+msgid "sMultiLightSpecular"
+msgstr "從多個光源生成反射"
+
+msgid "sApplyReflection"
+msgstr "環境反射"
+
+msgid "sMatCapSetting"
+msgstr "MatCap設置"
+
+msgid "sMatCap"
+msgstr "MatCap"
+
+msgid "sMatCap2nd"
+msgstr "MatCap 2nd"
+
+msgid "sBlendUV1"
+msgstr "Blend UV1"
+
+msgid "sMatCapZRotCancel"
+msgstr "Z軸旋轉取消"
+
+msgid "sFixPerspective"
+msgstr "Fix Perspective"
+
+msgid "sHelpMatCapBlending"
+msgstr "關閉乘法模式下的 啟用照明。"
+
+msgid "sMatCapCustomNormal"
+msgstr "自定義法線貼圖"
+
+msgid "sRimLightSetting"
+msgstr "Rim Light設置"
+
+msgid "sRimLight"
+msgstr "Rim Light"
+
+msgid "sFresnelPower"
+msgstr "菲涅爾功率"
+
+msgid "sRimLightDirection"
+msgstr "光線方向影響"
+
+msgid "sRimDirectionRange"
+msgstr "直射光寬"
+
+msgid "sRimIndirectionRange"
+msgstr "間接光寬"
+
+msgid "sGlitterSetting"
+msgstr "Glitter設置"
+
+msgid "sGlitter"
+msgstr "Glitter"
+
+msgid "sParticleSize"
+msgstr "粒子大小"
+
+msgid "sContrast"
+msgstr "對比度"
+
+msgid "sPostContrast"
+msgstr "對比度（後處理）"
+
+msgid "sAngleLimit"
+msgstr "角度限制"
+
+msgid "sColorRandomness"
+msgstr "隨機顏色"
+
+msgid "sGemSetting"
+msgstr "寶石設置"
+
+msgid "sGem"
+msgstr "寶石"
+
+msgid "sChromaticAberration"
+msgstr "色差"
+
+msgid "sEnvironmentColor"
+msgstr "環境光色"
+
+msgid "sParticleLoop"
+msgstr "粒子循環數"
+
+msgid "sStencilSetting"
+msgstr "Stencil設置"
+
+msgid "sStencilTips"
+msgstr "你可以配置詳細的Stencil設置。"
+
+msgid "sAdvanced"
+msgstr "擴展設置"
+
+msgid "sRenderingSetting"
+msgstr "渲染設置"
+
+msgid "sRenderingTips"
+msgstr "你可以配置詳細的渲染設置。"
+
+msgid "sZClip"
+msgstr "ZClip"
+
+msgid "sZWrite"
+msgstr "ZWrite"
+
+msgid "sZTest"
+msgstr "ZTest"
+
+msgid "sOffsetFactor"
+msgstr "Offset Factor"
+
+msgid "sOffsetUnits"
+msgstr "Offset Units"
+
+msgid "sColorMask"
+msgstr "Color Mask"
+
+msgid "sAlphaToMask"
+msgstr "AlphaToMask"
+
+msgid "sForward"
+msgstr "Forward"
+
+msgid "sForwardAdd"
+msgstr "ForwardAdd"
+
+msgid "sSrcBlendRGB"
+msgstr "SrcBlend RGB"
+
+msgid "sDstBlendRGB"
+msgstr "DstBlend RGB"
+
+msgid "sSrcBlendAlpha"
+msgstr "SrcBlend Alpha"
+
+msgid "sDstBlendAlpha"
+msgstr "DstBlend Alpha"
+
+msgid "sBlendOpRGB"
+msgstr "BlendOp RGB"
+
+msgid "sBlendOpAlpha"
+msgstr "BlendOp Alpha"
+
+msgid "sRenderingReset"
+msgstr "重置渲染設置"
+
+msgid "sLightBakeSetting"
+msgstr "Light Bake"
+
+msgid "sOptimization"
+msgstr "優化"
+
+msgid "sOptimizationTips"
+msgstr "你可以對材料進行優化，以減少負荷。"
+
+msgid "sCustomProperties"
+msgstr "自定義屬性"
+
+msgid "sCustomPropertiesTips"
+msgstr "顯示用戶添加的屬性"
+
+msgid "sBake"
+msgstr "烘烤"
+
+msgid "sBakeAll"
+msgstr "烘烤所有層"
+
+msgid "sBake1st"
+msgstr "烘烤顏色轉移"
+
+msgid "sBake2nd"
+msgstr "烘烤第二層"
+
+msgid "sBake3rd"
+msgstr "烘焙第三層"
+
+msgid "sBakeAlphamask"
+msgstr "烘焙Alphamask"
+
+msgid "sSelectAlphamask"
+msgstr "選擇Alphamask"
+
+msgid "sRemoveUnused"
+msgstr "移除未使用的紋理"
+
+msgid "sConvertLite"
+msgstr "轉換為lilToonLite"
+
+msgid "sConvertMulti"
+msgstr "轉換為lilToonMulti"
+
+msgid "sConvertMToon"
+msgstr "轉換為MToon (VRM)"
+
+msgid "sOptimizeForEvents"
+msgstr "優化以提交到活動"
+
+msgid "sYes"
+msgstr "Yes"
+
+msgid "sNo"
+msgstr "No"
+
+msgid "sOK"
+msgstr "OK"
+
+msgid "sCancel"
+msgstr "Cancel"
+
+msgid "sNone"
+msgstr "None"
+
+msgid "sComplete"
+msgstr "完成了。"
+
+msgid "sCopy"
+msgstr "複製"
+
+msgid "sPaste"
+msgstr "貼上"
+
+msgid "sPasteWithTexture"
+msgstr "貼上 (with texture)"
+
+msgid "sReset"
+msgstr "重置"
+
+msgid "sOpenManual"
+msgstr "開放式手冊"
+
+msgid "sFixNow"
+msgstr "自動修改"
+
+msgid "sDialogResetUV"
+msgstr "重置UV設置"
+
+msgid "sDialogResetUVMes"
+msgstr "你確定要重置UV設置嗎？"
+
+msgid "sDialogCannotBake"
+msgstr "不能運行烘烤"
+
+msgid "sDialogNoNeedBake"
+msgstr "不需要運行烘烤"
+
+msgid "sDialogSetMainTex"
+msgstr "你需要將紋理設置為主色。"
+
+msgid "sDialogNoChange"
+msgstr "你不改變顏色。"
+
+msgid "sDialogNotUse2nd"
+msgstr "你沒有使用第二層。"
+
+msgid "sDialogNotUse3rd"
+msgstr "你沒有使用第三層。"
+
+msgid "sDialogNotUseAll"
+msgstr "你沒有改變顏色，沒有使用圖層。"
+
+msgid "sDialogRunBake"
+msgstr "運行烘烤？"
+
+msgid "sDialogBakeMain"
+msgstr "你要烘烤主紋理嗎？"
+
+msgid "sDialogBakeShadow"
+msgstr "你想烘烤陰影紋理嗎？"
+
+msgid "sDialogBakeMatCap"
+msgstr "你想烘烤matcap嗎？"
+
+msgid "sDialogBakeTriMask"
+msgstr "你想烘烤TriMask（MatCap/Rim/發光的掩碼）嗎？"
+
+msgid "sDialogBakeOutline"
+msgstr "你想烘烤輪廓紋理嗎？"
+
+msgid "sDialogGifToAtlas"
+msgstr "將Gif轉換成Atlas"
+
+msgid "sDialogTexPow2"
+msgstr "你想把紋理分辨率調整為2的冪嗎？"
+
+msgid "sDialogImportOldVer"
+msgstr "您要導入的包的版本早於已導入的lilToon。是否繼續？"
+
+msgid "sDialogImportPackage"
+msgstr "已經導入了UPM版lilToon。是否繼續導入unitypackage版？ （這可能會導致腳本錯誤等。）"
+
+msgid "sWarnOptimiseMeshData"
+msgstr "Unity錯誤可能會刪除所需的頂點資料。 發生故障時，請關閉「Project Setting/Prer/Optimize Mesh Data」。"
+
+msgid "sPresets"
+msgstr "預設"
+
+msgid "sPresetsNotAvailable"
+msgstr "預設在此著色器中不可用。"
+
+msgid "sPresetIsMaterial"
+msgstr "選擇Material以外的"
+
+msgid "sPresetRefresh"
+msgstr "刷新列表"
+
+msgid "sPresetSave"
+msgstr "保存預設"
+
+msgid "sPresetCategory"
+msgstr "類別"
+
+msgid "sPresetCategorySkin"
+msgstr "皮膚"
+
+msgid "sPresetCategoryHair"
+msgstr "頭髮"
+
+msgid "sPresetCategoryCloth"
+msgstr "布質"
+
+msgid "sPresetCategoryNature"
+msgstr "自然"
+
+msgid "sPresetCategoryInorganic"
+msgstr "無機物"
+
+msgid "sPresetCategoryEffect"
+msgstr "效果"
+
+msgid "sPresetCategoryOther"
+msgstr "其他"
+
+msgid "sPresetName"
+msgstr "預設名稱"
+
+msgid "sPresetSaveTarget"
+msgstr "保存目標"
+
+msgid "sPresetTexture"
+msgstr "保存目標紋理"
+
+msgid "sPresetShader"
+msgstr "Shader"
+
+msgid "sPresetQueue"
+msgstr "Render Queue"
+
+msgid "sPresetStencil"
+msgstr "Stencil"
+
+msgid "sPresetMainTex2Outline"
+msgstr "將主紋理應用於輪廓"
+
+msgid "sPresetMain"
+msgstr "主色"
+
+msgid "sPresetMain2"
+msgstr "主色2nd"
+
+msgid "sPresetMain2Mask"
+msgstr "主色2nd蒙版"
+
+msgid "sPresetMain3"
+msgstr "主色3rd"
+
+msgid "sPresetMain3Mask"
+msgstr "主色3rd蒙版"
+
+msgid "sPresetShadowBorder"
+msgstr "陰影AO"
+
+msgid "sPresetShadowBlur"
+msgstr "陰影模糊"
+
+msgid "sPresetShadowStrength"
+msgstr "陰影蒙版"
+
+msgid "sPresetShadowColor"
+msgstr "陰影顏色"
+
+msgid "sPresetShadowColor2"
+msgstr "陰影顏色2"
+
+msgid "sPresetEmissionColor"
+msgstr "發光色"
+
+msgid "sPresetEmissionMask"
+msgstr "發光蒙版"
+
+msgid "sPresetEmissionGrad"
+msgstr "發光漸變"
+
+msgid "sPresetEmission2Color"
+msgstr "發光2nd顏色"
+
+msgid "sPresetEmission2Mask"
+msgstr "發光2nd蒙版"
+
+msgid "sPresetEmission2Grad"
+msgstr "發光2nd漸變"
+
+msgid "sPresetNormal"
+msgstr "法線貼圖"
+
+msgid "sPresetNormal2"
+msgstr "法線貼圖2nd"
+
+msgid "sPresetNormal2Mask"
+msgstr "法線貼圖2nd蒙版"
+
+msgid "sPresetReflectionSmoothness"
+msgstr "平滑度"
+
+msgid "sPresetReflectionMetallic"
+msgstr "金屬程度"
+
+msgid "sPresetReflectionColor"
+msgstr "反射顏色"
+
+msgid "sPresetMatcap"
+msgstr "MatCap"
+
+msgid "sPresetMatcapMask"
+msgstr "MatCap蒙版"
+
+msgid "sPresetRim"
+msgstr "Rim Color"
+
+msgid "sPresetParallax"
+msgstr "視差"
+
+msgid "sPresetOutlineTex"
+msgstr "輪廓紋理"
+
+msgid "sPresetOutlineWidth"
+msgstr "輪廓寬度"
+
+msgid "sPresetFurNormal"
+msgstr "毛皮法線"
+
+msgid "sPresetFurNoise"
+msgstr "毛皮噪聲"
+
+msgid "sPresetFurMask"
+msgstr "毛皮蒙版"
+
+msgid "sShaderSetting"
+msgstr "著色器設置（用於所有材質）"
+
+msgid "sHelpShaderSetting"
+msgstr "在這里關閉的功能將從著色器中刪除。通過關閉不使用的功能，你可以減少你的頭像的大小，同時也可以減少負載。​​"
+
+msgid "sSettingLock"
+msgstr "Lock"
+
+msgid "sShaderSettingOptimizeInTestBuild"
+msgstr "在測試構建中優化"
+
+msgid "sShaderSettingOptimizeInEditor"
+msgstr "[Debug] 在編輯器中優化"
+
+msgid "sSettingClippingCanceller"
+msgstr "距離剪裁取消器"
+
+msgid "sSettingTexOutlineColor"
+msgstr "輪廓顏色紋理"
+
+msgid "sSettingDefaultValue"
+msgstr "初始值 (用於Fix Lighting或照明預設)"
+
+msgid "sSettingBuildSizeOptimization"
+msgstr "優化構建大小（用於所有材質）"
+
+msgid "sSettingApplyShadowFA"
+msgstr "通過ForwardAdd啟用陰影"
+
+msgid "sSettingUseForwardAdd"
+msgstr "使用ForwardAdd"
+
+msgid "sSettingUseForwardAddShadow"
+msgstr "在ForwardAdd路徑中接收陰影"
+
+msgid "sSettingUseVertexLight"
+msgstr "使用頂點燈"
+
+msgid "sSettingUseLightmap"
+msgstr "使用照明圖"
+
+msgid "sManualURL"
+msgstr "https://lilxyzw.github.io/lilToon/#/en-us/"
+
+msgid "sAnchorBaseSetting"
+msgstr "base/base"
+
+msgid "sAnchorLighting"
+msgstr "base/lighting"
+
+msgid "sAnchorUVSetting"
+msgstr "base/uv"
+
+msgid "sAnchorMainColor"
+msgstr "color/maincolor"
+
+msgid "sAnchorMainColor1"
+msgstr "color/maincolor"
+
+msgid "sAnchorMainColor2"
+msgstr "color/maincolor_layer"
+
+msgid "sAnchorAlphaMask"
+msgstr "color/alphamask"
+
+msgid "sAnchorShadow"
+msgstr "color/shadow"
+
+msgid "sAnchorRimShade"
+msgstr "color/rimshade"
+
+msgid "sAnchorEmission"
+msgstr "color/emission"
+
+msgid "sAnchorNormalMap"
+msgstr "reflections/normal"
+
+msgid "sAnchorAnisotropy"
+msgstr "reflections/anisotropy"
+
+msgid "sAnchorBacklight"
+msgstr "reflections/backlight"
+
+msgid "sAnchorReflection"
+msgstr "reflections/reflection"
+
+msgid "sAnchorMatCap"
+msgstr "reflections/matcap"
+
+msgid "sAnchorRimLight"
+msgstr "reflections/rimlight"
+
+msgid "sAnchorGlitter"
+msgstr "reflections/glitter"
+
+msgid "sAnchorGem"
+msgstr "reflections/gem"
+
+msgid "sAnchorOutline"
+msgstr "advanced/outline"
+
+msgid "sAnchorParallax"
+msgstr "advanced/parallax"
+
+msgid "sAnchorDistanceFade"
+msgstr "advanced/distancefade"
+
+msgid "sAnchorAudioLink"
+msgstr "advanced/audiolink"
+
+msgid "sAnchorDissolve"
+msgstr "advanced/dissolve"
+
+msgid "sAnchorIDMask"
+msgstr "advanced/idmask"
+
+msgid "sAnchorUDIMDiscard"
+msgstr "advanced/uvtilediscard"
+
+msgid "sAnchorEncryption"
+msgstr "advanced/encryption"
+
+msgid "sAnchorStencil"
+msgstr "advanced/stencil"
+
+msgid "sAnchorRendering"
+msgstr "advanced/rendering"
+
+msgid "sAnchorTessellation"
+msgstr "advanced/tessellation"
+
+msgid "sAnchorRefraction"
+msgstr "advanced/refraction"
+
+msgid "sAnchorFur"
+msgstr "advanced/fur"
+
+msgid "sAnchorOptimization"
+msgstr "other?id=Optimization"
+
+msgid "sAnchorShaderSetting"
+msgstr "other?id=Shader-Setting"
+
+msgid "sReadmeURL"
+msgstr "https://lilxyzw.github.io/lilToon/#/ja-jp/"
+
+msgid "sReadmeAnchorProblem"
+msgstr "other/qa"
+
+msgid "sHelp"
+msgstr "幫助"
+
+msgid "sCommonProblems"
+msgstr "常見問題"
+
+msgid "sUtilGif2AtlasPow2"
+msgstr "您想將紋理分辨率匹配到 2 的冪嗎？"
+
+msgid "sUtilDotTexRedRatio"
+msgstr "請選擇一個縮小比例。"
+
+msgid "sUtilShaderNotFound"
+msgstr "未找到著色器。"
+
+msgid "sUtilSelectPresets"
+msgstr "請選擇一個預設。"
+
+msgid "sUtilMaterialAlreadyExist"
+msgstr "該材料可能已經存在。 您確定要覆蓋它嗎？"
+
+msgid "sUtilInvalidFormat"
+msgstr "Invalid format."
+

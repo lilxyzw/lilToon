@@ -182,13 +182,6 @@ void lilLTCGI(inout lilLightData o, float3 positionWS, float3 N, float3 V, float
 #endif
 
 //------------------------------------------------------------------------------------------------------------------------------
-// GTAvaCrypt
-// https://github.com/rygo6/GTAvaCrypt/blob/master/LICENSE
-#if defined(LIL_FEATURE_ENCRYPTION)
-#include "GTModelDecode.cginc"
-#endif
-
-//------------------------------------------------------------------------------------------------------------------------------
 // UDIM Discard (UV Tile Discard, original implementation by Razgriz for Poiyomi)
 // https://github.com/poiyomi/PoiyomiToonShader/blob/master/LICENSE
 bool lilUDIMDiscard(

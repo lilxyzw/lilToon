@@ -755,8 +755,7 @@ namespace lilToon
                    assetPath.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase);
         }
 
-        #pragma warning restore CS0612
-        [Obsolete] public static string GetLoc(string value) { return lilLanguageManager.GetLoc(value); }
+        private static string GetLoc(string value) { return lilLanguageManager.GetLoc(value); }
     }
 
 #if LILTOON_DISABLE_ASSET_MODIFICATION == false

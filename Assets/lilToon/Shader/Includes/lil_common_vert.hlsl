@@ -95,17 +95,21 @@ LIL_V2F_TYPE vert(appdata input)
     float2 uvs[4] = {uvMain,input.uv1,input.uv2,input.uv3};
 
     //------------------------------------------------------------------------------------------------------------------------------
-    // Vertex Modification
-    #include "lil_vert_encryption.hlsl"
+    // Custom Shader
     lilCustomVertexOS(input, uvMain, input.positionOS);
-    // Object space direction after applying custom shader in Object Space
+
+    //------------------------------------------------------------------------------------------------------------------------------
+    // Object space direction
     #if defined(LIL_APP_NORMAL) && defined(LIL_APP_TANGENT)
-    float3 bitangentOS = normalize(cross(input.normalOS, input.tangentOS.xyz)) * (input.tangentOS.w * length(input.normalOS));
-    float3x3 tbnOS = float3x3(input.tangentOS.xyz, bitangentOS, input.normalOS);
+        float3 bitangentOS = normalize(cross(input.normalOS, input.tangentOS.xyz)) * (input.tangentOS.w * length(input.normalOS));
+        float3x3 tbnOS = float3x3(input.tangentOS.xyz, bitangentOS, input.normalOS);
     #else
-    float3 bitangentOS = 0.0;
-    float3x3 tbnOS = 0.0;
+        float3 bitangentOS = 0.0;
+        float3x3 tbnOS = 0.0;
     #endif
+
+    //------------------------------------------------------------------------------------------------------------------------------
+    // Vertex Modification
     #include "lil_vert_audiolink.hlsl"
     #if !defined(LIL_ONEPASS_OUTLINE)
         #include "lil_vert_outline.hlsl"
@@ -122,7 +126,6 @@ LIL_V2F_TYPE vert(appdata input)
         //------------------------------------------------------------------------------------------------------------------------------
         // Vertex Modification
         #define LIL_MODIFY_PREVPOS
-        #include "lil_vert_encryption.hlsl"
         lilCustomVertexOS(input, uvMain, input.previousPositionOS);
         #include "lil_vert_audiolink.hlsl"
         #undef LIL_MODIFY_PREVPOS
@@ -257,7 +260,7 @@ LIL_V2F_TYPE vert(appdata input)
         LIL_V2F_OUT_BASE.lightDirection = lightdataInput.lightDirection;
     #endif
     #if defined(LIL_V2F_INDLIGHTCOLOR)
-        LIL_V2F_OUT_BASE.indLightColor  = lightdataInput.indLightColor * _ShadowEnvStrength;
+        LIL_V2F_OUT_BASE.indLightColor  = lightdataInput.indLightColor;
     #endif
     #if defined(LIL_V2F_NDOTL)
         float2 outlineNormalVS = normalize(lilTransformDirWStoVSCenter(vertexNormalInput.normalWS).xy);

@@ -1,0 +1,1615 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en-US\n"
+
+msgid "sLanguageWarning"
+msgstr ""
+
+msgid "sEditorMode"
+msgstr "Editor Mode"
+
+msgid "sEditorModeSimple"
+msgstr "Simple"
+
+msgid "sEditorModeAdvanced"
+msgstr "Advanced"
+
+msgid "sEditorModePreset"
+msgstr "Preset"
+
+msgid "sEditorModeShaderSetting"
+msgstr "Shader Setting"
+
+msgid "sHelpSelectOverlay"
+msgstr "Currently lilToonOverray is selected. Change to lilToon for normal use."
+
+msgid "sColor"
+msgstr "Color"
+
+msgid "sAlpha"
+msgstr "Alpha"
+
+msgid "sColorAlpha"
+msgstr "Color / Alpha"
+
+msgid "sGamma"
+msgstr "Gamma"
+
+msgid "sHue"
+msgstr "Hue"
+
+msgid "sSaturation"
+msgstr "Saturation"
+
+msgid "sValue"
+msgstr "Value"
+
+msgid "sStrength"
+msgstr "Strength"
+
+msgid "sStrengthMask"
+msgstr "Mask & Strength"
+
+msgid "sStrengthR"
+msgstr "Strength (R)"
+
+msgid "sLength"
+msgstr "Length"
+
+msgid "sLengthMask"
+msgstr "Length Mask"
+
+msgid "sTexture"
+msgstr "Texture"
+
+msgid "sTextureRGB"
+msgstr "Color (RGB)"
+
+msgid "sTextureRGBA"
+msgstr "Color (RGB) and Transparency (A)"
+
+msgid "sMask"
+msgstr "Mask"
+
+msgid "sMaskType"
+msgstr "Mask Type"
+
+msgid "sBlendR"
+msgstr "Blend (R)"
+
+msgid "sBlendMode"
+msgstr "Blending Mode"
+
+msgid "sBlendModeNormal"
+msgstr "Normal"
+
+msgid "sBlendModeAdd"
+msgstr "Add"
+
+msgid "sBlendModeScreen"
+msgstr "Screen"
+
+msgid "sBlendModeMul"
+msgstr "Multiply"
+
+msgid "sBorder"
+msgstr "Border"
+
+msgid "sBorderAO"
+msgstr "AO & Border"
+
+msgid "sBorderR"
+msgstr "Border (R)"
+
+msgid "sBorderRGB"
+msgstr "Border (RGB = 1st/2nd/3rd)"
+
+msgid "sBlur"
+msgstr "Blur"
+
+msgid "sBlurR"
+msgstr "Blur (R)"
+
+msgid "sBlurRGB"
+msgstr "Blur (RGB = 1st/2nd/3rd)"
+
+msgid "sBlurMask"
+msgstr "Blur Mask"
+
+msgid "sAlphaR"
+msgstr "Alpha (R)"
+
+msgid "sMainColorPower"
+msgstr "Main Color Power"
+
+msgid "sEnableLighting"
+msgstr "Enable Lighting"
+
+msgid "sUVSetting"
+msgstr "UV Setting"
+
+msgid "sUVAnimation"
+msgstr "UV Animation"
+
+msgid "sOffset"
+msgstr "Offset"
+
+msgid "sScroll"
+msgstr "Scroll"
+
+msgid "sAngle"
+msgstr "Angle"
+
+msgid "sRotate"
+msgstr "Rotate"
+
+msgid "sAsMSDF"
+msgstr "MSDF Texture"
+
+msgid "sAsDecal"
+msgstr "As Decal"
+
+msgid "sAnimation"
+msgstr "Animation"
+
+msgid "sXFrames"
+msgstr "X Frames"
+
+msgid "sYFrames"
+msgstr "Y Frames"
+
+msgid "sFrames"
+msgstr "Frames"
+
+msgid "sFPS"
+msgstr "FPS"
+
+msgid "sXRatio"
+msgstr "Ratio X"
+
+msgid "sYRatio"
+msgstr "Ratio Y"
+
+msgid "sFixBorder"
+msgstr "Fix Border"
+
+msgid "sConvertGif"
+msgstr "Convert Gif"
+
+msgid "sMirrorMode"
+msgstr "Mirror Mode"
+
+msgid "sMirrorModeNormal"
+msgstr "Normal"
+
+msgid "sMirrorModeFlip"
+msgstr "Flip"
+
+msgid "sMirrorModeLeft"
+msgstr "Left Only"
+
+msgid "sMirrorModeRight"
+msgstr "Right Only"
+
+msgid "sMirrorModeRightFlip"
+msgstr "Flip Right Only"
+
+msgid "sCopyMode"
+msgstr "Copy Mode"
+
+msgid "sCopyModeNormal"
+msgstr "Normal"
+
+msgid "sCopyModeSymmetry"
+msgstr "Symmetry"
+
+msgid "sCopyModeFlip"
+msgstr "Flip"
+
+msgid "sPosition"
+msgstr "Position"
+
+msgid "sPositionX"
+msgstr "Position X"
+
+msgid "sPositionY"
+msgstr "Position Y"
+
+msgid "sScale"
+msgstr "Scale"
+
+msgid "sScaleX"
+msgstr "Scale X"
+
+msgid "sScaleY"
+msgstr "Scale Y"
+
+msgid "sVector"
+msgstr "Vector"
+
+msgid "sVertex"
+msgstr "Vertex"
+
+msgid "sVertexColor"
+msgstr "Vertex Color"
+
+msgid "sThreshold"
+msgstr "Threshold"
+
+msgid "sDensity"
+msgstr "Density"
+
+msgid "sSensitivity"
+msgstr "Sensitivity"
+
+msgid "sNormalStrength"
+msgstr "Normal Map Strength"
+
+msgid "sColorAlphaZeroWarn"
+msgstr "To enable the property, increase the alpha value."
+
+msgid "sApplyTransparency"
+msgstr "Apply Transparency"
+
+msgid "sVRParallaxStrength"
+msgstr "VR Parallax Strength"
+
+msgid "sShadowMask"
+msgstr "Shadow Mask"
+
+msgid "sBackfaceMask"
+msgstr "Backface Mask"
+
+msgid "sRandomize"
+msgstr "Randomize"
+
+msgid "sLimShadowStrength"
+msgstr "Shadow Strength"
+
+msgid "sLimOutline"
+msgstr "Outline"
+
+msgid "sLimEmission"
+msgstr "Emission"
+
+msgid "sLimEmission2nd"
+msgstr "Emission 2nd"
+
+msgid "sBaseSetting"
+msgstr "Base Setting"
+
+msgid "sInvisible"
+msgstr "Invisible"
+
+msgid "sAsUnlit"
+msgstr "As Unlit"
+
+msgid "sAsUnlitWarn"
+msgstr "A non-zero value is set for "As Unlit". This can cause differences in brightness between materials and avatars."
+
+msgid "sShaderType"
+msgstr "Shader Type"
+
+msgid "sShaderTypeNormal"
+msgstr "Normal"
+
+msgid "sShaderTypeLite"
+msgstr "Lite"
+
+msgid "sRenderingMode"
+msgstr "Rendering Mode"
+
+msgid "sRenderingModeOpaque"
+msgstr "Opaque"
+
+msgid "sRenderingModeCutout"
+msgstr "Cutout"
+
+msgid "sRenderingModeTransparent"
+msgstr "Transparent"
+
+msgid "sRenderingModeRefraction"
+msgstr "[high-load] Refraction"
+
+msgid "sRenderingModeRefractionBlur"
+msgstr "[high-load] Refraction Blur"
+
+msgid "sRenderingModeFur"
+msgstr "[high-load] Fur"
+
+msgid "sRenderingModeFurCutout"
+msgstr "[high-load] Fur (Cutout)"
+
+msgid "sRenderingModeFurTwoPass"
+msgstr "[high-load] Fur (2 pass)"
+
+msgid "sRenderingModeGem"
+msgstr "[high-load] Gem"
+
+msgid "sTransparentMode"
+msgstr "Transparent Mode"
+
+msgid "sTransparentModeNormal"
+msgstr "Normal"
+
+msgid "sTransparentModeOnePass"
+msgstr "One Pass"
+
+msgid "sTransparentModeTwoPass"
+msgstr "Two Pass"
+
+msgid "sColorType"
+msgstr "Color Type"
+
+msgid "sColorTypeNormal"
+msgstr "Normal"
+
+msgid "sColorTypeLUT"
+msgstr "LUT"
+
+msgid "sAsOverlay"
+msgstr "As Overlay"
+
+msgid "sCutoff"
+msgstr "Cutoff"
+
+msgid "sSubpassCutoff"
+msgstr "Subpass Cutoff"
+
+msgid "sCullMode"
+msgstr "Cull Mode"
+
+msgid "sCullModeOff"
+msgstr "Off"
+
+msgid "sCullModeFront"
+msgstr "Front"
+
+msgid "sCullModeBack"
+msgstr "Back"
+
+msgid "sFlipBackfaceNormal"
+msgstr "Flip Backface Normal"
+
+msgid "sShiftBackfaceUV"
+msgstr "Shift Backface UV"
+
+msgid "sBackfaceForceShadow"
+msgstr "Backface Force Shadow"
+
+msgid "sAAShading"
+msgstr "Anti-aliasing shading"
+
+msgid "sDither"
+msgstr "Dither"
+
+msgid "sSimpleStencilSettings"
+msgstr "Simple Stencil Settings"
+
+msgid "sStencilModeNormal"
+msgstr "Normal"
+
+msgid "sStencilModeWriter"
+msgstr "Writer"
+
+msgid "sStencilModeReader"
+msgstr "Reader"
+
+msgid "sStencilModeReaderInvert"
+msgstr "Reader (Invert)"
+
+msgid "sStencilModeReaderFade"
+msgstr "Reader (Fade)"
+
+msgid "sTransparentPresetsPreWriteDepth"
+msgstr "Pre-write depth"
+
+msgid "sTransparentPresetsColorTransparent"
+msgstr "Color Transparent"
+
+msgid "sTransparentPresetsBackAndFront"
+msgstr "Back and Front"
+
+msgid "sTransparentPresetsCutoutAndTransparent"
+msgstr "Cutout and Transparent"
+
+msgid "sTransparentPresetsFadeStencil"
+msgstr "Fade Stencil"
+
+msgid "sOutType"
+msgstr "Out Type"
+
+msgid "sOutTypeNormal"
+msgstr "Normal"
+
+msgid "sOutTypeFlat"
+msgstr "Flat"
+
+msgid "sOutTypeMono"
+msgstr "Mono"
+
+msgid "sLightingSettings"
+msgstr "Lighting"
+
+msgid "sVertexLightStrength"
+msgstr "Vertex Light Strength"
+
+msgid "sLightMinLimit"
+msgstr "Lower brightness limit"
+
+msgid "sLightMaxLimit"
+msgstr "Upper brightness limit"
+
+msgid "sMonochromeLighting"
+msgstr "Monochrome Lighting"
+
+msgid "sLightDirectionOverride"
+msgstr "Light Direction Override"
+
+msgid "sObjectFollowing"
+msgstr "Object direction following"
+
+msgid "sDirectionalLightStrength"
+msgstr "[HDRP] Directional Light Strength"
+
+msgid "sBeforeExposureLimit"
+msgstr "[HDRP] Before exposure limit"
+
+msgid "sLightingPreset"
+msgstr "Apply Preset"
+
+msgid "sLightingPresetDefault"
+msgstr "Default"
+
+msgid "sLightingPresetStable"
+msgstr "Stable"
+
+msgid "sLightingPresetSemiMonochrome"
+msgstr "Semi-monochrome"
+
+msgid "sHelpRenderingTransparent"
+msgstr "When two transparent materials overlap, one of them may become invisible. In this case, increase the "Render Queue" value of the material in the foreground to fix the problem."
+
+msgid "sHelpRenderingFur"
+msgstr "Limited features applied to fur parts for performance."
+
+msgid "sHelpTransparentForWorld"
+msgstr "Setting Render Queue to 2999 or lower for transparent materials can make other materials in the back invisible, causing problems such as clothes and hair to disappear. For world projects, it is recommended to set it above 3000 or turn off ZWrite."
+
+msgid "sHelpGrabPass"
+msgstr "Reflection and gem use GrabPass, which can have a significant impact on performance on mobile GPUs."
+
+msgid "sHelpGeometryShader"
+msgstr "Geometry shaders do not work on iOS or Mac, so it is recommended to change to another rendering mode."
+
+msgid "sHelpOnePassVertexLight"
+msgstr "When using One Pass Transparent, it is recommended to set Vertex Light Strength to 1.0."
+
+msgid "sHelpCullMode"
+msgstr "If the material does not look right, set the CullMode to Off or Back."
+
+msgid "sHelpZWrite"
+msgstr "If the material does not look right, turn on ZWrite."
+
+msgid "sAlphaBoostFA"
+msgstr "[Built-in RP] Alpha Boost (Point / Spot Light)"
+
+msgid "sLightBlending"
+msgstr "[Built-in RP] Light Blending"
+
+msgid "sBlendingAdd"
+msgstr "Add"
+
+msgid "sBlendingMax"
+msgstr "Max"
+
+msgid "sMaskTiling"
+msgstr "Mask UV Tiling"
+
+msgid "sMaskOffset"
+msgstr "Mask UV Offset"
+
+msgid "sNoise"
+msgstr "Noise"
+
+msgid "sNoiseR"
+msgstr "Noise (R)"
+
+msgid "sNoiseStrength"
+msgstr "Noise Strength"
+
+msgid "sTriMask"
+msgstr "TriMask (Mat/Rim/Emi)"
+
+msgid "sTriMaskRGB"
+msgstr "Mask (R:MatCap G:Rim B:Emission)"
+
+msgid "sApplyTo"
+msgstr "Apply to"
+
+msgid "sMainUV"
+msgstr "UV Setting"
+
+msgid "sMainUVTips"
+msgstr "You can set the UV position, scale and animation."
+
+msgid "sColors"
+msgstr "Color"
+
+msgid "sMainColorSetting"
+msgstr "Main Color / Alpha"
+
+msgid "sMainColorSettingSimple"
+msgstr "Main Color / Alpha"
+
+msgid "sMainColorTips"
+msgstr "You can set the color and transparency."
+
+msgid "sMainColorAlpha"
+msgstr "Main Color / Alpha"
+
+msgid "sMainColor"
+msgstr "Main Color"
+
+msgid "sMainColor2nd"
+msgstr "Main Color 2nd"
+
+msgid "sMainColor3rd"
+msgstr "Main Color 3rd"
+
+msgid "sColorAdjust"
+msgstr "Color Adjust"
+
+msgid "sGradationMap"
+msgstr "Gradation Map"
+
+msgid "sNotAlphaIsTransparency"
+msgstr "This texture is not marked as AlphaIsTransparency"
+
+msgid "sAlphaMask"
+msgstr "Alpha Mask"
+
+msgid "sAlphaMaskWarnOpaque"
+msgstr "If you want to use Alpha Mask, you need to change the "Rendering Mode" to Cutout or Transparent."
+
+msgid "sAlphaMaskModeNone"
+msgstr "None"
+
+msgid "sAlphaMaskModeReplace"
+msgstr "Replace"
+
+msgid "sAlphaMaskModeMul"
+msgstr "Multiply"
+
+msgid "sAlphaMaskModeAdd"
+msgstr "Add"
+
+msgid "sAlphaMaskModeSub"
+msgstr "Subtract"
+
+msgid "sShadowSetting"
+msgstr "Shadow"
+
+msgid "sShadowTips"
+msgstr "You can set the color and range of the shadow."
+
+msgid "sShadow"
+msgstr "Shadow"
+
+msgid "sReceiveShadow"
+msgstr "Receive Shadow"
+
+msgid "sShadowColor"
+msgstr "ShadowColor"
+
+msgid "sShadow1stColor"
+msgstr "1st Color"
+
+msgid "sShadow2ndColor"
+msgstr "2nd Color"
+
+msgid "sShadow3rdColor"
+msgstr "3rd Color"
+
+msgid "sShadowEnvStrength"
+msgstr "Environment strength on shadow color"
+
+msgid "sShadowBorderColor"
+msgstr "Border Color"
+
+msgid "sShadowBorderRange"
+msgstr "Border Range"
+
+msgid "sIgnoreBorderProperties"
+msgstr "Ignore border properties"
+
+msgid "sFlat"
+msgstr "Flat"
+
+msgid "sBacklightSetting"
+msgstr "Backlight"
+
+msgid "sBacklight"
+msgstr "Backlight"
+
+msgid "sBacklightTips"
+msgstr "Add a backlight when the light is behind the model."
+
+msgid "sDirectivity"
+msgstr "Directivity"
+
+msgid "sViewDirectionStrength"
+msgstr "View direction strength"
+
+msgid "sOutlineSetting"
+msgstr "Outline"
+
+msgid "sOutlineTips"
+msgstr "You can set the color and thickness of the outline."
+
+msgid "sOutline"
+msgstr "Outline"
+
+msgid "sHighlight"
+msgstr "Highlight"
+
+msgid "sWidth"
+msgstr "Mask & Width"
+
+msgid "sWidthR"
+msgstr "Width (R)"
+
+msgid "sFixWidth"
+msgstr "Fix width by distance"
+
+msgid "sVertexR2Width"
+msgstr "R -> Width"
+
+msgid "sVertexRGBA2Normal"
+msgstr "RGBA -> Normal & Width"
+
+msgid "sDeleteMesh0"
+msgstr "Remove zero width vertices"
+
+msgid "sDisableInVR"
+msgstr "Disable in VR"
+
+msgid "sRefractionSetting"
+msgstr "Refraction"
+
+msgid "sRefractionTips"
+msgstr "You can set the refraction strength and color."
+
+msgid "sRefraction"
+msgstr "Refraction"
+
+msgid "sRefractionFresnel"
+msgstr "Fresnel"
+
+msgid "sColorFromMain"
+msgstr "Get color from Main"
+
+msgid "sFurSetting"
+msgstr "Fur"
+
+msgid "sFurTips"
+msgstr "You can set the length and direction of the fur."
+
+msgid "sFur"
+msgstr "Fur"
+
+msgid "sAntiLight"
+msgstr "Anti Light"
+
+msgid "sGravity"
+msgstr "Gravity"
+
+msgid "sAO"
+msgstr "AO"
+
+msgid "sVertexColor2Vector"
+msgstr "VertexColor -> Vector"
+
+msgid "sLayerNum"
+msgstr "Layer Counts"
+
+msgid "sRootWidth"
+msgstr "Root Width"
+
+msgid "sTouchStrength"
+msgstr "Touch strength"
+
+msgid "sTessellation"
+msgstr "Tessellation (Extremely high load)"
+
+msgid "sTessellationTips"
+msgstr "You can set the tessellation."
+
+msgid "sTessellationEdge"
+msgstr "Threshold length"
+
+msgid "sTessellationShrink"
+msgstr "Shrink"
+
+msgid "sTessellationFactor"
+msgstr "Max Factor"
+
+msgid "sEmissionSetting"
+msgstr "Emission"
+
+msgid "sEmissionTips"
+msgstr "You can set the color and blinking of the light."
+
+msgid "sEmission"
+msgstr "Emission"
+
+msgid "sEmission2nd"
+msgstr "Emission 2nd"
+
+msgid "sBlinkStrength"
+msgstr "Blink Strength"
+
+msgid "sBlinkType"
+msgstr "Blink Type"
+
+msgid "sBlinkSpeed"
+msgstr "Blink Speed"
+
+msgid "sBlinkOffset"
+msgstr "Blink Offset"
+
+msgid "sGradation"
+msgstr "Gradation"
+
+msgid "sGradTexSpeed"
+msgstr "Texture & Speed"
+
+msgid "sGradColor"
+msgstr "Color"
+
+msgid "sParallaxDepth"
+msgstr "Parallax Depth"
+
+msgid "sFluorescence"
+msgstr "Fluorescence"
+
+msgid "sParallax"
+msgstr "Parallax"
+
+msgid "sParallaxTips"
+msgstr "You can set the parallax."
+
+msgid "sParallaxR"
+msgstr "Parallax (R)"
+
+msgid "sParallaxOffset"
+msgstr "Offset"
+
+msgid "sPOM"
+msgstr "[high-load] POM"
+
+msgid "sDistanceFade"
+msgstr "Distance Fade"
+
+msgid "sDistanceFadeTips"
+msgstr "You can set the color change depending on the distance."
+
+msgid "sStartDistance"
+msgstr "Start Distance"
+
+msgid "sEndDistance"
+msgstr "End Distance"
+
+msgid "sAudioLink"
+msgstr "AudioLink"
+
+msgid "sAudioLinkTips"
+msgstr "This setting allows you to change the appearance of a material through the AudioLink system."
+
+msgid "sAudioLinkUVMode"
+msgstr "UV Mode"
+
+msgid "sAudioLinkUVModeNone"
+msgstr "None"
+
+msgid "sAudioLinkUVModeRim"
+msgstr "Rim"
+
+msgid "sAudioLinkUVModeUV"
+msgstr "UV"
+
+msgid "sAudioLinkUVModeMask"
+msgstr "Mask"
+
+msgid "sAudioLinkUVModePosition"
+msgstr "Position"
+
+msgid "sAudioLinkMaskRGB"
+msgstr "RGB = Delay / Band / Strength"
+
+msgid "sAudioLinkMaskRGBSpectrum"
+msgstr "RGB = Volume / Band / Strength"
+
+msgid "sAudioLinkBand"
+msgstr "Band"
+
+msgid "sAudioLinkBandBass"
+msgstr "Bass"
+
+msgid "sAudioLinkBandLowMid"
+msgstr "Low Mid"
+
+msgid "sAudioLinkBandHighMid"
+msgstr "High Mid"
+
+msgid "sAudioLinkBandTreble"
+msgstr "Treble"
+
+msgid "sAudioLinkStartPosition"
+msgstr "Start Position"
+
+msgid "sAudioLinkMovingVector"
+msgstr "Moving Vector"
+
+msgid "sAudioLinkNormalStrength"
+msgstr "Normal Strength"
+
+msgid "sAudioLinkAsLocal"
+msgstr "As Local"
+
+msgid "sAudioLinkLocalMap"
+msgstr "Local Map"
+
+msgid "sAudioLinkLocalMapBPM"
+msgstr "BPM"
+
+msgid "sAudioLinkLocalMapNotes"
+msgstr "Notes"
+
+msgid "sAudioLinkDefaultValue"
+msgstr "Default value for no AudioLink"
+
+msgid "sDissolve"
+msgstr "Dissolve"
+
+msgid "sDissolveTips"
+msgstr "Settings for dissolving a material"
+
+msgid "sDissolveWarnOpaque"
+msgstr "If you want to use Dissolve, you need to change the "Rendering Mode" to Cutout or Transparent."
+
+msgid "sDissolveMode"
+msgstr "Dissolve Mode"
+
+msgid "sDissolveModeNone"
+msgstr "None"
+
+msgid "sDissolveModeAlpha"
+msgstr "Alpha"
+
+msgid "sDissolveModeUV"
+msgstr "UV"
+
+msgid "sDissolveModePosition"
+msgstr "Position"
+
+msgid "sDissolveShape"
+msgstr "Shape"
+
+msgid "sDissolveShapePoint"
+msgstr "Point"
+
+msgid "sDissolveShapeLine"
+msgstr "Line"
+
+msgid "sIDMask"
+msgstr "ID Mask"
+
+msgid "sUDIMDiscard"
+msgstr "UV Tile Discard"
+
+msgid "sUDIMDiscardUV"
+msgstr "Discard UV"
+
+msgid "sUDIMDiscardMode"
+msgstr "Discard Mode"
+
+msgid "sEncryption"
+msgstr "Encryption"
+
+msgid "sEncryptionTips"
+msgstr "Decrypt the mesh from 4 keys."
+
+msgid "sIgnoreEncryption"
+msgstr "Ignore Encryption"
+
+msgid "sKeys"
+msgstr "Keys"
+
+msgid "sNormalMapReflection"
+msgstr "Normal Map & Reflection"
+
+msgid "sNormalMapSetting"
+msgstr "Normal Map"
+
+msgid "sNormalMapTips"
+msgstr "You can set the normal map."
+
+msgid "sNormalMap"
+msgstr "Normal Map"
+
+msgid "sNormalMap2nd"
+msgstr "Normal Map 2nd"
+
+msgid "sNormalRGB"
+msgstr "Normal (RGB)"
+
+msgid "sAnisotropy"
+msgstr "Anisotropy"
+
+msgid "sTangentWidth"
+msgstr "Tangent Width"
+
+msgid "sBitangentWidth"
+msgstr "Bitangent Width"
+
+msgid "sReflectionsSetting"
+msgstr "Reflections"
+
+msgid "sReflectionsTips"
+msgstr "You can set the Reflections."
+
+msgid "sReflection"
+msgstr "Reflection"
+
+msgid "sSmoothness"
+msgstr "Smoothness"
+
+msgid "sSmoothnessR"
+msgstr "Smoothness (R)"
+
+msgid "sMetallic"
+msgstr "Metallic"
+
+msgid "sMetallicR"
+msgstr "Metallic (R)"
+
+msgid "sReflectance"
+msgstr "Reflectance"
+
+msgid "sSpecularMode"
+msgstr "Specular Mode"
+
+msgid "sSpecularNone"
+msgstr "None"
+
+msgid "sSpecularReal"
+msgstr "Realistic"
+
+msgid "sSpecularToon"
+msgstr "Toon"
+
+msgid "sMultiLightSpecular"
+msgstr "Multi Light Specular"
+
+msgid "sApplyReflection"
+msgstr "Environment Reflections"
+
+msgid "sMatCapSetting"
+msgstr "MatCap"
+
+msgid "sMatCap"
+msgstr "MatCap"
+
+msgid "sMatCap2nd"
+msgstr "MatCap 2nd"
+
+msgid "sBlendUV1"
+msgstr "Blend UV1"
+
+msgid "sMatCapZRotCancel"
+msgstr "Z-axis rotation cancellation"
+
+msgid "sFixPerspective"
+msgstr "Fix Perspective"
+
+msgid "sHelpMatCapBlending"
+msgstr "Turn off "Enable Lighting" in multiply mode."
+
+msgid "sMatCapCustomNormal"
+msgstr "Custom normal map"
+
+msgid "sRimLightSetting"
+msgstr "Rim Light"
+
+msgid "sRimLight"
+msgstr "Rim Light"
+
+msgid "sFresnelPower"
+msgstr "Fresnel Power"
+
+msgid "sRimLightDirection"
+msgstr "Light direction strength"
+
+msgid "sRimDirectionRange"
+msgstr "Direct light width"
+
+msgid "sRimIndirectionRange"
+msgstr "Indirect light width"
+
+msgid "sGlitterSetting"
+msgstr "Glitter"
+
+msgid "sGlitter"
+msgstr "Glitter"
+
+msgid "sParticleSize"
+msgstr "Particle Size"
+
+msgid "sContrast"
+msgstr "Contrast"
+
+msgid "sPostContrast"
+msgstr "Post Contrast"
+
+msgid "sAngleLimit"
+msgstr "Angle limit"
+
+msgid "sColorRandomness"
+msgstr "Color Randomness"
+
+msgid "sGemSetting"
+msgstr "Gem"
+
+msgid "sGem"
+msgstr "Gem"
+
+msgid "sChromaticAberration"
+msgstr "Chromatic Aberration"
+
+msgid "sEnvironmentColor"
+msgstr "Environment Color"
+
+msgid "sParticleLoop"
+msgstr "Particle Loop"
+
+msgid "sStencilSetting"
+msgstr "Stencil"
+
+msgid "sStencilTips"
+msgstr "You can set the Stencil"
+
+msgid "sAdvanced"
+msgstr "Advanced"
+
+msgid "sRenderingSetting"
+msgstr "Rendering"
+
+msgid "sRenderingTips"
+msgstr "You can configure detailed rendering settings."
+
+msgid "sZClip"
+msgstr "ZClip"
+
+msgid "sZWrite"
+msgstr "ZWrite"
+
+msgid "sZTest"
+msgstr "ZTest"
+
+msgid "sOffsetFactor"
+msgstr "Offset Factor"
+
+msgid "sOffsetUnits"
+msgstr "Offset Units"
+
+msgid "sColorMask"
+msgstr "Color Mask"
+
+msgid "sAlphaToMask"
+msgstr "AlphaToMask"
+
+msgid "sForward"
+msgstr "Forward"
+
+msgid "sForwardAdd"
+msgstr "ForwardAdd"
+
+msgid "sSrcBlendRGB"
+msgstr "SrcBlend RGB"
+
+msgid "sDstBlendRGB"
+msgstr "DstBlend RGB"
+
+msgid "sSrcBlendAlpha"
+msgstr "SrcBlend Alpha"
+
+msgid "sDstBlendAlpha"
+msgstr "DstBlend Alpha"
+
+msgid "sBlendOpRGB"
+msgstr "BlendOp RGB"
+
+msgid "sBlendOpAlpha"
+msgstr "BlendOp Alpha"
+
+msgid "sRenderingReset"
+msgstr "Reset Rendering Properties"
+
+msgid "sLightBakeSetting"
+msgstr "Light Bake"
+
+msgid "sOptimization"
+msgstr "Optimization"
+
+msgid "sOptimizationTips"
+msgstr "You can optimize the material to reduce the load."
+
+msgid "sCustomProperties"
+msgstr "Custom Properties"
+
+msgid "sCustomPropertiesTips"
+msgstr "Displays the properties added by the user."
+
+msgid "sBake"
+msgstr "Bake"
+
+msgid "sBakeAll"
+msgstr "Bake all layer"
+
+msgid "sBake1st"
+msgstr "Bake Color Shift"
+
+msgid "sBake2nd"
+msgstr "Bake 2nd Layer"
+
+msgid "sBake3rd"
+msgstr "Bake 3rd layer"
+
+msgid "sBakeAlphamask"
+msgstr "Bake Alphamask"
+
+msgid "sSelectAlphamask"
+msgstr "Select Alphamask"
+
+msgid "sRemoveUnused"
+msgstr "Remove unused textures"
+
+msgid "sConvertLite"
+msgstr "Convert to lilToonLite"
+
+msgid "sConvertMulti"
+msgstr "Convert to lilToonMulti"
+
+msgid "sConvertMToon"
+msgstr "Convert to MToon (VRM)"
+
+msgid "sOptimizeForEvents"
+msgstr "Optimize for submission to the event"
+
+msgid "sYes"
+msgstr "Yes"
+
+msgid "sNo"
+msgstr "No"
+
+msgid "sOK"
+msgstr "OK"
+
+msgid "sCancel"
+msgstr "Cancel"
+
+msgid "sNone"
+msgstr "None"
+
+msgid "sComplete"
+msgstr "Complete!"
+
+msgid "sCopy"
+msgstr "Copy"
+
+msgid "sPaste"
+msgstr "Paste"
+
+msgid "sPasteWithTexture"
+msgstr "Paste (with texture)"
+
+msgid "sReset"
+msgstr "Reset"
+
+msgid "sOpenManual"
+msgstr "Open manual"
+
+msgid "sFixNow"
+msgstr "Fix Now"
+
+msgid "sDialogResetUV"
+msgstr "Reset UV Setting"
+
+msgid "sDialogResetUVMes"
+msgstr "Are you sure you want to reset UV setting?"
+
+msgid "sDialogCannotBake"
+msgstr "Cannot run a bake"
+
+msgid "sDialogNoNeedBake"
+msgstr "No need to run a bake"
+
+msgid "sDialogSetMainTex"
+msgstr "You need to set texture to Main Color."
+
+msgid "sDialogNoChange"
+msgstr "You are not changing the color."
+
+msgid "sDialogNotUse2nd"
+msgstr "You are not using the 2nd layer."
+
+msgid "sDialogNotUse3rd"
+msgstr "You are not using the 3rd layer."
+
+msgid "sDialogNotUseAll"
+msgstr "You are not changing the color and not using layers."
+
+msgid "sDialogRunBake"
+msgstr "Run bake?"
+
+msgid "sDialogBakeMain"
+msgstr "Do you want to bake main texture?"
+
+msgid "sDialogBakeShadow"
+msgstr "Do you want to bake shadow texture?"
+
+msgid "sDialogBakeMatCap"
+msgstr "Do you want to bake matcap?"
+
+msgid "sDialogBakeTriMask"
+msgstr "Do you want to bake TriMask (Mask of Matcap / Rim / Emission)?"
+
+msgid "sDialogBakeOutline"
+msgstr "Do you want to bake outline texture?"
+
+msgid "sDialogGifToAtlas"
+msgstr "Convert Gif to Atlas"
+
+msgid "sDialogTexPow2"
+msgstr "Do you want to adjust the texture resolution to power of 2?"
+
+msgid "sDialogImportOldVer"
+msgstr "The package you are importing is an older version than the already imported lilToon. Do you want to continue?"
+
+msgid "sDialogImportPackage"
+msgstr "The UPM version of lilToon has already been imported. Do you want to continue importing the unitypackage version? (This may cause script errors, etc.)"
+
+msgid "sWarnOptimiseMeshData"
+msgstr "Due to a bug in Unity, even necessary vertex data may be deleted. If the problem occurs, please turn off "Project Settings/Player/Optimize Mesh Data"."
+
+msgid "sPresets"
+msgstr "Presets"
+
+msgid "sPresetsNotAvailable"
+msgstr "Presets are not available for this shader."
+
+msgid "sPresetIsMaterial"
+msgstr "Currently selected is not a Material."
+
+msgid "sPresetRefresh"
+msgstr "Refresh List"
+
+msgid "sPresetSave"
+msgstr "Save Preset"
+
+msgid "sPresetCategory"
+msgstr "Category"
+
+msgid "sPresetCategorySkin"
+msgstr "Skin"
+
+msgid "sPresetCategoryHair"
+msgstr "Hair"
+
+msgid "sPresetCategoryCloth"
+msgstr "Cloth"
+
+msgid "sPresetCategoryNature"
+msgstr "Nature"
+
+msgid "sPresetCategoryInorganic"
+msgstr "Inorganic"
+
+msgid "sPresetCategoryEffect"
+msgstr "Effect"
+
+msgid "sPresetCategoryOther"
+msgstr "Other"
+
+msgid "sPresetName"
+msgstr "Preset Name"
+
+msgid "sPresetSaveTarget"
+msgstr "Save target"
+
+msgid "sPresetTexture"
+msgstr "Save target texture"
+
+msgid "sPresetShader"
+msgstr "Shader"
+
+msgid "sPresetQueue"
+msgstr "Render Queue"
+
+msgid "sPresetStencil"
+msgstr "Stencil"
+
+msgid "sPresetMainTex2Outline"
+msgstr "Apply main texture to outline"
+
+msgid "sPresetMain"
+msgstr "Main Color"
+
+msgid "sPresetMain2"
+msgstr "Main Color 2nd"
+
+msgid "sPresetMain2Mask"
+msgstr "Main Color 2nd Mask"
+
+msgid "sPresetMain3"
+msgstr "Main Color 3rd"
+
+msgid "sPresetMain3Mask"
+msgstr "Main Color 3rd Mask"
+
+msgid "sPresetShadowBorder"
+msgstr "Shadow AO"
+
+msgid "sPresetShadowBlur"
+msgstr "Shadow Blur"
+
+msgid "sPresetShadowStrength"
+msgstr "Shadow Mask"
+
+msgid "sPresetShadowColor"
+msgstr "Shadow Color"
+
+msgid "sPresetShadowColor2"
+msgstr "Shadow Color 2nd"
+
+msgid "sPresetEmissionColor"
+msgstr "Emission Color"
+
+msgid "sPresetEmissionMask"
+msgstr "Emission Mask"
+
+msgid "sPresetEmissionGrad"
+msgstr "Emission Grad"
+
+msgid "sPresetEmission2Color"
+msgstr "Emission 2nd Color"
+
+msgid "sPresetEmission2Mask"
+msgstr "Emission 2nd Mask"
+
+msgid "sPresetEmission2Grad"
+msgstr "Emission 2nd Grad"
+
+msgid "sPresetNormal"
+msgstr "Normal Map"
+
+msgid "sPresetNormal2"
+msgstr "Normal Map 2nd"
+
+msgid "sPresetNormal2Mask"
+msgstr "Normal Map 2nd Mask"
+
+msgid "sPresetReflectionSmoothness"
+msgstr "Smoothness"
+
+msgid "sPresetReflectionMetallic"
+msgstr "Metallic"
+
+msgid "sPresetReflectionColor"
+msgstr "Reflection Color"
+
+msgid "sPresetMatcap"
+msgstr "MatCap"
+
+msgid "sPresetMatcapMask"
+msgstr "MatCap Mask"
+
+msgid "sPresetRim"
+msgstr "Rim Color"
+
+msgid "sPresetParallax"
+msgstr "Parallax"
+
+msgid "sPresetOutlineTex"
+msgstr "Outline Texture"
+
+msgid "sPresetOutlineWidth"
+msgstr "Outline Width"
+
+msgid "sPresetFurNormal"
+msgstr "Fur Normal"
+
+msgid "sPresetFurNoise"
+msgstr "Fur Noise"
+
+msgid "sPresetFurMask"
+msgstr "Fur Mask"
+
+msgid "sShaderSetting"
+msgstr "Shader Setting (for all materials)"
+
+msgid "sHelpShaderSetting"
+msgstr "Features turned off here will be removed from the shader. By turning off unused features, you can reduce the size of your avatar while also reducing the load."
+
+msgid "sSettingLock"
+msgstr "Lock"
+
+msgid "sShaderSettingOptimizeInTestBuild"
+msgstr "Optimize in test build"
+
+msgid "sShaderSettingOptimizeInEditor"
+msgstr "[Debug] Optimize in editor"
+
+msgid "sSettingClippingCanceller"
+msgstr "Distance Clipping Canceller"
+
+msgid "sSettingTexOutlineColor"
+msgstr "Outline Color Texture"
+
+msgid "sSettingDefaultValue"
+msgstr "Default Value (used for "Fix Lighting" and lighting presets)"
+
+msgid "sSettingBuildSizeOptimization"
+msgstr "Build size optimization (for all materials)"
+
+msgid "sSettingApplyShadowFA"
+msgstr "Enable shadow in ForwardAdd"
+
+msgid "sSettingUseForwardAdd"
+msgstr "Use ForwardAdd"
+
+msgid "sSettingUseForwardAddShadow"
+msgstr "Receive shadow in ForwardAdd"
+
+msgid "sSettingUseVertexLight"
+msgstr "Use vertex light"
+
+msgid "sSettingUseLightmap"
+msgstr "Use lightmap"
+
+msgid "sManualURL"
+msgstr "https://lilxyzw.github.io/lilToon/#/en-us/"
+
+msgid "sAnchorBaseSetting"
+msgstr "base/base"
+
+msgid "sAnchorLighting"
+msgstr "base/lighting"
+
+msgid "sAnchorUVSetting"
+msgstr "base/uv"
+
+msgid "sAnchorMainColor"
+msgstr "color/maincolor"
+
+msgid "sAnchorMainColor1"
+msgstr "color/maincolor"
+
+msgid "sAnchorMainColor2"
+msgstr "color/maincolor_layer"
+
+msgid "sAnchorAlphaMask"
+msgstr "color/alphamask"
+
+msgid "sAnchorShadow"
+msgstr "color/shadow"
+
+msgid "sAnchorRimShade"
+msgstr "color/rimshade"
+
+msgid "sAnchorEmission"
+msgstr "color/emission"
+
+msgid "sAnchorNormalMap"
+msgstr "reflections/normal"
+
+msgid "sAnchorAnisotropy"
+msgstr "reflections/anisotropy"
+
+msgid "sAnchorBacklight"
+msgstr "reflections/backlight"
+
+msgid "sAnchorReflection"
+msgstr "reflections/reflection"
+
+msgid "sAnchorMatCap"
+msgstr "reflections/matcap"
+
+msgid "sAnchorRimLight"
+msgstr "reflections/rimlight"
+
+msgid "sAnchorGlitter"
+msgstr "reflections/glitter"
+
+msgid "sAnchorGem"
+msgstr "reflections/gem"
+
+msgid "sAnchorOutline"
+msgstr "advanced/outline"
+
+msgid "sAnchorParallax"
+msgstr "advanced/parallax"
+
+msgid "sAnchorDistanceFade"
+msgstr "advanced/distancefade"
+
+msgid "sAnchorAudioLink"
+msgstr "advanced/audiolink"
+
+msgid "sAnchorDissolve"
+msgstr "advanced/dissolve"
+
+msgid "sAnchorIDMask"
+msgstr "advanced/idmask"
+
+msgid "sAnchorUDIMDiscard"
+msgstr "advanced/uvtilediscard"
+
+msgid "sAnchorEncryption"
+msgstr "advanced/encryption"
+
+msgid "sAnchorStencil"
+msgstr "advanced/stencil"
+
+msgid "sAnchorRendering"
+msgstr "advanced/rendering"
+
+msgid "sAnchorTessellation"
+msgstr "advanced/tessellation"
+
+msgid "sAnchorRefraction"
+msgstr "advanced/refraction"
+
+msgid "sAnchorFur"
+msgstr "advanced/fur"
+
+msgid "sAnchorOptimization"
+msgstr "other?id=Optimization"
+
+msgid "sAnchorShaderSetting"
+msgstr "other?id=Shader-Setting"
+
+msgid "sReadmeURL"
+msgstr "https://lilxyzw.github.io/lilToon/#/ja-jp/"
+
+msgid "sReadmeAnchorProblem"
+msgstr "other/qa"
+
+msgid "sHelp"
+msgstr "Help"
+
+msgid "sCommonProblems"
+msgstr "Common Problems"
+
+msgid "sUtilGif2AtlasPow2"
+msgstr "Do you want to adjust the texture resolution to power of 2?"
+
+msgid "sUtilDotTexRedRatio"
+msgstr "Select a reduction ratio"
+
+msgid "sUtilShaderNotFound"
+msgstr "Shader is not found."
+
+msgid "sUtilSelectPresets"
+msgstr "Select presets"
+
+msgid "sUtilMaterialAlreadyExist"
+msgstr "Materials may already exist. Are you sure you want to overwrite it?"
+
+msgid "sUtilInvalidFormat"
+msgstr "Invalid format."
+

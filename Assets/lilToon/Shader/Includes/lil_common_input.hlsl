@@ -168,13 +168,7 @@ CBUFFER_START(UnityPerMaterial)
     float4  _Color;
     float4  _MainTex_ST;
     float4  _FakeShadowVector;
-    #if defined(LIL_FEATURE_ENCRYPTION)
-        float4  _Keys;
-    #endif
     lilBool _Invisible;
-    #if defined(LIL_FEATURE_ENCRYPTION)
-        lilBool _IgnoreEncryption;
-    #endif
 #elif defined(LIL_BAKER)
     float4  _Color;
     float4  _MainTex_ST;
@@ -360,9 +354,6 @@ CBUFFER_START(UnityPerMaterial)
         float4  _DissolveNoiseMask_ST;
         float4  _DissolveNoiseMask_ScrollRotate;
     #endif
-    #if defined(LIL_FEATURE_ENCRYPTION)
-        float4  _Keys;
-    #endif
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
         float4  _OutlineColor;
         float4  _OutlineLitColor;
@@ -392,6 +383,8 @@ CBUFFER_START(UnityPerMaterial)
     float   _LightMaxLimit;
     float   _MonochromeLighting;
     float   _AAStrength;
+    float   _EnvRimBorder;
+    float   _EnvRimBlur;
     #if defined(LIL_BRP)
         float   _AlphaBoostFA;
     #endif
@@ -724,7 +717,6 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     #if defined(LIL_FUR)
         uint    _FurLayerNum;
-        uint    _FurMeshType;
     #endif
     lilBool _Invisible;
     lilBool _UseClippingCanceller;
@@ -802,9 +794,6 @@ CBUFFER_START(UnityPerMaterial)
         lilBool _AudioLink2Emission;
         lilBool _AudioLink2Emission2nd;
         lilBool _AudioLink2Vertex;
-    #endif
-    #if defined(LIL_FEATURE_ENCRYPTION)
-        lilBool _IgnoreEncryption;
     #endif
     #if defined(LIL_MULTI_INPUTS_OUTLINE)
         lilBool _OutlineLitApplyTex;

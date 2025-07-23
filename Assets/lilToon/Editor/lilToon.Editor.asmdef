@@ -1,8 +1,16 @@
 {
     "name": "lilToon.Editor",
+    "rootNamespace": "",
+    "references": [],
     "includePlatforms": [
         "Editor"
     ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
     "versionDefines": [
         {
             "name": "com.vrchat.avatars",
@@ -26,8 +34,9 @@
         },
         {
             "name": "red.sim.lightvolumes",
-            "expression": "",
+            "expression": "2",
             "define": "LILTOON_VRCLIGHTVOLUMES"
         }
-    ]
+    ],
+    "noEngineReferences": false
 }

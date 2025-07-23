@@ -41,8 +41,7 @@
                         _FurGravity                 ("sGravity", Range(0,1)) = 0.25
                         _FurRandomize               ("sRandomize", Float) = 0
                         _FurAO                      ("sAO", Range(0,1)) = 0
-        [lilEnum]       _FurMeshType                ("Mesh Type|Subdivision|Shrink", Int) = 1
-        [IntRange]      _FurLayerNum                ("sLayerNum", Range(1, 6)) = 2
+        [IntRange]      _FurLayerNum                ("sLayerNum", Range(1, 3)) = 2
                         _FurRootOffset              ("sRootWidth", Range(-1,0)) = 0
                         _FurCutoutLength            ("sLength+ (Cutout)", Float) = 0.8
                         _FurTouchStrength           ("sTouchStrength", Range(0, 1)) = 0

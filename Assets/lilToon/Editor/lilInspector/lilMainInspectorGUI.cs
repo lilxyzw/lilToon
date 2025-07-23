@@ -381,10 +381,6 @@ namespace lilToon
                 GUILayout.Label(GetLoc("sAdvanced"), boldLabel);
 
                 //------------------------------------------------------------------------------------------------------------------------------
-                // Encryption
-                DrawEncryptionSettings();
-
-                //------------------------------------------------------------------------------------------------------------------------------
                 // Stencil
                 if(ShouldDrawBlock(PropertyBlock.Stencil))
                 {
@@ -1369,10 +1365,6 @@ namespace lilToon
                 }
 
                 //------------------------------------------------------------------------------------------------------------------------------
-                // Encryption
-                DrawEncryptionSettings();
-
-                //------------------------------------------------------------------------------------------------------------------------------
                 // Refraction
                 if(isRefr && ShouldDrawBlock(PropertyBlock.Refraction))
                 {
@@ -1418,23 +1410,7 @@ namespace lilToon
                         LocalizedPropertyTexture(alphaMaskContent, furMask);
                         LocalizedProperty(furAO);
                         lilEditorGUI.DrawLine();
-                        LocalizedProperty(furMeshType);
-                        if(furMeshType.floatValue == 0)
-                        {
-                            int furLayerNum2 = (int)furLayerNum.floatValue;
-                            EditorGUI.BeginChangeCheck();
-                            EditorGUI.showMixedValue = furLayerNum.hasMixedValue;
-                            furLayerNum2 = lilEditorGUI.IntSlider(GetLoc(Event.current.alt ? furLayerNum.name : "sLayerNum"), furLayerNum2, 1, 3);
-                            EditorGUI.showMixedValue = false;
-                            if(EditorGUI.EndChangeCheck())
-                            {
-                                furLayerNum.floatValue = furLayerNum2;
-                            }
-                        }
-                        else
-                        {
-                            LocalizedProperty(furLayerNum);
-                        }
+                        LocalizedProperty(furLayerNum);
                         lilEditorGUI.MinusRangeGUI(furRootOffset, GetLoc("sRootWidth"));
                         LocalizedProperty(furTouchStrength);
                         lilEditorGUI.DrawLine();

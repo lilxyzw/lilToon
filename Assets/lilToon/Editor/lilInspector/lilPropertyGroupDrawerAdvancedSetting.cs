@@ -264,66 +264,6 @@ namespace lilToon
                 }
             }
         }
-
-        private void DrawEncryptionSettings()
-        {
-            if(lilDirectoryManager.ExistsEncryption() || lilDirectoryManager.ExistsAvaCryptV2())
-            {
-                if(!ShouldDrawBlock(PropertyBlock.Encryption)) return;
-                edSet.isShowEncryption = lilEditorGUI.Foldout(GetLoc("sEncryption"), edSet.isShowEncryption);
-                DrawMenuButton(GetLoc("sAnchorEncryption"), PropertyBlock.Encryption);
-                if(edSet.isShowEncryption)
-                {
-                    EditorGUILayout.BeginVertical(boxOuter);
-                    EditorGUILayout.LabelField(GetLoc("sEncryption"), customToggleFont);
-                    DrawMenuButton(GetLoc("sAnchorEncryption"), PropertyBlock.Encryption);
-                    EditorGUILayout.BeginVertical(boxInnerHalf);
-                    EditorGUILayout.HelpBox("This will be removed in the future.", MessageType.Warning);
-                    LocalizedProperty(ignoreEncryption);
-                    if(lilDirectoryManager.ExistsEncryption())
-                    {
-                        LocalizedProperty(keys);
-                    }
-                    else
-                    {
-                        LocalizedProperty(bitKey0);
-                        LocalizedProperty(bitKey1);
-                        LocalizedProperty(bitKey2);
-                        LocalizedProperty(bitKey3);
-                        LocalizedProperty(bitKey4);
-                        LocalizedProperty(bitKey5);
-                        LocalizedProperty(bitKey6);
-                        LocalizedProperty(bitKey7);
-                        LocalizedProperty(bitKey8);
-                        LocalizedProperty(bitKey9);
-                        LocalizedProperty(bitKey10);
-                        LocalizedProperty(bitKey11);
-                        LocalizedProperty(bitKey12);
-                        LocalizedProperty(bitKey13);
-                        LocalizedProperty(bitKey14);
-                        LocalizedProperty(bitKey15);
-                        LocalizedProperty(bitKey16);
-                        LocalizedProperty(bitKey17);
-                        LocalizedProperty(bitKey18);
-                        LocalizedProperty(bitKey19);
-                        LocalizedProperty(bitKey20);
-                        LocalizedProperty(bitKey21);
-                        LocalizedProperty(bitKey22);
-                        LocalizedProperty(bitKey23);
-                        LocalizedProperty(bitKey24);
-                        LocalizedProperty(bitKey25);
-                        LocalizedProperty(bitKey26);
-                        LocalizedProperty(bitKey27);
-                        LocalizedProperty(bitKey28);
-                        LocalizedProperty(bitKey29);
-                        LocalizedProperty(bitKey30);
-                        LocalizedProperty(bitKey31);
-                    }
-                    EditorGUILayout.EndVertical();
-                    EditorGUILayout.EndVertical();
-                }
-            }
-        }
     }
 }
 #endif

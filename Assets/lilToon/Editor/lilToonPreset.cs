@@ -530,7 +530,7 @@ public class lilToonPreset : ScriptableObject
             }
         }
 
-        [Obsolete] public static string GetLoc(string value) { return lilLanguageManager.GetLoc(value); }
+        private static string GetLoc(string value) { return lilLanguageManager.GetLoc(value); }
     }
     #endregion
 }

@@ -36,6 +36,8 @@ Shader "_lil/[Optional] lilToonFurOnlyCutout"
         [lilToggle]     _UseDither                  ("sDither", Int) = 0
         [NoScaleOffset] _DitherTex                  ("Dither", 2D) = "white" {}
                         _DitherMaxValue             ("Max Value", Float) = 255
+                        _EnvRimBorder               ("[VRCLV] Rim Border", Range(0, 1)) = 0.85
+                        _EnvRimBlur                 ("[VRCLV] Rim Blur", Range(0, 1)) = 0.35
 
         //----------------------------------------------------------------------------------------------------------------------
         // Main
@@ -524,43 +526,6 @@ Shader "_lil/[Optional] lilToonFurOnlyCutout"
         [lilToggle]     _UDIMDiscardRow0_0          ("", Int) = 0
 
         //----------------------------------------------------------------------------------------------------------------------
-        // Encryption
-        [lilToggle]     _IgnoreEncryption           ("sIgnoreEncryption", Int) = 0
-                        _Keys                       ("sKeys", Vector) = (0,0,0,0)
-                        _BitKey0                    ("_BitKey0", Float) = 0
-                        _BitKey1                    ("_BitKey1", Float) = 0
-                        _BitKey2                    ("_BitKey2", Float) = 0
-                        _BitKey3                    ("_BitKey3", Float) = 0
-                        _BitKey4                    ("_BitKey4", Float) = 0
-                        _BitKey5                    ("_BitKey5", Float) = 0
-                        _BitKey6                    ("_BitKey6", Float) = 0
-                        _BitKey7                    ("_BitKey7", Float) = 0
-                        _BitKey8                    ("_BitKey8", Float) = 0
-                        _BitKey9                    ("_BitKey9", Float) = 0
-                        _BitKey10                   ("_BitKey10", Float) = 0
-                        _BitKey11                   ("_BitKey11", Float) = 0
-                        _BitKey12                   ("_BitKey12", Float) = 0
-                        _BitKey13                   ("_BitKey13", Float) = 0
-                        _BitKey14                   ("_BitKey14", Float) = 0
-                        _BitKey15                   ("_BitKey15", Float) = 0
-                        _BitKey16                   ("_BitKey16", Float) = 0
-                        _BitKey17                   ("_BitKey17", Float) = 0
-                        _BitKey18                   ("_BitKey18", Float) = 0
-                        _BitKey19                   ("_BitKey19", Float) = 0
-                        _BitKey20                   ("_BitKey20", Float) = 0
-                        _BitKey21                   ("_BitKey21", Float) = 0
-                        _BitKey22                   ("_BitKey22", Float) = 0
-                        _BitKey23                   ("_BitKey23", Float) = 0
-                        _BitKey24                   ("_BitKey24", Float) = 0
-                        _BitKey25                   ("_BitKey25", Float) = 0
-                        _BitKey26                   ("_BitKey26", Float) = 0
-                        _BitKey27                   ("_BitKey27", Float) = 0
-                        _BitKey28                   ("_BitKey28", Float) = 0
-                        _BitKey29                   ("_BitKey29", Float) = 0
-                        _BitKey30                   ("_BitKey30", Float) = 0
-                        _BitKey31                   ("_BitKey31", Float) = 0
-
-        //----------------------------------------------------------------------------------------------------------------------
         // Outline
         [lilHDR]        _OutlineColor               ("sColor", Color) = (0.6,0.56,0.73,1)
                         _OutlineTex                 ("Texture", 2D) = "white" {}
@@ -651,8 +616,7 @@ Shader "_lil/[Optional] lilToonFurOnlyCutout"
                         _FurGravity                 ("sGravity", Range(0,1)) = 0.25
                         _FurRandomize               ("sRandomize", Float) = 0
                         _FurAO                      ("sAO", Range(0,1)) = 0
-        [lilEnum]       _FurMeshType                ("Mesh Type|Subdivision|Shrink", Int) = 1
-        [IntRange]      _FurLayerNum                ("sLayerNum", Range(1, 6)) = 2
+        [IntRange]      _FurLayerNum                ("sLayerNum", Range(1, 3)) = 2
                         _FurRootOffset              ("sRootWidth", Range(-1,0)) = 0
                         _FurCutoutLength            ("sLength+ (Cutout)", Float) = 0.8
                         _FurTouchStrength           ("sTouchStrength", Range(0, 1)) = 0

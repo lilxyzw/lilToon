@@ -17,9 +17,7 @@
     #if defined(LIL_V2F_FORCE_POSITION_OS) || defined(LIL_SHOULD_POSITION_OS) || defined(LIL_FEATURE_IDMASK)
         #define LIL_V2F_POSITION_OS
     #endif
-    #if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_PASS_FORWARDADD) || defined(LIL_FEATURE_OUTLINE_RECEIVE_SHADOW) || defined(LIL_FEATURE_DISTANCE_FADE) || !defined(LIL_BRP) || defined(LIL_USE_LPPV)
-        #define LIL_V2F_POSITION_WS
-    #endif
+    #define LIL_V2F_POSITION_WS
     #if defined(LIL_V2F_FORCE_NORMAL) || defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE) || defined(LIL_HDRP)
         #define LIL_V2F_NORMAL_WS
     #endif
@@ -63,9 +61,7 @@
     #if defined(LIL_V2F_FORCE_POSITION_OS) || defined(LIL_SHOULD_POSITION_OS) || defined(LIL_FEATURE_IDMASK)
         #define LIL_V2F_POSITION_OS
     #endif
-    #if defined(LIL_V2F_FORCE_POSITION_WS) || defined(LIL_SHOULD_POSITION_WS)
-        #define LIL_V2F_POSITION_WS
-    #endif
+    #define LIL_V2F_POSITION_WS
     #if defined(LIL_V2F_FORCE_NORMAL) || defined(LIL_SHOULD_NORMAL)
         #define LIL_V2F_NORMAL_WS
     #endif
@@ -75,9 +71,7 @@
     #if !defined(LIL_PASS_FORWARDADD)
         #define LIL_V2F_LIGHTCOLOR
         #define LIL_V2F_LIGHTDIRECTION
-        #if defined(LIL_FEATURE_SHADOW)
-            #define LIL_V2F_INDLIGHTCOLOR
-        #endif
+        #define LIL_V2F_INDLIGHTCOLOR
         #if defined(LIL_FEATURE_SHADOW) || defined(LIL_FEATURE_BACKLIGHT)
             #define LIL_V2F_SHADOW
         #endif
@@ -294,6 +288,14 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         fd.reflectionN = fd.N;
         fd.matcapN = fd.N;
         fd.matcap2ndN = fd.N;
+
+        #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED)
+        if(LightVolumesEnabled())
+        {
+            fd.lightColor += saturate(fd.indLightColor - fd.lightColor) * lilTooningScale(_AAStrength, fd.ln - fd.vl, _EnvRimBorder, _EnvRimBlur);
+            fd.indLightColor = 0;
+        }
+        #endif
 
         //------------------------------------------------------------------------------------------------------------------------------
         // AudioLink

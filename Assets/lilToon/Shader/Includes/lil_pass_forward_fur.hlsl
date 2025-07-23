@@ -38,9 +38,7 @@
 #if !defined(LIL_PASS_FORWARDADD)
     #define LIL_V2F_LIGHTCOLOR
     #define LIL_V2F_LIGHTDIRECTION
-    #if defined(LIL_FEATURE_SHADOW)
-        #define LIL_V2F_INDLIGHTCOLOR
-    #endif
+    #define LIL_V2F_INDLIGHTCOLOR
 #endif
 #define LIL_V2F_VERTEXLIGHT_FOG
 #define LIL_V2F_FURLAYER
@@ -144,6 +142,15 @@ float4 frag(v2f input) : SV_Target
 
     fd.origN = normalize(input.normalWS);
     fd.N = normalize(input.normalWS);
+    fd.ln = dot(fd.L, fd.N);
+
+    #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED)
+    if(LightVolumesEnabled())
+    {
+        fd.lightColor += saturate(fd.indLightColor - fd.lightColor) * lilTooningScale(_AAStrength, fd.ln - fd.vl, _EnvRimBorder, _EnvRimBlur);
+        fd.indLightColor = 0;
+    }
+    #endif
 
     BEFORE_SHADOW
     #ifndef LIL_PASS_FORWARDADD

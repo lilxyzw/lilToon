@@ -469,41 +469,6 @@ namespace lilToon
         private readonly lilMaterialProperty udimDiscardRow0_2     = new lilMaterialProperty("_UDIMDiscardRow0_2", PropertyBlock.UDIMDiscard);
         private readonly lilMaterialProperty udimDiscardRow0_3     = new lilMaterialProperty("_UDIMDiscardRow0_3", PropertyBlock.UDIMDiscard);
 
-        private readonly lilMaterialProperty ignoreEncryption   = new lilMaterialProperty("_IgnoreEncryption", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty keys               = new lilMaterialProperty("_Keys", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey0            = new lilMaterialProperty("_BitKey0", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey1            = new lilMaterialProperty("_BitKey1", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey2            = new lilMaterialProperty("_BitKey2", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey3            = new lilMaterialProperty("_BitKey3", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey4            = new lilMaterialProperty("_BitKey4", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey5            = new lilMaterialProperty("_BitKey5", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey6            = new lilMaterialProperty("_BitKey6", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey7            = new lilMaterialProperty("_BitKey7", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey8            = new lilMaterialProperty("_BitKey8", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey9            = new lilMaterialProperty("_BitKey9", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey10           = new lilMaterialProperty("_BitKey10", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey11           = new lilMaterialProperty("_BitKey11", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey12           = new lilMaterialProperty("_BitKey12", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey13           = new lilMaterialProperty("_BitKey13", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey14           = new lilMaterialProperty("_BitKey14", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey15           = new lilMaterialProperty("_BitKey15", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey16           = new lilMaterialProperty("_BitKey16", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey17           = new lilMaterialProperty("_BitKey17", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey18           = new lilMaterialProperty("_BitKey18", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey19           = new lilMaterialProperty("_BitKey19", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey20           = new lilMaterialProperty("_BitKey20", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey21           = new lilMaterialProperty("_BitKey21", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey22           = new lilMaterialProperty("_BitKey22", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey23           = new lilMaterialProperty("_BitKey23", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey24           = new lilMaterialProperty("_BitKey24", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey25           = new lilMaterialProperty("_BitKey25", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey26           = new lilMaterialProperty("_BitKey26", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey27           = new lilMaterialProperty("_BitKey27", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey28           = new lilMaterialProperty("_BitKey28", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey29           = new lilMaterialProperty("_BitKey29", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey30           = new lilMaterialProperty("_BitKey30", PropertyBlock.Encryption);
-        private readonly lilMaterialProperty bitKey31           = new lilMaterialProperty("_BitKey31", PropertyBlock.Encryption);
-
         private readonly lilMaterialProperty refractionStrength         = new lilMaterialProperty("_RefractionStrength", PropertyBlock.Refraction, PropertyBlock.Gem);
         private readonly lilMaterialProperty refractionFresnelPower     = new lilMaterialProperty("_RefractionFresnelPower", PropertyBlock.Refraction, PropertyBlock.Gem);
         private readonly lilMaterialProperty refractionColorFromMain    = new lilMaterialProperty("_RefractionColorFromMain", PropertyBlock.Refraction);
@@ -519,7 +484,6 @@ namespace lilToon
         private readonly lilMaterialProperty furRandomize           = new lilMaterialProperty("_FurRandomize", PropertyBlock.Fur);
         private readonly lilMaterialProperty furAO                  = new lilMaterialProperty("_FurAO", PropertyBlock.Fur);
         private readonly lilMaterialProperty vertexColor2FurVector  = new lilMaterialProperty("_VertexColor2FurVector", PropertyBlock.Fur);
-        private readonly lilMaterialProperty furMeshType            = new lilMaterialProperty("_FurMeshType", PropertyBlock.Fur);
         private readonly lilMaterialProperty furLayerNum            = new lilMaterialProperty("_FurLayerNum", PropertyBlock.Fur);
         private readonly lilMaterialProperty furRootOffset          = new lilMaterialProperty("_FurRootOffset", PropertyBlock.Fur);
         private readonly lilMaterialProperty furCutoutLength        = new lilMaterialProperty("_FurCutoutLength", PropertyBlock.Fur);
@@ -1112,41 +1076,6 @@ namespace lilToon
                 udimDiscardRow0_2,
                 udimDiscardRow0_3,
 
-                ignoreEncryption,
-                keys,
-                bitKey0,
-                bitKey1,
-                bitKey2,
-                bitKey3,
-                bitKey4,
-                bitKey5,
-                bitKey6,
-                bitKey7,
-                bitKey8,
-                bitKey9,
-                bitKey10,
-                bitKey11,
-                bitKey12,
-                bitKey13,
-                bitKey14,
-                bitKey15,
-                bitKey16,
-                bitKey17,
-                bitKey18,
-                bitKey19,
-                bitKey20,
-                bitKey21,
-                bitKey22,
-                bitKey23,
-                bitKey24,
-                bitKey25,
-                bitKey26,
-                bitKey27,
-                bitKey28,
-                bitKey29,
-                bitKey30,
-                bitKey31,
-
                 refractionStrength,
                 refractionFresnelPower,
                 refractionColorFromMain,
@@ -1162,7 +1091,6 @@ namespace lilToon
                 furRandomize,
                 furAO,
                 vertexColor2FurVector,
-                furMeshType,
                 furLayerNum,
                 furRootOffset,
                 furCutoutLength,

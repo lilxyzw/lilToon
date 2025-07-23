@@ -42,11 +42,11 @@
     #define LIL_APP_TEXCOORD5
 #endif
 
-#if defined(LIL_REQUIRE_APP_TEXCOORD6) || (defined(LIL_FEATURE_IDMASK) || defined(LIL_FEATURE_ENCRYPTION)) && !defined(LIL_LITE)
+#if defined(LIL_REQUIRE_APP_TEXCOORD6) || (defined(LIL_FEATURE_IDMASK)) && !defined(LIL_LITE)
     #define LIL_APP_TEXCOORD6
 #endif
 
-#if defined(LIL_REQUIRE_APP_TEXCOORD7) || (defined(LIL_FEATURE_IDMASK) || defined(LIL_FEATURE_ENCRYPTION)) && !defined(LIL_LITE)
+#if defined(LIL_REQUIRE_APP_TEXCOORD7) || (defined(LIL_FEATURE_IDMASK)) && !defined(LIL_LITE)
     #define LIL_APP_TEXCOORD7
 #endif
 
@@ -54,7 +54,7 @@
     #define LIL_APP_COLOR
 #endif
 
-#if defined(LIL_REQUIRE_APP_NORMAL) || defined(LIL_SHOULD_NORMAL) || defined(LIL_FEATURE_ENCRYPTION) || defined(LIL_OUTLINE) || defined(LIL_LITE) || defined(LIL_GEM) || defined(LIL_PASS_FORWARD_FUR_INCLUDED) || ((defined(LIL_PASS_DEPTHONLY_INCLUDED) || defined(LIL_PASS_MOTIONVECTOR_INCLUDED)) && defined(LIL_FUR)) || defined(LIL_TESSELLATION) || defined(LIL_PASS_DEPTHNORMAL_INCLUDED) || defined(WRITE_NORMAL_BUFFER) || defined(LIL_PASS_SHADOWCASTER_INCLUDED)
+#if defined(LIL_REQUIRE_APP_NORMAL) || defined(LIL_SHOULD_NORMAL) || defined(LIL_OUTLINE) || defined(LIL_LITE) || defined(LIL_GEM) || defined(LIL_PASS_FORWARD_FUR_INCLUDED) || ((defined(LIL_PASS_DEPTHONLY_INCLUDED) || defined(LIL_PASS_MOTIONVECTOR_INCLUDED)) && defined(LIL_FUR)) || defined(LIL_TESSELLATION) || defined(LIL_PASS_DEPTHNORMAL_INCLUDED) || defined(WRITE_NORMAL_BUFFER) || defined(LIL_PASS_SHADOWCASTER_INCLUDED)
     #define LIL_APP_NORMAL
 #endif
 

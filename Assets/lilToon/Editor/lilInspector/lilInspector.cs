@@ -28,9 +28,6 @@ namespace lilToon
 
         protected virtual void DrawCustomProperties(Material material)
         {
-            #pragma warning disable 0618
-            DrawCustomProperties(m_MaterialEditor, material, boxOuter, boxInnerHalf, boxInner, customBox, customToggleFont, GUI.skin.button);
-            #pragma warning restore 0618
         }
 
         //------------------------------------------------------------------------------------------------------------------------------
@@ -51,11 +48,6 @@ namespace lilToon
 
         public void DrawAllGUI(MaterialEditor materialEditor, MaterialProperty[] props, Material material)
         {
-            if(lilDirectoryManager.ExistsEncryption() || lilDirectoryManager.ExistsAvaCryptV2())
-            {
-                EditorGUILayout.HelpBox("Encryption will be removed in the future.", MessageType.Warning);
-            }
-
             // workaround for Unity bug (https://issuetracker.unity3d.com/issues/uv1-data-is-lost-during-assetbundle-build-when-optimize-mesh-data-is-on)
             #if UNITY_2021_1_OR_NEWER
             if(PlayerSettings.stripUnusedMeshComponents && lilEditorGUI.AutoFixHelpBox(GetLoc("sWarnOptimiseMeshData")))

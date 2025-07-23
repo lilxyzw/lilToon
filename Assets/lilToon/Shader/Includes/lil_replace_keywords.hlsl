@@ -2,10 +2,6 @@
 #define LIL_REPLACE_KEYWORDS_INCLUDED
 
 //----------------------------------------------------------------------------------------------------------------------
-// AvatarEncryption
-//#define LIL_FEATURE_ENCRYPTION
-
-//----------------------------------------------------------------------------------------------------------------------
 // Ignore shader setting
 #define LIL_IGNORE_SHADERSETTING
 

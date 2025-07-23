@@ -39,8 +39,8 @@ void InitializeSH(float3 positionWS)
     olSHBb = unity_SHBb;
     olSHC  = unity_SHC ;
 
-    #if defined(OPENLIT_VRCLIGHTVOLUMES) || defined(OPENLIT_VRCLIGHTVOLUMES_WITHOUTPACKAGE)
-    if(_UdonLightVolumeEnabled && _UdonLightVolumeCount != 0)
+    #if defined(VRC_LIGHT_VOLUMES_INCLUDED)
+    if(LightVolumesEnabled())
     {
         float3 L0, L1r, L1g, L1b = 0;
         LightVolumeSH(positionWS, L0, L1r, L1g, L1b);
@@ -54,6 +54,14 @@ void InitializeSH(float3 positionWS)
         olSHC = 0;
     }
     #endif
+}
+
+float3 GetV(float3 L, float3 positionWS)
+{
+    #if defined(VRC_LIGHT_VOLUMES_INCLUDED)
+    if(LightVolumesEnabled()) return normalize(_WorldSpaceCameraPos.xyz - positionWS);
+    #endif
+    return L;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -102,7 +110,7 @@ float3 ComputeCustomLightDirection(float4 lightDirectionOverride)
     return lightDirectionOverride.w ? customDir : lightDirectionOverride.xyz;
 }
 
-void ComputeLightDirection(out float3 lightDirection, out float3 lightDirectionForSH9, float4 lightDirectionOverride)
+void ComputeLightDirection(out float3 lightDirection, float4 lightDirectionOverride)
 {
     float3 mainDir = OPENLIT_LIGHT_DIRECTION * OpenLitLuminance(OPENLIT_LIGHT_COLOR);
     #if !defined(LIGHTMAP_ON) && UNITY_SHOULD_SAMPLE_SH
@@ -115,21 +123,20 @@ void ComputeLightDirection(out float3 lightDirection, out float3 lightDirectionF
     float3 customDir = ComputeCustomLightDirection(lightDirectionOverride);
 
     lightDirection = normalize(sh9DirAbs + mainDir + customDir);
-    lightDirectionForSH9 = sh9Dir + mainDir;
-    lightDirectionForSH9 = dot(lightDirectionForSH9,lightDirectionForSH9) < 0.000001 ? 0 : normalize(lightDirectionForSH9);
 }
 
-void ComputeLightDirection(out float3 lightDirection, out float3 lightDirectionForSH9)
+void ComputeLightDirection(out float3 lightDirection)
 {
-    ComputeLightDirection(lightDirection, lightDirectionForSH9, OPENLIT_FALLBACK_DIRECTION);
+    ComputeLightDirection(lightDirection, OPENLIT_FALLBACK_DIRECTION);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
 // ShadeSH9
-void ShadeSH9ToonDouble(float3 lightDirection, out float3 shMax, out float3 shMin)
+void ShadeSH9ToonDouble(float3 V, out float3 shMax, out float3 shMin)
 {
     #if !defined(LIGHTMAP_ON) && UNITY_SHOULD_SAMPLE_SH
-        float3 N = lightDirection * 0.666666;
+        //float3 N = lightDirection * 0.666666;
+        float3 N = V;
         float4 vB = N.xyzz * N.yzzx;
         // L0 L2
         float3 res = float3(olSHAr.w,olSHAg.w,olSHAb.w);
@@ -143,7 +150,11 @@ void ShadeSH9ToonDouble(float3 lightDirection, out float3 shMax, out float3 shMi
         l1.g = dot(olSHAg.rgb, N);
         l1.b = dot(olSHAb.rgb, N);
         shMax = res + l1;
-        shMin = res - l1;
+        N = normalize(olSHAr.rgb + olSHAg.rgb + olSHAb.rgb);
+        l1.r = dot(olSHAr.rgb, N);
+        l1.g = dot(olSHAg.rgb, N);
+        l1.b = dot(olSHAb.rgb, N);
+        shMin = res + l1;
         #if defined(UNITY_COLORSPACE_GAMMA)
             shMax = OpenLitLinearToSRGB(shMax);
             shMin = OpenLitLinearToSRGB(shMin);
@@ -154,60 +165,40 @@ void ShadeSH9ToonDouble(float3 lightDirection, out float3 shMax, out float3 shMi
     #endif
 }
 
-void ShadeSH9ToonDouble(out float3 shMax, out float3 shMin)
-{
-    float3 lightDirection, lightDirectionForSH9;
-    ComputeLightDirection(lightDirection, lightDirectionForSH9, OPENLIT_FALLBACK_DIRECTION);
-    ShadeSH9ToonDouble(lightDirectionForSH9, shMax, shMin);
-}
-
-float3 ShadeSH9Toon()
-{
-    float3 shMax, shMin;
-    ShadeSH9ToonDouble(shMax, shMin);
-    return shMax;
-}
-
-float3 ShadeSH9ToonIndirect()
-{
-    float3 shMax, shMin;
-    ShadeSH9ToonDouble(shMax, shMin);
-    return shMin;
-}
-
 //------------------------------------------------------------------------------------------------------------------------------
 // Lighting
-void ComputeSHLightsAndDirection(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float4 lightDirectionOverride, float3 positionWS = 0)
+void ComputeSHLightsAndDirection(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float4 lightDirectionOverride, float3 positionWS)
 {
     InitializeSH(positionWS);
     float3 lightDirectionForSH9;
-    ComputeLightDirection(lightDirection, lightDirectionForSH9, lightDirectionOverride);
-    ShadeSH9ToonDouble(lightDirectionForSH9, directLight, indirectLight);
+    ComputeLightDirection(lightDirection, lightDirectionOverride);
+    float3 V = GetV(lightDirection, positionWS);
+    ShadeSH9ToonDouble(V, directLight, indirectLight);
 }
 
-void ComputeSHLightsAndDirection(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float3 positionWS = 0)
+void ComputeSHLightsAndDirection(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float3 positionWS)
 {
     ComputeSHLightsAndDirection(lightDirection, directLight, indirectLight, OPENLIT_FALLBACK_DIRECTION, positionWS);
 }
 
-void ComputeLights(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float4 lightDirectionOverride, float3 positionWS = 0)
+void ComputeLights(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float4 lightDirectionOverride, float3 positionWS)
 {
     ComputeSHLightsAndDirection(lightDirection, directLight, indirectLight, lightDirectionOverride, positionWS);
     directLight += OPENLIT_LIGHT_COLOR;
 }
 
-void ComputeLights(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float3 positionWS = 0)
+void ComputeLights(out float3 lightDirection, out float3 directLight, out float3 indirectLight, float3 positionWS)
 {
     ComputeSHLightsAndDirection(lightDirection, directLight, indirectLight, positionWS);
     directLight += OPENLIT_LIGHT_COLOR;
 }
 
-void ComputeLights(out OpenLitLightDatas lightDatas, float4 lightDirectionOverride, float3 positionWS = 0)
+void ComputeLights(out OpenLitLightDatas lightDatas, float4 lightDirectionOverride, float3 positionWS)
 {
     ComputeLights(lightDatas.lightDirection, lightDatas.directLight, lightDatas.indirectLight, lightDirectionOverride, positionWS);
 }
 
-void ComputeLights(out OpenLitLightDatas lightDatas, float3 positionWS = 0)
+void ComputeLights(out OpenLitLightDatas lightDatas, float3 positionWS)
 {
     ComputeLights(lightDatas.lightDirection, lightDatas.directLight, lightDatas.indirectLight, positionWS);
 }
