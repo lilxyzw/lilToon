@@ -336,7 +336,7 @@ sMatCap2nd	MatCap 2nd	マットキャップ2nd	매트 캡 2nd	第二 MatCap	MatC
 sBlendUV1	Blend UV1	UV1を合成	Blend UV1	Blend UV1	Blend UV1
 sMatCapZRotCancel	Z-axis rotation cancellation	Z軸回転キャンセル	Z축 회전 취소	Z轴旋转取消	Z軸旋轉取消
 sFixPerspective	Fix Perspective	パース補正	Fix Perspective	透视校正	Fix Perspective
-sHelpMatCapBlending	Turn off "Enable Lighting" in multiply mode.	乗算モードでは"ライティングを適用"を0にしてください	곱셈 모드에서는 "라이팅을 적용"을 0으로 해 주세요	关闭 Multiply 模式下的“启用照明”。	關閉乘法模式下的 啟用照明。
+sHelpMatCapBlending	Turn off "Enable Lighting" in multiply mode.	乗算モードでは"ライトの明るさを反映"を0にしてください	곱셈 모드에서는 "라이팅을 적용"을 0으로 해 주세요	关闭 Multiply 模式下的“启用照明”。	關閉乘法模式下的 啟用照明。
 sMatCapCustomNormal	Custom normal map	カスタムノーマルマップ	커스텀 노멀 맵	自定义法线贴图	自定義法線貼圖
 sRimLightSetting	Rim Light	リムライト設定	림 라이트 설정	Rim Light 设置	Rim Light設置
 sRimLight	Rim Light	リムライト	림 라이트	Rim Light	Rim Light
