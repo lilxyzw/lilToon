@@ -110,11 +110,7 @@ Unity等で3DCGを扱う際に登場する用語です。これらを把握し�
 
 ### Unityバージョン
 
-- 2018.3 - 2018.4
-- 2019.1 - 2019.4
-- 2020.1 - 2020.3
-- 2021.1 - 2021.3
-- 2022.1 - 2022.3
+- 2022.3
 - 2023.1 - 2023.3
 
 ### シェーダーモデル
@@ -132,15 +128,7 @@ Unity等で3DCGを扱う際に登場する用語です。これらを把握し�
 - High Definition Render Pipeline
 
 ※ 動作確認環境
-- Unity 2018.1.0f2 (Built-in RP)
-- Unity 2018.4.20f1 (Built-in RP / LWRP 4.10.0 / HDRP 4.10.0)
-- Unity 2019.2.21f1 (Built-in RP / LWRP 6.9.2 / HDRP 6.9.2)
-- Unity 2019.3.0f6 (Built-in RP / URP 7.1.8 / HDRP 7.1.8)
-- Unity 2019.4.31f1 (Built-in RP / URP 7.7.1 / HDRP 7.7.1)
-- Unity 2020.3.47f1 (Built-in RP / URP 10.10.1 / HDRP 10.10.1)
-- Unity 2021.3.23f1 (Built-in RP / URP 12.1.11 / HDRP 12.1.11)
 - Unity 2022.3.22f1 (Built-in RP / URP 14.0.8 / HDRP 14.0.8)
-- Unity 2023.2.0a11 (Built-in RP / URP 16.0.1 / HDRP 16.0.1)
 
 ## lilToonを用いた制作物の配布について
 - VRChat向けの配布物である場合、VCCからのインストールを案内することをオススメします

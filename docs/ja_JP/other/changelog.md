@@ -4,6 +4,81 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-07-23
+### 変更
+- 同梱のVRC Light Volumesを2.0.0に更新
+- VRC Light Volumesで方向が考慮されるように
+- asmdefのAuto Referencedをオフにしスクリプトのコンパイルを高速化
+
+### 削除
+- ファーのShrinkモードを削除しSubdivisionモードに統一
+- メッシュの暗号化機能を削除
+
+## [1.10.3] - 2025-05-20
+### 修正
+- lilToonMultiでVRC Light Volumesが動作しない
+- ファーマテリアルでのVRC Light Volumesの補間を改善
+
+## [1.10.2] - 2025-05-19
+### 修正
+- GPU Instancing使用時にエラー
+
+## [1.10.1] - 2025-05-19
+### 変更
+- VRC Light Volumesを追加パッケージなしでも利用可能に
+
+## [1.10.0] - 2025-05-18
+### 追加
+- VRC Light Volumesに対応
+- toonstandard・toonstandardoutlineをフォールバックに追加
+- Rampをベイクする機能を追加
+
+### 変更
+- 簡易設定を削除
+
+### 修正
+- Unity 2019でエラー
+- MToon変換時にNaNが発生する可能性があった
+- 宝石シェーダーのエディタで距離フェードの設定が表示されていた
+
+## [1.9.0] - 2025-04-11
+### 追加
+- 影のSDFモードでBチャンネルを通常の影とのブレンド、Aチャンネルを影の強度として使用できるように
+
+### 変更
+- Inspectorの大幅な高速化
+- ミラー内で距離クリッピングキャンセラーが適用されないように
+- カスタムシェーダーでAudioLink.cgincを使用してもエラーにならないように
+
+### 修正
+- 「未使用のテクスチャを外す」で一部テクスチャが残るのを修正
+- ステンシルで非表示になっている部分に影が表示されるのを修正
+- FakeShadowのVR時の視差を修正
+- 外部ツールからマテリアル最適化メソッドを呼び出した際にFakeShadowでエラーになるのを修正
+- ChilloutVRビルドでアニメーションやマテリアルスロットが空の場合にエラーになっていたのを修正
+
+## [1.8.5] - 2024-12-20
+### 変更
+- 不具合検証のため1.8.4の変更箇所のうち影響のない部分を差し戻し
+
+## [1.8.4] - 2024-12-12
+### 追加
+- NDMFの`Apply on Play`でシェーダー最適化をスキップできるように
+
+### 変更
+- ファーにRimShadeが適用されるように
+
+### 修正
+- 最適化後のファーのリムライトの計算が正しくない場合がある
+- UV Tile Discardが正しく動作していない
+- LTCGIの距離減衰の調整
+- 特定条件下でLTCGIが動作しない
+- AudioLinkの一部モードが正しく動作しない
+
+## [1.8.3] - 2024-10-16
+### 修正
+- 一部カスタムシェーダーでのエラー
+
 ## [1.8.2] - 2024-10-12
 ### 修正
 - VRChatのワールドSDKで使用した場合のみビルドに失敗する
