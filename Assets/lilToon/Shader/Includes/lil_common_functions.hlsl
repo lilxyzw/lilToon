@@ -544,7 +544,7 @@ float2 lilCalcMatCapUV(float2 uv1, float3 normalWS, float3 viewDirection, float3
     float3 tangentVD = cross(normalVD, bitangentVD);
     float3x3 tbnVD = float3x3(tangentVD, bitangentVD, normalVD);
     float2 uvMat = mul(tbnVD, normalWS).xy;
-    uvMat = lerp(uvMat, uv1*2-1, matcapBlendUV1);
+    uvMat = lerp(uvMat, saturate(uv1)*2-1, matcapBlendUV1);
     uvMat = uvMat * matcap_ST.xy + matcap_ST.zw;
     uvMat = uvMat * 0.5 + 0.5;
     return uvMat;
