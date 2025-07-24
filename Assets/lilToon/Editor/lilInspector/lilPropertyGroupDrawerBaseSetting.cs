@@ -165,6 +165,8 @@ namespace lilToon
                             EditorGUILayout.EndHorizontal();
                             EditorGUI.indentLevel--;
                         }
+                        LocalizedProperty(envRimBorder);
+                        LocalizedProperty(envRimBlur);
                     }
                     RenderQueueField();
                     if((renderingModeBuf >= RenderingMode.Transparent && renderingModeBuf != RenderingMode.FurCutout) || (isMulti && transparentModeMat.floatValue == 2.0f))
