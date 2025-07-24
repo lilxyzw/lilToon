@@ -128,6 +128,25 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     #if defined(LIL_V2F_SHADOW) || defined(LIL_PASS_FORWARDADD)
         LIL_LIGHT_ATTENUATION(fd.attenuation, input);
     #endif
+
+    // For VRCLV
+    #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED) && !defined(LIL_FUR)
+        if(LightVolumesEnabled())
+        {
+            lilVertexPositionInputs vertexInput = lilGetVertexPositionInputsFromWS(input.positionWS);
+            LIL_CALC_MAINLIGHT(vertexInput, lightdataInput);
+            #if defined(LIL_V2F_LIGHTCOLOR)
+                input.lightColor     = lightdataInput.lightColor;
+            #endif
+            #if defined(LIL_V2F_LIGHTDIRECTION)
+                input.lightDirection = lightdataInput.lightDirection;
+            #endif
+            #if defined(LIL_V2F_INDLIGHTCOLOR)
+                input.indLightColor  = lightdataInput.indLightColor;
+            #endif
+        }
+    #endif
+
     LIL_GET_LIGHTING_DATA(input,fd);
 
     //------------------------------------------------------------------------------------------------------------------------------

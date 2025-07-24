@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-07-23
+### Changed
+- Updated included VRC Light Volumes to 2.0.0
+- VRC Light Volumes now respect direction
+- Turn off Auto Referenced in asmdef to speed up script compilation
+
+### Removed
+- Removed Shrink mode for fur and unified it to Subdivision mode
+- Removed mesh encryption feature
+
 ## [1.10.3] - 2025-05-20
 ### Fixed
 - VRC Light Volumes not working on lilToonMulti

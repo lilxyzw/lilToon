@@ -205,6 +205,16 @@ lilVertexPositionInputs lilGetVertexPositionInputs(float3 positionOS)
     return lilGetVertexPositionInputs(float4(positionOS, 1.0));
 }
 
+lilVertexPositionInputs lilGetVertexPositionInputsFromWS(float3 positionWS)
+{
+    lilVertexPositionInputs output;
+    output.positionWS = positionWS;
+    output.positionVS = lilTransformWStoVS(output.positionWS);
+    output.positionCS = lilTransformWStoCS(output.positionWS);
+    output.positionSS = lilTransformCStoSS(output.positionCS);
+    return output;
+}
+
 lilVertexPositionInputs lilReGetVertexPositionInputs(lilVertexPositionInputs output)
 {
     output.positionVS = lilTransformWStoVS(output.positionWS);
