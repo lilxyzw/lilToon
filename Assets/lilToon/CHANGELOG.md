@@ -4,7 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2025-07-25
+### Added
+- Properties to adjust the rim light of VRCLV
+- API to consolidate shader compilations into one when building multiple avatars
+
+### 変更
+- Changed VRC Light Volumes to be calculated per pixel (excluding fur shader due to load considerations)
+
+### 修正
+- Shadows are not cast if the Skybox is invalid
+- MatCap is not displayed correctly when using StaticBatching
+- When noise is unassigned in Dissolve, the appearance changes before and after optimization
+
 ## [2.0.0] - 2025-07-23
+### Added
+- Setting ToonStandard Ramp in VRChat Shader Fallback
+
 ### Changed
 - Updated included VRC Light Volumes to 2.0.0
 - VRC Light Volumes now respect direction

@@ -4,7 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2025-07-25
+### 追加
+- VRCLVが逆光時にできるリムライトを調整できるように
+- 複数アバタービルド時にシェーダーコンパイルを1回にまとめられるAPIを追加
+
+### 変更
+- VRC Light Volumesをピクセル単位で計算するように（負荷の都合でファーシェーダーは除く）
+
+### 修正
+- Skyboxが不正な場合に影ができない
+- StaticBatching使用時にMatCapが正しく表示されない
+- Dissolveでノイズが未割り当ての場合に最適化前後で見た目が変わる
+
 ## [2.0.0] - 2025-07-23
+### 追加
+- VRChatのシェーダーフォールバックでToonStandardのRampを設定可能に
+
 ### 変更
 - 同梱のVRC Light Volumesを2.0.0に更新
 - VRC Light Volumesで方向が考慮されるように
