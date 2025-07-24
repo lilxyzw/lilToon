@@ -67,6 +67,29 @@ namespace lilToon.External
             return true;
         }
 
+        public bool OnPreprocessAvatars(GameObject[] avatarGameObjects)
+        {
+            try
+            {
+                lilToonSetting shaderSetting = null;
+                lilToonSetting.InitializeShaderSetting(ref shaderSetting);
+                var caller = new System.Diagnostics.StackFrame(2, false);
+                var callerMethod = caller.GetMethod();
+                if(!shaderSetting.isOptimizeInNDMF && callerMethod.DeclaringType.FullName == "nadena.dev.ndmf.ApplyOnPlay") return true;
+
+                var materials = avatarGameObjects.SelectMany(a => GetMaterialsFromGameObject(a)).ToArray();
+                var clips = avatarGameObjects.SelectMany(a => GetAnimationClipsFromGameObject(a)).ToArray();
+                lilToonSetting.SetShaderSettingBeforeBuild(materials, clips);
+                lilMaterialUtils.SetupMultiMaterial(materials, clips);
+            }
+            catch(Exception e)
+            {
+                Debug.LogException(e);
+                Debug.Log("[lilToon] OnPreprocessAvatars() failed");
+            }
+            return true;
+        }
+
         public void OnPostprocessAvatar()
         {
             lilToonSetting.SetShaderSettingAfterBuild();
