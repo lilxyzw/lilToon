@@ -30,7 +30,7 @@ msgid "sColor"
 msgstr "色"
 
 msgid "sAlpha"
-msgstr "透明度"
+msgstr "不透明度"
 
 msgid "sColorAlpha"
 msgstr "色 / 透明度"
@@ -69,7 +69,7 @@ msgid "sTextureRGB"
 msgstr "色(RGB)"
 
 msgid "sTextureRGBA"
-msgstr "色(RGB)と透明度(A)"
+msgstr "色(RGB)と不透明度(A)"
 
 msgid "sMask"
 msgstr "マスク"
@@ -120,7 +120,7 @@ msgid "sBlurMask"
 msgstr "ぼかし量マスク"
 
 msgid "sAlphaR"
-msgstr "透明度 (R)"
+msgstr "不透明度 (R)"
 
 msgid "sMainColorPower"
 msgstr "メインカラーの強度"
@@ -249,7 +249,7 @@ msgid "sNormalStrength"
 msgstr "ノーマルマップ強度"
 
 msgid "sColorAlphaZeroWarn"
-msgstr "プロパティを有効にするには透明度の値を上げて下さい。"
+msgstr "プロパティを有効にするには不透明度の値を上げて下さい。"
 
 msgid "sApplyTransparency"
 msgstr "透明度を適用"
