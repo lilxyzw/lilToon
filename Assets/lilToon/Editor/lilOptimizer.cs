@@ -205,12 +205,13 @@ namespace lilToon
             if(string.IsNullOrEmpty(pathBase) || string.IsNullOrEmpty(pathOpt) || !File.Exists(pathBase) || !File.Exists(pathOpt)) return null;
             var shader = Shader.Find("Hidden/ltspass_proponly");
             var sb = new StringBuilder();
+            sb.AppendLine("#define LIL_INPUT_OPTIMIZED");
             var sr = new StreamReader(pathBase);
             string line;
-            while((line = sr.ReadLine()) != null)
+            while ((line = sr.ReadLine()) != null)
             {
                 int indEND = line.IndexOf(";");
-                if(indEND <= 0)
+                if (indEND <= 0)
                 {
                     sb.AppendLine(line);
                     continue;
@@ -221,37 +222,37 @@ namespace lilToon
                 int indF = line.IndexOf("float   ");
                 int indI = line.IndexOf("uint    ");
                 int indB = line.IndexOf("lilBool ");
-                if(indF4 >= 0)
+                if (indF4 >= 0)
                 {
                     indF4 += TYPE_OFFSET;
                     string name = line.Substring(indF4, indEND - indF4);
-                    if(indST >= 0)
+                    if (indST >= 0)
                     {
                         // Texture
-                        string texname = name.Substring(0,name.Length - 3);
-                        if(dicD.ContainsKey(texname) && !dicD[texname].isVariable)
+                        string texname = name.Substring(0, name.Length - 3);
+                        if (dicD.ContainsKey(texname) && !dicD[texname].isVariable)
                         {
                             var v = dicD[texname];
                             sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + LilF2S(v.s.x) + "," + LilF2S(v.s.y) + "," + LilF2S(v.o.x) + "," + LilF2S(v.o.y) + ")");
                             continue;
                         }
                     }
-                    else if(dicC.ContainsKey(name) && !dicC[name].isVariable)
+                    else if (dicC.ContainsKey(name) && !dicC[name].isVariable)
                     {
                         var v = dicC[name];
                         Color c = ShouldLinear(shader, name) ? v.c.linear : v.c;
                         sb.AppendLine(GetIndent(indF4 - 8) + "#define " + name + " float4(" + LilF2S(c.r) + "," + LilF2S(c.g) + "," + LilF2S(c.b) + "," + LilF2S(c.a) + ")");
 
-                        if(name == "_Color" && (v.c.r + v.c.g + v.c.b <= 0.001f)) sb.AppendLine(GetIndent(indF4 - 8) + "#define sampler_MainTex lil_sampler_linear_repeat_");
+                        if (name == "_Color" && (v.c.r + v.c.g + v.c.b <= 0.001f)) sb.AppendLine(GetIndent(indF4 - 8) + "#define sampler_MainTex lil_sampler_linear_repeat_");
                         continue;
                     }
                 }
-                else if(indF >= 0)
+                else if (indF >= 0)
                 {
                     // Float
                     indF += TYPE_OFFSET;
                     string name = line.Substring(indF, indEND - indF);
-                    if(dicF.ContainsKey(name) && !dicF[name].isVariable)
+                    if (dicF.ContainsKey(name) && !dicF[name].isVariable)
                     {
                         float f = dicF[name].f;
                         f = ShouldLinear(shader, name) ? Mathf.GammaToLinearSpace(f) : f;
@@ -259,23 +260,23 @@ namespace lilToon
                         continue;
                     }
                 }
-                else if(indI >= 0)
+                else if (indI >= 0)
                 {
                     // Int
                     indI += TYPE_OFFSET;
                     string name = line.Substring(indI, indEND - indI);
-                    if(dicF.ContainsKey(name) && !dicF[name].isVariable && name != "_AlphaMaskMode")
+                    if (dicF.ContainsKey(name) && !dicF[name].isVariable && name != "_AlphaMaskMode")
                     {
                         sb.AppendLine(GetIndent(indI - 8) + "#define " + name + " (" + (uint)dicF[name].f + ")");
                         continue;
                     }
                 }
-                else if(indB >= 0)
+                else if (indB >= 0)
                 {
                     // Bool
                     indB += TYPE_OFFSET;
                     string name = line.Substring(indB, indEND - indB);
-                    if(dicF.ContainsKey(name) && !dicF[name].isVariable)
+                    if (dicF.ContainsKey(name) && !dicF[name].isVariable)
                     {
                         sb.AppendLine(GetIndent(indB - 8) + "#define " + name + " (" + (uint)dicF[name].f + ")");
                         continue;

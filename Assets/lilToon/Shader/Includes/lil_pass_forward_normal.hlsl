@@ -128,7 +128,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     #endif
 
     // For VRCLV
-    #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED) && !defined(LIL_OUTLINE) && !defined(LIL_FUR)
+    #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED) && !defined(LIL_OUTLINE) && !defined(LIL_FUR) && (defined(LIL_INPUT_OPTIMIZED) || defined(LIL_MULTI))
         if(LightVolumesEnabled())
         {
             lilVertexPositionInputs vertexInput = lilGetVertexPositionInputsFromWS(input.positionWS);
