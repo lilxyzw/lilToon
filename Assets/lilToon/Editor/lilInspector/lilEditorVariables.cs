@@ -104,8 +104,8 @@ namespace lilToon
         [Serializable]
         public class lilToonVersion
         {
-            public string latest_vertion_name;
-            public int latest_vertion_value;
+            public string version;
+            public SemVerParser semver;
         }
 
         public struct PropertyBlockData
@@ -138,7 +138,7 @@ namespace lilToon
 
         private Material[] materials;
         private static lilToonSetting shaderSetting;
-        private static readonly lilToonVersion latestVersion = new lilToonVersion{latest_vertion_name = "", latest_vertion_value = 0};
+        private static readonly lilToonVersion latestVersion = new() { version = "" };
         private static readonly Dictionary<string, MaterialProperty> copiedProperties = new Dictionary<string, MaterialProperty>();
         private static bool isCustomEditor = false;
         private static bool isMultiVariants = false;

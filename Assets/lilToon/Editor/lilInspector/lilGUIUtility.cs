@@ -40,9 +40,9 @@ namespace lilToon
             VersionCheck();
             var labelStyle = new GUIStyle(GUI.skin.label){fontStyle = FontStyle.Bold};
             string versionLabel = "lilToon " + lilConstants.currentVersionName;
-            if(latestVersion != null && latestVersion.latest_vertion_name != null && latestVersion.latest_vertion_value > lilConstants.currentVersionValue)
+            if(latestVersion != null && latestVersion.semver > lilConstants.Version.semver)
             {
-                versionLabel = "[Update] lilToon " + lilConstants.currentVersionName + " -> " + latestVersion.latest_vertion_name;
+                versionLabel = "[Update] lilToon " + lilConstants.currentVersionName + " -> " + latestVersion.version;
                 labelStyle.normal.textColor = Color.red;
             }
 
@@ -58,22 +58,17 @@ namespace lilToon
 
         private static void VersionCheck()
         {
-            if(string.IsNullOrEmpty(latestVersion.latest_vertion_name))
+            if(string.IsNullOrEmpty(latestVersion.version))
             {
-                if(!string.IsNullOrEmpty(lilEditorParameters.instance.versionInfo))
+                if (!string.IsNullOrEmpty(lilEditorParameters.instance.versionInfo) && lilEditorParameters.instance.versionInfo.Contains("version"))
                 {
-                    if(
-                        !string.IsNullOrEmpty(lilEditorParameters.instance.versionInfo) &&
-                        lilEditorParameters.instance.versionInfo.Contains("latest_vertion_name") &&
-                        lilEditorParameters.instance.versionInfo.Contains("latest_vertion_value")
-                    )
-                    {
-                        EditorJsonUtility.FromJsonOverwrite(lilEditorParameters.instance.versionInfo, latestVersion);
-                        return;
-                    }
+                    EditorJsonUtility.FromJsonOverwrite(lilEditorParameters.instance.versionInfo, latestVersion);
                 }
-                latestVersion.latest_vertion_name = lilConstants.currentVersionName;
-                latestVersion.latest_vertion_value = lilConstants.currentVersionValue;
+                else
+                {
+                    latestVersion.version = lilConstants.currentVersionName;
+                }
+                latestVersion.semver = new SemVerParser(latestVersion.version);
                 return;
             }
         }

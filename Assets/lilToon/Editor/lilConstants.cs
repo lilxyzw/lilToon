@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,12 +7,24 @@ namespace lilToon
 {
     public class lilConstants
     {
-        public const string currentVersionName = "2.1.0";
+        public static string currentVersionName = Version.version;
         public const int currentVersionValue = 45;
+        internal static lilToonInspector.lilToonVersion version = null;
+        internal static lilToonInspector.lilToonVersion Version => GetFromPackage();
+        private static lilToonInspector.lilToonVersion GetFromPackage()
+        {
+            if (version == null)
+            {
+                version = new lilToonInspector.lilToonVersion();
+                EditorJsonUtility.FromJsonOverwrite(File.ReadAllText(lilDirectoryManager.GetPackageJsonPath()), version);
+                version.semver = new SemVerParser(version.version);
+            }
+            return version;
+        }
 
         internal const string boothURL = "https://lilxyzw.booth.pm/";
         internal const string githubURL = "https://github.com/lilxyzw/lilToon";
-        internal const string versionInfoURL = "https://raw.githubusercontent.com/lilxyzw/lilToon/master/version.json";
+        internal const string versionInfoURL = "https://raw.githubusercontent.com/lilxyzw/lilToon/refs/heads/master/Assets/lilToon/package.json";
 
         internal static readonly string[] mainTexCheckWords = new[] {"mask", "shadow", "shade", "outline", "normal", "bumpmap", "matcap", "rimlight", "emittion", "reflection", "specular", "roughness", "smoothness", "metallic", "metalness", "opacity", "parallax", "displacement", "height", "ambient", "occlusion"};
 

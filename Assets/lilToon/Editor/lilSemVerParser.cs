@@ -10,8 +10,11 @@ namespace lilToon
         public int patch;
         public string prerelease;
         public string build;
+        public string full;
 
-        public SemVerParser(string versionString, bool isForced) {
+        public SemVerParser(string versionString, bool isForced)
+        {
+            full = versionString;
             // https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
             var pattern = @"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$";
             var pattern2 = @"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)";
@@ -19,28 +22,36 @@ namespace lilToon
             var regex2 = new Regex(pattern2);
             var match = regex.Match(versionString);
             var match2 = regex2.Match(versionString);
-            if (match.Success) {
+            if (match.Success)
+            {
                 major = int.Parse(match.Groups[1].Value);
                 minor = int.Parse(match.Groups[2].Value);
                 patch = int.Parse(match.Groups[3].Value);
                 prerelease = match.Groups[4].Success ? match.Groups[4].Value : null;
                 build = match.Groups[5].Success ? match.Groups[5].Value : null;
-            } else if (match2.Success) {
+            }
+            else if (match2.Success)
+            {
                 major = int.Parse(match2.Groups[1].Value);
                 minor = int.Parse(match2.Groups[2].Value);
                 patch = int.Parse(match2.Groups[3].Value);
                 prerelease = null;
                 build = null;
-            } else if(isForced) {
+            }
+            else if (isForced)
+            {
                 major = 999999;
                 minor = 999999;
                 patch = 999999;
-            } else {
+            }
+            else
+            {
                 throw new ArgumentException("Invalid semver string: " + versionString);
             }
         }
 
         public SemVerParser(string versionString) {
+            full = versionString;
             // https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
             var pattern = @"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$";
             var regex = new Regex(pattern);
