@@ -58,10 +58,11 @@ void InitializeSH(float3 positionWS)
 
 float3 GetV(float3 L, float3 positionWS)
 {
+    return
     #if defined(VRC_LIGHT_VOLUMES_INCLUDED)
-    if(LightVolumesEnabled()) return normalize(_WorldSpaceCameraPos.xyz - positionWS);
+    LightVolumesEnabled() ? normalize(_WorldSpaceCameraPos.xyz - positionWS) :
     #endif
-    return L;
+    L;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------

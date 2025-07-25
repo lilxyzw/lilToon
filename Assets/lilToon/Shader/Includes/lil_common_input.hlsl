@@ -100,7 +100,9 @@ SAMPLER(lil_sampler_linear_clamp);
 
 #ifndef LIL_INPUT_BASE_INCLUDED
 
+#if !defined(LIL_BRP)
 CBUFFER_START(UnityPerMaterial)
+#endif
 #if defined(LIL_LITE)
     float4  _LightDirectionOverride;
     float4  _Color;
@@ -814,7 +816,10 @@ CBUFFER_START(UnityPerMaterial)
 #if defined(LIL_CUSTOM_PROPERTIES)
     LIL_CUSTOM_PROPERTIES
 #endif
+
+#if !defined(LIL_BRP)
 CBUFFER_END
+#endif
 
 #endif // LIL_INPUT_BASE_INCLUDED
 

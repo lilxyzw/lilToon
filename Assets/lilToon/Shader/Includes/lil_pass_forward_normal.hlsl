@@ -62,9 +62,7 @@
         #define LIL_V2F_POSITION_OS
     #endif
     #define LIL_V2F_POSITION_WS
-    #if defined(LIL_V2F_FORCE_NORMAL) || defined(LIL_SHOULD_NORMAL)
-        #define LIL_V2F_NORMAL_WS
-    #endif
+    #define LIL_V2F_NORMAL_WS
     #if defined(LIL_V2F_FORCE_TANGENT) || defined(LIL_SHOULD_TBN)
         #define LIL_V2F_TANGENT_WS
     #endif
@@ -130,11 +128,14 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     #endif
 
     // For VRCLV
-    #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED) && !defined(LIL_FUR)
+    #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED) && !defined(LIL_OUTLINE) && !defined(LIL_FUR)
         if(LightVolumesEnabled())
         {
             lilVertexPositionInputs vertexInput = lilGetVertexPositionInputsFromWS(input.positionWS);
+            lilVertexNormalInputs vertexNormalInput = lilGetVertexNormalInputsFromWS(input.normalWS);
+            #define input fd
             LIL_CALC_MAINLIGHT(vertexInput, lightdataInput);
+            #undef input
             #if defined(LIL_V2F_LIGHTCOLOR)
                 input.lightColor     = lightdataInput.lightColor;
             #endif

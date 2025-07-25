@@ -142,31 +142,34 @@ namespace lilToon
                         zwrite.floatValue = 1.0f;
                     }
                     if(isMulti) LocalizedProperty(useClippingCanceller);
-                    if(!isFakeShadow) LocalizedProperty(aaStrength);
-                    if(!isFakeShadow && renderingModeBuf == RenderingMode.Cutout || (isMulti && transparentModeMat.floatValue == 1.0f))
+                    if (!isFakeShadow)
+                    {
+                        LocalizedProperty(aaStrength);
+                        LocalizedProperty(envRimBorder);
+                        LocalizedProperty(envRimBlur);
+                    }
+                    if (!isFakeShadow && renderingModeBuf == RenderingMode.Cutout || (isMulti && transparentModeMat.floatValue == 1.0f))
                     {
                         LocalizedProperty(useDither);
-                        if(lilEditorGUI.CheckPropertyToDraw(ditherTex, ditherMaxValue) && useDither.floatValue == 1.0f)
+                        if (lilEditorGUI.CheckPropertyToDraw(ditherTex, ditherMaxValue) && useDither.floatValue == 1.0f)
                         {
                             EditorGUI.indentLevel++;
                             EditorGUI.BeginChangeCheck();
                             LocalizedPropertyTexture(ditherContent, ditherTex);
-                            if(EditorGUI.EndChangeCheck() && ditherTex.textureValue != null)
+                            if (EditorGUI.EndChangeCheck() && ditherTex.textureValue != null)
                             {
-                                ditherMaxValue.floatValue = Mathf.Clamp(ditherTex.textureValue.width * ditherTex.textureValue.height-1, 0, 255);
+                                ditherMaxValue.floatValue = Mathf.Clamp(ditherTex.textureValue.width * ditherTex.textureValue.height - 1, 0, 255);
                             }
                             LocalizedProperty(ditherMaxValue);
                             EditorGUILayout.BeginHorizontal();
                             GUILayout.Space(16);
-                            if(GUILayout.Button("x2" )){ditherTex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(lilDirectoryManager.GetMainFolderPath() + "/Texture/lil_bayer_2x2.png");   ditherMaxValue.floatValue = 3  ;}
-                            if(GUILayout.Button("x4" )){ditherTex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(lilDirectoryManager.GetMainFolderPath() + "/Texture/lil_bayer_4x4.png");   ditherMaxValue.floatValue = 15 ;}
-                            if(GUILayout.Button("x8" )){ditherTex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(lilDirectoryManager.GetMainFolderPath() + "/Texture/lil_bayer_8x8.png");   ditherMaxValue.floatValue = 63 ;}
-                            if(GUILayout.Button("x16")){ditherTex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(lilDirectoryManager.GetMainFolderPath() + "/Texture/lil_bayer_16x16.png"); ditherMaxValue.floatValue = 255;}
+                            if (GUILayout.Button("x2")) { ditherTex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(lilDirectoryManager.GetMainFolderPath() + "/Texture/lil_bayer_2x2.png"); ditherMaxValue.floatValue = 3; }
+                            if (GUILayout.Button("x4")) { ditherTex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(lilDirectoryManager.GetMainFolderPath() + "/Texture/lil_bayer_4x4.png"); ditherMaxValue.floatValue = 15; }
+                            if (GUILayout.Button("x8")) { ditherTex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(lilDirectoryManager.GetMainFolderPath() + "/Texture/lil_bayer_8x8.png"); ditherMaxValue.floatValue = 63; }
+                            if (GUILayout.Button("x16")) { ditherTex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(lilDirectoryManager.GetMainFolderPath() + "/Texture/lil_bayer_16x16.png"); ditherMaxValue.floatValue = 255; }
                             EditorGUILayout.EndHorizontal();
                             EditorGUI.indentLevel--;
                         }
-                        LocalizedProperty(envRimBorder);
-                        LocalizedProperty(envRimBlur);
                     }
                     RenderQueueField();
                     if((renderingModeBuf >= RenderingMode.Transparent && renderingModeBuf != RenderingMode.FurCutout) || (isMulti && transparentModeMat.floatValue == 2.0f))

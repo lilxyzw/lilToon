@@ -259,6 +259,15 @@ lilVertexNormalInputs lilGetVertexNormalInputs(float3 normalOS, float4 tangentOS
     return output;
 }
 
+lilVertexNormalInputs lilGetVertexNormalInputsFromWS(float3 normalWS)
+{
+    lilVertexNormalInputs output;
+    output.normalWS     = normalWS;
+    output.tangentWS    = float3(1.0, 0.0, 0.0);
+    output.bitangentWS  = float3(0.0, 1.0, 0.0);
+    return output;
+}
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Outline
 float lilGetOutlineWidth(float2 uv, float4 color, float outlineWidth, TEXTURE2D(outlineWidthMask), uint outlineVertexR2Width LIL_SAMP_IN_FUNC(samp))

@@ -9,10 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Properties to adjust the rim light of VRCLV
 - API to consolidate shader compilations into one when building multiple avatars
 
-### 変更
+### Changed
 - Changed VRC Light Volumes to be calculated per pixel (excluding fur shader due to load considerations)
 
-### 修正
+### Fixed
 - Shadows are not cast if the Skybox is invalid
 - MatCap is not displayed correctly when using StaticBatching
 - When noise is unassigned in Dissolve, the appearance changes before and after optimization
