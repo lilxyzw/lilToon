@@ -622,11 +622,11 @@ public class lilToonSetting : ScriptableObject
         if (shaderSetting.LIL_FEATURE_Main2ndTex) sb.AppendLine("#define LIL_FEATURE_Main2ndTex");
         if (shaderSetting.LIL_FEATURE_Main2ndBlendMask) sb.AppendLine("#define LIL_FEATURE_Main2ndBlendMask");
         if (shaderSetting.LIL_FEATURE_Main2ndDissolveMask) sb.AppendLine("#define LIL_FEATURE_Main2ndDissolveMask");
-        if (shaderSetting.LIL_FEATURE_Main2ndDissolveNoiseMask) sb.AppendLine("#define LIL_FEATURE_Main2ndDissolveNoiseMask");
+        /*if (shaderSetting.LIL_FEATURE_Main2ndDissolveNoiseMask)*/ sb.AppendLine("#define LIL_FEATURE_Main2ndDissolveNoiseMask");
         if (shaderSetting.LIL_FEATURE_Main3rdTex) sb.AppendLine("#define LIL_FEATURE_Main3rdTex");
         if (shaderSetting.LIL_FEATURE_Main3rdBlendMask) sb.AppendLine("#define LIL_FEATURE_Main3rdBlendMask");
         if (shaderSetting.LIL_FEATURE_Main3rdDissolveMask) sb.AppendLine("#define LIL_FEATURE_Main3rdDissolveMask");
-        if (shaderSetting.LIL_FEATURE_Main3rdDissolveNoiseMask) sb.AppendLine("#define LIL_FEATURE_Main3rdDissolveNoiseMask");
+        /*if (shaderSetting.LIL_FEATURE_Main3rdDissolveNoiseMask)*/ sb.AppendLine("#define LIL_FEATURE_Main3rdDissolveNoiseMask");
         if (shaderSetting.LIL_FEATURE_AlphaMask) sb.AppendLine("#define LIL_FEATURE_AlphaMask");
         if (shaderSetting.LIL_FEATURE_BumpMap) sb.AppendLine("#define LIL_FEATURE_BumpMap");
         if (shaderSetting.LIL_FEATURE_Bump2ndMap) sb.AppendLine("#define LIL_FEATURE_Bump2ndMap");
@@ -665,7 +665,7 @@ public class lilToonSetting : ScriptableObject
         if (shaderSetting.LIL_FEATURE_AudioLinkMask) sb.AppendLine("#define LIL_FEATURE_AudioLinkMask");
         if (shaderSetting.LIL_FEATURE_AudioLinkLocalMap) sb.AppendLine("#define LIL_FEATURE_AudioLinkLocalMap");
         if (shaderSetting.LIL_FEATURE_DissolveMask) sb.AppendLine("#define LIL_FEATURE_DissolveMask");
-        if (shaderSetting.LIL_FEATURE_DissolveNoiseMask) sb.AppendLine("#define LIL_FEATURE_DissolveNoiseMask");
+        /*if (shaderSetting.LIL_FEATURE_DissolveNoiseMask)*/ sb.AppendLine("#define LIL_FEATURE_DissolveNoiseMask");
         if (shaderSetting.LIL_FEATURE_OutlineTex) sb.AppendLine("#define LIL_FEATURE_OutlineTex");
         if (shaderSetting.LIL_FEATURE_OutlineWidthMask) sb.AppendLine("#define LIL_FEATURE_OutlineWidthMask");
         if (shaderSetting.LIL_FEATURE_OutlineVectorTex) sb.AppendLine("#define LIL_FEATURE_OutlineVectorTex");
