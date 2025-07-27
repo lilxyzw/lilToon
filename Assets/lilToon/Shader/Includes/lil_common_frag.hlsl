@@ -483,7 +483,7 @@
         #define _DissolveMaskEnabled false
     #endif
 
-    #if 1
+    #if defined(LIL_FEATURE_DissolveNoiseMask)
         #define OVERRIDE_DISSOLVE \
             lilCalcDissolveWithNoise( \
                 fd.col.a, \
@@ -757,7 +757,7 @@
             #endif
 
             #if defined(LIL_FEATURE_LAYER_DISSOLVE)
-                #if 1
+                #if defined(LIL_FEATURE_Main2ndDissolveNoiseMask)
                     lilCalcDissolveWithNoise(
                         color2nd.a,
                         main2ndDissolveAlpha,
@@ -853,7 +853,7 @@
             #endif
 
             #if defined(LIL_FEATURE_LAYER_DISSOLVE)
-                #if 1
+                #if defined(LIL_FEATURE_Main3rdDissolveNoiseMask)
                     lilCalcDissolveWithNoise(
                         color3rd.a,
                         main3rdDissolveAlpha,

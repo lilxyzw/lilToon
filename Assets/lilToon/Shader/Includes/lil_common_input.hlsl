@@ -57,6 +57,15 @@ SAMPLER(lil_sampler_linear_clamp);
 #if !defined(LIL_FEATURE_DitherTex)
     #define LIL_FEATURE_DitherTex
 #endif
+#if !defined(LIL_FEATURE_DissolveNoiseMask)
+    #define LIL_FEATURE_DissolveNoiseMask
+#endif
+#if !defined(LIL_FEATURE_Main2ndDissolveNoiseMask)
+    #define LIL_FEATURE_Main2ndDissolveNoiseMask
+#endif
+#if !defined(LIL_FEATURE_Main3rdDissolveNoiseMask)
+    #define LIL_FEATURE_Main3rdDissolveNoiseMask
+#endif
 #if defined(LIL_LITE)
     #if !defined(LIL_FEATURE_TriMask)
         #define LIL_FEATURE_TriMask
