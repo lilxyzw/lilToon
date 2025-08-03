@@ -89,24 +89,6 @@ void lilHashRGB4(float2 pos, out float3 noise0, out float3 noise1, out float3 no
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
-// Udon AudioLink
-// https://github.com/llealloo/vrc-udon-audio-link
-bool lilCheckAudioLink()
-{
-    #if defined(LIL_FEATURE_AUDIOLINK)
-        #if defined(LIL_LWTEX)
-            return _AudioTexture_TexelSize.z > 16;
-        #else
-            int width, height;
-            _AudioTexture.GetDimensions(width, height);
-            return width > 16;
-        #endif
-    #else
-        return false;
-    #endif
-}
-
-//------------------------------------------------------------------------------------------------------------------------------
 // LTCGI
 // https://github.com/PiMaker/ltcgi
 #if defined(LIL_FEATURE_LTCGI)
@@ -180,6 +162,29 @@ void lilLTCGI(inout lilLightData o, float3 positionWS, float3 N, float3 V, float
 }
 #undef Sample
 #endif
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Udon AudioLink
+// https://github.com/llealloo/vrc-udon-audio-link
+#if defined(LIL_FEATURE_AUDIOLINK) && !defined(AUDIOLINK_CGINC_INCLUDED)
+TEXTURE2D_FLOAT(_AudioTexture);
+float4 _AudioTexture_TexelSize;
+#endif
+
+bool lilCheckAudioLink()
+{
+    #if defined(LIL_FEATURE_AUDIOLINK)
+        #if defined(LIL_LWTEX)
+            return _AudioTexture_TexelSize.z > 16;
+        #else
+            int width, height;
+            _AudioTexture.GetDimensions(width, height);
+            return width > 16;
+        #endif
+    #else
+        return false;
+    #endif
+}
 
 //------------------------------------------------------------------------------------------------------------------------------
 // UDIM Discard (UV Tile Discard, original implementation by Razgriz for Poiyomi)
