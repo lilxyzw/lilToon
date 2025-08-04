@@ -539,6 +539,9 @@ public class lilToonSetting : ScriptableObject
         #elif LILTOON_VRCSDK3
         if (shaderSetting.LIL_OPTIMIZE_USE_VRCLIGHTVOLUMES) sb.AppendLine("#define LIL_FEATURE_VRCLIGHTVOLUMES_WITHOUTPACKAGE");
         #endif
+        #if LILTOON_AUDIOLINK
+        sb.AppendLine("#define LIL_FEATURE_AUDIOLINK_PACKAGE");
+        #endif
         return sb.ToString();
     }
 

@@ -15,10 +15,12 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // VRC Light Volumes
 // https://github.com/REDSIM/VRCLightVolumes
+#if defined(SHADER_STAGE_FRAGMENT)
 #if defined(OPENLIT_VRCLIGHTVOLUMES)
 #include "Packages/red.sim.lightvolumes/Shaders/LightVolumes.cginc"
 #elif defined(OPENLIT_VRCLIGHTVOLUMES_WITHOUTPACKAGE)
 #include "VRC Light Volumes/LightVolumes.cginc"
+#endif
 #endif
 
 static float4 olSHAr = 0;

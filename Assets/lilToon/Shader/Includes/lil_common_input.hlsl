@@ -893,7 +893,9 @@ SAMPLER(sampler_AudioLinkMask);
 SAMPLER(sampler_OutlineTex);
 
 // AudioLink
-#if defined(LIL_FEATURE_AUDIOLINK) && !defined(AUDIOLINK_CGINC_INCLUDED)
+#if defined(LIL_FEATURE_AUDIOLINK_PACKAGE)
+#include "Packages/com.llealloo.audiolink/Runtime/Shaders/AudioLink.cginc"
+#elif defined(LIL_FEATURE_AUDIOLINK) && !defined(AUDIOLINK_CGINC_INCLUDED)
 TEXTURE2D_FLOAT(_AudioTexture);
 float4 _AudioTexture_TexelSize;
 #endif
