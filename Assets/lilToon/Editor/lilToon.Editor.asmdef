@@ -34,8 +34,13 @@
         },
         {
             "name": "red.sim.lightvolumes",
-            "expression": "2",
+            "expression": "",
             "define": "LILTOON_VRCLIGHTVOLUMES"
+        },
+        {
+            "name": "com.llealloo.audiolink",
+            "expression": "2",
+            "define": "LILTOON_AUDIOLINK"
         }
     ],
     "noEngineReferences": false

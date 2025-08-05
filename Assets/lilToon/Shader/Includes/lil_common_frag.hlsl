@@ -379,10 +379,11 @@
     #define LIL_APPLY_OUTLINE_LIT_SHADOW
 #endif
 
-#if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) && defined(LIL_V2F_NDOTL)
+#if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED)
     #define LIL_APPLY_OUTLINE_COLOR \
+        float outlineNdotL = dot(normalize(lilTransformDirWStoVSCenter(fd.N).xy), normalize(lilTransformDirWStoVSCenter(fd.L).xy)) * 0.5 + 0.5; \
         float3 outlineLitColor = _OutlineLitApplyTex ? fd.col.rgb * _OutlineLitColor.rgb : _OutlineLitColor.rgb; \
-        float outlineLitFactor = saturate(input.NdotL * _OutlineLitScale + _OutlineLitOffset) * _OutlineLitColor.a; \
+        float outlineLitFactor = saturate(outlineNdotL * _OutlineLitScale + _OutlineLitOffset) * _OutlineLitColor.a; \
         LIL_APPLY_OUTLINE_LIT_SHADOW \
         fd.col.rgb = lerp(fd.col.rgb * _OutlineColor.rgb, outlineLitColor, outlineLitFactor); \
         fd.col.a *= _OutlineColor.a;

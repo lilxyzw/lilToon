@@ -18,9 +18,7 @@
         #define LIL_V2F_POSITION_OS
     #endif
     #define LIL_V2F_POSITION_WS
-    #if defined(LIL_V2F_FORCE_NORMAL) || defined(LIL_USE_LIGHTMAP) && defined(LIL_LIGHTMODE_SUBTRACTIVE) || defined(LIL_HDRP)
-        #define LIL_V2F_NORMAL_WS
-    #endif
+    #define LIL_V2F_NORMAL_WS
     #if !defined(LIL_PASS_FORWARDADD)
         #define LIL_V2F_LIGHTCOLOR
         #if defined(LIL_FEATURE_OUTLINE_RECEIVE_SHADOW)
@@ -28,7 +26,6 @@
         #endif
     #endif
     #define LIL_V2F_VERTEXLIGHT_FOG
-    #define LIL_V2F_NDOTL
 
     struct v2f
     {
@@ -44,13 +41,12 @@
         #if defined(LIL_V2F_NORMAL_WS)
             LIL_VECTOR_INTERPOLATION float3 normalWS     : TEXCOORD4;
         #endif
-        float NdotL         : TEXCOORD5;
-        LIL_LIGHTCOLOR_COORDS(6)
-        LIL_VERTEXLIGHT_FOG_COORDS(7)
+        LIL_LIGHTCOLOR_COORDS(5)
+        LIL_VERTEXLIGHT_FOG_COORDS(6)
         #if defined(LIL_V2F_SHADOW)
-            LIL_SHADOW_COORDS(8)
+            LIL_SHADOW_COORDS(7)
         #endif
-        LIL_CUSTOM_V2F_MEMBER(9,10,11,12,13,14,15,16)
+        LIL_CUSTOM_V2F_MEMBER(8,9,10,11,12,13,14,15)
         LIL_VERTEX_INPUT_INSTANCE_ID
         LIL_VERTEX_OUTPUT_STEREO
     };
@@ -128,8 +124,8 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     #endif
 
     // For VRCLV
-    #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED) && !defined(LIL_OUTLINE) && !defined(LIL_FUR) && (defined(LIL_INPUT_OPTIMIZED) || defined(LIL_MULTI))
-        if(LightVolumesEnabled())
+    #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED) && (defined(LIL_INPUT_OPTIMIZED) || defined(LIL_MULTI))
+        if(_UdonLightVolumeEnabled)
         {
             lilVertexPositionInputs vertexInput = lilGetVertexPositionInputsFromWS(input.positionWS);
             lilVertexNormalInputs vertexNormalInput = lilGetVertexNormalInputsFromWS(input.normalWS);
@@ -310,7 +306,7 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         fd.matcap2ndN = fd.N;
 
         #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED)
-        if(LightVolumesEnabled())
+        if(_UdonLightVolumeEnabled)
         {
             fd.lightColor += saturate(fd.indLightColor - fd.lightColor) * lilTooningScale(_AAStrength, fd.ln - fd.vl, _EnvRimBorder, _EnvRimBlur);
             fd.indLightColor = 0;

@@ -262,15 +262,6 @@ LIL_V2F_TYPE vert(appdata input)
     #if defined(LIL_V2F_INDLIGHTCOLOR)
         LIL_V2F_OUT_BASE.indLightColor  = lightdataInput.indLightColor;
     #endif
-    #if defined(LIL_V2F_NDOTL)
-        float2 outlineNormalVS = normalize(lilTransformDirWStoVSCenter(vertexNormalInput.normalWS).xy);
-        #if defined(LIL_PASS_FORWARDADD)
-            float2 outlineLightVS = normalize(lilTransformDirWStoVSCenter(normalize(_WorldSpaceLightPos0.xyz - vertexInput.positionWS * _WorldSpaceLightPos0.w)).xy);
-        #else
-            float2 outlineLightVS = normalize(lilTransformDirWStoVSCenter(lightdataInput.lightDirection).xy);
-        #endif
-        LIL_V2F_OUT_BASE.NdotL          = dot(outlineNormalVS, outlineLightVS) * 0.5 + 0.5;
-    #endif
     #if defined(LIL_V2F_SHADOW)
         LIL_TRANSFER_SHADOW(vertexInput, input.uv1, LIL_V2F_OUT_BASE);
     #endif
