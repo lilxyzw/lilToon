@@ -46,6 +46,7 @@ namespace lilToon.External
 
         public bool OnPreprocessAvatar(GameObject avatarGameObject)
         {
+            lilToonSetting.isOptimize = true;
             try
             {
                 lilToonSetting shaderSetting = null;
@@ -64,11 +65,13 @@ namespace lilToon.External
                 Debug.LogException(e);
                 Debug.Log("[lilToon] OnPreprocessAvatar() failed");
             }
+            lilToonSetting.isOptimize = false;
             return true;
         }
 
         public bool OnPreprocessAvatars(GameObject[] avatarGameObjects)
         {
+            lilToonSetting.isOptimize = true;
             try
             {
                 lilToonSetting shaderSetting = null;
@@ -87,6 +90,7 @@ namespace lilToon.External
                 Debug.LogException(e);
                 Debug.Log("[lilToon] OnPreprocessAvatars() failed");
             }
+            lilToonSetting.isOptimize = false;
             return true;
         }
 

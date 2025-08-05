@@ -205,7 +205,6 @@ namespace lilToon
             if(string.IsNullOrEmpty(pathBase) || string.IsNullOrEmpty(pathOpt) || !File.Exists(pathBase) || !File.Exists(pathOpt)) return null;
             var shader = Shader.Find("Hidden/ltspass_proponly");
             var sb = new StringBuilder();
-            sb.AppendLine("#define LIL_INPUT_OPTIMIZED");
             var sr = new StreamReader(pathBase);
             string line;
             while ((line = sr.ReadLine()) != null)
