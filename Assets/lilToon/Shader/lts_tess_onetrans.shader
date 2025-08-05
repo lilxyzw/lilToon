@@ -36,7 +36,7 @@ Shader "Hidden/lilToonTessellationOnePassTransparent"
         [lilToggle]     _UseDither                  ("sDither", Int) = 0
         [NoScaleOffset] _DitherTex                  ("Dither", 2D) = "white" {}
                         _DitherMaxValue             ("Max Value", Float) = 255
-                        _EnvRimBorder               ("[VRCLV] Rim Border", Range(0, 1)) = 0.85
+                        _EnvRimBorder               ("[VRCLV] Rim Border", Range(0, 3)) = 0.85
                         _EnvRimBlur                 ("[VRCLV] Rim Blur", Range(0, 1)) = 0.35
 
         //----------------------------------------------------------------------------------------------------------------------
