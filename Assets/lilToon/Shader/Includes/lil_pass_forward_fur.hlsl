@@ -97,7 +97,7 @@ float4 frag(v2f input) : SV_Target
 
     // For VRCLV
     #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED) && (defined(LIL_INPUT_OPTIMIZED) || defined(LIL_MULTI))
-        if(LightVolumesEnabled())
+        if(_UdonLightVolumeEnabled)
         {
             lilVertexPositionInputs vertexInput = lilGetVertexPositionInputsFromWS(input.positionWS);
             lilVertexNormalInputs vertexNormalInput = lilGetVertexNormalInputsFromWS(input.normalWS);
@@ -167,7 +167,7 @@ float4 frag(v2f input) : SV_Target
     fd.ln = dot(fd.L, fd.N);
 
     #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED)
-    if(LightVolumesEnabled())
+    if(_UdonLightVolumeEnabled)
     {
         fd.lightColor += saturate(fd.indLightColor - fd.lightColor) * lilTooningScale(_AAStrength, fd.ln - fd.vl, _EnvRimBorder, _EnvRimBlur);
         fd.indLightColor = 0;

@@ -15,7 +15,7 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // VRC Light Volumes
 // https://github.com/REDSIM/VRCLightVolumes
-#if defined(SHADER_STAGE_FRAGMENT)
+#if defined(SHADER_STAGE_FRAGMENT) && (defined(LIL_INPUT_OPTIMIZED) || defined(LIL_MULTI)) || !defined(SHADER_STAGE_FRAGMENT) && !(defined(LIL_INPUT_OPTIMIZED) || defined(LIL_MULTI))
 #if defined(OPENLIT_VRCLIGHTVOLUMES)
 #include "Packages/red.sim.lightvolumes/Shaders/LightVolumes.cginc"
 #elif defined(OPENLIT_VRCLIGHTVOLUMES_WITHOUTPACKAGE)
@@ -42,7 +42,7 @@ void InitializeSH(float3 positionWS)
     olSHC  = unity_SHC ;
 
     #if defined(VRC_LIGHT_VOLUMES_INCLUDED)
-    if(LightVolumesEnabled())
+    if(_UdonLightVolumeEnabled)
     {
         float3 L0, L1r, L1g, L1b = 0;
         LightVolumeSH(positionWS, L0, L1r, L1g, L1b);
@@ -62,7 +62,7 @@ float3 GetV(float3 L, float3 positionWS)
 {
     return
     #if defined(VRC_LIGHT_VOLUMES_INCLUDED)
-    LightVolumesEnabled() ? normalize(_WorldSpaceCameraPos.xyz - positionWS) :
+    _UdonLightVolumeEnabled ? normalize(_WorldSpaceCameraPos.xyz - positionWS) :
     #endif
     L;
 }

@@ -34,7 +34,7 @@
         },
         {
             "name": "red.sim.lightvolumes",
-            "expression": "2",
+            "expression": "",
             "define": "LILTOON_VRCLIGHTVOLUMES"
         },
         {
