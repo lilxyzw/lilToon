@@ -545,6 +545,7 @@ public class lilToonSetting : ScriptableObject
         return sb.ToString();
     }
 
+    internal static bool isOptimize = false;
     public static string BuildShaderSettingString(lilToonSetting shaderSetting, bool isFile)
     {
         var sb = new StringBuilder();
@@ -625,11 +626,13 @@ public class lilToonSetting : ScriptableObject
         if (shaderSetting.LIL_FEATURE_Main2ndTex) sb.AppendLine("#define LIL_FEATURE_Main2ndTex");
         if (shaderSetting.LIL_FEATURE_Main2ndBlendMask) sb.AppendLine("#define LIL_FEATURE_Main2ndBlendMask");
         if (shaderSetting.LIL_FEATURE_Main2ndDissolveMask) sb.AppendLine("#define LIL_FEATURE_Main2ndDissolveMask");
-        /*if (shaderSetting.LIL_FEATURE_Main2ndDissolveNoiseMask)*/ sb.AppendLine("#define LIL_FEATURE_Main2ndDissolveNoiseMask");
+        /*if (shaderSetting.LIL_FEATURE_Main2ndDissolveNoiseMask)*/
+        sb.AppendLine("#define LIL_FEATURE_Main2ndDissolveNoiseMask");
         if (shaderSetting.LIL_FEATURE_Main3rdTex) sb.AppendLine("#define LIL_FEATURE_Main3rdTex");
         if (shaderSetting.LIL_FEATURE_Main3rdBlendMask) sb.AppendLine("#define LIL_FEATURE_Main3rdBlendMask");
         if (shaderSetting.LIL_FEATURE_Main3rdDissolveMask) sb.AppendLine("#define LIL_FEATURE_Main3rdDissolveMask");
-        /*if (shaderSetting.LIL_FEATURE_Main3rdDissolveNoiseMask)*/ sb.AppendLine("#define LIL_FEATURE_Main3rdDissolveNoiseMask");
+        /*if (shaderSetting.LIL_FEATURE_Main3rdDissolveNoiseMask)*/
+        sb.AppendLine("#define LIL_FEATURE_Main3rdDissolveNoiseMask");
         if (shaderSetting.LIL_FEATURE_AlphaMask) sb.AppendLine("#define LIL_FEATURE_AlphaMask");
         if (shaderSetting.LIL_FEATURE_BumpMap) sb.AppendLine("#define LIL_FEATURE_BumpMap");
         if (shaderSetting.LIL_FEATURE_Bump2ndMap) sb.AppendLine("#define LIL_FEATURE_Bump2ndMap");
@@ -668,7 +671,8 @@ public class lilToonSetting : ScriptableObject
         if (shaderSetting.LIL_FEATURE_AudioLinkMask) sb.AppendLine("#define LIL_FEATURE_AudioLinkMask");
         if (shaderSetting.LIL_FEATURE_AudioLinkLocalMap) sb.AppendLine("#define LIL_FEATURE_AudioLinkLocalMap");
         if (shaderSetting.LIL_FEATURE_DissolveMask) sb.AppendLine("#define LIL_FEATURE_DissolveMask");
-        /*if (shaderSetting.LIL_FEATURE_DissolveNoiseMask)*/ sb.AppendLine("#define LIL_FEATURE_DissolveNoiseMask");
+        /*if (shaderSetting.LIL_FEATURE_DissolveNoiseMask)*/
+        sb.AppendLine("#define LIL_FEATURE_DissolveNoiseMask");
         if (shaderSetting.LIL_FEATURE_OutlineTex) sb.AppendLine("#define LIL_FEATURE_OutlineTex");
         if (shaderSetting.LIL_FEATURE_OutlineWidthMask) sb.AppendLine("#define LIL_FEATURE_OutlineWidthMask");
         if (shaderSetting.LIL_FEATURE_OutlineVectorTex) sb.AppendLine("#define LIL_FEATURE_OutlineVectorTex");
@@ -691,6 +695,7 @@ public class lilToonSetting : ScriptableObject
             if (!shaderSetting.LIL_OPTIMIZE_USE_VERTEXLIGHT) sb.AppendLine("#pragma lil_skip_variants_addlight");
             if (!shaderSetting.LIL_OPTIMIZE_USE_LIGHTMAP) sb.AppendLine("#pragma lil_skip_variants_lightmaps");
         }
+        if (isOptimize) sb.AppendLine("#define LIL_INPUT_OPTIMIZED");
         return sb.ToString();
     }
 
@@ -814,7 +819,7 @@ public class lilToonSetting : ScriptableObject
         ApplyShaderSetting(shaderSetting, "[lilToon] PreprocessBuild", shaders);
         AssetDatabase.Refresh();
     }
-    
+
     internal static void GetOptimizedSetting(Material[] materials, AnimationClip[] clips, out string usedShaders, out string optimizedHLSL, out string shaderSettingText)
     {
         usedShaders = null;
@@ -822,7 +827,7 @@ public class lilToonSetting : ScriptableObject
         shaderSettingText = null;
 
         var shaders = GetShaderListFromGameObject(materials, clips);
-        if(shaders.Count() == 0) return;
+        if (shaders.Count() == 0) return;
 
         usedShaders = string.Join(Environment.NewLine, shaders.Select(s => s.name).Distinct().ToArray());
 
@@ -833,13 +838,13 @@ public class lilToonSetting : ScriptableObject
         optimizedHLSL = lilOptimizer.GetOptimizedText(materials, clips);
 
         // Get materials
-        foreach(var material in materials)
+        foreach (var material in materials)
         {
             SetupShaderSettingFromMaterial(material, ref shaderSetting);
         }
 
         // Get animations
-        foreach(var clip in clips)
+        foreach (var clip in clips)
         {
             SetupShaderSettingFromAnimationClip(clip, ref shaderSetting, true);
         }
