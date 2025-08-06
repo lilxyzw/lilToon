@@ -630,10 +630,10 @@ msgid "sFlat"
 msgstr "Flat"
 
 msgid "sBacklightSetting"
-msgstr "背光效果"
+msgstr "背光"
 
 msgid "sBacklight"
-msgstr "背光效果"
+msgstr "背光"
 
 msgid "sBacklightTips"
 msgstr "当摄像机对准模型的背光面时，为模型的受光面边缘添加高光效果"
@@ -645,13 +645,13 @@ msgid "sViewDirectionStrength"
 msgstr "视线方向强度"
 
 msgid "sOutlineSetting"
-msgstr "轮廓效果"
+msgstr "轮廓"
 
 msgid "sOutlineTips"
 msgstr "您可以在此设置轮廓的主色和厚度。"
 
 msgid "sOutline"
-msgstr "轮廓效果"
+msgstr "轮廓"
 
 msgid "sHighlight"
 msgstr "高亮主色"
@@ -744,7 +744,7 @@ msgid "RimShade"
 msgstr "边缘阴影"
 
 msgid "sEmissionSetting"
-msgstr "自发光效果"
+msgstr "自发光"
 
 msgid "sEmissionTips"
 msgstr "您可以在此设置灯光主色和闪烁。"
@@ -879,7 +879,7 @@ msgid "sAudioLinkDefaultValue"
 msgstr "没有使用 AudioLink 时的默认值"
 
 msgid "sDissolve"
-msgstr "溶解效果"
+msgstr "溶解"
 
 msgid "sDissolveTips"
 msgstr "设置材质的溶解效果"
@@ -1005,7 +1005,7 @@ msgid "sApplyReflection"
 msgstr "环境反射"
 
 msgid "sMatCapSetting"
-msgstr "MatCap (材质捕获)"
+msgstr "MatCap"
 
 msgid "sMatCap"
 msgstr "MatCap"
@@ -1029,10 +1029,10 @@ msgid "sMatCapCustomNormal"
 msgstr "自定义法线贴图"
 
 msgid "sRimLightSetting"
-msgstr "轮廓光"
+msgstr "边缘光"
 
 msgid "sRimLight"
-msgstr "轮廓光"
+msgstr "边缘光"
 
 msgid "sFresnelPower"
 msgstr "菲涅尔折射率"
@@ -1047,10 +1047,10 @@ msgid "sRimIndirectionRange"
 msgstr "间接光宽度"
 
 msgid "sGlitterSetting"
-msgstr "亮片效果"
+msgstr "亮片"
 
 msgid "sGlitter"
-msgstr "亮片效果"
+msgstr "亮片"
 
 msgid "sParticleSize"
 msgstr "粒子大小"
