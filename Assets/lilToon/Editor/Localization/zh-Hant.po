@@ -725,9 +725,6 @@ msgstr "接觸強度"
 msgid "sTessellation"
 msgstr "Tessellation（極高負荷）"
 
-msgid "Tessellation"
-msgstr "Tessellation（極高負荷）"
-
 msgid "sTessellationTips"
 msgstr "你可以設定 Tessellation。"
 
@@ -740,8 +737,11 @@ msgstr "縮減"
 msgid "sTessellationFactor"
 msgstr "最大係數"
 
-msgid "RimShade"
+msgid "sRimShadeSetting"
 msgstr "邊緣陰影設定（RimShade）"
+
+msgid "RimShade"
+msgstr "邊緣陰影"
 
 msgid "sEmissionSetting"
 msgstr "自發光設定"

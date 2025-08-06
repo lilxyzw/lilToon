@@ -737,6 +737,12 @@ msgstr "縮小補正"
 msgid "sTessellationFactor"
 msgstr "最大分割数"
 
+msgid "sRimShadeSetting"
+msgstr "リムシェード"
+
+msgid "RimShade"
+msgstr "リムシェード"
+
 msgid "sEmissionSetting"
 msgstr "発光設定"
 

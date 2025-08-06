@@ -725,9 +725,6 @@ msgstr "接触强度"
 msgid "sTessellation"
 msgstr "镶嵌化处理 (极高负载)"
 
-msgid "Tessellation"
-msgstr "镶嵌化处理"
-
 msgid "sTessellationTips"
 msgstr "您可以在此设置镶嵌选项。"
 
@@ -739,6 +736,9 @@ msgstr "收缩幅度"
 
 msgid "sTessellationFactor"
 msgstr "最大细分数"
+
+msgid "sRimShadeSetting"
+msgstr "边缘阴影"
 
 msgid "RimShade"
 msgstr "边缘阴影"

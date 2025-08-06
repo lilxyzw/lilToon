@@ -737,6 +737,12 @@ msgstr "축소"
 msgid "sTessellationFactor"
 msgstr "최대 분할수"
 
+msgid "sRimShadeSetting"
+msgstr "림쉐이드"
+
+msgid "RimShade"
+msgstr "림쉐이드"
+
 msgid "sEmissionSetting"
 msgstr "발광 설정"
 

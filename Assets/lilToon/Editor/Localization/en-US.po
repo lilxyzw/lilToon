@@ -737,6 +737,12 @@ msgstr "Shrink"
 msgid "sTessellationFactor"
 msgstr "Max Factor"
 
+msgid "sRimShadeSetting"
+msgstr "RimShade"
+
+msgid "RimShade"
+msgstr "RimShade"
+
 msgid "sEmissionSetting"
 msgstr "Emission"
 
