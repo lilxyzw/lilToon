@@ -723,10 +723,10 @@ msgid "sTouchStrength"
 msgstr "接触强度"
 
 msgid "sTessellation"
-msgstr "细分 (极高负载)"
+msgstr "曲面细分 (极高负载)"
 
 msgid "sTessellationTips"
-msgstr "您可以在此设置细分选项。"
+msgstr "您可以在此设置曲面细分选项。"
 
 msgid "sTessellationEdge"
 msgstr "阈值"
