@@ -74,6 +74,7 @@ export const ja_JP = defineConfig({
           { text: 'シェーダー設定', link: langName + '/other/settings' },
           { text: 'メニューの追加項目', link: langName + '/other/menuitem' },
           { text: 'テクスチャのインポート設定について', link: langName + '/other/textures' },
+          { text: '【重要】バージョン1.xから2.xへの移行について', link: langName + '/migrate1to2' },
           { text: 'Q&A', link: langName + '/other/qa' },
           { text: '変更履歴', link: langName + '/other/changelog' },
         ]
