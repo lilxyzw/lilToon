@@ -26,6 +26,9 @@ msgstr "着色器设置"
 msgid "sHelpSelectOverlay"
 msgstr "您目前选择了 lilToonOverlay，如果是一般用途的话请更改为 lilToon。"
 
+msgid "Mode"
+msgstr "模式"
+
 msgid "sColor"
 msgstr "纹理"
 
@@ -125,6 +128,12 @@ msgstr "透明度 (R)"
 msgid "sMainColorPower"
 msgstr "主色强度"
 
+msgid "Cubemap Fallback"
+msgstr "后备 Cubemap"
+
+msgid "Override"
+msgstr "覆盖"
+
 msgid "sEnableLighting"
 msgstr "启用照明"
 
@@ -151,6 +160,9 @@ msgstr "MSDF 纹理"
 
 msgid "sAsDecal"
 msgstr "作为贴花"
+
+msgid "UV Mode"
+msgstr "UV 模式"
 
 msgid "sAnimation"
 msgstr "动画"
@@ -285,7 +297,7 @@ msgid "sInvisible"
 msgstr "不可见"
 
 msgid "sAsUnlit"
-msgstr "Unlit化"
+msgstr "Unlit 化"
 
 msgid "sAsUnlitWarn"
 msgstr "“Unlit 化”中设置了非零值。这可能会导致材质以及人物模型之间存在亮度差异。"
@@ -359,6 +371,9 @@ msgstr "Cutoff"
 msgid "sSubpassCutoff"
 msgstr "Subpass Cutoff"
 
+msgid "Cull Mode"
+msgstr "Cull Mode   (剔除方向)"
+
 msgid "sCullMode"
 msgstr "Cull Mode   (剔除方向)"
 
@@ -366,10 +381,10 @@ msgid "sCullModeOff"
 msgstr "Off         (渲染双面)"
 
 msgid "sCullModeFront"
-msgstr "Front      (剔除表面，渲染背面)"
+msgstr "Front      (剔除正面，渲染背面)"
 
 msgid "sCullModeBack"
-msgstr "Back       (剔除背面，渲染表面)"
+msgstr "Back       (剔除背面，渲染正面)"
 
 msgid "sFlipBackfaceNormal"
 msgstr "翻转背面法线"
@@ -383,8 +398,17 @@ msgstr "背面强制阴影"
 msgid "sAAShading"
 msgstr "抗锯齿阴影"
 
+msgid "[VRCLV] Rim Border"
+msgstr "[VRCLV] Rim Border"
+
+msgid "[VRCLV] Rim Blur"
+msgstr "[VRCLV] Rim Blur"
+
 msgid "sDither"
 msgstr "Dither"
+
+msgid "Max Value"
+msgstr "最大值"
 
 msgid "sSimpleStencilSettings"
 msgstr "简易 Stencil 设置"
@@ -471,7 +495,7 @@ msgid "sLightingPresetSemiMonochrome"
 msgstr "半单色"
 
 msgid "sHelpRenderingTransparent"
-msgstr "当两个透明材质重叠时，其中一个可能会变得不可见。这种情况下，通过提高前面显示的材质的"Render Queue"值来修正。"
+msgstr "当两个透明材质重叠时，其中一个可能会变得不可见。这种情况下，通过提高前面显示的材质的“Render Queue”值来修正。"
 
 msgid "sHelpRenderingFur"
 msgstr "由于性能原因，应用于毛发的功能受到限制。"
@@ -535,6 +559,27 @@ msgstr "UV 设置"
 
 msgid "sMainUVTips"
 msgstr "您可以在此设置 UV 坐标、比例和动画。"
+
+msgid "sCustomSafetyFallback"
+msgstr "自定义后备着色器"
+
+msgid "sFallbackShaderType"
+msgstr "后备类型"
+
+msgid "sFallbackRenderingMode"
+msgstr "渲染模式"
+
+msgid "sFallbackFacing"
+msgstr "剔除"
+
+msgid "sFallbackResult"
+msgstr "Result"
+
+msgid "sFallbackToonstandardShading"
+msgstr "阴影模式"
+
+msgid "Shadow Ramp"
+msgstr "阴影 Ramp"
 
 msgid "sColors"
 msgstr "纹理设置"
@@ -626,6 +671,12 @@ msgstr "边界范围"
 msgid "sIgnoreBorderProperties"
 msgstr "忽略边界设置"
 
+msgid "Shadow Caster Bias"
+msgstr "Shadow Caster Bias"
+
+msgid "AO Map"
+msgstr "AO Map"
+
 msgid "sFlat"
 msgstr "Flat"
 
@@ -670,6 +721,9 @@ msgstr "R -> Width"
 
 msgid "sVertexRGBA2Normal"
 msgstr "RGBA -> Normal & Width"
+
+msgid "Z Bias"
+msgstr "Z Bias"
 
 msgid "sDeleteMesh0"
 msgstr "删除宽度为 0 的顶点"
@@ -722,8 +776,11 @@ msgstr "根厚度"
 msgid "sTouchStrength"
 msgstr "接触强度"
 
-msgid "sTessellation"
+msgid "sTessellationSetting"
 msgstr "曲面细分 (极高负载)"
+
+msgid "sTessellation"
+msgstr "曲面细分"
 
 msgid "sTessellationTips"
 msgstr "您可以在此设置曲面细分选项。"
@@ -839,6 +896,9 @@ msgstr "RGB = 延迟 / 频宽 / 强度"
 msgid "sAudioLinkMaskRGBSpectrum"
 msgstr "RGB = 音量 / 频宽 / 强度"
 
+msgid "Offset"
+msgstr "偏移"
+
 msgid "sAudioLinkBand"
 msgstr "频段"
 
@@ -888,7 +948,7 @@ msgid "sDissolveWarnOpaque"
 msgstr "如果要使用溶解，则需要将“渲染模式”更改为镂空或透明。"
 
 msgid "sDissolveMode"
-msgstr "Dissolve Mode(溶解模式)"
+msgstr "溶解模式"
 
 msgid "sDissolveModeNone"
 msgstr "None"
@@ -1052,6 +1112,12 @@ msgstr "亮片"
 msgid "sGlitter"
 msgstr "亮片"
 
+msgid "Shape"
+msgstr "形状"
+
+msgid "Atras"
+msgstr "Atras"
+
 msgid "sParticleSize"
 msgstr "粒子大小"
 
@@ -1059,7 +1125,7 @@ msgid "sContrast"
 msgstr "对比度"
 
 msgid "sPostContrast"
-msgstr "对比度(后处理)"
+msgstr "对比度 (后处理)"
 
 msgid "sAngleLimit"
 msgstr "角度限制"

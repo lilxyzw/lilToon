@@ -26,6 +26,9 @@ msgstr "著色器設定"
 msgid "sHelpSelectOverlay"
 msgstr "目前選擇的是 lilToonOverray。若為一般用途，請改用 lilToon。"
 
+msgid "Mode"
+msgstr "模式"
+
 msgid "sColor"
 msgstr "顏色"
 
@@ -125,6 +128,12 @@ msgstr "透明度 (R)"
 msgid "sMainColorPower"
 msgstr "主色強度"
 
+msgid "Cubemap Fallback"
+msgstr "Cubemap Fallback"
+
+msgid "Override"
+msgstr "Override"
+
 msgid "sEnableLighting"
 msgstr "啟用照明"
 
@@ -151,6 +160,9 @@ msgstr "MSDF 貼圖"
 
 msgid "sAsDecal"
 msgstr "作為 Decal"
+
+msgid "UV Mode"
+msgstr "UV Mode"
 
 msgid "sAnimation"
 msgstr "動畫"
@@ -359,6 +371,9 @@ msgstr "Cutoff"
 msgid "sSubpassCutoff"
 msgstr "Subpass Cutoff"
 
+msgid "Cull Mode"
+msgstr "Cull Mode（剔除模式）"
+
 msgid "sCullMode"
 msgstr "Cull Mode（剔除模式）"
 
@@ -383,8 +398,17 @@ msgstr "背面強制陰影"
 msgid "sAAShading"
 msgstr "抗鋸齒陰影"
 
+msgid "[VRCLV] Rim Border"
+msgstr "[VRCLV] Rim Border"
+
+msgid "[VRCLV] Rim Blur"
+msgstr "[VRCLV] Rim Blur"
+
 msgid "sDither"
 msgstr "Dither"
+
+msgid "Max Value"
+msgstr "Max Value"
 
 msgid "sSimpleStencilSettings"
 msgstr "簡易 Stencil 設定"
@@ -536,6 +560,27 @@ msgstr "UV 設定"
 msgid "sMainUVTips"
 msgstr "你可以設定 UV 座標、比例和動畫。"
 
+msgid "sCustomSafetyFallback"
+msgstr "Custom Safety Fallback"
+
+msgid "sFallbackShaderType"
+msgstr "Shader Type"
+
+msgid "sFallbackRenderingMode"
+msgstr "Rendering Mode"
+
+msgid "sFallbackFacing"
+msgstr "Facing"
+
+msgid "sFallbackResult"
+msgstr "Result"
+
+msgid "sFallbackToonstandardShading"
+msgstr "Shading"
+
+msgid "Shadow Ramp"
+msgstr "Shadow Ramp"
+
 msgid "sColors"
 msgstr "顏色設定"
 
@@ -626,6 +671,12 @@ msgstr "邊界範圍"
 msgid "sIgnoreBorderProperties"
 msgstr "忽略邊界設定"
 
+msgid "Shadow Caster Bias"
+msgstr "Shadow Caster Bias"
+
+msgid "AO Map"
+msgstr "AO Map"
+
 msgid "sFlat"
 msgstr "平的"
 
@@ -670,6 +721,9 @@ msgstr "R -> Width"
 
 msgid "sVertexRGBA2Normal"
 msgstr "RGBA -> Normal & Width"
+
+msgid "Z Bias"
+msgstr "Z Bias"
 
 msgid "sDeleteMesh0"
 msgstr "刪除寬度為 0 的頂點"
@@ -722,8 +776,11 @@ msgstr "根厚度"
 msgid "sTouchStrength"
 msgstr "接觸強度"
 
-msgid "sTessellation"
+msgid "sTessellationSetting"
 msgstr "Tessellation（極高負荷）"
+
+msgid "sTessellation"
+msgstr "Tessellation"
 
 msgid "sTessellationTips"
 msgstr "你可以設定 Tessellation。"
@@ -838,6 +895,9 @@ msgstr "RGB = Delay / Band / Strength"
 
 msgid "sAudioLinkMaskRGBSpectrum"
 msgstr "RGB = Volume / Band / Strength"
+
+msgid "Offset"
+msgstr "Offset"
 
 msgid "sAudioLinkBand"
 msgstr "Band"
@@ -1051,6 +1111,12 @@ msgstr "亮粉效果設定"
 
 msgid "sGlitter"
 msgstr "亮粉效果（Glitter）"
+
+msgid "Shape"
+msgstr "Shape"
+
+msgid "Atras"
+msgstr "Atras"
 
 msgid "sParticleSize"
 msgstr "粒子大小"

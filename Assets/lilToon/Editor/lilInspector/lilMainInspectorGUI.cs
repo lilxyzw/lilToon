@@ -1580,7 +1580,7 @@ namespace lilToon
                 // Tessellation
                 if(ShouldDrawBlock(PropertyBlock.Tessellation))
                 {
-                    edSet.isShowTess = lilEditorGUI.Foldout(GetLoc("sTessellation"), edSet.isShowTess);
+                    edSet.isShowTess = lilEditorGUI.Foldout(GetLoc("sTessellationSetting"), edSet.isShowTess);
                     DrawMenuButton(GetLoc("sAnchorTessellation"), PropertyBlock.Tessellation);
                     if(edSet.isShowTess)
                     {
