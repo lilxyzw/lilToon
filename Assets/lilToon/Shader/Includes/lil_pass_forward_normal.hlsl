@@ -115,20 +115,13 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
     LIL_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
     lilFragData fd = lilInitFragData();
 
-    BEFORE_UNPACK_V2F
-    OVERRIDE_UNPACK_V2F
-    LIL_COPY_VFACE(fd.facing);
-    LIL_GET_HDRPDATA(input,fd);
-    #if defined(LIL_V2F_SHADOW) || defined(LIL_PASS_FORWARDADD)
-        LIL_LIGHT_ATTENUATION(fd.attenuation, input);
-    #endif
-
     // For VRCLV
     #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED) && (defined(LIL_INPUT_OPTIMIZED) || defined(LIL_MULTI))
         if(_UdonLightVolumeEnabled)
         {
             lilVertexPositionInputs vertexInput = lilGetVertexPositionInputsFromWS(input.positionWS);
             lilVertexNormalInputs vertexNormalInput = lilGetVertexNormalInputsFromWS(input.normalWS);
+            LIL_UNPACK_TEXCOORD1(input,fd);
             #define input fd
             LIL_CALC_MAINLIGHT(vertexInput, lightdataInput);
             #undef input
@@ -142,6 +135,14 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
                 input.indLightColor  = lightdataInput.indLightColor;
             #endif
         }
+    #endif
+
+    BEFORE_UNPACK_V2F
+    OVERRIDE_UNPACK_V2F
+    LIL_COPY_VFACE(fd.facing);
+    LIL_GET_HDRPDATA(input,fd);
+    #if defined(LIL_V2F_SHADOW) || defined(LIL_PASS_FORWARDADD)
+        LIL_LIGHT_ATTENUATION(fd.attenuation, input);
     #endif
 
     LIL_GET_LIGHTING_DATA(input,fd);
