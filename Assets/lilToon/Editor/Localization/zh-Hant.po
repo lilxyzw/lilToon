@@ -278,6 +278,9 @@ msgstr "背面遮罩"
 msgid "sRandomize"
 msgstr "隨機化"
 
+msgid " (Size)"
+msgstr " (Size)"
+
 msgid "sLimShadowStrength"
 msgstr "陰影強度"
 

@@ -278,6 +278,9 @@ msgstr "후면에서 무효화"
 msgid "sRandomize"
 msgstr "임의화"
 
+msgid " (Size)"
+msgstr " (Size)"
+
 msgid "sLimShadowStrength"
 msgstr "그림자 강도"
 

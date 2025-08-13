@@ -278,6 +278,9 @@ msgstr "裏面で無効化"
 msgid "sRandomize"
 msgstr "ランダム化"
 
+msgid " (Size)"
+msgstr " (Size)"
+
 msgid "sLimShadowStrength"
 msgstr "影の強さ"
 

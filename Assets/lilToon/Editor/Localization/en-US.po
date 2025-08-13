@@ -278,6 +278,9 @@ msgstr "Backface Mask"
 msgid "sRandomize"
 msgstr "Randomize"
 
+msgid " (Size)"
+msgstr " (Size)"
+
 msgid "sLimShadowStrength"
 msgstr "Shadow Strength"
 

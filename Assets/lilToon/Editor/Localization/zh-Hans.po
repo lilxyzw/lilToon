@@ -278,6 +278,9 @@ msgstr "背面蒙版"
 msgid "sRandomize"
 msgstr "随机化"
 
+msgid " (Size)"
+msgstr " (大小)"
+
 msgid "sLimShadowStrength"
 msgstr "阴影强度"
 
