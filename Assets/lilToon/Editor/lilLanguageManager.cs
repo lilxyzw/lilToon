@@ -127,7 +127,14 @@ namespace lilToon
             while ((str = sr.ReadLine()) != null)
             {
                 var lineContents = str.Split('\t');
-                loc[lineContents[0]] = lineContents[langSet.languageNum + 1];
+                if(lineContents.Length > langSet.languageNum + 1)
+                {
+                    loc[lineContents[0]] = lineContents[langSet.languageNum + 1];
+                }
+                else
+                {
+                    loc.Remove(lineContents[0]);
+                }
             }
             sr.Close();
         }

@@ -176,7 +176,7 @@ namespace lilToon
                         int fallbackCullType = tag.Contains("DoubleSided") ? 1 : 0;
 
                         int fallbackShadingType = -1;
-                        if(ramp.textureValue)
+                        if(ramp.p != null && ramp.textureValue)
                         {
                             var path = AssetDatabase.GetAssetPath(ramp.textureValue);
                             var guid = AssetDatabase.AssetPathToGUID(path);
@@ -221,7 +221,7 @@ namespace lilToon
                             default: break;
                         }
 
-                        if(tag.Contains("toonstandard"))
+                        if(ramp.p != null && tag.Contains("toonstandard"))
                         {
                             EditorGUI.BeginChangeCheck();
                             fallbackShadingType = lilEditorGUI.Popup(GetLoc("sFallbackToonstandardShading"), fallbackShadingType, sFallbackShadingTypes);
@@ -244,7 +244,10 @@ namespace lilToon
                         }
                         else
                         {
-                            ramp.textureValue = null;
+                            if(ramp.p != null)
+                            {
+                                ramp.textureValue = null;
+                            }
                             EditorGUILayout.LabelField(GetLoc("sFallbackResult"), '"' + tag + '"');
                         }
 
@@ -253,7 +256,10 @@ namespace lilToon
                     else
                     {
                         tag = "";
-                        ramp.textureValue = null;
+                        if(ramp.p != null)
+                        {
+                            ramp.textureValue = null;
+                        }
                     }
                     EditorGUI.showMixedValue = false;
                     if(EditorGUI.EndChangeCheck())
