@@ -170,6 +170,8 @@ float4 frag(v2f input) : SV_Target
     #if defined(LIL_BRP) && defined(LIL_PASS_FORWARD) && defined(VRC_LIGHT_VOLUMES_INCLUDED)
     if(_UdonLightVolumeEnabled)
     {
+        LIL_CORRECT_LIGHTCOLOR_PS(fd.indLightColor);
+        LIL_CORRECT_LIGHTCOLOR_VS(fd.indLightColor);
         float borderMin = _EnvRimBorder - _EnvRimBlur * 0.5;
         float borderMax = _EnvRimBorder + _EnvRimBlur * 0.5;
         float fakerim = saturate((fd.ln - fd.vl - borderMin) / saturate(borderMax - borderMin + fwidth(fd.ln - fd.vl) * _AAStrength));
