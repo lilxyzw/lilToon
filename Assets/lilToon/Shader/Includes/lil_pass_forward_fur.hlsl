@@ -38,7 +38,9 @@
 #if !defined(LIL_PASS_FORWARDADD)
     #define LIL_V2F_LIGHTCOLOR
     #define LIL_V2F_LIGHTDIRECTION
-    #define LIL_V2F_INDLIGHTCOLOR
+    #if defined(LIL_BRP) || defined(LIL_HDRP)
+        #define LIL_V2F_INDLIGHTCOLOR
+    #endif
 #endif
 #define LIL_V2F_VERTEXLIGHT_FOG
 #define LIL_V2F_FURLAYER
