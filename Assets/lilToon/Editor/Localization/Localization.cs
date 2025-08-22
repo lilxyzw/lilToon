@@ -42,7 +42,7 @@ namespace lilToon
 
         internal static string L(string key)
         {
-            if(!instance.localizationAsset) Load();
+            if (!instance.localizationAsset || !instance.localizationAssetFallback) Load();
             var localized = instance.localizationAsset.GetLocalizedString(key);
             return localized != key ? localized : instance.localizationAssetFallback.GetLocalizedString(key);
         }
@@ -54,7 +54,7 @@ namespace lilToon
 
         private static GUIContent G(string key, Texture image, string tooltip)
         {
-            if (!instance.localizationAsset) Load();
+            if (!instance.localizationAsset || !instance.localizationAssetFallback) Load();
             if (guicontents.TryGetValue(key, out var content)) return content;
             return guicontents[key] = new GUIContent(L(key), image, L(tooltip));
         }
