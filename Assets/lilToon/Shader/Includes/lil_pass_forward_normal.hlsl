@@ -176,6 +176,12 @@ float4 frag(v2f input LIL_VFACE(facing)) : SV_Target
         OVERRIDE_CALC_DDX_DDY
 
         //------------------------------------------------------------------------------------------------------------------------------
+        // Normal
+        #if defined(LIL_V2F_NORMAL_WS)
+            fd.N = normalize(input.normalWS);
+        #endif
+
+        //------------------------------------------------------------------------------------------------------------------------------
         // Main Color
         BEFORE_OUTLINE_COLOR
         OVERRIDE_OUTLINE_COLOR
