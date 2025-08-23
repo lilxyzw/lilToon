@@ -21,7 +21,7 @@
 #if !defined(LIL_PASS_FORWARDADD)
     #define LIL_V2G_LIGHTCOLOR
     #define LIL_V2G_LIGHTDIRECTION
-    #if defined(LIL_FEATURE_SHADOW)
+    #if defined(LIL_FEATURE_SHADOW) && (defined(LIL_BRP) || defined(LIL_HDRP))
         #define LIL_V2G_INDLIGHTCOLOR
     #endif
 #endif
