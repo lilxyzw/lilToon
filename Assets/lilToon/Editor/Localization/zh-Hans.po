@@ -128,9 +128,11 @@ msgstr "透明度 (R)"
 msgid "sMainColorPower"
 msgstr "主色强度"
 
+# TODO
 msgid "Cubemap Fallback"
 msgstr "后备 Cubemap"
 
+# TODO
 msgid "Override"
 msgstr "覆盖"
 
@@ -278,6 +280,7 @@ msgstr "背面蒙版"
 msgid "sRandomize"
 msgstr "随机化"
 
+# TODO
 msgid " (Size)"
 msgstr " (大小)"
 
@@ -401,12 +404,15 @@ msgstr "背面强制阴影"
 msgid "sAAShading"
 msgstr "抗锯齿阴影"
 
+# TODO
 msgid "[VRCLV] Rim Border"
 msgstr "[VRCLV] Rim Border"
 
+# TODO
 msgid "[VRCLV] Rim Blur"
 msgstr "[VRCLV] Rim Blur"
 
+# TODO
 msgid "sDither"
 msgstr "Dither"
 
@@ -482,6 +488,7 @@ msgstr "跟随对象方向"
 msgid "sDirectionalLightStrength"
 msgstr "[HDRP] 定向光强度"
 
+# TODO
 msgid "sBeforeExposureLimit"
 msgstr "[HDRP] Before exposure limit"
 
@@ -563,24 +570,31 @@ msgstr "UV 设置"
 msgid "sMainUVTips"
 msgstr "您可以在此设置 UV 坐标、比例和动画。"
 
+# TODO
 msgid "sCustomSafetyFallback"
-msgstr "自定义后备着色器"
+msgstr "自定义备用着色器"
 
+# TODO
 msgid "sFallbackShaderType"
-msgstr "后备类型"
+msgstr "备用着色器类型"
 
+# TODO
 msgid "sFallbackRenderingMode"
 msgstr "渲染模式"
 
+# TODO
 msgid "sFallbackFacing"
 msgstr "剔除"
 
+# TODO
 msgid "sFallbackResult"
 msgstr "Result"
 
+# TODO
 msgid "sFallbackToonstandardShading"
 msgstr "阴影模式"
 
+# TODO
 msgid "Shadow Ramp"
 msgstr "阴影 Ramp"
 
@@ -674,9 +688,11 @@ msgstr "边界范围"
 msgid "sIgnoreBorderProperties"
 msgstr "忽略边界设置"
 
+# TODO
 msgid "Shadow Caster Bias"
 msgstr "Shadow Caster Bias"
 
+# TODO
 msgid "AO Map"
 msgstr "AO Map"
 
@@ -725,6 +741,7 @@ msgstr "R -> Width"
 msgid "sVertexRGBA2Normal"
 msgstr "RGBA -> Normal & Width"
 
+# TODO
 msgid "Z Bias"
 msgstr "Z Bias"
 
@@ -1115,9 +1132,11 @@ msgstr "亮片"
 msgid "sGlitter"
 msgstr "亮片"
 
+# TODO
 msgid "Shape"
 msgstr "形状"
 
+# TODO
 msgid "Atras"
 msgstr "Atras"
 
