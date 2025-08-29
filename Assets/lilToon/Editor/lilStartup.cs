@@ -18,10 +18,6 @@ namespace lilToon
         {
             //------------------------------------------------------------------------------------------------------------------------------
             // Variables
-            #pragma warning disable CS0612
-            lilLanguageManager.InitializeLanguage();
-            #pragma warning restore CS0612
-
             AssetDatabase.importPackageStarted -= PackageVersionChecker;
             AssetDatabase.importPackageStarted += PackageVersionChecker;
             EditorApplication.playModeStateChanged -= PlayModeStateChanged;
