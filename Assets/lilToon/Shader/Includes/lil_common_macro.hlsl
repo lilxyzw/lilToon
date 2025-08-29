@@ -2017,7 +2017,7 @@ float3 lilGetLightMapDirection(float2 uv)
     #define LIL_LIGHTDIRECTION_COORDS(idx)  float3 lightDirection : TEXCOORD##idx;
 #endif
 
-#if defined(LIL_BRP) && !defined(LIL_PASS_FORWARDADD)
+#if (defined(LIL_BRP) || defined(LIL_HDRP)) && !defined(LIL_PASS_FORWARDADD)
     #define LIL_INDLIGHTCOLOR_COORDS(idx)   float3 indLightColor : TEXCOORD##idx;
     #define LIL_GET_INDLIGHTCOLOR(i,o)      o.indLightColor = i.indLightColor
 #else
