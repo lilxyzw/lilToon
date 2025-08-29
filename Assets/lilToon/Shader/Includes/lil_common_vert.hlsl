@@ -90,6 +90,10 @@ LIL_V2F_TYPE vert(appdata input)
     LIL_INITIALIZE_VERTEX_OUTPUT_STEREO(LIL_V2F_OUT_BASE);
 
     //------------------------------------------------------------------------------------------------------------------------------
+    // Set up light color
+    LIL_FORCE_SCENE_LIGHT;
+
+    //------------------------------------------------------------------------------------------------------------------------------
     // UV
     float2 uvMain = lilCalcUV(input.uv0, _MainTex_ST);
     float2 uvs[4] = {uvMain,input.uv1,input.uv2,input.uv3};

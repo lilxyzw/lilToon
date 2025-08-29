@@ -907,6 +907,9 @@ float4 _AudioTexture_TexelSize;
     #define sampler_OutlineTex lil_sampler_linear_repeat
 #endif
 
+// For VRChat
+uint _UdonForceSceneLighting;
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Custom properties
 #if defined(LIL_CUSTOM_TEXTURES)
