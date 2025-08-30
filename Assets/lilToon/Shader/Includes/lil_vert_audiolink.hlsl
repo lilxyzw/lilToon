@@ -18,7 +18,7 @@
 
         // Mask (R:Delay G:Band B:Strength)
         float4 audioLinkMask = 1.0;
-        #if defined(Use_AudioLinkMask)
+        #if defined(LIL_FEATURE_AudioLinkMask)
             if(_AudioLinkVertexUVMode == 3)
             {
                 float2 uvMask = uvMain;
