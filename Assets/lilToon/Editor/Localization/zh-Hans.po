@@ -6,34 +6,37 @@ msgstr ""
 "Language: zh-Hans\n"
 
 msgid "sLanguageWarning"
-msgstr "翻译可能不准确，因为使用了机器翻译。"
+msgstr "翻译可能不准确，长按 Alt 键可显示关键字。"
 
 msgid "sEditorMode"
 msgstr "编辑器模式"
 
 msgid "sEditorModeSimple"
-msgstr "简单设置"
+msgstr "简易模式"
 
 msgid "sEditorModeAdvanced"
-msgstr "详细设置"
+msgstr "详细模式"
 
 msgid "sEditorModePreset"
-msgstr "预设"
+msgstr "材质预设"
 
 msgid "sEditorModeShaderSetting"
 msgstr "着色器设置"
 
 msgid "sHelpSelectOverlay"
-msgstr "目前选择了 lilToonOverray，如果是通常用途的话请变更为 lilToon。"
+msgstr "您目前选择了 lilToonOverlay，如果是一般用途的话请更改为 lilToon。"
+
+msgid "Mode"
+msgstr "模式"
 
 msgid "sColor"
-msgstr "颜色"
+msgstr "纹理"
 
 msgid "sAlpha"
 msgstr "透明度"
 
 msgid "sColorAlpha"
-msgstr "颜色 / 透明度"
+msgstr "主色 / 透明度"
 
 msgid "sGamma"
 msgstr "伽玛"
@@ -66,10 +69,10 @@ msgid "sTexture"
 msgstr "纹理"
 
 msgid "sTextureRGB"
-msgstr "颜色 (RGB)"
+msgstr "主色 (RGB)"
 
 msgid "sTextureRGBA"
-msgstr "颜色 (RGB) & 透明度 (A)"
+msgstr "主色 (RGB) & 透明度 (A)"
 
 msgid "sMask"
 msgstr "蒙版"
@@ -84,16 +87,16 @@ msgid "sBlendMode"
 msgstr "混合模式"
 
 msgid "sBlendModeNormal"
-msgstr "Normal"
+msgstr "Normal (正常)"
 
 msgid "sBlendModeAdd"
-msgstr "Add"
+msgstr "Add (叠加)"
 
 msgid "sBlendModeScreen"
-msgstr "Screen"
+msgstr "Screen (滤色)"
 
 msgid "sBlendModeMul"
-msgstr "Multiply"
+msgstr "Multiply (正片叠底)"
 
 msgid "sBorder"
 msgstr "边界"
@@ -117,19 +120,27 @@ msgid "sBlurRGB"
 msgstr "模糊 (RGB = 第一/第二/第三)"
 
 msgid "sBlurMask"
-msgstr "模糊掩码"
+msgstr "模糊蒙版"
 
 msgid "sAlphaR"
 msgstr "透明度 (R)"
 
 msgid "sMainColorPower"
-msgstr "主色功率"
+msgstr "主色强度"
+
+# TODO
+msgid "Cubemap Fallback"
+msgstr "后备 Cubemap"
+
+# TODO
+msgid "Override"
+msgstr "覆盖"
 
 msgid "sEnableLighting"
 msgstr "启用照明"
 
 msgid "sUVSetting"
-msgstr "UV设置"
+msgstr "UV 设置"
 
 msgid "sUVAnimation"
 msgstr "UV 动画"
@@ -150,7 +161,10 @@ msgid "sAsMSDF"
 msgstr "MSDF 纹理"
 
 msgid "sAsDecal"
-msgstr "作为 Decal"
+msgstr "作为贴花"
+
+msgid "UV Mode"
+msgstr "UV 模式"
 
 msgid "sAnimation"
 msgstr "动画"
@@ -219,7 +233,7 @@ msgid "sPositionY"
 msgstr "Y 坐标"
 
 msgid "sScale"
-msgstr "尺寸"
+msgstr "平铺大小"
 
 msgid "sScaleX"
 msgstr "X 尺寸"
@@ -234,7 +248,7 @@ msgid "sVertex"
 msgstr "顶点"
 
 msgid "sVertexColor"
-msgstr "顶点颜色"
+msgstr "顶点主色"
 
 msgid "sThreshold"
 msgstr "阈值"
@@ -266,6 +280,10 @@ msgstr "背面蒙版"
 msgid "sRandomize"
 msgstr "随机化"
 
+# TODO
+msgid " (Size)"
+msgstr " (大小)"
+
 msgid "sLimShadowStrength"
 msgstr "阴影强度"
 
@@ -285,19 +303,19 @@ msgid "sInvisible"
 msgstr "不可见"
 
 msgid "sAsUnlit"
-msgstr "作为 Unlit"
+msgstr "Unlit 化"
 
 msgid "sAsUnlitWarn"
-msgstr "“作为 Unlit”中设置了非零值。这可能会导致材质以及 Avatar 之间存在亮度差异。"
+msgstr "“Unlit 化”中设置了非零值。这可能会导致材质以及人物模型之间存在亮度差异。"
 
 msgid "sShaderType"
-msgstr "着色器类型"
+msgstr "着色器功能"
 
 msgid "sShaderTypeNormal"
-msgstr "Normal"
+msgstr "Normal   (默认)"
 
 msgid "sShaderTypeLite"
-msgstr "Lite"
+msgstr "Lite         (轻量)"
 
 msgid "sRenderingMode"
 msgstr "渲染模式"
@@ -333,7 +351,7 @@ msgid "sTransparentMode"
 msgstr "透明模式"
 
 msgid "sTransparentModeNormal"
-msgstr "Normal"
+msgstr "普通"
 
 msgid "sTransparentModeOnePass"
 msgstr "One Pass"
@@ -342,10 +360,10 @@ msgid "sTransparentModeTwoPass"
 msgstr "Two Pass"
 
 msgid "sColorType"
-msgstr "颜色类型"
+msgstr "主色类型"
 
 msgid "sColorTypeNormal"
-msgstr "Normal"
+msgstr "正常"
 
 msgid "sColorTypeLUT"
 msgstr "LUT"
@@ -359,17 +377,20 @@ msgstr "Cutoff"
 msgid "sSubpassCutoff"
 msgstr "Subpass Cutoff"
 
+msgid "Cull Mode"
+msgstr "Cull Mode   (剔除方向)"
+
 msgid "sCullMode"
-msgstr "Cull Mode"
+msgstr "Cull Mode   (剔除方向)"
 
 msgid "sCullModeOff"
-msgstr "Off"
+msgstr "Off         (渲染双面)"
 
 msgid "sCullModeFront"
-msgstr "Front"
+msgstr "Front      (剔除正面，渲染背面)"
 
 msgid "sCullModeBack"
-msgstr "Back"
+msgstr "Back       (剔除背面，渲染正面)"
 
 msgid "sFlipBackfaceNormal"
 msgstr "翻转背面法线"
@@ -378,13 +399,25 @@ msgid "sShiftBackfaceUV"
 msgstr "移动背面 UV"
 
 msgid "sBackfaceForceShadow"
-msgstr "背面阴影力量"
+msgstr "背面强制阴影"
 
 msgid "sAAShading"
 msgstr "抗锯齿阴影"
 
+# TODO
+msgid "[VRCLV] Rim Border"
+msgstr "[VRCLV] Rim Border"
+
+# TODO
+msgid "[VRCLV] Rim Blur"
+msgstr "[VRCLV] Rim Blur"
+
+# TODO
 msgid "sDither"
 msgstr "Dither"
+
+msgid "Max Value"
+msgstr "最大值"
 
 msgid "sSimpleStencilSettings"
 msgstr "简易 Stencil 设置"
@@ -455,6 +488,7 @@ msgstr "跟随对象方向"
 msgid "sDirectionalLightStrength"
 msgstr "[HDRP] 定向光强度"
 
+# TODO
 msgid "sBeforeExposureLimit"
 msgstr "[HDRP] Before exposure limit"
 
@@ -471,7 +505,7 @@ msgid "sLightingPresetSemiMonochrome"
 msgstr "半单色"
 
 msgid "sHelpRenderingTransparent"
-msgstr "当两个透明材质重叠时，其中一个可能会变得不可见。这种情况下，通过提高前面显示的材质的"Render Queue"值来修正。"
+msgstr "当两个透明材质重叠时，其中一个可能会变得不可见。这种情况下，通过提高前面显示的材质的“Render Queue”值来修正。"
 
 msgid "sHelpRenderingFur"
 msgstr "由于性能原因，应用于毛发的功能受到限制。"
@@ -480,7 +514,7 @@ msgid "sHelpTransparentForWorld"
 msgstr "将透明材质的 Render Queue 设置为 2999 或更低，会使后面的其他材质不可见，造成衣服和头发消失等问题。对于 World 项目，推荐设定为 3000 以上或关闭 ZWrite 设定。"
 
 msgid "sHelpGrabPass"
-msgstr "反射和宝石使用 GrabPass，因此在可能对移动端 GPU 中产生很大的性能影响。"
+msgstr "反射和宝石使用 GrabPass，因此可能对移动端 GPU 产生很大的性能影响。"
 
 msgid "sHelpGeometryShader"
 msgstr "由于几何体着色器在 iOS 或 Mac 上不起作用，因此建议将其更改为其他渲染模式。"
@@ -507,16 +541,16 @@ msgid "sBlendingMax"
 msgstr "Max"
 
 msgid "sMaskTiling"
-msgstr "蒙版 UV Tiling"
+msgstr "蒙版 UV 平铺"
 
 msgid "sMaskOffset"
-msgstr "蒙版 UV Offset"
+msgstr "蒙版 UV 偏移"
 
 msgid "sNoise"
 msgstr "噪点"
 
 msgid "sNoiseR"
-msgstr "Noise (R)"
+msgstr "噪点 (R)"
 
 msgid "sNoiseStrength"
 msgstr "噪点强度"
@@ -534,19 +568,47 @@ msgid "sMainUV"
 msgstr "UV 设置"
 
 msgid "sMainUVTips"
-msgstr "你可以设置 UV 坐标、比例和动画。"
+msgstr "您可以在此设置 UV 坐标、比例和动画。"
+
+# TODO
+msgid "sCustomSafetyFallback"
+msgstr "自定义备用着色器"
+
+# TODO
+msgid "sFallbackShaderType"
+msgstr "备用着色器类型"
+
+# TODO
+msgid "sFallbackRenderingMode"
+msgstr "渲染模式"
+
+# TODO
+msgid "sFallbackFacing"
+msgstr "剔除"
+
+# TODO
+msgid "sFallbackResult"
+msgstr "Result"
+
+# TODO
+msgid "sFallbackToonstandardShading"
+msgstr "阴影模式"
+
+# TODO
+msgid "Shadow Ramp"
+msgstr "阴影 Ramp"
 
 msgid "sColors"
-msgstr "颜色设置"
+msgstr "纹理设置"
 
 msgid "sMainColorSetting"
-msgstr "主色 / Alpha 設置"
+msgstr "主色 / Alpha 设置"
 
 msgid "sMainColorSettingSimple"
-msgstr "主色 / Alpha 設置"
+msgstr "主色 / Alpha 设置"
 
 msgid "sMainColorTips"
-msgstr "你可以设置颜色和透明度。"
+msgstr "您可以在此设置材质主色和透明度。"
 
 msgid "sMainColorAlpha"
 msgstr "主色 / 透明度"
@@ -567,7 +629,7 @@ msgid "sGradationMap"
 msgstr "渐变映射"
 
 msgid "sNotAlphaIsTransparency"
-msgstr "此纹理未被设置为 Alpha 是透明的"
+msgstr "此纹理的 Alpha 未被设置为透明"
 
 msgid "sAlphaMask"
 msgstr "Alpha 蒙版"
@@ -579,22 +641,22 @@ msgid "sAlphaMaskModeNone"
 msgstr "无"
 
 msgid "sAlphaMaskModeReplace"
-msgstr "Replace"
+msgstr "Replace (替换)"
 
 msgid "sAlphaMaskModeMul"
-msgstr "Multiply"
+msgstr "Multiply (正片叠底)"
 
 msgid "sAlphaMaskModeAdd"
-msgstr "Add"
+msgstr "Add (叠加)"
 
 msgid "sAlphaMaskModeSub"
-msgstr "Subtract"
+msgstr "Subtract (减淡)"
 
 msgid "sShadowSetting"
 msgstr "阴影设置"
 
 msgid "sShadowTips"
-msgstr "你可以设置阴影的颜色和范围。"
+msgstr "您可以在此设置阴影的主色和范围。"
 
 msgid "sShadow"
 msgstr "阴影"
@@ -603,19 +665,19 @@ msgid "sReceiveShadow"
 msgstr "接收阴影"
 
 msgid "sShadowColor"
-msgstr "阴影颜色"
+msgstr "阴影主色"
 
 msgid "sShadow1stColor"
-msgstr "颜色 1"
+msgstr "阴影颜色 1 "
 
 msgid "sShadow2ndColor"
-msgstr "颜色 2"
+msgstr "阴影颜色 2 "
 
 msgid "sShadow3rdColor"
-msgstr "颜色 3"
+msgstr "阴影颜色 3 "
 
 msgid "sShadowEnvStrength"
-msgstr "阴影颜色的环境强度"
+msgstr "阴影颜色的环境影响"
 
 msgid "sShadowBorderColor"
 msgstr "边界颜色"
@@ -626,17 +688,25 @@ msgstr "边界范围"
 msgid "sIgnoreBorderProperties"
 msgstr "忽略边界设置"
 
+# TODO
+msgid "Shadow Caster Bias"
+msgstr "Shadow Caster Bias"
+
+# TODO
+msgid "AO Map"
+msgstr "AO Map"
+
 msgid "sFlat"
-msgstr "平的"
+msgstr "Flat"
 
 msgid "sBacklightSetting"
-msgstr "背光灯设置"
+msgstr "背光"
 
 msgid "sBacklight"
-msgstr "背光灯"
+msgstr "背光"
 
 msgid "sBacklightTips"
-msgstr "当照明在模型后面时添加背光灯"
+msgstr "当摄像机对准模型的背光面时，为模型的受光面边缘添加高光效果"
 
 msgid "sDirectivity"
 msgstr "指向性"
@@ -645,16 +715,16 @@ msgid "sViewDirectionStrength"
 msgstr "视线方向强度"
 
 msgid "sOutlineSetting"
-msgstr "轮廓设置"
+msgstr "轮廓"
 
 msgid "sOutlineTips"
-msgstr "你可以设置轮廓的颜色和厚度。"
+msgstr "您可以在此设置轮廓的主色和厚度。"
 
 msgid "sOutline"
 msgstr "轮廓"
 
 msgid "sHighlight"
-msgstr "高亮颜色"
+msgstr "高亮主色"
 
 msgid "sWidth"
 msgstr "蒙版 & 宽度"
@@ -663,13 +733,17 @@ msgid "sWidthR"
 msgstr "宽度 (R)"
 
 msgid "sFixWidth"
-msgstr "按距离修正宽度"
+msgstr "按距离补偿宽度"
 
 msgid "sVertexR2Width"
 msgstr "R -> Width"
 
 msgid "sVertexRGBA2Normal"
 msgstr "RGBA -> Normal & Width"
+
+# TODO
+msgid "Z Bias"
+msgstr "Z Bias"
 
 msgid "sDeleteMesh0"
 msgstr "删除宽度为 0 的顶点"
@@ -681,7 +755,7 @@ msgid "sRefractionSetting"
 msgstr "折射设置"
 
 msgid "sRefractionTips"
-msgstr "你可以设置折射强度和颜色。"
+msgstr "您可以在此设置折射强度和主色。"
 
 msgid "sRefraction"
 msgstr "折射"
@@ -690,13 +764,13 @@ msgid "sRefractionFresnel"
 msgstr "菲涅尔"
 
 msgid "sColorFromMain"
-msgstr "从主色获取颜色"
+msgstr "从主色获取纹理"
 
 msgid "sFurSetting"
 msgstr "毛发设置"
 
 msgid "sFurTips"
-msgstr "你可以设置毛发的长度和方向。"
+msgstr "您可以在此设置毛发的长度和方向。"
 
 msgid "sFur"
 msgstr "毛发"
@@ -722,38 +796,47 @@ msgstr "根厚度"
 msgid "sTouchStrength"
 msgstr "接触强度"
 
+msgid "sTessellationSetting"
+msgstr "曲面细分 (极高负载)"
+
 msgid "sTessellation"
-msgstr "镶嵌 (极高负载)"
+msgstr "曲面细分"
 
 msgid "sTessellationTips"
-msgstr "你可以设置镶嵌。"
+msgstr "您可以在此设置曲面细分选项。"
 
 msgid "sTessellationEdge"
-msgstr "阈值长度"
+msgstr "阈值"
 
 msgid "sTessellationShrink"
-msgstr "缩减"
+msgstr "收缩幅度"
 
 msgid "sTessellationFactor"
-msgstr "最大系数"
+msgstr "最大细分数"
+
+msgid "sRimShadeSetting"
+msgstr "边缘阴影"
+
+msgid "RimShade"
+msgstr "边缘阴影"
 
 msgid "sEmissionSetting"
-msgstr "发光设置"
+msgstr "自发光"
 
 msgid "sEmissionTips"
-msgstr "你可以设置灯光颜色和闪烁。"
+msgstr "您可以在此设置灯光主色和闪烁。"
 
 msgid "sEmission"
-msgstr "发光"
+msgstr "自发光"
 
 msgid "sEmission2nd"
-msgstr "第二发光"
+msgstr "第二自发光"
 
 msgid "sBlinkStrength"
 msgstr "闪烁强度"
 
 msgid "sBlinkType"
-msgstr "闪烁类型"
+msgstr "禁用渐变闪烁"
 
 msgid "sBlinkSpeed"
 msgstr "闪烁速度"
@@ -768,7 +851,7 @@ msgid "sGradTexSpeed"
 msgstr "纹理 & 速度"
 
 msgid "sGradColor"
-msgstr "颜色"
+msgstr "纹理"
 
 msgid "sParallaxDepth"
 msgstr "视差深度"
@@ -780,7 +863,7 @@ msgid "sParallax"
 msgstr "视差"
 
 msgid "sParallaxTips"
-msgstr "你可以设置视差。"
+msgstr "您可以在此设置视差。"
 
 msgid "sParallaxR"
 msgstr "视差 (R)"
@@ -795,7 +878,7 @@ msgid "sDistanceFade"
 msgstr "距离淡化"
 
 msgid "sDistanceFadeTips"
-msgstr "你可以根据距离来设置颜色的变化。"
+msgstr "您可以在此设置整体色调跟随距离的变化。"
 
 msgid "sStartDistance"
 msgstr "开始距离"
@@ -807,7 +890,7 @@ msgid "sAudioLink"
 msgstr "AudioLink"
 
 msgid "sAudioLinkTips"
-msgstr "根据 AudioLink 系统更改材质外观的设置。"
+msgstr "根据 AudioLink 系统更改材质外观时使用的设置。"
 
 msgid "sAudioLinkUVMode"
 msgstr "UV 模式"
@@ -828,13 +911,16 @@ msgid "sAudioLinkUVModePosition"
 msgstr "坐标"
 
 msgid "sAudioLinkMaskRGB"
-msgstr "RGB = Delay / Band / Strength"
+msgstr "RGB = 延迟 / 频宽 / 强度"
 
 msgid "sAudioLinkMaskRGBSpectrum"
-msgstr "RGB = Volume / Band / Strength"
+msgstr "RGB = 音量 / 频宽 / 强度"
+
+msgid "Offset"
+msgstr "偏移"
 
 msgid "sAudioLinkBand"
-msgstr "Band"
+msgstr "频段"
 
 msgid "sAudioLinkBandBass"
 msgstr "Bass"
@@ -849,7 +935,7 @@ msgid "sAudioLinkBandTreble"
 msgstr "Treble"
 
 msgid "sAudioLinkStartPosition"
-msgstr "初始点"
+msgstr "初始位置"
 
 msgid "sAudioLinkMovingVector"
 msgstr "运动方向"
@@ -870,13 +956,13 @@ msgid "sAudioLinkLocalMapNotes"
 msgstr "Notes"
 
 msgid "sAudioLinkDefaultValue"
-msgstr "没有 AudioLink 的默认值"
+msgstr "没有使用 AudioLink 时的默认值"
 
 msgid "sDissolve"
-msgstr "Dissolve"
+msgstr "溶解"
 
 msgid "sDissolveTips"
-msgstr "用于溶解材质的设置"
+msgstr "设置材质的溶解效果"
 
 msgid "sDissolveWarnOpaque"
 msgstr "如果要使用溶解，则需要将“渲染模式”更改为镂空或透明。"
@@ -933,10 +1019,10 @@ msgid "sNormalMapReflection"
 msgstr "法线贴图 & 反射设置"
 
 msgid "sNormalMapSetting"
-msgstr "法线贴图设置"
+msgstr "法线贴图"
 
 msgid "sNormalMapTips"
-msgstr "你可以设置法线贴图。"
+msgstr "您可以在此设置法线贴图。"
 
 msgid "sNormalMap"
 msgstr "法线贴图"
@@ -957,10 +1043,10 @@ msgid "sBitangentWidth"
 msgstr "Bitangent Width"
 
 msgid "sReflectionsSetting"
-msgstr "反射设置"
+msgstr "反射"
 
 msgid "sReflectionsTips"
-msgstr "你可以设置反射。"
+msgstr "设置材质的反射效果。"
 
 msgid "sReflection"
 msgstr "反射"
@@ -972,10 +1058,10 @@ msgid "sSmoothnessR"
 msgstr "平滑度 (R)"
 
 msgid "sMetallic"
-msgstr "金属程度"
+msgstr "金属度"
 
 msgid "sMetallicR"
-msgstr "金属程度 (R)"
+msgstr "金属度 (R)"
 
 msgid "sReflectance"
 msgstr "反射率"
@@ -999,7 +1085,7 @@ msgid "sApplyReflection"
 msgstr "环境反射"
 
 msgid "sMatCapSetting"
-msgstr "MatCap 设置"
+msgstr "MatCap"
 
 msgid "sMatCap"
 msgstr "MatCap"
@@ -1023,10 +1109,10 @@ msgid "sMatCapCustomNormal"
 msgstr "自定义法线贴图"
 
 msgid "sRimLightSetting"
-msgstr "Rim Light 设置"
+msgstr "边缘光"
 
 msgid "sRimLight"
-msgstr "Rim Light"
+msgstr "边缘光"
 
 msgid "sFresnelPower"
 msgstr "菲涅尔折射率"
@@ -1035,16 +1121,24 @@ msgid "sRimLightDirection"
 msgstr "光线方向影响"
 
 msgid "sRimDirectionRange"
-msgstr "直射光宽"
+msgstr "直射光宽度"
 
 msgid "sRimIndirectionRange"
-msgstr "间接光宽"
+msgstr "间接光宽度"
 
 msgid "sGlitterSetting"
-msgstr "Glitter 设置"
+msgstr "亮片"
 
 msgid "sGlitter"
-msgstr "Glitter"
+msgstr "亮片"
+
+# TODO
+msgid "Shape"
+msgstr "形状"
+
+# TODO
+msgid "Atras"
+msgstr "Atras"
 
 msgid "sParticleSize"
 msgstr "粒子大小"
@@ -1053,7 +1147,7 @@ msgid "sContrast"
 msgstr "对比度"
 
 msgid "sPostContrast"
-msgstr "对比度（后处理）"
+msgstr "对比度 (后处理)"
 
 msgid "sAngleLimit"
 msgstr "角度限制"
@@ -1071,7 +1165,7 @@ msgid "sChromaticAberration"
 msgstr "色差"
 
 msgid "sEnvironmentColor"
-msgstr "环境光色"
+msgstr "环境光主色"
 
 msgid "sParticleLoop"
 msgstr "粒子循环数"
@@ -1080,7 +1174,7 @@ msgid "sStencilSetting"
 msgstr "Stencil 设置"
 
 msgid "sStencilTips"
-msgstr "你可以配置详细的 Stencil 设置。"
+msgstr "您可以在此配置详细的 Stencil 设置。"
 
 msgid "sAdvanced"
 msgstr "扩展设置"
@@ -1089,16 +1183,16 @@ msgid "sRenderingSetting"
 msgstr "渲染设置"
 
 msgid "sRenderingTips"
-msgstr "你可以配置详细的渲染设置。"
+msgstr "您可以在此配置详细的渲染设置。"
 
 msgid "sZClip"
-msgstr "ZClip"
+msgstr "ZClip           (深度剪裁)"
 
 msgid "sZWrite"
-msgstr "ZWrite"
+msgstr "ZWrite         (写入深度)"
 
 msgid "sZTest"
-msgstr "ZTest"
+msgstr "ZTest           (遮挡方式)"
 
 msgid "sOffsetFactor"
 msgstr "Offset Factor"
@@ -1107,7 +1201,7 @@ msgid "sOffsetUnits"
 msgstr "Offset Units"
 
 msgid "sColorMask"
-msgstr "Color Mask"
+msgstr "Color Mask  (色彩通道)"
 
 msgid "sAlphaToMask"
 msgstr "AlphaToMask"
@@ -1146,34 +1240,34 @@ msgid "sOptimization"
 msgstr "优化"
 
 msgid "sOptimizationTips"
-msgstr "你可以对材质进行优化，以减少负荷。"
+msgstr "您可以在此对材质进行优化，以减少系统负荷。"
 
 msgid "sCustomProperties"
 msgstr "自定义属性"
 
 msgid "sCustomPropertiesTips"
-msgstr "显示用户添加的属性"
+msgstr "显示由用户添加的属性"
 
 msgid "sBake"
 msgstr "烘培"
 
 msgid "sBakeAll"
-msgstr "烘培所有层"
+msgstr "烘培并合并所有主色"
 
 msgid "sBake1st"
-msgstr "烘培颜色转移"
+msgstr "烘培第一层主色"
 
 msgid "sBake2nd"
-msgstr "烘培第二层"
+msgstr "烘培第二层主色"
 
 msgid "sBake3rd"
-msgstr "烘培第三层"
+msgstr "烘培第三层主色"
 
 msgid "sBakeAlphamask"
 msgstr "烘焙 Alpha 蒙版"
 
 msgid "sSelectAlphamask"
-msgstr "选择Alpha 蒙版"
+msgstr "选择 Alpha 蒙版"
 
 msgid "sRemoveUnused"
 msgstr "移除未使用的纹理"
@@ -1188,7 +1282,7 @@ msgid "sConvertMToon"
 msgstr "转换为 MToon (VRM)"
 
 msgid "sOptimizeForEvents"
-msgstr "优化以提交到事件"
+msgstr "为提交事件进行优化"
 
 msgid "sYes"
 msgstr "是"
@@ -1203,7 +1297,7 @@ msgid "sCancel"
 msgstr "取消"
 
 msgid "sNone"
-msgstr "None"
+msgstr "无"
 
 msgid "sComplete"
 msgstr "完成！"
@@ -1215,7 +1309,7 @@ msgid "sPaste"
 msgstr "粘贴"
 
 msgid "sPasteWithTexture"
-msgstr "粘贴（包括纹理）"
+msgstr "粘贴(包括纹理)"
 
 msgid "sReset"
 msgstr "重置"
@@ -1224,67 +1318,67 @@ msgid "sOpenManual"
 msgstr "打开手册"
 
 msgid "sFixNow"
-msgstr "自动修改"
+msgstr "自动修复"
 
 msgid "sDialogResetUV"
 msgstr "重置 UV 设置"
 
 msgid "sDialogResetUVMes"
-msgstr "你确定要重置 UV 设置吗？"
+msgstr "您确定要重置 UV 设置吗？"
 
 msgid "sDialogCannotBake"
-msgstr "不能运行烘培"
+msgstr "目前不能进行烘培"
 
 msgid "sDialogNoNeedBake"
-msgstr "不需要运行烘培"
+msgstr "目前不需要进行烘培"
 
 msgid "sDialogSetMainTex"
-msgstr "你需要将纹理设置为主色。"
+msgstr "您需要将纹理设置为主色。"
 
 msgid "sDialogNoChange"
-msgstr "你没有更改颜色。"
+msgstr "您没有调节主色，不需要进行烘焙。"
 
 msgid "sDialogNotUse2nd"
-msgstr "你没有使用第二层。"
+msgstr "您没有使用第二层主色。"
 
 msgid "sDialogNotUse3rd"
-msgstr "你没有使用第三层。"
+msgstr "您没有使用第三层主色。"
 
 msgid "sDialogNotUseAll"
-msgstr "你没有更改颜色，没有使用图层。"
+msgstr "您既没有更改主色，也没有使用图层。"
 
 msgid "sDialogRunBake"
 msgstr "进行烘培？"
 
 msgid "sDialogBakeMain"
-msgstr "你要烘培主纹理吗？"
+msgstr "您确定要烘培主纹理吗？"
 
 msgid "sDialogBakeShadow"
-msgstr "你要烘培阴影纹理吗？"
+msgstr "您确定要烘培阴影纹理吗？"
 
 msgid "sDialogBakeMatCap"
-msgstr "你要烘培 matcap 吗？"
+msgstr "您确定要烘培 matcap 吗？"
 
 msgid "sDialogBakeTriMask"
-msgstr "你要烘培这三个蒙版（MatCap/Rim/发光）吗？"
+msgstr "您确定要烘培这三个蒙版(MatCap/Rim/发光)吗？"
 
 msgid "sDialogBakeOutline"
-msgstr "你要烘培轮廓纹理吗？"
+msgstr "您确定要烘培轮廓纹理吗？"
 
 msgid "sDialogGifToAtlas"
 msgstr "将 Gif 转换成图集"
 
 msgid "sDialogTexPow2"
-msgstr "你要把纹理分辨率调整为 2 的幂吗？"
+msgstr "您要把纹理分辨率调整为 2 的整数倍吗？"
 
 msgid "sDialogImportOldVer"
-msgstr "您要导入的包版本早于已导入的 lilToon 版本。是否继续？"
+msgstr "您要导入的 lilToon 版本早于已导入的 lilToon 版本。是否继续？"
 
 msgid "sDialogImportPackage"
-msgstr "已经导入了UPM版lilToon。是否继续导入unitypackage版？（这可能会导致脚本错误等。）"
+msgstr "已经导入了UPM版lilToon。是否继续导入unitypackage版本？(可能会导致脚本错误等一系列问题。)"
 
 msgid "sWarnOptimiseMeshData"
-msgstr "Unity错误可能会删除所需的顶点数据。发生故障时，请关闭“Project Setting/Prer/Optimize Mesh Data”。"
+msgstr "Unity可能会错误删除所需的顶点数据。发生问题时，请关闭“Project Setting/Player/Optimize Mesh Data” 选项。"
 
 msgid "sPresets"
 msgstr "预设"
@@ -1338,7 +1432,7 @@ msgid "sPresetShader"
 msgstr "着色器"
 
 msgid "sPresetQueue"
-msgstr "Render Queue"
+msgstr "渲染队列"
 
 msgid "sPresetStencil"
 msgstr "Stencil"
@@ -1371,13 +1465,13 @@ msgid "sPresetShadowStrength"
 msgstr "阴影蒙版"
 
 msgid "sPresetShadowColor"
-msgstr "阴影颜色"
+msgstr "阴影主色"
 
 msgid "sPresetShadowColor2"
-msgstr "阴影颜色 2"
+msgstr "阴影主色 2"
 
 msgid "sPresetEmissionColor"
-msgstr "发光色"
+msgstr "发光主色"
 
 msgid "sPresetEmissionMask"
 msgstr "发光蒙版"
@@ -1386,7 +1480,7 @@ msgid "sPresetEmissionGrad"
 msgstr "发光渐变"
 
 msgid "sPresetEmission2Color"
-msgstr "第二发光颜色"
+msgstr "第二发光主色"
 
 msgid "sPresetEmission2Mask"
 msgstr "第二发光蒙版"
@@ -1398,7 +1492,7 @@ msgid "sPresetNormal"
 msgstr "法线贴图"
 
 msgid "sPresetNormal2"
-msgstr "法线贴图2nd"
+msgstr "第二法线贴图"
 
 msgid "sPresetNormal2Mask"
 msgstr "第二法线贴图蒙版"
@@ -1410,7 +1504,7 @@ msgid "sPresetReflectionMetallic"
 msgstr "金属度"
 
 msgid "sPresetReflectionColor"
-msgstr "反射颜色"
+msgstr "反射主色"
 
 msgid "sPresetMatcap"
 msgstr "MatCap"
@@ -1419,7 +1513,7 @@ msgid "sPresetMatcapMask"
 msgstr "MatCap 蒙版"
 
 msgid "sPresetRim"
-msgstr "Rim 颜色"
+msgstr "Rim 主色"
 
 msgid "sPresetParallax"
 msgstr "视差"
@@ -1434,13 +1528,13 @@ msgid "sPresetFurNormal"
 msgstr "毛发法线"
 
 msgid "sPresetFurNoise"
-msgstr "毛发噪声"
+msgstr "毛发噪点"
 
 msgid "sPresetFurMask"
 msgstr "毛发蒙版"
 
 msgid "sShaderSetting"
-msgstr "着色器设置（用于所有材质）"
+msgstr "着色器设置(用于所有材质)"
 
 msgid "sHelpShaderSetting"
 msgstr "此处关闭的功能将从着色器中删除。通过关闭未使用的功能，可以减少你的 Avatar 的大小，同时还能减少负载。"
@@ -1449,22 +1543,22 @@ msgid "sSettingLock"
 msgstr "锁定"
 
 msgid "sShaderSettingOptimizeInTestBuild"
-msgstr "在测试构建中优化"
+msgstr "为测试构建优化"
 
 msgid "sShaderSettingOptimizeInEditor"
-msgstr "[Debug] 在编辑器中优化"
+msgstr "[Debug] 为编辑器优化"
 
 msgid "sSettingClippingCanceller"
 msgstr "距离裁剪消除器"
 
 msgid "sSettingTexOutlineColor"
-msgstr "轮廓颜色纹理"
+msgstr "轮廓主色纹理"
 
 msgid "sSettingDefaultValue"
 msgstr "初始值 (用于“Fix Lighting”以及照明预设)"
 
 msgid "sSettingBuildSizeOptimization"
-msgstr "优化构建大小（用于所有材质）"
+msgstr "优化构建大小(用于所有材质)"
 
 msgid "sSettingApplyShadowFA"
 msgstr "通过 ForwardAdd 启用阴影"
@@ -1596,7 +1690,7 @@ msgid "sCommonProblems"
 msgstr "常见问题"
 
 msgid "sUtilGif2AtlasPow2"
-msgstr "您想将纹理分辨率匹配到 2 的幂吗？"
+msgstr "您要把纹理分辨率调整为 2 的整数倍吗？"
 
 msgid "sUtilDotTexRedRatio"
 msgstr "请选择一个缩小比例。"

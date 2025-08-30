@@ -128,7 +128,7 @@ namespace lilToon
                     string tag = material.GetTag("VRCFallback", false);
                     EditorGUI.BeginChangeCheck();
                     EditorGUI.showMixedValue = m_MaterialEditor.targets.Where(obj => obj is Material).Any(obj => tag != ((Material)obj).GetTag("VRCFallback", false));
-                    bool shouldSetTag = EditorGUI.ToggleLeft(EditorGUILayout.GetControlRect(), "Custom Safety Fallback", !string.IsNullOrEmpty(tag), customToggleFont);
+                    bool shouldSetTag = EditorGUI.ToggleLeft(EditorGUILayout.GetControlRect(), GetLoc("sCustomSafetyFallback"), !string.IsNullOrEmpty(tag), customToggleFont);
                     if(shouldSetTag)
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
@@ -187,9 +187,9 @@ namespace lilToon
                             fallbackShadingType = Array.IndexOf(sFallbackShadingTypes, "Custom");
                         }
 
-                        fallbackShaderType = lilEditorGUI.Popup("Shader Type", fallbackShaderType, sFallbackShaderTypes);
-                        fallbackRenderType = lilEditorGUI.Popup("Rendering Mode", fallbackRenderType, sFallbackRenderTypes);
-                        fallbackCullType = lilEditorGUI.Popup("Facing", fallbackCullType, sFallbackCullTypes);
+                        fallbackShaderType = lilEditorGUI.Popup(GetLoc("sFallbackShaderType"), fallbackShaderType, sFallbackShaderTypes);
+                        fallbackRenderType = lilEditorGUI.Popup(GetLoc("sFallbackRenderingMode"), fallbackRenderType, sFallbackRenderTypes);
+                        fallbackCullType = lilEditorGUI.Popup(GetLoc("sFallbackFacing"), fallbackCullType, sFallbackCullTypes);
 
                         switch(fallbackShaderType)
                         {
@@ -224,7 +224,7 @@ namespace lilToon
                         if(ramp.p != null && tag.Contains("toonstandard"))
                         {
                             EditorGUI.BeginChangeCheck();
-                            fallbackShadingType = lilEditorGUI.Popup("Shading", fallbackShadingType, sFallbackShadingTypes);
+                            fallbackShadingType = lilEditorGUI.Popup(GetLoc("sFallbackToonstandardShading"), fallbackShadingType, sFallbackShadingTypes);
                             if(EditorGUI.EndChangeCheck())
                             {
                                 var guid = sFallbackRampGuids[fallbackShadingType];
@@ -233,10 +233,10 @@ namespace lilToon
                             }
                             if(sFallbackShadingTypes[fallbackShadingType] == "Custom")
                             {
-                                LocalizedPropertyTexture(new GUIContent(ramp.displayName), ramp);
+                                LocalizedPropertyTexture(new GUIContent(GetLoc(ramp.displayName)), ramp);
                             }
                             EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.LabelField("Result", '"' + tag + '"');
+                            EditorGUILayout.LabelField(GetLoc("sFallbackResult"), '"' + tag + '"');
                             EditorGUI.BeginDisabledGroup(true);
                             EditorGUILayout.ObjectField(ramp.textureValue, typeof(Texture2D), false, GUILayout.Width(32));
                             EditorGUI.EndDisabledGroup();
@@ -248,7 +248,7 @@ namespace lilToon
                             {
                                 ramp.textureValue = null;
                             }
-                            EditorGUILayout.LabelField("Result", '"' + tag + '"');
+                            EditorGUILayout.LabelField(GetLoc("sFallbackResult"), '"' + tag + '"');
                         }
 
                         EditorGUILayout.EndVertical();
