@@ -251,7 +251,7 @@ namespace lilToon
                     // Float
                     indF += TYPE_OFFSET;
                     string name = line.Substring(indF, indEND - indF);
-                    if (dicF.ContainsKey(name) && !dicF[name].isVariable)
+                    if (dicF.ContainsKey(name) && !dicF[name].isVariable && name != "_LightMinLimit" && name != "_LightMaxLimit" && name != "_MonochromeLighting" && name != "_AsUnlit")
                     {
                         float f = dicF[name].f;
                         f = ShouldLinear(shader, name) ? Mathf.GammaToLinearSpace(f) : f;
