@@ -29,7 +29,7 @@ namespace lilToon
             else        DrawPreset();
         }
 
-        private void DrawSettingsGUI()
+        private void DrawSettingsGUI(Material material)
         {
             var applyButton = new GUIStyle(GUI.skin.button);
             applyButton.normal.textColor = Color.red;
@@ -63,7 +63,12 @@ namespace lilToon
             {
                 EditorGUILayout.BeginVertical(customBox);
                 GUI.enabled = !isLocked;
+                EditorGUI.BeginChangeCheck();
                 ToggleGUI(GetLoc("sSettingClippingCanceller"), ref shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER);
+                if(EditorGUI.EndChangeCheck())
+                {
+                    material.SetFloat("_UseClippingCanceller", shaderSetting.LIL_FEATURE_CLIPPING_CANCELLER ? 1.0f : 0.0f);
+                }
                 GUI.enabled = true;
                 EditorGUILayout.EndVertical();
             }

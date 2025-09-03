@@ -102,7 +102,7 @@ namespace lilToon
             {
                 case EditorMode.Advanced:   DrawAdvancedGUI(material); break;
                 case EditorMode.Preset:     DrawPresetGUI(); break;
-                case EditorMode.Settings:   DrawSettingsGUI(); break;
+                case EditorMode.Settings:   DrawSettingsGUI(material); break;
             }
 
             if(EditorGUI.EndChangeCheck())
