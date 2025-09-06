@@ -86,7 +86,7 @@ namespace lilToon
 
         private static void DrawShaderTypeWarn(Material material)
         {
-            if(!isMultiVariants && material.shader.name.Contains("Overlay") && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpSelectOverlay")))
+            if(!isMultiVariants && lilShaderUtils.IsOverlayShaderName(material.shader.name) && lilEditorGUI.AutoFixHelpBox(GetLoc("sHelpSelectOverlay")))
             {
                 material.shader = lts;
             }
@@ -289,20 +289,22 @@ namespace lilToon
         #region
         private void CheckShaderType(Material material)
         {
-            isLite          = material.shader.name.Contains("Lite");
-            isCutout        = material.shader.name.Contains("Cutout");
-            isTransparent   = material.shader.name.Contains("Transparent") || material.shader.name.Contains("Overlay");
-            isOutl          = !isMultiVariants && material.shader.name.Contains("Outline");
-            isRefr          = !isMultiVariants && material.shader.name.Contains("Refraction");
-            isBlur          = !isMultiVariants && material.shader.name.Contains("Blur");
-            isFur           = !isMultiVariants && material.shader.name.Contains("Fur");
-            isTess          = !isMultiVariants && material.shader.name.Contains("Tessellation");
-            isGem           = !isMultiVariants && material.shader.name.Contains("Gem");
-            isFakeShadow    = !isMultiVariants && material.shader.name.Contains("FakeShadow");
-            isOnePass       = material.shader.name.Contains("OnePass");
-            isTwoPass       = material.shader.name.Contains("TwoPass");
-            isMulti         = material.shader.name.Contains("Multi");
-            isCustomShader  = material.shader.name.Contains("Optional");
+            var shaderName = material.shader.name;
+
+            isLite          = lilShaderUtils.IsLiteShaderName(shaderName);
+            isCutout        = lilShaderUtils.IsCutoutShaderName(shaderName);
+            isTransparent   = lilShaderUtils.IsTransparentShaderName(shaderName) || lilShaderUtils.IsOverlayShaderName(shaderName);
+            isOutl          = !isMultiVariants && lilShaderUtils.IsOutlineShaderName(shaderName);
+            isRefr          = !isMultiVariants && lilShaderUtils.IsRefractionShaderName(shaderName);
+            isBlur          = !isMultiVariants && lilShaderUtils.IsBlurShaderName(shaderName);
+            isFur           = !isMultiVariants && lilShaderUtils.IsFurShaderName(shaderName);
+            isTess          = !isMultiVariants && lilShaderUtils.IsTessellationShaderName(shaderName);
+            isGem           = !isMultiVariants && lilShaderUtils.IsGemShaderName(shaderName);
+            isFakeShadow    = !isMultiVariants && lilShaderUtils.IsFakeShadowShaderName(shaderName);
+            isOnePass       = lilShaderUtils.IsOnePassShaderName(shaderName);
+            isTwoPass       = lilShaderUtils.IsTwoPassShaderName(shaderName);
+            isMulti         = lilShaderUtils.IsMultiShaderName(shaderName);
+            isCustomShader  = lilShaderUtils.IsOptionalShaderName(shaderName);
             isShowRenderMode = !isCustomShader;
             isStWr          = stencilPass.floatValue == (float)StencilOp.Replace;
 

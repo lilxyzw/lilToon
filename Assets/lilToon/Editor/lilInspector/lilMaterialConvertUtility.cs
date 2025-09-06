@@ -225,8 +225,9 @@ namespace lilToon
             if(renderingMode == RenderingMode.FurCutout)        renderingMode = RenderingMode.Cutout;
             if(renderingMode == RenderingMode.FurTwoPass)       renderingMode = RenderingMode.Transparent;
 
-            bool isonepass      = material.shader.name.Contains("OnePass");
-            bool istwopass      = material.shader.name.Contains("TwoPass");
+            var shaderName = material.shader.name;
+            bool isonepass      = lilShaderUtils.IsOnePassShaderName(shaderName);
+            bool istwopass      = lilShaderUtils.IsTwoPassShaderName(shaderName);
 
             var           transparentMode = TransparentMode.Normal;
             if(isonepass) transparentMode = TransparentMode.OnePass;
