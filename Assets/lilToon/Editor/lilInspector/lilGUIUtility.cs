@@ -289,20 +289,22 @@ namespace lilToon
         #region
         private void CheckShaderType(Material material)
         {
-            isLite          = lilShaderUtils.IsLiteShaderName(material.shader.name);
-            isCutout        = lilShaderUtils.IsCutoutShaderName(material.shader.name);
-            isTransparent   = lilShaderUtils.IsTransparentShaderName(material.shader.name) || lilShaderUtils.IsOverlayShaderName(material.shader.name);
-            isOutl          = !isMultiVariants && lilShaderUtils.IsOutlineShaderName(material.shader.name);
-            isRefr          = !isMultiVariants && lilShaderUtils.IsRefractionShaderName(material.shader.name);
-            isBlur          = !isMultiVariants && lilShaderUtils.IsBlurShaderName(material.shader.name);
-            isFur           = !isMultiVariants && lilShaderUtils.IsFurShaderName(material.shader.name);
-            isTess          = !isMultiVariants && lilShaderUtils.IsTessellationShaderName(material.shader.name);
-            isGem           = !isMultiVariants && lilShaderUtils.IsGemShaderName(material.shader.name);
-            isFakeShadow    = !isMultiVariants && lilShaderUtils.IsFakeShadowShaderName(material.shader.name);
-            isOnePass       = lilShaderUtils.IsOnePassShaderName(material.shader.name);
-            isTwoPass       = lilShaderUtils.IsTwoPassShaderName(material.shader.name);
-            isMulti         = lilShaderUtils.IsMultiShaderName(material.shader.name);
-            isCustomShader  = lilShaderUtils.IsOptionalShaderName(material.shader.name);
+            var shaderName = material.shader.name;
+
+            isLite          = lilShaderUtils.IsLiteShaderName(shaderName);
+            isCutout        = lilShaderUtils.IsCutoutShaderName(shaderName);
+            isTransparent   = lilShaderUtils.IsTransparentShaderName(shaderName) || lilShaderUtils.IsOverlayShaderName(shaderName);
+            isOutl          = !isMultiVariants && lilShaderUtils.IsOutlineShaderName(shaderName);
+            isRefr          = !isMultiVariants && lilShaderUtils.IsRefractionShaderName(shaderName);
+            isBlur          = !isMultiVariants && lilShaderUtils.IsBlurShaderName(shaderName);
+            isFur           = !isMultiVariants && lilShaderUtils.IsFurShaderName(shaderName);
+            isTess          = !isMultiVariants && lilShaderUtils.IsTessellationShaderName(shaderName);
+            isGem           = !isMultiVariants && lilShaderUtils.IsGemShaderName(shaderName);
+            isFakeShadow    = !isMultiVariants && lilShaderUtils.IsFakeShadowShaderName(shaderName);
+            isOnePass       = lilShaderUtils.IsOnePassShaderName(shaderName);
+            isTwoPass       = lilShaderUtils.IsTwoPassShaderName(shaderName);
+            isMulti         = lilShaderUtils.IsMultiShaderName(shaderName);
+            isCustomShader  = lilShaderUtils.IsOptionalShaderName(shaderName);
             isShowRenderMode = !isCustomShader;
             isStWr          = stencilPass.floatValue == (float)StencilOp.Replace;
 

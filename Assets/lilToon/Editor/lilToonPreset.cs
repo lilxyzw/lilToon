@@ -67,17 +67,18 @@ public class lilToonPreset : ScriptableObject
             material.SetFloat(f.name, f.value);
         }
         if(preset.shader != null) material.shader = preset.shader;
-        bool isoutl         = preset.outline == -1 ? lilShaderUtils.IsOutlineShaderName(material.shader.name) : (preset.outline == 1);
-        bool istess         = preset.tessellation == -1 ? lilShaderUtils.IsTessellationShaderName(material.shader.name) : (preset.tessellation == 1);
+        var shaderName = material.shader.name;
+        bool isoutl         = preset.outline == -1 ? lilShaderUtils.IsOutlineShaderName(shaderName) : (preset.outline == 1);
+        bool istess         = preset.tessellation == -1 ? lilShaderUtils.IsTessellationShaderName(shaderName) : (preset.tessellation == 1);
 
-        bool islite         = lilShaderUtils.IsLiteShaderName(material.shader.name);
-        bool iscutout       = lilShaderUtils.IsCutoutShaderName(material.shader.name);
-        bool istransparent  = lilShaderUtils.IsTransparentShaderName(material.shader.name);
-        bool isrefr         = lilShaderUtils.IsRefractionShaderName(material.shader.name);
-        bool isblur         = lilShaderUtils.IsBlurShaderName(material.shader.name);
-        bool isfur          = lilShaderUtils.IsFurShaderName(material.shader.name);
-        bool isonepass      = lilShaderUtils.IsOnePassShaderName(material.shader.name);
-        bool istwopass      = lilShaderUtils.IsTwoPassShaderName(material.shader.name);
+        bool islite         = lilShaderUtils.IsLiteShaderName(shaderName);
+        bool iscutout       = lilShaderUtils.IsCutoutShaderName(shaderName);
+        bool istransparent  = lilShaderUtils.IsTransparentShaderName(shaderName);
+        bool isrefr         = lilShaderUtils.IsRefractionShaderName(shaderName);
+        bool isblur         = lilShaderUtils.IsBlurShaderName(shaderName);
+        bool isfur          = lilShaderUtils.IsFurShaderName(shaderName);
+        bool isonepass      = lilShaderUtils.IsOnePassShaderName(shaderName);
+        bool istwopass      = lilShaderUtils.IsTwoPassShaderName(shaderName);
 
         var renderingMode = RenderingMode.Opaque;
 
@@ -210,19 +211,20 @@ public class lilToonPreset : ScriptableObject
             Array.Resize(ref preset.vectors, 0);
             Array.Resize(ref preset.floats, 0);
             Array.Resize(ref preset.textures, 0);
-            if(material.shader != null && !string.IsNullOrEmpty(material.shader.name))
+            string shaderName;
+            if(material.shader != null && !string.IsNullOrEmpty(shaderName = material.shader.name))
             {
-                isOutl        = lilShaderUtils.IsOutlineShaderName(material.shader.name);
-                isTess        = lilShaderUtils.IsTessellationShaderName(material.shader.name);
+                isOutl        = lilShaderUtils.IsOutlineShaderName(shaderName);
+                isTess        = lilShaderUtils.IsTessellationShaderName(shaderName);
                 renderingMode = RenderingMode.Opaque;
-                if(lilShaderUtils.IsCutoutShaderName(material.shader.name))         renderingMode = RenderingMode.Cutout;
-                if(lilShaderUtils.IsTransparentShaderName(material.shader.name))    renderingMode = RenderingMode.Transparent;
-                if(lilShaderUtils.IsRefractionShaderName(material.shader.name))     renderingMode = RenderingMode.Refraction;
-                if(lilShaderUtils.IsRefractionBlurShaderName(material.shader.name)) renderingMode = RenderingMode.RefractionBlur;
-                if(lilShaderUtils.IsFurShaderName(material.shader.name))            renderingMode = RenderingMode.Fur;
-                if(lilShaderUtils.IsFurCutoutShaderName(material.shader.name))      renderingMode = RenderingMode.FurCutout;
-                if(lilShaderUtils.IsFurTwoPassShaderName(material.shader.name))     renderingMode = RenderingMode.FurTwoPass;
-                if(lilShaderUtils.IsGemShaderName(material.shader.name))            renderingMode = RenderingMode.Gem;
+                if(lilShaderUtils.IsCutoutShaderName(shaderName))         renderingMode = RenderingMode.Cutout;
+                if(lilShaderUtils.IsTransparentShaderName(shaderName))    renderingMode = RenderingMode.Transparent;
+                if(lilShaderUtils.IsRefractionShaderName(shaderName))     renderingMode = RenderingMode.Refraction;
+                if(lilShaderUtils.IsRefractionBlurShaderName(shaderName)) renderingMode = RenderingMode.RefractionBlur;
+                if(lilShaderUtils.IsFurShaderName(shaderName))            renderingMode = RenderingMode.Fur;
+                if(lilShaderUtils.IsFurCutoutShaderName(shaderName))      renderingMode = RenderingMode.FurCutout;
+                if(lilShaderUtils.IsFurTwoPassShaderName(shaderName))     renderingMode = RenderingMode.FurTwoPass;
+                if(lilShaderUtils.IsGemShaderName(shaderName))            renderingMode = RenderingMode.Gem;
             }
             else
             {
