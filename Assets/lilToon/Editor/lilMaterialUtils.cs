@@ -388,10 +388,10 @@ namespace lilToon
             bool useEmissionBlendMask = IsFeatureOnTexture(material, "_EmissionBlendMask");
             bool useEmission2ndBlendMask = IsFeatureOnTexture(material, "_Emission2ndBlendMask");
 
-            bool isOutl = material.shader.name.Contains("Outline");
-            bool isRefr = material.shader.name.Contains("Refraction");
-            bool isFur = material.shader.name.Contains("Fur");
-            bool isGem = material.shader.name.Contains("Gem");
+            bool isOutl = lilShaderUtils.IsOutlineShaderName(material.shader.name);
+            bool isRefr = lilShaderUtils.IsRefractionShaderName(material.shader.name);
+            bool isFur = lilShaderUtils.IsFurShaderName(material.shader.name);
+            bool isGem = lilShaderUtils.IsGemShaderName(material.shader.name);
 
             SetShaderKeywords(material, "UNITY_UI_ALPHACLIP",                   tpmode == 1);
             SetShaderKeywords(material, "UNITY_UI_CLIP_RECT",                   tpmode == 2 || tpmode == 4);
@@ -474,7 +474,7 @@ namespace lilToon
 
         public static void SetupMultiMaterial(Material[] materials, AnimationClip[] clips)
         {
-            var ms = materials.Where(m => m.shader.name.Contains("Multi")).ToArray();
+            var ms = materials.Where(m => lilShaderUtils.IsMultiShaderName(m.shader.name)).ToArray();
             foreach(var binding in clips.SelectMany(c => AnimationUtility.GetCurveBindings(c)).ToArray())
             {
                 string propname = binding.propertyName;
@@ -541,7 +541,7 @@ namespace lilToon
         public static void RemoveUnusedTexture(Material material, params string[] animatedProps)
         {
             if(!material.shader.name.Contains("lilToon")) return;
-            RemoveUnusedTexture(material, material.shader.name.Contains("Lite"), animatedProps);
+            RemoveUnusedTexture(material, lilShaderUtils.IsLiteShaderName(material.shader.name), animatedProps);
         }
 
         public static void RemoveUnusedTexture(Material material, bool islite, params string[] animatedProps)
@@ -641,13 +641,13 @@ namespace lilToon
                     material.SetTexture("_MatCap2ndBlendMask", null);
                     material.SetTexture("_MatCap2ndBumpMap", null);
                 }
-                if(!material.shader.name.Contains("Outline"))
+                if(!lilShaderUtils.IsOutlineShaderName(material.shader.name))
                 {
                     material.SetTexture("_OutlineTex", null);
                     material.SetTexture("_OutlineWidthMask", null);
                     material.SetTexture("_OutlineVectorTex", null);
                 }
-                if(!material.shader.name.Contains("Fur"))
+                if(!lilShaderUtils.IsFurShaderName(material.shader.name))
                 {
                     material.SetTexture("_FurVectorTex", null);
                     material.SetTexture("_FurLengthMask", null);

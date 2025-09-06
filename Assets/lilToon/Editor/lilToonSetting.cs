@@ -994,7 +994,7 @@ public class lilToonSetting : ScriptableObject
     internal static void SetupShaderSettingFromMaterial(Material material, ref lilToonSetting shaderSetting)
     {
         if(material == null || material.shader == null) return;
-        if(material.shader.name.Contains("Lite") || material.shader.name.Contains("Multi")) return;
+        if(lilShaderUtils.IsLiteShaderName(material.shader.name) || lilShaderUtils.IsMultiShaderName(material.shader.name)) return;
         if(!lilMaterialUtils.CheckShaderIslilToon(material.shader)) return;
 
         if(!shaderSetting.LIL_FEATURE_ANIMATE_MAIN_UV && material.HasProperty("_MainTex_ScrollRotate") && material.GetVector("_MainTex_ScrollRotate") != lilConstants.defaultScrollRotate)
@@ -1037,7 +1037,7 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.LIL_FEATURE_SHADOW_LUT = true;
         }
 
-        if(material.shader.name.Contains("Fur"))
+        if(lilShaderUtils.IsFurShaderName(material.shader.name))
         {
             if(!shaderSetting.LIL_FEATURE_FUR_COLLISION && material.HasProperty("_FurTouchStrength") && material.GetFloat("_FurTouchStrength") != 0.0f)
             {
@@ -1247,7 +1247,7 @@ public class lilToonSetting : ScriptableObject
         }
            
         // Outline
-        if(material.shader.name.Contains("Outline"))
+        if(lilShaderUtils.IsOutlineShaderName(material.shader.name))
         {
             if(!shaderSetting.LIL_FEATURE_ANIMATE_OUTLINE_UV && material.HasProperty("_OutlineTex_ScrollRotate") && material.GetVector("_OutlineTex_ScrollRotate") != lilConstants.defaultScrollRotate)
             {
