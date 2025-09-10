@@ -84,6 +84,8 @@ namespace lilToon
                     hsvgMaterial.SetFloat(useMain2ndTex.name,               useMain2ndTex.floatValue);
                     hsvgMaterial.SetColor(mainColor2nd.name,                mainColor2nd.colorValue);
                     hsvgMaterial.SetFloat(main2ndTexAngle.name,             main2ndTexAngle.floatValue);
+                    hsvgMaterial.SetVector(main2ndTexDecalAnimation.name,   main2ndTexDecalAnimation.vectorValue);
+                    hsvgMaterial.SetVector(main2ndTexDecalSubParam.name,    main2ndTexDecalSubParam.vectorValue);
                     hsvgMaterial.SetFloat(main2ndTexIsDecal.name,           main2ndTexIsDecal.floatValue);
                     hsvgMaterial.SetFloat(main2ndTexIsLeftOnly.name,        main2ndTexIsLeftOnly.floatValue);
                     hsvgMaterial.SetFloat(main2ndTexIsRightOnly.name,       main2ndTexIsRightOnly.floatValue);
@@ -126,6 +128,8 @@ namespace lilToon
                     hsvgMaterial.SetFloat(useMain3rdTex.name,               useMain3rdTex.floatValue);
                     hsvgMaterial.SetColor(mainColor3rd.name,                mainColor3rd.colorValue);
                     hsvgMaterial.SetFloat(main3rdTexAngle.name,             main3rdTexAngle.floatValue);
+                    hsvgMaterial.SetVector(main3rdTexDecalAnimation.name,   main3rdTexDecalAnimation.vectorValue);
+                    hsvgMaterial.SetVector(main3rdTexDecalSubParam.name,    main3rdTexDecalSubParam.vectorValue);
                     hsvgMaterial.SetFloat(main3rdTexIsDecal.name,           main3rdTexIsDecal.floatValue);
                     hsvgMaterial.SetFloat(main3rdTexIsLeftOnly.name,        main3rdTexIsLeftOnly.floatValue);
                     hsvgMaterial.SetFloat(main3rdTexIsRightOnly.name,       main3rdTexIsRightOnly.floatValue);
@@ -238,6 +242,8 @@ namespace lilToon
                     hsvgMaterial.SetFloat(useMain2ndTex.name,               useMain2ndTex.floatValue);
                     hsvgMaterial.SetColor(mainColor2nd.name,                mainColor2nd.colorValue);
                     hsvgMaterial.SetFloat(main2ndTexAngle.name,             main2ndTexAngle.floatValue);
+                    hsvgMaterial.SetVector(main2ndTexDecalAnimation.name,   main2ndTexDecalAnimation.vectorValue);
+                    hsvgMaterial.SetVector(main2ndTexDecalSubParam.name,    main2ndTexDecalSubParam.vectorValue);
                     hsvgMaterial.SetFloat(main2ndTexIsDecal.name,           main2ndTexIsDecal.floatValue);
                     hsvgMaterial.SetFloat(main2ndTexIsLeftOnly.name,        main2ndTexIsLeftOnly.floatValue);
                     hsvgMaterial.SetFloat(main2ndTexIsRightOnly.name,       main2ndTexIsRightOnly.floatValue);
@@ -280,6 +286,8 @@ namespace lilToon
                     hsvgMaterial.SetFloat(useMain3rdTex.name,               useMain3rdTex.floatValue);
                     hsvgMaterial.SetColor(mainColor3rd.name,                mainColor3rd.colorValue);
                     hsvgMaterial.SetFloat(main3rdTexAngle.name,             main3rdTexAngle.floatValue);
+                    hsvgMaterial.SetVector(main3rdTexDecalAnimation.name,   main3rdTexDecalAnimation.vectorValue);
+                    hsvgMaterial.SetVector(main3rdTexDecalSubParam.name,    main3rdTexDecalSubParam.vectorValue);
                     hsvgMaterial.SetFloat(main3rdTexIsDecal.name,           main3rdTexIsDecal.floatValue);
                     hsvgMaterial.SetFloat(main3rdTexIsLeftOnly.name,        main3rdTexIsLeftOnly.floatValue);
                     hsvgMaterial.SetFloat(main3rdTexIsRightOnly.name,       main3rdTexIsRightOnly.floatValue);
