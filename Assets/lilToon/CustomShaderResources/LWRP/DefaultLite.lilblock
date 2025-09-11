@@ -67,7 +67,7 @@
         Pass
         {
             Name "FORWARD_OUTLINE"
-            Tags {"LightMode" = "*LIL_LIGHTMODE_FORWARD_0*"}
+            Tags {"LightMode" = "*LIL_LIGHTMODE_FORWARD_1*"}
 
             Stencil
             {
