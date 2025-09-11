@@ -1241,9 +1241,9 @@
             #endif
 
             // Color
-            float3 backlightColor = _BacklightColor.rgb;
+            float4 backlightColor = _BacklightColor;
             #if defined(LIL_FEATURE_BacklightColorTex)
-                backlightColor *= LIL_SAMPLE_2D_ST(_BacklightColorTex, samp, fd.uvMain).rgb;
+                backlightColor *= LIL_SAMPLE_2D_ST(_BacklightColorTex, samp, fd.uvMain);
             #endif
 
             // Factor
@@ -1257,8 +1257,8 @@
             backlight = fd.facing < (_BacklightBackfaceMask-1.0) ? 0.0 : backlight;
 
             // Blend
-            backlightColor = lerp(backlightColor, backlightColor * fd.albedo, _BacklightMainStrength);
-            fd.col.rgb += backlight * backlightColor * fd.lightColor;
+            backlightColor.rgb = lerp(backlightColor.rgb, backlightColor.rgb * fd.albedo, _BacklightMainStrength);
+            fd.col.rgb += backlight * backlightColor.a * backlightColor.rgb * fd.lightColor;
         }
     }
 #endif
