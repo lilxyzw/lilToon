@@ -362,7 +362,7 @@ namespace lilToon
             else if(materialLowerName.Contains("hair"))                                         lilToonPreset.ApplyPreset(material, presetHair, false);
             else                                                                                lilToonPreset.ApplyPreset(material, presetCloth, false);
 
-            bool isOutl = material.shader.name.Contains("Outline");
+            bool isOutl = lilShaderUtils.IsOutlineShaderName(material.shader.name);
 
             if(!material.HasProperty("_ShadowStrengthMask") || material.GetTexture("_ShadowStrengthMask") == null)
             {
