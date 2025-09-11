@@ -75,10 +75,6 @@ namespace lilToon
             CheckShaderType(material);
 
             //------------------------------------------------------------------------------------------------------------------------------
-            // Load Custom Properties
-            LoadCustomProperties(props, material);
-
-            //------------------------------------------------------------------------------------------------------------------------------
             // Info
             EditorGUI.BeginChangeCheck();
             DrawWebPages();
@@ -89,6 +85,10 @@ namespace lilToon
             lilLanguageManager.SelectLang();
             sMainColorBranch = isUseAlpha ? GetLoc("sMainColorAlpha") : GetLoc("sMainColor");
             mainColorRGBAContent = isUseAlpha ? colorAlphaRGBAContent : colorRGBAContent;
+
+            //------------------------------------------------------------------------------------------------------------------------------
+            // Load Custom Properties
+            LoadCustomProperties(props, material);
 
             //------------------------------------------------------------------------------------------------------------------------------
             // Editor Mode
