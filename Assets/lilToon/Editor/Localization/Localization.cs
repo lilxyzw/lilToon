@@ -28,7 +28,7 @@ namespace lilToon
 
         internal static string[] GetLanguages()
         {
-            return languages ??= Directory.GetFiles(localizationFolder, "*.po").Where(f => !f.StartsWith("._")).Select(f => Path.GetFileNameWithoutExtension(f)).ToArray();
+            return languages ??= Directory.GetFiles(localizationFolder, "*.po").Select(f => Path.GetFileNameWithoutExtension(f)).Where(f => !f.StartsWith("._")).ToArray();
         }
 
         internal static string[] GetLanguageNames()
