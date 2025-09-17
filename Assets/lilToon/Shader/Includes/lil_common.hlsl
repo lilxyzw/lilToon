@@ -66,7 +66,7 @@ struct lilFragData
     float3 indLightColor;
     float3 addLightColor;
     float attenuation;
-    float3 invLighting;
+    float fluorescence;
 
     // UV
     float2 uv0;
@@ -141,12 +141,12 @@ lilFragData lilInitFragData()
     fd.col = 1.0;
     fd.albedo = 1.0;
     fd.emissionColor = 0.0;
+    fd.fluorescence = 1.0;
 
     fd.lightColor = 1.0;
     fd.indLightColor = 0.0;
     fd.addLightColor = 0.0;
     fd.attenuation = 1.0;
-    fd.invLighting = 0.0;
 
     fd.uv0 = 0.0;
     fd.uv1 = 0.0;
