@@ -29,6 +29,9 @@ msgstr "現在lilToonOverrayが選択されています。通常の用途で使�
 msgid "sColor"
 msgstr "色"
 
+msgid "Mode"
+msgstr "モード"
+
 msgid "sAlpha"
 msgstr "不透明度"
 
@@ -125,6 +128,12 @@ msgstr "不透明度 (R)"
 msgid "sMainColorPower"
 msgstr "メインカラーの強度"
 
+msgid "Cubemap Fallback"
+msgstr "Cubemap Fallback"
+
+msgid "Override"
+msgstr "Override"
+
 msgid "sEnableLighting"
 msgstr "ライトの明るさを反映"
 
@@ -151,6 +160,9 @@ msgstr "MSDFテクスチャ"
 
 msgid "sAsDecal"
 msgstr "デカール化"
+
+msgid "UV Mode"
+msgstr "UV Mode"
 
 msgid "sAnimation"
 msgstr "アニメーション"
@@ -266,6 +278,9 @@ msgstr "裏面で無効化"
 msgid "sRandomize"
 msgstr "ランダム化"
 
+msgid " (Size)"
+msgstr " (Size)"
+
 msgid "sLimShadowStrength"
 msgstr "影の強さ"
 
@@ -359,6 +374,9 @@ msgstr "Cutoff (完全透明にする範囲)"
 msgid "sSubpassCutoff"
 msgstr "Subpass Cutoff (完全透明にする範囲)"
 
+msgid "Cull Mode"
+msgstr "Cull Mode (描画面)"
+
 msgid "sCullMode"
 msgstr "Cull Mode (描画面)"
 
@@ -383,8 +401,17 @@ msgstr "裏面を影にする"
 msgid "sAAShading"
 msgstr "アンチエイリアスシェーディング"
 
+msgid "[VRCLV] Rim Border"
+msgstr "[VRCLV] Rim Border"
+
+msgid "[VRCLV] Rim Blur"
+msgstr "[VRCLV] Rim Blur"
+
 msgid "sDither"
 msgstr "Dither"
+
+msgid "Max Value"
+msgstr "Max Value"
 
 msgid "sSimpleStencilSettings"
 msgstr "簡易ステンシル設定"
@@ -536,6 +563,27 @@ msgstr "UV設定"
 msgid "sMainUVTips"
 msgstr "UVの位置やサイズ、アニメーションの設定ができます"
 
+msgid "sCustomSafetyFallback"
+msgstr "Custom Safety Fallback"
+
+msgid "sFallbackShaderType"
+msgstr "Shader Type"
+
+msgid "sFallbackRenderingMode"
+msgstr "Rendering Mode"
+
+msgid "sFallbackFacing"
+msgstr "Facing"
+
+msgid "sFallbackResult"
+msgstr "Result"
+
+msgid "sFallbackToonstandardShading"
+msgstr "Shading"
+
+msgid "Shadow Ramp"
+msgstr "Shadow Ramp"
+
 msgid "sColors"
 msgstr "色設定"
 
@@ -626,6 +674,12 @@ msgstr "境界の幅"
 msgid "sIgnoreBorderProperties"
 msgstr "影範囲設定を無視して適用"
 
+msgid "Shadow Caster Bias"
+msgstr "Shadow Caster Bias"
+
+msgid "AO Map"
+msgstr "AO Map"
+
 msgid "sFlat"
 msgstr "平面化"
 
@@ -670,6 +724,9 @@ msgstr "R -> Width"
 
 msgid "sVertexRGBA2Normal"
 msgstr "RGBA -> Normal & Width"
+
+msgid "Z Bias"
+msgstr "Z Bias"
 
 msgid "sDeleteMesh0"
 msgstr "太さ0の頂点を削除"
@@ -722,8 +779,11 @@ msgstr "根本の太さ"
 msgid "sTouchStrength"
 msgstr "接触強度"
 
-msgid "sTessellation"
+msgid "sTessellationSetting"
 msgstr "テッセレーション (非常に高負荷)"
+
+msgid "sTessellation"
+msgstr "テッセレーション"
 
 msgid "sTessellationTips"
 msgstr "テッセレーションのかかり方を設定できます"
@@ -736,6 +796,12 @@ msgstr "縮小補正"
 
 msgid "sTessellationFactor"
 msgstr "最大分割数"
+
+msgid "sRimShadeSetting"
+msgstr "リムシェード"
+
+msgid "RimShade"
+msgstr "リムシェード"
 
 msgid "sEmissionSetting"
 msgstr "発光設定"
@@ -832,6 +898,9 @@ msgstr "RGB = 遅延 / 帯域 / 強度"
 
 msgid "sAudioLinkMaskRGBSpectrum"
 msgstr "RGB = 音量 / 帯域 / 強度"
+
+msgid "Offset"
+msgstr "Offset"
 
 msgid "sAudioLinkBand"
 msgstr "帯域"
@@ -1045,6 +1114,12 @@ msgstr "ラメ設定"
 
 msgid "sGlitter"
 msgstr "ラメ"
+
+msgid "Shape"
+msgstr "Shape"
+
+msgid "Atras"
+msgstr "Atras"
 
 msgid "sParticleSize"
 msgstr "パーティクルサイズ"
