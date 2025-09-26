@@ -336,10 +336,10 @@ msgid "sRenderingModeFur"
 msgstr "[高負荷] 毛髮"
 
 msgid "sRenderingModeFurCutout"
-msgstr "[高負荷] 毛髮（鏤空）"
+msgstr "[高負荷] 毛髮 (鏤空)"
 
 msgid "sRenderingModeFurTwoPass"
-msgstr "[高負荷] 毛髮（2 pass）"
+msgstr "[高負荷] 毛髮 (2 pass)"
 
 msgid "sRenderingModeGem"
 msgstr "[高負荷] 寶石"
@@ -375,19 +375,19 @@ msgid "sSubpassCutoff"
 msgstr "Subpass Cutoff"
 
 msgid "Cull Mode"
-msgstr "Cull Mode（剔除模式）"
+msgstr "Cull Mode (剔除模式)"
 
 msgid "sCullMode"
-msgstr "Cull Mode（剔除模式）"
+msgstr "Cull Mode (剔除模式)"
 
 msgid "sCullModeOff"
-msgstr "Off（不剔除）"
+msgstr "Off (不剔除)"
 
 msgid "sCullModeFront"
-msgstr "Front（剔除表面）"
+msgstr "Front (剔除表面)"
 
 msgid "sCullModeBack"
-msgstr "Back（剔除背面）"
+msgstr "Back (剔除背面)"
 
 msgid "sFlipBackfaceNormal"
 msgstr "翻轉背面法線"
@@ -426,10 +426,10 @@ msgid "sStencilModeReader"
 msgstr "Reader"
 
 msgid "sStencilModeReaderInvert"
-msgstr "Reader（翻轉）"
+msgstr "Reader (翻轉)"
 
 msgid "sStencilModeReaderFade"
-msgstr "Reader（透明）"
+msgstr "Reader (透明)"
 
 msgid "sTransparentPresetsPreWriteDepth"
 msgstr "預先寫入深度"
@@ -522,7 +522,7 @@ msgid "sHelpZWrite"
 msgstr "如果材質看起來不正確，請打開 ZWrite。"
 
 msgid "sAlphaBoostFA"
-msgstr "[Built-in RP] 透明度提升（點光源 / 聚光燈）"
+msgstr "[Built-in RP] 透明度提升 (點光源 / 聚光燈)"
 
 msgid "sLightBlending"
 msgstr "[Built-in RP] 混合光"
@@ -687,7 +687,7 @@ msgid "sBacklightSetting"
 msgstr "背光設定"
 
 msgid "sBacklight"
-msgstr "背光效果（Backlight）"
+msgstr "背光效果 (Backlight)"
 
 msgid "sBacklightTips"
 msgstr "當光源位於模型後方時，添加背光效果。"
@@ -780,7 +780,7 @@ msgid "sTouchStrength"
 msgstr "接觸強度"
 
 msgid "sTessellationSetting"
-msgstr "Tessellation（極高負荷）"
+msgstr "Tessellation (極高負荷)"
 
 msgid "sTessellation"
 msgstr "Tessellation"
@@ -798,7 +798,7 @@ msgid "sTessellationFactor"
 msgstr "最大係數"
 
 msgid "sRimShadeSetting"
-msgstr "邊緣陰影設定（RimShade）"
+msgstr "邊緣陰影設定 (RimShade)"
 
 msgid "RimShade"
 msgstr "邊緣陰影"
@@ -951,7 +951,7 @@ msgid "sDissolveWarnOpaque"
 msgstr "如果要使用溶解效果，請將「渲染模式」更改為鏤空或透明。"
 
 msgid "sDissolveMode"
-msgstr "溶解模式（Dissolve Mode）"
+msgstr "溶解模式 (Dissolve Mode)"
 
 msgid "sDissolveModeNone"
 msgstr "None"
@@ -1014,7 +1014,7 @@ msgid "sNormalMap2nd"
 msgstr "法線貼圖二"
 
 msgid "sNormalRGB"
-msgstr "法線（RGB）"
+msgstr "法線 (RGB)"
 
 msgid "sAnisotropy"
 msgstr "各向異性反射"
@@ -1032,19 +1032,19 @@ msgid "sReflectionsTips"
 msgstr "你可以設定反射效果。"
 
 msgid "sReflection"
-msgstr "反射（Refection）"
+msgstr "反射 (Refection)"
 
 msgid "sSmoothness"
 msgstr "平滑度"
 
 msgid "sSmoothnessR"
-msgstr "平滑度（R）"
+msgstr "平滑度 (R)"
 
 msgid "sMetallic"
 msgstr "金屬程度"
 
 msgid "sMetallicR"
-msgstr "金屬程度（R）"
+msgstr "金屬程度 (R)"
 
 msgid "sReflectance"
 msgstr "反射率"
@@ -1095,7 +1095,7 @@ msgid "sRimLightSetting"
 msgstr "輪廓光設定"
 
 msgid "sRimLight"
-msgstr "輪廓光（Rim Light）"
+msgstr "輪廓光 (Rim Light)"
 
 msgid "sFresnelPower"
 msgstr "菲涅爾功率"
@@ -1113,7 +1113,7 @@ msgid "sGlitterSetting"
 msgstr "亮粉效果設定"
 
 msgid "sGlitter"
-msgstr "亮粉效果（Glitter）"
+msgstr "亮粉效果 (Glitter)"
 
 msgid "Shape"
 msgstr "Shape"
@@ -1128,7 +1128,7 @@ msgid "sContrast"
 msgstr "對比度"
 
 msgid "sPostContrast"
-msgstr "對比度（後處理）"
+msgstr "對比度 (後處理)"
 
 msgid "sAngleLimit"
 msgstr "角度限制"
@@ -1290,7 +1290,7 @@ msgid "sPaste"
 msgstr "貼上"
 
 msgid "sPasteWithTexture"
-msgstr "貼上（包含貼圖）"
+msgstr "貼上 (包含貼圖)"
 
 msgid "sReset"
 msgstr "重置"
@@ -1341,7 +1341,7 @@ msgid "sDialogBakeMatCap"
 msgstr "你要烘培 matcap 嗎？"
 
 msgid "sDialogBakeTriMask"
-msgstr "你要烘培這三個遮罩（MatCap / Rim / 自發光）嗎？"
+msgstr "你要烘培這三個遮罩 (MatCap / Rim / 自發光) 嗎？"
 
 msgid "sDialogBakeOutline"
 msgstr "你要烘培輪廓貼圖嗎？"
@@ -1356,7 +1356,7 @@ msgid "sDialogImportOldVer"
 msgstr "你要導入的包版本早於已導入的 lilToon 版本。是否繼續？"
 
 msgid "sDialogImportPackage"
-msgstr "已經導入了 UPM 版 lilToon。是否繼續導入 unitypackage 版？（這可能會導致腳本錯誤等。）"
+msgstr "已經導入了 UPM 版 lilToon。是否繼續導入 unitypackage 版？ (這可能會導致腳本錯誤等)"
 
 msgid "sWarnOptimiseMeshData"
 msgstr "Unity 可能會錯誤刪除所需的頂點資料。 發生問題時，請關閉「Project Setting/Player/Optimize Mesh Data」。"
@@ -1515,7 +1515,7 @@ msgid "sPresetFurMask"
 msgstr "毛髮遮罩"
 
 msgid "sShaderSetting"
-msgstr "著色器設定（用於所有材質）"
+msgstr "著色器設定 (用於所有材質)"
 
 msgid "sHelpShaderSetting"
 msgstr "此處關閉的功能將從著色器中刪除。通過關閉不使用的功能，可以減少你的 Avatar 的大小和負載。​​"
@@ -1536,10 +1536,10 @@ msgid "sSettingTexOutlineColor"
 msgstr "輪廓顏色貼圖"
 
 msgid "sSettingDefaultValue"
-msgstr "初始值（用於 Fix Lighting 和照明預設）"
+msgstr "初始值 (用於 Fix Lighting 和照明預設)"
 
 msgid "sSettingBuildSizeOptimization"
-msgstr "優化構建大小（用於所有材質）"
+msgstr "優化構建大小 (用於所有材質)"
 
 msgid "sSettingApplyShadowFA"
 msgstr "通過 ForwardAdd 啟用陰影"

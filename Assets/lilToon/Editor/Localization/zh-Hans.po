@@ -339,10 +339,10 @@ msgid "sRenderingModeFur"
 msgstr "[高负载] 毛发"
 
 msgid "sRenderingModeFurCutout"
-msgstr "[高负载] 毛发(镂空)"
+msgstr "[高负载] 毛发 (镂空)"
 
 msgid "sRenderingModeFurTwoPass"
-msgstr "[高负载] 毛发(2 pass)"
+msgstr "[高负载] 毛发 (2 pass)"
 
 msgid "sRenderingModeGem"
 msgstr "[高负载] 宝石"
@@ -1127,10 +1127,10 @@ msgid "sRimIndirectionRange"
 msgstr "间接光宽度"
 
 msgid "sGlitterSetting"
-msgstr "亮片"
+msgstr "闪粉"
 
 msgid "sGlitter"
-msgstr "亮片"
+msgstr "闪粉"
 
 # TODO
 msgid "Shape"
@@ -1309,7 +1309,7 @@ msgid "sPaste"
 msgstr "粘贴"
 
 msgid "sPasteWithTexture"
-msgstr "粘贴(包括纹理)"
+msgstr "粘贴 (包括纹理)"
 
 msgid "sReset"
 msgstr "重置"
@@ -1360,7 +1360,7 @@ msgid "sDialogBakeMatCap"
 msgstr "您确定要烘培 matcap 吗？"
 
 msgid "sDialogBakeTriMask"
-msgstr "您确定要烘培这三个蒙版(MatCap/Rim/发光)吗？"
+msgstr "您确定要烘培这三个蒙版 (MatCap/Rim/发光) 吗？"
 
 msgid "sDialogBakeOutline"
 msgstr "您确定要烘培轮廓纹理吗？"
@@ -1375,7 +1375,7 @@ msgid "sDialogImportOldVer"
 msgstr "您要导入的 lilToon 版本早于已导入的 lilToon 版本。是否继续？"
 
 msgid "sDialogImportPackage"
-msgstr "已经导入了UPM版lilToon。是否继续导入unitypackage版本？(可能会导致脚本错误等一系列问题。)"
+msgstr "已经导入了UPM版lilToon。是否继续导入unitypackage版本？(可能会导致脚本错误等一系列问题)"
 
 msgid "sWarnOptimiseMeshData"
 msgstr "Unity可能会错误删除所需的顶点数据。发生问题时，请关闭“Project Setting/Player/Optimize Mesh Data” 选项。"
@@ -1534,7 +1534,7 @@ msgid "sPresetFurMask"
 msgstr "毛发蒙版"
 
 msgid "sShaderSetting"
-msgstr "着色器设置(用于所有材质)"
+msgstr "着色器设置 (用于所有材质)"
 
 msgid "sHelpShaderSetting"
 msgstr "此处关闭的功能将从着色器中删除。通过关闭未使用的功能，可以减少你的 Avatar 的大小，同时还能减少负载。"
@@ -1558,7 +1558,7 @@ msgid "sSettingDefaultValue"
 msgstr "初始值 (用于“Fix Lighting”以及照明预设)"
 
 msgid "sSettingBuildSizeOptimization"
-msgstr "优化构建大小(用于所有材质)"
+msgstr "优化构建大小 (用于所有材质)"
 
 msgid "sSettingApplyShadowFA"
 msgstr "通过 ForwardAdd 启用阴影"
