@@ -511,7 +511,7 @@ msgid "sHelpRenderingFur"
 msgstr "由于性能原因，应用于毛发的功能受到限制。"
 
 msgid "sHelpTransparentForWorld"
-msgstr "将透明材质的 Render Queue 设置为 2999 或更低，会使后面的其他材质不可见，造成衣服和头发消失等问题。对于 World 项目，推荐设定为 3000 以上或关闭 ZWrite 设定。"
+msgstr "将透明材质的 Render Queue 设置为 2999 或更低，会使在其后面的其他材质不可见，同时可能会造成衣服和头发消失等问题。对于 World 项目，推荐设定为 3000 以上或关闭 ZWrite 设定。"
 
 msgid "sHelpGrabPass"
 msgstr "反射和宝石使用 GrabPass，因此可能对移动端 GPU 产生很大的性能影响。"
