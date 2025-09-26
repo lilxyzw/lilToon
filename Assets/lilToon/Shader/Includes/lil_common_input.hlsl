@@ -193,6 +193,8 @@ CBUFFER_START(UnityPerMaterial)
     uint    _Main3rdTex_UVMode;
     uint    _AlphaMaskMode;
     lilBool _UseMain2ndTex;
+    float4 _Main2ndTexDecalAnimation;
+    float4 _Main2ndTexDecalSubParam;
     lilBool _Main2ndTexIsDecal;
     lilBool _Main2ndTexIsLeftOnly;
     lilBool _Main2ndTexIsRightOnly;
@@ -201,6 +203,8 @@ CBUFFER_START(UnityPerMaterial)
     lilBool _Main2ndTexShouldFlipCopy;
     lilBool _Main2ndTexIsMSDF;
     lilBool _UseMain3rdTex;
+    float4 _Main3rdTexDecalAnimation;
+    float4 _Main3rdTexDecalSubParam;
     lilBool _Main3rdTexIsDecal;
     lilBool _Main3rdTexIsLeftOnly;
     lilBool _Main3rdTexIsRightOnly;
@@ -906,6 +910,9 @@ float4 _AudioTexture_TexelSize;
 #if !defined(LIL_FEATURE_OutlineTex)
     #define sampler_OutlineTex lil_sampler_linear_repeat
 #endif
+
+// For VRChat
+uint _UdonForceSceneLighting;
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Custom properties

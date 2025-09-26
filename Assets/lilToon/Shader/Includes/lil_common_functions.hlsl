@@ -530,15 +530,20 @@ float2 lilCalcDecalUV(
         isRightHand);
 }
 
-float2 lilCalcAtlasAnimation(float2 uv, float4 decalAnimation, float4 decalSubParam)
+float2 lilCalcAtlasAnimationAtAnimTime(float2 uv, float4 decalAnimation, float4 decalSubParam, uint animTime)
 {
     float2 outuv = lerp(float2(uv.x, 1.0-uv.y), 0.5, decalSubParam.z);
-    uint animTime = decalAnimation.w == 0.0 ? (uint)decalAnimation.z : (uint)(LIL_TIME * decalAnimation.w) % (uint)decalAnimation.z;
     uint offsetX = animTime % (uint)decalAnimation.x;
     uint offsetY = animTime / (uint)decalAnimation.x;
     outuv = (outuv + float2(offsetX,offsetY)) * decalSubParam.xy / decalAnimation.xy;
     outuv.y = 1.0-outuv.y;
     return outuv;
+}
+
+float2 lilCalcAtlasAnimation(float2 uv, float4 decalAnimation, float4 decalSubParam)
+{
+    uint animTime = decalAnimation.w == 0.0 ? (uint)decalAnimation.z : (uint)(LIL_TIME * decalAnimation.w) % (uint)decalAnimation.z;
+    return lilCalcAtlasAnimationAtAnimTime(uv, decalAnimation, decalSubParam, animTime);
 }
 
 // MatCap
@@ -765,12 +770,19 @@ float4 lilGetSubTexWithoutAnimation(
     bool shouldFlipMirror,
     bool shouldFlipCopy,
     bool isMSDF,
-    bool isRightHand
+    bool isRightHand,
+    float4 decalAnimation,
+    float4 decalSubParam
     LIL_SAMP_IN_FUNC(samp))
 {
     #if defined(LIL_FEATURE_DECAL)
         float2 uv2 = lilCalcDecalUV(uv, uv_ST, angle, isLeftOnly, isRightOnly, shouldCopy, shouldFlipMirror, shouldFlipCopy, isRightHand);
-        float4 outCol = LIL_SAMPLE_2D(tex,samp,uv2);
+        #if defined(LIL_FEATURE_ANIMATE_DECAL)
+            float2 uv2samp = lilCalcAtlasAnimationAtAnimTime(uv2, decalAnimation, decalSubParam, 0);
+        #else
+            float2 uv2samp = uv2;
+        #endif
+        float4 outCol = LIL_SAMPLE_2D(tex,samp,uv2samp);
         if(isMSDF) outCol = float4(1.0, 1.0, 1.0, lilMSDF(outCol.rgb));
         if(isDecal) outCol.a *= lilIsIn0to1(uv2, saturate(nv-0.05));
         return outCol;
