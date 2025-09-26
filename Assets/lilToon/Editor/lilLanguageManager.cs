@@ -147,7 +147,7 @@ namespace lilToon
             loc["sAlphaMaskModes"]           = BuildParams(GetLoc("sAlphaMask"), GetLoc("sAlphaMaskModeNone"), GetLoc("sAlphaMaskModeReplace"), GetLoc("sAlphaMaskModeMul"), GetLoc("sAlphaMaskModeAdd"), GetLoc("sAlphaMaskModeSub"));
             loc["sBlinkSettings"]              = BuildParams(GetLoc("sBlinkStrength"), GetLoc("sBlinkType"), GetLoc("sBlinkSpeed"), GetLoc("sBlinkOffset"));
             loc["sDistanceFadeSettings"]      = BuildParams(GetLoc("sStartDistance"), GetLoc("sEndDistance"), GetLoc("sStrength"), GetLoc("sBackfaceForceShadow"));
-            loc["sDistanceFadeModes"]  = BuildParams("Mode", GetLoc("sVertex"), GetLoc("sDissolveModePosition"));
+            loc["sDistanceFadeModes"]  = BuildParams(GetLoc("Mode"), GetLoc("sVertex"), GetLoc("sDissolveModePosition"));
             loc["sDissolveParams"]           = BuildParams(GetLoc("sDissolveMode"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"), GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"));
             loc["sDissolveParamsModes"]       = BuildParams(GetLoc("sDissolve"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"));
             loc["sDissolveParamsOther"]      = BuildParams(GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"), "Dummy");
@@ -174,7 +174,7 @@ namespace lilToon
             sAlphaMaskModes                 = BuildParams(GetLoc("sAlphaMask"), GetLoc("sAlphaMaskModeNone"), GetLoc("sAlphaMaskModeReplace"), GetLoc("sAlphaMaskModeMul"), GetLoc("sAlphaMaskModeAdd"), GetLoc("sAlphaMaskModeSub"));
             blinkSetting                    = BuildParams(GetLoc("sBlinkStrength"), GetLoc("sBlinkType"), GetLoc("sBlinkSpeed"), GetLoc("sBlinkOffset"));
             sDistanceFadeSetting            = BuildParams(GetLoc("sStartDistance"), GetLoc("sEndDistance"), GetLoc("sStrength"), GetLoc("sBackfaceForceShadow"));
-            sDistanceFadeSettingMode        = BuildParams("Mode", GetLoc("sVertex"), GetLoc("sDissolveModePosition"));
+            sDistanceFadeSettingMode        = BuildParams(GetLoc("Mode"), GetLoc("sVertex"), GetLoc("sDissolveModePosition"));
             sDissolveParams                 = BuildParams(GetLoc("sDissolveMode"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"), GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"));
             sDissolveParamsMode             = BuildParams(GetLoc("sDissolve"), GetLoc("sDissolveModeNone"), GetLoc("sDissolveModeAlpha"), GetLoc("sDissolveModeUV"), GetLoc("sDissolveModePosition"));
             sDissolveParamsOther            = BuildParams(GetLoc("sDissolveShape"), GetLoc("sDissolveShapePoint"), GetLoc("sDissolveShapeLine"), GetLoc("sBorder"), GetLoc("sBlur"), "Dummy");
@@ -212,11 +212,11 @@ namespace lilToon
             shadow2ndColorRGBAContent       = new GUIContent(GetLoc("sShadow2ndColor"),                     GetLoc("sTextureRGBA"));
             shadow3rdColorRGBAContent       = new GUIContent(GetLoc("sShadow3rdColor"),                     GetLoc("sTextureRGBA"));
             blurMaskRGBContent              = new GUIContent(GetLoc("sBlurMask"),                           GetLoc("sBlurRGB"));
-            shadowAOMapContent              = new GUIContent("AO Map",                                      GetLoc("sBorderRGB"));
+            shadowAOMapContent              = new GUIContent(GetLoc("AO Map"),                              GetLoc("sBorderRGB"));
             widthMaskContent                = new GUIContent(GetLoc("sWidth"),                              GetLoc("sWidthR"));
             lengthMaskContent               = new GUIContent(GetLoc("sLengthMask"),                         GetLoc("sStrengthR"));
             triMaskContent                  = new GUIContent(GetLoc("sTriMask"),                            GetLoc("sTriMaskRGB"));
-            cubemapContent                  = new GUIContent("Cubemap Fallback");
+            cubemapContent                  = new GUIContent(GetLoc("Cubemap Fallback"));
             audioLinkLocalMapContent        = new GUIContent(GetLoc("sAudioLinkLocalMap"));
             gradationMapContent             = new GUIContent(GetLoc("sGradationMap"));
 
