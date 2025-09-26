@@ -312,10 +312,10 @@ msgid "sShaderType"
 msgstr "着色器功能"
 
 msgid "sShaderTypeNormal"
-msgstr "Normal   (默认)"
+msgstr "Normal (常规)"
 
 msgid "sShaderTypeLite"
-msgstr "Lite         (轻量)"
+msgstr "Lite (轻量)"
 
 msgid "sRenderingMode"
 msgstr "渲染模式"
@@ -378,19 +378,19 @@ msgid "sSubpassCutoff"
 msgstr "Subpass Cutoff"
 
 msgid "Cull Mode"
-msgstr "Cull Mode   (剔除方向)"
+msgstr "Cull Mode (剔除模式)"
 
 msgid "sCullMode"
-msgstr "Cull Mode   (剔除方向)"
+msgstr "Cull Mode (剔除模式)"
 
 msgid "sCullModeOff"
-msgstr "Off         (渲染双面)"
+msgstr "Off (不剔除)"
 
 msgid "sCullModeFront"
-msgstr "Front      (剔除正面，渲染背面)"
+msgstr "Front (剔除正面)"
 
 msgid "sCullModeBack"
-msgstr "Back       (剔除背面，渲染正面)"
+msgstr "Back (剔除背面)"
 
 msgid "sFlipBackfaceNormal"
 msgstr "翻转背面法线"
@@ -511,7 +511,7 @@ msgid "sHelpRenderingFur"
 msgstr "由于性能原因，应用于毛发的功能受到限制。"
 
 msgid "sHelpTransparentForWorld"
-msgstr "将透明材质的 Render Queue 设置为 2999 或更低，会使在其后面的其他材质不可见，同时可能会造成衣服和头发消失等问题。对于 World 项目，推荐设定为 3000 以上或关闭 ZWrite 设定。"
+msgstr "将透明材质的 Render Queue 设置为 2999 或更低，会使后面的其他材质不可见，造成衣服和头发消失等问题。对于 World 项目，推荐设定为 3000 以上或关闭 ZWrite 设定。"
 
 msgid "sHelpGrabPass"
 msgstr "反射和宝石使用 GrabPass，因此可能对移动端 GPU 产生很大的性能影响。"
@@ -997,6 +997,7 @@ msgstr "ID Mask"
 msgid "sUDIMDiscard"
 msgstr "UV Tile Discard"
 
+# TODO
 msgid "sUDIMDiscardUV"
 msgstr "Discard UV"
 
@@ -1186,13 +1187,13 @@ msgid "sRenderingTips"
 msgstr "您可以在此配置详细的渲染设置。"
 
 msgid "sZClip"
-msgstr "ZClip           (深度剪裁)"
+msgstr "ZClip"
 
 msgid "sZWrite"
-msgstr "ZWrite         (写入深度)"
+msgstr "ZWrite"
 
 msgid "sZTest"
-msgstr "ZTest           (遮挡方式)"
+msgstr "ZTest"
 
 msgid "sOffsetFactor"
 msgstr "Offset Factor"
@@ -1201,7 +1202,7 @@ msgid "sOffsetUnits"
 msgstr "Offset Units"
 
 msgid "sColorMask"
-msgstr "Color Mask  (色彩通道)"
+msgstr "Color Mask"
 
 msgid "sAlphaToMask"
 msgstr "AlphaToMask"
@@ -1375,10 +1376,10 @@ msgid "sDialogImportOldVer"
 msgstr "您要导入的 lilToon 版本早于已导入的 lilToon 版本。是否继续？"
 
 msgid "sDialogImportPackage"
-msgstr "已经导入了UPM版lilToon。是否继续导入unitypackage版本？(可能会导致脚本错误等一系列问题)"
+msgstr "已经导入了 UPM 版 lilToon。是否继续导入 unitypackage 版本？(可能会导致脚本错误等一系列问题)"
 
 msgid "sWarnOptimiseMeshData"
-msgstr "Unity可能会错误删除所需的顶点数据。发生问题时，请关闭“Project Setting/Player/Optimize Mesh Data” 选项。"
+msgstr "Unity可能会错误删除所需的顶点数据。发生问题时，请关闭“Project Setting/Player/Optimize Mesh Data”选项。"
 
 msgid "sPresets"
 msgstr "预设"
@@ -1564,7 +1565,7 @@ msgid "sSettingApplyShadowFA"
 msgstr "通过 ForwardAdd 启用阴影"
 
 msgid "sSettingUseForwardAdd"
-msgstr "使用ForwardAdd"
+msgstr "使用 ForwardAdd"
 
 msgid "sSettingUseForwardAddShadow"
 msgstr "在 ForwardAdd 路径中接收阴影"
