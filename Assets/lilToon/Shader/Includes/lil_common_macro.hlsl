@@ -2026,7 +2026,9 @@ float3 lilGetLightMapDirection(float2 uv)
 #endif
 
 // Dir light & indir light
-#if defined(LIL_USE_LPPV) && (defined(LIL_FEATURE_SHADOW) || defined(LIL_LITE))
+#if (defined(PROBE_VOLUMES_L1) || defined(PROBE_VOLUMES_L2))
+    #define LIL_CALC_TWOLIGHT(i,o) lilGetLightColorDoubleAPV(i.positionWS, vertexNormalInput.normalWS, o.lightColor, o.indLightColor)
+#elif defined(LIL_USE_LPPV) && (defined(LIL_FEATURE_SHADOW) || defined(LIL_LITE))
     #define LIL_CALC_TWOLIGHT(i,o) lilGetLightColorDouble(i.positionWS, o.lightColor, o.indLightColor)
 #elif defined(LIL_FEATURE_SHADOW) || defined(LIL_LITE)
     #define LIL_CALC_TWOLIGHT(i,o) lilGetLightColorDouble(o.lightColor, o.indLightColor)
