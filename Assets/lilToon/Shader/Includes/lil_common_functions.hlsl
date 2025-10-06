@@ -1086,7 +1086,6 @@ void lilGetLightColorDoubleAPV(float3 positionWS, float3 normalWS, out float3 li
     lilGetToonSHDoubleAPV(lilGetLightDirectionForSH9(), positionWS, normalWS, shMax, shMin);
     lightColor = LIL_MAINLIGHT_COLOR + shMax;
     indLightColor = saturate(shMin);
-    lightColor, indLightColor = 0;
 }
 #endif
 
