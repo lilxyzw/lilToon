@@ -525,7 +525,7 @@ msgid "sAlphaBoostFA"
 msgstr "[Built-in RP] 透明度提升 (點光源 / 聚光燈)"
 
 msgid "sLightBlending"
-msgstr "[Built-in RP] 混合光"
+msgstr "[Built-in RP] 光照混合"
 
 msgid "sBlendingAdd"
 msgstr "Add"

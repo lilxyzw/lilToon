@@ -130,11 +130,11 @@ msgstr "主色强度"
 
 # TODO
 msgid "Cubemap Fallback"
-msgstr "后备 Cubemap"
+msgstr "备用反射 Cubemap"
 
 # TODO
 msgid "Override"
-msgstr "覆盖"
+msgstr "覆盖环境反射 Cubemap"
 
 msgid "sEnableLighting"
 msgstr "启用照明"
@@ -406,11 +406,11 @@ msgstr "抗锯齿阴影"
 
 # TODO
 msgid "[VRCLV] Rim Border"
-msgstr "[VRCLV] Rim Border"
+msgstr "[VRCLV] 光照边界宽度"
 
 # TODO
 msgid "[VRCLV] Rim Blur"
-msgstr "[VRCLV] Rim Blur"
+msgstr "[VRCLV] 光照边界模糊"
 
 # TODO
 msgid "sDither"
@@ -490,17 +490,18 @@ msgstr "[HDRP] 定向光强度"
 
 # TODO
 msgid "sBeforeExposureLimit"
-msgstr "[HDRP] Before exposure limit"
+msgstr "[HDRP] 曝光前最大亮度"
 
 msgid "sLightingPreset"
 msgstr "应用预设"
 
 msgid "sLightingPresetDefault"
-msgstr "通常"
+msgstr "默认"
 
 msgid "sLightingPresetStable"
 msgstr "稳定"
 
+# TODO
 msgid "sLightingPresetSemiMonochrome"
 msgstr "半单色"
 
@@ -532,7 +533,7 @@ msgid "sAlphaBoostFA"
 msgstr "[Built-in RP] 透明度提升 (点光源 / 聚光灯)"
 
 msgid "sLightBlending"
-msgstr "[Built-in RP] 混合光"
+msgstr "[Built-in RP] 光照混合"
 
 msgid "sBlendingAdd"
 msgstr "Add"
@@ -584,11 +585,11 @@ msgstr "渲染模式"
 
 # TODO
 msgid "sFallbackFacing"
-msgstr "剔除"
+msgstr "剔除模式"
 
 # TODO
 msgid "sFallbackResult"
-msgstr "Result"
+msgstr "输出结果"
 
 # TODO
 msgid "sFallbackToonstandardShading"
@@ -596,7 +597,7 @@ msgstr "阴影模式"
 
 # TODO
 msgid "Shadow Ramp"
-msgstr "阴影 Ramp"
+msgstr "阴影映射 (Shadow Ramp)"
 
 msgid "sColors"
 msgstr "纹理设置"
@@ -694,7 +695,7 @@ msgstr "Shadow Caster Bias"
 
 # TODO
 msgid "AO Map"
-msgstr "AO Map"
+msgstr "环境光遮蔽贴图"
 
 msgid "sFlat"
 msgstr "Flat"
@@ -743,7 +744,7 @@ msgstr "RGBA -> Normal & Width"
 
 # TODO
 msgid "Z Bias"
-msgstr "Z Bias"
+msgstr "深度偏移"
 
 msgid "sDeleteMesh0"
 msgstr "删除宽度为 0 的顶点"
@@ -1139,7 +1140,7 @@ msgstr "形状"
 
 # TODO
 msgid "Atras"
-msgstr "Atras"
+msgstr "图集拆分 (Atlas)"
 
 msgid "sParticleSize"
 msgstr "粒子大小"
