@@ -629,10 +629,17 @@ namespace lilToon
             sb.AppendLine();
 
             sb.AppendLine("# SRP Information");
-            if(GraphicsSettings.renderPipelineAsset != null)
+#if UNITY_6000_0_OR_NEWER
+            if (GraphicsSettings.defaultRenderPipeline != null)
+            {
+                sb.AppendLine("Current RP: " + GraphicsSettings.defaultRenderPipeline.ToString());
+            }
+#else
+            if (GraphicsSettings.renderPipelineAsset != null)
             {
                 sb.AppendLine("Current RP: " + GraphicsSettings.renderPipelineAsset.ToString());
             }
+#endif
             else
             {
                 sb.AppendLine("Current RP: " + "Built-in Render Pipeline");

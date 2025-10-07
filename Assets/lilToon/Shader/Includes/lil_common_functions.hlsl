@@ -1022,6 +1022,73 @@ void lilGetLightColorDouble(out float3 lightColor, out float3 indLightColor)
     indLightColor = saturate(shMin);
 }
 
+#if defined(PROBE_VOLUMES_L1) || defined(PROBE_VOLUMES_L2)
+#include "Packages/com.unity.render-pipelines.core/Runtime/Lighting/ProbeVolume/ProbeVolume.hlsl"
+void lilGetToonSHDoubleAPV(float3 lightDirection, float3 positionWS, float3 normalWS, out float3 shMax, out float3 shMin)
+{
+    float4 SHAr = unity_SHAr;
+    float4 SHAg = unity_SHAg;
+    float4 SHAb = unity_SHAb;
+    float4 SHBr = unity_SHBr;
+    float4 SHBg = unity_SHBg;
+    float4 SHBb = unity_SHBb;
+    float3 SHC = unity_SHC.rgb;
+
+    float3 V = normalize(lilViewDirection(positionWS));
+    APVSample apvSample = SampleAPV(positionWS, normalWS, lilGetRenderingLayer(), V);
+    if (apvSample.status != APV_SAMPLE_STATUS_INVALID)
+    {
+        apvSample.Decode();
+
+        #if defined(PROBE_VOLUMES_L1)
+            SHAr = half4(apvSample.L1_R, apvSample.L0.r);
+            SHAg = half4(apvSample.L1_G, apvSample.L0.g);
+            SHAb = half4(apvSample.L1_B, apvSample.L0.b);
+        #elif defined(PROBE_VOLUMES_L2)
+            SHAr = half4(apvSample.L1_R, apvSample.L0.r);
+            SHAg = half4(apvSample.L1_G, apvSample.L0.g);
+            SHAb = half4(apvSample.L1_B, apvSample.L0.b);
+            SHBr = apvSample.L2_R;
+            SHBg = apvSample.L2_G;
+            SHBb = apvSample.L2_B;
+            SHC = apvSample.L2_C.rgb;
+        #endif
+        SHBr *= _APVWeight;
+        SHBg *= _APVWeight;
+        SHBb *= _APVWeight;
+        SHC *= _APVWeight;
+    }
+
+    float3 N = lightDirection * 0.666666;
+    float4 vB = N.xyzz * N.yzzx;
+    // L0 L2
+    float3 res = float3(SHAr.w,SHAg.w,SHAb.w);
+    res.r += dot(SHBr, vB);
+    res.g += dot(SHBg, vB);
+    res.b += dot(SHBb, vB);
+    res += SHC * (N.x * N.x - N.y * N.y);
+    // L1
+    float3 l1;
+    l1.r = dot(SHAr.rgb, N);
+    l1.g = dot(SHAg.rgb, N);
+    l1.b = dot(SHAb.rgb, N);
+    shMax = res + l1;
+    shMin = res - l1;
+    #ifdef LIL_COLORSPACE_GAMMA
+        shMax = lilLinearToSRGB(shMax);
+        shMin = lilLinearToSRGB(shMin);
+    #endif
+}
+
+void lilGetLightColorDoubleAPV(float3 positionWS, float3 normalWS, out float3 lightColor, out float3 indLightColor)
+{
+    float3 shMax, shMin;
+    lilGetToonSHDoubleAPV(lilGetLightDirectionForSH9(), positionWS, normalWS, shMax, shMin);
+    lightColor = LIL_MAINLIGHT_COLOR + shMax;
+    indLightColor = saturate(shMin);
+}
+#endif
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Geometric Specular Antialiasing
 void GSAA(inout float roughness, float3 N, float strength)

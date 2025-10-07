@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2025-10-06
+### 追加
+- Adaptive Probe Volumes対応
+
+### Fixed
+- AudioLinkMaskが頂点シェーダーで動作しない
+- カスタムシェーダーのInspectorでエラー
+- 逆光ライトの透明度が反映されていない
+- lilToonLiteの輪郭線がURPで表示されない
+- アニメーションされたデカールが適切にベイクされない
+- exFATのmacOS環境でInspectorが表示されない
+- Unity 6上でのwarning
+
 ## [2.2.1] - 2025-08-29
 ### 修正
 - シェーダーエラー

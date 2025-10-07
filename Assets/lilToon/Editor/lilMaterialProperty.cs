@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace lilToon
 {
@@ -50,12 +51,6 @@ namespace lilToon
             private set { }
         }
 
-        public MaterialProperty.PropFlags flags
-        {
-            get { return p.flags; }
-            private set { }
-        }
-
         public bool hasMixedValue
         {
             get { return p.hasMixedValue; }
@@ -74,15 +69,31 @@ namespace lilToon
             private set { }
         }
 
-        public UnityEngine.Rendering.TextureDimension textureDimension
+        public TextureDimension textureDimension
         {
             get { return p.textureDimension; }
             private set { }
         }
 
-        public MaterialProperty.PropType type
+        public ShaderPropertyType propertyType
         {
-            get { return p.type; }
+#if UNITY_6000_0_OR_NEWER
+            get { return p.propertyType; }
+#else
+            get
+            {
+                return p.type switch
+                {
+                    MaterialProperty.PropType.Color => ShaderPropertyType.Color,
+                    MaterialProperty.PropType.Vector => ShaderPropertyType.Vector,
+                    MaterialProperty.PropType.Float => ShaderPropertyType.Float,
+                    MaterialProperty.PropType.Range => ShaderPropertyType.Range,
+                    MaterialProperty.PropType.Texture => ShaderPropertyType.Texture,
+                    MaterialProperty.PropType.Int => ShaderPropertyType.Int,
+                    _ => ShaderPropertyType.Float,
+                };
+            }
+#endif
             private set { }
         }
 
