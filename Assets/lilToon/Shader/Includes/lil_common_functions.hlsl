@@ -1080,10 +1080,31 @@ void lilGetToonSHDoubleAPV(float3 lightDirection, float3 positionWS, float3 norm
     #endif
 }
 
+float3 lilGetFixedLightDirectionAPV(float3 positionWS, float3 normalWS, float4 lightDirectionOverride)
+{
+    float3 mainDir = LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR);
+    float4 SHAr = unity_SHAr;
+    float4 SHAg = unity_SHAg;
+    float4 SHAb = unity_SHAb;
+    float3 V = normalize(lilViewDirection(positionWS));
+    APVSample apvSample = SampleAPV(positionWS, normalWS, lilGetRenderingLayer(), V);
+    if (apvSample.status != APV_SAMPLE_STATUS_INVALID)
+    {
+        apvSample.Decode();
+        SHAr = half4(apvSample.L1_R, apvSample.L0.r);
+        SHAg = half4(apvSample.L1_G, apvSample.L0.g);
+        SHAb = half4(apvSample.L1_B, apvSample.L0.b);
+    }
+
+    float3 sh9Dir = SHAr.xyz * 0.333333 + SHAg.xyz * 0.333333 + SHAb.xyz * 0.333333;
+    float3 L = float3(sh9Dir.x, abs(sh9Dir.y), sh9Dir.z) + mainDir + lilGetCustomLightDirection(lightDirectionOverride);
+    return L;
+}
+
 void lilGetLightColorDoubleAPV(float3 positionWS, float3 normalWS, out float3 lightColor, out float3 indLightColor)
 {
     float3 shMax, shMin;
-    lilGetToonSHDoubleAPV(lilGetLightDirectionForSH9(), positionWS, normalWS, shMax, shMin);
+    lilGetToonSHDoubleAPV(lilGetFixedLightDirectionAPV(positionWS, normalWS, float4(0,0.001,0,0)), positionWS, normalWS, shMax, shMin);
     lightColor = LIL_MAINLIGHT_COLOR + shMax;
     indLightColor = saturate(shMin);
 }
