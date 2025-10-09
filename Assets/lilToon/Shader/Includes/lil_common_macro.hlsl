@@ -2124,6 +2124,13 @@ struct lilLightData
         LIL_APPLY_LTCGI(o) \
         LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o); \
         LIL_CORRECT_LIGHTCOLOR_VS(o.lightColor)
+#elif defined(PROBE_VOLUMES_L1) || defined(PROBE_VOLUMES_L2)
+    #define LIL_CALC_MAINLIGHT(i,o) \
+        lilLightData o; \
+        o.lightDirection = lilGetFixedLightDirectionAPV(i.positionWS, 0, _LightDirectionOverride); \
+        LIL_CALC_TWOLIGHT(i,o); \
+        LIL_APPLY_ADDITIONALLIGHT_TO_MAIN(i,o); \
+        LIL_CORRECT_LIGHTCOLOR_VS(o.lightColor)
 #else
     #define LIL_CALC_MAINLIGHT(i,o) \
         lilLightData o; \
