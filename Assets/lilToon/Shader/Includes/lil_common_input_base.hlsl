@@ -619,6 +619,7 @@ uint    _Cull;
 #endif
 #if defined(LIL_FEATURE_RIMLIGHT)
     uint    _RimBlendMode;
+    uint    _RimColorTex_UVMode;
 #endif
 #if defined(LIL_FEATURE_GLITTER)
     uint    _GlitterUVMode;

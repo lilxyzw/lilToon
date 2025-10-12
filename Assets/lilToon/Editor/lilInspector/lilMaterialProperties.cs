@@ -311,6 +311,7 @@ namespace lilToon
         private readonly lilMaterialProperty useRim                 = new lilMaterialProperty("_UseRim", PropertyBlock.RimLight);
         private readonly lilMaterialProperty rimColor               = new lilMaterialProperty("_RimColor", PropertyBlock.RimLight);
         private readonly lilMaterialProperty rimColorTex            = new lilMaterialProperty("_RimColorTex", true, PropertyBlock.RimLight);
+        private readonly lilMaterialProperty rimColorTex_UVMode     = new lilMaterialProperty("_RimColorTex_UVMode", true, PropertyBlock.RimLight);
         private readonly lilMaterialProperty rimMainStrength        = new lilMaterialProperty("_RimMainStrength", PropertyBlock.RimLight);
         private readonly lilMaterialProperty rimNormalStrength      = new lilMaterialProperty("_RimNormalStrength", PropertyBlock.RimLight);
         private readonly lilMaterialProperty rimBorder              = new lilMaterialProperty("_RimBorder", PropertyBlock.RimLight);
@@ -920,6 +921,7 @@ namespace lilToon
                 useRim,
                 rimColor,
                 rimColorTex,
+                rimColorTex_UVMode,
                 rimMainStrength,
                 rimNormalStrength,
                 rimBorder,

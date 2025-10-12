@@ -1649,7 +1649,11 @@
                 float4 rimColor = _RimColor;
                 float4 rimIndirColor = _RimIndirColor;
                 #if defined(LIL_FEATURE_RimColorTex)
-                    float4 rimColorTex = LIL_SAMPLE_2D_ST(_RimColorTex, samp, fd.uvMain);
+                    float2 uvRimColor = fd.uvMain;
+                    if(_RimColorTex_UVMode == 1) uvRimColor = fd.uv1;
+                    if(_RimColorTex_UVMode == 2) uvRimColor = fd.uv2;
+                    if(_RimColorTex_UVMode == 3) uvRimColor = fd.uv3;
+                    float4 rimColorTex = LIL_SAMPLE_2D_ST(_RimColorTex, samp, uvRimColor);
                     rimColor *= rimColorTex;
                     rimIndirColor *= rimColorTex;
                 #endif
@@ -1699,7 +1703,11 @@
                 // Color
                 float4 rimColor = _RimColor;
                 #if defined(LIL_FEATURE_RimColorTex)
-                    rimColor *= LIL_SAMPLE_2D_ST(_RimColorTex, samp, fd.uvMain);
+                    float2 uvRimColor = fd.uvMain;
+                    if(_RimColorTex_UVMode == 1) uvRimColor = fd.uv1;
+                    if(_RimColorTex_UVMode == 2) uvRimColor = fd.uv2;
+                    if(_RimColorTex_UVMode == 3) uvRimColor = fd.uv3;
+                    rimColor *= LIL_SAMPLE_2D_ST(_RimColorTex, samp, uvRimColor);
                 #endif
                 rimColor.rgb = lerp(rimColor.rgb, rimColor.rgb * fd.albedo, _RimMainStrength);
 

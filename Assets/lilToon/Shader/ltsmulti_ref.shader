@@ -298,6 +298,7 @@ Shader "Hidden/lilToonMultiRefraction"
         [lilToggleLeft] _UseRim                     ("sRimLight", Int) = 0
         [lilHDR]        _RimColor                   ("sColor", Color) = (0.66,0.5,0.48,1)
         [NoScaleOffset] _RimColorTex                ("Texture", 2D) = "white" {}
+        [lilEnum]       _RimColorTex_UVMode         ("UV Mode|UV0|UV1|UV2|UV3", Int) = 0
                         _RimMainStrength            ("sMainColorPower", Range(0, 1)) = 0
                         _RimNormalStrength          ("sNormalStrength", Range(0, 1)) = 1.0
                         _RimBorder                  ("sBorder", Range(0, 1)) = 0.5
