@@ -168,10 +168,10 @@ msgid "sAnimation"
 msgstr "动画"
 
 msgid "sXFrames"
-msgstr "X轴帧数"
+msgstr "X 轴帧数"
 
 msgid "sYFrames"
-msgstr "Y轴帧数"
+msgstr "Y 轴帧数"
 
 msgid "sFrames"
 msgstr "总帧数"
@@ -513,7 +513,7 @@ msgid "sHelpGeometryShader"
 msgstr "由于几何体着色器在 iOS 或 Mac 上不起作用，因此建议将其更改为其他渲染模式。"
 
 msgid "sHelpOnePassVertexLight"
-msgstr "使用 One Pass Transparent 时，建议将顶点灯强度设定为 1.0。"
+msgstr "透明模式使用 One Pass 时，建议将顶点灯强度设定为 1.0。"
 
 msgid "sHelpCullMode"
 msgstr "如果材质看起来不正确，请将 CullMode 设置为 Off 或 Back。"
@@ -654,13 +654,13 @@ msgid "sShadowColor"
 msgstr "阴影主色"
 
 msgid "sShadow1stColor"
-msgstr "阴影颜色 1 "
+msgstr "第一阴影主色"
 
 msgid "sShadow2ndColor"
-msgstr "阴影颜色 2 "
+msgstr "第二阴影主色"
 
 msgid "sShadow3rdColor"
-msgstr "阴影颜色 3 "
+msgstr "第三阴影主色"
 
 msgid "sShadowEnvStrength"
 msgstr "阴影颜色的环境影响"
@@ -1449,7 +1449,7 @@ msgid "sPresetShadowColor"
 msgstr "阴影主色"
 
 msgid "sPresetShadowColor2"
-msgstr "阴影主色 2"
+msgstr "第二阴影主色"
 
 msgid "sPresetEmissionColor"
 msgstr "发光主色"
