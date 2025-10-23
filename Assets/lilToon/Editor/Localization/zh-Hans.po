@@ -642,7 +642,7 @@ msgid "sShadowSetting"
 msgstr "阴影设置"
 
 msgid "sShadowTips"
-msgstr "您可以在此设置阴影的主色和范围。"
+msgstr "您可以在此设置阴影的颜色和范围。"
 
 msgid "sShadow"
 msgstr "阴影"
@@ -651,16 +651,16 @@ msgid "sReceiveShadow"
 msgstr "接收阴影"
 
 msgid "sShadowColor"
-msgstr "阴影主色"
+msgstr "阴影颜色"
 
 msgid "sShadow1stColor"
-msgstr "第一阴影主色"
+msgstr "阴影颜色 1"
 
 msgid "sShadow2ndColor"
-msgstr "第二阴影主色"
+msgstr "阴影颜色 2"
 
 msgid "sShadow3rdColor"
-msgstr "第三阴影主色"
+msgstr "阴影颜色 3"
 
 msgid "sShadowEnvStrength"
 msgstr "阴影颜色的环境影响"
@@ -1446,10 +1446,10 @@ msgid "sPresetShadowStrength"
 msgstr "阴影蒙版"
 
 msgid "sPresetShadowColor"
-msgstr "阴影主色"
+msgstr "阴影颜色"
 
 msgid "sPresetShadowColor2"
-msgstr "第二阴影主色"
+msgstr "阴影颜色 2"
 
 msgid "sPresetEmissionColor"
 msgstr "发光主色"
