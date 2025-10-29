@@ -26,6 +26,9 @@ msgstr "Shader Setting"
 msgid "sHelpSelectOverlay"
 msgstr "Currently lilToonOverray is selected. Change to lilToon for normal use."
 
+msgid "Mode"
+msgstr "Mode"
+
 msgid "sColor"
 msgstr "Color"
 
@@ -125,6 +128,12 @@ msgstr "Alpha (R)"
 msgid "sMainColorPower"
 msgstr "Main Color Power"
 
+msgid "Cubemap Fallback"
+msgstr "Cubemap Fallback"
+
+msgid "Override"
+msgstr "Override"
+
 msgid "sEnableLighting"
 msgstr "Enable Lighting"
 
@@ -151,6 +160,9 @@ msgstr "MSDF Texture"
 
 msgid "sAsDecal"
 msgstr "As Decal"
+
+msgid "UV Mode"
+msgstr "UV Mode"
 
 msgid "sAnimation"
 msgstr "Animation"
@@ -266,6 +278,9 @@ msgstr "Backface Mask"
 msgid "sRandomize"
 msgstr "Randomize"
 
+msgid " (Size)"
+msgstr " (Size)"
+
 msgid "sLimShadowStrength"
 msgstr "Shadow Strength"
 
@@ -359,6 +374,9 @@ msgstr "Cutoff"
 msgid "sSubpassCutoff"
 msgstr "Subpass Cutoff"
 
+msgid "Cull Mode"
+msgstr "Cull Mode"
+
 msgid "sCullMode"
 msgstr "Cull Mode"
 
@@ -383,8 +401,17 @@ msgstr "Backface Force Shadow"
 msgid "sAAShading"
 msgstr "Anti-aliasing shading"
 
+msgid "[VRCLV] Rim Border"
+msgstr "[VRCLV] Rim Border"
+
+msgid "[VRCLV] Rim Blur"
+msgstr "[VRCLV] Rim Blur"
+
 msgid "sDither"
 msgstr "Dither"
+
+msgid "Max Value"
+msgstr "Max Value"
 
 msgid "sSimpleStencilSettings"
 msgstr "Simple Stencil Settings"
@@ -536,6 +563,27 @@ msgstr "UV Setting"
 msgid "sMainUVTips"
 msgstr "You can set the UV position, scale and animation."
 
+msgid "sCustomSafetyFallback"
+msgstr "Custom Safety Fallback"
+
+msgid "sFallbackShaderType"
+msgstr "Shader Type"
+
+msgid "sFallbackRenderingMode"
+msgstr "Rendering Mode"
+
+msgid "sFallbackFacing"
+msgstr "Facing"
+
+msgid "sFallbackResult"
+msgstr "Result"
+
+msgid "sFallbackToonstandardShading"
+msgstr "Shading"
+
+msgid "Shadow Ramp"
+msgstr "Shadow Ramp"
+
 msgid "sColors"
 msgstr "Color"
 
@@ -626,6 +674,12 @@ msgstr "Border Range"
 msgid "sIgnoreBorderProperties"
 msgstr "Ignore border properties"
 
+msgid "Shadow Caster Bias"
+msgstr "Shadow Caster Bias"
+
+msgid "AO Map"
+msgstr "AO Map"
+
 msgid "sFlat"
 msgstr "Flat"
 
@@ -670,6 +724,9 @@ msgstr "R -> Width"
 
 msgid "sVertexRGBA2Normal"
 msgstr "RGBA -> Normal & Width"
+
+msgid "Z Bias"
+msgstr "Z Bias"
 
 msgid "sDeleteMesh0"
 msgstr "Remove zero width vertices"
@@ -722,8 +779,11 @@ msgstr "Root Width"
 msgid "sTouchStrength"
 msgstr "Touch strength"
 
-msgid "sTessellation"
+msgid "sTessellationSetting"
 msgstr "Tessellation (Extremely high load)"
+
+msgid "sTessellation"
+msgstr "Tessellation"
 
 msgid "sTessellationTips"
 msgstr "You can set the tessellation."
@@ -736,6 +796,12 @@ msgstr "Shrink"
 
 msgid "sTessellationFactor"
 msgstr "Max Factor"
+
+msgid "sRimShadeSetting"
+msgstr "RimShade"
+
+msgid "RimShade"
+msgstr "RimShade"
 
 msgid "sEmissionSetting"
 msgstr "Emission"
@@ -832,6 +898,9 @@ msgstr "RGB = Delay / Band / Strength"
 
 msgid "sAudioLinkMaskRGBSpectrum"
 msgstr "RGB = Volume / Band / Strength"
+
+msgid "Offset"
+msgstr "Offset"
 
 msgid "sAudioLinkBand"
 msgstr "Band"
@@ -1045,6 +1114,12 @@ msgstr "Glitter"
 
 msgid "sGlitter"
 msgstr "Glitter"
+
+msgid "Shape"
+msgstr "Shape"
+
+msgid "Atras"
+msgstr "Atras"
 
 msgid "sParticleSize"
 msgstr "Particle Size"

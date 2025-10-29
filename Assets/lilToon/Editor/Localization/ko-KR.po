@@ -29,6 +29,9 @@ msgstr "현재 lilToonOverray가 선택되어있습니다.일반 용도에서는
 msgid "sColor"
 msgstr "색"
 
+msgid "Mode"
+msgstr "Mode"
+
 msgid "sAlpha"
 msgstr "투명도"
 
@@ -125,6 +128,12 @@ msgstr "투명도 (R)"
 msgid "sMainColorPower"
 msgstr "메인 컬러의 강도"
 
+msgid "Cubemap Fallback"
+msgstr "Cubemap Fallback"
+
+msgid "Override"
+msgstr "Override"
+
 msgid "sEnableLighting"
 msgstr "라이팅을 적용"
 
@@ -151,6 +160,9 @@ msgstr "MSDF 텍스처"
 
 msgid "sAsDecal"
 msgstr "데칼 화"
+
+msgid "UV Mode"
+msgstr "UV Mode"
 
 msgid "sAnimation"
 msgstr "애니메이션"
@@ -266,6 +278,9 @@ msgstr "후면에서 무효화"
 msgid "sRandomize"
 msgstr "임의화"
 
+msgid " (Size)"
+msgstr " (Size)"
+
 msgid "sLimShadowStrength"
 msgstr "그림자 강도"
 
@@ -359,6 +374,9 @@ msgstr "Cutoff"
 msgid "sSubpassCutoff"
 msgstr "Subpass Cutoff"
 
+msgid "Cull Mode"
+msgstr "Cull Mode"
+
 msgid "sCullMode"
 msgstr "Cull Mode"
 
@@ -383,8 +401,17 @@ msgstr "뒷면에 그림자를 드리우다"
 msgid "sAAShading"
 msgstr "Anti-aliasing shading"
 
+msgid "[VRCLV] Rim Border"
+msgstr "[VRCLV] Rim Border"
+
+msgid "[VRCLV] Rim Blur"
+msgstr "[VRCLV] Rim Blur"
+
 msgid "sDither"
 msgstr "Dither"
+
+msgid "Max Value"
+msgstr "Max Value"
 
 msgid "sSimpleStencilSettings"
 msgstr "간이 스텐실 설정"
@@ -536,6 +563,27 @@ msgstr "UV 설정"
 msgid "sMainUVTips"
 msgstr "UV의 위치 나 크기, 애니메이션을 설정할 수 있습니다"
 
+msgid "sCustomSafetyFallback"
+msgstr "Custom Safety Fallback"
+
+msgid "sFallbackShaderType"
+msgstr "Shader Type"
+
+msgid "sFallbackRenderingMode"
+msgstr "Rendering Mode"
+
+msgid "sFallbackFacing"
+msgstr "Facing"
+
+msgid "sFallbackResult"
+msgstr "Result"
+
+msgid "sFallbackToonstandardShading"
+msgstr "Shading"
+
+msgid "Shadow Ramp"
+msgstr "Shadow Ramp"
+
 msgid "sColors"
 msgstr "색상 설정"
 
@@ -626,6 +674,12 @@ msgstr "경계의 폭"
 msgid "sIgnoreBorderProperties"
 msgstr "범위 설정 무시"
 
+msgid "Shadow Caster Bias"
+msgstr "Shadow Caster Bias"
+
+msgid "AO Map"
+msgstr "AO Map"
+
 msgid "sFlat"
 msgstr "플랫"
 
@@ -670,6 +724,9 @@ msgstr "R -> Width"
 
 msgid "sVertexRGBA2Normal"
 msgstr "RGBA -> Normal & Width"
+
+msgid "Z Bias"
+msgstr "Z Bias"
 
 msgid "sDeleteMesh0"
 msgstr "굵기 0의 꼭짓점 삭제"
@@ -722,8 +779,11 @@ msgstr "근본 굵기"
 msgid "sTouchStrength"
 msgstr "접촉 강도"
 
-msgid "sTessellation"
+msgid "sTessellationSetting"
 msgstr "테셀레이션 (매우 높음)"
+
+msgid "sTessellation"
+msgstr "테셀레이션"
 
 msgid "sTessellationTips"
 msgstr "텟세레이션을 설정할 수 있습니다."
@@ -736,6 +796,12 @@ msgstr "축소"
 
 msgid "sTessellationFactor"
 msgstr "최대 분할수"
+
+msgid "sRimShadeSetting"
+msgstr "림쉐이드"
+
+msgid "RimShade"
+msgstr "림쉐이드"
 
 msgid "sEmissionSetting"
 msgstr "발광 설정"
@@ -832,6 +898,9 @@ msgstr "RGB = Delay / Band / Strength"
 
 msgid "sAudioLinkMaskRGBSpectrum"
 msgstr "RGB = Volume / Band / Strength"
+
+msgid "Offset"
+msgstr "Offset"
 
 msgid "sAudioLinkBand"
 msgstr "Band"
@@ -1045,6 +1114,12 @@ msgstr "Glitter 설정"
 
 msgid "sGlitter"
 msgstr "Glitter"
+
+msgid "Shape"
+msgstr "Shape"
+
+msgid "Atras"
+msgstr "Atras"
 
 msgid "sParticleSize"
 msgstr "파티클 사이즈"
