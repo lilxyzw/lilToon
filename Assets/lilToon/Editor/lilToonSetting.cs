@@ -215,7 +215,18 @@ public class lilToonSetting : ScriptableObject
     {
         string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
         if(shaderSetting == null) shaderSetting = CreateInstance<lilToonSetting>();
-        if(File.Exists(shaderSettingPath)) JsonUtility.FromJsonOverwrite(File.ReadAllText(shaderSettingPath), shaderSetting);
+        if(File.Exists(shaderSettingPath))
+        {
+            try
+            {
+                JsonUtility.FromJsonOverwrite(File.ReadAllText(shaderSettingPath), shaderSetting);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                Debug.Log("[lilToon] LoadShaderSetting() failed");
+            }
+        }
         LoadLockedSetting(ref shaderSetting);
     }
 
