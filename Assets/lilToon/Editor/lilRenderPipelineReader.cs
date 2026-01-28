@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -110,8 +111,16 @@ namespace lilToon
             string path = AssetDatabase.GUIDToAssetPath(guid);
             if(!string.IsNullOrEmpty(path))
             {
-                var package = JsonUtility.FromJson<PackageInfos>(File.ReadAllText(path));
-                version = package.version;
+                try
+                {
+                    var package = JsonUtility.FromJson<PackageInfos>(File.ReadAllText(path));
+                    version = package.version;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    Debug.Log("[lilToon] ReadVersion() failed");
+                }
             }
 
             PackageVersionInfos infos;

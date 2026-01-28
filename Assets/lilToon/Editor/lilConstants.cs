@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -15,9 +16,22 @@ namespace lilToon
         {
             if (version == null)
             {
-                version = new lilToonInspector.lilToonVersion();
-                EditorJsonUtility.FromJsonOverwrite(File.ReadAllText(lilDirectoryManager.GetPackageJsonPath()), version);
-                version.semver = new SemVerParser(version.version);
+                var v = new lilToonInspector.lilToonVersion();
+                try
+                {
+                    EditorJsonUtility.FromJsonOverwrite(File.ReadAllText(lilDirectoryManager.GetPackageJsonPath()), v);
+                    v.semver = new SemVerParser(v.version);
+                    version = v;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    Debug.Log("[lilToon] GetFromPackage() failed");
+
+                    v.version = "0.0.0";
+                    v.semver = new SemVerParser(v.version);
+                    return v;
+                }
             }
             return version;
         }

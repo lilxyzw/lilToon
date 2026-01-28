@@ -734,8 +734,16 @@ namespace lilToon
             string path = AssetDatabase.GUIDToAssetPath(guid);
             if(!string.IsNullOrEmpty(path))
             {
-                var package = JsonUtility.FromJson<PackageInfos>(File.ReadAllText(path));
-                return package.version;
+                try
+                {
+                    var package = JsonUtility.FromJson<PackageInfos>(File.ReadAllText(path));
+                    return package.version;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    Debug.Log("[lilToon] ReadVersion() failed");
+                }
             }
             return null;
         }
