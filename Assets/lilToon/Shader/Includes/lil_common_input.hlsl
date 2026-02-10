@@ -876,6 +876,7 @@ TEXTURE2D(_Emission2ndBlendMask);
 TEXTURE2D(_Emission2ndGradTex);
 TEXTURE2D(_ParallaxMap);
 TEXTURE2D(_DitherTex);
+TEXTURE2D(_DistanceFadeMask);
 TEXTURE2D(_AudioLinkMask);
 TEXTURE2D(_AudioLinkLocalMap);
 TEXTURE2D(_DissolveMask);
