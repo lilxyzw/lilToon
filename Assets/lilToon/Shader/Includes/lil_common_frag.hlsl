@@ -2015,7 +2015,11 @@
     {
         float depth = _DistanceFadeMode ? fd.depthObject : fd.depth;
         float distFade = saturate((depth - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x));
-        float distFadeStrength = _DistanceFade.z * LIL_SAMPLE_2D(_DistanceFadeMask, lil_sampler_linear_repeat, fd.uvMain).r;
+        #if defined(LIL_FEATURE_DistanceFadeMask)
+            float distFadeStrength = _DistanceFade.z * LIL_SAMPLE_2D(_DistanceFadeMask, lil_sampler_linear_repeat, fd.uvMain).r;
+        #else
+            float distFadeStrength = _DistanceFade.z;
+        #endif
         #if defined(LIL_OUTLINE) || defined(LIL_PASS_FORWARD_FUR_INCLUDED)
             distFade = distFade * distFadeStrength;
         #else
@@ -2030,7 +2034,11 @@
     {
         float depth = _DistanceFadeMode ? fd.depthObject : fd.depth;
         float distFade = saturate((depth - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x));
-        float distFadeStrength = _DistanceFade.z * LIL_SAMPLE_2D(_DistanceFadeMask, lil_sampler_linear_repeat, fd.uvMain).r;
+        #if defined(LIL_FEATURE_DistanceFadeMask)
+            float distFadeStrength = _DistanceFade.z * LIL_SAMPLE_2D(_DistanceFadeMask, lil_sampler_linear_repeat, fd.uvMain).r;
+        #else
+            float distFadeStrength = _DistanceFade.z;
+        #endif
         #if defined(LIL_OUTLINE) || defined(LIL_PASS_FORWARD_FUR_INCLUDED)
             distFade = distFade * distFadeStrength;
         #else

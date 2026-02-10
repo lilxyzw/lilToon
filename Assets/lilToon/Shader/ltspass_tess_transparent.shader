@@ -764,6 +764,7 @@ Shader "Hidden/ltspass_tess_transparent"
             #define LIL_FEATURE_Emission2ndBlendMask
             #define LIL_FEATURE_Emission2ndGradTex
             #define LIL_FEATURE_ParallaxMap
+            #define LIL_FEATURE_DistanceFadeMask
             #define LIL_FEATURE_AudioLinkMask
             #define LIL_FEATURE_AudioLinkLocalMap
             #define LIL_FEATURE_DissolveMask
