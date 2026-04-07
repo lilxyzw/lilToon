@@ -442,12 +442,12 @@ namespace lilToon
             var cleanLines = new List<string>();
             foreach (var line in lines)
             {
-#if !UNITY_6000_3_OR_NEWER
-                if (line.Contains("CGPROGRAM") || line.Contains("HLSLPROGRAM") || line.Contains("Pass {"))
-                {
-                    seenVariants.Clear();
-                }
-#endif
+                #if !UNITY_6000_3_OR_NEWER
+                    if (line.Contains("CGPROGRAM") || line.Contains("HLSLPROGRAM") || line.Contains("Pass {"))
+                    {
+                        seenVariants.Clear();
+                    }
+                #endif
 
                 if (!line.Contains("#pragma skip_variants"))
                 {
