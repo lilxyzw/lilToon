@@ -431,15 +431,56 @@ namespace lilToon
 
             sb.Replace("\r\n", "\r");
             sb.Replace("\n", "\r");
-            sb.Replace("\r", "\r\n");
 
-            sb.Replace("\r\n    \r\n", "\r\n");
-            sb.Replace("\r\n        \r\n", "\r\n");
-            sb.Replace("\r\n            \r\n", "\r\n");
+            sb.Replace("\r    \r", "\r");
+            sb.Replace("\r        \r", "\r");
+            sb.Replace("\r            \r", "\r");
+
+            HashSet<string> seenVariants = new HashSet<string>();
+
+            var lines = sb.ToString().Split("\r");
+            var cleanLines = new List<string>();
+            foreach (var line in lines)
+            {
+                #if !UNITY_6000_3_OR_NEWER
+                    if (line.Contains("CGPROGRAM") || line.Contains("HLSLPROGRAM") || line.Contains("Pass {"))
+                    {
+                        seenVariants.Clear();
+                    }
+                #endif
+
+                if (!line.Contains("#pragma skip_variants"))
+                {
+                    cleanLines.Add(line);
+                    continue;
+                }
+
+                string[] tokens = line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                List<string> cleanTokens = new List<string>();
+                var indentEndIdx = line.IndexOf("#", StringComparison.Ordinal);
+
+                foreach (var token in tokens)
+                {
+                    if (token is "#pragma" or "skip_variants")
+                    {
+                        cleanTokens.Add(token);
+                        continue;
+                    }
+
+                    if (seenVariants.Add(token)) cleanTokens.Add(token);
+                }
+
+                if (cleanTokens.Count > 2) // not only #pragma skip_variants
+                {
+                    cleanLines.Add(line[..indentEndIdx] + string.Join(" ", cleanTokens));
+                }
+            }
+
+            var outShader = string.Join("\r\n", cleanLines);
 
             AddHLSLDependency(assetFolderPath, ctx);
 
-            return sb.ToString();
+            return outShader;
         }
 
         public static string UnpackContainer(string assetPath, AssetImportContext ctx = null)
