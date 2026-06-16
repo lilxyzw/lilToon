@@ -875,7 +875,9 @@ namespace lilToon
 
         private static string FixNewlineCode(string text)
         {
-            return text.Replace("\\r", "\r").Replace("\\n", "\n");
+            return text.Replace("\\r\\n", Environment.NewLine)
+                .Replace("\\r", Environment.NewLine)
+                .Replace("\\n", Environment.NewLine);
         }
 
         private static void FixIncludeForOldUnity(ref StringBuilder sb)
