@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.3] - 2026-06-16
+### Changed
+- Update language files
+
+### Fixed
+- skip_valiants duplicate error
+- HDR color is not saved correctly in presets
+- Some textures do not copy and paste correctly
+- Fixed the handling of newline characters in custom shaders
+- Texture UV settings are not copied
+- Avoid errors when lilToonSetting.json is empty
+
 ## [2.3.2] - 2025-10-29
 ### Changed
 - Update language files
