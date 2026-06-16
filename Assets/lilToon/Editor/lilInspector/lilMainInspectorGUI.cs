@@ -1125,6 +1125,7 @@ namespace lilToon
                         EditorGUI.indentLevel++;
                         LocalizedProperty(distanceFade);
                         LocalizedProperty(distanceFadeMode);
+                        LocalizedPropertyTexture(maskBlendContent, distanceFadeMask);
                         EditorGUI.indentLevel--;
                         DrawLine();
                         EditorGUILayout.LabelField(GetLoc("sRimLight"));
