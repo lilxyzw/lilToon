@@ -688,6 +688,7 @@ CBUFFER_START(UnityPerMaterial)
     #endif
     #if defined(LIL_MULTI_INPUTS_RIM)
         uint    _RimBlendMode;
+        uint    _RimColorTex_UVMode;
     #endif
     #if defined(LIL_MULTI_INPUTS_MATCAP)
         uint    _MatCapBlendMode;

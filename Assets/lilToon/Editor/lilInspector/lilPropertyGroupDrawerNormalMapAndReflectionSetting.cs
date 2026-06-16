@@ -133,7 +133,7 @@ namespace lilToon
                     if(useRim.floatValue == 1)
                     {
                         EditorGUILayout.BeginVertical(boxInnerHalf);
-                        TextureGUI(ref edSet.isShowRimColorTex, colorMaskRGBAContent, rimColorTex, rimColor);
+                        TextureGUI(ref edSet.isShowRimColorTex, colorMaskRGBAContent, rimColorTex, rimColor, rimColorTex_UVMode, "UV Mode|UV0|UV1|UV2|UV3");
                         LocalizedPropertyAlpha(rimColor);
                         LocalizedProperty(rimMainStrength);
                         LocalizedProperty(rimEnableLighting);
