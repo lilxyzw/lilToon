@@ -174,7 +174,12 @@ public class lilToonSetting : ScriptableObject
     {
         var lockedSetting = CreateInstance<lilToonSetting>();
         string path = lilDirectoryManager.GetSettingLockPath();
-        if(File.Exists(path))
+        if(!File.Exists(path))
+        {
+            return;
+        }
+
+        try
         {
             JsonUtility.FromJsonOverwrite(File.ReadAllText(path), lockedSetting);
             shaderSetting.LIL_OPTIMIZE_APPLY_SHADOW_FA       = lockedSetting.LIL_OPTIMIZE_APPLY_SHADOW_FA;
@@ -191,6 +196,11 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.furLightModeName                   = lockedSetting.furLightModeName;
             shaderSetting.furPreLightModeName                = lockedSetting.furPreLightModeName;
             shaderSetting.gemPreLightModeName                = lockedSetting.gemPreLightModeName;
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+            Debug.Log("[lilToon] LoadLockedSetting() failed");
         }
     }
 
@@ -215,7 +225,18 @@ public class lilToonSetting : ScriptableObject
     {
         string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
         if(shaderSetting == null) shaderSetting = CreateInstance<lilToonSetting>();
-        if(File.Exists(shaderSettingPath)) JsonUtility.FromJsonOverwrite(File.ReadAllText(shaderSettingPath), shaderSetting);
+        if(File.Exists(shaderSettingPath))
+        {
+            try
+            {
+                JsonUtility.FromJsonOverwrite(File.ReadAllText(shaderSettingPath), shaderSetting);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                Debug.Log("[lilToon] LoadShaderSetting() failed");
+            }
+        }
         LoadLockedSetting(ref shaderSetting);
     }
 
