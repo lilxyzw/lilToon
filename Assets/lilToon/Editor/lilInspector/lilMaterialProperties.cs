@@ -28,7 +28,7 @@ namespace lilToon
         private readonly lilMaterialProperty backfaceColor          = new lilMaterialProperty("_BackfaceColor", PropertyBlock.Base);
         private readonly lilMaterialProperty aaStrength             = new lilMaterialProperty("_AAStrength", PropertyBlock.Base);
         private readonly lilMaterialProperty useDither              = new lilMaterialProperty("_UseDither", PropertyBlock.Base);
-        private readonly lilMaterialProperty ditherTex              = new lilMaterialProperty("_DitherTex", PropertyBlock.Base);
+        private readonly lilMaterialProperty ditherTex              = new lilMaterialProperty("_DitherTex", true, PropertyBlock.Base);
         private readonly lilMaterialProperty ditherMaxValue         = new lilMaterialProperty("_DitherMaxValue", PropertyBlock.Base);
         private readonly lilMaterialProperty envRimBorder           = new lilMaterialProperty("_EnvRimBorder", PropertyBlock.Base);
         private readonly lilMaterialProperty envRimBlur             = new lilMaterialProperty("_EnvRimBlur", PropertyBlock.Base);
@@ -161,7 +161,7 @@ namespace lilToon
 
         private readonly lilMaterialProperty useRimShade            = new lilMaterialProperty("_UseRimShade", PropertyBlock.RimShade);
         private readonly lilMaterialProperty rimShadeColor          = new lilMaterialProperty("_RimShadeColor", PropertyBlock.RimShade);
-        private readonly lilMaterialProperty rimShadeMask           = new lilMaterialProperty("_RimShadeMask", PropertyBlock.RimShade);
+        private readonly lilMaterialProperty rimShadeMask           = new lilMaterialProperty("_RimShadeMask", true, PropertyBlock.RimShade);
         private readonly lilMaterialProperty rimShadeNormalStrength = new lilMaterialProperty("_RimShadeNormalStrength", PropertyBlock.RimShade);
         private readonly lilMaterialProperty rimShadeBorder         = new lilMaterialProperty("_RimShadeBorder", PropertyBlock.RimShade);
         private readonly lilMaterialProperty rimShadeBlur           = new lilMaterialProperty("_RimShadeBlur", PropertyBlock.RimShade);
@@ -260,8 +260,8 @@ namespace lilToon
         private readonly lilMaterialProperty applyReflection                = new lilMaterialProperty("_ApplyReflection", PropertyBlock.Reflection);
         private readonly lilMaterialProperty reflectionNormalStrength       = new lilMaterialProperty("_ReflectionNormalStrength", PropertyBlock.Reflection);
         private readonly lilMaterialProperty reflectionApplyTransparency    = new lilMaterialProperty("_ReflectionApplyTransparency", PropertyBlock.Reflection);
-        private readonly lilMaterialProperty reflectionCubeTex              = new lilMaterialProperty("_ReflectionCubeTex", PropertyBlock.Reflection);
-        private readonly lilMaterialProperty reflectionCubeColor            = new lilMaterialProperty("_ReflectionCubeColor", true, PropertyBlock.Reflection);
+        private readonly lilMaterialProperty reflectionCubeTex              = new lilMaterialProperty("_ReflectionCubeTex", true, PropertyBlock.Reflection);
+        private readonly lilMaterialProperty reflectionCubeColor            = new lilMaterialProperty("_ReflectionCubeColor", PropertyBlock.Reflection);
         private readonly lilMaterialProperty reflectionCubeOverride         = new lilMaterialProperty("_ReflectionCubeOverride", PropertyBlock.Reflection);
         private readonly lilMaterialProperty reflectionCubeEnableLighting   = new lilMaterialProperty("_ReflectionCubeEnableLighting", PropertyBlock.Reflection);
         private readonly lilMaterialProperty reflectionBlendMode            = new lilMaterialProperty("_ReflectionBlendMode", PropertyBlock.Reflection);
@@ -411,7 +411,7 @@ namespace lilToon
         private readonly lilMaterialProperty audioLinkVertexStart       = new lilMaterialProperty("_AudioLinkVertexStart", PropertyBlock.AudioLink);
         private readonly lilMaterialProperty audioLinkVertexStrength    = new lilMaterialProperty("_AudioLinkVertexStrength", PropertyBlock.AudioLink);
         private readonly lilMaterialProperty audioLinkAsLocal           = new lilMaterialProperty("_AudioLinkAsLocal", PropertyBlock.AudioLink);
-        private readonly lilMaterialProperty audioLinkLocalMap          = new lilMaterialProperty("_AudioLinkLocalMap", PropertyBlock.AudioLink);
+        private readonly lilMaterialProperty audioLinkLocalMap          = new lilMaterialProperty("_AudioLinkLocalMap", true, PropertyBlock.AudioLink);
         private readonly lilMaterialProperty audioLinkLocalMapParams    = new lilMaterialProperty("_AudioLinkLocalMapParams", PropertyBlock.AudioLink);
 
         private readonly lilMaterialProperty dissolveMask                   = new lilMaterialProperty("_DissolveMask", true, PropertyBlock.Dissolve);
