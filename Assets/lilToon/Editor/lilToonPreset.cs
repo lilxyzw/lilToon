@@ -33,6 +33,7 @@ public class lilToonPreset : ScriptableObject
     public struct lilPresetColor
     {
         public string name;
+        [ColorUsage(true, true)]
         public Color value;
     }
 
