@@ -439,6 +439,33 @@ namespace lilToon
 
             AddHLSLDependency(assetFolderPath, ctx);
 
+            // fix duplication of skip_variants
+            using var sr = new StringReader(sb.ToString());
+            sb.Clear();
+            string line;
+            var skips = new HashSet<string>();
+            while ((line = sr.ReadLine()) != null)
+            {
+                var match = Regex.Match(line, @"(^\s+#pragma\s+skip_variants\s+)(\w+\s*)*");
+                if (!match.Success)
+                {
+                    sb.AppendLine(line);
+                    continue;
+                }
+
+                bool isValid = false;
+                var temp = new StringBuilder(match.Groups[1].Value);
+                for (int i = 2; i < match.Groups.Count; i++)
+                {
+                    if (skips.Add(match.Groups[i].Value))
+                    {
+                        temp.Append(match.Groups[i].Value);
+                        isValid = true;
+                    }
+                }
+                if (isValid) sb.AppendLine(temp.ToString());
+            }
+
             return sb.ToString();
         }
 
