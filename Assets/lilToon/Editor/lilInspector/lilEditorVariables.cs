@@ -140,6 +140,7 @@ namespace lilToon
         private static lilToonSetting shaderSetting;
         private static readonly lilToonVersion latestVersion = new() { version = "" };
         private static readonly Dictionary<string, MaterialProperty> copiedProperties = new Dictionary<string, MaterialProperty>();
+        private static readonly Dictionary<string, Vector4> copiedVectorProperties = new Dictionary<string, Vector4>();
         private static bool isCustomEditor = false;
         private static bool isMultiVariants = false;
         private readonly Gradient mainGrad  = new Gradient();

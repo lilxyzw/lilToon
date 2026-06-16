@@ -342,17 +342,28 @@ namespace lilToon
 
         private void CopyProperties(PropertyBlock propertyBlock)
         {
+            var material = (Material)m_MaterialEditor.target;
             foreach(var p in AllProperties().Where(p =>
                 p.p != null &&
                 p.blocks.Contains(propertyBlock)
             ))
             {
                 copiedProperties[p.name] = p.p;
+
+                if(p.isTexture)
+                {
+                    string stPropertyName = p.name + "_ST";
+                    if(material.HasProperty(stPropertyName))
+                    {
+                        copiedVectorProperties[stPropertyName] = material.GetVector(stPropertyName);
+                    }
+                }
             }
         }
 
         private void PasteProperties(PropertyBlock propertyBlock, bool shouldCopyTex)
         {
+            var material = (Material)m_MaterialEditor.target;
             foreach(var p in AllProperties().Where(p =>
                 p.p != null &&
                 p.blocks.Contains(propertyBlock) &&
@@ -367,6 +378,15 @@ namespace lilToon
                 if(propType == ShaderPropertyType.Float)   p.floatValue = copiedProperties[p.name].floatValue;
                 if(propType == ShaderPropertyType.Range)   p.floatValue = copiedProperties[p.name].floatValue;
                 if(propType == ShaderPropertyType.Texture) p.textureValue = copiedProperties[p.name].textureValue;
+
+                if(p.isTexture && shouldCopyTex)
+                {
+                    string stPropertyName = p.name + "_ST";
+                    if(copiedVectorProperties.ContainsKey(stPropertyName) && material.HasProperty(stPropertyName))
+                    {
+                        material.SetVector(stPropertyName, copiedVectorProperties[stPropertyName]);
+                    }
+                }
             }
         }
 
