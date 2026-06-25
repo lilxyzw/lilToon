@@ -1023,6 +1023,8 @@ void lilGetLightColorDouble(out float3 lightColor, out float3 indLightColor)
 }
 
 #if defined(PROBE_VOLUMES_L1) || defined(PROBE_VOLUMES_L2)
+
+
 #include "Packages/com.unity.render-pipelines.core/Runtime/Lighting/ProbeVolume/ProbeVolume.hlsl"
 void lilGetToonSHDoubleAPV(float3 lightDirection, float3 positionWS, float3 normalWS, out float3 shMax, out float3 shMin)
 {
@@ -1080,14 +1082,19 @@ void lilGetToonSHDoubleAPV(float3 lightDirection, float3 positionWS, float3 norm
     #endif
 }
 
-float3 lilGetFixedLightDirectionAPV(float3 positionWS, float3 normalWS, float4 lightDirectionOverride)
+
+
+APVSample lilGetAPVSample(float3 positionWS, float3 normalWS)
+{
+    return SampleAPV(positionWS, normalWS, lilGetRenderingLayer(), normalize(lilViewDirection(positionWS)));
+}
+
+float3 lilGetFixedLightDirectionAPV(float3 positionWS, float3 normalWS, float4 lightDirectionOverride, APVSample apvSample)
 {
     float3 mainDir = LIL_MAINLIGHT_DIRECTION * lilLuminance(LIL_MAINLIGHT_COLOR);
     float4 SHAr = unity_SHAr;
     float4 SHAg = unity_SHAg;
     float4 SHAb = unity_SHAb;
-    float3 V = normalize(lilViewDirection(positionWS));
-    APVSample apvSample = SampleAPV(positionWS, normalWS, lilGetRenderingLayer(), V);
     if (apvSample.status != APV_SAMPLE_STATUS_INVALID)
     {
         apvSample.Decode();
@@ -1101,12 +1108,20 @@ float3 lilGetFixedLightDirectionAPV(float3 positionWS, float3 normalWS, float4 l
     return L;
 }
 
+
 void lilGetLightColorDoubleAPV(float3 positionWS, float3 normalWS, out float3 lightColor, out float3 indLightColor)
 {
     float3 shMax, shMin;
-    lilGetToonSHDoubleAPV(lilGetFixedLightDirectionAPV(positionWS, normalWS, float4(0,0.001,0,0)), positionWS, normalWS, shMax, shMin);
-    lightColor = LIL_MAINLIGHT_COLOR + shMax;
-    indLightColor = saturate(shMin);
+    APVSample apvSample = lilGetAPVSample(positionWS, normalWS);
+    if (apvSample.status != APV_SAMPLE_STATUS_INVALID) { 
+        lilGetToonSHDoubleAPV(lilGetFixedLightDirectionAPV(positionWS, normalWS, float4(0,0.001,0,0), apvSample), positionWS, normalWS, shMax, shMin);
+        lightColor = max(shMin, shMax); // [issue#419] Apply APV data's darkening
+        indLightColor = saturate(shMin);
+    }
+    else { // If there's no baked APV data
+        lightColor = LIL_MAINLIGHT_COLOR;
+        indLightColor = float3(0,0,0);
+    }
 }
 #endif
 
