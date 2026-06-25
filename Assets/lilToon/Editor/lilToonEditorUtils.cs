@@ -132,20 +132,17 @@ namespace lilToon
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Assets/lilToon/Convert Gif to Atlas
-        #if SYSTEM_DRAWING
-            // Gif to Atlas
-            [MenuItem(menuPathConvertGifToAtlas, false, menuPriorityConvertGifToAtlas)]
-            private static void ConvertGifToAtlas()
-            {
-                lilTextureUtils.ConvertGifToAtlas(Selection.activeObject);
-            }
+        [MenuItem(menuPathConvertGifToAtlas, false, menuPriorityConvertGifToAtlas)]
+        private static void ConvertGifToAtlas()
+        {
+            lilTextureUtils.ConvertGifToAtlas(Selection.activeObject);
+        }
 
-            [MenuItem(menuPathConvertGifToAtlas, true, menuPriorityConvertGifToAtlas)]
-            private static bool CheckConvertGifToAtlas()
-            {
-                return CheckExtension(".gif");
-            }
-        #endif
+        [MenuItem(menuPathConvertGifToAtlas, true, menuPriorityConvertGifToAtlas)]
+        private static bool CheckConvertGifToAtlas()
+        {
+            return CheckExtension(".gif");
+        }
 
         //------------------------------------------------------------------------------------------------------------------------------
         // Assets/lilToon/Convert LUT to PNG

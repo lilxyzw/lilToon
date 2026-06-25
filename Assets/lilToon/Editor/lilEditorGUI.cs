@@ -902,19 +902,17 @@ namespace lilToon
 
         public static void ConvertGifToAtlas(MaterialProperty tex, MaterialProperty decalAnimation, MaterialProperty decalSubParam, MaterialProperty isDecal)
         {
-            #if SYSTEM_DRAWING
-                if(tex.textureValue != null && AssetDatabase.GetAssetPath(tex.textureValue).EndsWith(".gif", StringComparison.OrdinalIgnoreCase) && Button(GetLoc("sConvertGif")))
-                {
-                    int frameCount, loopXY, duration;
-                    float xScale, yScale;
-                    string savePath = lilTextureUtils.ConvertGifToAtlas(tex.textureValue, out frameCount, out loopXY, out duration, out xScale, out yScale);
+            if(tex.textureValue != null && AssetDatabase.GetAssetPath(tex.textureValue).EndsWith(".gif", StringComparison.OrdinalIgnoreCase) && Button(GetLoc("sConvertGif")))
+            {
+                int frameCount, loopXY, duration;
+                float xScale, yScale;
+                string savePath = lilTextureUtils.ConvertGifToAtlas(tex.textureValue, out frameCount, out loopXY, out duration, out xScale, out yScale);
 
-                    tex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(savePath);
-                    decalAnimation.vectorValue = new Vector4(loopXY,loopXY,frameCount,100.0f/duration);
-                    decalSubParam.vectorValue = new Vector4(xScale,yScale,decalSubParam.vectorValue.z,decalSubParam.vectorValue.w);
-                    isDecal.floatValue = 1.0f;
-                }
-            #endif
+                tex.textureValue = AssetDatabase.LoadAssetAtPath<Texture2D>(savePath);
+                decalAnimation.vectorValue = new Vector4(loopXY,loopXY,frameCount,100.0f/duration);
+                decalSubParam.vectorValue = new Vector4(xScale,yScale,decalSubParam.vectorValue.z,decalSubParam.vectorValue.w);
+                isDecal.floatValue = 1.0f;
+            }
         }
 
         public static void RenderQueueField(MaterialEditor materialEditor)
