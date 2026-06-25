@@ -1115,7 +1115,7 @@ void lilGetLightColorDoubleAPV(float3 positionWS, float3 normalWS, out float3 li
     APVSample apvSample = lilGetAPVSample(positionWS, normalWS);
     if (apvSample.status != APV_SAMPLE_STATUS_INVALID) { 
         lilGetToonSHDoubleAPV(lilGetFixedLightDirectionAPV(positionWS, normalWS, float4(0,0.001,0,0), apvSample), positionWS, normalWS, shMax, shMin);
-        lightColor = shMin; // [issue#419] Apply APV data's darkening
+        lightColor = max(shMin, shMax); // [issue#419] Apply APV data's darkening
         indLightColor = saturate(shMin);
     }
     else { // If there's no baked APV data
