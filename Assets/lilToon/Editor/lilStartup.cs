@@ -24,50 +24,6 @@ namespace lilToon
             EditorApplication.playModeStateChanged += PlayModeStateChanged;
 
             //------------------------------------------------------------------------------------------------------------------------------
-            // Create files
-            if(!lilEditorParameters.instance.startupEnd)
-            {
-                lilEditorParameters.instance.startupEnd = true;
-
-                #if LILTOON_DISABLE_ASSET_MODIFICATION == false
-                #if !SYSTEM_DRAWING
-                    string editorPath = lilDirectoryManager.GetEditorPath();
-
-                    // RSP
-                    if(!File.Exists(lilDirectoryManager.rspPath))
-                    {
-                        var sw = new StreamWriter(lilDirectoryManager.rspPath,true);
-                        sw.Write("-r:System.Drawing.dll" + Environment.NewLine + "-define:SYSTEM_DRAWING");
-                        sw.Close();
-                        AssetDatabase.Refresh();
-                        AssetDatabase.ImportAsset(editorPath);
-                    }
-
-                    var sr = new StreamReader(lilDirectoryManager.rspPath);
-                    string s = sr.ReadToEnd();
-                    sr.Close();
-
-                    if(!s.Contains("r:System.Drawing.dll"))
-                    {
-                        var sw = new StreamWriter(lilDirectoryManager.rspPath,true);
-                        sw.Write(Environment.NewLine + "-r:System.Drawing.dll");
-                        sw.Close();
-                        AssetDatabase.Refresh();
-                        AssetDatabase.ImportAsset(editorPath);
-                    }
-                    if(!s.Contains("define:SYSTEM_DRAWING"))
-                    {
-                        var sw = new StreamWriter(lilDirectoryManager.rspPath,true);
-                        sw.Write(Environment.NewLine + "-define:SYSTEM_DRAWING");
-                        sw.Close();
-                        AssetDatabase.Refresh();
-                        AssetDatabase.ImportAsset(editorPath);
-                    }
-                #endif
-                #endif //LILTOON_DISABLE_ASSET_MODIFICATION
-            }
-
-            //------------------------------------------------------------------------------------------------------------------------------
             // Shader setting
             lilToonSetting shaderSetting = null;
             lilToonSetting.InitializeShaderSetting(ref shaderSetting);

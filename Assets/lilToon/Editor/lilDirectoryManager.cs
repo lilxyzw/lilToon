@@ -16,12 +16,6 @@ namespace lilToon
         public const string postBuildTempPath               = "Temp/lilToonPostBuild";
         public const string startupTempPath                 = "Temp/lilToonStartup";
 
-        #if NET_4_6
-            public const string rspPath = "Assets/csc.rsp";
-        #else
-            public const string rspPath = "Assets/mcs.rsp";
-        #endif
-
         public static string GetPackageJsonPath()           => GUIDToPath("397d2fa9e93fb5d44a9540d5f01437fc"); // "package.json"
         public static string GetBaseShaderFolderPath()      => GUIDToPath("d465bb256af2e3a4ca646387f4bd83e7"); // "BaseShaderResources"
         public static string GetEditorFolderPath()          => GUIDToPath("3e73d675b9c1adc4f8b6b8ef01bce51c"); // "Editor"
