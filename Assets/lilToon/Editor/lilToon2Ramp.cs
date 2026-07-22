@@ -8,8 +8,9 @@ namespace lilToon
     {
         public static Texture2D Convert(Material origin, int width = 128)
         {
-            var material = new Material(origin);
-            material.shader = Shader.Find("Hidden/ltsother_bakeramp");
+            var shader = Shader.Find("Hidden/ltsother_bakeramp");
+            var material = new Material(shader);
+            material.CopyPropertiesFromMaterial(origin);
 
             int height = 16;
             var currentRT = RenderTexture.active;
