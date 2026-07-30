@@ -111,6 +111,7 @@ public class lilToonSetting : ScriptableObject
     public bool LIL_FEATURE_Emission2ndBlendMask = true;
     public bool LIL_FEATURE_Emission2ndGradTex = true;
     public bool LIL_FEATURE_ParallaxMap = true;
+    public bool LIL_FEATURE_DistanceFadeMask = true;
     public bool LIL_FEATURE_AudioLinkMask = true;
     public bool LIL_FEATURE_AudioLinkLocalMap = true;
     public bool LIL_FEATURE_DissolveMask = true;
@@ -358,6 +359,7 @@ public class lilToonSetting : ScriptableObject
         shaderSetting.LIL_FEATURE_Emission2ndBlendMask = false;
         shaderSetting.LIL_FEATURE_Emission2ndGradTex = false;
         shaderSetting.LIL_FEATURE_ParallaxMap = false;
+        shaderSetting.LIL_FEATURE_DistanceFadeMask = false;
         shaderSetting.LIL_FEATURE_AudioLinkMask = false;
         shaderSetting.LIL_FEATURE_AudioLinkLocalMap = false;
         shaderSetting.LIL_FEATURE_DissolveMask = false;
@@ -471,6 +473,7 @@ public class lilToonSetting : ScriptableObject
             shaderSetting.LIL_FEATURE_Emission2ndBlendMask = true;
             shaderSetting.LIL_FEATURE_Emission2ndGradTex = true;
             shaderSetting.LIL_FEATURE_ParallaxMap = true;
+            shaderSetting.LIL_FEATURE_DistanceFadeMask = true;
             shaderSetting.LIL_FEATURE_AudioLinkMask = true;
             shaderSetting.LIL_FEATURE_AudioLinkLocalMap = true;
             shaderSetting.LIL_FEATURE_DissolveMask = true;
@@ -689,6 +692,7 @@ public class lilToonSetting : ScriptableObject
         if (shaderSetting.LIL_FEATURE_Emission2ndBlendMask) sb.AppendLine("#define LIL_FEATURE_Emission2ndBlendMask");
         if (shaderSetting.LIL_FEATURE_Emission2ndGradTex) sb.AppendLine("#define LIL_FEATURE_Emission2ndGradTex");
         if (shaderSetting.LIL_FEATURE_ParallaxMap) sb.AppendLine("#define LIL_FEATURE_ParallaxMap");
+        if (shaderSetting.LIL_FEATURE_DistanceFadeMask) sb.AppendLine("#define LIL_FEATURE_DistanceFadeMask");
         if (shaderSetting.LIL_FEATURE_AudioLinkMask) sb.AppendLine("#define LIL_FEATURE_AudioLinkMask");
         if (shaderSetting.LIL_FEATURE_AudioLinkLocalMap) sb.AppendLine("#define LIL_FEATURE_AudioLinkLocalMap");
         if (shaderSetting.LIL_FEATURE_DissolveMask) sb.AppendLine("#define LIL_FEATURE_DissolveMask");
@@ -1446,6 +1450,7 @@ public class lilToonSetting : ScriptableObject
         CheckTexture(ref shaderSetting.LIL_FEATURE_Emission2ndBlendMask      , "_Emission2ndBlendMask", material);
         CheckTexture(ref shaderSetting.LIL_FEATURE_Emission2ndGradTex        , "_Emission2ndGradTex", material);
         CheckTexture(ref shaderSetting.LIL_FEATURE_ParallaxMap               , "_ParallaxMap", material);
+        CheckTexture(ref shaderSetting.LIL_FEATURE_DistanceFadeMask          , "_DistanceFadeMask", material);
         CheckTexture(ref shaderSetting.LIL_FEATURE_AudioLinkMask             , "_AudioLinkMask", material);
         CheckTexture(ref shaderSetting.LIL_FEATURE_AudioLinkLocalMap         , "_AudioLinkLocalMap", material);
         CheckTexture(ref shaderSetting.LIL_FEATURE_DissolveMask              , "_DissolveMask", material);
@@ -1506,6 +1511,7 @@ public class lilToonSetting : ScriptableObject
         shaderSetting.LIL_FEATURE_Emission2ndBlendMask       = shaderSetting.LIL_FEATURE_Emission2ndBlendMask     || propname.Contains("_Emission2ndBlendMask");
         shaderSetting.LIL_FEATURE_Emission2ndGradTex         = shaderSetting.LIL_FEATURE_Emission2ndGradTex       || propname.Contains("_Emission2ndGradTex");
         shaderSetting.LIL_FEATURE_ParallaxMap                = shaderSetting.LIL_FEATURE_ParallaxMap              || propname.Contains("_ParallaxMap");
+        shaderSetting.LIL_FEATURE_DistanceFadeMask           = shaderSetting.LIL_FEATURE_DistanceFadeMask         || propname.Contains("_DistanceFadeMask");
         shaderSetting.LIL_FEATURE_AudioLinkMask              = shaderSetting.LIL_FEATURE_AudioLinkMask            || propname.Contains("_AudioLinkMask");
         shaderSetting.LIL_FEATURE_AudioLinkLocalMap          = shaderSetting.LIL_FEATURE_AudioLinkLocalMap        || propname.Contains("_AudioLinkLocalMap");
         shaderSetting.LIL_FEATURE_DissolveMask               = shaderSetting.LIL_FEATURE_DissolveMask             || propname.Contains("_DissolveMask");

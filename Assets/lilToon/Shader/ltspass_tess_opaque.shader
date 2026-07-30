@@ -429,6 +429,7 @@ Shader "Hidden/ltspass_tess_opaque"
         [lilHDR]        _DistanceFadeColor          ("sColor", Color) = (0,0,0,1)
         [lilFFFB]       _DistanceFade               ("sDistanceFadeSettings", Vector) = (0.1,0.01,0,0)
         [lilEnum]       _DistanceFadeMode           ("sDistanceFadeModes", Int) = 0
+        [NoScaleOffset] _DistanceFadeMask           ("Mask", 2D) = "white" {}
         [lilHDR]        _DistanceFadeRimColor       ("sColor", Color) = (0,0,0,0)
         [PowerSlider(3.0)]_DistanceFadeRimFresnelPower ("sFresnelPower", Range(0.01, 50)) = 5.0
 
@@ -730,6 +731,7 @@ Shader "Hidden/ltspass_tess_opaque"
             #define LIL_FEATURE_Emission2ndBlendMask
             #define LIL_FEATURE_Emission2ndGradTex
             #define LIL_FEATURE_ParallaxMap
+            #define LIL_FEATURE_DistanceFadeMask
             #define LIL_FEATURE_AudioLinkMask
             #define LIL_FEATURE_AudioLinkLocalMap
             #define LIL_FEATURE_DissolveMask
