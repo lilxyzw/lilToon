@@ -366,7 +366,7 @@ msgid "sColorTypeLUT"
 msgstr "LUT"
 
 msgid "sAsOverlay"
-msgstr "Overlay 머티리얼"
+msgstr "오버레이로 사용"
 
 msgid "sCutoff"
 msgstr "컷오프"
@@ -1479,7 +1479,7 @@ msgid "sPresetNormal2Mask"
 msgstr "노멀 맵 2nd 마스크"
 
 msgid "sPresetReflectionSmoothness"
-msgstr "부드러움"
+msgstr "평활도(Smoothness)"
 
 msgid "sPresetReflectionMetallic"
 msgstr "메탈릭"
