@@ -24,7 +24,7 @@ msgid "sEditorModeShaderSetting"
 msgstr "Shader Setting"
 
 msgid "sHelpSelectOverlay"
-msgstr "Currently lilToonOverray is selected. Change to lilToon for normal use."
+msgstr "Currently lilToonOverlay is selected. Change to lilToon for normal use."
 
 msgid "Mode"
 msgstr "Mode"
@@ -303,7 +303,7 @@ msgid "sAsUnlit"
 msgstr "As Unlit"
 
 msgid "sAsUnlitWarn"
-msgstr "A non-zero value is set for "As Unlit". This can cause differences in brightness between materials and avatars."
+msgstr "A non-zero value is set for \"As Unlit\". This can cause differences in brightness between materials and avatars."
 
 msgid "sShaderType"
 msgstr "Shader Type"
@@ -498,7 +498,7 @@ msgid "sLightingPresetSemiMonochrome"
 msgstr "Semi-monochrome"
 
 msgid "sHelpRenderingTransparent"
-msgstr "When two transparent materials overlap, one of them may become invisible. In this case, increase the "Render Queue" value of the material in the foreground to fix the problem."
+msgstr "When two transparent materials overlap, one of them may become invisible. In this case, increase the \"Render Queue\" value of the material in the foreground to fix the problem."
 
 msgid "sHelpRenderingFur"
 msgstr "Limited features applied to fur parts for performance."
@@ -507,7 +507,7 @@ msgid "sHelpTransparentForWorld"
 msgstr "Setting Render Queue to 2999 or lower for transparent materials can make other materials in the back invisible, causing problems such as clothes and hair to disappear. For world projects, it is recommended to set it above 3000 or turn off ZWrite."
 
 msgid "sHelpGrabPass"
-msgstr "Reflection and gem use GrabPass, which can have a significant impact on performance on mobile GPUs."
+msgstr "Refraction and gem use GrabPass, which can have a significant impact on performance on mobile GPUs."
 
 msgid "sHelpGeometryShader"
 msgstr "Geometry shaders do not work on iOS or Mac, so it is recommended to change to another rendering mode."
@@ -621,7 +621,7 @@ msgid "sAlphaMask"
 msgstr "Alpha Mask"
 
 msgid "sAlphaMaskWarnOpaque"
-msgstr "If you want to use Alpha Mask, you need to change the "Rendering Mode" to Cutout or Transparent."
+msgstr "If you want to use Alpha Mask, you need to change the \"Rendering Mode\" to Cutout or Transparent."
 
 msgid "sAlphaMaskModeNone"
 msgstr "None"
@@ -948,7 +948,7 @@ msgid "sDissolveTips"
 msgstr "Settings for dissolving a material"
 
 msgid "sDissolveWarnOpaque"
-msgstr "If you want to use Dissolve, you need to change the "Rendering Mode" to Cutout or Transparent."
+msgstr "If you want to use Dissolve, you need to change the \"Rendering Mode\" to Cutout or Transparent."
 
 msgid "sDissolveMode"
 msgstr "Dissolve Mode"
@@ -1086,7 +1086,7 @@ msgid "sFixPerspective"
 msgstr "Fix Perspective"
 
 msgid "sHelpMatCapBlending"
-msgstr "Turn off "Enable Lighting" in multiply mode."
+msgstr "Turn off \"Enable Lighting\" in multiply mode."
 
 msgid "sMatCapCustomNormal"
 msgstr "Custom normal map"
@@ -1119,7 +1119,7 @@ msgid "Shape"
 msgstr "Shape"
 
 msgid "Atras"
-msgstr "Atras"
+msgstr "Atlas"
 
 msgid "sParticleSize"
 msgstr "Particle Size"
@@ -1359,7 +1359,7 @@ msgid "sDialogImportPackage"
 msgstr "The UPM version of lilToon has already been imported. Do you want to continue importing the unitypackage version? (This may cause script errors, etc.)"
 
 msgid "sWarnOptimiseMeshData"
-msgstr "Due to a bug in Unity, even necessary vertex data may be deleted. If the problem occurs, please turn off "Project Settings/Player/Optimize Mesh Data"."
+msgstr "Due to a bug in Unity, even necessary vertex data may be deleted. If the problem occurs, please turn off \"Project Settings/Player/Optimize Mesh Data\"."
 
 msgid "sPresets"
 msgstr "Presets"
@@ -1536,7 +1536,7 @@ msgid "sSettingTexOutlineColor"
 msgstr "Outline Color Texture"
 
 msgid "sSettingDefaultValue"
-msgstr "Default Value (used for "Fix Lighting" and lighting presets)"
+msgstr "Default Value (used for \"Fix Lighting\" and lighting presets)"
 
 msgid "sSettingBuildSizeOptimization"
 msgstr "Build size optimization (for all materials)"
@@ -1687,4 +1687,3 @@ msgstr "Materials may already exist. Are you sure you want to overwrite it?"
 
 msgid "sUtilInvalidFormat"
 msgstr "Invalid format."
-
