@@ -498,13 +498,13 @@ msgid "sLightingPresetSemiMonochrome"
 msgstr "세미 모노크롬"
 
 msgid "sHelpRenderingTransparent"
-msgstr "투과 머티리얼끼리 겹치면 한쪽이 보이지 않을 수 있습니다. 이 경우 앞쪽 머티리얼의 Render Queue 값을 높이세요."
+msgstr "반투명 머티리얼끼리 겹치면 한쪽이 보이지 않을 수 있습니다. 이 경우 앞쪽 머티리얼의 Render Queue 값을 높이세요."
 
 msgid "sHelpRenderingFur"
 msgstr "퍼포먼스를 위해 퍼에 적용되는 기능이 제한되어 있습니다."
 
 msgid "sHelpTransparentForWorld"
-msgstr "투과 머티리얼에서 Render Queue를 2999 이하로 설정하면 뒤쪽에 있는 다른 머티리얼이 보이지 않아 옷이나 머리카락이 사라지는 등의 문제가 발생할 수 있습니다. 월드용이라면 3000 이상으로 설정하거나 ZWrite를 끄는 것을 권장합니다."
+msgstr "반투명 머티리얼에서 Render Queue를 2999 이하로 설정하면 뒤쪽에 있는 다른 머티리얼이 보이지 않아 옷이나 머리카락이 사라지는 등의 문제가 발생할 수 있습니다. 월드용이라면 3000 이상으로 설정하거나 ZWrite를 끄는 것을 권장합니다."
 
 msgid "sHelpGrabPass"
 msgstr "굴절·보석은 GrabPass를 사용하기 때문에 모바일 GPU에서 성능에 큰 영향을 미칠 수 있습니다."
