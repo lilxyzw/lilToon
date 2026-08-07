@@ -102,7 +102,7 @@ msgid "sBorder"
 msgstr "범위"
 
 msgid "sBorderAO"
-msgstr "AO과 그림자 범위"
+msgstr "AO 및 그림자 범위"
 
 msgid "sBorderR"
 msgstr "범위 (R)"
@@ -114,10 +114,10 @@ msgid "sBlur"
 msgstr "흐림"
 
 msgid "sBlurR"
-msgstr "흐리게 (R)"
+msgstr "흐림 (R)"
 
 msgid "sBlurRGB"
-msgstr "흐리게 (RGB = 1st/2nd/3rd)"
+msgstr "흐림 (RGB = 1st/2nd/3rd)"
 
 msgid "sBlurMask"
 msgstr "흐림 효과 마스크"
@@ -426,10 +426,10 @@ msgid "sStencilModeReader"
 msgstr "읽기"
 
 msgid "sStencilModeReaderInvert"
-msgstr "읽기(반전)"
+msgstr "읽기 (반전)"
 
 msgid "sStencilModeReaderFade"
-msgstr "읽기(반투명)"
+msgstr "읽기 (반투명)"
 
 msgid "sTransparentPresetsPreWriteDepth"
 msgstr "깊이 미리 쓰기"
@@ -471,10 +471,10 @@ msgid "sLightMaxLimit"
 msgstr "밝기 상한"
 
 msgid "sMonochromeLighting"
-msgstr "라이트의 흑백화"
+msgstr "라이팅 흑백화"
 
 msgid "sLightDirectionOverride"
-msgstr "라이트 방향의 오버라이드"
+msgstr "라이트 방향 오버라이드"
 
 msgid "sObjectFollowing"
 msgstr "오브젝트의 방향 추종"
@@ -528,7 +528,7 @@ msgid "sLightBlending"
 msgstr "[Built-in RP] 라이트 혼합"
 
 msgid "sBlendingAdd"
-msgstr "더하기"
+msgstr "가산"
 
 msgid "sBlendingMax"
 msgstr "최댓값"
@@ -555,7 +555,7 @@ msgid "sTriMaskRGB"
 msgstr "마스크 (R:MatCap G:Rim B:Emission)"
 
 msgid "sApplyTo"
-msgstr "적용처"
+msgstr "적용 대상"
 
 msgid "sMainUV"
 msgstr "UV 설정"
@@ -669,7 +669,7 @@ msgid "sShadowBorderColor"
 msgstr "경계 색상"
 
 msgid "sShadowBorderRange"
-msgstr "경계의 폭"
+msgstr "경계 범위"
 
 msgid "sIgnoreBorderProperties"
 msgstr "범위 설정 무시"
@@ -789,13 +789,13 @@ msgid "sTessellationTips"
 msgstr "테셀레이션을 설정할 수 있습니다."
 
 msgid "sTessellationEdge"
-msgstr "길이의 한계"
+msgstr "임계 길이"
 
 msgid "sTessellationShrink"
-msgstr "축소"
+msgstr "축소 보정"
 
 msgid "sTessellationFactor"
-msgstr "최대 분할수"
+msgstr "최대 분할 수"
 
 msgid "sRimShadeSetting"
 msgstr "림쉐이드"
@@ -813,7 +813,7 @@ msgid "sEmission"
 msgstr "발광 텍스처"
 
 msgid "sEmission2nd"
-msgstr "발광 2nd"
+msgstr "발광 텍스처 2nd"
 
 msgid "sBlinkStrength"
 msgstr "블링크 강도"
@@ -1035,10 +1035,10 @@ msgid "sReflection"
 msgstr "반사"
 
 msgid "sSmoothness"
-msgstr "평활도(Smoothness)"
+msgstr "평활도 (Smoothness)"
 
 msgid "sSmoothnessR"
-msgstr "평활도(Smoothness) (R)"
+msgstr "평활도 (Smoothness) (R)"
 
 msgid "sMetallic"
 msgstr "메탈릭"
@@ -1071,7 +1071,7 @@ msgid "sMatCapSetting"
 msgstr "매트캡 설정"
 
 msgid "sMatCap"
-msgstr "매트캡(MatCap)"
+msgstr "매트캡 (MatCap)"
 
 msgid "sMatCap2nd"
 msgstr "매트캡 2nd"
@@ -1122,13 +1122,13 @@ msgid "Atras"
 msgstr "아틀라스"
 
 msgid "sParticleSize"
-msgstr "파티클 사이즈"
+msgstr "파티클 크기"
 
 msgid "sContrast"
 msgstr "콘트라스트"
 
 msgid "sPostContrast"
-msgstr "콘트라스트(후처리)"
+msgstr "콘트라스트 (후처리)"
 
 msgid "sAngleLimit"
 msgstr "각도 제한"
@@ -1155,7 +1155,7 @@ msgid "sStencilSetting"
 msgstr "스텐실 설정"
 
 msgid "sStencilTips"
-msgstr "스텐실(Stencil, 눈썹을 헤어 위에 표시하는 등)을 설정할 수 있습니다."
+msgstr "스텐실 (Stencil, 눈썹을 헤어 위에 표시하는 등)을 설정할 수 있습니다."
 
 msgid "sAdvanced"
 msgstr "확장 설정"
@@ -1212,7 +1212,7 @@ msgid "sBlendOpAlpha"
 msgstr "BlendOp Alpha"
 
 msgid "sRenderingReset"
-msgstr "렌더링 설정을 초기화"
+msgstr "렌더링 설정 초기화"
 
 msgid "sLightBakeSetting"
 msgstr "라이트 베이크"
@@ -1245,7 +1245,7 @@ msgid "sBake3rd"
 msgstr "레이어 3 베이크"
 
 msgid "sBakeAlphamask"
-msgstr "알파 마스크를 굽기"
+msgstr "알파 마스크 베이크"
 
 msgid "sSelectAlphamask"
 msgstr "알파 마스크를 선택하세요."
@@ -1317,7 +1317,7 @@ msgid "sDialogSetMainTex"
 msgstr "메인 컬러에 텍스처를 설정해야 합니다."
 
 msgid "sDialogNoChange"
-msgstr "색상이 변경되지 않았습니다."
+msgstr "색상을 변경하지 않았습니다."
 
 msgid "sDialogNotUse2nd"
 msgstr "메인 컬러 2nd 레이어를 사용하고 있지 않습니다."
@@ -1341,7 +1341,7 @@ msgid "sDialogBakeMatCap"
 msgstr "매트캡을 베이크하시겠습니까?"
 
 msgid "sDialogBakeTriMask"
-msgstr "TriMask(MatCap / Rim / Emission 마스크)를 베이크하시겠습니까?"
+msgstr "TriMask (MatCap / Rim / Emission 마스크)를 베이크하시겠습니까?"
 
 msgid "sDialogBakeOutline"
 msgstr "윤곽선 색상 텍스처를 베이크하시겠습니까?"
@@ -1479,7 +1479,7 @@ msgid "sPresetNormal2Mask"
 msgstr "노멀 맵 2nd 마스크"
 
 msgid "sPresetReflectionSmoothness"
-msgstr "평활도(Smoothness)"
+msgstr "평활도 (Smoothness)"
 
 msgid "sPresetReflectionMetallic"
 msgstr "메탈릭"
@@ -1503,7 +1503,7 @@ msgid "sPresetOutlineTex"
 msgstr "윤곽선 색상"
 
 msgid "sPresetOutlineWidth"
-msgstr "윤곽선의 폭"
+msgstr "윤곽선 굵기"
 
 msgid "sPresetFurNormal"
 msgstr "퍼 노멀 맵"
@@ -1515,7 +1515,7 @@ msgid "sPresetFurMask"
 msgstr "퍼 마스크"
 
 msgid "sShaderSetting"
-msgstr "셰이더 설정(모든 머티리얼 공통)"
+msgstr "셰이더 설정 (모든 머티리얼 공통)"
 
 msgid "sHelpShaderSetting"
 msgstr "여기에서 끈 기능은 셰이더에서 제거됩니다. 불필요한 기능을 꺼서 아바타 용량과 처리 부하를 줄일 수 있습니다."
@@ -1536,10 +1536,10 @@ msgid "sSettingTexOutlineColor"
 msgstr "윤곽선 색상 텍스처"
 
 msgid "sSettingDefaultValue"
-msgstr "초기값 (Fix Lighting이나 라이팅 프리셋에 사용)"
+msgstr "초기값 (Fix Lighting 및 라이팅 프리셋에 사용)"
 
 msgid "sSettingBuildSizeOptimization"
-msgstr "빌드 크기 최적화(모든 머티리얼 공통)"
+msgstr "빌드 크기 최적화 (모든 머티리얼 공통)"
 
 msgid "sSettingApplyShadowFA"
 msgstr "ForwardAdd로 그림자 활성화"

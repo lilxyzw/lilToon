@@ -1119,7 +1119,7 @@ msgid "Shape"
 msgstr "Shape"
 
 msgid "Atras"
-msgstr "Atras"
+msgstr "Atlas"
 
 msgid "sParticleSize"
 msgstr "パーティクルサイズ"
