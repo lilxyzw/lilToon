@@ -135,7 +135,7 @@ msgid "Override"
 msgstr "오버라이드"
 
 msgid "sEnableLighting"
-msgstr "라이팅을 적용"
+msgstr "라이트 밝기 반영"
 
 msgid "sUVSetting"
 msgstr "UV 설정"
@@ -285,7 +285,7 @@ msgid "sLimShadowStrength"
 msgstr "그림자 강도"
 
 msgid "sLimOutline"
-msgstr "윤곽선의 색"
+msgstr "윤곽선 색상"
 
 msgid "sLimEmission"
 msgstr "발광색"
@@ -504,7 +504,7 @@ msgid "sHelpRenderingFur"
 msgstr "퍼포먼스를 위해 퍼에 적용되는 기능이 제한되어 있습니다."
 
 msgid "sHelpTransparentForWorld"
-msgstr "반투명 머티리얼에서 Render Queue를 2999 이하로 설정하면 뒤쪽에 있는 다른 머티리얼이 보이지 않아 옷이나 머리카락이 사라지는 등의 문제가 발생할 수 있습니다. 월드용이라면 3000 이상으로 설정하거나 ZWrite를 끄는 것을 권장합니다."
+msgstr "반투명 머티리얼에서 Render Queue를 2999 이하로 설정하면 뒤쪽에 있는 다른 머티리얼이 보이지 않아 의상이나 헤어가 사라지는 등의 문제가 발생할 수 있습니다. 월드용이라면 3000 이상으로 설정하거나 ZWrite를 끄는 것을 권장합니다."
 
 msgid "sHelpGrabPass"
 msgstr "굴절·보석은 GrabPass를 사용하기 때문에 모바일 GPU에서 성능에 큰 영향을 미칠 수 있습니다."
@@ -669,7 +669,7 @@ msgid "sShadowBorderColor"
 msgstr "경계 색상"
 
 msgid "sShadowBorderRange"
-msgstr "경계 범위"
+msgstr "경계 폭"
 
 msgid "sIgnoreBorderProperties"
 msgstr "범위 설정 무시"
@@ -1086,7 +1086,7 @@ msgid "sFixPerspective"
 msgstr "원근 보정"
 
 msgid "sHelpMatCapBlending"
-msgstr "곱하기 모드에서는 '라이팅 적용' 값을 0으로 설정하세요."
+msgstr "곱하기 모드에서는 '라이트 밝기 반영' 값을 0으로 설정하세요."
 
 msgid "sMatCapCustomNormal"
 msgstr "커스텀 노멀 맵"
