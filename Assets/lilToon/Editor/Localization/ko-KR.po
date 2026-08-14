@@ -270,10 +270,10 @@ msgid "sVRParallaxStrength"
 msgstr "VR 패럴랙스 강도"
 
 msgid "sShadowMask"
-msgstr "그림자 마스크"
+msgstr "그림자 영향도"
 
 msgid "sBackfaceMask"
-msgstr "뒷면 마스크"
+msgstr "뒷면에서는 비활성화"
 
 msgid "sRandomize"
 msgstr "임의화"
@@ -588,16 +588,16 @@ msgid "sColors"
 msgstr "색상 설정"
 
 msgid "sMainColorSetting"
-msgstr "메인 컬러 / 알파 설정"
+msgstr "메인 컬러 / 불투명도 설정"
 
 msgid "sMainColorSettingSimple"
-msgstr "메인 컬러 / 알파 설정"
+msgstr "메인 컬러 / 불투명도 설정"
 
 msgid "sMainColorTips"
 msgstr "색상과 투명도를 설정할 수 있습니다."
 
 msgid "sMainColorAlpha"
-msgstr "메인 컬러 / 알파"
+msgstr "메인 컬러 / 불투명도"
 
 msgid "sMainColor"
 msgstr "메인 컬러"
@@ -936,7 +936,7 @@ msgid "sAudioLinkLocalMapBPM"
 msgstr "BPM"
 
 msgid "sAudioLinkLocalMapNotes"
-msgstr "박자 수"
+msgstr "BPM 배율"
 
 msgid "sAudioLinkDefaultValue"
 msgstr "AudioLink 비활성화 시 기본값"
