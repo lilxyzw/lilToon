@@ -637,7 +637,7 @@ Shader "Hidden/lilToonMultiOutline"
 
     SubShader
     {
-        Tags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
+        Tags {"RenderType" = "Opaque" "Queue" = "Geometry"}
         HLSLINCLUDE
             #define LIL_OPTIMIZE_APPLY_SHADOW_FA
             #define LIL_OPTIMIZE_USE_FORWARDADD
