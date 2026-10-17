@@ -40,7 +40,7 @@ namespace lilToon
         internal const string githubURL = "https://github.com/lilxyzw/lilToon";
         internal const string versionInfoURL = "https://raw.githubusercontent.com/lilxyzw/lilToon/refs/heads/master/Assets/lilToon/package.json";
 
-        internal static readonly string[] mainTexCheckWords = new[] {"mask", "shadow", "shade", "outline", "normal", "bumpmap", "matcap", "rimlight", "emittion", "reflection", "specular", "roughness", "smoothness", "metallic", "metalness", "opacity", "parallax", "displacement", "height", "ambient", "occlusion"};
+        internal static readonly string[] mainTexCheckWords = new[] {"mask", "shadow", "shade", "outline", "normal", "bumpmap", "matcap", "rimlight", "emission", "reflection", "specular", "roughness", "smoothness", "metallic", "metalness", "opacity", "parallax", "displacement", "height", "ambient", "occlusion"};
 
         public static readonly Vector2 defaultTextureOffset = new Vector2(0.0f,0.0f);
         public static readonly Vector2 defaultTextureScale = new Vector2(1.0f,1.0f);
