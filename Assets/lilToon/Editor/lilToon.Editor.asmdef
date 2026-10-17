@@ -41,6 +41,11 @@
             "name": "com.llealloo.audiolink",
             "expression": "2",
             "define": "LILTOON_AUDIOLINK"
+        },
+        {
+            "name": "com.unity.modules.uielements",
+            "expression": "",
+            "define": "LILTOON_MODULE_UIELEMENTS"
         }
     ],
     "noEngineReferences": false

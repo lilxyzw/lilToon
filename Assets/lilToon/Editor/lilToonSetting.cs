@@ -793,6 +793,12 @@ public class lilToonSetting : ScriptableObject
                 next is Texture ||
                 next is Shader ||
                 next is TextAsset ||
+                next is UnityEngine.Font ||
+#if LILTOON_MODULE_UIELEMENTS
+                next is UnityEngine.UIElements.VisualTreeAsset ||
+                next is UnityEngine.UIElements.StyleSheet ||
+                next is UnityEngine.UIElements.PanelSettings ||
+#endif
                 next.GetType() == typeof(Object)
             ) continue;
 
