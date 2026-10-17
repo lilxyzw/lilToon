@@ -24,7 +24,7 @@ msgid "sEditorModeShaderSetting"
 msgstr "シェーダー設定"
 
 msgid "sHelpSelectOverlay"
-msgstr "現在lilToonOverrayが選択されています。通常の用途で使う場合はlilToonに変更してください。"
+msgstr "現在lilToonOverlayが選択されています。通常の用途で使う場合はlilToonに変更してください。"
 
 msgid "sColor"
 msgstr "色"
@@ -303,7 +303,7 @@ msgid "sAsUnlit"
 msgstr "Unlit化"
 
 msgid "sAsUnlitWarn"
-msgstr ""Unlit化"が0以外に設定されています。これはマテリアル間・アバター間での明るさの違いを発生させる可能性があります。"
+msgstr "\"Unlit化\"が0以外に設定されています。これはマテリアル間・アバター間での明るさの違いを発生させる可能性があります。"
 
 msgid "sShaderType"
 msgstr "シェーダーの種類"
@@ -621,7 +621,7 @@ msgid "sAlphaMask"
 msgstr "アルファマスク"
 
 msgid "sAlphaMaskWarnOpaque"
-msgstr "アルファマスクを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。"
+msgstr "アルファマスクを使う場合は\"描画モード\"をカットアウトか半透明に変更する必要があります。"
 
 msgid "sAlphaMaskModeNone"
 msgstr "None"
@@ -948,7 +948,7 @@ msgid "sDissolveTips"
 msgstr "マテリアルが溶けるような表現ができます"
 
 msgid "sDissolveWarnOpaque"
-msgstr "Dissolveを使う場合は"描画モード"をカットアウトか半透明に変更する必要があります。"
+msgstr "Dissolveを使う場合は\"描画モード\"をカットアウトか半透明に変更する必要があります。"
 
 msgid "sDissolveMode"
 msgstr "Dissolve Mode"
@@ -1086,7 +1086,7 @@ msgid "sFixPerspective"
 msgstr "パース補正"
 
 msgid "sHelpMatCapBlending"
-msgstr "乗算モードでは"ライトの明るさを反映"を0にしてください"
+msgstr "乗算モードでは\"ライトの明るさを反映\"を0にしてください"
 
 msgid "sMatCapCustomNormal"
 msgstr "カスタムノーマルマップ"
@@ -1119,7 +1119,7 @@ msgid "Shape"
 msgstr "Shape"
 
 msgid "Atras"
-msgstr "Atras"
+msgstr "Atlas"
 
 msgid "sParticleSize"
 msgstr "パーティクルサイズ"
@@ -1359,7 +1359,7 @@ msgid "sDialogImportPackage"
 msgstr "既にUPM版lilToonがインポートされています。unitypackage版のインポートを続行しますか？（これはスクリプトエラー等を引き起こす可能性があります。）"
 
 msgid "sWarnOptimiseMeshData"
-msgstr "Unityのバグにより必要な頂点データまで削除されることがあります。不具合が発生する場合は"Project Settings/Player/Optimize Mesh Data"をオフにしてください。"
+msgstr "Unityのバグにより必要な頂点データまで削除されることがあります。不具合が発生する場合は\"Project Settings/Player/Optimize Mesh Data\"をオフにしてください。"
 
 msgid "sPresets"
 msgstr "プリセット"
@@ -1687,4 +1687,3 @@ msgstr "マテリアルが既に存在している可能性があります。上
 
 msgid "sUtilInvalidFormat"
 msgstr "フォーマットが不正です。"
-

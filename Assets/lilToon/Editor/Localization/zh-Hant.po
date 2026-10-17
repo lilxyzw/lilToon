@@ -24,7 +24,7 @@ msgid "sEditorModeShaderSetting"
 msgstr "著色器設定"
 
 msgid "sHelpSelectOverlay"
-msgstr "目前選擇的是 lilToonOverray。若為一般用途，請改用 lilToon。"
+msgstr "目前選擇的是 lilToonOverlay。若為一般用途，請改用 lilToon。"
 
 msgid "Mode"
 msgstr "模式"
@@ -1119,7 +1119,7 @@ msgid "Shape"
 msgstr "Shape"
 
 msgid "Atras"
-msgstr "Atras"
+msgstr "Atlas"
 
 msgid "sParticleSize"
 msgstr "粒子大小"
@@ -1687,4 +1687,3 @@ msgstr "該材質可能已經存在。 你確定要覆蓋它嗎？"
 
 msgid "sUtilInvalidFormat"
 msgstr "無效格式。"
-
