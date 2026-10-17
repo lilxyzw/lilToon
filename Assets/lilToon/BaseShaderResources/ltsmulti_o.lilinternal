@@ -6,7 +6,7 @@ Shader "Hidden/lilToonMultiOutline"
         lilProperties "DefaultOpaque"
     }
 
-    lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Transparent-100"}
+    lilSubShaderTags {"RenderType" = "Opaque" "Queue" = "Geometry"}
     lilSubShaderBRP "DefaultMultiOutline"
     lilSubShaderLWRP "DefaultMultiOutline"
     lilSubShaderURP "DefaultMultiOutline"
