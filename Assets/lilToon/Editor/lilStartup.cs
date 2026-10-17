@@ -150,12 +150,16 @@ namespace lilToon
             {
                 yield return webRequest.SendWebRequest();
                 #if UNITY_2020_2_OR_NEWER
-                    if(webRequest.result != UnityWebRequest.Result.ConnectionError)
+                    if(webRequest.result == UnityWebRequest.Result.Success)
                 #else
-                    if(!webRequest.isNetworkError)
+                    if(!webRequest.isNetworkError && !webRequest.isHttpError)
                 #endif
                 {
-                    lilEditorParameters.instance.versionInfo = webRequest.downloadHandler.text;
+                    string versionInfo = webRequest.downloadHandler.text;
+                    if(!string.IsNullOrWhiteSpace(versionInfo) && versionInfo.TrimStart().StartsWith("{"))
+                    {
+                        lilEditorParameters.instance.versionInfo = versionInfo;
+                    }
                 }
             }
         }

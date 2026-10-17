@@ -60,12 +60,20 @@ namespace lilToon
         {
             if(string.IsNullOrEmpty(latestVersion.version))
             {
-                if (!string.IsNullOrEmpty(lilEditorParameters.instance.versionInfo) && lilEditorParameters.instance.versionInfo.Contains("version"))
+                if(!string.IsNullOrEmpty(lilEditorParameters.instance.versionInfo))
                 {
-                    EditorJsonUtility.FromJsonOverwrite(lilEditorParameters.instance.versionInfo, latestVersion);
+                    try
+                    {
+                        EditorJsonUtility.FromJsonOverwrite(lilEditorParameters.instance.versionInfo, latestVersion);
+                    }
+                    catch(ArgumentException)
+                    {
+                        lilEditorParameters.instance.versionInfo = string.Empty;
+                    }
                 }
-                else
+                if(string.IsNullOrEmpty(latestVersion.version))
                 {
+                    lilEditorParameters.instance.versionInfo = string.Empty;
                     latestVersion.version = lilConstants.currentVersionName;
                 }
                 latestVersion.semver = new SemVerParser(latestVersion.version);
