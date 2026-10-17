@@ -339,6 +339,13 @@ float3 lilBlendColor(float3 dstCol, float3 srcCol, float srcA, uint blendMode)
     return lilBlendColor(dstCol, srcCol, float3(srcA,srcA,srcA), blendMode);
 }
 
+float3 lilClampBrightness(float3 lightColor, float lightMin, float lightMax)
+{
+    float v = max(lightColor.r, max(lightColor.g, lightColor.b));
+    v = clamp(v, 0.00001, v);
+    return lightColor * (clamp(v, lightMin, lightMax) / v);
+}
+
 float lilGray(float3 rgb)
 {
     return dot(rgb, float3(1.0/3.0, 1.0/3.0, 1.0/3.0));
