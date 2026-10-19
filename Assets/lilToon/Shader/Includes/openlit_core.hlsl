@@ -15,7 +15,7 @@
 //------------------------------------------------------------------------------------------------------------------------------
 // VRC Light Volumes
 // https://github.com/REDSIM/VRCLightVolumes
-#if defined(SHADER_STAGE_FRAGMENT) && (defined(LIL_INPUT_OPTIMIZED) || defined(LIL_MULTI)) || !defined(SHADER_STAGE_FRAGMENT) && !(defined(LIL_INPUT_OPTIMIZED) || defined(LIL_MULTI))
+#if defined(UNITY_PASS_FORWARDBASE) && defined(SHADER_STAGE_FRAGMENT) && (defined(LIL_INPUT_OPTIMIZED) || defined(LIL_MULTI)) || !defined(SHADER_STAGE_FRAGMENT) && !(defined(LIL_INPUT_OPTIMIZED) || defined(LIL_MULTI))
 #if defined(OPENLIT_VRCLIGHTVOLUMES)
 #include "Packages/red.sim.lightvolumes/Shaders/LightVolumes.cginc"
 #elif defined(OPENLIT_VRCLIGHTVOLUMES_WITHOUTPACKAGE)
