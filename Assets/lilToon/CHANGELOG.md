@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-10-19
+### Changed
+- Minimal VRCLV 3.0 support
+
+### Fixed
+- improve Korean localization
+- Fixed an issue where building a scene containing UI Toolkit assets would cause a crash due to a memory allocation failure
+- handle invalid version check responses
+- Correct RenderQueue value for multi outline shader
+- correct typo in mainTexCheckWords array for 'emission'
+
 ## [2.3.4] - 2026-06-25
 ### Changed
 - Move additional light to pixel shader (URP)

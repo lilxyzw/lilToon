@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-10-19
+### 変更
+- 最低限のVRCLV 3.0対応
+
+### 修正
+- 韓国語翻訳の改善
+- UI Toolkitアセットを含むシーンのビルドでメモリ確保に失敗しクラッシュする問題を修正
+- 無効なバージョンチェック応答を処理
+- lilToonMultiのアウトラインのRenderQueueを修正
+- mainTexCheckWords配列内の「emission」に関する誤字を修正
+
 ## [2.3.4] - 2026-06-25
 ### 変更
 - URPの追加ライトをピクゼルシェーダーに移動
