@@ -307,7 +307,7 @@
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Main Texture
-#if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED)
+#if defined(LIL_PASS_FORWARD_NORMAL_INCLUDED) || defined(LIL_PASS_FORWARD_FUR_INCLUDED)
     #define LIL_GET_MAIN_TEX \
         fd.col = LIL_SAMPLE_2D_POM(_MainTex, sampler_MainTex, fd.uvMain, fd.ddxMain, fd.ddyMain);
 
