@@ -1856,7 +1856,7 @@
             #if defined(LIL_FEATURE_AUDIOLINK)
                 if(_AudioLink2Emission) emissionColor.a *= fd.audioLinkValue;
             #endif
-            emissionColor.rgb = lerp(emissionColor.rgb, emissionColor.rgb * fd.invLighting, _EmissionFluorescence);
+            emissionColor.a *= lerp(1.0, fd.fluorescence, _EmissionFluorescence);
             emissionColor.rgb = lerp(emissionColor.rgb, emissionColor.rgb * fd.albedo, _EmissionMainStrength);
             float emissionBlend = _EmissionBlend * lilCalcBlink(_EmissionBlink) * emissionColor.a;
             #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)
@@ -1940,7 +1940,7 @@
             #if defined(LIL_FEATURE_AUDIOLINK)
                 if(_AudioLink2Emission2nd) emission2ndColor.a *= fd.audioLinkValue;
             #endif
-            emission2ndColor.rgb = lerp(emission2ndColor.rgb, emission2ndColor.rgb * fd.invLighting, _Emission2ndFluorescence);
+            emission2ndColor.a *= lerp(1.0, fd.fluorescence, _Emission2ndFluorescence);
             emission2ndColor.rgb = lerp(emission2ndColor.rgb, emission2ndColor.rgb * fd.albedo, _Emission2ndMainStrength);
             float emission2ndBlend = _Emission2ndBlend * lilCalcBlink(_Emission2ndBlink) * emission2ndColor.a;
             #if LIL_RENDER == 2 && !defined(LIL_REFRACTION)

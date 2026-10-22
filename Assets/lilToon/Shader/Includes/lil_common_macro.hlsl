@@ -116,6 +116,10 @@
     float lilLuminance(float3 rgb) { return dot(rgb, float3(0.0396819152, 0.458021790, 0.00609653955)); }
 #endif
 
+float lilFluorescence(float3 rgb) {
+    return pow(1.0 - saturate(lilLuminance(rgb)), 3.0);
+}
+
 // Initialize struct
 #if defined(UNITY_INITIALIZE_OUTPUT)
     #define LIL_INITIALIZE_STRUCT(type,name) UNITY_INITIALIZE_OUTPUT(type,name)
@@ -2303,12 +2307,12 @@ struct lilLightData
         LIL_GET_MAINLIGHT(input, fd.lightColor, fd.L, fd.attenuation); \
         fd.origL = fd.L; \
         LIL_GET_ADDITIONALLIGHT(input, fd.addLightColor); \
-        fd.invLighting = saturate((1.0 - fd.lightColor) * sqrt(fd.lightColor))
+        fd.fluorescence = lilFluorescence(fd.lightColor)
 #else
     #define LIL_GET_LIGHTING_DATA(input,fd) \
         LIL_GET_MAINLIGHT(input, fd.lightColor, fd.L, fd.attenuation); \
         LIL_GET_ADDITIONALLIGHT(input, fd.addLightColor); \
-        fd.invLighting = saturate((1.0 - fd.lightColor) * sqrt(fd.lightColor))
+        fd.fluorescence = lilFluorescence(fd.lightColor)
 #endif
 
 #define LIL_GET_POSITION_WS_DATA(input,fd) \
