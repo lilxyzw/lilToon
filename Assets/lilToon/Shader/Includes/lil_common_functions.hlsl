@@ -498,9 +498,8 @@ float2 lilCalcDecalUV(
     if(isRightOnly && !isRightHand) outUV.x = -1.0;
 
     // Rotate
-    outUV = (outUV - uv_ST.zw) / uv_ST.xy;
-    outUV = lilRotateUV(outUV, angle);
-    outUV = outUV * uv_ST.xy + uv_ST.zw;
+    float2 center = (uv_ST.zw / 2) / (uv_ST.xy * uv_ST.zw);
+    outUV = lilRotateUV(outUV - center, angle) + center;
 
     return outUV;
 }
