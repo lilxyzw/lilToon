@@ -388,6 +388,7 @@ namespace lilToon
         private readonly lilMaterialProperty distanceFade                = new lilMaterialProperty("_DistanceFade", PropertyBlock.DistanceFade);
         private readonly lilMaterialProperty distanceFadeColor           = new lilMaterialProperty("_DistanceFadeColor", PropertyBlock.DistanceFade);
         private readonly lilMaterialProperty distanceFadeMode            = new lilMaterialProperty("_DistanceFadeMode", PropertyBlock.DistanceFade);
+        private readonly lilMaterialProperty distanceFadeMask            = new lilMaterialProperty("_DistanceFadeMask", true, PropertyBlock.DistanceFade);
         private readonly lilMaterialProperty distanceFadeRimColor        = new lilMaterialProperty("_DistanceFadeRimColor", PropertyBlock.DistanceFade);
         private readonly lilMaterialProperty distanceFadeRimFresnelPower = new lilMaterialProperty("_DistanceFadeRimFresnelPower", PropertyBlock.DistanceFade);
 
@@ -997,6 +998,7 @@ namespace lilToon
                 distanceFade,
                 distanceFadeColor,
                 distanceFadeMode,
+                distanceFadeMask,
                 distanceFadeRimColor,
                 distanceFadeRimFresnelPower,
 

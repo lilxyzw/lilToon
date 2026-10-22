@@ -2015,10 +2015,15 @@
     {
         float depth = _DistanceFadeMode ? fd.depthObject : fd.depth;
         float distFade = saturate((depth - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x));
-        #if defined(LIL_OUTLINE) || defined(LIL_PASS_FORWARD_FUR_INCLUDED)
-            distFade = distFade * _DistanceFade.z;
+        #if defined(LIL_FEATURE_DistanceFadeMask)
+            float distFadeStrength = _DistanceFade.z * LIL_SAMPLE_2D(_DistanceFadeMask, lil_sampler_linear_repeat, fd.uvMain).r;
         #else
-            distFade = fd.facing < (_DistanceFade.w-1.0) ? _DistanceFade.z : distFade * _DistanceFade.z;
+            float distFadeStrength = _DistanceFade.z;
+        #endif
+        #if defined(LIL_OUTLINE) || defined(LIL_PASS_FORWARD_FUR_INCLUDED)
+            distFade = distFade * distFadeStrength;
+        #else
+            distFade = fd.facing < (_DistanceFade.w-1.0) ? distFadeStrength : distFade * distFadeStrength;
         #endif
         #if LIL_RENDER == 1
             fd.col.a = lerp(fd.col.a, fd.col.a * _DistanceFadeColor.a, distFade);
@@ -2029,10 +2034,15 @@
     {
         float depth = _DistanceFadeMode ? fd.depthObject : fd.depth;
         float distFade = saturate((depth - _DistanceFade.x) / (_DistanceFade.y - _DistanceFade.x));
-        #if defined(LIL_OUTLINE) || defined(LIL_PASS_FORWARD_FUR_INCLUDED)
-            distFade = distFade * _DistanceFade.z;
+        #if defined(LIL_FEATURE_DistanceFadeMask)
+            float distFadeStrength = _DistanceFade.z * LIL_SAMPLE_2D(_DistanceFadeMask, lil_sampler_linear_repeat, fd.uvMain).r;
         #else
-            distFade = fd.facing < (_DistanceFade.w-1.0) ? _DistanceFade.z : distFade * _DistanceFade.z;
+            float distFadeStrength = _DistanceFade.z;
+        #endif
+        #if defined(LIL_OUTLINE) || defined(LIL_PASS_FORWARD_FUR_INCLUDED)
+            distFade = distFade * distFadeStrength;
+        #else
+            distFade = fd.facing < (_DistanceFade.w-1.0) ? distFadeStrength : distFade * distFadeStrength;
         #endif
 
         float3 fadeColor = _DistanceFadeColor.rgb;
