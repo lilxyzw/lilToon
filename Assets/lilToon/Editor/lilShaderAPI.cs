@@ -8,7 +8,7 @@ namespace lilToon
     {
         public static bool IsTextureLimitedAPI()
         {
-            return CurrentAPITextureLimit() <= 32;
+            return CurrentAPITextureLimit() <= 64;
         }
 
         public static int CurrentAPITextureLimit()
@@ -23,6 +23,8 @@ namespace lilToon
                     return 32;
                 case GraphicsDeviceType.OpenGLCore:
                     return 32;
+                case GraphicsDeviceType.Vulkan:
+                    return 64;
                 default :
                     return 128;
             }
