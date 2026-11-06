@@ -415,6 +415,7 @@ namespace lilToon
                         break;
                     case ShaderPropertyType.Texture:
                         p.textureValue = null;
+                        p.textureScaleAndOffset = new Vector4(1.0f, 1.0f, 0.0f, 0.0f);
                         break;
                 }
             }
