@@ -38,6 +38,12 @@ namespace lilToon
             set { p.textureValue = value; }
         }
 
+        public Vector4 textureScaleAndOffset
+        {
+            get { return p.textureScaleAndOffset; }
+            set { p.textureScaleAndOffset = value; }
+        }
+
         // Other
         public string name
         {
