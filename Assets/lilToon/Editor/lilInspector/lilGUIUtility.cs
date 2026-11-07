@@ -350,50 +350,41 @@ namespace lilToon
 
         private void CopyProperties(PropertyBlock propertyBlock)
         {
-            var material = (Material)m_MaterialEditor.target;
             foreach(var p in AllProperties().Where(p =>
                 p.p != null &&
                 p.blocks.Contains(propertyBlock)
             ))
             {
                 copiedProperties[p.name] = p.p;
-
-                if(p.isTexture)
-                {
-                    string stPropertyName = p.name + "_ST";
-                    if(material.HasProperty(stPropertyName))
-                    {
-                        copiedVectorProperties[stPropertyName] = material.GetVector(stPropertyName);
-                    }
-                }
             }
         }
 
         private void PasteProperties(PropertyBlock propertyBlock, bool shouldCopyTex)
         {
-            var material = (Material)m_MaterialEditor.target;
-            foreach(var p in AllProperties().Where(p =>
+            foreach (var p in AllProperties().Where(p =>
                 p.p != null &&
                 p.blocks.Contains(propertyBlock) &&
-                !(!shouldCopyTex && p.isTexture) &&
-                copiedProperties.ContainsKey(p.name) &&
-                copiedProperties[p.name] != null
+                !(!shouldCopyTex && p.isTexture)
             ))
             {
-                var propType = p.propertyType;
-                if(propType == ShaderPropertyType.Color)   p.colorValue = copiedProperties[p.name].colorValue;
-                if(propType == ShaderPropertyType.Vector)  p.vectorValue = copiedProperties[p.name].vectorValue;
-                if(propType == ShaderPropertyType.Float)   p.floatValue = copiedProperties[p.name].floatValue;
-                if(propType == ShaderPropertyType.Range)   p.floatValue = copiedProperties[p.name].floatValue;
-                if(propType == ShaderPropertyType.Texture) p.textureValue = copiedProperties[p.name].textureValue;
-
-                if(p.isTexture && shouldCopyTex)
+                copiedProperties.TryGetValue(p.name, out var copiedProperty);
+                if (copiedProperty == null) continue;
+                switch (p.propertyType)
                 {
-                    string stPropertyName = p.name + "_ST";
-                    if(copiedVectorProperties.ContainsKey(stPropertyName) && material.HasProperty(stPropertyName))
-                    {
-                        material.SetVector(stPropertyName, copiedVectorProperties[stPropertyName]);
-                    }
+                    case ShaderPropertyType.Color:
+                        p.colorValue = copiedProperty.colorValue;
+                        break;
+                    case ShaderPropertyType.Vector:
+                        p.vectorValue = copiedProperty.vectorValue;
+                        break;
+                    case ShaderPropertyType.Float:
+                    case ShaderPropertyType.Range:
+                        p.floatValue = copiedProperty.floatValue;
+                        break;
+                    case ShaderPropertyType.Texture:
+                        p.textureValue = copiedProperty.textureValue;
+                        p.textureScaleAndOffset = copiedProperty.textureScaleAndOffset;
+                        break;
                 }
             }
         }
@@ -403,20 +394,30 @@ namespace lilToon
             #if UNITY_2019_3_OR_NEWER
             foreach(var p in AllProperties().Where(p =>
                 p.p != null &&
-                p.blocks.Contains(propertyBlock) &&
-                p.targets[0] is Material &&
-                ((Material)p.targets[0]).shader != null
+                p.blocks.Contains(propertyBlock)
             ))
             {
-                var shader = ((Material)p.targets[0]).shader;
+                var shader = (p.targets[0] as Material)?.shader;
+                if (shader == null) continue;
                 int propID = shader.FindPropertyIndex(p.name);
-                if(propID == -1) continue;
-                var propType = p.propertyType;
-                if(propType == ShaderPropertyType.Color)     p.colorValue = shader.GetPropertyDefaultVectorValue(propID);
-                if(propType == ShaderPropertyType.Vector)    p.vectorValue = shader.GetPropertyDefaultVectorValue(propID);
-                if(propType == ShaderPropertyType.Float)     p.floatValue = shader.GetPropertyDefaultFloatValue(propID);
-                if(propType == ShaderPropertyType.Range)     p.floatValue = shader.GetPropertyDefaultFloatValue(propID);
-                if(propType == ShaderPropertyType.Texture)   p.textureValue = null;
+                if (propID == -1) continue;
+                switch (p.propertyType)
+                {
+                    case ShaderPropertyType.Color:
+                        p.colorValue = shader.GetPropertyDefaultVectorValue(propID);
+                        break;
+                    case ShaderPropertyType.Vector:
+                        p.vectorValue = shader.GetPropertyDefaultVectorValue(propID);
+                        break;
+                    case ShaderPropertyType.Float:
+                    case ShaderPropertyType.Range:
+                        p.floatValue = shader.GetPropertyDefaultFloatValue(propID);
+                        break;
+                    case ShaderPropertyType.Texture:
+                        p.textureValue = null;
+                        p.textureScaleAndOffset = new Vector4(1.0f, 1.0f, 0.0f, 0.0f);
+                        break;
+                }
             }
             #endif
         }
