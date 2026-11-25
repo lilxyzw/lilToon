@@ -620,7 +620,19 @@
             float4 anisoTangentMap = float4(0.5,0.5,1.0,0.5); \
             LIL_SAMPLE_AnisotropyTangentMap; \
             float3 anisoTangent = lilUnpackNormalScale(anisoTangentMap, 1.0); \
-            fd.T = lilOrthoNormalize(normalize(mul(anisoTangent, fd.TBN)), fd.N); \
+            float3 direction = mul(anisoTangent, fd.TBN); \
+            float3 perpendicular = cross(fd.N, direction); \
+            if(dot(perpendicular, perpendicular) <= max(1e-20f, 1e-8f * dot(direction, direction))) \
+            { \
+                perpendicular = cross(fd.N, fd.TBN[0]); \
+                if(dot(perpendicular, perpendicular) <= 1e-8f) \
+                { \
+                    perpendicular = cross(fd.N, fd.TBN[1]); \
+                    if(dot(perpendicular, perpendicular) <= 1e-8f) \
+                        perpendicular = cross(fd.N, abs(fd.N.y) < 0.9 ? float3(0,1,0) : float3(1,0,0)); \
+                } \
+            } \
+            fd.T = normalize(cross(perpendicular, fd.N)); \
             fd.B = cross(fd.N, fd.T); \
             fd.anisotropy = _AnisotropyScale; \
             LIL_SAMPLE_AnisotropyScaleMask; \
